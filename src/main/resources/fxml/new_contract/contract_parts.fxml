@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root prefHeight="259.0" prefWidth="740.0" type="HBox" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane>
+         <children>
+            <VBox>
+               <children>
+                  <Label text="Cliente de Gestoría Moldes - Empleador" textFill="#1807ac">
+                     <VBox.margin>
+                        <Insets left="15.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="employerName" maxHeight="26.0" maxWidth="385.0" minHeight="26.0" minWidth="385.0" prefHeight="26.0" prefWidth="385.0" promptText="Teclee el patrón de búsqueda para el empleador" style="-fx-text-inner-color: blue;">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <ListView fx:id="employersNames" maxHeight="210.0" maxWidth="385.0" minHeight="210.0" minWidth="385.0" prefHeight="210.0" prefWidth="385.0">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </ListView>
+                  <HBox maxWidth="396.0" prefHeight="31.0" prefWidth="396.0">
+                     <children>
+                        <Label maxHeight="16.0" maxWidth="175.0" minHeight="16.0" minWidth="175.0" prefHeight="16.0" prefWidth="175.0" text="Código Cuenta Cotización">
+                           <HBox.margin>
+                              <Insets left="10.0" top="8.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ChoiceBox fx:id="cotizationCode" minWidth="159.0" prefHeight="26.0" prefWidth="200.0">
+                           <HBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane>
+         <children>
+            <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label text="Empleado" textFill="#1807ac">
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="employeeName" maxHeight="26.0" maxWidth="385.0" minHeight="26.0" minWidth="385.0" prefHeight="26.0" prefWidth="385.0" promptText="Teclee el patrón de búsqueda para el empleado" style="-fx-text-inner-color: blue;">
+                     <VBox.margin>
+                        <Insets left="5.0" right="10.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <ListView fx:id="employeesNames" maxHeight="210.0" maxWidth="385.0" minHeight="210.0" minWidth="385.0" prefHeight="210.0" prefWidth="385.0">
+                     <VBox.margin>
+                        <Insets left="5.0" right="10.0" />
+                     </VBox.margin>
+                  </ListView>
+                  <Button fx:id="newEmployee" maxHeight="37.0" maxWidth="150.0" minHeight="37.0" minWidth="150.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" text="Nuevo empleado" textAlignment="CENTER" textFill="#045c0d" wrapText="true">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="150.0" right="100.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</fx:root>

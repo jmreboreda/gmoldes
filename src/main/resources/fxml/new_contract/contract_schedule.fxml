@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <GridPane fx:id="scheduleBoard" prefHeight="270.0" prefWidth="700.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="105.0" minWidth="105.0" prefWidth="105.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+                  <ColumnConstraints />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" minWidth="120.0" prefHeight="62.0" prefWidth="120.0" style="-fx-background-color: #dcdcdc; -fx-border-color: #adafb0;" text="Dia de la semana" textAlignment="CENTER" wrapText="true" GridPane.rowSpan="2">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" minWidth="105.0" prefHeight="62.0" prefWidth="100.0" style="-fx-background-color: #dcdcdc; -fx-border-color: #adafb0;" text="Fecha" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowSpan="2">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" minWidth="500.0" prefHeight="30.0" style="-fx-background-color: #dcdcdc; -fx-border-color: #adafb0;" text="Horario" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.columnSpan="4">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="120.0" minWidth="125.0" prefHeight="62.0" prefWidth="120.0" style="-fx-background-color: #dcdcdc; -fx-border-color: #adafb0;" text="AM desde" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="120.0" minWidth="125.0" prefHeight="62.0" prefWidth="120.0" style="-fx-background-color: #dcdcdc; -fx-border-color: #adafb0;" text="AM hasta" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="120.0" minWidth="125.0" prefHeight="62.0" prefWidth="120.0" style="-fx-background-color: #dcdcdc; -fx-border-color: #adafb0;" text="PM desde" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="120.0" minWidth="125.0" prefHeight="62.0" prefWidth="120.0" style="-fx-background-color: #dcdcdc; -fx-border-color: #adafb0;" text="PM hasta" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="62.0" prefWidth="100.0" style="-fx-background-color: #dcdcdc; -fx-border-color: #adafb0;" text="Total horas" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="6" GridPane.rowSpan="2">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <TextField style="-fx-text-inner-color: blue;" GridPane.rowIndex="2" />
+                  <TextField alignment="CENTER" promptText="dd-mm-aaaa" style="-fx-text-inner-color: blue;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                  <TextField alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                  <TextField style="-fx-text-inner-color: blue;" GridPane.rowIndex="3" />
+                  <TextField alignment="CENTER" promptText="dd-mm-aaaa" style="-fx-text-inner-color: blue;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                  <TextField alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                  <TextField style="-fx-text-inner-color: blue;" GridPane.rowIndex="4" />
+                  <TextField alignment="CENTER" promptText="dd-mm-aaaa" style="-fx-text-inner-color: blue;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                  <TextField alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                  <TextField style="-fx-text-inner-color: blue;" GridPane.rowIndex="5" />
+                  <TextField alignment="CENTER" promptText="dd-mm-aaaa" style="-fx-text-inner-color: blue;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                  <TextField alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                  <TextField style="-fx-text-inner-color: blue;" GridPane.rowIndex="6" />
+                  <TextField alignment="CENTER" promptText="dd-mm-aaaa" style="-fx-text-inner-color: blue;" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="5" GridPane.rowIndex="6" />
+                  <TextField alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="6" />
+                  <TextField style="-fx-text-inner-color: blue;" GridPane.rowIndex="7" />
+                  <TextField alignment="CENTER" promptText="dd-mm-aaaa" style="-fx-text-inner-color: blue;" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+                  <TextField alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="7" />
+                  <TextField style="-fx-text-inner-color: blue;" GridPane.rowIndex="8" />
+                  <TextField alignment="CENTER" promptText="dd-mm-aaaa" style="-fx-text-inner-color: blue;" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+                  <TextField alignment="CENTER" promptText="hh:mm" style="-fx-text-inner-color: blue;" GridPane.columnIndex="5" GridPane.rowIndex="8" />
+                  <TextField alignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="8" />
+               </children>
+            </GridPane>
+            <HBox prefHeight="55.0" prefWidth="800.0">
+               <children>
+                  <Button disable="true" minHeight="46.0" minWidth="127.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="127.0" text="Modificar">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="500.0" right="25.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button minHeight="46.0" minWidth="127.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="120.0" text="Revisar" textFill="#001bf0">
+                     <HBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</fx:root>
