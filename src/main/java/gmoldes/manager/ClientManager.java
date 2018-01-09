@@ -74,7 +74,6 @@ public class ClientManager {
     public List<TimeRecordClientDTO> findAllClientWithActiveContractSorted(){
         List<TimeRecordClientDTO> clientDTOList = new ArrayList<>();
         contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        MapperContractVODTO mapper = new MapperContractVODTO();
         List<ContractVO> contractVOList = contractDAO.findAllClientWithActiveContractSorted();
         for(ContractVO contractVO : contractVOList){
             TimeRecordClientDTO clientDTO = new TimeRecordClientDTO();

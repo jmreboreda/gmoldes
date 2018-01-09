@@ -26,8 +26,8 @@ public class NewContractMainController extends VBox {
     private static final Logger logger = Logger.getLogger(NewContractMainController.class.getSimpleName());
     private static final String MAIN_FXML = "/fxml/new_contract/contract_main.fxml";
 
-    private ClientManager clientManager = new ClientManager();
-    private PersonManager personManager = new PersonManager();
+    private ClientController clientController = new ClientController();
+    private PersonController personController = new PersonController();
 
     private Parent parent;
 
@@ -125,10 +125,10 @@ public class NewContractMainController extends VBox {
     }
 
     private List<ClientDTO> findClientsByNamePattern(String pattern){
-        return clientManager.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
+        return clientController.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
     }
 
     private List<PersonDTO> findPersonsByNamePattern(String pattern){
-        return personManager.findAllPersonsByNamePatternInAlphabeticalOrder(pattern);
+        return personController.findAllPersonsByNamePatternInAlphabeticalOrder(pattern);
     }
 }

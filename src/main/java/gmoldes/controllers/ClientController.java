@@ -14,4 +14,8 @@ public class ClientController {
 
         return clientManager.findAllClientWithActiveContractSorted();
     }
+
+    public List<ClientDTO> findAllActiveClientByNamePatternInAlphabeticalOrder(String pattern){
+        return clientManager.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
+    }
 }

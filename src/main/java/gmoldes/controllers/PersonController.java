@@ -15,4 +15,8 @@ public class PersonController {
 
         return personManager.findPersonById(id);
     }
+
+    public List<PersonDTO> findAllPersonsByNamePatternInAlphabeticalOrder(String pattern){
+        return personManager.findAllPersonsByNamePatternInAlphabeticalOrder(pattern);
+    }
 }
