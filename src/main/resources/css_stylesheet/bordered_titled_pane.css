@@ -1,0 +1,22 @@
+.label {
+    -fx-font-size: 14;
+    -fx-font-family: "Open Sans";
+}
+
+.bordered-titled-title {
+  -fx-background-color: white;
+  -fx-translate-x: 10;
+  -fx-translate-y: -10;
+}
+
+.bordered-titled-border {
+  -fx-content-display: top;
+  -fx-border-insets: 20 15 15 15;
+  -fx-background-color: white;
+  -fx-border-color: darkgray ;
+  -fx-border-width: 0.5;
+}
+
+.bordered-titled-content {
+  -fx-padding: 26 10 10 10;
+}

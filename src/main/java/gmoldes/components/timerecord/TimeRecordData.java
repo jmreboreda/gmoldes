@@ -2,6 +2,7 @@ package gmoldes.components.timerecord;
 
 import com.lowagie.text.DocumentException;
 import gmoldes.components.ViewLoader;
+import gmoldes.controllers.ClientController;
 import gmoldes.controllers.ContractController;
 import gmoldes.controllers.PersonController;
 import gmoldes.domain.dto.ContractDTO;
@@ -9,7 +10,6 @@ import gmoldes.domain.dto.PersonDTO;
 import gmoldes.domain.dto.TimeRecordCandidateDataDTO;
 import gmoldes.domain.dto.TimeRecordClientDTO;
 import gmoldes.forms.TimeRecord;
-import gmoldes.manager.ClientManager;
 import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Utilities;
@@ -32,10 +32,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TimeRecordData extends VBox {
 
@@ -227,16 +226,16 @@ public class TimeRecordData extends VBox {
     }
 
     private void loadClientForTimeRecord() {
-        ClientManager clientManager = new ClientManager();
-        List<TimeRecordClientDTO> activeClientList = clientManager.findAllClientWithActiveContractSorted();
+        ClientController clientController = new ClientController();
+        List<TimeRecordClientDTO> activeClientList = clientController.findAllClientWithActiveContractSorted();
 
-        List<TimeRecordClientDTO> activeClientListWithoutDuplicates = retrieveActiveClientListWithoutDuplicates(activeClientList);
+        List<TimeRecordClientDTO> clientListWithActiveContractWithoutDuplicates = retrieveClientLisWithActiveContractWithoutDuplicates(activeClientList);
 
-        ObservableList<TimeRecordClientDTO> clientDTOS = FXCollections.observableArrayList(activeClientListWithoutDuplicates);
+        ObservableList<TimeRecordClientDTO> clientDTOS = FXCollections.observableArrayList(clientListWithActiveContractWithoutDuplicates);
         clientForTimeRecord.setItems(clientDTOS);
     }
 
-    private List<TimeRecordClientDTO> retrieveActiveClientListWithoutDuplicates(List<TimeRecordClientDTO> activeClientList ){
+    private List<TimeRecordClientDTO> retrieveClientLisWithActiveContractWithoutDuplicates(List<TimeRecordClientDTO> activeClientList ){
 
         List<TimeRecordClientDTO> activeClientListWithoutDuplicates = new ArrayList<>();
 
@@ -250,7 +249,9 @@ public class TimeRecordData extends VBox {
             activeClientListWithoutDuplicates.add(itemMap.getValue());
         }
 
-        return activeClientListWithoutDuplicates;
+        return activeClientListWithoutDuplicates
+                .stream()
+                .sorted(Comparator.comparing(TimeRecordClientDTO::getNom_rzsoc)).collect(Collectors.toList());
     }
 
     private void refreshData(List<TimeRecordCandidateDataDTO> candidates){
