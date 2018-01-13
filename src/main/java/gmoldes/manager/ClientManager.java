@@ -74,7 +74,20 @@ public class ClientManager {
     public List<TimeRecordClientDTO> findAllClientWithActiveContractSorted(){
         List<TimeRecordClientDTO> clientDTOList = new ArrayList<>();
         contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        List<ContractVO> contractVOList = contractDAO.findAllClientWithActiveContractSorted();
+        List<ContractVO> contractVOList = contractDAO.findAllClientWithActiveContractWithTimeRecordSorted();
+        for(ContractVO contractVO : contractVOList){
+            TimeRecordClientDTO clientDTO = new TimeRecordClientDTO();
+            clientDTO.setIdcliente(contractVO.getIdcliente_gm());
+            clientDTO.setNom_rzsoc(contractVO.getClientegm_name());
+            clientDTOList.add(clientDTO);
+        }
+        return clientDTOList;
+    }
+
+    public List<TimeRecordClientDTO> findAllClientWithActiveContractWithTimeRecordSorted(){
+        List<TimeRecordClientDTO> clientDTOList = new ArrayList<>();
+        contractDAO = ContractDAO.ContractDAOFactory.getInstance();
+        List<ContractVO> contractVOList = contractDAO.findAllClientWithActiveContractWithTimeRecordSorted();
         for(ContractVO contractVO : contractVOList){
             TimeRecordClientDTO clientDTO = new TimeRecordClientDTO();
             clientDTO.setIdcliente(contractVO.getIdcliente_gm());
