@@ -20,6 +20,11 @@ import java.util.Date;
                 name = ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD,
                 query = " select p from ContractVO as p where p.idcliente_gm = :code and p.f_desde <= :initialperiod and (p.f_hasta >= :initialperiod or p.f_hasta is null) order by p.trabajador_name"
         ),
+        @NamedQuery(
+                name = ContractVO.FIND_ALL_CONTRACTS_WITH_TIMRERECORD_BY_CLIENT_ID_IN_PERIOD,
+                query = " select p from ContractVO as p where p.idcliente_gm = :code and p.f_desde <= :initialperiod and (p.f_hasta >= :initialperiod or p.f_hasta is null)" +
+                        " and (jor_tipo = 'Parcial' or tipoctto = 'Formación') order by p.trabajador_name"
+        ),
 
         @NamedQuery(
                 name = ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID,
@@ -28,6 +33,10 @@ import java.util.Date;
         @NamedQuery(
                 name = ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED,
                 query = "select p from ContractVO as p where p.envigor = true order by p.clientegm_name"
+        ),
+        @NamedQuery(
+                name = ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED,
+                query = "select p from ContractVO as p where p.envigor = true and (p.jor_tipo = 'Parcial' or tipoctto = 'Formación') order by p.clientegm_name"
         )
 })
 public class ContractVO implements Serializable {
@@ -35,8 +44,8 @@ public class ContractVO implements Serializable {
     public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD = "ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD";
     public static final String FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID";
     public static final String FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED = "ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED";
-
-
+    public static final String FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED = "ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED";
+    public static final String FIND_ALL_CONTRACTS_WITH_TIMRERECORD_BY_CLIENT_ID_IN_PERIOD = "ContractVO.FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD";
     @Id
     @SequenceGenerator(name = "contratoshistorico_id_seq", sequenceName = "contratoshistorico_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contratoshistorico_id_seq")
@@ -46,22 +55,32 @@ public class ContractVO implements Serializable {
     private Integer numvariacion;
     private Integer tipovariacion;
     private Integer idcliente_gm;
+    @Column(name = "clientegm_name", length = 100)
     private String clientegm_name;
+    @Column(name = "contrato_ccc", length = 20)
     private String contrato_ccc;
     @Column(name = "idtrabajador", nullable = false)
     private Integer idtrabajador;
+    @Column(name = "trabajador_name", length = 100)
     private String trabajador_name;
+    @Column(name = "categoria", length = 250)
     private String categoria;
+    @Column(name = "jor_trab", length = 100)
     private String jor_trab;
+    @Column(name = "jor_trab_dias", length = 7)
     private String jor_trab_dias;
+    @Column(name = "jor_tipo", length = 100)
     private String jor_tipo;
+    @Column(name = "tipoctto", length = 100)
     private String tipoctto;
     private Date f_desde;
     private Date f_hasta;
+    @Column(name = "id_ctto_inem", length = 30)
     private String id_ctto_inem;
     private Boolean envigor;
     private String notas_gestor;
     private String notas_privadas;
+    @Column(name = "duracion", length = 1)
     private String duracion;
     private Integer subrogacion;
     private Date idc;

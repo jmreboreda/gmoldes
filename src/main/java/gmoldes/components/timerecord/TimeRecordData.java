@@ -195,7 +195,7 @@ public class TimeRecordData extends VBox {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<ContractDTO> contractDTOList = contractController.findAllContractsByClientIdInPeriod(idSelectedClient, referenceDate);
+        List<ContractDTO> contractDTOList = contractController.findAllContractsWithTimeRecordByClientIdInPeriod(idSelectedClient, referenceDate);
         if(!contractDTOList.isEmpty()) {
             Integer employeeId;
             String dateTo;
@@ -227,15 +227,15 @@ public class TimeRecordData extends VBox {
 
     private void loadClientForTimeRecord() {
         ClientController clientController = new ClientController();
-        List<TimeRecordClientDTO> activeClientList = clientController.findAllClientWithActiveContractSorted();
+        List<TimeRecordClientDTO> activeClientList = clientController.findAllClientWithActiveContractWithTimeRecordSorted();
 
-        List<TimeRecordClientDTO> clientListWithActiveContractWithoutDuplicates = retrieveClientLisWithActiveContractWithoutDuplicates(activeClientList);
+        List<TimeRecordClientDTO> clientListWithActiveContractWithoutDuplicates = retrieveClientListWithActiveContractWithoutDuplicates(activeClientList);
 
         ObservableList<TimeRecordClientDTO> clientDTOS = FXCollections.observableArrayList(clientListWithActiveContractWithoutDuplicates);
         clientForTimeRecord.setItems(clientDTOS);
     }
 
-    private List<TimeRecordClientDTO> retrieveClientLisWithActiveContractWithoutDuplicates(List<TimeRecordClientDTO> activeClientList ){
+    private List<TimeRecordClientDTO> retrieveClientListWithActiveContractWithoutDuplicates(List<TimeRecordClientDTO> activeClientList ){
 
         List<TimeRecordClientDTO> activeClientListWithoutDuplicates = new ArrayList<>();
 
