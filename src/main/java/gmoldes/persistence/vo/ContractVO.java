@@ -21,7 +21,7 @@ import java.util.Date;
                 query = " select p from ContractVO as p where p.idcliente_gm = :code and p.f_desde <= :initialperiod and (p.f_hasta >= :initialperiod or p.f_hasta is null) order by p.trabajador_name"
         ),
         @NamedQuery(
-                name = ContractVO.FIND_ALL_CONTRACTS_WITH_TIMRERECORD_BY_CLIENT_ID_IN_PERIOD,
+                name = ContractVO.FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD,
                 query = " select p from ContractVO as p where p.idcliente_gm = :code and p.f_desde <= :initialperiod and (p.f_hasta >= :initialperiod or p.f_hasta is null)" +
                         " and (jor_tipo = 'Parcial' or tipoctto = 'Formación') order by p.trabajador_name"
         ),
@@ -45,7 +45,7 @@ public class ContractVO implements Serializable {
     public static final String FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID";
     public static final String FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED = "ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED";
     public static final String FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED = "ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED";
-    public static final String FIND_ALL_CONTRACTS_WITH_TIMRERECORD_BY_CLIENT_ID_IN_PERIOD = "ContractVO.FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD";
+    public static final String FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD = "ContractVO.FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD";
     @Id
     @SequenceGenerator(name = "contratoshistorico_id_seq", sequenceName = "contratoshistorico_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contratoshistorico_id_seq")
