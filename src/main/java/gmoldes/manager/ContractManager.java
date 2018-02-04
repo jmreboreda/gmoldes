@@ -50,11 +50,11 @@ public class ContractManager {
         return contractDTOList;
     }
 
-    public List<ContractDTO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String monthYear){
+    public List<ContractDTO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String yearMonth){
 
         List<ContractDTO> contractDTOList = new ArrayList<>();
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        List<ContractVO> contractVOList = contractDAO.findAllContractsWithTimeRecordByClientIdInPeriod(clientId, monthYear);
+        List<ContractVO> contractVOList = contractDAO.findAllContractsWithTimeRecordByClientIdInPeriod(clientId, yearMonth);
         for (ContractVO contractVO : contractVOList) {
             ContractDTO contractDTO = ContractDTO.create()
                     .withCategoria(contractVO.getCategoria())
