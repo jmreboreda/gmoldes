@@ -190,14 +190,8 @@ public class TimeRecordData extends VBox {
         ContractController contractController = new ContractController();
         Integer idSelectedClient = clientForTimeRecord.getSelectionModel().getSelectedItem().getIdcliente();
         Integer numberMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
-        String period = "01-".concat(numberMonth.toString()).concat("-").concat(yearNumber.getText());
-        Date referenceDate = null;
-        try {
-            referenceDate = dateFormatter.parse(period);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        List<ContractDTO> contractDTOList = contractController.findAllContractsWithTimeRecordByClientIdInPeriod(idSelectedClient, referenceDate);
+        String monthYear = (numberMonth.toString()).concat(yearNumber.getText());
+        List<ContractDTO> contractDTOList = contractController.findAllContractsWithTimeRecordByClientIdInPeriod(idSelectedClient, monthYear);
         if(!contractDTOList.isEmpty()) {
             Integer employeeId;
             String dateTo;

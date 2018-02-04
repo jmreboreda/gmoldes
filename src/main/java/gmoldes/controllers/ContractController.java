@@ -16,9 +16,9 @@ public class ContractController {
         return contractManager.findAllContractsByClientIdInPeriod(clientId, referenceDate);
     }
 
-    public List<ContractDTO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, Date referenceDate){
+    public List<ContractDTO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String monthYear){
 
-        return contractManager.findAllContractsWithTimeRecordByClientIdInPeriod(clientId, referenceDate);
+        return contractManager.findAllContractsWithTimeRecordByClientIdInPeriod(clientId, monthYear);
     }
 
     public List<ContractDTO> findAllActiveContractsByClientId(Integer id){
