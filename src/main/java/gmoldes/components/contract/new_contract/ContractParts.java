@@ -1,8 +1,8 @@
 package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.new_contract.events.SearchEmployeesEvent;
-import gmoldes.components.contract.new_contract.events.SearchEmployersEvent;
+import gmoldes.components.contract.events.SearchEmployeesEvent;
+import gmoldes.components.contract.events.SearchEmployersEvent;
 import gmoldes.domain.dto.ClientDTO;
 import gmoldes.domain.dto.PersonDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
