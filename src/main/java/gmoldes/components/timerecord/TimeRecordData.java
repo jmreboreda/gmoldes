@@ -195,6 +195,7 @@ public class TimeRecordData extends VBox {
             numberMonthS = "0" + numberMonthS;
         }
         String yearMonth = (yearNumber.getText()).concat(numberMonthS);
+//        System.out.println("yearMonth = " + yearMonth);
         List<ContractDTO> contractDTOList = contractController.findAllContractsWithTimeRecordByClientIdInPeriod(idSelectedClient, yearMonth);
         if(!contractDTOList.isEmpty()) {
             Integer employeeId;
@@ -209,7 +210,7 @@ public class TimeRecordData extends VBox {
                 }
                 String dateFrom = dateFormatter.format(contractDTO.getF_desde());
 
-                TimeRecordCandidateDataDTO data = new TimeRecordCandidateDataDTO(
+                TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
                         contractDTO.getTrabajador_name(),
                         employeeNIF,
                         contractDTO.getContrato_ccc(),
@@ -219,7 +220,7 @@ public class TimeRecordData extends VBox {
                         dateFrom,
                         dateTo
                 );
-                candidates.add(data);
+                candidates.add(dataCandidates);
             }
         }
         refreshData(candidates);

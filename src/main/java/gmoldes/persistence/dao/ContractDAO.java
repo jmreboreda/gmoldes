@@ -71,7 +71,7 @@ public class ContractDAO {
     public List<ContractVO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String yearMonth){
         TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD, ContractVO.class);
         query.setParameter("code", clientId);
-        query.setParameter("initialperiod", "'" + yearMonth + "'");
+        query.setParameter("initialperiod", yearMonth);
 
         return query.getResultList();
     }
