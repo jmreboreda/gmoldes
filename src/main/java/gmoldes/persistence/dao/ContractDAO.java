@@ -68,29 +68,15 @@ public class ContractDAO {
         return query.getResultList();
     }
 
-    public List<ContractVO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, Date referenceDate){
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-M-yyyy");
-//        Date initialPeriod = null;
-//        try {
-//            initialPeriod = dateFormat.parse("01-".concat(period));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_WITH_TIMRERECORD_BY_CLIENT_ID_IN_PERIOD, ContractVO.class);
+    public List<ContractVO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String yearMonth){
+        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD, ContractVO.class);
         query.setParameter("code", clientId);
-        query.setParameter("initialperiod", referenceDate);
+        query.setParameter("initialperiod", yearMonth);
 
         return query.getResultList();
     }
 
     public List<ContractVO> findAllContractsByClientIdInPeriod(Integer clientId, Date referenceDate){
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-M-yyyy");
-//        Date initialPeriod = null;
-//        try {
-//            initialPeriod = dateFormat.parse("01-".concat(period));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
         TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD, ContractVO.class);
         query.setParameter("code", clientId);
         query.setParameter("initialperiod", referenceDate);
@@ -99,7 +85,6 @@ public class ContractDAO {
     }
 
     public List<ContractVO> findAllActiveContractsByClientId(Integer clientId){
-
         TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID, ContractVO.class);
         query.setParameter("code", clientId);
 

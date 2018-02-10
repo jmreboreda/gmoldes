@@ -1,4 +1,4 @@
-package gmoldes.components.contract.new_contract.events;
+package gmoldes.components.contract.events;
 
 import javafx.event.Event;
 import javafx.event.EventType;

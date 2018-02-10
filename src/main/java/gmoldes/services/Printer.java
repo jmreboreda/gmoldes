@@ -13,10 +13,8 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
 
+import gmoldes.utilities.Message;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
-import org.apache.pdfbox.pdmodel.common.PDMetadata;
-import org.apache.pdfbox.pdmodel.interactive.viewerpreferences.PDViewerPreferences;
 import org.apache.pdfbox.printing.PDFPageable;
 
 public class Printer {
@@ -28,7 +26,8 @@ public class Printer {
         PrintService serviceForPrint = null;
         PDDocument PDFDocumentLoaded = PDDocument.load(new File(pathToPDF));
 
-        //PDViewerPreferences PDFDocumentPreferences = PDFDocumentLoaded.getDocumentCatalog().getViewerPreferences();
+//        PDViewerPreferences PDFDocumentPreferences = PDFDocumentLoaded.getDocumentCatalog().getViewerPreferences();
+//        System.out.println("Preferencias: " + PDFDocumentPreferences);
 
         PrintRequestAttributeSet datts = new HashPrintRequestAttributeSet();
         MediaSizeName DINA4 = MediaSize.ISO.A4.getMediaSizeName();
@@ -40,7 +39,7 @@ public class Printer {
             datts.add(DINA3);
         }
         if(printAttributes.get("sides").equals("DUPLEX")) {
-            datts.add(Sides.DUPLEX);
+            datts.add(Sides.TWO_SIDED_LONG_EDGE);
         } else{
             datts.add(Sides.ONE_SIDED);
         }
@@ -55,21 +54,21 @@ public class Printer {
             datts.add(OrientationRequested.PORTRAIT);
         }
         datts.add(new Copies(1));
-        datts.add(new JobName("GMappJob", null));
+        datts.add(new JobName("GmoldesJob", null));
 
-        PrintService[] printServices = findPrintService(datts);
-        if(printServices.length == 0){
+        PrintService[] printServicesWithAttributes = findPrintServiceWithAttributes(datts);
+        if(printServicesWithAttributes.length == 0){
             System.out.println("No printer can print the PDF with those attributes...");
         }
         else {
-            for(PrintService printService : printServices){
+            for(PrintService printService : printServicesWithAttributes){
 //                AttributeSet attributes = getAttributesForPrintService(printService);
 //                DocFlavor[] docF = getSupportedDocFlavorForPrintService(printService);
                 if(printService.getName().contains(DEFAULT_PRINTER)){
                     serviceForPrint = printService;
                     break;
                 }else {
-                    serviceForPrint = ServiceUI.printDialog(null, 100, 100, printServices, null, null, datts);
+                    serviceForPrint = ServiceUI.printDialog(null, 100, 100, printServicesWithAttributes, null, null, datts);
                 }
             }
             PrinterJob printerJob = PrinterJob.getPrinterJob();
@@ -80,7 +79,7 @@ public class Printer {
         PDFDocumentLoaded.close();
     }
 
-    private static PrintService[] findPrintService(PrintRequestAttributeSet datts) {
+    private static PrintService[] findPrintServiceWithAttributes(PrintRequestAttributeSet datts) {
         PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, datts);
         for (PrintService printService : printServices) {
             //System.out.println(printService.getName());

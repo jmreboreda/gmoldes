@@ -12,6 +12,7 @@ import gmoldes.domain.dto.TimeRecordClientDTO;
 import gmoldes.forms.TimeRecord;
 import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
+import gmoldes.utilities.Enumeration;
 import gmoldes.utilities.Utilities;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
@@ -47,7 +48,7 @@ public class TimeRecordData extends VBox {
     private Parent parent;
 
     @FXML
-    private ChoiceBox<Utilities.Months> monthName;
+    private ChoiceBox<Enumeration.Months> monthName;
     @FXML
     private TextField yearNumber;
     @FXML
@@ -90,18 +91,18 @@ public class TimeRecordData extends VBox {
         exitButton.setOnMouseClicked(this::onExit);
 
         monthName.setItems(FXCollections.observableArrayList(
-                Utilities.Months.ENERO,
-                Utilities.Months.FEBRERO,
-                Utilities.Months.MARZO,
-                Utilities.Months.ABRIL,
-                Utilities.Months.MAYO,
-                Utilities.Months.JUNIO,
-                Utilities.Months.JULIO,
-                Utilities.Months.AGOSTO,
-                Utilities.Months.SEPTIEMBRE,
-                Utilities.Months.OCTUBRE,
-                Utilities.Months.NOVIEMBRE,
-                Utilities.Months.DICIEMBRE
+                Enumeration.Months.ENERO,
+                Enumeration.Months.FEBRERO,
+                Enumeration.Months.MARZO,
+                Enumeration.Months.ABRIL,
+                Enumeration.Months.MAYO,
+                Enumeration.Months.JUNIO,
+                Enumeration.Months.JULIO,
+                Enumeration.Months.AGOSTO,
+                Enumeration.Months.SEPTIEMBRE,
+                Enumeration.Months.OCTUBRE,
+                Enumeration.Months.NOVIEMBRE,
+                Enumeration.Months.DICIEMBRE
                 )
         );
 
@@ -146,6 +147,7 @@ public class TimeRecordData extends VBox {
 
         try {
             Printer.printPDF(pathToTimeRecordPDF, attributes);
+            Message.warningMessage(printButton.getScene().getWindow(),"Información del sistema", "Registro horario enviado a la impresora." + "\n");
             Utilities.deleteFileFromPath(pathToTimeRecordPDF);
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
@@ -188,14 +190,13 @@ public class TimeRecordData extends VBox {
         ContractController contractController = new ContractController();
         Integer idSelectedClient = clientForTimeRecord.getSelectionModel().getSelectedItem().getIdcliente();
         Integer numberMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
-        String period = "01-".concat(numberMonth.toString()).concat("-").concat(yearNumber.getText());
-        Date referenceDate = null;
-        try {
-            referenceDate = dateFormatter.parse(period);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        String numberMonthS = numberMonth.toString();
+        if(numberMonthS.length() < 2){
+            numberMonthS = "0" + numberMonthS;
         }
-        List<ContractDTO> contractDTOList = contractController.findAllContractsWithTimeRecordByClientIdInPeriod(idSelectedClient, referenceDate);
+        String yearMonth = (yearNumber.getText()).concat(numberMonthS);
+//        System.out.println("yearMonth = " + yearMonth);
+        List<ContractDTO> contractDTOList = contractController.findAllContractsWithTimeRecordByClientIdInPeriod(idSelectedClient, yearMonth);
         if(!contractDTOList.isEmpty()) {
             Integer employeeId;
             String dateTo;
@@ -209,7 +210,7 @@ public class TimeRecordData extends VBox {
                 }
                 String dateFrom = dateFormatter.format(contractDTO.getF_desde());
 
-                TimeRecordCandidateDataDTO data = new TimeRecordCandidateDataDTO(
+                TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
                         contractDTO.getTrabajador_name(),
                         employeeNIF,
                         contractDTO.getContrato_ccc(),
@@ -219,7 +220,7 @@ public class TimeRecordData extends VBox {
                         dateFrom,
                         dateTo
                 );
-                candidates.add(data);
+                candidates.add(dataCandidates);
             }
         }
         refreshData(candidates);
