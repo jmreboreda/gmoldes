@@ -23,6 +23,7 @@ import java.util.Date;
         @NamedQuery(
                 name = ContractVO.FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD,
                 query = "select p from ContractVO as p where p.idcliente_gm = :code " +
+                        "and tipovariacion < 800 " +
                         "and concat(trim(to_char(extract(year from p.f_desde),'9999')), trim(to_char(extract(month from p.f_desde),'09'))) <= :initialperiod " +
                         "and (concat(trim(to_char(extract(year from p.f_hasta),'9999')), trim(to_char(extract(month from p.f_hasta),'09'))) >= :initialperiod " +
                         "or p.f_hasta is null) and (jor_tipo = 'Parcial' or tipoctto = 'Formación') order by p.trabajador_name, p.f_desde"
