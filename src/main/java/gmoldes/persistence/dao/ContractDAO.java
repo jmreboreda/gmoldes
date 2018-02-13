@@ -60,6 +60,13 @@ public class ContractDAO {
         return query.getResultList();
     }
 
+    public List<ContractVO> findAllClientWithContractWithTimeRecordInPeriodSorted(String yearMonth){
+        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CLIENT_WITH_CONTRACT_WITH_TIMERECORD_IN_PERIOD_SORTED, ContractVO.class);
+        query.setParameter("yearMonth", yearMonth);
+
+        return query.getResultList();
+    }
+
     public List<ContractVO> findAllContractsByClientId(Integer clientId){
 
         TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID, ContractVO.class);
