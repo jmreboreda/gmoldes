@@ -11,8 +11,8 @@ import gmoldes.domain.dto.TimeRecordCandidateDataDTO;
 import gmoldes.domain.dto.TimeRecordClientDTO;
 import gmoldes.forms.TimeRecord;
 import gmoldes.services.Printer;
-import gmoldes.utilities.Message;
 import gmoldes.utilities.Enumeration;
+import gmoldes.utilities.Message;
 import gmoldes.utilities.Utilities;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
@@ -27,10 +27,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.awt.print.PrinterException;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -82,8 +80,8 @@ public class TimeRecordData extends VBox {
     public void initialize() {
 
         clientForTimeRecord.setOnAction(this::onChangeEmployer);
-        yearNumber.setOnAction(this::onChangeEmployer);
-        monthName.setOnAction(this::onChangeEmployer);
+        yearNumber.setOnAction(this::loadClientForTimeRecord);
+        monthName.setOnAction(this::loadClientForTimeRecord);
         createPDFButton.disableProperty().bind(BooleanExpression.booleanExpression(this.dataByTimeRecord.getSelectionModel().selectedItemProperty().isNull()));
         createPDFButton.setOnMouseClicked(this::onCreateTimeRecordPDF);
         printButton.disableProperty().bind(BooleanExpression.booleanExpression(this.dataByTimeRecord.getSelectionModel().selectedItemProperty().isNull()));
@@ -128,7 +126,7 @@ public class TimeRecordData extends VBox {
         dateFrom.setStyle("-fx-alignment: CENTER;");
         dateTo.setStyle("-fx-alignment: CENTER;");
 
-        loadClientForTimeRecord();
+        loadClientForTimeRecord(new ActionEvent());
     }
 
     private void onCreateTimeRecordPDF(MouseEvent event){
@@ -189,13 +187,7 @@ public class TimeRecordData extends VBox {
         List<TimeRecordCandidateDataDTO> candidates = new ArrayList<>();
         ContractController contractController = new ContractController();
         Integer idSelectedClient = clientForTimeRecord.getSelectionModel().getSelectedItem().getIdcliente();
-        Integer numberMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
-        String numberMonthS = numberMonth.toString();
-        if(numberMonthS.length() < 2){
-            numberMonthS = "0" + numberMonthS;
-        }
-        String yearMonth = (yearNumber.getText()).concat(numberMonthS);
-//        System.out.println("yearMonth = " + yearMonth);
+        String yearMonth = retrievePeriodForTimeRecord();
         List<ContractDTO> contractDTOList = contractController.findAllContractsWithTimeRecordByClientIdInPeriod(idSelectedClient, yearMonth);
         if(!contractDTOList.isEmpty()) {
             Integer employeeId;
@@ -226,9 +218,10 @@ public class TimeRecordData extends VBox {
         refreshData(candidates);
     }
 
-    private void loadClientForTimeRecord() {
+    private void loadClientForTimeRecord(ActionEvent event) {
+        dataByTimeRecord.getItems().clear();
         ClientController clientController = new ClientController();
-        List<TimeRecordClientDTO> activeClientList = clientController.findAllClientWithActiveContractWithTimeRecordSorted();
+        List<TimeRecordClientDTO> activeClientList = clientController.findAllClientWithContractWithTimeRecordInPeriodSorted(retrievePeriodForTimeRecord());
 
         List<TimeRecordClientDTO> clientListWithActiveContractWithoutDuplicates = retrieveClientListWithActiveContractWithoutDuplicates(activeClientList);
 
@@ -266,5 +259,15 @@ public class TimeRecordData extends VBox {
         PersonDTO employee = personController.findPersonById(employeeId);
 
         return Utilities.formatAsNIF(employee.getNifcif());
+    }
+
+    private String retrievePeriodForTimeRecord(){
+        Integer numberMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
+        String numberMonthS = numberMonth.toString();
+        if(numberMonthS.length() < 2){
+            numberMonthS = "0" + numberMonthS;
+        }
+
+        return (yearNumber.getText()).concat(numberMonthS);
     }
 }

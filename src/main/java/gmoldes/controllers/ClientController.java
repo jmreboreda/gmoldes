@@ -20,6 +20,11 @@ public class ClientController {
         return clientManager.findAllClientWithActiveContractWithTimeRecordSorted();
     }
 
+    public List<TimeRecordClientDTO> findAllClientWithContractWithTimeRecordInPeriodSorted(String yearMonth){
+
+        return clientManager.findAllClientWithContractWithTimeRecordInPeriodSorted(yearMonth);
+    }
+
     public List<ClientDTO> findAllActiveClientByNamePatternInAlphabeticalOrder(String pattern){
         return clientManager.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
     }

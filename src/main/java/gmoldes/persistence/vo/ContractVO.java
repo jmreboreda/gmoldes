@@ -37,6 +37,13 @@ import java.util.Date;
                 query = "select p from ContractVO as p where p.envigor = true order by p.clientegm_name"
         ),
         @NamedQuery(
+                name = ContractVO.FIND_ALL_CLIENT_WITH_CONTRACT_WITH_TIMERECORD_IN_PERIOD_SORTED,
+                query = "select p from ContractVO as p where tipovariacion < 800" +
+                        "and concat(trim(to_char(extract(year from p.f_desde),'9999')), trim(to_char(extract(month from p.f_desde),'09'))) <= :yearMonth " +
+                        "and (concat(trim(to_char(extract(year from p.f_hasta),'9999')), trim(to_char(extract(month from p.f_hasta),'09'))) >= :yearMonth " +
+                        "or p.f_hasta is null) and (jor_tipo = 'Parcial' or tipoctto = 'Formación') order by p.clientegm_name"
+        ),
+        @NamedQuery(
                 name = ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED,
                 query = "select p from ContractVO as p where p.envigor = true and (p.jor_tipo = 'Parcial' or tipoctto = 'Formación') order by p.clientegm_name"
         )
@@ -48,6 +55,7 @@ public class ContractVO implements Serializable {
     public static final String FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED = "ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED";
     public static final String FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED = "ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED";
     public static final String FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD = "ContractVO.FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD";
+    public static final String FIND_ALL_CLIENT_WITH_CONTRACT_WITH_TIMERECORD_IN_PERIOD_SORTED = "ContractVO.FIND_ALL_CLIENT_WITH_CONTRACT_WITH_TIMERECORD_IN_PERIOD_SORTED";
 
     @Id
     @SequenceGenerator(name = "contratoshistorico_id_seq", sequenceName = "contratoshistorico_id_seq", allocationSize = 1)
