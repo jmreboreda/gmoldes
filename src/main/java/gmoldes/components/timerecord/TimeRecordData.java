@@ -27,11 +27,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
+import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -144,9 +147,13 @@ public class TimeRecordData extends VBox {
         attributes.put("orientation","LANDSCAPE");
 
         try {
-            Printer.printPDF(pathToTimeRecordPDF, attributes);
-            Message.warningMessage(printButton.getScene().getWindow(),"Información del sistema", "Registro horario enviado a la impresora." + "\n");
+            String resultPrint = Printer.printPDF(pathToTimeRecordPDF, attributes);
             Utilities.deleteFileFromPath(pathToTimeRecordPDF);
+            if(resultPrint.equals("ok")) {
+                Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "Registro horario enviado a la impresora." + "\n");
+            }else{
+                Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "No existe impresora para imprimir el registro horario." + "\n");
+            }
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
         }
