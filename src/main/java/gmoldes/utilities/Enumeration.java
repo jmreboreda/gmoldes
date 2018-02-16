@@ -2,30 +2,6 @@ package gmoldes.utilities;
 
 public class Enumeration {
 
-    public enum Months {
-        ENERO       ("enero"),
-        FEBRERO     ("febrero"),
-        MARZO       ("marzo"),
-        ABRIL       ("abril"),
-        MAYO        ("mayo"),
-        JUNIO       ("junio"),
-        JULIO       ("julio"),
-        AGOSTO      ("agosto"),
-        SEPTIEMBRE  ("septiembre"),
-        OCTUBRE     ("octubre"),
-        NOVIEMBRE   ("noviembre"),
-        DICIEMBRE   ("diciembre");
-
-        String month;
-
-        Months(String p){
-            month = p;
-        }
-        public String getMonthName() {
-            return month;
-        }
-    }
-
     public enum TypeClients {
         PERSONA_FISICA      ("PF"),
         PERSONA_JURIDICA    ("PJ"),

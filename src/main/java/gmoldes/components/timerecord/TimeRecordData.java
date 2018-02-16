@@ -11,7 +11,6 @@ import gmoldes.domain.dto.TimeRecordCandidateDataDTO;
 import gmoldes.domain.dto.TimeRecordClientDTO;
 import gmoldes.forms.TimeRecord;
 import gmoldes.services.Printer;
-import gmoldes.utilities.Enumeration;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Utilities;
 import javafx.beans.binding.BooleanExpression;
@@ -49,7 +48,7 @@ public class TimeRecordData extends VBox {
     private Parent parent;
 
     @FXML
-    private ChoiceBox<Enumeration.Months> monthName;
+    private ChoiceBox<String> monthName;
     @FXML
     private TextField yearNumber;
     @FXML
@@ -91,19 +90,20 @@ public class TimeRecordData extends VBox {
         printButton.setOnMouseClicked(this::onPrintTimeRecord);
         exitButton.setOnMouseClicked(this::onExit);
 
+        Locale locale = Locale.getDefault();
         monthName.setItems(FXCollections.observableArrayList(
-                Enumeration.Months.ENERO,
-                Enumeration.Months.FEBRERO,
-                Enumeration.Months.MARZO,
-                Enumeration.Months.ABRIL,
-                Enumeration.Months.MAYO,
-                Enumeration.Months.JUNIO,
-                Enumeration.Months.JULIO,
-                Enumeration.Months.AGOSTO,
-                Enumeration.Months.SEPTIEMBRE,
-                Enumeration.Months.OCTUBRE,
-                Enumeration.Months.NOVIEMBRE,
-                Enumeration.Months.DICIEMBRE
+                Month.JANUARY.getDisplayName(TextStyle.FULL, locale),
+                Month.FEBRUARY.getDisplayName(TextStyle.FULL, locale),
+                Month.MARCH.getDisplayName(TextStyle.FULL, locale),
+                Month.APRIL.getDisplayName(TextStyle.FULL, locale),
+                Month.MAY.getDisplayName(TextStyle.FULL, locale),
+                Month.JUNE.getDisplayName(TextStyle.FULL, locale),
+                Month.JULY.getDisplayName(TextStyle.FULL, locale),
+                Month.AUGUST.getDisplayName(TextStyle.FULL, locale),
+                Month.SEPTEMBER.getDisplayName(TextStyle.FULL, locale),
+                Month.OCTOBER.getDisplayName(TextStyle.FULL, locale),
+                Month.NOVEMBER.getDisplayName(TextStyle.FULL, locale),
+                Month.DECEMBER.getDisplayName(TextStyle.FULL, locale)
                 )
         );
 
@@ -167,7 +167,7 @@ public class TimeRecordData extends VBox {
     private String createPDF(){
         TimeRecordCandidateDataDTO data = dataByTimeRecord.getSelectionModel().getSelectedItem();
         TimeRecord timeRecord = TimeRecord.create()
-                .withNameOfMonth(this.monthName.getSelectionModel().getSelectedItem().getMonthName())
+                .withNameOfMonth(this.monthName.getSelectionModel().getSelectedItem())
                 .withYearNumber(this.yearNumber.getText())
                 .withEnterpriseName(clientForTimeRecord.getSelectionModel().getSelectedItem().toString())
                 .withQuoteAccountCode(data.getQuoteAccountCode())
