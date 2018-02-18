@@ -24,6 +24,17 @@ public class ContractController {
     public List<ContractDTO> findAllActiveContractsByClientId(Integer id){
 
         return contractManager.findAllActiveContractsByClientId(id);
+    }
 
+    public int establishCurrentContract(){
+
+        ContractManager manager = new ContractManager();
+        return manager.establishCurrentContract();
+    }
+
+    public int establishNotCurrentContract(){
+
+        ContractManager manager = new ContractManager();
+        return manager.establishNotCurrentContract();
     }
 }

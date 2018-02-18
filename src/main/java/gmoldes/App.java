@@ -1,6 +1,7 @@
 package gmoldes;
 
 
+import gmoldes.check.InitialChecks;
 import gmoldes.controllers.InitialMenuController;
 import gmoldes.persistence.dao.ClientDAO;
 import gmoldes.persistence.vo.ClientVO;
@@ -19,6 +20,9 @@ public class App extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        InitialChecks.UpdateCurrentContracts();
+
         InitialMenuController controller = new InitialMenuController();
         primaryStage.setResizable(false);
         Scene scene = new Scene(controller);

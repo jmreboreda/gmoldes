@@ -39,7 +39,7 @@ public class Printer {
             datts.add(DINA3);
         }
         if(printAttributes.get("sides").equals("DUPLEX")) {
-            datts.add(Sides.TWO_SIDED_LONG_EDGE);
+            datts.add(Sides.TWO_SIDED_SHORT_EDGE);
         } else{
             datts.add(Sides.ONE_SIDED);
         }

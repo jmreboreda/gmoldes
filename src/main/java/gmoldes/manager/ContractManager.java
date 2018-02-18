@@ -119,4 +119,17 @@ public class ContractManager {
         }
         return contractDTOList;
     }
+
+    public int establishCurrentContract(){
+
+        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
+        return contractDAO.establishCurrentContract();
+
+    }
+
+    public int establishNotCurrentContract(){
+
+        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
+        return contractDAO.establishNotCurrentContract();
+    }
 }
