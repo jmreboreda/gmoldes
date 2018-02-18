@@ -64,6 +64,14 @@ public class ContractDAO {
         return result;
     }
 
+    public List<ContractVO> findContractsExpiration(){
+        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_CONTRACTS_EXPIRATION, ContractVO.class);
+
+        return query.getResultList();
+    }
+
+
+
     public Integer create(ContractVO contractVO) {
 
         try {
