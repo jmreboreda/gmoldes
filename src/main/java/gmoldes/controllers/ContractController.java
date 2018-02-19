@@ -42,4 +42,9 @@ public class ContractController {
         ContractManager manager = new ContractManager();
         return manager.findContractsExpiration();
     }
+
+    public List<ContractDTO> findPendingIDC(){
+        ContractManager manager = new ContractManager();
+        return manager.findPendingIDC();
+    }
 }

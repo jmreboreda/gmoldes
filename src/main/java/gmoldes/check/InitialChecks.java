@@ -2,10 +2,16 @@ package gmoldes.check;
 
 import gmoldes.controllers.ContractController;
 
+import gmoldes.controllers.TypesContractVariationsController;
 import gmoldes.domain.dto.ContractDTO;
+import gmoldes.domain.dto.IDCControlDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class InitialChecks {
@@ -25,5 +31,32 @@ public class InitialChecks {
         ContractController controller = new ContractController();
 
         return controller.findContractsExpiration();
+    }
+
+    public static List<IDCControlDTO> findPendingIDC() throws ParseException {
+        Date now = new Date();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        List<IDCControlDTO> idcControlDTOList = new ArrayList<>();
+        ContractController controller = new ContractController();
+        List<ContractDTO> contractDTOList = controller.findPendingIDC();
+        for(ContractDTO contractDTO : contractDTOList){
+            IDCControlDTO idcControlDTO = new IDCControlDTO();
+            idcControlDTO.setTrabajador_name(contractDTO.getTrabajador_name());
+            idcControlDTO.setClientegm_name(contractDTO.getClientegm_name());
+            idcControlDTO.setDate_to(dateFormatter.format(contractDTO.getF_desde()));
+            int days = (int)(long)((contractDTO.getF_desde().getTime() - now.getTime())/(24*60*60*1000));
+            idcControlDTO.setDays(days);
+            String variation_description = retrieveVariationDescriptionById(contractDTO.getTipovariacion());
+            idcControlDTO.setDescr_variacion(variation_description);
+            idcControlDTOList.add(idcControlDTO);
+        }
+
+        return idcControlDTOList;
+    }
+
+    public static String retrieveVariationDescriptionById(int idVariation){
+        TypesContractVariationsController controller = new TypesContractVariationsController();
+
+        return controller.findVariationDescriptionById(idVariation);
     }
 }

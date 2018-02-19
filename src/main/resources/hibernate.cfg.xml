@@ -26,8 +26,8 @@
         <mapping class="gmoldes.persistence.vo.ClientVO"/>
         <mapping class="gmoldes.persistence.vo.ContractVO"/>
         <mapping class="gmoldes.persistence.vo.PersonVO"/>
+        <mapping class="gmoldes.persistence.vo.TypesContractVariationsVO"/>
         <mapping class="gmoldes.persistence.vo.ServiceGMVO"/>
-
 
     </session-factory>
 </hibernate-configuration>

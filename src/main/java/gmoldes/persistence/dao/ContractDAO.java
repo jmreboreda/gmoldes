@@ -1,6 +1,7 @@
 package gmoldes.persistence.dao;
 
 
+import gmoldes.domain.dto.IDCControlDTO;
 import gmoldes.persistence.vo.ContractVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
@@ -29,7 +30,6 @@ public class ContractDAO {
             }
             return contractDAO;
         }
-
     }
 
     public ContractDAO(Session session) {
@@ -70,7 +70,11 @@ public class ContractDAO {
         return query.getResultList();
     }
 
+    public List<ContractVO> findPendingIDC(){
+        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.IDC_CONTROL, ContractVO.class);
 
+        return query.getResultList();
+    }
 
     public Integer create(ContractVO contractVO) {
 

@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -21,6 +22,8 @@ public class Message {
         alert.initOwner(window);
         alert.setTitle(title);
         alert.setHeaderText(null);
+        alert.setResizable(true);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setContentText(message);
 
         Optional<ButtonType> result = alert.showAndWait();
@@ -38,6 +41,8 @@ public class Message {
         alert.initOwner(window);
         alert.setTitle(title);
         alert.setHeaderText(null);
+        alert.setResizable(true);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setContentText(message);
         alert.showAndWait();
     }
