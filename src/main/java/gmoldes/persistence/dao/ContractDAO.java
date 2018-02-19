@@ -6,6 +6,7 @@ import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +36,42 @@ public class ContractDAO {
         this.session = session;
     }
 
+    public int establishCurrentContract(){
+        int result = 0;
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("update ContractVO as p set p.envigor = TRUE where p.envigor = FALSE and (p.f_desde <= date(now()) and (p.f_hasta > date(now()) or p.f_hasta is null))");
+            result = query.executeUpdate();
+            session.getTransaction().commit();
+        }catch(Exception e){
+
+        }
+
+        return result;
+    }
+
+    public int establishNotCurrentContract(){
+        int result = 0;
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("update ContractVO as p set p.envigor = FALSE where p.envigor = TRUE and (p.f_desde > date(now()) or p.f_hasta < date(now()))");
+            result = query.executeUpdate();
+            session.getTransaction().commit();
+        }catch(Exception e){
+
+        }
+
+        return result;
+    }
+
+    public List<ContractVO> findContractsExpiration(){
+        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_CONTRACTS_EXPIRATION, ContractVO.class);
+
+        return query.getResultList();
+    }
+
+
+
     public Integer create(ContractVO contractVO) {
 
         try {
@@ -45,7 +82,8 @@ public class ContractDAO {
         catch (org.hibernate.exception.ConstraintViolationException cve){
 
         }
-            return contractVO.getId();
+
+        return contractVO.getId();
     }
 
     public List<ContractVO> findAllClientWithActiveContractSorted(){

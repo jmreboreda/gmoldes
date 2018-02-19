@@ -13,6 +13,10 @@ import java.util.Date;
 @Table(name = "contratoshistorico")
 @NamedQueries(value = {
         @NamedQuery(
+                name = ContractVO.FIND_CONTRACTS_EXPIRATION,
+                query = "select p from ContractVO as p where p.preavisofin is null AND p.f_hasta is not null and date(p.f_hasta) - date(NOW()) <= 20"
+        ),
+        @NamedQuery(
                 name = ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID,
                 query = "select p from ContractVO as p where p.idcliente_gm = :code order by p.trabajador_name"
         ),
@@ -49,6 +53,7 @@ import java.util.Date;
         )
 })
 public class ContractVO implements Serializable {
+    public static final String FIND_CONTRACTS_EXPIRATION = "ContractVO.FIND_CONTRACTS_EXPIRATION";
     public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID";
     public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD = "ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD";
     public static final String FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID";

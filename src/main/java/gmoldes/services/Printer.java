@@ -21,7 +21,7 @@ public class Printer {
 
     private static final String DEFAULT_PRINTER = "KONICA MINOLTA";
 
-    public static void printPDF(String pathToPDF, Map<String, String> printAttributes) throws IOException, PrinterException {
+    public static String printPDF(String pathToPDF, Map<String, String> printAttributes) throws IOException, PrinterException {
 
         PrintService serviceForPrint = null;
         PDDocument PDFDocumentLoaded = PDDocument.load(new File(pathToPDF));
@@ -39,7 +39,7 @@ public class Printer {
             datts.add(DINA3);
         }
         if(printAttributes.get("sides").equals("DUPLEX")) {
-            datts.add(Sides.TWO_SIDED_LONG_EDGE);
+            datts.add(Sides.TWO_SIDED_SHORT_EDGE);
         } else{
             datts.add(Sides.ONE_SIDED);
         }
@@ -56,35 +56,42 @@ public class Printer {
         datts.add(new Copies(1));
         datts.add(new JobName("GmoldesJob", null));
 
-        PrintService[] printServicesWithAttributes = findPrintServiceWithAttributes(datts);
-        if(printServicesWithAttributes.length == 0){
+        PrintService printServiceForAttributes = getPrintServiceForAttributes(datts);
+        if(printServiceForAttributes == null){
             System.out.println("No printer can print the PDF with those attributes...");
+            return "fail";
         }
         else {
-            for(PrintService printService : printServicesWithAttributes){
-//                AttributeSet attributes = getAttributesForPrintService(printService);
-//                DocFlavor[] docF = getSupportedDocFlavorForPrintService(printService);
-                if(printService.getName().contains(DEFAULT_PRINTER)){
-                    serviceForPrint = printService;
-                    break;
-                }else {
-                    serviceForPrint = ServiceUI.printDialog(null, 100, 100, printServicesWithAttributes, null, null, datts);
-                }
-            }
             PrinterJob printerJob = PrinterJob.getPrinterJob();
             printerJob.setPageable(new PDFPageable(PDFDocumentLoaded));
-            printerJob.setPrintService(serviceForPrint);
+            printerJob.setPrintService(printServiceForAttributes);
             printerJob.print(datts);
         }
         PDFDocumentLoaded.close();
+
+        return "ok";
     }
 
-    private static PrintService[] findPrintServiceWithAttributes(PrintRequestAttributeSet datts) {
-        PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, datts);
-        for (PrintService printService : printServices) {
-            //System.out.println(printService.getName());
+    private static PrintService getPrintServiceForAttributes(PrintRequestAttributeSet datts){
+        PrintService serviceForPrint = null;
+        PrintService[] printServicesForAttributes = PrintServiceLookup.lookupPrintServices(null, datts);
+        if(printServicesForAttributes.length == 0){
+            return null;
         }
-        return printServices;
+        else {
+            for (PrintService printService : printServicesForAttributes) {
+//                AttributeSet attributes = getAttributesForPrintService(printService);
+//                DocFlavor[] docF = getSupportedDocFlavorForPrintService(printService);
+                if (printService.getName().contains(DEFAULT_PRINTER)) {
+                    serviceForPrint = printService;
+                    break;
+                } else {
+                    serviceForPrint = ServiceUI.printDialog(null, 100, 100, printServicesForAttributes, null, null, datts);
+                }
+            }
+        }
+
+        return serviceForPrint;
     }
 
     private static AttributeSet getAttributesForPrintService(PrintService printService){

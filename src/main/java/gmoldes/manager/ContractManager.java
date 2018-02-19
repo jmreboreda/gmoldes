@@ -2,6 +2,7 @@ package gmoldes.manager;
 
 
 import gmoldes.domain.dto.ContractDTO;
+import gmoldes.mappers.MapperContractVODTO;
 import gmoldes.persistence.dao.ContractDAO;
 import gmoldes.persistence.vo.ContractVO;
 
@@ -117,6 +118,32 @@ public class ContractManager {
 
             contractDTOList.add(contractDTO);
         }
+        return contractDTOList;
+    }
+
+    public int establishCurrentContract(){
+
+        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
+        return contractDAO.establishCurrentContract();
+
+    }
+
+    public int establishNotCurrentContract(){
+
+        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
+        return contractDAO.establishNotCurrentContract();
+    }
+
+    public List<ContractDTO> findContractsExpiration(){
+        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
+        List<ContractVO> contractVOList = contractDAO.findContractsExpiration();
+        MapperContractVODTO mapper = new MapperContractVODTO();
+        List<ContractDTO> contractDTOList = new ArrayList<>();
+        for(ContractVO contractVO : contractVOList){
+            ContractDTO contractDTO = mapper.mapContractVODTO(contractVO);
+            contractDTOList.add(contractDTO);
+        }
+
         return contractDTOList;
     }
 }

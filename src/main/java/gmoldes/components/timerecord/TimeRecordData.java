@@ -11,7 +11,6 @@ import gmoldes.domain.dto.TimeRecordCandidateDataDTO;
 import gmoldes.domain.dto.TimeRecordClientDTO;
 import gmoldes.forms.TimeRecord;
 import gmoldes.services.Printer;
-import gmoldes.utilities.Enumeration;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Utilities;
 import javafx.beans.binding.BooleanExpression;
@@ -27,11 +26,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
+import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -46,7 +48,7 @@ public class TimeRecordData extends VBox {
     private Parent parent;
 
     @FXML
-    private ChoiceBox<Enumeration.Months> monthName;
+    private ChoiceBox<String> monthName;
     @FXML
     private TextField yearNumber;
     @FXML
@@ -88,19 +90,20 @@ public class TimeRecordData extends VBox {
         printButton.setOnMouseClicked(this::onPrintTimeRecord);
         exitButton.setOnMouseClicked(this::onExit);
 
+        Locale locale = Locale.getDefault();
         monthName.setItems(FXCollections.observableArrayList(
-                Enumeration.Months.ENERO,
-                Enumeration.Months.FEBRERO,
-                Enumeration.Months.MARZO,
-                Enumeration.Months.ABRIL,
-                Enumeration.Months.MAYO,
-                Enumeration.Months.JUNIO,
-                Enumeration.Months.JULIO,
-                Enumeration.Months.AGOSTO,
-                Enumeration.Months.SEPTIEMBRE,
-                Enumeration.Months.OCTUBRE,
-                Enumeration.Months.NOVIEMBRE,
-                Enumeration.Months.DICIEMBRE
+                Month.JANUARY.getDisplayName(TextStyle.FULL, locale),
+                Month.FEBRUARY.getDisplayName(TextStyle.FULL, locale),
+                Month.MARCH.getDisplayName(TextStyle.FULL, locale),
+                Month.APRIL.getDisplayName(TextStyle.FULL, locale),
+                Month.MAY.getDisplayName(TextStyle.FULL, locale),
+                Month.JUNE.getDisplayName(TextStyle.FULL, locale),
+                Month.JULY.getDisplayName(TextStyle.FULL, locale),
+                Month.AUGUST.getDisplayName(TextStyle.FULL, locale),
+                Month.SEPTEMBER.getDisplayName(TextStyle.FULL, locale),
+                Month.OCTOBER.getDisplayName(TextStyle.FULL, locale),
+                Month.NOVEMBER.getDisplayName(TextStyle.FULL, locale),
+                Month.DECEMBER.getDisplayName(TextStyle.FULL, locale)
                 )
         );
 
@@ -144,9 +147,13 @@ public class TimeRecordData extends VBox {
         attributes.put("orientation","LANDSCAPE");
 
         try {
-            Printer.printPDF(pathToTimeRecordPDF, attributes);
-            Message.warningMessage(printButton.getScene().getWindow(),"Información del sistema", "Registro horario enviado a la impresora." + "\n");
+            String resultPrint = Printer.printPDF(pathToTimeRecordPDF, attributes);
             Utilities.deleteFileFromPath(pathToTimeRecordPDF);
+            if(resultPrint.equals("ok")) {
+                Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "Registro horario enviado a la impresora." + "\n");
+            }else{
+                Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "No existe impresora para imprimir el registro horario." + "\n");
+            }
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
         }
@@ -160,7 +167,7 @@ public class TimeRecordData extends VBox {
     private String createPDF(){
         TimeRecordCandidateDataDTO data = dataByTimeRecord.getSelectionModel().getSelectedItem();
         TimeRecord timeRecord = TimeRecord.create()
-                .withNameOfMonth(this.monthName.getSelectionModel().getSelectedItem().getMonthName())
+                .withNameOfMonth(this.monthName.getSelectionModel().getSelectedItem())
                 .withYearNumber(this.yearNumber.getText())
                 .withEnterpriseName(clientForTimeRecord.getSelectionModel().getSelectedItem().toString())
                 .withQuoteAccountCode(data.getQuoteAccountCode())
