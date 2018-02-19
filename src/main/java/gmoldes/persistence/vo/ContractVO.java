@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gmoldes.persistence.vo;
 
 import javax.persistence.*;
@@ -14,19 +9,23 @@ import java.util.Date;
 @NamedQueries(value = {
         @NamedQuery(
                 name = ContractVO.FIND_CONTRACTS_EXPIRATION,
-                query = "select p from ContractVO as p where p.preavisofin is null AND p.f_hasta is not null and date(p.f_hasta) - date(NOW()) <= 20"
+                query = "select p from ContractVO p where p.preavisofin is null AND p.f_hasta is not null and date(p.f_hasta) - date(NOW()) <= 20"
+        ),
+        @NamedQuery(
+                name = ContractVO.IDC_CONTROL,
+                query = "select p from ContractVO p where p.idc is null and date(p.f_desde) - date (now()) <= 3"
         ),
         @NamedQuery(
                 name = ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID,
-                query = "select p from ContractVO as p where p.idcliente_gm = :code order by p.trabajador_name"
+                query = "select p from ContractVO p where p.idcliente_gm = :code order by p.trabajador_name"
         ),
         @NamedQuery(
                 name = ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD,
-                query = "select p from ContractVO as p where p.idcliente_gm = :code and p.f_desde <= :initialperiod and (p.f_hasta >= :initialperiod or p.f_hasta is null) order by p.trabajador_name"
+                query = "select p from ContractVO p where p.idcliente_gm = :code and p.f_desde <= :initialperiod and (p.f_hasta >= :initialperiod or p.f_hasta is null) order by p.trabajador_name"
         ),
         @NamedQuery(
                 name = ContractVO.FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD,
-                query = "select p from ContractVO as p where p.idcliente_gm = :code " +
+                query = "select p from ContractVO p where p.idcliente_gm = :code " +
                         "and tipovariacion < 800 " +
                         "and concat(trim(to_char(extract(year from p.f_desde),'9999')), trim(to_char(extract(month from p.f_desde),'09'))) <= :initialperiod " +
                         "and (concat(trim(to_char(extract(year from p.f_hasta),'9999')), trim(to_char(extract(month from p.f_hasta),'09'))) >= :initialperiod " +
@@ -34,26 +33,28 @@ import java.util.Date;
         ),
         @NamedQuery(
                 name = ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID,
-                query = "select p from ContractVO as p where p.envigor = true and p.idcliente_gm = :code order by p.trabajador_name"
+                query = "select p from ContractVO p where p.envigor = true and p.idcliente_gm = :code order by p.trabajador_name"
         ),
         @NamedQuery(
                 name = ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED,
-                query = "select p from ContractVO as p where p.envigor = true order by p.clientegm_name"
+                query = "select p from ContractVO p where p.envigor = true order by p.clientegm_name"
         ),
         @NamedQuery(
                 name = ContractVO.FIND_ALL_CLIENT_WITH_CONTRACT_WITH_TIMERECORD_IN_PERIOD_SORTED,
-                query = "select p from ContractVO as p where tipovariacion < 800" +
+                query = "select p from ContractVO p where tipovariacion < 800" +
                         "and concat(trim(to_char(extract(year from p.f_desde),'9999')), trim(to_char(extract(month from p.f_desde),'09'))) <= :yearMonth " +
                         "and (concat(trim(to_char(extract(year from p.f_hasta),'9999')), trim(to_char(extract(month from p.f_hasta),'09'))) >= :yearMonth " +
                         "or p.f_hasta is null) and (jor_tipo = 'Parcial' or tipoctto = 'Formación') order by p.clientegm_name"
         ),
         @NamedQuery(
                 name = ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED,
-                query = "select p from ContractVO as p where p.envigor = true and (p.jor_tipo = 'Parcial' or tipoctto = 'Formación') order by p.clientegm_name"
+                query = "select p from ContractVO p where p.envigor = true and (p.jor_tipo = 'Parcial' or tipoctto = 'Formación') order by p.clientegm_name"
         )
 })
+
 public class ContractVO implements Serializable {
     public static final String FIND_CONTRACTS_EXPIRATION = "ContractVO.FIND_CONTRACTS_EXPIRATION";
+    public static final String IDC_CONTROL = "ContractVO.IDC_CONTROL";
     public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID";
     public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD = "ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD";
     public static final String FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID";

@@ -4,6 +4,7 @@ package gmoldes;
 import gmoldes.check.InitialChecks;
 import gmoldes.controllers.InitialMenuController;
 import gmoldes.domain.dto.ContractDTO;
+import gmoldes.domain.dto.IDCControlDTO;
 import gmoldes.persistence.dao.ClientDAO;
 import gmoldes.persistence.vo.ClientVO;
 import gmoldes.persistence.vo.ServiceGMVO;
@@ -25,20 +26,41 @@ public class App extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        /* Update contracts DB */
         InitialChecks.UpdateCurrentContracts();
 
+        /* Alert of contract expiration */
         String alert = "";
-        List<ContractDTO> contractsExpirations = InitialChecks.contractExpirationControl();
-        if(!contractsExpirations.isEmpty()) {
+        List<ContractDTO> contractsExpiration = InitialChecks.contractExpirationControl();
+        if(!contractsExpiration.isEmpty()) {
             SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-            for (ContractDTO contractDTO : contractsExpirations) {
+            Date now = new Date();
+            int days = 0;
+            for (ContractDTO contractDTO : contractsExpiration) {
+                days = (int) (dateFormatter.parse(dateFormatter.format(contractDTO.getF_hasta())).getTime() - dateFormatter.parse(dateFormatter.format(now)).getTime())/86400000;
                 alert = alert + "Preaviso del contrato de " + contractDTO.getTrabajador_name() + " con " + contractDTO.getClientegm_name()
-                        + ": vencimiento el día " + dateFormatter.format(contractDTO.getF_hasta()) + ". Faltan  XXXXX días" + "\n";
+                        + ": vencimiento el día " + dateFormatter.format(contractDTO.getF_hasta()) + ". Faltan  " + days + " días." + "\n";
             }
 
             Message.warningMessage(primaryStage.getOwner(), "Preavisos de fin de contrato", alert);
         }
 
+        /* Alert for pending IDC */
+        String alert1 = "";
+        List<IDCControlDTO> idcControlDTOList = InitialChecks.findPendingIDC();
+        if(!idcControlDTOList.isEmpty()){
+            for(IDCControlDTO idcControlDTO : idcControlDTOList){
+
+                alert1 = alert1 + "IDC Pendiente: " + idcControlDTO.getDescr_variacion() + " de " + idcControlDTO.getTrabajador_name() + " con " +
+                        idcControlDTO.getClientegm_name() + " desde " + idcControlDTO.getDate_to() + ". Faltan " + idcControlDTO.getDays() + " días." + "\n";
+            }
+
+            Message.warningMessage(primaryStage.getOwner(), "IDC pendientes de recepción", alert1);
+        }
+
+
+
+        /* Initial menu */
         InitialMenuController controller = new InitialMenuController();
         primaryStage.setResizable(false);
         Scene scene = new Scene(controller);

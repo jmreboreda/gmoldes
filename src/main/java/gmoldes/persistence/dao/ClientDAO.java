@@ -15,12 +15,6 @@ public class ClientDAO {
     private SessionFactory sessionFactory;
     private Session session;
 
-//    public static String FIND_PERSON_BY_ID = "FROM PersonVO WHERE id = :code";
-//    public static String FIND_ALL_PERSON_IN_ALPHABETICAL_ORDER = "SELECT id, apellido1, apellido2, nombre FROM PersonVO ORDER BY apellido1, apellido2, nombre";
-//    public static String FIND_ALL_PERSON_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER =
-//            "FROM PersonVO WHERE LOWER(apellido1) LIKE :code OR LOWER(apellido2) LIKE :code OR LOWER(nombre) LIKE :code ORDER BY apellido1, apellido2, nombre";
-//    public static String FIND_PERSON_BY_STRICT_NAME = "FROM PersonVO WHERE apellido1 = :code1 AND apellido2 = :code2 AND nombre = :code3";
-
     public ClientDAO() {
     }
 
@@ -104,12 +98,12 @@ public class ClientDAO {
 //        return personId;
 //    }
 
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
-    }
+//    public Session getSession() {
+//        return session;
+//    }
+//
+//    public void setSession(Session session) {
+//        this.session = session;
+//    }
 
 }
