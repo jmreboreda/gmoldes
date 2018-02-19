@@ -22,6 +22,8 @@ public class Message {
         alert.initOwner(window);
         alert.setTitle(title);
         alert.setHeaderText(null);
+        alert.setResizable(true);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setContentText(message);
 
         Optional<ButtonType> result = alert.showAndWait();
@@ -39,8 +41,8 @@ public class Message {
         alert.initOwner(window);
         alert.setTitle(title);
         alert.setHeaderText(null);
+        alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        //alert.getDialogPane().setMinSize(message.length() + 10, 100);
         alert.setContentText(message);
         alert.showAndWait();
     }

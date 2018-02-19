@@ -6,7 +6,7 @@ public class IDCControlDTO {
     private String trabajador_name;
     private String clientegm_name;
     private String date_to;
-    private String days;
+    private Integer days;
 
     public IDCControlDTO() {
     }
@@ -43,11 +43,11 @@ public class IDCControlDTO {
         this.date_to = date_to;
     }
 
-    public String getDays() {
+    public Integer getDays() {
         return days;
     }
 
-    public void setDays(String days) {
+    public void setDays(Integer days) {
         this.days = days;
     }
 }

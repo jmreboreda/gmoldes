@@ -44,8 +44,8 @@ public class InitialChecks {
             idcControlDTO.setTrabajador_name(contractDTO.getTrabajador_name());
             idcControlDTO.setClientegm_name(contractDTO.getClientegm_name());
             idcControlDTO.setDate_to(dateFormatter.format(contractDTO.getF_desde()));
-            int days = (int) (dateFormatter.parse(dateFormatter.format(contractDTO.getF_desde())).getTime() - dateFormatter.parse(dateFormatter.format(now)).getTime())/86400000;
-            idcControlDTO.setDays(String.valueOf(days));
+            int days = (int)(long)((contractDTO.getF_desde().getTime() - now.getTime())/(24*60*60*1000));
+            idcControlDTO.setDays(days);
             String variation_description = retrieveVariationDescriptionById(contractDTO.getTipovariacion());
             idcControlDTO.setDescr_variacion(variation_description);
             idcControlDTOList.add(idcControlDTO);
