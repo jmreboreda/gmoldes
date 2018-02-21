@@ -57,6 +57,7 @@ public class InitialMenuController extends AnchorPane {
         Scene scene = new Scene(newContractController);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage newContractStage = new Stage();
+        newContractStage.setTitle("Nuevo contrato de trabajo");
         newContractStage.setScene(scene);
         newContractStage.initOwner(primaryStage);
         newContractStage.initModality(Modality.APPLICATION_MODAL);
@@ -68,6 +69,7 @@ public class InitialMenuController extends AnchorPane {
         Scene scene = new Scene(timeRecordController);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage timeRecordStage = new Stage();
+        timeRecordStage.setTitle("Registro horario");
         timeRecordStage.setScene(scene);
         timeRecordStage.initOwner(primaryStage);
         timeRecordStage.initModality(Modality.APPLICATION_MODAL);

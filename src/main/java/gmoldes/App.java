@@ -20,11 +20,12 @@ public class App extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        initialProcesses(primaryStage);
+        initialControlProcesses(primaryStage);
 
         /* Initial menu */
         InitialMenuController controller = new InitialMenuController();
         primaryStage.setResizable(false);
+        primaryStage.setTitle("Menú principal");
         Scene scene = new Scene(controller);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         primaryStage.setScene(scene);
@@ -36,12 +37,17 @@ public class App extends Application{
         launch(args);
     }
 
-    private void initialProcesses(Stage primaryStage) throws ParseException {
+    private void initialControlProcesses(Stage primaryStage) throws ParseException {
+        updateCurrentContractsInDatabase();
+        alertByContractExpiration(primaryStage);
+        alertOfPendingIDC(primaryStage);
+    }
 
-        /* 1. Update current contracts in the database */
+    private void updateCurrentContractsInDatabase(){
         InitialChecks.UpdateCurrentContracts();
+    }
 
-        /* 2. Alert of contract expiration */
+    private void alertByContractExpiration(Stage primaryStage){
         String alert = "";
         String missingExceededText = "";
         List<ContractDTO> contractsExpiration = InitialChecks.contractExpirationControl();
@@ -61,24 +67,25 @@ public class App extends Application{
 
             Message.warningMessage(primaryStage.getOwner(), "Preavisos de fin de contrato pendientes de recepción", alert);
         }
+    }
 
-        /* 3. Alert for pending IDC */
-        String alert1 = "";
-        String missingExceededText1 = "";
+    private void alertOfPendingIDC(Stage primaryStage) throws ParseException {
+        String alert = "";
+        String missingExceededText = "";
         List<IDCControlDTO> idcControlDTOList = InitialChecks.findPendingIDC();
         if(!idcControlDTOList.isEmpty()){
             for(IDCControlDTO idcControlDTO : idcControlDTOList){
                 if(idcControlDTO.getDays() >= 0){
-                    missingExceededText1 = "Faltan ";
+                    missingExceededText = "Faltan ";
                 }else{
-                    missingExceededText1 = "Excedido en ";
+                    missingExceededText = "Excedido en ";
                 }
                 int days = Math.abs(idcControlDTO.getDays());
-                alert1 = alert1 + "IDC Pendiente: " + idcControlDTO.getDescr_variacion() + " de " + idcControlDTO.getTrabajador_name() + " con " +
-                        idcControlDTO.getClientegm_name() + " desde " + idcControlDTO.getDate_to() + ". " + missingExceededText1  + days + " días." + "\n\n";
+                alert = alert + "IDC Pendiente: " + idcControlDTO.getDescr_variacion() + " de " + idcControlDTO.getTrabajador_name() + " con " +
+                        idcControlDTO.getClientegm_name() + " desde " + idcControlDTO.getDate_to() + ". " + missingExceededText  + days + " días." + "\n\n";
             }
 
-            Message.warningMessage(primaryStage.getOwner(), "IDC pendientes de recepción", alert1);
+            Message.warningMessage(primaryStage.getOwner(), "IDC pendientes de recepción", alert);
         }
     }
 }
