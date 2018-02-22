@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 public class Utilities {
 
@@ -110,5 +111,65 @@ public class Utilities {
             nifFormatted = dni.substring(0,1)+"."+dni.substring(1,4)+"."+dni.substring(4,7)+"-"+dni.substring(7,8);
 
         return nifFormatted;
+    }
+
+    private Character calculateNIF_DNILetter(String digitsNIF){
+        String lettertable[] = {"T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E"};
+        Integer numberNIF = Integer.parseInt(digitsNIF);
+        return lettertable[numberNIF % 23].charAt(0);
+
+    }
+
+    public static boolean validateNIF_notDNI(String nifNotDNI) {
+        Pattern cifPattern = Pattern.compile("[[A-H][J-N][P-S]UVW][0-9]{7}[0-9A-J]");
+        String ONLY_NUMBERS_CONTROL = "ABEH"; // Only support numbers as control character
+        String ONLY_LETTERS_CONTROL = "KPQS"; // They only support letters as a control character
+        String NUMBER_TO_LETTER_CONTROL = "JABCDEFGHI"; // Conversión de dígito a letra de control.
+
+        try {
+            if (!cifPattern.matcher(nifNotDNI).matches()) {
+                // No cumple el patrón
+                return false;
+            }
+
+            int parA = 0;
+            for (int i = 2; i < 8; i += 2) {
+                final int digit = Character.digit(nifNotDNI.charAt(i), 10);
+                if (digit < 0) {
+                    return false;
+                }
+                parA += digit;
+            }
+
+            int nonB = 0;
+            for (int i = 1; i < 9; i += 2) {
+                final int digit = Character.digit(nifNotDNI.charAt(i), 10);
+                if (digit < 0) {
+                    return false;
+                }
+                int nn = 2 * digit;
+                if (nn > 9) {
+                    nn = 1 + (nn - 10);
+                }
+                nonB += nn;
+            }
+
+            final int partialC = parA + nonB;
+            final int digitE = partialC % 10;
+            final int digitD = (digitE > 0) ? (10 - digitE) : 0;
+            final char initialLetter = nifNotDNI.charAt(0);
+            final char finalCharacter = nifNotDNI.charAt(8);
+
+            final boolean isValidControl =
+                    // Character control is valid as a letter?
+                    (ONLY_NUMBERS_CONTROL.indexOf(initialLetter) < 0 && NUMBER_TO_LETTER_CONTROL.charAt(digitD) == finalCharacter)
+                            ||
+                            // Character control is valid as a digit?
+                            (ONLY_LETTERS_CONTROL.indexOf(initialLetter) < 0 && digitD == Character.digit(finalCharacter, 10));
+            return isValidControl;
+
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
