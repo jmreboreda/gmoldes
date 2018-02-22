@@ -161,36 +161,4 @@ public class TimeRecord {
                     this.employeeNIF, this.numberHoursPerWeek);
         }
     }
-
-    public static String createPDF(TimeRecord timeRecord) throws IOException, DocumentException {
-
-        String desktopDirName = "";
-
-        if(OS_ALIAS.toLowerCase().contains("windows")){
-            desktopDirName = "Desktop";
-        }else if(OS_ALIAS.toLowerCase().contains("linux")){
-            desktopDirName = "Escritorio";
-        }
-
-        final String pathOut = USER_HOME.concat("/").concat(desktopDirName).concat("/").concat(timeRecord.toFileName()).concat(".pdf");
-        PdfReader reader = new PdfReader(PATH_TO_PDF_TEMPLATE);
-        PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(pathOut));
-
-        AcroFields timeRecordPDFFields = stamp.getAcroFields();
-        //HashMap map = timeRecordPDF.getFields();
-        timeRecordPDFFields.setField("nameOfMonth",timeRecord.getNameOfMonth());
-        timeRecordPDFFields.setField("yearNumber",timeRecord.getYearNumber());
-        timeRecordPDFFields.setField("enterpriseName",timeRecord.getEnterpriseName());
-        timeRecordPDFFields.setField("quoteAccountCode",timeRecord.getQuoteAccountCode());
-        timeRecordPDFFields.setField("employeeName",timeRecord.getEmployeeName());
-        timeRecordPDFFields.setField("employeeNIF",timeRecord.getEmployeeNIF());
-        timeRecordPDFFields.setField("numberHoursPerWeek",timeRecord.getNumberHoursPerWeek());
-        timeRecordPDFFields.setField("enterpriseSignature","Firmado: ".concat(timeRecord.getEnterpriseName()));
-        timeRecordPDFFields.setField("employeeSignature","Firmado: ".concat(timeRecord.getEmployeeName()));
-
-        stamp.setFormFlattening(true);
-        stamp.close();
-
-        return pathOut;
-    }
 }

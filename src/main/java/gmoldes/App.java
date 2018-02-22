@@ -9,7 +9,6 @@ import gmoldes.utilities.Message;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -80,16 +80,4 @@ public class InitialMenuController extends AnchorPane {
         Platform.exit();
         System.exit(0);
     }
-
-    private List<ClientDTO> findClientsByNamePattern(String pattern){
-        return clientManager.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
-    }
-
-    private List<PersonDTO> findPersonsByNamePattern(String pattern){
-        return personManager.findAllPersonsByNamePatternInAlphabeticalOrder(pattern);
-    }
-
-    public void setPrimaryStage(Stage stage){
-        this.primaryStage = stage;
-    }
 }
