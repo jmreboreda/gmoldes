@@ -1,10 +1,14 @@
 package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.controllers.ContractTypeController;
+import gmoldes.domain.dto.ContractTypeDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -18,6 +22,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -41,7 +46,7 @@ public class ContractData extends AnchorPane {
     @FXML
     private TextField hourNotification;
     @FXML
-    private ChoiceBox contractType;
+    private ChoiceBox<ContractTypeDTO> contractType;
     @FXML
     private DatePicker dateFrom;
     @FXML
@@ -96,6 +101,7 @@ public class ContractData extends AnchorPane {
         notificationDateControlSetup();
         contractDurationControlSetup();
         workDayDataControlSetup();
+        loadContractType();
     }
 
     private void onDateAction(ActionEvent actionEvent){
@@ -254,6 +260,15 @@ public class ContractData extends AnchorPane {
                 }
             }
         });
+    }
+
+    private void loadContractType(){
+
+        ContractTypeController contractTypeController = new ContractTypeController();
+        List<ContractTypeDTO> contractTypeDTOList = contractTypeController.findAllContractTypes();
+
+        ObservableList<ContractTypeDTO> contractTypeDTOS = FXCollections.observableArrayList(contractTypeDTOList);
+        contractType.setItems(contractTypeDTOS);
     }
 
     private void hourNotificationControlSetup(){
