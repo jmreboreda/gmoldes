@@ -3,9 +3,8 @@ package gmoldes.components.contract.new_contract;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.SearchEmployeesEvent;
 import gmoldes.components.contract.events.SearchEmployersEvent;
-import gmoldes.domain.dto.ClientDTO;
-import gmoldes.domain.dto.PersonDTO;
-import gmoldes.domain.dto.ProvisionalContractDataDTO;
+import gmoldes.controllers.ClientCCCController;
+import gmoldes.domain.dto.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -40,7 +39,7 @@ public class ContractParts extends HBox {
     @FXML
     private ListView<PersonDTO> employeesNames;
     @FXML
-    private ChoiceBox cotizationCode;
+    private ChoiceBox<ClientCCCDTO> cotizationCode;
     @FXML
     private javafx.scene.control.Button newEmployee;
 
@@ -107,12 +106,26 @@ public class ContractParts extends HBox {
     }
 
     private void onSelectClient(ClientDTO newClientValue){
+
         employerName.setText(newClientValue.getNom_rzsoc());
+        List<ClientCCCDTO> clientCCCDTOList = retrieveClientCCCById(newClientValue.getId());
+
+        ObservableList<ClientCCCDTO> clientCCCDTOL = FXCollections.observableArrayList(clientCCCDTOList);
+        cotizationCode.setItems(clientCCCDTOL);
+        if(clientCCCDTOL.size() == 1){
+            cotizationCode.getSelectionModel().selectFirst();
+        }
     }
 
     private void onSelectEmployee(PersonDTO newPersonValue){
 
         employeeName.setText(newPersonValue.getApellidos().concat(", ").concat(newPersonValue.getNom_rzsoc()));
+    }
+
+    private List<ClientCCCDTO> retrieveClientCCCById(Integer id){
+        ClientCCCController controller = new ClientCCCController();
+
+        return controller.findAllCCCByClientId(id);
     }
 
     public void clearEmployersData(){

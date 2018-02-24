@@ -8,7 +8,7 @@ import java.io.Serializable;
 @NamedQueries(value = {
         @NamedQuery(
                 name = ContractTypeVO.FIND_ALL_CONTRACT_TYPES,
-                query = "select p from ContractTypeVO p"
+                query = "select p from ContractTypeVO p order by descripctto"
         )
 })
 
@@ -86,9 +86,5 @@ public class ContractTypeVO implements Serializable{
 
     public void setJornadasepe(String jornadasepe) {
         this.jornadasepe = jornadasepe;
-    }
-
-    public String toString(){
-        return descripctto;
     }
 }

@@ -46,7 +46,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <ChoiceBox fx:id="contractType" prefHeight="26.0" prefWidth="624.0" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="1">
+            <ChoiceBox fx:id="contractType" prefHeight="26.0" prefWidth="709.0" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
