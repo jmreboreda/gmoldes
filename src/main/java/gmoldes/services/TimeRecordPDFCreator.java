@@ -8,29 +8,21 @@ import gmoldes.forms.TimeRecord;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class TimeRecordPDFCreator {
 
-    private static final String OS_ALIAS = System.getProperty("os.name");
-    private static final String USER_HOME = System.getProperty("user.home");
     private static final String PATH_TO_PDF_TEMPLATE = "/pdf_forms/DGM_002_Registro_Horario.pdf";
 
     public TimeRecordPDFCreator() {
     }
 
-    public static String createTimeRecordPDF(TimeRecord timeRecord) throws IOException, DocumentException {
+    public static Path createTimeRecordPDF(TimeRecord timeRecord, Path pathOut) throws IOException, DocumentException {
 
-        String desktopDirName = "";
-
-        if(OS_ALIAS.toLowerCase().contains("windows")){
-            desktopDirName = "Desktop";
-        }else if(OS_ALIAS.toLowerCase().contains("linux")){
-            desktopDirName = "Escritorio";
-        }
-
-        final String pathOut = USER_HOME.concat("/").concat(desktopDirName).concat("/").concat(timeRecord.toFileName()).concat(".pdf");
         PdfReader reader = new PdfReader(PATH_TO_PDF_TEMPLATE);
-        PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(pathOut));
+        PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(pathOut.toString()));
 
         AcroFields timeRecordPDFFields = stamp.getAcroFields();
         //HashMap map = timeRecordPDF.getFields();

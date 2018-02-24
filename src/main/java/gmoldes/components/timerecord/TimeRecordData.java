@@ -30,6 +30,9 @@ import javafx.stage.Stage;
 
 import java.awt.print.PrinterException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
@@ -135,13 +138,13 @@ public class TimeRecordData extends VBox {
 
     private void onCreateTimeRecordPDF(MouseEvent event){
         TimeRecord timeRecord = createTimeRecord();
-        String pathToTimeRecordPDF = createTimeRecordPDF(timeRecord);
+        String pathToTimeRecordPDF = createTimeRecordPDF(timeRecord).toString();
         Message.warningMessage(createPDFButton.getScene().getWindow(),"Información del sistema", "Registro horario creado en:" + "\n" + pathToTimeRecordPDF + "\n");
     }
 
     private void onPrintTimeRecord(MouseEvent event){
         TimeRecord timeRecord = createTimeRecord();
-        String pathToTimeRecordPDF = createTimeRecordPDF(timeRecord);
+        String pathToTimeRecordPDF = createTimeRecordPDF(timeRecord).toString();
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("papersize","A4");
@@ -155,7 +158,8 @@ public class TimeRecordData extends VBox {
             if(resultPrint.equals("ok")) {
                 Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "Registro horario enviado a la impresora." + "\n");
             }else{
-                Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "No existe impresora para imprimir el registro horario." + "\n");
+                Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "No existe impresora para imprimir el registro horario" +
+                        " con los atributos indicados." + "\n");
             }
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
@@ -180,12 +184,13 @@ public class TimeRecordData extends VBox {
                 .build();
     }
 
-    private String createTimeRecordPDF(TimeRecord timeRecord){
-        String pathToTimeRecordPDF = "";
-        try {
-            pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord);
+    private Path createTimeRecordPDF(TimeRecord timeRecord) {
+        Path pathToTimeRecordPDF = Paths.get(System.getProperty("user.home"), "Borrame", timeRecord.toFileName().concat(".pdf"));
 
-        } catch (IOException | DocumentException e) {
+        try {
+            Files.createDirectories(pathToTimeRecordPDF.getParent());
+            pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord, pathToTimeRecordPDF);
+        } catch (DocumentException | IOException e) {
             e.printStackTrace();
         }
 
