@@ -14,6 +14,5 @@ public class TypesContractVariationsManager {
         TypesContractVariationsVO typesContractVariationVO = typesContractVariationsDAO.findVariationDescriptionById(variationId);
 
         return typesContractVariationVO.getVariation_description();
-
     }
 }

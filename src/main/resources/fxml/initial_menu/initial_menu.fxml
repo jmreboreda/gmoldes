@@ -23,25 +23,25 @@
                         <Image url="@../../pics/GMapp_PNG_64x64.png" />
                      </image>
                      <HBox.margin>
-                        <Insets top="5.0" />
+                        <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label prefHeight="62.0" prefWidth="343.0" text="Gestoria Moldes :: Menú Principal" textFill="#640000">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="62.0" prefWidth="343.0" text="Menú Principal" textAlignment="CENTER" textFill="#640000">
                      <HBox.margin>
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                      <font>
-                        <Font name="System Bold" size="18.0" />
+                        <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
             <Line endX="337.0" fill="#b1acac" startX="-100.0" stroke="#8d8a8a">
                <VBox.margin>
-                  <Insets top="10.0" />
+                  <Insets left="3.0" top="10.0" />
                </VBox.margin>
             </Line>
-            <Button fx:id="newContractButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Nuevo contrato de trabajo" textAlignment="CENTER">
+            <Button fx:id="newContractButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Nuevo contrato de trabajo" textAlignment="CENTER">
                <VBox.margin>
                   <Insets left="68.5" top="25.0" />
                </VBox.margin>
@@ -49,7 +49,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="timeRecordButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Impresión de Registros Horarios" textAlignment="CENTER">
+            <Button fx:id="timeRecordButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Impresión de Registros Horarios" textAlignment="CENTER">
                <VBox.margin>
                   <Insets left="68.5" top="10.0" />
                </VBox.margin>
@@ -59,7 +59,7 @@
             </Button>
             <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="90.0" prefWidth="100.0" text="Salir" textAlignment="CENTER" textFill="#640000">
                <VBox.margin>
-                  <Insets bottom="25.0" left="300.0" top="350.0" />
+                  <Insets bottom="25.0" left="320.0" top="350.0" />
                </VBox.margin>
                <cursor>
                   <Cursor fx:constant="HAND" />
