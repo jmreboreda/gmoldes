@@ -68,7 +68,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <Label fx:id="contractType" prefHeight="18.0" prefWidth="405.0" textFill="#1807ac" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="2" />
+            <Label fx:id="contractType" prefHeight="18.0" prefWidth="561.0" textFill="#1807ac" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="2" />
             <Label text="Fecha Inicio:" wrapText="true" GridPane.rowIndex="3">
                <cursor>
                   <Cursor fx:constant="HAND" />
