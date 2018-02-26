@@ -22,12 +22,12 @@ import java.util.logging.Logger;
 
 public class NewContractMainController extends VBox {
 
-
     private static final Logger logger = Logger.getLogger(NewContractMainController.class.getSimpleName());
     private static final String MAIN_FXML = "/fxml/new_contract/contract_main.fxml";
 
     private ClientController clientController = new ClientController();
     private PersonController personController = new PersonController();
+    private ClientCCCController clientCCCController = new ClientCCCController();
 
     private Parent parent;
 
@@ -69,7 +69,6 @@ public class NewContractMainController extends VBox {
         contractParts.setOnSearchEmployers(this::onSearchEmployers);
         contractParts.setOnSearchEmployees(this::onSearchEmployees);
         contractParts.setOnSelectEmployer(this::onSelectEmployer);
-
     }
 
     private void refreshProvisionalContractData(){
@@ -99,6 +98,7 @@ public class NewContractMainController extends VBox {
         }
         if(pattern.isEmpty()){
             contractParts.clearEmployersData();
+            contractParts.clearEmployerCCC();
             return;
         }
         if(pattern.equals(employersNameSelectedItem)){
@@ -127,10 +127,8 @@ public class NewContractMainController extends VBox {
 
     private void onSelectEmployer(SelectEmployerEvent selectEmployerEvent){
         Integer selectedEmployerId = selectEmployerEvent.getSelectedEmployer().getId();
-        if(selectedEmployerId != null) {
-            List<ClientCCCDTO> clientCCCDTOList = retrieveClientCCCById(selectedEmployerId);
-            contractParts.refreshClientCCC(clientCCCDTOList);
-        }
+        List<ClientCCCDTO> clientCCCDTOList = retrieveClientCCCById(selectedEmployerId);
+        contractParts.refreshEmployerCCC(clientCCCDTOList);
     }
 
     private List<ClientDTO> findClientsByNamePattern(String pattern){
@@ -142,8 +140,6 @@ public class NewContractMainController extends VBox {
     }
 
     private List<ClientCCCDTO> retrieveClientCCCById(Integer id){
-        ClientCCCController controller = new ClientCCCController();
-
-        return controller.findAllCCCByClientId(id);
+        return clientCCCController.findAllCCCByClientId(id);
     }
 }

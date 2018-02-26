@@ -40,6 +40,7 @@ public class ClientVO implements Serializable {
     private Integer nifcif_dup;
     private String nom_rzsoc;
     private Integer numvez;
+    @Column(name = "cltsg21", length = 4)
     private String cltsg21;
     private Date fdesde;
     private Date fhasta;

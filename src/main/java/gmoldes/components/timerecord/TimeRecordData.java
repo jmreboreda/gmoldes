@@ -44,9 +44,12 @@ import java.util.stream.Collectors;
 public class TimeRecordData extends VBox {
 
     private static final String TIME_RECORD_FXML = "/fxml/time_record/timerecord_data.fxml";
+    private static final String OPERATING_SYSTEM = System.getProperty("os.name");
+    private static final String USER_HOME = System.getProperty("user.home");
+    private static final String WINDOWS_TEMPORAL_DIR = "/AppData/Local/Temp/Borrame";
+    private static final String LINUX_TEMPORAL_DIR = "/Temp/Borrame";
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
     private static final Integer LAST_MONTH_INDEX_IN_MONTHNAME = 11;
-    private final BooleanProperty activeButton = new SimpleBooleanProperty(false);
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
     private Parent parent;
@@ -185,7 +188,13 @@ public class TimeRecordData extends VBox {
     }
 
     private Path createTimeRecordPDF(TimeRecord timeRecord) {
-        Path pathToTimeRecordPDF = Paths.get(System.getProperty("user.home"), "Borrame", timeRecord.toFileName().concat(".pdf"));
+        String temporalDir = null;
+        if(OPERATING_SYSTEM.toLowerCase().contains("windows")){
+            temporalDir = WINDOWS_TEMPORAL_DIR;
+        }else if(OPERATING_SYSTEM.toLowerCase().contains("linux")){
+            temporalDir = LINUX_TEMPORAL_DIR;
+        }
+        Path pathToTimeRecordPDF = Paths.get(USER_HOME, temporalDir, timeRecord.toFileName().concat(".pdf"));
 
         try {
             Files.createDirectories(pathToTimeRecordPDF.getParent());
