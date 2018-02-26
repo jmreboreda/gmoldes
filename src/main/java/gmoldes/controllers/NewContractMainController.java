@@ -3,7 +3,9 @@ package gmoldes.controllers;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.SearchEmployeesEvent;
 import gmoldes.components.contract.events.SearchEmployersEvent;
+import gmoldes.components.contract.events.SelectEmployerEvent;
 import gmoldes.components.contract.new_contract.*;
+import gmoldes.domain.dto.ClientCCCDTO;
 import gmoldes.domain.dto.ClientDTO;
 import gmoldes.domain.dto.PersonDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
@@ -66,6 +68,7 @@ public class NewContractMainController extends VBox {
 
         contractParts.setOnSearchEmployers(this::onSearchEmployers);
         contractParts.setOnSearchEmployees(this::onSearchEmployees);
+        contractParts.setOnSelectEmployer(this::onSelectEmployer);
 
     }
 
@@ -122,11 +125,25 @@ public class NewContractMainController extends VBox {
         contractParts.refreshEmployees(employees);
     }
 
+    private void onSelectEmployer(SelectEmployerEvent selectEmployerEvent){
+        Integer selectedEmployerId = selectEmployerEvent.getSelectedEmployer().getId();
+        if(selectedEmployerId != null) {
+            List<ClientCCCDTO> clientCCCDTOList = retrieveClientCCCById(selectedEmployerId);
+            contractParts.refreshClientCCC(clientCCCDTOList);
+        }
+    }
+
     private List<ClientDTO> findClientsByNamePattern(String pattern){
         return clientController.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
     }
 
     private List<PersonDTO> findPersonsByNamePattern(String pattern){
         return personController.findAllPersonsByNamePatternInAlphabeticalOrder(pattern);
+    }
+
+    private List<ClientCCCDTO> retrieveClientCCCById(Integer id){
+        ClientCCCController controller = new ClientCCCController();
+
+        return controller.findAllCCCByClientId(id);
     }
 }

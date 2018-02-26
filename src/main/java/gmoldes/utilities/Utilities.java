@@ -95,7 +95,7 @@ public class Utilities {
         for (i = 0; i < initialAndFinalLetter.length - 1; i++){
             if (dni.substring(0, 1).equals(initialAndFinalLetter[i])) {
                 if (dni.length() == 9) {
-                    // Letra + 7 + letra
+                    /* Letra + 7 + letra */
                     nifFormatted = dni.substring(0, 1) + "-" + dni.substring(1, 2) + "." + dni.substring(2, 5) + "." + dni.substring(5, 8) + "-" + dni.substring(8, 9);
                     return nifFormatted;
                 } else {
@@ -104,7 +104,7 @@ public class Utilities {
                 }
             }
         }
-        // NIF: 8 + letra
+        /* NIF: 8 + letra */
         if (dni.length() == 9)
             nifFormatted = dni.substring(0,2)+"."+dni.substring(2,5)+"."+dni.substring(5,8)+"-"+dni.substring(8,9);
         else

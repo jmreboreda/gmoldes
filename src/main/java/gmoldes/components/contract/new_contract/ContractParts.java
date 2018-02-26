@@ -3,6 +3,7 @@ package gmoldes.components.contract.new_contract;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.SearchEmployeesEvent;
 import gmoldes.components.contract.events.SearchEmployersEvent;
+import gmoldes.components.contract.events.SelectEmployerEvent;
 import gmoldes.controllers.ClientCCCController;
 import gmoldes.domain.dto.*;
 import javafx.collections.FXCollections;
@@ -24,6 +25,7 @@ public class ContractParts extends HBox {
     private static final String CONTRACT_PARTS_FXML = "/fxml/new_contract/contract_parts.fxml";
     private EventHandler<SearchEmployersEvent> onEmployerNamePatternChangedEventHandler;
     private EventHandler<SearchEmployeesEvent> onEmployeeNamePatternChangedEventHandler;
+    private EventHandler<SelectEmployerEvent> onSelectEmployerEventHandler;
 
     private Parent parent;
 
@@ -55,6 +57,11 @@ public class ContractParts extends HBox {
         employerName.setOnKeyReleased(this::onEmployerNamePatternChanged);
         employeeName.setOnKeyReleased(this::onEmployeeNamePatternChanged);
 
+        employersNames.getSelectionModel().selectedItemProperty()
+                .addListener((observable, oldValue, newClientEmployerSelected) -> onSelectClientEmployer(newClientEmployerSelected));
+
+        employeesNames.getSelectionModel().selectedItemProperty()
+                .addListener((observable, oldValue, newPersonValue) -> onSelectEmployee(newPersonValue));
     }
 
     private void onEmployerNamePatternChanged(KeyEvent keyEvent) {
@@ -66,8 +73,6 @@ public class ContractParts extends HBox {
         final SearchEmployersEvent searchEmployersEvent = new SearchEmployersEvent(pattern, employersNameSelectedItem);
         onEmployerNamePatternChangedEventHandler.handle(searchEmployersEvent);
 
-        employersNames.getSelectionModel().selectedItemProperty()
-               .addListener((observable, oldValue, newClientValue) -> onSelectClient(newClientValue));
     }
 
     private void onEmployeeNamePatternChanged(KeyEvent keyEvent) {
@@ -78,9 +83,6 @@ public class ContractParts extends HBox {
         }
         final SearchEmployeesEvent searchEmployeesEvent = new SearchEmployeesEvent(pattern, employeeNameSelectedItem);
         onEmployeeNamePatternChangedEventHandler.handle(searchEmployeesEvent);
-
-        employeesNames.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newPersonValue) -> onSelectEmployee(newPersonValue));
     }
 
     public ProvisionalContractDataDTO getAllData(){
@@ -105,21 +107,17 @@ public class ContractParts extends HBox {
                 .build();
     }
 
-    private void onSelectClient(ClientDTO newClientValue){
+    private void onSelectClientEmployer(ClientDTO newClientEmployerSelected){
+        employerName.setText(newClientEmployerSelected.getNom_rzsoc());
 
-        employerName.setText(newClientValue.getNom_rzsoc());
-        List<ClientCCCDTO> clientCCCDTOList = retrieveClientCCCById(newClientValue.getId());
-
-        ObservableList<ClientCCCDTO> clientCCCDTOL = FXCollections.observableArrayList(clientCCCDTOList);
-        cotizationCode.setItems(clientCCCDTOL);
-        if(clientCCCDTOL.size() == 1){
-            cotizationCode.getSelectionModel().selectFirst();
-        }
+        final SelectEmployerEvent selectEmployerEvent = new SelectEmployerEvent(newClientEmployerSelected);
+        onSelectEmployerEventHandler.handle(selectEmployerEvent);
     }
 
     private void onSelectEmployee(PersonDTO newPersonValue){
-
-        employeeName.setText(newPersonValue.getApellidos().concat(", ").concat(newPersonValue.getNom_rzsoc()));
+        if(newPersonValue != null) {
+            employeeName.setText(newPersonValue.getApellidos().concat(", ").concat(newPersonValue.getNom_rzsoc()));
+        }
     }
 
     private List<ClientCCCDTO> retrieveClientCCCById(Integer id){
@@ -130,6 +128,10 @@ public class ContractParts extends HBox {
 
     public void clearEmployersData(){
         employerName.clear();
+        clearEmployersNames();
+    }
+
+    public void clearEmployersNames(){
         if(!employersNames.getItems().isEmpty()) {
             employersNames.getItems().clear();
         }
@@ -137,6 +139,10 @@ public class ContractParts extends HBox {
 
     public void clearEmployeesData(){
         employeeName.clear();
+        clearEmployeesNames();
+    }
+
+    public void clearEmployeesNames(){
         if(!employeesNames.getItems().isEmpty()) {
             employeesNames.getItems().clear();
         }
@@ -158,11 +164,23 @@ public class ContractParts extends HBox {
         employeesNames.getItems().addAll(listPersonsWhoMatchPattern);
     }
 
+    public void refreshClientCCC(List<ClientCCCDTO> clientCCCDTO){
+        ObservableList<ClientCCCDTO> clientCCCDTOL = FXCollections.observableArrayList(clientCCCDTO);
+        cotizationCode.setItems(clientCCCDTOL);
+        if (clientCCCDTOL.size() == 1) {
+            cotizationCode.getSelectionModel().selectFirst();
+        }
+    }
+
     public void setOnSearchEmployers(EventHandler<SearchEmployersEvent> handler) {
         this.onEmployerNamePatternChangedEventHandler = handler;
     }
 
     public void setOnSearchEmployees(EventHandler<SearchEmployeesEvent> handler) {
         this.onEmployeeNamePatternChangedEventHandler = handler;
+    }
+
+    public void setOnSelectEmployer(EventHandler<SelectEmployerEvent> handler){
+        this.onSelectEmployerEventHandler = handler;
     }
 }
