@@ -2,7 +2,8 @@ package gmoldes.persistence.vo;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+//import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 
@@ -40,7 +41,8 @@ public class ClientVO implements Serializable {
     private Integer nifcif_dup;
     private String nom_rzsoc;
     private Integer numvez;
-    private String cltsg21;
+    @Column(name = "cltsg21", length = 4)
+    private Character cltsg21;
     private Date fdesde;
     private Date fhasta;
     private Boolean cltactivo;
@@ -97,11 +99,11 @@ public class ClientVO implements Serializable {
         this.numvez = numvez;
     }
 
-    public String getCltsg21() {
+    public Character getCltsg21() {
         return cltsg21;
     }
 
-    public void setCltsg21(String cltsg21) {
+    public void setCltsg21(Character cltsg21) {
         this.cltsg21 = cltsg21;
     }
 

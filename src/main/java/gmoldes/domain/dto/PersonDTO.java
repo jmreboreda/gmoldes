@@ -5,6 +5,7 @@
  */
 package gmoldes.domain.dto;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -14,19 +15,19 @@ public class PersonDTO {
     private String apellidos;
     private String nom_rzsoc;
     private String nifcif;
-    private String nifcifdup;
+    private Short nifcifdup;
     private String numafss;
     private Date fechanacim;
     private String estciv;
     private String direccion;
     private String localidad;
-    private Integer codpostal;
-    private String nivestud;
+    private BigDecimal codpostal;
+    private Character nivestud;
     private String nacionalidad;
 
-    public PersonDTO(Integer idpersona, String apellidos, String nom_rzsoc, String nifcif, String nifcifdup,
+    public PersonDTO(Integer idpersona, String apellidos, String nom_rzsoc, String nifcif, Short nifcifdup,
                      String numafss, Date fechanacim, String estciv, String direccion, String localidad,
-                     Integer codpostal, String nivestud, String nacionalidad) {
+                     BigDecimal codpostal, Character nivestud, String nacionalidad) {
         this.idpersona = idpersona;
         this.apellidos = apellidos;
         this.nom_rzsoc = nom_rzsoc;
@@ -74,11 +75,11 @@ public class PersonDTO {
         this.nifcif = nifcif;
     }
 
-    public String getNifcifdup() {
+    public Short getNifcifdup() {
         return nifcifdup;
     }
 
-    public void setNifcifdup(String nifcifdup) {
+    public void setNifcifdup(Short nifcifdup) {
         this.nifcifdup = nifcifdup;
     }
 
@@ -122,19 +123,19 @@ public class PersonDTO {
         this.localidad = localidad;
     }
 
-    public Integer getCodpostal() {
+    public BigDecimal getCodpostal() {
         return codpostal;
     }
 
-    public void setCodpostal(Integer codpostal) {
+    public void setCodpostal(BigDecimal codpostal) {
         this.codpostal = codpostal;
     }
 
-    public String getNivestud() {
+    public Character getNivestud() {
         return nivestud;
     }
 
-    public void setNivestud(String nivestud) {
+    public void setNivestud(Character nivestud) {
         this.nivestud = nivestud;
     }
 
@@ -161,14 +162,14 @@ public class PersonDTO {
         private String apellidos;
         private String nom_rzsoc;
         private String nifcif;
-        private String nifcifdup;
+        private Short nifcifdup;
         private String numafss;
         private Date fechanacim;
         private String estciv;
         private String direccion;
         private String localidad;
-        private Integer codpostal;
-        private String nivestud;
+        private BigDecimal codpostal;
+        private Character nivestud;
         private String nacionalidad;
 
         public PersonDTO.PersonBuilder withIdpersona(Integer idpersona) {
@@ -191,7 +192,7 @@ public class PersonDTO {
             return this;
         }
 
-        public PersonDTO.PersonBuilder withNifcifdup(String nifcifdup) {
+        public PersonDTO.PersonBuilder withNifcifdup(Short nifcifdup) {
             this.nifcifdup = nifcifdup;
             return this;
         }
@@ -221,12 +222,12 @@ public class PersonDTO {
             return this;
         }
 
-        public PersonDTO.PersonBuilder withCodpostal(Integer codpostal) {
+        public PersonDTO.PersonBuilder withCodpostal(BigDecimal codpostal) {
             this.codpostal = codpostal;
             return this;
         }
 
-        public PersonDTO.PersonBuilder withNivestud(String nivestud) {
+        public PersonDTO.PersonBuilder withNivestud(Character nivestud) {
             this.nivestud = nivestud;
             return this;
         }

@@ -8,9 +8,15 @@
  
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost/gmoldesnew</property>
-        <property name="hibernate.connection.username">jmrb</property>
-        <property name="hibernate.connection.password">L100mhdSL</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost/patata</property>
+        <property name="hibernate.connection.username">patata</property>
+        <property name="hibernate.connection.password">patata</property>
+
+        <property name="hibernate.c3p0.min_size">5</property>
+        <property name="hibernate.c3p0.max_size">20</property>
+        <property name="hibernate.c3p0.timeout">300</property>
+        <property name="hibernate.c3p0.max_statements">50</property>
+        <property name="hibernate.c3p0.idle_test_period">3000</property>
  
         <!-- SQL dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL94Dialect</property>
@@ -20,13 +26,15 @@
  
         <!-- Drop and re-create all database on startup -->
       <!--   <property name="hibernate.hbm2ddl.auto">create-drop</property> -->
-        <property name="hibernate.hbm2ddl.auto">update</property>  
+        <property name="hibernate.hbm2ddl.auto">validate</property>
  
         <!-- Annotated entity classes -->
         <mapping class="gmoldes.persistence.vo.ClientVO"/>
         <mapping class="gmoldes.persistence.vo.ContractVO"/>
         <mapping class="gmoldes.persistence.vo.PersonVO"/>
         <mapping class="gmoldes.persistence.vo.TypesContractVariationsVO"/>
+        <mapping class="gmoldes.persistence.vo.ContractTypeVO"/>
+        <mapping class="gmoldes.persistence.vo.ClientCCCVO"/>
         <mapping class="gmoldes.persistence.vo.ServiceGMVO"/>
 
     </session-factory>

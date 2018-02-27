@@ -5,7 +5,7 @@
  */
 package gmoldes.domain.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 
 public class ContractDTO {
@@ -21,7 +21,7 @@ public class ContractDTO {
     private String trabajador_name;
     private String categoria;
     private String jor_trab;
-    private String jor_trab_dias;
+    private Character jor_trab_dias;
     private String jor_tipo;
     private String tipoctto;
     private Date f_desde;
@@ -30,7 +30,7 @@ public class ContractDTO {
     private Boolean envigor;
     private String notas_gestor;
     private String notas_privadas;
-    private String duracion;
+    private Character duracion;
     private Integer subrogacion;
     private Date idc;
     private Date preavisofin;
@@ -46,7 +46,7 @@ public class ContractDTO {
                        String trabajador_name,
                        String categoria,
                        String jor_trab,
-                       String jor_trab_dias,
+                       Character jor_trab_dias,
                        String jor_tipo,
                        String tipoctto,
                        Date f_desde,
@@ -55,7 +55,7 @@ public class ContractDTO {
                        Boolean envigor,
                        String notas_gestor,
                        String notas_privadas,
-                       String duracion,
+                       Character duracion,
                        Integer subrogacion,
                        Date idc,
                        Date preavisofin){
@@ -174,11 +174,11 @@ public class ContractDTO {
         this.jor_trab = jor_trab;
     }
 
-    public String getJor_trab_dias() {
+    public Character getJor_trab_dias() {
         return jor_trab_dias;
     }
 
-    public void setJor_trab_dias(String jor_trab_dias) {
+    public void setJor_trab_dias(Character jor_trab_dias) {
         this.jor_trab_dias = jor_trab_dias;
     }
 
@@ -246,11 +246,11 @@ public class ContractDTO {
         this.notas_privadas = notas_privadas;
     }
 
-    public String getDuracion() {
+    public Character getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(String duracion) {
+    public void setDuracion(Character duracion) {
         this.duracion = duracion;
     }
 
@@ -279,7 +279,7 @@ public class ContractDTO {
         private String trabajador_name;
         private String categoria;
         private String jor_trab;
-        private String jor_trab_dias;
+        private Character jor_trab_dias;
         private String jor_tipo;
         private String tipoctto;
         private Date f_desde;
@@ -288,7 +288,7 @@ public class ContractDTO {
         private Boolean envigor;
         private String notas_gestor;
         private String notas_privadas;
-        private String duracion;
+        private Character duracion;
         private Integer subrogacion;
         private Date idc;
         private Date preavisofin;
@@ -348,7 +348,7 @@ public class ContractDTO {
             return this;
         }
 
-        public ContractBuilder withJor_trab_dias(String jor_trab_dias) {
+        public ContractBuilder withJor_trab_dias(Character jor_trab_dias) {
             this.jor_trab_dias = jor_trab_dias;
             return this;
         }
@@ -393,7 +393,7 @@ public class ContractDTO {
             return this;
         }
 
-        public ContractBuilder withDuracion(String duracion) {
+        public ContractBuilder withDuracion(Character duracion) {
             this.duracion = duracion;
             return this;
         }
