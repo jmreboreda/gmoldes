@@ -2,7 +2,8 @@ package gmoldes.persistence.vo;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.math.BigDecimal;
+import java.sql.Date;
 
 
 @Entity
@@ -40,14 +41,15 @@ public class PersonVO implements Serializable {
     private String apellidos;
     private String nom_rzsoc;
     private String nifcif;
-    private String nifcifdup;
+    private Short nifcifdup;
     private String numafss;
     private Date fechanacim;
     private String estciv;
     private String direccion;
     private String localidad;
-    private Integer codpostal;
-    private String nivestud;
+    private BigDecimal codpostal;
+    @Column(name = "nivestud", length = 2)
+    private Character nivestud;
     private String nacionalidad;
 
     public Integer getIdpersona() {
@@ -82,11 +84,11 @@ public class PersonVO implements Serializable {
         this.nifcif = nifcif;
     }
 
-    public String getNifcifdup() {
+    public Short getNifcifdup() {
         return nifcifdup;
     }
 
-    public void setNifcifdup(String nifcifdup) {
+    public void setNifcifdup(Short nifcifdup) {
         this.nifcifdup = nifcifdup;
     }
 
@@ -130,19 +132,19 @@ public class PersonVO implements Serializable {
         this.localidad = localidad;
     }
 
-    public Integer getCodpostal() {
+    public BigDecimal getCodpostal() {
         return codpostal;
     }
 
-    public void setCodpostal(Integer codpostal) {
+    public void setCodpostal(BigDecimal codpostal) {
         this.codpostal = codpostal;
     }
 
-    public String getNivestud() {
+    public Character getNivestud() {
         return nivestud;
     }
 
-    public void setNivestud(String nivestud) {
+    public void setNivestud(Character nivestud) {
         this.nivestud = nivestud;
     }
 
