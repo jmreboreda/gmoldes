@@ -2,7 +2,7 @@ package gmoldes.persistence.vo;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Table(name = "contratoshistorico")
@@ -85,7 +85,7 @@ public class ContractVO implements Serializable {
     @Column(name = "jor_trab", length = 100)
     private String jor_trab;
     @Column(name = "jor_trab_dias", length = 7)
-    private String jor_trab_dias;
+    private Character jor_trab_dias;
     @Column(name = "jor_tipo", length = 100)
     private String jor_tipo;
     @Column(name = "tipoctto", length = 100)
@@ -98,7 +98,7 @@ public class ContractVO implements Serializable {
     private String notas_gestor;
     private String notas_privadas;
     @Column(name = "duracion", length = 1)
-    private String duracion;
+    private Character duracion;
     private Integer subrogacion;
     private Date idc;
     private Date preavisofin;
@@ -191,11 +191,11 @@ public class ContractVO implements Serializable {
         this.jor_trab = jor_trab;
     }
 
-    public String getJor_trab_dias() {
+    public Character getJor_trab_dias() {
         return jor_trab_dias;
     }
 
-    public void setJor_trab_dias(String jor_trab_dias) {
+    public void setJor_trab_dias(Character jor_trab_dias) {
         this.jor_trab_dias = jor_trab_dias;
     }
 
@@ -263,11 +263,11 @@ public class ContractVO implements Serializable {
         this.notas_privadas = notas_privadas;
     }
 
-    public String getDuracion() {
+    public Character getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(String duracion) {
+    public void setDuracion(Character duracion) {
         this.duracion = duracion;
     }
 

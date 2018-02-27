@@ -20,13 +20,15 @@
  
         <!-- Drop and re-create all database on startup -->
       <!--   <property name="hibernate.hbm2ddl.auto">create-drop</property> -->
-        <property name="hibernate.hbm2ddl.auto">update</property>  
+        <property name="hibernate.hbm2ddl.auto">update</property>
  
         <!-- Annotated entity classes -->
         <mapping class="gmoldes.persistence.vo.ClientVO"/>
         <mapping class="gmoldes.persistence.vo.ContractVO"/>
         <mapping class="gmoldes.persistence.vo.PersonVO"/>
         <mapping class="gmoldes.persistence.vo.TypesContractVariationsVO"/>
+        <mapping class="gmoldes.persistence.vo.ContractTypeVO"/>
+        <mapping class="gmoldes.persistence.vo.ClientCCCVO"/>
         <mapping class="gmoldes.persistence.vo.ServiceGMVO"/>
 
     </session-factory>

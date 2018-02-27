@@ -16,7 +16,7 @@ public class ClientDTO {
     private Integer nifcif_dup;
     private String nom_rzsoc;
     private Integer numvez;
-    private String cltsg21;
+    private Character cltsg21;
     private Date fdesde;
     private Date fhasta;
     private Boolean cltactivo;
@@ -27,7 +27,7 @@ public class ClientDTO {
     }
 
     public ClientDTO(Integer id, Integer idcliente, String nifcif, Integer nifcif_dup, String nom_rzsoc,
-                     Integer numvez, String cltsg21, Date fdesde, Date fhasta, Boolean cltactivo,
+                     Integer numvez, Character cltsg21, Date fdesde, Date fhasta, Boolean cltactivo,
                      Date sinactividad, String tipoclte) {
         this.id = id;
         this.idcliente = idcliente;
@@ -91,11 +91,11 @@ public class ClientDTO {
         this.numvez = numvez;
     }
 
-    public String getCltsg21() {
+    public Character getCltsg21() {
         return cltsg21;
     }
 
-    public void setCltsg21(String cltsg21) {
+    public void setCltsg21(Character cltsg21) {
         this.cltsg21 = cltsg21;
     }
 
@@ -156,7 +156,7 @@ public class ClientDTO {
         private Integer nifcif_dup;
         private String nom_rzsoc;
         private Integer numvez;
-        private String cltsg21;
+        private Character cltsg21;
         private Date fdesde;
         private Date fhasta;
         private Boolean cltactivo;
@@ -193,7 +193,7 @@ public class ClientDTO {
             return this;
         }
 
-        public ClientDTO.PersonBuilder withCltsg21(String cltsg21) {
+        public ClientDTO.PersonBuilder withCltsg21(Character cltsg21) {
             this.cltsg21 = cltsg21;
             return this;
         }
