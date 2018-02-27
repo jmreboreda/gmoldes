@@ -12,15 +12,15 @@ import java.util.Set;
 @NamedQueries(value = {
         @NamedQuery(
                 name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER,
-                query = " select p from ClientVO as p where lower(p.nom_rzsoc) like lower(:code) and p.cltactivo = true order by p.nom_rzsoc"
+                query = "select p from ClientVO as p where lower(p.nom_rzsoc) like lower(:code) and p.cltactivo = true order by p.nom_rzsoc"
         ),
         @NamedQuery(
                 name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER,
-                query = " select p from ClientVO as p where p.cltactivo = true order by p.nom_rzsoc"
+                query = "select p from ClientVO as p where p.cltactivo = true order by p.nom_rzsoc"
         ),
         @NamedQuery(
                 name = ClientVO.FIND_CLIENT_BY_SAME_NAME,
-                query = " select p from ClientVO as p where p.nom_rzsoc = :nom_rzsoc"
+                query = "select p from ClientVO as p where p.nom_rzsoc = :nom_rzsoc"
         )
 })
 
@@ -38,9 +38,9 @@ public class ClientVO implements Serializable {
     private Integer id;
     private Integer idcliente;
     private String nifcif;
-    private Integer nifcif_dup;
+    private Short nifcif_dup;
     private String nom_rzsoc;
-    private Integer numvez;
+    private Short numvez;
     @Column(name = "cltsg21", length = 4)
     private Character cltsg21;
     private Date fdesde;
@@ -75,11 +75,11 @@ public class ClientVO implements Serializable {
         this.nifcif = nifcif;
     }
 
-    public Integer getNifcif_dup() {
+    public Short getNifcif_dup() {
         return nifcif_dup;
     }
 
-    public void setNifcif_dup(Integer nifcif_dup) {
+    public void setNifcif_dup(Short nifcif_dup) {
         this.nifcif_dup = nifcif_dup;
     }
 
@@ -91,11 +91,11 @@ public class ClientVO implements Serializable {
         this.nom_rzsoc = nom_rzsoc;
     }
 
-    public Integer getNumvez() {
+    public Short getNumvez() {
         return numvez;
     }
 
-    public void setNumvez(Integer numvez) {
+    public void setNumvez(Short numvez) {
         this.numvez = numvez;
     }
 
