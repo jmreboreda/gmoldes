@@ -11,36 +11,36 @@ import java.util.Date;
 public class ClientDTO {
 
     private Integer id;
-    private Integer idcliente;
-    private String nifcif;
-    private Short nifcif_dup;
-    private String nom_rzsoc;
-    private Short numvez;
-    private Character cltsg21;
-    private Date fdesde;
-    private Date fhasta;
-    private Boolean cltactivo;
-    private Date sinactividad;
-    private String tipoclte;
+    private Integer clientId;
+    private String taxIdentificationNumber;
+    private Short taxIdentificationNumber_dup;
+    private String personOrCompanyName;
+    private Short numberOfTimes;
+    private Character codeInSigaProgram;
+    private Date dateFrom;
+    private Date dateTo;
+    private Boolean activeClient;
+    private Date withoutActivity;
+    private String clientType;
 
     public ClientDTO() {
     }
 
-    public ClientDTO(Integer id, Integer idcliente, String nifcif, Short nifcif_dup, String nom_rzsoc,
-                     Short numvez, Character cltsg21, Date fdesde, Date fhasta, Boolean cltactivo,
-                     Date sinactividad, String tipoclte) {
+    public ClientDTO(Integer id, Integer clientId, String taxIdentificationNumber, Short taxIdentificationNumber_dup, String personOrCompanyName,
+                     Short numberOfTimes, Character codeInSigaProgram, Date dateFrom, Date dateTo, Boolean activeClient,
+                     Date withoutActivity, String clientType) {
         this.id = id;
-        this.idcliente = idcliente;
-        this.nifcif = nifcif;
-        this.nifcif_dup = nifcif_dup;
-        this.nom_rzsoc = nom_rzsoc;
-        this.numvez = numvez;
-        this.cltsg21 = cltsg21;
-        this.fdesde = fdesde;
-        this.fhasta = fhasta;
-        this.cltactivo = cltactivo;
-        this.sinactividad = sinactividad;
-        this.tipoclte = tipoclte;
+        this.clientId = clientId;
+        this.taxIdentificationNumber = taxIdentificationNumber;
+        this.taxIdentificationNumber_dup = taxIdentificationNumber_dup;
+        this.personOrCompanyName = personOrCompanyName;
+        this.numberOfTimes = numberOfTimes;
+        this.codeInSigaProgram = codeInSigaProgram;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.activeClient = activeClient;
+        this.withoutActivity = withoutActivity;
+        this.clientType = clientType;
     }
 
     public Integer getId() {
@@ -51,97 +51,97 @@ public class ClientDTO {
         this.id = id;
     }
 
-    public Integer getIdcliente() {
-        return idcliente;
+    public Integer getClientId() {
+        return clientId;
     }
 
-    public void setIdcliente(Integer idcliente) {
-        this.idcliente = idcliente;
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
     }
 
-    public String getNifcif() {
-        return nifcif;
+    public String getTaxIdentificationNumber() {
+        return taxIdentificationNumber;
     }
 
-    public void setNifcif(String nifcif) {
-        this.nifcif = nifcif;
+    public void setTaxIdentificationNumber(String taxIdentificationNumber) {
+        this.taxIdentificationNumber = taxIdentificationNumber;
     }
 
-    public Short getNifcif_dup() {
-        return nifcif_dup;
+    public Short getTaxIdentificationNumber_dup() {
+        return taxIdentificationNumber_dup;
     }
 
-    public void setNifcif_dup(Short nifcif_dup) {
-        this.nifcif_dup = nifcif_dup;
+    public void setTaxIdentificationNumber_dup(Short taxIdentificationNumber_dup) {
+        this.taxIdentificationNumber_dup = taxIdentificationNumber_dup;
     }
 
-    public String getNom_rzsoc() {
-        return nom_rzsoc;
+    public String getPersonOrCompanyName() {
+        return personOrCompanyName;
     }
 
-    public void setNom_rzsoc(String nom_rzsoc) {
-        this.nom_rzsoc = nom_rzsoc;
+    public void setPersonOrCompanyName(String personOrCompanyName) {
+        this.personOrCompanyName = personOrCompanyName;
     }
 
-    public Short getNumvez() {
-        return numvez;
+    public Short getNumberOfTimes() {
+        return numberOfTimes;
     }
 
-    public void setNumvez(Short numvez) {
-        this.numvez = numvez;
+    public void setNumberOfTimes(Short numberOfTimes) {
+        this.numberOfTimes = numberOfTimes;
     }
 
-    public Character getCltsg21() {
-        return cltsg21;
+    public Character getCodeInSigaProgram() {
+        return codeInSigaProgram;
     }
 
-    public void setCltsg21(Character cltsg21) {
-        this.cltsg21 = cltsg21;
+    public void setCodeInSigaProgram(Character codeInSigaProgram) {
+        this.codeInSigaProgram = codeInSigaProgram;
     }
 
-    public Date getFdesde() {
-        return fdesde;
+    public Date getDateFrom() {
+        return dateFrom;
     }
 
-    public void setFdesde(Date fdesde) {
-        this.fdesde = fdesde;
+    public void setDateFrom(Date dateFrom) {
+        this.dateFrom = dateFrom;
     }
 
-    public Date getFhasta() {
-        return fhasta;
+    public Date getDateTo() {
+        return dateTo;
     }
 
-    public void setFhasta(Date fhasta) {
-        this.fhasta = fhasta;
+    public void setDateTo(Date dateTo) {
+        this.dateTo = dateTo;
     }
 
-    public Boolean getCltactivo() {
-        return cltactivo;
+    public Boolean getActiveClient() {
+        return activeClient;
     }
 
-    public void setCltactivo(Boolean cltactivo) {
-        this.cltactivo = cltactivo;
+    public void setActiveClient(Boolean activeClient) {
+        this.activeClient = activeClient;
     }
 
-    public Date getSinactividad() {
-        return sinactividad;
+    public Date getWithoutActivity() {
+        return withoutActivity;
     }
 
-    public void setSinactividad(Date sinactividad) {
-        this.sinactividad = sinactividad;
+    public void setWithoutActivity(Date withoutActivity) {
+        this.withoutActivity = withoutActivity;
     }
 
-    public String getTipoclte() {
-        return tipoclte;
+    public String getClientType() {
+        return clientType;
     }
 
-    public void setTipoclte(String tipoclte) {
-        this.tipoclte = tipoclte;
+    public void setClientType(String clientType) {
+        this.clientType = clientType;
     }
 
     @Override
     public String toString() {
-        return getNom_rzsoc();
+        return getPersonOrCompanyName();
     }
 
     public static ClientDTO.PersonBuilder create() {
@@ -151,81 +151,81 @@ public class ClientDTO {
     public static class PersonBuilder {
 
         private Integer id;
-        private Integer idcliente;
-        private String nifcif;
-        private Short nifcif_dup;
-        private String nom_rzsoc;
-        private Short numvez;
-        private Character cltsg21;
-        private Date fdesde;
-        private Date fhasta;
-        private Boolean cltactivo;
-        private Date sinactividad;
-        private String tipoclte;
+        private Integer clientId;
+        private String taxIdentificationNumber;
+        private Short taxIdentificationNumber_dup;
+        private String personOrCompanyName;
+        private Short numberOfTimes;
+        private Character codeInSigaProgram;
+        private Date dateFrom;
+        private Date dateTo;
+        private Boolean activeClient;
+        private Date withoutActivity;
+        private String clientType;
 
         public ClientDTO.PersonBuilder withId(Integer id) {
             this.id = id;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withIdcliente(Integer idcliente) {
-            this.idcliente = idcliente;
+        public ClientDTO.PersonBuilder withClientId(Integer clientId) {
+            this.clientId = clientId;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withNifcif(String nifcif) {
-            this.nifcif = nifcif;
+        public ClientDTO.PersonBuilder withTaxIdentificationNumber(String taxIdentificationNumber) {
+            this.taxIdentificationNumber = taxIdentificationNumber;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withNifcif_dup(Short nifcif_dup) {
-            this.nifcif_dup = nifcif_dup;
+        public ClientDTO.PersonBuilder withTaxIdentificationNumber_dup(Short withTaxIdentificationNumber_dup) {
+            this.taxIdentificationNumber_dup = withTaxIdentificationNumber_dup;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withNom_rzsoc(String nom_rzsoc) {
-            this.nom_rzsoc = nom_rzsoc;
+        public ClientDTO.PersonBuilder withPersonOrCompanyName(String personOrCompanyName) {
+            this.personOrCompanyName = personOrCompanyName;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withNumvez(Short numvez) {
-            this.numvez = numvez;
+        public ClientDTO.PersonBuilder withNumberOfTimes(Short numberOfTimes) {
+            this.numberOfTimes = numberOfTimes;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withCltsg21(Character cltsg21) {
-            this.cltsg21 = cltsg21;
+        public ClientDTO.PersonBuilder withCodeInSigaProgram(Character codeInSigaProgram) {
+            this.codeInSigaProgram = codeInSigaProgram;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withFdesde(Date fdesde) {
-            this.fdesde = fdesde;
+        public ClientDTO.PersonBuilder withDateFrom(Date dateFrom) {
+            this.dateFrom = dateFrom;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withFhasta(Date fhasta) {
-            this.fhasta = fhasta;
+        public ClientDTO.PersonBuilder withDateTo(Date dateTo) {
+            this.dateTo = dateTo;
             return this;
         }
 
         public ClientDTO.PersonBuilder withCltactivo(Boolean cltactivo) {
-            this.cltactivo = cltactivo;
+            this.activeClient = cltactivo;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withSinactividad(Date sinactividad) {
-            this.sinactividad = sinactividad;
+        public ClientDTO.PersonBuilder withWithOutActivity(Date withoutActivity) {
+            this.withoutActivity = withoutActivity;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withTipoclte(String tipoclte) {
-            this.tipoclte = tipoclte;
+        public ClientDTO.PersonBuilder withClientType(String clientType) {
+            this.clientType = clientType;
             return this;
         }
 
         public ClientDTO build() {
-            return new ClientDTO(this.id, this.idcliente, this.nifcif, this.nifcif_dup, this.nom_rzsoc,
-            this.numvez, this.cltsg21, this.fdesde, this.fhasta, this.cltactivo, this.sinactividad, this.tipoclte);
+            return new ClientDTO(this.id, this.clientId, this.taxIdentificationNumber, this.taxIdentificationNumber_dup, this.personOrCompanyName,
+            this.numberOfTimes, this.codeInSigaProgram, this.dateFrom, this.dateTo, this.activeClient, this.withoutActivity, this.clientType);
         }
     }
 }

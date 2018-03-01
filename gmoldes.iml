@@ -16,6 +16,9 @@
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-c3p0:5.2.11.Final" level="project" />
     <orderEntry type="library" name="Maven: com.mchange:c3p0:0.9.5.2" level="project" />
     <orderEntry type="library" name="Maven: com.mchange:mchange-commons-java:0.2.11" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-c3p0:5.2.11.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.mchange:c3p0:0.9.5.2" level="project" />
+    <orderEntry type="library" name="Maven: com.mchange:mchange-commons-java:0.2.11" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4.1212.jre7" level="project" />
     <orderEntry type="library" name="Maven: javax.persistence:javax.persistence-api:2.2" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:5.2.11.Final" level="project" />

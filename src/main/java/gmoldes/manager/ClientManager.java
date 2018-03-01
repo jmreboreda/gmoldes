@@ -3,8 +3,6 @@ package gmoldes.manager;
 
 import gmoldes.domain.dto.ClientDTO;
 import gmoldes.domain.dto.TimeRecordClientDTO;
-import gmoldes.mappers.MapperClientVODTO;
-import gmoldes.mappers.MapperContractVODTO;
 import gmoldes.persistence.dao.ClientDAO;
 import gmoldes.persistence.dao.ContractDAO;
 import gmoldes.persistence.vo.ClientVO;
@@ -30,15 +28,15 @@ public class ClientManager {
             ClientDTO clientDTO = ClientDTO.create()
                     .withId(clientVO.getId())
                     .withCltactivo(clientVO.getCltactivo())
-                    .withCltsg21(clientVO.getCltsg21())
-                    .withFdesde(clientVO.getFdesde())
-                    .withFhasta(clientVO.getFhasta())
-                    .withNifcif(clientVO.getNifcif())
-                    .withNifcif_dup(clientVO.getNifcif_dup())
-                    .withNom_rzsoc(clientVO.getNom_rzsoc())
-                    .withNumvez(clientVO.getNumvez())
-                    .withSinactividad(clientVO.getSinactividad())
-                    .withTipoclte(clientVO.getTipoclte())
+                    .withCodeInSigaProgram(clientVO.getCltsg21())
+                    .withDateFrom(clientVO.getFdesde())
+                    .withDateTo(clientVO.getFhasta())
+                    .withTaxIdentificationNumber(clientVO.getNifcif())
+                    .withTaxIdentificationNumber_dup(clientVO.getNifcif_dup())
+                    .withPersonOrCompanyName(clientVO.getNom_rzsoc())
+                    .withNumberOfTimes(clientVO.getNumvez())
+                    .withWithOutActivity(clientVO.getSinactividad())
+                    .withClientType(clientVO.getTipoclte())
                     .build();
 
             personDTOList.add(clientDTO);
@@ -55,15 +53,15 @@ public class ClientManager {
             ClientDTO clientDTO = ClientDTO.create()
                     .withId(clientVO.getId())
                     .withCltactivo(clientVO.getCltactivo())
-                    .withCltsg21(clientVO.getCltsg21())
-                    .withFdesde(clientVO.getFdesde())
-                    .withFhasta(clientVO.getFhasta())
-                    .withNifcif(clientVO.getNifcif())
-                    .withNifcif_dup(clientVO.getNifcif_dup())
-                    .withNom_rzsoc(clientVO.getNom_rzsoc())
-                    .withNumvez(clientVO.getNumvez())
-                    .withSinactividad(clientVO.getSinactividad())
-                    .withTipoclte(clientVO.getTipoclte())
+                    .withCodeInSigaProgram(clientVO.getCltsg21())
+                    .withDateFrom(clientVO.getFdesde())
+                    .withDateTo(clientVO.getFhasta())
+                    .withTaxIdentificationNumber(clientVO.getNifcif())
+                    .withTaxIdentificationNumber_dup(clientVO.getNifcif_dup())
+                    .withPersonOrCompanyName(clientVO.getNom_rzsoc())
+                    .withNumberOfTimes(clientVO.getNumvez())
+                    .withWithOutActivity(clientVO.getSinactividad())
+                    .withClientType(clientVO.getTipoclte())
                     .build();
 
             personDTOList.add(clientDTO);

@@ -48,7 +48,7 @@ public class ContractDTO {
                        String workerName,
                        String laborCategory,
                        String weeklyWorkHours,
-                       Set<DayOfWeek> jor_trab_dias,
+                       Set<DayOfWeek> daysOfWeekToWork,
                        String fullPartialWorkday,
                        String typeOfContract,
                        Date dateFrom,
@@ -73,7 +73,7 @@ public class ContractDTO {
         this.workerName = workerName;
         this.laborCategory = laborCategory;
         this.weeklyWorkHours = weeklyWorkHours;
-        this.daysOfWeekToWork = jor_trab_dias;
+        this.daysOfWeekToWork = daysOfWeekToWork;
         this.fullPartialWorkday = fullPartialWorkday;
         this.typeOfContract = typeOfContract;
         this.dateFrom = dateFrom;
