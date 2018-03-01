@@ -9,6 +9,8 @@ import java.util.Set;
 
 public class MapperContractVODTO {
 
+    private static final String IS_WORK_DAY = "1";
+
     public ContractDTO mapContractVODTO(ContractVO contractVO) {
 
         Set<DayOfWeek> daysOfWorkSet = mapDaysOfWeekToWorkVODTO(contractVO);
@@ -39,6 +41,7 @@ public class MapperContractVODTO {
                 .withQuoteDataReportIDC(contractVO.getIdc())
                 .withEndOfContractNotice(contractVO.getPreavisofin())
                 .build();
+
         return contractDTO;
     }
 
@@ -49,17 +52,46 @@ public class MapperContractVODTO {
         Set<DayOfWeek> daysOfWeekSet = new HashSet<>();
 
         for (int i = 0; i < daysOfWork.length(); i++) {
-            if (daysOfWork.substring(i, i + 1).equals("1")) {
+            if (daysOfWork.substring(i, i + 1).equals(IS_WORK_DAY)) {
                 daysOfWeekSet.add(daysOfWeek[i]);
             }
         }
 
         /** Ordenar y obtener el nombre local de los días de la semana
-        * Set<DayOfWeek> sortedDaysOfWeekSet = new TreeSet<DayOfWeek>(daysOfWeekSet);
-        * Locale locale = Locale.getDefault();
-        * for(DayOfWeek dayOfWeek : sortedDaysOfWeekSet) {
-        *     System.out.println(dayOfWeek.getDisplayName(TextStyle.FULL, locale));
-        * }
+        Set<DayOfWeek> sortedDaysOfWeekSet = new TreeSet<DayOfWeek>(daysOfWeekSet);
+        Locale locale = Locale.getDefault();
+        for(DayOfWeek dayOfWeek : sortedDaysOfWeekSet) {
+             System.out.println(dayOfWeek.getDisplayName(TextStyle.FULL, locale));
+        }
+         */
+
+        /**
+         // Get DayOfWeek from int value
+         DayOfWeek dayOfWeek = DayOfWeek.of(1);
+         System.out.println("dayOfWeek = " + dayOfWeek);
+
+         // Get DayOfWeek from string value
+         dayOfWeek = DayOfWeek.valueOf("SATURDAY");
+         System.out.println("dayOfWeek = " + dayOfWeek);
+
+         // Get DayOfWeek of a date object
+         LocalDate date = LocalDate.now();
+         DayOfWeek dow = date.getDayOfWeek();
+
+         System.out.println("Date  = " + date);
+         System.out.println("Dow   = " + dow + "; value = " + dow.getValue());
+
+         // Get DayOfWeek display name in different locale.
+         Locale locale = new Locale("id", "ID");
+         String indonesian = dow.getDisplayName(TextStyle.SHORT, locale);
+         System.out.println("ID = " + indonesian);
+
+         String germany = dow.getDisplayName(TextStyle.FULL, Locale.GERMANY);
+         System.out.println("DE = " + germany);
+
+         // Adding number of days to DayOfWeek enum.
+         System.out.println("DayOfWeek.MONDAY.plus(4) = " + DayOfWee
+
         */
 
         return daysOfWeekSet;
