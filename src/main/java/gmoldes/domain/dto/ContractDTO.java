@@ -6,84 +6,86 @@
 package gmoldes.domain.dto;
 
 import java.sql.Date;
+import java.time.DayOfWeek;
+import java.util.Set;
 
 
 public class ContractDTO {
 
     private Integer id;
-    private Integer numcontrato;
-    private Integer numvariacion;
-    private Integer tipovariacion;
-    private Integer idcliente_gm;
-    private String clientegm_name;
-    private String contrato_ccc;
-    private Integer idtrabajador;
-    private String trabajador_name;
-    private String categoria;
-    private String jor_trab;
-    private Character jor_trab_dias;
-    private String jor_tipo;
-    private String tipoctto;
-    private Date f_desde;
-    private Date f_hasta;
-    private String id_ctto_inem;
-    private Boolean envigor;
-    private String notas_gestor;
-    private String notas_privadas;
-    private Character duracion;
-    private Integer subrogacion;
-    private Date idc;
-    private Date preavisofin;
+    private Integer contractNumber;
+    private Integer variationNumber;
+    private Integer variationType;
+    private Integer clientGMId;
+    private String clientGMName;
+    private String quoteAccountCode;
+    private Integer workerId;
+    private String workerName;
+    private String laborCategory;
+    private String weeklyWorkHours;
+    private Set<DayOfWeek> daysOfWeekToWork;
+    private String fullPartialWorkday;
+    private String typeOfContract;
+    private Date dateFrom;
+    private Date dateTo;
+    private String identificationContractNumberINEM;
+    private Boolean currentContract;
+    private String notesForManager;
+    private String privateNotes;
+    private Character indefiniteOrTemporalContract;
+    private Integer surrogateContract;
+    private Date quoteDataReportIDC;
+    private Date endOfContractNotice;
 
     public ContractDTO(Integer id,
-                       Integer numcontrato,
-                       Integer numvariacion,
-                       Integer tipovariacion,
-                       Integer idcliente_gm,
-                       String clientegm_name,
-                       String contrato_ccc,
-                       Integer idtrabajador,
-                       String trabajador_name,
-                       String categoria,
-                       String jor_trab,
-                       Character jor_trab_dias,
-                       String jor_tipo,
-                       String tipoctto,
-                       Date f_desde,
-                       Date f_hasta,
-                       String id_ctto_inem,
-                       Boolean envigor,
-                       String notas_gestor,
-                       String notas_privadas,
-                       Character duracion,
-                       Integer subrogacion,
-                       Date idc,
-                       Date preavisofin){
+                       Integer contractNumber,
+                       Integer variationNumber,
+                       Integer variationType,
+                       Integer clientGMId,
+                       String clientGMName,
+                       String quoteAccountCode,
+                       Integer workerId,
+                       String workerName,
+                       String laborCategory,
+                       String weeklyWorkHours,
+                       Set<DayOfWeek> jor_trab_dias,
+                       String fullPartialWorkday,
+                       String typeOfContract,
+                       Date dateFrom,
+                       Date dateTo,
+                       String identificationContractNumberINEM,
+                       Boolean currentContract,
+                       String notesForManager,
+                       String privateNotes,
+                       Character indefiniteOrTemporalContract,
+                       Integer surrogateContract,
+                       Date quoteDataReportIDC,
+                       Date endOfContractNotice){
 
         this.id = id;
-        this.numcontrato = numcontrato;
-        this.numvariacion = numvariacion;
-        this.tipovariacion = tipovariacion;
-        this.idcliente_gm = idcliente_gm;
-        this.clientegm_name = clientegm_name;
-        this.contrato_ccc = contrato_ccc;
-        this.idtrabajador = idtrabajador;
-        this.trabajador_name = trabajador_name;
-        this.categoria = categoria;
-        this.jor_trab = jor_trab;
-        this.jor_trab_dias = jor_trab_dias;
-        this.jor_tipo = jor_tipo;
-        this.tipoctto = tipoctto;
-        this.f_desde = f_desde;
-        this.f_hasta = f_hasta;
-        this.id_ctto_inem = id_ctto_inem;
-        this.envigor = envigor;
-        this.notas_gestor = notas_gestor;
-        this.notas_privadas = notas_privadas;
-        this.duracion = duracion;
-        this.subrogacion = subrogacion;
-        this.idc = idc;
-        this.preavisofin = preavisofin;
+        this.contractNumber = contractNumber;
+        this.variationNumber = variationNumber;
+        this.variationType = variationType;
+        this.clientGMId = clientGMId;
+        this.clientGMName = clientGMName;
+        this.quoteAccountCode = quoteAccountCode;
+        this.workerId = workerId;
+        this.workerName = workerName;
+        this.laborCategory = laborCategory;
+        this.weeklyWorkHours = weeklyWorkHours;
+        this.daysOfWeekToWork = jor_trab_dias;
+        this.fullPartialWorkday = fullPartialWorkday;
+        this.typeOfContract = typeOfContract;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.identificationContractNumberINEM = identificationContractNumberINEM;
+        this.currentContract = currentContract;
+        this.notesForManager = notesForManager;
+        this.privateNotes = privateNotes;
+        this.indefiniteOrTemporalContract = indefiniteOrTemporalContract;
+        this.surrogateContract = surrogateContract;
+        this.quoteDataReportIDC = quoteDataReportIDC;
+        this.endOfContractNotice = endOfContractNotice;
     }
 
     public Integer getId() {
@@ -94,172 +96,188 @@ public class ContractDTO {
         this.id = id;
     }
 
-    public Integer getNumcontrato() {
-        return numcontrato;
+    public Integer getContractNumber() {
+        return contractNumber;
     }
 
-    public void setNumcontrato(Integer numcontrato) {
-        this.numcontrato = numcontrato;
+    public void setContractNumber(Integer contractNumber) {
+        this.contractNumber = contractNumber;
     }
 
-    public Integer getNumvariacion() {
-        return numvariacion;
+    public Integer getVariationNumber() {
+        return variationNumber;
     }
 
-    public void setNumvariacion(Integer numvariacion) {
-        this.numvariacion = numvariacion;
+    public void setVariationNumber(Integer variationNumber) {
+        this.variationNumber = variationNumber;
     }
 
-    public Integer getTipovariacion() {
-        return tipovariacion;
+    public Integer getVariationType() {
+        return variationType;
     }
 
-    public void setTipovariacion(Integer tipovariacion) {
-        this.tipovariacion = tipovariacion;
+    public void setVariationType(Integer variationType) {
+        this.variationType = variationType;
     }
 
-    public Integer getIdcliente_gm() {
-        return idcliente_gm;
+    public Integer getClientGMId() {
+        return clientGMId;
     }
 
-    public void setIdcliente_gm(Integer idcliente_gm) {
-        this.idcliente_gm = idcliente_gm;
+    public void setClientGMId(Integer clientGMId) {
+        this.clientGMId = clientGMId;
     }
 
-    public String getClientegm_name() {
-        return clientegm_name;
+    public String getClientGMName() {
+        return clientGMName;
     }
 
-    public void setClientegm_name(String clientegm_name) {
-        this.clientegm_name = clientegm_name;
+    public void setClientGMName(String clientGMName) {
+        this.clientGMName = clientGMName;
     }
 
-    public String getContrato_ccc() {
-        return contrato_ccc;
+    public String getQuoteAccountCode() {
+        return quoteAccountCode;
     }
 
-    public void setContrato_ccc(String contrato_ccc) {
-        this.contrato_ccc = contrato_ccc;
+    public void setQuoteAccountCode(String quoteAccountCode) {
+        this.quoteAccountCode = quoteAccountCode;
     }
 
-    public Integer getIdtrabajador() {
-        return idtrabajador;
+    public Integer getWorkerId() {
+        return workerId;
     }
 
-    public void setIdtrabajador(Integer idtrabajador) {
-        this.idtrabajador = idtrabajador;
+    public void setWorkerId(Integer workerId) {
+        this.workerId = workerId;
     }
 
-    public String getTrabajador_name() {
-        return trabajador_name;
+    public String getWorkerName() {
+        return workerName;
     }
 
-    public void setTrabajador_name(String trabajador_name) {
-        this.trabajador_name = trabajador_name;
+    public void setWorkerName(String workerName) {
+        this.workerName = workerName;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getLaborCategory() {
+        return laborCategory;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setLaborCategory(String laboralCategory) {
+        this.laborCategory = laboralCategory;
     }
 
-    public String getJor_trab() {
-        return jor_trab;
+    public String getWeeklyWorkHours() {
+        return weeklyWorkHours;
     }
 
-    public void setJor_trab(String jor_trab) {
-        this.jor_trab = jor_trab;
+    public void setWeeklyWorkHours(String weeklyWorkHours) {
+        this.weeklyWorkHours = weeklyWorkHours;
     }
 
-    public Character getJor_trab_dias() {
-        return jor_trab_dias;
+    public Set<DayOfWeek> getDaysOfWeekToWork() {
+        return daysOfWeekToWork;
     }
 
-    public void setJor_trab_dias(Character jor_trab_dias) {
-        this.jor_trab_dias = jor_trab_dias;
+    public void setDaysOfWeekToWork(Set<DayOfWeek> daysOfWeekToWork) {
+        this.daysOfWeekToWork = daysOfWeekToWork;
     }
 
-    public String getJor_tipo() {
-        return jor_tipo;
+    public String getFullPartialWorkday() {
+        return fullPartialWorkday;
     }
 
-    public void setJor_tipo(String jor_tipo) {
-        this.jor_tipo = jor_tipo;
+    public void setFullPartialWorkday(String fullPartialWorkday) {
+        this.fullPartialWorkday = fullPartialWorkday;
     }
 
-    public String getTipoctto() {
-        return tipoctto;
+    public String getTypeOfContract() {
+        return typeOfContract;
     }
 
-    public void setTipoctto(String tipoctto) {
-        this.tipoctto = tipoctto;
+    public void setTypeOfContract(String typeOfContract) {
+        this.typeOfContract = typeOfContract;
     }
 
-    public Date getF_desde() {
-        return f_desde;
+    public Date getDateFrom() {
+        return dateFrom;
     }
 
-    public void setF_desde(Date f_desde) {
-        this.f_desde = f_desde;
+    public void setDateFrom(Date dateFrom) {
+        this.dateFrom = dateFrom;
     }
 
-    public Date getF_hasta() {
-        return f_hasta;
+    public Date getDateTo() {
+        return dateTo;
     }
 
-    public void setF_hasta(Date f_hasta) {
-        this.f_hasta = f_hasta;
+    public void setDateTo(Date dateTo) {
+        this.dateTo = dateTo;
     }
 
-    public String getId_ctto_inem() {
-        return id_ctto_inem;
+    public String getIdentificationContractNumberINEM() {
+        return identificationContractNumberINEM;
     }
 
-    public void setId_ctto_inem(String id_ctto_inem) {
-        this.id_ctto_inem = id_ctto_inem;
+    public void setIdentificationContractNumberINEM(String identificationContractNumberINEM) {
+        this.identificationContractNumberINEM = identificationContractNumberINEM;
     }
 
-    public Boolean getEnvigor() {
-        return envigor;
+    public Boolean getCurrentContract() {
+        return currentContract;
     }
 
-    public void setEnvigor(Boolean envigor) {
-        this.envigor = envigor;
+    public void setCurrentContract(Boolean currentContract) {
+        this.currentContract = currentContract;
     }
 
-    public String getNotas_gestor() {
-        return notas_gestor;
+    public String getNotesForManager() {
+        return notesForManager;
     }
 
-    public void setNotas_gestor(String notas_gestor) {
-        this.notas_gestor = notas_gestor;
+    public void setNotesForManager(String notesForManager) {
+        this.notesForManager = notesForManager;
     }
 
-    public String getNotas_privadas() {
-        return notas_privadas;
+    public String getPrivateNotes() {
+        return privateNotes;
     }
 
-    public void setNotas_privadas(String notas_privadas) {
-        this.notas_privadas = notas_privadas;
+    public void setPrivateNotes(String privateNotes) {
+        this.privateNotes = privateNotes;
     }
 
-    public Character getDuracion() {
-        return duracion;
+    public Character getIndefiniteOrTemporalContract() {
+        return indefiniteOrTemporalContract;
     }
 
-    public void setDuracion(Character duracion) {
-        this.duracion = duracion;
+    public void setIndefiniteOrTemporalContract(Character indefiniteOrTemporalContract) {
+        this.indefiniteOrTemporalContract = indefiniteOrTemporalContract;
     }
 
-    public Integer getSubrogacion() {
-        return subrogacion;
+    public Integer getSurrogateContract() {
+        return surrogateContract;
     }
 
-    public void setSubrogacion(Integer subrogacion) {
-        this.subrogacion = subrogacion;
+    public void setSurrogateContract(Integer surrogateContract) {
+        this.surrogateContract = surrogateContract;
+    }
+
+    public Date getQuoteDataReportIDC() {
+        return quoteDataReportIDC;
+    }
+
+    public void setQuoteDataReportIDC(Date quoteDataReportIDC) {
+        this.quoteDataReportIDC = quoteDataReportIDC;
+    }
+
+    public Date getEndOfContractNotice() {
+        return endOfContractNotice;
+    }
+
+    public void setEndOfContractNotice(Date endOfContractNotice) {
+        this.endOfContractNotice = endOfContractNotice;
     }
 
     public static ContractBuilder create() {
@@ -269,155 +287,155 @@ public class ContractDTO {
     public static class ContractBuilder {
 
         private Integer id;
-        private Integer numcontrato;
-        private Integer numvariacion;
-        private Integer tipovariacion;
-        private Integer idcliente_gm;
-        private String clientegm_name;
-        private String contrato_ccc;
-        private Integer idtrabajador;
-        private String trabajador_name;
-        private String categoria;
-        private String jor_trab;
-        private Character jor_trab_dias;
-        private String jor_tipo;
-        private String tipoctto;
-        private Date f_desde;
-        private Date f_hasta;
-        private String id_ctto_inem;
-        private Boolean envigor;
-        private String notas_gestor;
-        private String notas_privadas;
-        private Character duracion;
-        private Integer subrogacion;
-        private Date idc;
-        private Date preavisofin;
+        private Integer contractNumber;
+        private Integer variationNumber;
+        private Integer variationType;
+        private Integer clientGMId;
+        private String clientGMName;
+        private String quoteAccountCode;
+        private Integer workerId;
+        private String workerName;
+        private String laborCategory;
+        private String weeklyWorkHours;
+        private Set<DayOfWeek> daysOfWeekToWork;
+        private String fullPartialWorkday;
+        private String typeOfContract;
+        private Date dateFrom;
+        private Date dateTo;
+        private String identificationContractNumberINEM;
+        private Boolean currentContract;
+        private String notesForManager;
+        private String privateNotes;
+        private Character indefiniteOrTemporalContract;
+        private Integer surrogateContract;
+        private Date quoteDataReportIDC;
+        private Date endOfContractNotice;
 
         public ContractBuilder withId(Integer id) {
             this.id = id;
             return this;
         }
 
-        public ContractBuilder withNumcontrato(Integer numcontrato) {
-            this.numcontrato = numcontrato;
+        public ContractBuilder withContractNumber(Integer contractNumber) {
+            this.contractNumber = contractNumber;
             return this;
         }
 
-        public ContractBuilder withNumvariacion(Integer numvariacion) {
-            this.numvariacion = numvariacion;
+        public ContractBuilder withVariationNumber(Integer variationNumber) {
+            this.variationNumber = variationNumber;
             return this;
         }
 
-        public ContractBuilder withTipovariacion(Integer tipovariacion) {
-            this.tipovariacion = tipovariacion;
+        public ContractBuilder withVariationType(Integer variationType) {
+            this.variationType = variationType;
             return this;
         }
 
-        public ContractBuilder withIdcliente_gm(Integer idcliente_gm) {
-            this.idcliente_gm = idcliente_gm;
+        public ContractBuilder withClientGMId(Integer clientGMId) {
+            this.clientGMId = clientGMId;
             return this;
         }
 
-        public ContractBuilder withClientegm_name(String clientegm_name) {
-            this.clientegm_name = clientegm_name;
+        public ContractBuilder withClientGMName(String clientGMName) {
+            this.clientGMName = clientGMName;
             return this;
         }
 
-        public ContractBuilder withContrato_ccc(String contrato_ccc) {
-            this.contrato_ccc = contrato_ccc;
+        public ContractBuilder withQuoteAccountCode(String quoteAccountCode) {
+            this.quoteAccountCode = quoteAccountCode;
             return this;
         }
 
-        public ContractBuilder withIdtrabajador(Integer idtrabajador) {
-            this.idtrabajador = idtrabajador;
+        public ContractBuilder withWorkerId(Integer workerId) {
+            this.workerId = workerId;
             return this;
         }
 
-        public ContractBuilder withTrabajador_name(String trabajador_name) {
-            this.trabajador_name = trabajador_name;
+        public ContractBuilder withWorkerName(String workerName) {
+            this.workerName = workerName;
             return this;
         }
 
-        public ContractBuilder withCategoria(String categoria) {
-            this.categoria = categoria;
+        public ContractBuilder withLaborCategory(String laborCategory) {
+            this.laborCategory = laborCategory;
             return this;
         }
 
-        public ContractBuilder withJor_trab(String jor_trab) {
-            this.jor_trab = jor_trab;
+        public ContractBuilder withWeeklyWorkHours(String weeklyWorkHours) {
+            this.weeklyWorkHours = weeklyWorkHours;
             return this;
         }
 
-        public ContractBuilder withJor_trab_dias(Character jor_trab_dias) {
-            this.jor_trab_dias = jor_trab_dias;
+        public ContractBuilder withDaysOfWeekToWork(Set<DayOfWeek> jor_trab_dias) {
+            this.daysOfWeekToWork = jor_trab_dias;
             return this;
         }
 
-        public ContractBuilder withJor_tipo(String jor_tipo) {
-            this.jor_tipo = jor_tipo;
+        public ContractBuilder withFullPartialWorkday(String fullPartialWorkday) {
+            this.fullPartialWorkday = fullPartialWorkday;
             return this;
         }
 
-        public ContractBuilder withTipoctto(String tipoctto) {
-            this.tipoctto = tipoctto;
+        public ContractBuilder withTypeOfContract(String typeOfContract) {
+            this.typeOfContract = typeOfContract;
             return this;
         }
 
-        public ContractBuilder withF_desde(Date f_desde) {
-            this.f_desde = f_desde;
+        public ContractBuilder withDateFrom(Date dateFrom) {
+            this.dateFrom = dateFrom;
             return this;
         }
 
-        public ContractBuilder withF_hasta(Date f_hasta) {
-            this.f_hasta = f_hasta;
+        public ContractBuilder withDateTo(Date dateTo) {
+            this.dateTo = dateTo;
             return this;
         }
 
-        public ContractBuilder withId_ctto_inem(String id_ctto_inem) {
-            this.id_ctto_inem = id_ctto_inem;
+        public ContractBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
+            this.identificationContractNumberINEM = identificationContractNumberINEM;
             return this;
         }
 
-        public ContractBuilder withEnvigor(Boolean envigor) {
-            this.envigor = envigor;
+        public ContractBuilder withCurrentContract(Boolean currentContract) {
+            this.currentContract = currentContract;
             return this;
         }
 
-        public ContractBuilder withNotas_gestor(String notas_gestor) {
-            this.notas_gestor = notas_gestor;
+        public ContractBuilder withNotesForManager(String notesForManager) {
+            this.notesForManager = notesForManager;
             return this;
         }
 
-        public ContractBuilder withNotas_privadas(String notas_privadas) {
-            this.notas_privadas = notas_privadas;
+        public ContractBuilder withPrivateNotes(String privateNotes) {
+            this.privateNotes = privateNotes;
             return this;
         }
 
-        public ContractBuilder withDuracion(Character duracion) {
-            this.duracion = duracion;
+        public ContractBuilder withIndefiniteOrTemporalContract(Character indefiniteOrTemporalContract) {
+            this.indefiniteOrTemporalContract = indefiniteOrTemporalContract;
             return this;
         }
 
-        public ContractBuilder withSubrogacion(Integer subrogacion) {
-            this.subrogacion = subrogacion;
+        public ContractBuilder withSurrogateContract(Integer surrogateContract) {
+            this.surrogateContract = surrogateContract;
             return this;
         }
 
-        public ContractBuilder withIdc(Date idc) {
-            this.idc = idc;
+        public ContractBuilder withQuoteDataReportIDC(Date quoteDataReportIDC) {
+            this.quoteDataReportIDC = quoteDataReportIDC;
             return this;
         }
 
-        public ContractBuilder withPreavisofin(Date preavisofin) {
-            this.preavisofin = preavisofin;
+        public ContractBuilder withEndOfContractNotice(Date endOfContractNotice) {
+            this.endOfContractNotice = endOfContractNotice;
             return this;
         }
 
         public ContractDTO build() {
-            return new ContractDTO(this.id, this.numcontrato, this.numvariacion, this.tipovariacion, this.idcliente_gm, this.clientegm_name,
-            this.contrato_ccc, this.idtrabajador, this.trabajador_name, this.categoria, this.jor_trab, this.jor_trab_dias, this.jor_tipo,
-            this.tipoctto, this.f_desde, this.f_hasta, this.id_ctto_inem, this.envigor, this.notas_gestor, this.notas_privadas,
-            this.duracion, this.subrogacion, this.idc, this.preavisofin);
+            return new ContractDTO(this.id, this.contractNumber, this.variationNumber, this.variationType, this.clientGMId, this.clientGMName,
+            this.quoteAccountCode, this.workerId, this.workerName, this.laborCategory, this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday,
+            this.typeOfContract, this.dateFrom, this.dateTo, this.identificationContractNumberINEM, this.currentContract, this.notesForManager, this.privateNotes,
+            this.indefiniteOrTemporalContract, this.surrogateContract, this.quoteDataReportIDC, this.endOfContractNotice);
         }
     }
 }

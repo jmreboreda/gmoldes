@@ -15,8 +15,6 @@ import gmoldes.services.TimeRecordPDFCreator;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Utilities;
 import javafx.beans.binding.BooleanExpression;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -225,22 +223,22 @@ public class TimeRecordData extends VBox {
             Integer employeeId;
             String dateTo;
             for (ContractDTO contractDTO : contractDTOList) {
-                employeeId = contractDTO.getIdtrabajador();
+                employeeId = contractDTO.getWorkerId();
                 String employeeNIF = retrieveNifByPersonId(employeeId);
-                if(contractDTO.getF_hasta() != null){
-                    dateTo = dateFormatter.format(contractDTO.getF_hasta());
+                if(contractDTO.getDateTo() != null){
+                    dateTo = dateFormatter.format(contractDTO.getDateTo());
                 }else{
                     dateTo = "";
                 }
-                String dateFrom = dateFormatter.format(contractDTO.getF_desde());
+                String dateFrom = dateFormatter.format(contractDTO.getDateFrom());
 
                 TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
-                        contractDTO.getTrabajador_name(),
+                        contractDTO.getWorkerName(),
                         employeeNIF,
-                        contractDTO.getContrato_ccc(),
-                        contractDTO.getJor_tipo(),
-                        contractDTO.getJor_trab(),
-                        contractDTO.getTipoctto(),
+                        contractDTO.getQuoteAccountCode(),
+                        contractDTO.getFullPartialWorkday(),
+                        contractDTO.getWeeklyWorkHours(),
+                        contractDTO.getTypeOfContract(),
                         dateFrom,
                         dateTo
                 );

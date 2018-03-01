@@ -41,12 +41,12 @@ public class InitialChecks {
         List<ContractDTO> contractDTOList = controller.findPendingIDC();
         for(ContractDTO contractDTO : contractDTOList){
             IDCControlDTO idcControlDTO = new IDCControlDTO();
-            idcControlDTO.setTrabajador_name(contractDTO.getTrabajador_name());
-            idcControlDTO.setClientegm_name(contractDTO.getClientegm_name());
-            idcControlDTO.setDate_to(dateFormatter.format(contractDTO.getF_desde()));
-            int days = (int)(long)((contractDTO.getF_desde().getTime() - now.getTime())/(24*60*60*1000));
+            idcControlDTO.setTrabajador_name(contractDTO.getWorkerName());
+            idcControlDTO.setClientegm_name(contractDTO.getClientGMName());
+            idcControlDTO.setDate_to(dateFormatter.format(contractDTO.getDateFrom()));
+            int days = (int)(long)((contractDTO.getDateFrom().getTime() - now.getTime())/(24*60*60*1000));
             idcControlDTO.setDays(days);
-            String variation_description = retrieveVariationDescriptionById(contractDTO.getTipovariacion());
+            String variation_description = retrieveVariationDescriptionById(contractDTO.getVariationType());
             idcControlDTO.setDescr_variacion(variation_description);
             idcControlDTOList.add(idcControlDTO);
         }

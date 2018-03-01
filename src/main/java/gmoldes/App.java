@@ -54,14 +54,14 @@ public class App extends Application{
             SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
             Date now = new Date();
             for (ContractDTO contractDTO : contractsExpiration) {
-                int days = (int)(long)((contractDTO.getF_hasta().getTime() - now.getTime())/(24*60*60*1000));
+                int days = (int)(long)((contractDTO.getDateTo().getTime() - now.getTime())/(24*60*60*1000));
                 if(days >= 0){
                     missingExceededText = "Faltan ";
                 }else{
                     missingExceededText = "Excedido en ";
                 }
-                alert = alert + "Preaviso del contrato de " + contractDTO.getTrabajador_name() + " con " + contractDTO.getClientegm_name()
-                        + ": vencimiento el día " + dateFormatter.format(contractDTO.getF_hasta()) + ". " + missingExceededText + Math.abs(days) + " días." + "\n\n";
+                alert = alert + "Preaviso del contrato de " + contractDTO.getWorkerName() + " con " + contractDTO.getClientGMName()
+                        + ": vencimiento el día " + dateFormatter.format(contractDTO.getDateTo()) + ". " + missingExceededText + Math.abs(days) + " días." + "\n\n";
             }
 
             Message.warningMessage(primaryStage.getOwner(), "Preavisos de fin de contrato pendientes de recepción", alert);
