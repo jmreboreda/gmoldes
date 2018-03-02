@@ -15,8 +15,6 @@ import gmoldes.services.TimeRecordPDFCreator;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Utilities;
 import javafx.beans.binding.BooleanExpression;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -50,7 +49,7 @@ public class TimeRecordData extends VBox {
     private static final String LINUX_TEMPORAL_DIR = "/Temp/Borrame";
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
     private static final Integer LAST_MONTH_INDEX_IN_MONTHNAME = 11;
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private Parent parent;
 
@@ -225,22 +224,22 @@ public class TimeRecordData extends VBox {
             Integer employeeId;
             String dateTo;
             for (ContractDTO contractDTO : contractDTOList) {
-                employeeId = contractDTO.getIdtrabajador();
+                employeeId = contractDTO.getWorkerId();
                 String employeeNIF = retrieveNifByPersonId(employeeId);
-                if(contractDTO.getF_hasta() != null){
-                    dateTo = dateFormatter.format(contractDTO.getF_hasta());
+                if(contractDTO.getDateTo() != null){
+                    dateTo = dateFormatter.format(contractDTO.getDateTo());
                 }else{
                     dateTo = "";
                 }
-                String dateFrom = dateFormatter.format(contractDTO.getF_desde());
+                String dateFrom = dateFormatter.format(contractDTO.getDateFrom());
 
                 TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
-                        contractDTO.getTrabajador_name(),
+                        contractDTO.getWorkerName(),
                         employeeNIF,
-                        contractDTO.getContrato_ccc(),
-                        contractDTO.getJor_tipo(),
-                        contractDTO.getJor_trab(),
-                        contractDTO.getTipoctto(),
+                        contractDTO.getQuoteAccountCode(),
+                        contractDTO.getFullPartialWorkday(),
+                        contractDTO.getWeeklyWorkHours(),
+                        contractDTO.getTypeOfContract(),
                         dateFrom,
                         dateTo
                 );

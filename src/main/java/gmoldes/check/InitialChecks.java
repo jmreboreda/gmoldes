@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +36,7 @@ public class InitialChecks {
         return controller.findContractsExpiration();
     }
 
-    public static List<IDCControlDTO> findPendingIDC() throws ParseException {
+    public static List<IDCControlDTO> findPendingQuoteDataReportIDC() throws ParseException {
         Date now = new Date();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
         List<IDCControlDTO> idcControlDTOList = new ArrayList<>();
@@ -41,12 +44,12 @@ public class InitialChecks {
         List<ContractDTO> contractDTOList = controller.findPendingIDC();
         for(ContractDTO contractDTO : contractDTOList){
             IDCControlDTO idcControlDTO = new IDCControlDTO();
-            idcControlDTO.setTrabajador_name(contractDTO.getTrabajador_name());
-            idcControlDTO.setClientegm_name(contractDTO.getClientegm_name());
-            idcControlDTO.setDate_to(dateFormatter.format(contractDTO.getF_desde()));
-            int days = (int)(long)((contractDTO.getF_desde().getTime() - now.getTime())/(24*60*60*1000));
+            idcControlDTO.setTrabajador_name(contractDTO.getWorkerName());
+            idcControlDTO.setClientegm_name(contractDTO.getClientGMName());
+            idcControlDTO.setDate_to(dateFormatter.format(contractDTO.getDateFrom()));
+            Integer days = Period.between(LocalDate.now(), contractDTO.getDateFrom()).getDays();
             idcControlDTO.setDays(days);
-            String variation_description = retrieveVariationDescriptionById(contractDTO.getTipovariacion());
+            String variation_description = retrieveVariationDescriptionById(contractDTO.getVariationType());
             idcControlDTO.setDescr_variacion(variation_description);
             idcControlDTOList.add(idcControlDTO);
         }

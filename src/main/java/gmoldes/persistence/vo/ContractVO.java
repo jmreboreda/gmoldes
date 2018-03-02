@@ -85,7 +85,7 @@ public class ContractVO implements Serializable {
     @Column(name = "jor_trab", length = 100)
     private String jor_trab;
     @Column(name = "jor_trab_dias", length = 7)
-    private Character jor_trab_dias;
+    private String jor_trab_dias;
     @Column(name = "jor_tipo", length = 100)
     private String jor_tipo;
     @Column(name = "tipoctto", length = 100)
@@ -191,11 +191,11 @@ public class ContractVO implements Serializable {
         this.jor_trab = jor_trab;
     }
 
-    public Character getJor_trab_dias() {
+    public String getJor_trab_dias() {
         return jor_trab_dias;
     }
 
-    public void setJor_trab_dias(Character jor_trab_dias) {
+    public void setJor_trab_dias(String jor_trab_dias) {
         this.jor_trab_dias = jor_trab_dias;
     }
 

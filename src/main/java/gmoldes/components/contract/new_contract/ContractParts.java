@@ -87,7 +87,7 @@ public class ContractParts extends HBox {
     }
 
     private void onSelectEmployer(ClientDTO newEmployerSelected){
-        employerName.setText(newEmployerSelected.getNom_rzsoc());
+        employerName.setText(newEmployerSelected.getPersonOrCompanyName());
         clearEmployersNames();
 
         final SelectEmployerEvent selectEmployerEvent = new SelectEmployerEvent(newEmployerSelected);
