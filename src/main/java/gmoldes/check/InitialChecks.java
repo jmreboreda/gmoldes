@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,14 +21,15 @@ import java.util.List;
 public class InitialChecks {
 
     private static final Logger logger = LoggerFactory.getLogger(InitialChecks.class.getSimpleName());
+    private static final String CURRENT_CONTRACT_UPDATE_TO = "Current contract update to ";
 
     public static void UpdateCurrentContracts(){
         ContractController controller = new ContractController();
 
         int result = controller.establishCurrentContracts();
-        logger.info("Current contract update to TRUE: " + result);
+        logger.info(CURRENT_CONTRACT_UPDATE_TO + "TRUE: " + result);
         int result1 = controller.establishNotCurrentContracts();
-        logger.info("Current contract update to FALSE: " + result1);
+        logger.info(CURRENT_CONTRACT_UPDATE_TO + "FALSE: " + result1);
     }
 
     public static List<ContractDTO> contractExpirationControl(){
@@ -37,8 +39,7 @@ public class InitialChecks {
     }
 
     public static List<IDCControlDTO> findPendingQuoteDataReportIDC() throws ParseException {
-        Date now = new Date();
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         List<IDCControlDTO> idcControlDTOList = new ArrayList<>();
         ContractController controller = new ContractController();
         List<ContractDTO> contractDTOList = controller.findPendingIDC();

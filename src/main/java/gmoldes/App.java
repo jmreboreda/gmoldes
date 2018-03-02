@@ -3,6 +3,7 @@ package gmoldes;
 
 import gmoldes.check.InitialChecks;
 import gmoldes.controllers.InitialMenuController;
+import gmoldes.domain.NieNif;
 import gmoldes.domain.dto.ContractDTO;
 import gmoldes.domain.dto.IDCControlDTO;
 import gmoldes.utilities.Message;

@@ -12,33 +12,33 @@ public class ClientDTO {
 
     private Integer id;
     private Integer clientId;
-    private String taxIdentificationNumber;
-    private Short taxIdentificationNumber_dup;
+    private String nieNIF;
+    private Short nieNIF_dup;
     private String personOrCompanyName;
     private Short numberOfTimes;
     private Character codeInSigaProgram;
     private Date dateFrom;
     private Date dateTo;
-    private Boolean activeClient;
+    private Boolean isActive;
     private Date withoutActivity;
     private String clientType;
 
     public ClientDTO() {
     }
 
-    public ClientDTO(Integer id, Integer clientId, String taxIdentificationNumber, Short taxIdentificationNumber_dup, String personOrCompanyName,
-                     Short numberOfTimes, Character codeInSigaProgram, Date dateFrom, Date dateTo, Boolean activeClient,
+    public ClientDTO(Integer id, Integer clientId, String nieNIF, Short nieNIF_dup, String personOrCompanyName,
+                     Short numberOfTimes, Character codeInSigaProgram, Date dateFrom, Date dateTo, Boolean isActive,
                      Date withoutActivity, String clientType) {
         this.id = id;
         this.clientId = clientId;
-        this.taxIdentificationNumber = taxIdentificationNumber;
-        this.taxIdentificationNumber_dup = taxIdentificationNumber_dup;
+        this.nieNIF = nieNIF;
+        this.nieNIF_dup = nieNIF_dup;
         this.personOrCompanyName = personOrCompanyName;
         this.numberOfTimes = numberOfTimes;
         this.codeInSigaProgram = codeInSigaProgram;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
-        this.activeClient = activeClient;
+        this.isActive = isActive;
         this.withoutActivity = withoutActivity;
         this.clientType = clientType;
     }
@@ -59,20 +59,20 @@ public class ClientDTO {
         this.clientId = clientId;
     }
 
-    public String getTaxIdentificationNumber() {
-        return taxIdentificationNumber;
+    public String getNieNIF() {
+        return nieNIF;
     }
 
-    public void setTaxIdentificationNumber(String taxIdentificationNumber) {
-        this.taxIdentificationNumber = taxIdentificationNumber;
+    public void setNieNIF(String nieNIF) {
+        this.nieNIF = nieNIF;
     }
 
-    public Short getTaxIdentificationNumber_dup() {
-        return taxIdentificationNumber_dup;
+    public Short getNieNIF_dup() {
+        return nieNIF_dup;
     }
 
-    public void setTaxIdentificationNumber_dup(Short taxIdentificationNumber_dup) {
-        this.taxIdentificationNumber_dup = taxIdentificationNumber_dup;
+    public void setNieNIF_dup(Short nieNIF_dup) {
+        this.nieNIF_dup = nieNIF_dup;
     }
 
     public String getPersonOrCompanyName() {
@@ -115,12 +115,12 @@ public class ClientDTO {
         this.dateTo = dateTo;
     }
 
-    public Boolean getActiveClient() {
-        return activeClient;
+    public Boolean getIsActive() {
+        return isActive;
     }
 
-    public void setActiveClient(Boolean activeClient) {
-        this.activeClient = activeClient;
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     public Date getWithoutActivity() {
@@ -152,14 +152,14 @@ public class ClientDTO {
 
         private Integer id;
         private Integer clientId;
-        private String taxIdentificationNumber;
-        private Short taxIdentificationNumber_dup;
+        private String nieNIF;
+        private Short nieNIF_dup;
         private String personOrCompanyName;
         private Short numberOfTimes;
         private Character codeInSigaProgram;
         private Date dateFrom;
         private Date dateTo;
-        private Boolean activeClient;
+        private Boolean isActive;
         private Date withoutActivity;
         private String clientType;
 
@@ -173,13 +173,13 @@ public class ClientDTO {
             return this;
         }
 
-        public ClientDTO.PersonBuilder withTaxIdentificationNumber(String taxIdentificationNumber) {
-            this.taxIdentificationNumber = taxIdentificationNumber;
+        public ClientDTO.PersonBuilder withNieNIF(String nieNIF) {
+            this.nieNIF = nieNIF;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withTaxIdentificationNumber_dup(Short withTaxIdentificationNumber_dup) {
-            this.taxIdentificationNumber_dup = withTaxIdentificationNumber_dup;
+        public ClientDTO.PersonBuilder withNieNIF_dup(Short nieNIF_dup) {
+            this.nieNIF_dup = nieNIF_dup;
             return this;
         }
 
@@ -208,8 +208,8 @@ public class ClientDTO {
             return this;
         }
 
-        public ClientDTO.PersonBuilder withCltactivo(Boolean cltactivo) {
-            this.activeClient = cltactivo;
+        public ClientDTO.PersonBuilder withIsActive(Boolean isActive) {
+            this.isActive = isActive;
             return this;
         }
 
@@ -224,8 +224,8 @@ public class ClientDTO {
         }
 
         public ClientDTO build() {
-            return new ClientDTO(this.id, this.clientId, this.taxIdentificationNumber, this.taxIdentificationNumber_dup, this.personOrCompanyName,
-            this.numberOfTimes, this.codeInSigaProgram, this.dateFrom, this.dateTo, this.activeClient, this.withoutActivity, this.clientType);
+            return new ClientDTO(this.id, this.clientId, this.nieNIF, this.nieNIF_dup, this.personOrCompanyName,
+            this.numberOfTimes, this.codeInSigaProgram, this.dateFrom, this.dateTo, this.isActive, this.withoutActivity, this.clientType);
         }
     }
 }
