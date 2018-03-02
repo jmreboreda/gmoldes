@@ -5,8 +5,9 @@
  */
 package gmoldes.domain.dto;
 
-import java.sql.Date;
+
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Set;
 
 
@@ -26,16 +27,16 @@ public class ContractDTO {
     private Set<DayOfWeek> daysOfWeekToWork;
     private String fullPartialWorkday;
     private String typeOfContract;
-    private Date dateFrom;
-    private Date dateTo;
+    private LocalDate dateFrom;
+    private LocalDate dateTo;
     private String identificationContractNumberINEM;
     private Boolean currentContract;
     private String notesForManager;
     private String privateNotes;
     private Character indefiniteOrTemporalContract;
     private Integer surrogateContract;
-    private Date quoteDataReportIDC;
-    private Date endOfContractNotice;
+    private LocalDate quoteDataReportIDC;
+    private LocalDate endOfContractNotice;
 
     public ContractDTO(Integer id,
                        Integer contractNumber,
@@ -51,16 +52,16 @@ public class ContractDTO {
                        Set<DayOfWeek> daysOfWeekToWork,
                        String fullPartialWorkday,
                        String typeOfContract,
-                       Date dateFrom,
-                       Date dateTo,
+                       LocalDate dateFrom,
+                       LocalDate dateTo,
                        String identificationContractNumberINEM,
                        Boolean currentContract,
                        String notesForManager,
                        String privateNotes,
                        Character indefiniteOrTemporalContract,
                        Integer surrogateContract,
-                       Date quoteDataReportIDC,
-                       Date endOfContractNotice){
+                       LocalDate quoteDataReportIDC,
+                       LocalDate endOfContractNotice){
 
         this.id = id;
         this.contractNumber = contractNumber;
@@ -200,19 +201,19 @@ public class ContractDTO {
         this.typeOfContract = typeOfContract;
     }
 
-    public Date getDateFrom() {
+    public LocalDate getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(Date dateFrom) {
+    public void setDateFrom(LocalDate dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public Date getDateTo() {
+    public LocalDate getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(Date dateTo) {
+    public void setDateTo(LocalDate dateTo) {
         this.dateTo = dateTo;
     }
 
@@ -264,19 +265,19 @@ public class ContractDTO {
         this.surrogateContract = surrogateContract;
     }
 
-    public Date getQuoteDataReportIDC() {
+    public LocalDate getQuoteDataReportIDC() {
         return quoteDataReportIDC;
     }
 
-    public void setQuoteDataReportIDC(Date quoteDataReportIDC) {
+    public void setQuoteDataReportIDC(LocalDate quoteDataReportIDC) {
         this.quoteDataReportIDC = quoteDataReportIDC;
     }
 
-    public Date getEndOfContractNotice() {
+    public LocalDate getEndOfContractNotice() {
         return endOfContractNotice;
     }
 
-    public void setEndOfContractNotice(Date endOfContractNotice) {
+    public void setEndOfContractNotice(LocalDate endOfContractNotice) {
         this.endOfContractNotice = endOfContractNotice;
     }
 
@@ -300,16 +301,16 @@ public class ContractDTO {
         private Set<DayOfWeek> daysOfWeekToWork;
         private String fullPartialWorkday;
         private String typeOfContract;
-        private Date dateFrom;
-        private Date dateTo;
+        private LocalDate dateFrom;
+        private LocalDate dateTo;
         private String identificationContractNumberINEM;
         private Boolean currentContract;
         private String notesForManager;
         private String privateNotes;
         private Character indefiniteOrTemporalContract;
         private Integer surrogateContract;
-        private Date quoteDataReportIDC;
-        private Date endOfContractNotice;
+        private LocalDate quoteDataReportIDC;
+        private LocalDate endOfContractNotice;
 
         public ContractBuilder withId(Integer id) {
             this.id = id;
@@ -381,12 +382,12 @@ public class ContractDTO {
             return this;
         }
 
-        public ContractBuilder withDateFrom(Date dateFrom) {
+        public ContractBuilder withDateFrom(LocalDate dateFrom) {
             this.dateFrom = dateFrom;
             return this;
         }
 
-        public ContractBuilder withDateTo(Date dateTo) {
+        public ContractBuilder withDateTo(LocalDate dateTo) {
             this.dateTo = dateTo;
             return this;
         }
@@ -421,12 +422,12 @@ public class ContractDTO {
             return this;
         }
 
-        public ContractBuilder withQuoteDataReportIDC(Date quoteDataReportIDC) {
+        public ContractBuilder withQuoteDataReportIDC(LocalDate quoteDataReportIDC) {
             this.quoteDataReportIDC = quoteDataReportIDC;
             return this;
         }
 
-        public ContractBuilder withEndOfContractNotice(Date endOfContractNotice) {
+        public ContractBuilder withEndOfContractNotice(LocalDate endOfContractNotice) {
             this.endOfContractNotice = endOfContractNotice;
             return this;
         }

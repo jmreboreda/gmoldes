@@ -6,6 +6,7 @@ import gmoldes.mappers.MapperContractVODTO;
 import gmoldes.persistence.dao.ContractDAO;
 import gmoldes.persistence.vo.ContractVO;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,17 +19,22 @@ public class ContractManager {
     public List<ContractDTO> findAllContractsByClientIdInPeriod(Integer clientId, Date referenceDate){
 
         List<ContractDTO> contractDTOList = new ArrayList<>();
+        LocalDate dateTo = null;
+
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractVO> contractVOList = contractDAO.findAllContractsByClientIdInPeriod(clientId, referenceDate);
         for (ContractVO contractVO : contractVOList) {
+            if(contractVO.getF_hasta() != null){
+                dateTo = contractVO.getF_hasta().toLocalDate();
+            }
             ContractDTO contractDTO = ContractDTO.create()
                     .withLaborCategory(contractVO.getCategoria())
                     .withClientGMName(contractVO.getClientegm_name())
                     .withQuoteAccountCode(contractVO.getContrato_ccc())
                     .withIndefiniteOrTemporalContract(contractVO.getDuracion())
                     .withCurrentContract(contractVO.getEnvigor())
-                    .withDateFrom(contractVO.getF_desde())
-                    .withDateTo(contractVO.getF_hasta())
+                    .withDateFrom(contractVO.getF_desde().toLocalDate())
+                    .withDateTo(dateTo)
                     .withId(contractVO.getId())
                     .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())
                     .withClientGMId(contractVO.getIdcliente_gm())
@@ -46,6 +52,7 @@ public class ContractManager {
                     .build();
 
             contractDTOList.add(contractDTO);
+            dateTo = null;
         }
         return contractDTOList;
     }
@@ -53,17 +60,22 @@ public class ContractManager {
     public List<ContractDTO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String yearMonth){
 
         List<ContractDTO> contractDTOList = new ArrayList<>();
+        LocalDate dateTo = null;
+
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractVO> contractVOList = contractDAO.findAllContractsWithTimeRecordByClientIdInPeriod(clientId, yearMonth);
         for (ContractVO contractVO : contractVOList) {
+            if(contractVO.getF_hasta() != null){
+                dateTo = contractVO.getF_hasta().toLocalDate();
+            }
             ContractDTO contractDTO = ContractDTO.create()
                     .withLaborCategory(contractVO.getCategoria())
                     .withClientGMName(contractVO.getClientegm_name())
                     .withQuoteAccountCode(contractVO.getContrato_ccc())
                     .withIndefiniteOrTemporalContract(contractVO.getDuracion())
                     .withCurrentContract(contractVO.getEnvigor())
-                    .withDateFrom(contractVO.getF_desde())
-                    .withDateTo(contractVO.getF_hasta())
+                    .withDateFrom(contractVO.getF_desde().toLocalDate())
+                    .withDateTo(dateTo)
                     .withId(contractVO.getId())
                     .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())
                     .withClientGMId(contractVO.getIdcliente_gm())
@@ -81,6 +93,7 @@ public class ContractManager {
                     .build();
 
             contractDTOList.add(contractDTO);
+            dateTo = null;
         }
         return contractDTOList;
     }
@@ -88,17 +101,22 @@ public class ContractManager {
     public List<ContractDTO> findAllActiveContractsByClientId(Integer clientId) {
 
         List<ContractDTO> contractDTOList = new ArrayList<>();
+        LocalDate dateTo = null;
+
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractVO> contractVOList = contractDAO.findAllActiveContractsByClientId(clientId);
         for (ContractVO contractVO : contractVOList) {
+            if(contractVO.getF_hasta() != null){
+                dateTo = contractVO.getF_hasta().toLocalDate();
+            }
             ContractDTO contractDTO = ContractDTO.create()
                     .withLaborCategory(contractVO.getCategoria())
                     .withClientGMName(contractVO.getClientegm_name())
                     .withQuoteAccountCode(contractVO.getContrato_ccc())
                     .withIndefiniteOrTemporalContract(contractVO.getDuracion())
                     .withCurrentContract(contractVO.getEnvigor())
-                    .withDateFrom(contractVO.getF_desde())
-                    .withDateTo(contractVO.getF_hasta())
+                    .withDateFrom(contractVO.getF_desde().toLocalDate())
+                    .withDateTo(dateTo)
                     .withId(contractVO.getId())
                     .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())
                     .withClientGMId(contractVO.getIdcliente_gm())

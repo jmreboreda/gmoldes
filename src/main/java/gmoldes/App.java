@@ -10,8 +10,9 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class App extends Application{
@@ -47,21 +48,20 @@ public class App extends Application{
     }
 
     private void alertByContractExpiration(Stage primaryStage){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String alert = "";
         String missingExceededText = "";
         List<ContractDTO> contractsExpiration = InitialChecks.contractExpirationControl();
         if(!contractsExpiration.isEmpty()) {
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-            Date now = new Date();
             for (ContractDTO contractDTO : contractsExpiration) {
-                int days = (int)(long)((contractDTO.getDateTo().getTime() - now.getTime())/(24*60*60*1000));
-                if(days >= 0){
+                Integer daysForContractExpiration = Period.between(LocalDate.now(), contractDTO.getDateTo()).getDays();
+                if(daysForContractExpiration >= 0){
                     missingExceededText = "Faltan ";
                 }else{
                     missingExceededText = "Excedido en ";
                 }
                 alert = alert + "Preaviso del contrato de " + contractDTO.getWorkerName() + " con " + contractDTO.getClientGMName()
-                        + ": vencimiento el día " + dateFormatter.format(contractDTO.getDateTo()) + ". " + missingExceededText + Math.abs(days) + " días." + "\n\n";
+                        + ": vencimiento el día " + contractDTO.getDateTo().format(dateFormatter) + ". " + missingExceededText + Math.abs(daysForContractExpiration) + " días." + "\n\n";
             }
 
             Message.warningMessage(primaryStage.getOwner(), "Preavisos de fin de contrato pendientes de recepción", alert);
@@ -71,7 +71,7 @@ public class App extends Application{
     private void alertOfPendingIDC(Stage primaryStage) throws ParseException {
         String alert = "";
         String missingExceededText = "";
-        List<IDCControlDTO> idcControlDTOList = InitialChecks.findPendingIDC();
+        List<IDCControlDTO> idcControlDTOList = InitialChecks.findPendingQuoteDataReportIDC();
         if(!idcControlDTOList.isEmpty()){
             for(IDCControlDTO idcControlDTO : idcControlDTOList){
                 if(idcControlDTO.getDays() >= 0){

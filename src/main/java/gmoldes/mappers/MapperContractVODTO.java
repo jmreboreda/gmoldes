@@ -4,6 +4,7 @@ import gmoldes.domain.dto.ContractDTO;
 import gmoldes.persistence.vo.ContractVO;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +15,20 @@ public class MapperContractVODTO {
     public ContractDTO mapContractVODTO(ContractVO contractVO) {
 
         Set<DayOfWeek> daysOfWorkSet = mapDaysOfWeekToWorkVODTO(contractVO);
+
+        LocalDate dateTo = null;
+        LocalDate dateOfIDC = null;
+        LocalDate dateEndOfContractNotice = null;
+
+        if(contractVO.getF_hasta() != null){
+            dateTo = contractVO.getF_hasta().toLocalDate();
+        }
+        if(contractVO.getIdc() != null){
+            dateOfIDC = contractVO.getIdc().toLocalDate();
+        }
+        if(contractVO.getPreavisofin() != null){
+            dateEndOfContractNotice = contractVO.getPreavisofin().toLocalDate();
+        }
 
         ContractDTO contractDTO = ContractDTO.create()
                 .withId(contractVO.getId())
@@ -30,16 +45,16 @@ public class MapperContractVODTO {
                 .withDaysOfWeekToWork(daysOfWorkSet)
                 .withFullPartialWorkday(contractVO.getJor_tipo())
                 .withTypeOfContract(contractVO.getTipoctto())
-                .withDateFrom(contractVO.getF_desde())
-                .withDateTo(contractVO.getF_hasta())
+                .withDateFrom(contractVO.getF_desde().toLocalDate())
+                .withDateTo(dateTo)
                 .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())
                 .withCurrentContract(contractVO.getEnvigor())
                 .withNotesForManager(contractVO.getNotas_gestor())
                 .withPrivateNotes(contractVO.getNotas_privadas())
                 .withIndefiniteOrTemporalContract(contractVO.getDuracion())
                 .withSurrogateContract(contractVO.getSubrogacion())
-                .withQuoteDataReportIDC(contractVO.getIdc())
-                .withEndOfContractNotice(contractVO.getPreavisofin())
+                .withQuoteDataReportIDC(dateOfIDC)
+                .withEndOfContractNotice(dateEndOfContractNotice)
                 .build();
 
         return contractDTO;

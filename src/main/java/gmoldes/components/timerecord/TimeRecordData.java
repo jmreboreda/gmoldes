@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class TimeRecordData extends VBox {
     private static final String LINUX_TEMPORAL_DIR = "/Temp/Borrame";
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
     private static final Integer LAST_MONTH_INDEX_IN_MONTHNAME = 11;
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private Parent parent;
 
