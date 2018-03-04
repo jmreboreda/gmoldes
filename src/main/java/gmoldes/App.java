@@ -3,6 +3,7 @@ package gmoldes;
 
 import gmoldes.check.InitialChecks;
 import gmoldes.controllers.InitialMenuController;
+import gmoldes.domain.NieNif;
 import gmoldes.domain.dto.ContractDTO;
 import gmoldes.domain.dto.IDCControlDTO;
 import gmoldes.utilities.Message;
@@ -20,7 +21,7 @@ public class App extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
+        
         initialControlProcesses(primaryStage);
 
         /* Initial menu */

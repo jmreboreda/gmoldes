@@ -13,16 +13,16 @@ public class NieNif {
     private String numbersNIF;
     private String lastLetterNIF;
 
-    private static final Pattern dniPattern = Pattern.compile("\\d{8}[[A-H][J-N][P-T][V-Z]]");
-    private static final Pattern niePattern = Pattern.compile("[XYZ]\\d{7}[[A-H][J-N][P-T][V-Z]]");
-    private static final Pattern otherNifPatternFinalNumber = Pattern.compile("[[A-H]JUV]\\d{8}");
-    private static final Pattern otherNifPatternFinalLetter = Pattern.compile( 	"[N[P-S]UV]\\d{7}[A-J]");
+    private final Pattern dniPattern = Pattern.compile("\\d{8}[[A-H][J-N][P-T][V-Z]]");
+    private final Pattern niePattern = Pattern.compile("[XYZ]\\d{7}[[A-H][J-N][P-T][V-Z]]");
+    private final Pattern otherNifPatternFinalNumber = Pattern.compile("[[A-H]JUV]\\d{8}");
+    private final Pattern otherNifPatternFinalLetter = Pattern.compile( 	"[N[P-S]UV]\\d{7}[A-J]");
 
-    private static final String finalLetterOfNIFDNI[] = {"T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E"};
+    private final String finalLetterOfNIFDNI[] = {"T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E"};
 
-    private static final String ONLY_NUMBERS_CONTROL = "ABEH";
-    private static final String ONLY_LETTERS_CONTROL = "KPQS";
-    private static final String NUMBER_TO_LETTER_CONTROL = "JABCDEFGHI";
+    private final String ONLY_NUMBERS_CONTROL = "ABEH";
+    private final String ONLY_LETTERS_CONTROL = "KPQS";
+    private final String NUMBER_TO_LETTER_CONTROL = "JABCDEFGHI";
 
     public NieNif(String nif) {
         this.nif = nif;
@@ -128,8 +128,7 @@ public class NieNif {
         return false;
     }
 
-
-    public static boolean validateAsOtherNif(String otherNif) {
+    public boolean validateAsOtherNif(String otherNif) {
         try {
             int parA = 0;
             for (int i = 2; i < 8; i += 2) {
