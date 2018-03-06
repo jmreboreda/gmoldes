@@ -10,7 +10,7 @@
         <columns>
           <TableColumn fx:id="dayOfWeek" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Día semana" />
           <TableColumn fx:id="date" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Fecha" />
-            <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" resizable="false" sortable="false" text="Horario hh:mm (reloj de 24 horas)">
+            <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" resizable="false" sortable="false" text="Horario hh:mm [reloj de 24 horas; medianoche son las 00:00]">
                <columns>
                   <TableColumn fx:id="amFrom" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Mañana desde" />
                   <TableColumn fx:id="amTo" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Mañana hasta" />

@@ -2,22 +2,25 @@ package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.domain.dto.ContractScheduleDayDTO;
+import gmoldes.utilities.EditingDateCell;
 import gmoldes.utilities.EditingStringCell;
+import gmoldes.utilities.EditingTimeCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ContractSchedule extends AnchorPane {
 
@@ -43,7 +46,7 @@ public class ContractSchedule extends AnchorPane {
     @FXML
     private TableColumn<ContractScheduleDayDTO, LocalTime> pmTo;
     @FXML
-    private TableColumn<ContractScheduleDayDTO, Double> totalDayHours;
+    private TableColumn<ContractScheduleDayDTO, LocalTime> totalDayHours;
 
     public ContractSchedule() {
         this.parent = ViewLoader.load(this, SCHEDULE_FXML);
@@ -54,11 +57,20 @@ public class ContractSchedule extends AnchorPane {
 
         contract_schedule_table.setEditable(true);
 
-        Callback<TableColumn<ContractScheduleDayDTO, String>, TableCell<ContractScheduleDayDTO, String>> cellFactory =
+        Callback<TableColumn<ContractScheduleDayDTO, String>, TableCell<ContractScheduleDayDTO, String>> cellStringFactory =
                 p -> new EditingStringCell();
-        dayOfWeek.setCellFactory(cellFactory);
+        dayOfWeek.setCellFactory(cellStringFactory);
 
+        Callback<TableColumn<ContractScheduleDayDTO, LocalDate>, TableCell<ContractScheduleDayDTO, LocalDate>> cellDateFactory =
+                p -> new EditingDateCell();
+        date.setCellFactory(cellDateFactory);
 
+        Callback<TableColumn<ContractScheduleDayDTO, LocalTime>, TableCell<ContractScheduleDayDTO, LocalTime>> cellTimeFactory =
+                p -> new EditingTimeCell();
+        amFrom.setCellFactory(cellTimeFactory);
+        amTo.setCellFactory(cellTimeFactory);
+        pmFrom.setCellFactory(cellTimeFactory);
+        pmTo.setCellFactory(cellTimeFactory);
 
         dayOfWeek.setCellValueFactory(new PropertyValueFactory<>("dayOfWeek"));
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -77,9 +89,8 @@ public class ContractSchedule extends AnchorPane {
         List<ContractScheduleDayDTO> contractScheduleDayDTOList = new ArrayList<>();
         for(int i = 0; i < 11; i++){
             contractScheduleDayDTOList.add(
-                    new ContractScheduleDayDTO("", null, LocalTime.MIN, LocalTime.MIN, LocalTime.MIN, LocalTime.MIN, 0.00D));
+                    new ContractScheduleDayDTO("", null, null, null, null, null, LocalTime.MIN));
         }
-
         ObservableList<ContractScheduleDayDTO> data = FXCollections.observableArrayList(contractScheduleDayDTOList);
         contract_schedule_table.setItems(data);
 

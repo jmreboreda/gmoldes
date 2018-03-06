@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleStringProperty;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class ContractScheduleDayDTO {
 
@@ -14,15 +16,15 @@ public class ContractScheduleDayDTO {
     private final SimpleObjectProperty<LocalTime> amTo;
     private final SimpleObjectProperty<LocalTime> pmFrom;
     private final SimpleObjectProperty<LocalTime> pmTo;
-    private final SimpleObjectProperty<Double> totalDayHours;
+    private final SimpleObjectProperty<LocalTime> totalDayHours;
 
-    public ContractScheduleDayDTO(String dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, Double totalDayHours) {
+    public ContractScheduleDayDTO(String dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, LocalTime totalDayHours) {
         this.dayOfWeek = new SimpleStringProperty(dayOfWeek);
         this.date = new SimpleObjectProperty<>(date);
         this.amFrom = new SimpleObjectProperty<>(amFrom);
-        this.amTo = new SimpleObjectProperty<>(amTo);;
-        this.pmFrom = new SimpleObjectProperty<>(pmFrom);;
-        this.pmTo = new SimpleObjectProperty<>(pmTo);;
+        this.amTo = new SimpleObjectProperty<>(amTo);
+        this.pmFrom = new SimpleObjectProperty<>(pmFrom);
+        this.pmTo = new SimpleObjectProperty<>(pmTo);
         this.totalDayHours = new SimpleObjectProperty<>(totalDayHours);
     }
 
@@ -98,15 +100,20 @@ public class ContractScheduleDayDTO {
         this.pmTo.set(pmTo);
     }
 
-    public Double getTotalDayHours() {
+    public LocalTime getTotalDayHours() {
         return totalDayHours.get();
     }
 
-    public SimpleObjectProperty<Double> totalDayHoursProperty() {
+    public SimpleObjectProperty<LocalTime> totalDayHoursProperty() {
         return totalDayHours;
     }
 
-    public void setTotalDayHours(Double totalDayHours) {
+    public void setTotalDayHours(LocalTime totalDayHours) {
         this.totalDayHours.set(totalDayHours);
+    }
+
+    public String toString(){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy").withLocale(new Locale("es", "ES"));
+        return dateFormatter.format(date.getValue());
     }
 }
