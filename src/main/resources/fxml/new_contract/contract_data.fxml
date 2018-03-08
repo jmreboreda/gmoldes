@@ -30,13 +30,13 @@
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" />
          </columnConstraints>
          <rowConstraints>
+            <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
          </rowConstraints>
@@ -83,7 +83,7 @@
             </Label>
             <Label prefHeight="16.0" prefWidth="231.0" text="Horas de trabajo por semana" GridPane.columnIndex="4" GridPane.columnSpan="5" GridPane.rowIndex="4">
                <GridPane.margin>
-                  <Insets />
+                  <Insets bottom="15.0" />
                </GridPane.margin>
                <padding>
                   <Insets left="30.0" />
@@ -91,7 +91,7 @@
             </Label>
             <TextField fx:id="hoursWorkWeek" alignment="CENTER" disable="true" prefHeight="26.0" prefWidth="143.0" GridPane.columnIndex="7" GridPane.rowIndex="4">
                <GridPane.margin>
-                  <Insets />
+                  <Insets bottom="15.0" left="10.0" />
                </GridPane.margin>
             </TextField>
             <Label text="Días Jornada" wrapText="true" GridPane.rowIndex="5">

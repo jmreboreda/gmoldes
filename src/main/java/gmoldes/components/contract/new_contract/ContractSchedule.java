@@ -19,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
 import java.text.DecimalFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class ContractSchedule extends AnchorPane {
     private static final Integer PM_FROM_COLUMN = 4;
     private static final Integer PM_TO_COLUMN = 5;
     private static final Integer HOURS_COLUMN = 6;
+    private static final KeyCode DELETE_ALL_DATA_REQUEST_KEYCODE = KeyCode.F8;
     private static final KeyCode DUPLICATE_REQUEST_KEYCODE = KeyCode.F10;
 
     private Parent parent;
@@ -103,7 +105,7 @@ public class ContractSchedule extends AnchorPane {
         pmFrom.setOnEditCommit(this::updateTableItemList);
         pmTo.setOnEditCommit(this::updateTableItemList);
 
-        contract_schedule_table.setOnKeyPressed(this::verifyRequestForDataDuplication);
+        contract_schedule_table.setOnKeyPressed(this::verifyRequestForSpecialKeyCode);
 
         List<ContractScheduleDayDTO> contractScheduleDayDTOList = new ArrayList<>();
         for(int i = 0; i <= FINAL_ROW_TABLE; i++){
@@ -150,30 +152,60 @@ public class ContractSchedule extends AnchorPane {
 
     public String retrieveFormattedHours(ContractScheduleDayDTO selectedItemRow){
         DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-        Long numberMinutesAM = 0L;
-        Long numberMinutesPM = 0L;
+        Duration durationAM = null;
+        Duration durationPM = null;
 
         if(selectedItemRow.getAmFrom() != null && selectedItemRow.getAmTo() != null){
-            numberMinutesAM = MINUTES.between(selectedItemRow.getAmFrom(), selectedItemRow.getAmTo());
+            durationAM = Duration.between(selectedItemRow.getAmFrom(), selectedItemRow.getAmTo());
         }
         if(selectedItemRow.getPmFrom() != null && selectedItemRow.getPmTo() != null){
-            numberMinutesPM = MINUTES.between(selectedItemRow.getPmFrom(), selectedItemRow.getPmTo());
+            durationPM = Duration.between(selectedItemRow.getPmFrom(), selectedItemRow.getPmTo());
         }
 
-        Float numberHours = (numberMinutesAM.floatValue() + numberMinutesPM.floatValue())/MINUTES_IN_HOUR;
+        assert durationPM != null;
+        assert durationAM != null;
+        Duration numberHours = durationAM.plus(durationPM);
 
         return decimalFormat.format(numberHours);
+
+
+
     }
 
-    private void verifyRequestForDataDuplication(KeyEvent event){
-        if((event.getCode() != DUPLICATE_REQUEST_KEYCODE))
+    private void verifyRequestForSpecialKeyCode(KeyEvent event){
+        if(event.getCode() != DELETE_ALL_DATA_REQUEST_KEYCODE &&
+                event.getCode() != DUPLICATE_REQUEST_KEYCODE )
         {
             return;
         }
-        Integer selectedRow = contract_schedule_table.getSelectionModel().getSelectedIndex();
+
+        if(event.getCode() == DELETE_ALL_DATA_REQUEST_KEYCODE) {
+            deleteAllDataForSelectedRow();
+        }
+
+        if(event.getCode() == DUPLICATE_REQUEST_KEYCODE) {
+            Integer selectedRow = contract_schedule_table.getSelectionModel().getSelectedIndex();
             if (verifyRowAndRowData(selectedRow)) {
                 duplicateDataInFirstEmptyRow(selectedRow);
             }
+        }
+    }
+
+    private void deleteAllDataForSelectedRow(){
+        Integer selectedRow = contract_schedule_table.getSelectionModel().getSelectedIndex();
+        if(selectedRow >= INITIAL_ROW_TABLE ){
+            ContractScheduleDayDTO selectedItemRow = contract_schedule_table.getItems().get(selectedRow);
+
+            selectedItemRow.setDayOfWeek(null);
+            selectedItemRow.setDate(null);
+            selectedItemRow.setAmFrom(null);
+            selectedItemRow.setAmTo(null);
+            selectedItemRow.setPmFrom(null);
+            selectedItemRow.setPmTo(null);
+            selectedItemRow.setTotalDayHours("0,00");
+            refreshTable(contract_schedule_table.getItems());
+        }
+
     }
 
     private Boolean verifyRowAndRowData(Integer selectedRow){

@@ -1,25 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView fx:id="contract_schedule_table" editable="true" layoutX="76.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <columns>
-          <TableColumn fx:id="dayOfWeek" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Día semana" />
-          <TableColumn fx:id="date" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Fecha" />
-            <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" resizable="false" sortable="false" text="Horario hh:mm [reloj de 24 horas; medianoche son las 00:00]">
-               <columns>
-                  <TableColumn fx:id="amFrom" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Mañana desde" />
-                  <TableColumn fx:id="amTo" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Mañana hasta" />
-                  <TableColumn fx:id="pmFrom" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Tarde desde" />
-                  <TableColumn fx:id="pmTo" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Tarde hasta" />
-               </columns>
-            </TableColumn>
-            <TableColumn fx:id="totalDayHours" maxWidth="-1.0" minWidth="75.0" prefWidth="75.0" resizable="false" sortable="false" text="Horas" />
-        </columns>
-      </TableView>
+      <VBox>
+         <children>
+            <TableView fx:id="contract_schedule_table" editable="true" prefHeight="280.0">
+              <columns>
+                <TableColumn fx:id="dayOfWeek" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Día semana" />
+                <TableColumn fx:id="date" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Fecha" />
+                  <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" resizable="false" sortable="false" text="Horario hh:mm [reloj de 24 horas; medianoche son las 00:00]">
+                     <columns>
+                        <TableColumn fx:id="amFrom" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Mañana desde" />
+                        <TableColumn fx:id="amTo" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Mañana hasta" />
+                        <TableColumn fx:id="pmFrom" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Tarde desde" />
+                        <TableColumn fx:id="pmTo" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Tarde hasta" />
+                     </columns>
+                  </TableColumn>
+                  <TableColumn fx:id="totalDayHours" maxWidth="-1.0" minWidth="75.0" prefWidth="75.0" resizable="false" sortable="false" text="Horas" />
+              </columns>
+            </TableView>
+            <HBox prefHeight="150.0" prefWidth="800.0">
+               <children>
+                  <VBox prefHeight="55.0" prefWidth="629.0">
+                     <children>
+                        <Label prefHeight="14.0" prefWidth="637.0" text="F8 - Borra todos los datos de la fila seleccionada." textFill="BLUE">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="14.0" prefWidth="637.0" text="F10 - Duplica en la primera fila libre de la tabla el horario de la fila seleccionada." textFill="BLUE">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </fx:root>
