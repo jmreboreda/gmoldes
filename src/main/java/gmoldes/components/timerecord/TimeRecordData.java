@@ -31,10 +31,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
@@ -113,8 +111,7 @@ public class TimeRecordData extends VBox {
                 )
         );
 
-        Date date = new Date();
-        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localDate = LocalDate.now();
         if(localDate.getMonthValue() > LAST_MONTH_INDEX_IN_MONTHNAME){
             monthName.getSelectionModel().select(FIRST_MONTH_INDEX_IN_MONTHNAME);
         }else {

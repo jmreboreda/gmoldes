@@ -3,12 +3,14 @@ package gmoldes;
 
 import gmoldes.check.InitialChecks;
 import gmoldes.controllers.InitialMenuController;
+import gmoldes.domain.NieNif;
 import gmoldes.domain.dto.ContractDTO;
 import gmoldes.domain.dto.IDCControlDTO;
 import gmoldes.utilities.Message;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -19,7 +21,7 @@ public class App extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
+        
         initialControlProcesses(primaryStage);
 
         /* Initial menu */

@@ -57,11 +57,12 @@ public class ProvisionalContractData extends AnchorPane {
     @FXML
     private ProvisionalContractData provisionalContractData;
 
+private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hechos aquí directamente no se tendrán en cuenta en el contrato final.";
 
     public ProvisionalContractData() {
 
         this.parent = ViewLoader.load(this, CURRENT_CONTRACT_FXML);
-        Tooltip tooltip = new Tooltip("Los cambios hechos aquí directamente no se tendrán en cuenta en el contrato final.");
+        Tooltip tooltip = new Tooltip(MODIFIED_DATA_WILL_NOT_BE_SAVED);
         this.Monday.setTooltip(tooltip);
         this.Tuesday.setTooltip(tooltip);
         this.Wednesday.setTooltip(tooltip);
