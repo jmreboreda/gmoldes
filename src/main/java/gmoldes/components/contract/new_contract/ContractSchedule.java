@@ -13,6 +13,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
@@ -35,6 +37,7 @@ public class ContractSchedule extends AnchorPane {
     private static final Integer PM_FROM_COLUMN = 4;
     private static final Integer PM_TO_COLUMN = 5;
     private static final Integer HOURS_COLUMN = 6;
+    private static final KeyCode DUPLICATE_REQUEST = KeyCode.F10;
 
     private Parent parent;
 
@@ -98,8 +101,10 @@ public class ContractSchedule extends AnchorPane {
         pmFrom.setOnEditCommit(this::updateTableItemList);
         pmTo.setOnEditCommit(this::updateTableItemList);
 
+        contract_schedule_table.setOnKeyPressed(this::verifyDuplicateRequest);
+
         List<ContractScheduleDayDTO> contractScheduleDayDTOList = new ArrayList<>();
-        for(int i = 0; i < 11; i++){
+        for(int i = 0; i < 7; i++){
             contractScheduleDayDTOList.add(
                     new ContractScheduleDayDTO("", null, null, null, null, null, "0,00"));
         }
@@ -156,5 +161,15 @@ public class ContractSchedule extends AnchorPane {
         Float numberHours = (numberMinutesAM.floatValue() + numberMinutesPM.floatValue())/MINUTES_IN_HOUR;
 
         return decimalFormat.format(numberHours);
+    }
+
+    private void verifyDuplicateRequest(KeyEvent event){
+        ContractScheduleDayDTO selectedItem = contract_schedule_table.getSelectionModel().getSelectedItem();
+        Integer selectedRow = contract_schedule_table.getSelectionModel().getSelectedIndex();
+
+        if(event.getCode() == DUPLICATE_REQUEST && selectedRow >= 0){
+            System.out.println("Pulsada F10: petición de duplicado. \n" +
+            "Fila: " + selectedRow + "   Item: " + selectedItem);
+        }
     }
 }
