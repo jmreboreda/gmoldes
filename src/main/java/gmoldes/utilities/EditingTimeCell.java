@@ -37,7 +37,12 @@ public class EditingTimeCell extends TableCell<ContractScheduleDayDTO, LocalTime
     public void cancelEdit() {
         super.cancelEdit();
 
-        setText(String.valueOf(getItem()));
+        if(getItem() != null ) {
+            setText(String.valueOf(getItem()));
+        }
+        else{
+            setText(null);
+        }
         setContentDisplay(ContentDisplay.TEXT_ONLY);
     }
 
@@ -77,29 +82,22 @@ public class EditingTimeCell extends TableCell<ContractScheduleDayDTO, LocalTime
                                 commitEdit(LocalTime.parse(textField.getText(), timeFormatter));
                             }
                             catch(DateTimeParseException e){
-                                textField.setText(LocalTime.MIN.toString());
+                                textField.setText(null);
+                                commitEdit(null);
                                 cancelEdit();
                             }
                         }
-
                     } catch (DateTimeParseException e) {
-                        textField.setText(LocalTime.MIN.toString());
+                        textField.setText(null);
+                        commitEdit(null);
                         cancelEdit();
                     }
                 }
-//                if(timePattern.matcher(textField.getText()).matches() &&
-//                        LocalTime.parse(textField.getText(), timeFormatter).isBefore(LocalTime.MAX)){
-//                        String dateConverted = textField.getText().replace("/","-");
-//                        try {
-//                            commitEdit(LocalTime.parse(dateConverted, timeFormatter));
-//                        }
-//                        catch(DateTimeParseException e){
-//                            textField.setText(LocalTime.MIN.toString());
-//                            cancelEdit();
-//                        }
-//                }else{
-//                    cancelEdit();
-//                }
+                else{
+                    textField.setText(null);
+                    commitEdit(null);
+                    cancelEdit();
+                }
             } else if (t.getCode() == KeyCode.ESCAPE) {
                 cancelEdit();
             }
@@ -107,6 +105,6 @@ public class EditingTimeCell extends TableCell<ContractScheduleDayDTO, LocalTime
     }
 
     private String getString() {
-        return getItem() == null ? "" : getItem().toString();
+        return getItem() == null ? null : getItem().toString();
     }
 }

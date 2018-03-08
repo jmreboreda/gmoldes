@@ -15,19 +15,26 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class ContractSchedule extends AnchorPane {
 
     private static final String SCHEDULE_FXML = "/fxml/new_contract/contract_schedule_table.fxml";
-
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private static final Float MINUTES_IN_HOUR = 60.0f;
+    private static final Integer DAY_OF_WEEK_COLUMN = 0;
+    private static final Integer DATE_COLUMN = 1;
+    private static final Integer AM_FROM_COLUMN = 2;
+    private static final Integer AM_TO_COLUMN = 3;
+    private static final Integer PM_FROM_COLUMN = 4;
+    private static final Integer PM_TO_COLUMN = 5;
+    private static final Integer HOURS_COLUMN = 6;
 
     private Parent parent;
 
@@ -46,7 +53,7 @@ public class ContractSchedule extends AnchorPane {
     @FXML
     private TableColumn<ContractScheduleDayDTO, LocalTime> pmTo;
     @FXML
-    private TableColumn<ContractScheduleDayDTO, LocalTime> totalDayHours;
+    private TableColumn<ContractScheduleDayDTO, Long> totalDayHours;
 
     public ContractSchedule() {
         this.parent = ViewLoader.load(this, SCHEDULE_FXML);
@@ -86,14 +93,68 @@ public class ContractSchedule extends AnchorPane {
         pmTo.setStyle("-fx-alignment: CENTER;");
         totalDayHours.setStyle("-fx-alignment: CENTER-RIGHT;");
 
+        amFrom.setOnEditCommit(this::updateTableItemList);
+        amTo.setOnEditCommit(this::updateTableItemList);
+        pmFrom.setOnEditCommit(this::updateTableItemList);
+        pmTo.setOnEditCommit(this::updateTableItemList);
+
         List<ContractScheduleDayDTO> contractScheduleDayDTOList = new ArrayList<>();
         for(int i = 0; i < 11; i++){
             contractScheduleDayDTOList.add(
-                    new ContractScheduleDayDTO("", null, null, null, null, null, LocalTime.MIN));
+                    new ContractScheduleDayDTO("", null, null, null, null, null, "0,00"));
         }
         ObservableList<ContractScheduleDayDTO> data = FXCollections.observableArrayList(contractScheduleDayDTOList);
-        contract_schedule_table.setItems(data);
+        refreshTable(data);
+    }
 
+    private void updateTableItemList(TableColumn.CellEditEvent event){
+        int editedRow = event.getTablePosition().getRow();
+        int editedColumn = event.getTablePosition().getColumn();
 
+        ContractScheduleDayDTO selectedItemRow = contract_schedule_table.getItems().get(editedRow);
+
+        if(editedColumn == DAY_OF_WEEK_COLUMN){
+            selectedItemRow.setDayOfWeek((String) event.getNewValue());
+        }
+        if(editedColumn == DATE_COLUMN){
+            selectedItemRow.setDate((LocalDate) event.getNewValue());
+        }
+        if(editedColumn == AM_FROM_COLUMN){
+            selectedItemRow.setAmFrom((LocalTime) event.getNewValue());
+        }
+        if(editedColumn == AM_TO_COLUMN){
+            selectedItemRow.setAmTo((LocalTime) event.getNewValue());
+        }
+        if(editedColumn == PM_FROM_COLUMN){
+            selectedItemRow.setPmFrom((LocalTime) event.getNewValue());
+        }
+        if(editedColumn == PM_TO_COLUMN){
+            selectedItemRow.setPmTo((LocalTime) event.getNewValue());
+        }
+        String numberHours = retrieveFormattedHours(selectedItemRow);
+        selectedItemRow.setTotalDayHours(numberHours);
+
+        refreshTable(contract_schedule_table.getItems());
+    }
+
+    public void refreshTable(ObservableList<ContractScheduleDayDTO> tableItemList){
+        contract_schedule_table.setItems(tableItemList);
+    }
+
+    public String retrieveFormattedHours(ContractScheduleDayDTO selectedItemRow){
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+        Long numberMinutesAM = 0L;
+        Long numberMinutesPM = 0L;
+
+        if(selectedItemRow.getAmFrom() != null && selectedItemRow.getAmTo() != null){
+            numberMinutesAM = MINUTES.between(selectedItemRow.getAmFrom(), selectedItemRow.getAmTo());
+        }
+        if(selectedItemRow.getPmFrom() != null && selectedItemRow.getPmTo() != null){
+            numberMinutesPM = MINUTES.between(selectedItemRow.getPmFrom(), selectedItemRow.getPmTo());
+        }
+
+        Float numberHours = (numberMinutesAM.floatValue() + numberMinutesPM.floatValue())/MINUTES_IN_HOUR;
+
+        return decimalFormat.format(numberHours);
     }
 }

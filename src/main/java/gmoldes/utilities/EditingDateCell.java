@@ -38,7 +38,12 @@ public class EditingDateCell extends TableCell<ContractScheduleDayDTO, LocalDate
     public void cancelEdit() {
         super.cancelEdit();
 
-        setText(String.valueOf(getItem()));
+        if(getItem() != null ) {
+            setText(String.valueOf(getItem()));
+        }
+        else{
+            setText(null);
+        }
         setContentDisplay(ContentDisplay.TEXT_ONLY);
     }
 
@@ -65,10 +70,10 @@ public class EditingDateCell extends TableCell<ContractScheduleDayDTO, LocalDate
 
     private void createTextField() {
         Pattern datePattern = Pattern.compile("\\d{2}[-/]\\d{2}[-/]\\d{4}");
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy").withLocale(Locale.ITALIAN);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         textField = new TextField(getString());
         textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
-        textField.setOnKeyReleased(t -> {
+        textField.setOnKeyPressed(t -> {
             if (t.getCode() == KeyCode.ENTER) {
                 if(datePattern.matcher(textField.getText()).matches()){
                     String dateConverted = textField.getText().replace("/","-");
@@ -76,20 +81,24 @@ public class EditingDateCell extends TableCell<ContractScheduleDayDTO, LocalDate
                         commitEdit(LocalDate.parse(dateConverted, dateFormatter));
                     }
                     catch(DateTimeParseException e){
-                        textField.setText("");
+                        textField.setText(null);
                         cancelEdit();
                     }
                 }else{
+                    textField.setText(null);
+                    commitEdit(null);
                     cancelEdit();
                 }
-                //commitEdit(LocalDate.parse(textField.getText(), dateFormatter));
             } else if (t.getCode() == KeyCode.ESCAPE) {
+                textField.setText(null);
                 cancelEdit();
             }
         });
     }
 
     private String getString() {
-        return getItem() == null ? "" : getItem().toString();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        return getItem() == null ? null : dateFormatter.format(getItem());
     }
 }
