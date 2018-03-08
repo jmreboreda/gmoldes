@@ -30,6 +30,8 @@ public class ContractSchedule extends AnchorPane {
 
     private static final String SCHEDULE_FXML = "/fxml/new_contract/contract_schedule_table.fxml";
     private static final Float MINUTES_IN_HOUR = 60.0f;
+    private static final Integer INITIAL_ROW_TABLE = 0;
+    private static final Integer FINAL_ROW_TABLE = 6;
     private static final Integer DAY_OF_WEEK_COLUMN = 0;
     private static final Integer DATE_COLUMN = 1;
     private static final Integer AM_FROM_COLUMN = 2;
@@ -37,7 +39,7 @@ public class ContractSchedule extends AnchorPane {
     private static final Integer PM_FROM_COLUMN = 4;
     private static final Integer PM_TO_COLUMN = 5;
     private static final Integer HOURS_COLUMN = 6;
-    private static final KeyCode DUPLICATE_REQUEST = KeyCode.F10;
+    private static final KeyCode DUPLICATE_REQUEST_KEYCODE = KeyCode.F10;
 
     private Parent parent;
 
@@ -101,10 +103,10 @@ public class ContractSchedule extends AnchorPane {
         pmFrom.setOnEditCommit(this::updateTableItemList);
         pmTo.setOnEditCommit(this::updateTableItemList);
 
-        contract_schedule_table.setOnKeyPressed(this::verifyDuplicateRequest);
+        contract_schedule_table.setOnKeyPressed(this::verifyRequestForDataDuplication);
 
         List<ContractScheduleDayDTO> contractScheduleDayDTOList = new ArrayList<>();
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i <= FINAL_ROW_TABLE; i++){
             contractScheduleDayDTOList.add(
                     new ContractScheduleDayDTO("", null, null, null, null, null, "0,00"));
         }
@@ -163,13 +165,62 @@ public class ContractSchedule extends AnchorPane {
         return decimalFormat.format(numberHours);
     }
 
-    private void verifyDuplicateRequest(KeyEvent event){
-        ContractScheduleDayDTO selectedItem = contract_schedule_table.getSelectionModel().getSelectedItem();
-        Integer selectedRow = contract_schedule_table.getSelectionModel().getSelectedIndex();
-
-        if(event.getCode() == DUPLICATE_REQUEST && selectedRow >= 0){
-            System.out.println("Pulsada F10: petición de duplicado. \n" +
-            "Fila: " + selectedRow + "   Item: " + selectedItem);
+    private void verifyRequestForDataDuplication(KeyEvent event){
+        if((event.getCode() != DUPLICATE_REQUEST_KEYCODE))
+        {
+            return;
         }
+        Integer selectedRow = contract_schedule_table.getSelectionModel().getSelectedIndex();
+        if(selectedRow >= INITIAL_ROW_TABLE && selectedRow < FINAL_ROW_TABLE){
+            if (verifyRowAndRowData(selectedRow)) {
+                duplicateDataInFirstEmptyRow(selectedRow);
+            }
+        }
+    }
+
+    private Boolean verifyRowAndRowData(Integer selectedRow){
+        if(selectedRow >= INITIAL_ROW_TABLE &&
+                selectedRow < FINAL_ROW_TABLE &&
+                verifySelectedRowContainsData(selectedRow)) {
+            return true;
+            }
+
+            return false;
+    }
+
+    private Boolean verifySelectedRowContainsData(Integer selectedRow){
+        ObservableList<ContractScheduleDayDTO> tableItemList = contract_schedule_table.getItems();
+        if(!tableItemList.get(selectedRow).getTotalDayHours().equals("0,00")){
+            return true;
+        }
+
+        return false;
+    }
+
+    private void duplicateDataInFirstEmptyRow(Integer selectedRow){
+        Integer firstEmptyRow = findFirstEmptyRow();
+        if(firstEmptyRow != -1) {
+            ContractScheduleDayDTO selectedItemRow = contract_schedule_table.getItems().get(selectedRow);
+            ContractScheduleDayDTO firstEmptyRowTarget = contract_schedule_table.getItems().get(firstEmptyRow);
+
+            firstEmptyRowTarget.setAmFrom((LocalTime) selectedItemRow.getAmFrom());
+            firstEmptyRowTarget.setAmTo((LocalTime) selectedItemRow.getAmTo());
+            firstEmptyRowTarget.setPmFrom((LocalTime) selectedItemRow.getPmFrom());
+            firstEmptyRowTarget.setPmTo((LocalTime) selectedItemRow.getPmTo());
+            firstEmptyRowTarget.setTotalDayHours(selectedItemRow.getTotalDayHours());
+            refreshTable(contract_schedule_table.getItems());
+        }
+    }
+
+    private Integer findFirstEmptyRow(){
+        Integer firstEmptyRow = -1;
+        ObservableList<ContractScheduleDayDTO> tableItemList = contract_schedule_table.getItems();
+        for(ContractScheduleDayDTO contractScheduleDayDTO : tableItemList){
+            if(contractScheduleDayDTO.getTotalDayHours().equals("0,00")){
+                return tableItemList.indexOf(contractScheduleDayDTO);
+            }
+        }
+
+        return firstEmptyRow;
     }
 }
