@@ -171,11 +171,9 @@ public class ContractSchedule extends AnchorPane {
             return;
         }
         Integer selectedRow = contract_schedule_table.getSelectionModel().getSelectedIndex();
-        if(selectedRow >= INITIAL_ROW_TABLE && selectedRow < FINAL_ROW_TABLE){
             if (verifyRowAndRowData(selectedRow)) {
                 duplicateDataInFirstEmptyRow(selectedRow);
             }
-        }
     }
 
     private Boolean verifyRowAndRowData(Integer selectedRow){
