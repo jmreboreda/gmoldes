@@ -3,6 +3,7 @@ package gmoldes.domain.dto;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -14,9 +15,9 @@ public class ContractScheduleDayDTO {
     private final SimpleObjectProperty<LocalTime> amTo;
     private final SimpleObjectProperty<LocalTime> pmFrom;
     private final SimpleObjectProperty<LocalTime> pmTo;
-    private final SimpleObjectProperty<String> totalDayHours;
+    private final SimpleObjectProperty<Duration> totalDayHours;
 
-    public ContractScheduleDayDTO(String dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, String totalDayHours) {
+    public ContractScheduleDayDTO(String dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, Duration totalDayHours) {
         this.dayOfWeek = new SimpleStringProperty(dayOfWeek);
         this.date = new SimpleObjectProperty<>(date);
         this.amFrom = new SimpleObjectProperty<>(amFrom);
@@ -98,15 +99,15 @@ public class ContractScheduleDayDTO {
         this.pmTo.set(pmTo);
     }
 
-    public String getTotalDayHours() {
+    public Duration getTotalDayHours() {
         return totalDayHours.get();
     }
 
-    public SimpleObjectProperty<String> totalDayHoursProperty() {
+    public SimpleObjectProperty<Duration> totalDayHoursProperty() {
         return totalDayHours;
     }
 
-    public void setTotalDayHours(String totalDayHours) {
+    public void setTotalDayHours(Duration totalDayHours) {
         this.totalDayHours.set(totalDayHours);
     }
 }
