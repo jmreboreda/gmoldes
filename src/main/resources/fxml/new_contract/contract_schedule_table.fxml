@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
          <children>
@@ -24,12 +26,12 @@
                         <TableColumn fx:id="pmTo" maxWidth="-1.0" minWidth="120.0" prefWidth="120.0" resizable="false" sortable="false" text="Tarde hasta" />
                      </columns>
                   </TableColumn>
-                  <TableColumn fx:id="totalDayHours" maxWidth="-1.0" minWidth="75.0" prefWidth="75.0" resizable="false" sortable="false" text="Horas" />
+                  <TableColumn fx:id="totalDayHours" maxWidth="-1.0" minWidth="75.0" prefWidth="75.0" resizable="false" sortable="false" text="Duración" />
               </columns>
             </TableView>
             <HBox prefHeight="150.0" prefWidth="800.0">
                <children>
-                  <VBox prefHeight="55.0" prefWidth="629.0">
+                  <VBox prefHeight="55.0" prefWidth="740.0">
                      <children>
                         <Label prefHeight="14.0" prefWidth="637.0" text="F8 - Borra todos los datos de la fila seleccionada." textFill="BLUE">
                            <font>
@@ -41,6 +43,23 @@
                               <Font size="12.0" />
                            </font>
                         </Label>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="75.0" text="Total horas">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="summationOfHours" alignment="CENTER_RIGHT" editable="false" text="0:00">
+                           <VBox.margin>
+                              <Insets right="5.0" top="5.0" />
+                           </VBox.margin>
+                        </TextField>
                      </children>
                   </VBox>
                </children>

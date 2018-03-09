@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -28,7 +29,6 @@ import java.util.List;
 public class ContractSchedule extends AnchorPane {
 
     private static final String SCHEDULE_FXML = "/fxml/new_contract/contract_schedule_table.fxml";
-    private static final Float MINUTES_IN_HOUR = 60.0f;
     private static final Integer INITIAL_ROW_TABLE = 0;
     private static final Integer FINAL_ROW_TABLE = 6;
     private static final Integer DAY_OF_WEEK_COLUMN = 0;
@@ -59,6 +59,10 @@ public class ContractSchedule extends AnchorPane {
     private TableColumn<ContractScheduleDayDTO, LocalTime> pmTo;
     @FXML
     private TableColumn<ContractScheduleDayDTO, Duration> totalDayHours;
+    @FXML
+    private TextField summationOfHours;
+
+    private Duration totalWeekHours = Duration.ZERO;
 
     public ContractSchedule() {
         this.parent = ViewLoader.load(this, SCHEDULE_FXML);
@@ -107,12 +111,12 @@ public class ContractSchedule extends AnchorPane {
         pmFrom.setOnEditCommit(this::updateTableItemList);
         pmTo.setOnEditCommit(this::updateTableItemList);
 
-        contract_schedule_table.setOnKeyPressed(this::verifyRequestForSpecialKeyCode);
+        contract_schedule_table.setOnKeyPressed(this::verifyRequestWithSpecialKeyCode);
 
         List<ContractScheduleDayDTO> contractScheduleDayDTOList = new ArrayList<>();
         for(int i = 0; i <= FINAL_ROW_TABLE; i++){
             contractScheduleDayDTOList.add(
-                    new ContractScheduleDayDTO("", null, null, null, null, null, Duration.parse("PT0H")));
+                    new ContractScheduleDayDTO("", null, null, null, null, null, Duration.ZERO));
         }
         ObservableList<ContractScheduleDayDTO> data = FXCollections.observableArrayList(contractScheduleDayDTOList);
         refreshTable(data);
@@ -146,15 +150,17 @@ public class ContractSchedule extends AnchorPane {
         selectedItemDay.setTotalDayHours(durationDay);
 
         refreshTable(contract_schedule_table.getItems());
+
+        refreshTotalWeekHours();
     }
 
-    public void refreshTable(ObservableList<ContractScheduleDayDTO> tableItemList){
+    private void refreshTable(ObservableList<ContractScheduleDayDTO> tableItemList){
         contract_schedule_table.setItems(tableItemList);
     }
 
-    public Duration retrieveDurationDay(ContractScheduleDayDTO selectedItemRow){
-        Duration durationAM = Duration.parse("PT0H");
-        Duration durationPM = Duration.parse("PT0H");
+    private Duration retrieveDurationDay(ContractScheduleDayDTO selectedItemRow){
+        Duration durationAM = Duration.ZERO;
+        Duration durationPM = Duration.ZERO;
 
         if(selectedItemRow.getAmFrom() != null && selectedItemRow.getAmTo() != null){
             durationAM = Duration.between(selectedItemRow.getAmFrom(), selectedItemRow.getAmTo());
@@ -167,7 +173,7 @@ public class ContractSchedule extends AnchorPane {
 
     }
 
-    private void verifyRequestForSpecialKeyCode(KeyEvent event){
+    private void verifyRequestWithSpecialKeyCode(KeyEvent event){
         if(event.getCode() != REQUEST_DELETION_ALL_DATA &&
                 event.getCode() != REQUEST_FOR_DATA_DUPLICATION)
         {
@@ -176,12 +182,14 @@ public class ContractSchedule extends AnchorPane {
 
         if(event.getCode() == REQUEST_DELETION_ALL_DATA) {
             deleteAllDataForSelectedRow();
+            refreshTotalWeekHours();
         }
 
         if(event.getCode() == REQUEST_FOR_DATA_DUPLICATION) {
             Integer selectedRow = contract_schedule_table.getSelectionModel().getSelectedIndex();
             if (verifyRowAndRowData(selectedRow)) {
                 duplicateDataInFirstEmptyRow(selectedRow);
+                refreshTotalWeekHours();
             }
         }
     }
@@ -197,14 +205,14 @@ public class ContractSchedule extends AnchorPane {
             selectedItemRow.setAmTo(null);
             selectedItemRow.setPmFrom(null);
             selectedItemRow.setPmTo(null);
-            selectedItemRow.setTotalDayHours(Duration.parse("PT0H0M"));
+            selectedItemRow.setTotalDayHours(Duration.ZERO);
             refreshTable(contract_schedule_table.getItems());
         }
     }
 
     private Boolean verifyRowAndRowData(Integer selectedRow){
         if(selectedRow >= INITIAL_ROW_TABLE &&
-                selectedRow < FINAL_ROW_TABLE &&
+                selectedRow <= FINAL_ROW_TABLE &&
                 verifySelectedRowContainsData(selectedRow)) {
             return true;
             }
@@ -214,7 +222,7 @@ public class ContractSchedule extends AnchorPane {
 
     private Boolean verifySelectedRowContainsData(Integer selectedRow){
         ObservableList<ContractScheduleDayDTO> tableItemList = contract_schedule_table.getItems();
-        if(!tableItemList.get(selectedRow).getTotalDayHours().equals(Duration.parse("PT0H0M"))){
+        if(!tableItemList.get(selectedRow).getTotalDayHours().equals(Duration.ZERO)){
             return true;
         }
 
@@ -223,7 +231,7 @@ public class ContractSchedule extends AnchorPane {
 
     private void duplicateDataInFirstEmptyRow(Integer selectedRow){
         Integer firstEmptyRow = findFirstEmptyRow();
-        if(firstEmptyRow != -1) {
+        if(firstEmptyRow != null) {
             ContractScheduleDayDTO selectedItemRow = contract_schedule_table.getItems().get(selectedRow);
             ContractScheduleDayDTO firstEmptyRowTarget = contract_schedule_table.getItems().get(firstEmptyRow);
 
@@ -237,14 +245,42 @@ public class ContractSchedule extends AnchorPane {
     }
 
     private Integer findFirstEmptyRow(){
-        Integer firstEmptyRow = -1;
         ObservableList<ContractScheduleDayDTO> tableItemList = contract_schedule_table.getItems();
         for(ContractScheduleDayDTO contractScheduleDayDTO : tableItemList){
-            if(contractScheduleDayDTO.getTotalDayHours().equals(Duration.parse("PT0H0M"))){
+            if(contractScheduleDayDTO.getTotalDayHours().equals(Duration.ZERO)){
                 return tableItemList.indexOf(contractScheduleDayDTO);
             }
         }
 
-        return firstEmptyRow;
+        return null;
+    }
+
+    private void refreshTotalWeekHours(){
+        Duration totalHours = Duration.ZERO;
+        for(ContractScheduleDayDTO contractScheduleDayDTO : contract_schedule_table.getItems()){
+            totalHours = totalHours.plus(contractScheduleDayDTO.getTotalDayHours());
+        }
+        summationOfHours.setText(myFormatDurationToString(totalHours));
+    }
+
+    private String myFormatDurationToString (Duration duration){
+        if(duration == Duration.ZERO){
+            return "0:00";
+        }
+
+        String durationToString = duration.toString();
+        durationToString = durationToString.replace("PT","");
+        durationToString = durationToString.replace("H",":");
+        durationToString = durationToString.replace("M","");
+
+        Long durationHours = duration.toHours();
+        Long durationMinutes = duration.toMinutes();
+        Long minutes = durationMinutes - durationHours * 60;
+
+        if(minutes == 0 ){
+            durationToString = durationToString + "00";
+        }
+
+        return durationToString;
     }
 }

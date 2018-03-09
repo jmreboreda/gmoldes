@@ -60,8 +60,8 @@ public class EditingDurationCell extends TableCell<ContractScheduleDayDTO, Durat
         if(minutesString.length() < 2){
             minutesString = minutesString + "0";
         }
-        String durationString = hours.toString() + ":" + minutesString ;
+        String durationString = hours.toString() + ":" + minutesString + " ";
 
-        return getItem() == null ? null : durationString;
+        return getItem() == null ? "" : durationString;
     }
 }
