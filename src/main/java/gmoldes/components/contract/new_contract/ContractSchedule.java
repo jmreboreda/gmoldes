@@ -116,7 +116,15 @@ public class ContractSchedule extends AnchorPane {
         List<ContractScheduleDayDTO> contractScheduleDayDTOList = new ArrayList<>();
         for(int i = 0; i <= FINAL_ROW_TABLE; i++){
             contractScheduleDayDTOList.add(
-                    new ContractScheduleDayDTO("", null, null, null, null, null, Duration.ZERO));
+                    ContractScheduleDayDTO.create()
+                            .withDayOfWeek(null)
+                            .withDate(null)
+                            .withAmFrom(null)
+                            .withAmTo(null)
+                            .withPmFrom(null)
+                            .withPmTo(null)
+                            .withTotalDayHours(Duration.ZERO)
+                            .build());
         }
         ObservableList<ContractScheduleDayDTO> data = FXCollections.observableArrayList(contractScheduleDayDTOList);
         refreshTable(data);

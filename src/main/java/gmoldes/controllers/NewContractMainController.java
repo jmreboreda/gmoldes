@@ -101,9 +101,9 @@ public class NewContractMainController extends VBox {
             contractParts.clearEmployerCCC();
             return;
         }
-        if(pattern.equals(employersNameSelectedItem)){
-            return;
-        }
+//        if(pattern.equals(employersNameSelectedItem)){
+//            return;
+//        }
         List<ClientDTO> employers = findClientsByNamePattern(pattern);
         contractParts.refreshEmployers(employers);
     }

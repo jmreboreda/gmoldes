@@ -10,6 +10,7 @@ import gmoldes.domain.dto.PersonDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -88,7 +89,8 @@ public class ContractParts extends HBox {
 
     private void onSelectEmployer(ClientDTO newEmployerSelected){
         employerName.setText(newEmployerSelected.getPersonOrCompanyName());
-        clearEmployersNames();
+        employerName.fireEvent(new ActionEvent());
+        //clearEmployersNames();
 
         final SelectEmployerEvent selectEmployerEvent = new SelectEmployerEvent(newEmployerSelected);
         onSelectEmployerEventHandler.handle(selectEmployerEvent);
@@ -97,6 +99,7 @@ public class ContractParts extends HBox {
     private void onSelectEmployee(PersonDTO newPersonValue){
         if(newPersonValue != null) {
             employeeName.setText(newPersonValue.getApellidos().concat(", ").concat(newPersonValue.getNom_rzsoc()));
+            //clearEmployeesNames();
         }
     }
 
