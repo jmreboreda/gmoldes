@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
@@ -89,8 +90,9 @@ public class ContractParts extends HBox {
 
     private void onSelectEmployer(ClientDTO newEmployerSelected){
         employerName.setText(newEmployerSelected.getPersonOrCompanyName());
-        employerName.fireEvent(new ActionEvent());
-        //clearEmployersNames();
+        KeyEvent ke = new KeyEvent(KeyEvent.KEY_RELEASED,"", "",
+                KeyCode.UNDEFINED, false, false, false, false);
+        employerName.fireEvent(ke);
 
         final SelectEmployerEvent selectEmployerEvent = new SelectEmployerEvent(newEmployerSelected);
         onSelectEmployerEventHandler.handle(selectEmployerEvent);
@@ -99,7 +101,8 @@ public class ContractParts extends HBox {
     private void onSelectEmployee(PersonDTO newPersonValue){
         if(newPersonValue != null) {
             employeeName.setText(newPersonValue.getApellidos().concat(", ").concat(newPersonValue.getNom_rzsoc()));
-            //clearEmployeesNames();
+            KeyEvent ke = new KeyEvent(KeyEvent.KEY_RELEASED,"", "", KeyCode.UNDEFINED, false, false, false, false);
+            employeeName.fireEvent(ke);
         }
     }
 
@@ -154,19 +157,14 @@ public class ContractParts extends HBox {
     }
 
     public void refreshEmployers(List<ClientDTO> employers){
-        if(!employersNames.getItems().isEmpty()) {
-            employersNames.getItems().clear();
-        }
         ObservableList<ClientDTO> listPersonsWhoMatchPattern = FXCollections.observableList(employers);
-        employersNames.getItems().addAll(listPersonsWhoMatchPattern);
+        employersNames.setItems(listPersonsWhoMatchPattern);
     }
 
     public void refreshEmployees(List<PersonDTO> employees){
-        if(!employeesNames.getItems().isEmpty()) {
-            employeesNames.getItems().clear();
-        }
         ObservableList<PersonDTO> listPersonsWhoMatchPattern = FXCollections.observableList(employees);
-        employeesNames.getItems().addAll(listPersonsWhoMatchPattern);
+        employeesNames.setItems(listPersonsWhoMatchPattern);
+
     }
 
     public void refreshEmployerCCC(List<ClientCCCDTO> clientCCCDTO){

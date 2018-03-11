@@ -136,7 +136,7 @@ public class ProvisionalContractDataDTO {
         private String workDayType;
         private String numberHoursPerWeek;
         private Map<String, Boolean> daysWeekToWork;
-        private String laboralCategory;
+        private String laborCategory;
 
         public ProvisionalContractDataDTO.DataBuilder withEmployerFullName (String employerFullName) {
             this.employerFullName = employerFullName;
@@ -188,14 +188,14 @@ public class ProvisionalContractDataDTO {
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withLaboralCategory(String laboralCategory) {
-            this.laboralCategory = laboralCategory;
+        public ProvisionalContractDataDTO.DataBuilder withLaboralCategory(String laborCategory) {
+            this.laborCategory = laborCategory;
             return this;
         }
 
         public ProvisionalContractDataDTO build() {
             return new ProvisionalContractDataDTO(this.employerFullName, this.employeeFullName, this.quoteAccountCode, this.contractType, this.dateFrom,
-            this.dateTo, this.durationDays, this.workDayType, this.numberHoursPerWeek, this.daysWeekToWork, this.laboralCategory);
+            this.dateTo, this.durationDays, this.workDayType, this.numberHoursPerWeek, this.daysWeekToWork, this.laborCategory);
         }
     }
 }

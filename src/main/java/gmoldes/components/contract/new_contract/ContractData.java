@@ -4,6 +4,7 @@ import gmoldes.components.ViewLoader;
 import gmoldes.controllers.ContractTypeController;
 import gmoldes.domain.dto.ContractTypeDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
+import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 
 public class ContractData extends AnchorPane {
@@ -82,18 +84,19 @@ public class ContractData extends AnchorPane {
     @FXML
     private CheckBox Sunday;
     @FXML
-    private TextField laboralCategory;
+    private TextField laborCategory;
 
     public ContractData() {
 
         this.parent = ViewLoader.load(this, CONTRACT_DATA_FXML);
-        this.dateFrom.setOnAction(this::onDateAction);
-        this.dateTo.setOnAction(this::onDateAction);
     }
 
     @FXML
     private void initialize(){
         logger.info("Initializing contract data fxml ...");
+        dateFrom.setOnAction(this::onDateAction);
+        dateTo.setOnAction(this::onDateAction);
+        hoursWorkWeek.setOnAction(this::onHoursWorkWeek);
         init();
     }
 
@@ -110,6 +113,16 @@ public class ContractData extends AnchorPane {
             this.durationDaysContract.setText(durationContractCalc.toString());
         }else{
             this.durationDaysContract.setText("");
+        }
+    }
+
+    private void onHoursWorkWeek(ActionEvent event){
+        Pattern timePattern = Pattern.compile("\\d{2}[:]\\d{2}");
+        if(!timePattern.matcher(hoursWorkWeek.getText()).matches()) {
+            hoursWorkWeek.setText(null);
+        }else if(Utilities.converterTimeStringToDuration(hoursWorkWeek.getText()).compareTo(Parameters.MAXIMUM_NUMBER_OF_WORK_HOURS_PER_WEEK ) > 0 ||
+                Integer.parseInt(hoursWorkWeek.getText().substring(3,5)) > Parameters.MAXIMUM_VALUE_MINUTES){
+            hoursWorkWeek.setText(null);
         }
     }
 
@@ -153,11 +166,7 @@ public class ContractData extends AnchorPane {
         if(radioButtonPartialWorkDay.isSelected()){
             workDayType = PARTIAL_WORKDAY;
             if(this.hoursWorkWeek.getText() != null){
-                try {
-                    numberHoursPerWeek = decimalFormatter.format(Double.parseDouble(this.hoursWorkWeek.getText().replace(",",".")));
-                }catch (Exception e){
-                    this.hoursWorkWeek.setText(null);
-                }
+                numberHoursPerWeek = this.hoursWorkWeek.getText();
             }
         }
 
@@ -192,10 +201,9 @@ public class ContractData extends AnchorPane {
             daysWeekToWork.put("Sunday", true);
         }
 
-
-        String laboralCategory = "";
-        if(this.laboralCategory.getText() != null){
-            laboralCategory = this.laboralCategory.getText();
+        String laborCategory = "";
+        if(this.laborCategory.getText() != null){
+            laborCategory = this.laborCategory.getText();
         }
 
         return ProvisionalContractDataDTO.create()
@@ -206,7 +214,7 @@ public class ContractData extends AnchorPane {
                 .withWorkDayType(workDayType)
                 .withNumberHoursPerWeek(numberHoursPerWeek)
                 .withDaysWeekToWork(daysWeekToWork)
-                .withLaboralCategory(laboralCategory)
+                .withLaboralCategory(laborCategory)
                 .build();
     }
 
@@ -275,7 +283,7 @@ public class ContractData extends AnchorPane {
         hourNotification.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             if (!newPropertyValue)
             {
-                Date hour = Utilities.verifyHourValue(hourNotification.getText());
+                Date hour = Utilities.validateStringAsTime(hourNotification.getText());
                 if(hour == null){
                     hourNotification.setText("");
                 }else{
@@ -286,6 +294,10 @@ public class ContractData extends AnchorPane {
         });
     }
 
+    public String getHoursWorkWeek(){
+        return hoursWorkWeek.getText();
+    }
+
     @Override
     public String toString(){
         return "Fecha notificación: " + this.dateNotification.getValue() + "\n"
@@ -293,5 +305,4 @@ public class ContractData extends AnchorPane {
                 + "Fecha desde: " + this.dateFrom.getValue() + "\n"
                 + "Fecha hasta: " + this.dateTo.getValue() + "\n";
     }
-
 }

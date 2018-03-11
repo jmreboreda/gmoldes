@@ -5,7 +5,7 @@ import javafx.event.EventType;
 
 public class SearchEmployersEvent extends Event {
 
-	public static final EventType<SearchEmployersEvent> SEARCH_EMPLOYERS_EVENT = new EventType<>("SEARCH_EMPLOYERS_EVENT");
+	public static final EventType<SearchEmployersEvent> SEARCH_EMPLOYERS_EVENT = new EventType<>("CHANGE_SCHEDULE_DURATION_EVENT");
 	private final String pattern;
 	private final String employersNameSelectedItem;
 

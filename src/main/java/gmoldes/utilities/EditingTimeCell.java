@@ -70,7 +70,7 @@ public class EditingTimeCell extends TableCell<ContractScheduleDayDTO, LocalTime
     private void createTextField() {
         Pattern timePattern = Pattern.compile("\\d{2}[:]\\d{2}");
 
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm").withLocale(Locale.ITALIAN);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         textField = new TextField(getString());
         textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
         textField.setOnKeyReleased(t -> {

@@ -52,16 +52,33 @@ public class EditingDurationCell extends TableCell<ContractScheduleDayDTO, Durat
 
     private String getString() {
         Duration duration = getItem();
-        Long hours = duration.toHours();
-        Long minutesOfHours = duration.toMinutes();
-        Long minutes = minutesOfHours - hours * 60;
+//        Long hours = duration.toHours();
+//        Long minutesOfHours = duration.toMinutes();
+//        Long minutes = minutesOfHours - hours * 60;
+//
+//        String minutesString = minutes.toString();
+//        if(minutesString.length() < 2){
+//            minutesString = minutesString + "0";
+//        }
+//        String durationToString = hours.toString() + ":" + minutesString + " ";
 
-        String minutesString = minutes.toString();
-        if(minutesString.length() < 2){
-            minutesString = minutesString + "0";
+        if(duration == Duration.ZERO){
+            return "0:00";
         }
-        String durationString = hours.toString() + ":" + minutesString + " ";
 
-        return getItem() == null ? "" : durationString;
+        String durationToString = duration.toString();
+        durationToString = durationToString.replace("PT","");
+        durationToString = durationToString.replace("H",":");
+        durationToString = durationToString.replace("M","");
+
+        Long durationHours = duration.toHours();
+        Long durationMinutes = duration.toMinutes();
+        Long minutes = durationMinutes - durationHours * 60;
+
+        if(minutes == 0 ){
+            durationToString = durationToString + "00";
+        }
+
+        return getItem() == null ? "" : durationToString;
     }
 }

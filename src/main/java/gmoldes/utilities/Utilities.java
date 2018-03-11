@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -40,7 +41,13 @@ public class Utilities {
         }
     };
 
-    public static Date verifyHourValue(String time){
+    public static Duration converterTimeStringToDuration(String timeAsString){
+        String stringDuration = timeAsString.replace(":", "H");
+        stringDuration = "PT" + stringDuration + "M";
+        return Duration.parse(stringDuration);
+    }
+
+    public static Date validateStringAsTime(String time){
         Date hour;
         DateFormat hourFormatter = new SimpleDateFormat("HH:mm");
         hourFormatter.setLenient(false);

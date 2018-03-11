@@ -1,6 +1,7 @@
 package gmoldes.controllers;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
 import gmoldes.components.contract.events.SearchEmployeesEvent;
 import gmoldes.components.contract.events.SearchEmployersEvent;
 import gmoldes.components.contract.events.SelectEmployerEvent;
@@ -9,6 +10,8 @@ import gmoldes.domain.dto.ClientCCCDTO;
 import gmoldes.domain.dto.ClientDTO;
 import gmoldes.domain.dto.PersonDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
+import gmoldes.utilities.Parameters;
+import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -17,6 +20,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -69,6 +73,7 @@ public class NewContractMainController extends VBox {
         contractParts.setOnSearchEmployers(this::onSearchEmployers);
         contractParts.setOnSearchEmployees(this::onSearchEmployees);
         contractParts.setOnSelectEmployer(this::onSelectEmployer);
+        contractSchedule.setOnChangeScheduleDuration(this::onChangeScheduleDuration);
     }
 
     private void refreshProvisionalContractData(){
@@ -92,7 +97,6 @@ public class NewContractMainController extends VBox {
 
     private void onSearchEmployers(SearchEmployersEvent searchEmployersEvent){
         String pattern = searchEmployersEvent.getPattern();
-        String employersNameSelectedItem = searchEmployersEvent.getEmployersNameSelectedItem();
         if(pattern == null){
             pattern = "";
         }
@@ -101,24 +105,17 @@ public class NewContractMainController extends VBox {
             contractParts.clearEmployerCCC();
             return;
         }
-//        if(pattern.equals(employersNameSelectedItem)){
-//            return;
-//        }
         List<ClientDTO> employers = findClientsByNamePattern(pattern);
         contractParts.refreshEmployers(employers);
     }
 
     private void onSearchEmployees(SearchEmployeesEvent searchEmployeesEvent){
         String pattern = searchEmployeesEvent.getPattern();
-        String employeesNameSelectedItem = searchEmployeesEvent.getEmployeesNameSelectedItem();
         if(pattern == null){
             pattern = "";
         }
         if(pattern.isEmpty()){
             contractParts.clearEmployeesData();
-            return;
-        }
-        if(pattern.equals(employeesNameSelectedItem)){
             return;
         }
         List<PersonDTO> employees = findPersonsByNamePattern(pattern);
@@ -129,6 +126,19 @@ public class NewContractMainController extends VBox {
         Integer selectedEmployerId = selectEmployerEvent.getSelectedEmployer().getId();
         List<ClientCCCDTO> clientCCCDTOList = retrieveClientCCCById(selectedEmployerId);
         contractParts.refreshEmployerCCC(clientCCCDTOList);
+    }
+
+    private void onChangeScheduleDuration(ChangeScheduleDurationEvent event){
+
+        if(event.getContractScheduleTotalHoursDuration().compareTo(Parameters.MAXIMUM_NUMBER_OF_WORK_HOURS_PER_WEEK) > 0){
+            System.out.println("Exceso de jornada laboral.");
+            return;
+        }
+
+        Duration duration = Utilities.converterTimeStringToDuration(contractData.getHoursWorkWeek());
+        if(event.getContractScheduleTotalHoursDuration().compareTo(duration) > 0){
+            System.out.println("No coincide el total de horas del horario con las establecidas en la pestaña \"Contrato\".");
+        }
     }
 
     private List<ClientDTO> findClientsByNamePattern(String pattern){

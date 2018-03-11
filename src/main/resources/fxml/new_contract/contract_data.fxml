@@ -173,7 +173,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="laboralCategory" promptText="Categoría laboral del trabajador" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="6">
+            <TextField fx:id="laborCategory" promptText="Categoría laboral del trabajador" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></TextField>

@@ -1,13 +1,13 @@
 package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
+import gmoldes.components.contract.events.SelectEmployerEvent;
 import gmoldes.domain.dto.ContractScheduleDayDTO;
-import gmoldes.utilities.EditingDateCell;
-import gmoldes.utilities.EditingDurationCell;
-import gmoldes.utilities.EditingStringCell;
-import gmoldes.utilities.EditingTimeCell;
+import gmoldes.utilities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TableCell;
@@ -37,9 +37,10 @@ public class ContractSchedule extends AnchorPane {
     private static final Integer AM_TO_COLUMN = 3;
     private static final Integer PM_FROM_COLUMN = 4;
     private static final Integer PM_TO_COLUMN = 5;
-    private static final Integer HOURS_COLUMN = 6;
     private static final KeyCode REQUEST_DELETION_ALL_DATA = KeyCode.F8;
     private static final KeyCode REQUEST_FOR_DATA_DUPLICATION = KeyCode.F10;
+
+    private EventHandler<ChangeScheduleDurationEvent> onChangeScheduleDurationEventHandler;
 
     private Parent parent;
 
@@ -269,6 +270,11 @@ public class ContractSchedule extends AnchorPane {
             totalHours = totalHours.plus(contractScheduleDayDTO.getTotalDayHours());
         }
         summationOfHours.setText(myFormatDurationToString(totalHours));
+
+        if(totalHours != Duration.ZERO) {
+            final ChangeScheduleDurationEvent changeScheduleDurationEvent = new ChangeScheduleDurationEvent(totalHours);
+            onChangeScheduleDurationEventHandler.handle(changeScheduleDurationEvent);
+        }
     }
 
     private String myFormatDurationToString (Duration duration){
@@ -290,5 +296,9 @@ public class ContractSchedule extends AnchorPane {
         }
 
         return durationToString;
+    }
+
+    public void setOnChangeScheduleDuration(EventHandler<ChangeScheduleDurationEvent> handler){
+       this.onChangeScheduleDurationEventHandler = handler;
     }
 }
