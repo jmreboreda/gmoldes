@@ -2,7 +2,6 @@ package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
-import gmoldes.components.contract.events.SelectEmployerEvent;
 import gmoldes.domain.dto.ContractScheduleDayDTO;
 import gmoldes.utilities.*;
 import javafx.collections.FXCollections;
@@ -118,12 +117,6 @@ public class ContractSchedule extends AnchorPane {
         for(int i = 0; i <= FINAL_ROW_TABLE; i++){
             contractScheduleDayDTOList.add(
                     ContractScheduleDayDTO.create()
-                            .withDayOfWeek(null)
-                            .withDate(null)
-                            .withAmFrom(null)
-                            .withAmTo(null)
-                            .withPmFrom(null)
-                            .withPmTo(null)
                             .withTotalDayHours(Duration.ZERO)
                             .build());
         }
@@ -269,33 +262,14 @@ public class ContractSchedule extends AnchorPane {
         for(ContractScheduleDayDTO contractScheduleDayDTO : contract_schedule_table.getItems()){
             totalHours = totalHours.plus(contractScheduleDayDTO.getTotalDayHours());
         }
-        summationOfHours.setText(myFormatDurationToString(totalHours));
+        summationOfHours.setText(Utilities.converterDurationToTimeString(totalHours));
+
+        System.out.println(Utilities.converterDurationToTimeString(totalHours)); //********************************
 
         if(totalHours != Duration.ZERO) {
             final ChangeScheduleDurationEvent changeScheduleDurationEvent = new ChangeScheduleDurationEvent(totalHours);
             onChangeScheduleDurationEventHandler.handle(changeScheduleDurationEvent);
         }
-    }
-
-    private String myFormatDurationToString (Duration duration){
-        if(duration == Duration.ZERO){
-            return "0:00";
-        }
-
-        String durationToString = duration.toString();
-        durationToString = durationToString.replace("PT","");
-        durationToString = durationToString.replace("H",":");
-        durationToString = durationToString.replace("M","");
-
-        Long durationHours = duration.toHours();
-        Long durationMinutes = duration.toMinutes();
-        Long minutes = durationMinutes - durationHours * 60;
-
-        if(minutes == 0 ){
-            durationToString = durationToString + "00";
-        }
-
-        return durationToString;
     }
 
     public void setOnChangeScheduleDuration(EventHandler<ChangeScheduleDurationEvent> handler){

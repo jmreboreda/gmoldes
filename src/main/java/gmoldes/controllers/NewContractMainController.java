@@ -137,7 +137,7 @@ public class NewContractMainController extends VBox {
 
         Duration duration = Utilities.converterTimeStringToDuration(contractData.getHoursWorkWeek());
         if(event.getContractScheduleTotalHoursDuration().compareTo(duration) > 0){
-            System.out.println("No coincide el total de horas del horario con las establecidas en la pestaña \"Contrato\".");
+            System.out.println("El total de horas del horario es mayor que el total de horas de la pestaña \"Contrato\".");
         }
     }
 

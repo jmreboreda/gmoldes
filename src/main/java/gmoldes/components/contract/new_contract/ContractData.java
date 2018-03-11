@@ -21,10 +21,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -96,7 +93,7 @@ public class ContractData extends AnchorPane {
         logger.info("Initializing contract data fxml ...");
         dateFrom.setOnAction(this::onDateAction);
         dateTo.setOnAction(this::onDateAction);
-        hoursWorkWeek.setOnAction(this::onHoursWorkWeek);
+        hoursWorkWeek.setOnAction(this::onHoursWorkWeekChanged);
         init();
     }
 
@@ -116,12 +113,24 @@ public class ContractData extends AnchorPane {
         }
     }
 
-    private void onHoursWorkWeek(ActionEvent event){
+    private void onHoursWorkWeekChanged(ActionEvent event){
         Pattern timePattern = Pattern.compile("\\d{2}[:]\\d{2}");
         if(!timePattern.matcher(hoursWorkWeek.getText()).matches()) {
             hoursWorkWeek.setText(null);
-        }else if(Utilities.converterTimeStringToDuration(hoursWorkWeek.getText()).compareTo(Parameters.MAXIMUM_NUMBER_OF_WORK_HOURS_PER_WEEK ) > 0 ||
-                Integer.parseInt(hoursWorkWeek.getText().substring(3,5)) > Parameters.MAXIMUM_VALUE_MINUTES){
+
+            return;
+        }
+
+        String hoursWorkPerWeek = hoursWorkWeek.getText();
+
+        if((Utilities.converterTimeStringToDuration(hoursWorkPerWeek) == null)){
+            hoursWorkWeek.setText(null);
+
+            return;
+        }
+
+        if(Objects.requireNonNull(Utilities.converterTimeStringToDuration(hoursWorkPerWeek))
+                .compareTo(Parameters.MAXIMUM_NUMBER_OF_WORK_HOURS_PER_WEEK ) > 0 ){
             hoursWorkWeek.setText(null);
         }
     }

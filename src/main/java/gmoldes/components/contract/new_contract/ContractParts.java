@@ -70,21 +70,13 @@ public class ContractParts extends HBox {
 
     private void onEmployerNamePatternChanged(KeyEvent keyEvent) {
         String pattern = employerName.getText();
-        String employersNameSelectedItem = null;
-        if(this.employersNames.getSelectionModel().getSelectedItem() != null) {
-            employersNameSelectedItem = this.employersNames.getSelectionModel().getSelectedItem().toString();
-        }
-        final SearchEmployersEvent searchEmployersEvent = new SearchEmployersEvent(pattern, employersNameSelectedItem);
+        final SearchEmployersEvent searchEmployersEvent = new SearchEmployersEvent(pattern);
         onEmployerNamePatternChangedEventHandler.handle(searchEmployersEvent);
     }
 
     private void onEmployeeNamePatternChanged(KeyEvent keyEvent) {
         String pattern = employeeName.getText();
-        String employeeNameSelectedItem = null;
-        if(this.employeesNames.getSelectionModel().getSelectedItem() != null) {
-            employeeNameSelectedItem = this.employeesNames.getSelectionModel().getSelectedItem().toString();
-        }
-        final SearchEmployeesEvent searchEmployeesEvent = new SearchEmployeesEvent(pattern, employeeNameSelectedItem);
+        final SearchEmployeesEvent searchEmployeesEvent = new SearchEmployeesEvent(pattern);
         onEmployeeNamePatternChangedEventHandler.handle(searchEmployeesEvent);
     }
 

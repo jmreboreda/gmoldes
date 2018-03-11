@@ -1,9 +1,6 @@
 package gmoldes.utilities;
 
 import javafx.util.StringConverter;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -42,9 +39,37 @@ public class Utilities {
     };
 
     public static Duration converterTimeStringToDuration(String timeAsString){
+        String minutes = timeAsString.substring(3,5);
+        if(Integer.parseInt(minutes) > Parameters.MAXIMUM_VALUE_MINUTES_IN_HOUR) {
+
+            return null;
+        }
+
         String stringDuration = timeAsString.replace(":", "H");
         stringDuration = "PT" + stringDuration + "M";
+
         return Duration.parse(stringDuration);
+    }
+
+    public static  String converterDurationToTimeString(Duration duration){
+        if(duration == Duration.ZERO){
+            return "0:00";
+        }
+
+        String durationToString = duration.toString();
+        durationToString = durationToString.replace("PT","");
+        durationToString = durationToString.replace("H",":");
+        durationToString = durationToString.replace("M","");
+
+        Long durationHours = duration.toHours();
+        Long durationMinutes = duration.toMinutes();
+        Long minutes = durationMinutes - durationHours * 60;
+
+        if(minutes == 0 ){
+            durationToString = durationToString + "00";
+        }
+
+        return durationToString;
     }
 
     public static Date validateStringAsTime(String time){
