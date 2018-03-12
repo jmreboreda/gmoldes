@@ -264,8 +264,6 @@ public class ContractSchedule extends AnchorPane {
         }
         summationOfHours.setText(Utilities.converterDurationToTimeString(totalHours));
 
-        System.out.println(Utilities.converterDurationToTimeString(totalHours)); //********************************
-
         if(totalHours != Duration.ZERO) {
             final ChangeScheduleDurationEvent changeScheduleDurationEvent = new ChangeScheduleDurationEvent(totalHours);
             onChangeScheduleDurationEventHandler.handle(changeScheduleDurationEvent);

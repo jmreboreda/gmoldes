@@ -77,6 +77,10 @@ public class NewContractMainController extends VBox {
     }
 
     private void refreshProvisionalContractData(){
+        if (!contractData.isValidDataInContractData()){
+            System.out.println("Hay campos obligatorios sin cumplimentar en la pestaña \"Contrato\".");
+            return;
+        }
         ProvisionalContractDataDTO contractDataDTO = retrieveProvisionalContractDataDTO();
         provisionalContractData.refreshData(contractDataDTO);
     }
@@ -97,9 +101,9 @@ public class NewContractMainController extends VBox {
 
     private void onSearchEmployers(SearchEmployersEvent searchEmployersEvent){
         String pattern = searchEmployersEvent.getPattern();
-        if(pattern == null){
-            pattern = "";
-        }
+//        if(pattern == null){
+//            pattern = "";
+//        }
         if(pattern.isEmpty()){
             contractParts.clearEmployersData();
             contractParts.clearEmployerCCC();
@@ -130,7 +134,7 @@ public class NewContractMainController extends VBox {
 
     private void onChangeScheduleDuration(ChangeScheduleDurationEvent event){
 
-        if(event.getContractScheduleTotalHoursDuration().compareTo(Parameters.MAXIMUM_NUMBER_OF_WORK_HOURS_PER_WEEK) > 0){
+        if(event.getContractScheduleTotalHoursDuration().compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0){
             System.out.println("Exceso de jornada laboral.");
             return;
         }

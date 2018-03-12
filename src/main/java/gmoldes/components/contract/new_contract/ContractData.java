@@ -18,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -81,7 +82,7 @@ public class ContractData extends AnchorPane {
     @FXML
     private CheckBox Sunday;
     @FXML
-    private TextField laborCategory;
+    private TextField laborCategoryDescriptionInput;
 
     public ContractData() {
 
@@ -95,6 +96,7 @@ public class ContractData extends AnchorPane {
         dateTo.setOnAction(this::onDateAction);
         hoursWorkWeek.setOnAction(this::onHoursWorkWeekChanged);
         init();
+
     }
 
     private void init(){
@@ -129,13 +131,17 @@ public class ContractData extends AnchorPane {
             return;
         }
 
-        if(Objects.requireNonNull(Utilities.converterTimeStringToDuration(hoursWorkPerWeek))
-                .compareTo(Parameters.MAXIMUM_NUMBER_OF_WORK_HOURS_PER_WEEK ) > 0 ){
+        Duration durationEnteredByUser = Utilities.converterTimeStringToDuration(hoursWorkPerWeek);
+        if(Objects.requireNonNull(durationEnteredByUser).compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK ) > 0 ){
             hoursWorkWeek.setText(null);
         }
     }
 
     public ProvisionalContractDataDTO getAllData(){
+
+        if(!isValidDataInContractData()){
+            return null;
+        }
 
         String contractType = null;
         if(this.contractType.getSelectionModel().getSelectedItem() != null){
@@ -169,8 +175,9 @@ public class ContractData extends AnchorPane {
         String workDayType = "";
         String numberHoursPerWeek = "";
         if(radioButtonFullWorkDay.isSelected()){
+            hoursWorkWeek.setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
             workDayType = FULL_WORKDAY;
-            numberHoursPerWeek = "";
+            numberHoursPerWeek = Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK);
         }
         if(radioButtonPartialWorkDay.isSelected()){
             workDayType = PARTIAL_WORKDAY;
@@ -211,8 +218,8 @@ public class ContractData extends AnchorPane {
         }
 
         String laborCategory = "";
-        if(this.laborCategory.getText() != null){
-            laborCategory = this.laborCategory.getText();
+        if(this.laborCategoryDescriptionInput.getText() != null){
+            laborCategory = this.laborCategoryDescriptionInput.getText();
         }
 
         return ProvisionalContractDataDTO.create()
@@ -225,6 +232,19 @@ public class ContractData extends AnchorPane {
                 .withDaysWeekToWork(daysWeekToWork)
                 .withLaboralCategory(laborCategory)
                 .build();
+    }
+
+    public Boolean isValidDataInContractData(){
+
+        if(hourNotification.getText().isEmpty() ||
+                contractType.getSelectionModel().getSelectedItem() == null ||
+                dateFrom.getValue() == null ||
+                radioButtonTemporalContractDuration.isSelected() && dateTo.getValue() == null ||
+                radioButtonPartialWorkDay.isSelected() && hoursWorkWeek.getText() == null
+                ){
+            return false;
+        }
+        return true;
     }
 
     private void notificationDateControlSetup(){
@@ -242,6 +262,7 @@ public class ContractData extends AnchorPane {
     private void contractDurationControlSetup(){
         radioButtonUndefinedContractDuration.setSelected(true);
         dateFrom.setConverter(Utilities.converter);
+        dateFrom.setValue(LocalDate.now());
         dateFrom.showWeekNumbersProperty().set(false);
         dateFrom.setEditable(false);
 
@@ -260,20 +281,26 @@ public class ContractData extends AnchorPane {
                 }else{
                     dateTo.setDisable(false);
                     durationDaysContract.setDisable(false);
+                    dateTo.setValue(LocalDate.now());
+                    dateTo.requestFocus();
                 }
             }
         });
     }
 
     private void workDayDataControlSetup(){
+        radioButtonFullWorkDay.setSelected(true);
+        hoursWorkWeek.setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
         grWorkDay.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle old_toggle, Toggle new_toggle) {
                 if (radioButtonFullWorkDay.isSelected()) {
-                    hoursWorkWeek.setText(null);
+                    hoursWorkWeek.setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
                     hoursWorkWeek.setDisable(true);
                 }else{
                     hoursWorkWeek.setDisable(false);
+                    hoursWorkWeek.setText("00:00");
+                    hoursWorkWeek.requestFocus();
                 }
             }
         });
