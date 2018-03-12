@@ -39,7 +39,15 @@ public class Utilities {
     };
 
     public static Duration converterTimeStringToDuration(String timeAsString){
-        String minutes = timeAsString.substring(3,5);
+        String minutes = null;
+        if(timeAsString.length() == 5){
+            minutes = timeAsString.substring(3,5);
+        }
+        else if(timeAsString.length() == 4){
+            minutes = timeAsString.substring(2,4);
+        }
+
+        assert minutes != null;
         if(Integer.parseInt(minutes) > Parameters.MAXIMUM_VALUE_MINUTES_IN_HOUR) {
 
             return null;

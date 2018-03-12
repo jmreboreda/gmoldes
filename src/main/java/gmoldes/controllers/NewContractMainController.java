@@ -1,10 +1,7 @@
 package gmoldes.controllers;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
-import gmoldes.components.contract.events.SearchEmployeesEvent;
-import gmoldes.components.contract.events.SearchEmployersEvent;
-import gmoldes.components.contract.events.SelectEmployerEvent;
+import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.new_contract.*;
 import gmoldes.domain.dto.ClientCCCDTO;
 import gmoldes.domain.dto.ClientDTO;
@@ -70,10 +67,15 @@ public class NewContractMainController extends VBox {
             }
         });
 
+        contractData.setOnChangeContractDataHoursWorkWeek(this::onChangeContractDataHoursWorkWeek);
         contractParts.setOnSearchEmployers(this::onSearchEmployers);
         contractParts.setOnSearchEmployees(this::onSearchEmployees);
         contractParts.setOnSelectEmployer(this::onSelectEmployer);
         contractSchedule.setOnChangeScheduleDuration(this::onChangeScheduleDuration);
+    }
+
+    private void onOkButton(MouseEvent event){
+        System.out.println(event.getSource() + " clicked!");
     }
 
     private void refreshProvisionalContractData(){
@@ -83,10 +85,6 @@ public class NewContractMainController extends VBox {
         }
         ProvisionalContractDataDTO contractDataDTO = retrieveProvisionalContractDataDTO();
         provisionalContractData.refreshData(contractDataDTO);
-    }
-
-    private void onOkButton(MouseEvent event){
-        System.out.println(event.getSource() + " clicked!");
     }
 
     private ProvisionalContractDataDTO retrieveProvisionalContractDataDTO(){
@@ -132,6 +130,15 @@ public class NewContractMainController extends VBox {
         contractParts.refreshEmployerCCC(clientCCCDTOList);
     }
 
+    private void onChangeContractDataHoursWorkWeek(ChangeContractDataHoursWorkWeekEvent event){
+        Duration scheduleHoursWorkWeekDuration = Utilities.converterTimeStringToDuration(contractSchedule.getSummationOfHours());
+        if(scheduleHoursWorkWeekDuration != Duration.ZERO){
+            if(event.getContractDataHoursWorkWeek().compareTo(scheduleHoursWorkWeekDuration) != 0){
+                System.out.println("El total de horas de la pestaña \"Horario\" es distinto que el total de horas de la pestaña \"Contrato\".");
+            }
+        }
+    }
+
     private void onChangeScheduleDuration(ChangeScheduleDurationEvent event){
 
         if(event.getContractScheduleTotalHoursDuration().compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0){
@@ -141,7 +148,7 @@ public class NewContractMainController extends VBox {
 
         Duration duration = Utilities.converterTimeStringToDuration(contractData.getHoursWorkWeek());
         if(event.getContractScheduleTotalHoursDuration().compareTo(duration) > 0){
-            System.out.println("El total de horas del horario es mayor que el total de horas de la pestaña \"Contrato\".");
+            System.out.println("El total de horas de la pestaña \"Horario\" es mayor que el total de horas de la pestaña \"Contrato\".");
         }
     }
 

@@ -1,6 +1,7 @@
 package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
 import gmoldes.controllers.ContractTypeController;
 import gmoldes.domain.dto.ContractTypeDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
@@ -11,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -37,6 +39,8 @@ public class ContractData extends AnchorPane {
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private DecimalFormat decimalFormatter = new DecimalFormat("0.00##");
+
+    private EventHandler<ChangeContractDataHoursWorkWeekEvent> changeContractDataHoursWorkWeekEventHandler;
 
 
     private Parent parent;
@@ -95,6 +99,14 @@ public class ContractData extends AnchorPane {
         dateFrom.setOnAction(this::onDateAction);
         dateTo.setOnAction(this::onDateAction);
         hoursWorkWeek.setOnAction(this::onHoursWorkWeekChanged);
+        hoursWorkWeek.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
+            if (!newPropertyValue)   // Textfield out focus
+            {
+                if(!hoursWorkWeek.getText().isEmpty()){
+                onHoursWorkWeekChanged(new ActionEvent());
+                }
+            }
+        });
         init();
 
     }
@@ -124,7 +136,6 @@ public class ContractData extends AnchorPane {
         }
 
         String hoursWorkPerWeek = hoursWorkWeek.getText();
-
         if((Utilities.converterTimeStringToDuration(hoursWorkPerWeek) == null)){
             hoursWorkWeek.setText(null);
 
@@ -132,14 +143,21 @@ public class ContractData extends AnchorPane {
         }
 
         Duration durationEnteredByUser = Utilities.converterTimeStringToDuration(hoursWorkPerWeek);
-        if(Objects.requireNonNull(durationEnteredByUser).compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK ) > 0 ){
+        if(durationEnteredByUser.compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK ) > 0 ){
             hoursWorkWeek.setText(null);
+
+            return;
         }
+
+        Duration hoursWorkWeekDuration = Utilities.converterTimeStringToDuration(hoursWorkWeek.getText());
+        ChangeContractDataHoursWorkWeekEvent contractDataHoursWorkWeekEvent = new ChangeContractDataHoursWorkWeekEvent(hoursWorkWeekDuration);
+        changeContractDataHoursWorkWeekEventHandler.handle(contractDataHoursWorkWeekEvent);
     }
 
     public ProvisionalContractDataDTO getAllData(){
 
         if(!isValidDataInContractData()){
+
             return null;
         }
 
@@ -332,6 +350,10 @@ public class ContractData extends AnchorPane {
 
     public String getHoursWorkWeek(){
         return hoursWorkWeek.getText();
+    }
+
+    public void setOnChangeContractDataHoursWorkWeek(EventHandler<ChangeContractDataHoursWorkWeekEvent> changeContractDataHoursWorkWeekEventHandler){
+        this.changeContractDataHoursWorkWeekEventHandler = changeContractDataHoursWorkWeekEventHandler;
     }
 
     @Override

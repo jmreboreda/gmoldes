@@ -270,6 +270,10 @@ public class ContractSchedule extends AnchorPane {
         }
     }
 
+    public String getSummationOfHours(){
+        return summationOfHours.getText();
+    }
+
     public void setOnChangeScheduleDuration(EventHandler<ChangeScheduleDurationEvent> handler){
        this.onChangeScheduleDurationEventHandler = handler;
     }
