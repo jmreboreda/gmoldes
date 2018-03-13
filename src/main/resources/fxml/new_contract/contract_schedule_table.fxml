@@ -55,7 +55,7 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="summationOfHours" alignment="CENTER_RIGHT" editable="false" text="0:00">
+                        <TextField fx:id="hoursWorkWeek" alignment="CENTER_RIGHT" editable="false" text="0:00">
                            <VBox.margin>
                               <Insets right="5.0" top="5.0" />
                            </VBox.margin>

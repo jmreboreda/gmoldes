@@ -131,7 +131,7 @@ public class NewContractMainController extends VBox {
     }
 
     private void onChangeContractDataHoursWorkWeek(ChangeContractDataHoursWorkWeekEvent event){
-        Duration scheduleHoursWorkWeekDuration = Utilities.converterTimeStringToDuration(contractSchedule.getSummationOfHours());
+        Duration scheduleHoursWorkWeekDuration = Utilities.converterTimeStringToDuration(contractSchedule.getHoursWorkWeek());
         if(scheduleHoursWorkWeekDuration != Duration.ZERO){
             if(event.getContractDataHoursWorkWeek().compareTo(scheduleHoursWorkWeekDuration) != 0){
                 System.out.println("El total de horas de la pestaña \"Horario\" es distinto que el total de horas de la pestaña \"Contrato\".");
@@ -147,6 +147,7 @@ public class NewContractMainController extends VBox {
         }
 
         Duration duration = Utilities.converterTimeStringToDuration(contractData.getHoursWorkWeek());
+        assert duration != null;
         if(event.getContractScheduleTotalHoursDuration().compareTo(duration) > 0){
             System.out.println("El total de horas de la pestaña \"Horario\" es mayor que el total de horas de la pestaña \"Contrato\".");
         }

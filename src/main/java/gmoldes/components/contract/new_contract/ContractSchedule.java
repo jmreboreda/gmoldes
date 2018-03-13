@@ -60,9 +60,8 @@ public class ContractSchedule extends AnchorPane {
     @FXML
     private TableColumn<ContractScheduleDayDTO, Duration> totalDayHours;
     @FXML
-    private TextField summationOfHours;
+    private TextField hoursWorkWeek;
 
-    private Duration totalWeekHours = Duration.ZERO;
 
     public ContractSchedule() {
         this.parent = ViewLoader.load(this, SCHEDULE_FXML);
@@ -262,7 +261,7 @@ public class ContractSchedule extends AnchorPane {
         for(ContractScheduleDayDTO contractScheduleDayDTO : contract_schedule_table.getItems()){
             totalHours = totalHours.plus(contractScheduleDayDTO.getTotalDayHours());
         }
-        summationOfHours.setText(Utilities.converterDurationToTimeString(totalHours));
+        hoursWorkWeek.setText(Utilities.converterDurationToTimeString(totalHours));
 
         if(totalHours != Duration.ZERO) {
             final ChangeScheduleDurationEvent changeScheduleDurationEvent = new ChangeScheduleDurationEvent(totalHours);
@@ -270,8 +269,8 @@ public class ContractSchedule extends AnchorPane {
         }
     }
 
-    public String getSummationOfHours(){
-        return summationOfHours.getText();
+    public String getHoursWorkWeek(){
+        return hoursWorkWeek.getText();
     }
 
     public void setOnChangeScheduleDuration(EventHandler<ChangeScheduleDurationEvent> handler){

@@ -24,6 +24,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -103,7 +104,10 @@ public class ContractData extends AnchorPane {
             if (!newPropertyValue)   // Textfield out focus
             {
                 if(!hoursWorkWeek.getText().isEmpty()){
-                onHoursWorkWeekChanged(new ActionEvent());
+                    onHoursWorkWeekChanged(new ActionEvent());
+                }
+                else{
+                    hoursWorkWeek.setText("00:00");
                 }
             }
         });
@@ -119,32 +123,34 @@ public class ContractData extends AnchorPane {
     }
 
     private void onDateAction(ActionEvent actionEvent){
-        if(this.dateTo.getValue() != null && this.dateFrom.getValue() != null) {
-            Long durationContractCalc = (this.dateTo.getValue().toEpochDay() - this.dateFrom.getValue().toEpochDay() + 1);
-            this.durationDaysContract.setText(durationContractCalc.toString());
-        }else{
-            this.durationDaysContract.setText("");
+        if(dateFrom.getValue() != null && dateTo.getValue() != null) {
+            Long daysOfContractDuration = ChronoUnit.DAYS.between(dateFrom.getValue(), dateTo.getValue()) + 1;
+            durationDaysContract.setText(daysOfContractDuration.toString());
+        }
+        else{
+            durationDaysContract.setText("");
         }
     }
 
     private void onHoursWorkWeekChanged(ActionEvent event){
         Pattern timePattern = Pattern.compile("\\d{2}[:]\\d{2}");
         if(!timePattern.matcher(hoursWorkWeek.getText()).matches()) {
-            hoursWorkWeek.setText(null);
+            hoursWorkWeek.setText("00:00");
 
             return;
         }
 
         String hoursWorkPerWeek = hoursWorkWeek.getText();
         if((Utilities.converterTimeStringToDuration(hoursWorkPerWeek) == null)){
-            hoursWorkWeek.setText(null);
+            hoursWorkWeek.setText("00:00");
 
             return;
         }
 
         Duration durationEnteredByUser = Utilities.converterTimeStringToDuration(hoursWorkPerWeek);
+        assert durationEnteredByUser != null;
         if(durationEnteredByUser.compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK ) > 0 ){
-            hoursWorkWeek.setText(null);
+            hoursWorkWeek.setText("00:00");
 
             return;
         }
@@ -199,8 +205,8 @@ public class ContractData extends AnchorPane {
         }
         if(radioButtonPartialWorkDay.isSelected()){
             workDayType = PARTIAL_WORKDAY;
-            if(this.hoursWorkWeek.getText() != null){
-                numberHoursPerWeek = this.hoursWorkWeek.getText();
+            if(hoursWorkWeek.getText() != null){
+                numberHoursPerWeek = hoursWorkWeek.getText();
             }
         }
 
@@ -236,8 +242,8 @@ public class ContractData extends AnchorPane {
         }
 
         String laborCategory = "";
-        if(this.laborCategoryDescriptionInput.getText() != null){
-            laborCategory = this.laborCategoryDescriptionInput.getText();
+        if(laborCategoryDescriptionInput.getText() != null){
+            laborCategory = laborCategoryDescriptionInput.getText();
         }
 
         return ProvisionalContractDataDTO.create()
