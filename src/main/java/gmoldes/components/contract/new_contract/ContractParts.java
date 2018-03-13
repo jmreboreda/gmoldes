@@ -59,6 +59,7 @@ public class ContractParts extends HBox {
     public void initialize() {
 
         employerName.setOnKeyReleased(this::onEmployerNamePatternChanged);
+
         employeeName.setOnKeyReleased(this::onEmployeeNamePatternChanged);
 
         employersNames.getSelectionModel().selectedItemProperty()
@@ -82,9 +83,9 @@ public class ContractParts extends HBox {
 
     private void onSelectEmployer(ClientDTO newEmployerSelected){
         employerName.setText(newEmployerSelected.getPersonOrCompanyName());
-        KeyEvent ke = new KeyEvent(KeyEvent.KEY_RELEASED,"", "",
-                KeyCode.UNDEFINED, false, false, false, false);
-        employerName.fireEvent(ke);
+//        KeyEvent ke = new KeyEvent(KeyEvent.KEY_RELEASED,"", "",
+//                KeyCode.UNDEFINED, false, false, false, false);
+//        employerName.fireEvent(ke);
 
         final SelectEmployerEvent selectEmployerEvent = new SelectEmployerEvent(newEmployerSelected);
         onSelectEmployerEventHandler.handle(selectEmployerEvent);
@@ -93,20 +94,20 @@ public class ContractParts extends HBox {
     private void onSelectEmployee(PersonDTO newPersonValue){
         if(newPersonValue != null) {
             employeeName.setText(newPersonValue.getApellidos().concat(", ").concat(newPersonValue.getNom_rzsoc()));
-            KeyEvent ke = new KeyEvent(KeyEvent.KEY_RELEASED,"", "", KeyCode.UNDEFINED, false, false, false, false);
-            employeeName.fireEvent(ke);
+//            KeyEvent ke = new KeyEvent(KeyEvent.KEY_RELEASED,"", "", KeyCode.UNDEFINED, false, false, false, false);
+//            employeeName.fireEvent(ke);
         }
     }
 
     public ProvisionalContractDataDTO getAllData(){
 
-        String employerName = "";
+        String selectedEmployerName = "";
         if(this.employersNames.getSelectionModel().getSelectedItem() != null){
-            employerName = this.employersNames.getSelectionModel().getSelectedItem().toString();
+            selectedEmployerName = this.employersNames.getSelectionModel().getSelectedItem().toString();
         }
-        String employeeName = "";
+        String selectedEmployeeName = "";
         if(this.employeesNames.getSelectionModel().getSelectedItem() != null){
-            employeeName = this.employeesNames.getSelectionModel().getSelectedItem().toString();
+            selectedEmployeeName = this.employeesNames.getSelectionModel().getSelectedItem().toString();
         }
         String CCC = "";
         if(this.cotizationCode.getSelectionModel().getSelectedItem() != null){
@@ -114,9 +115,9 @@ public class ContractParts extends HBox {
         }
 
         return ProvisionalContractDataDTO.create()
-                .withEmployerFullName(employerName)
+                .withEmployerFullName(selectedEmployerName)
                 .withQuoteAccountCode(CCC)
-                .withEmployeeFullName(employeeName)
+                .withEmployeeFullName(selectedEmployeeName)
                 .build();
     }
 

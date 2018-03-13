@@ -20,14 +20,18 @@ import javafx.scene.layout.AnchorPane;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
+import static java.time.format.TextStyle.FULL;
 
 
 public class ContractData extends AnchorPane {
@@ -97,8 +101,11 @@ public class ContractData extends AnchorPane {
     @FXML
     private void initialize(){
         logger.info("Initializing contract data fxml ...");
+
         dateFrom.setOnAction(this::onDateAction);
+
         dateTo.setOnAction(this::onDateAction);
+
         hoursWorkWeek.setOnAction(this::onHoursWorkWeekChanged);
         hoursWorkWeek.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             if (!newPropertyValue)   // Textfield out focus
@@ -111,6 +118,7 @@ public class ContractData extends AnchorPane {
                 }
             }
         });
+
         init();
 
     }
@@ -164,7 +172,7 @@ public class ContractData extends AnchorPane {
 
         if(!isValidDataInContractData()){
 
-            return null;
+            //return null;
         }
 
         String contractType = null;
@@ -210,35 +218,35 @@ public class ContractData extends AnchorPane {
             }
         }
 
-        Map<String, Boolean> daysWeekToWork = new HashMap<>();
-        daysWeekToWork.put("Monday", false);
-        daysWeekToWork.put("Tuesday", false);
-        daysWeekToWork.put("Wednesday", false);
-        daysWeekToWork.put("Thursday", false);
-        daysWeekToWork.put("Friday", false);
-        daysWeekToWork.put("Saturday", false);
-        daysWeekToWork.put("Sunday", false);
+        Map<DayOfWeek, Boolean> daysWeekToWork = new HashMap<>();
+        daysWeekToWork.put(DayOfWeek.MONDAY, false);
+        daysWeekToWork.put(DayOfWeek.TUESDAY, false);
+        daysWeekToWork.put(DayOfWeek.WEDNESDAY, false);
+        daysWeekToWork.put(DayOfWeek.THURSDAY, false);
+        daysWeekToWork.put(DayOfWeek.FRIDAY, false);
+        daysWeekToWork.put(DayOfWeek.SATURDAY, false);
+        daysWeekToWork.put(DayOfWeek.SUNDAY, false);
 
         if(Monday.isSelected()){
-            daysWeekToWork.put("Monday", true);
+            daysWeekToWork.put(DayOfWeek.MONDAY, true);
         }
         if(Tuesday.isSelected()){
-            daysWeekToWork.put("Tuesday", true);
+            daysWeekToWork.put(DayOfWeek.TUESDAY, true);
         }
         if(Wednesday.isSelected()){
-            daysWeekToWork.put("Wednesday", true);
+            daysWeekToWork.put(DayOfWeek.WEDNESDAY, true);
         }
         if(Thursday.isSelected()){
-            daysWeekToWork.put("Thursday", true);
+            daysWeekToWork.put(DayOfWeek.THURSDAY, true);
         }
         if(Friday.isSelected()){
-            daysWeekToWork.put("Friday", true);
+            daysWeekToWork.put(DayOfWeek.FRIDAY, true);
         }
         if(Saturday.isSelected()){
-            daysWeekToWork.put("Saturday", true);
+            daysWeekToWork.put(DayOfWeek.SATURDAY, true);
         }
         if(Sunday.isSelected()){
-            daysWeekToWork.put("Sunday", true);
+            daysWeekToWork.put(DayOfWeek.SUNDAY, true);
         }
 
         String laborCategory = "";

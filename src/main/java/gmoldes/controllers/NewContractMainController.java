@@ -81,7 +81,7 @@ public class NewContractMainController extends VBox {
     private void refreshProvisionalContractData(){
         if (!contractData.isValidDataInContractData()){
             System.out.println("Hay campos obligatorios sin cumplimentar en la pestaña \"Contrato\".");
-            return;
+            //return;
         }
         ProvisionalContractDataDTO contractDataDTO = retrieveProvisionalContractDataDTO();
         provisionalContractData.refreshData(contractDataDTO);

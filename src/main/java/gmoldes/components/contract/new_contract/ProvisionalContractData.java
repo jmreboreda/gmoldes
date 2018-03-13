@@ -10,6 +10,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
+import java.time.DayOfWeek;
+
 public class ProvisionalContractData extends AnchorPane {
 
     private static final String CURRENT_CONTRACT_FXML = "/fxml/new_contract/provisional_contract_data.fxml";
@@ -82,13 +84,13 @@ private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hecho
         this.numDaysContract.setText(contractDataDTO.getDurationDays());
         this.workDayType.setText(contractDataDTO.getWorkDayType());
         this.numberHoursPerWeek.setText(contractDataDTO.getNumberHoursPerWeek());
-        this.Monday.setSelected(contractDataDTO.getDaysWeekToWork().get("Monday"));
-        this.Tuesday.setSelected(contractDataDTO.getDaysWeekToWork().get("Tuesday"));
-        this.Wednesday.setSelected(contractDataDTO.getDaysWeekToWork().get("Wednesday"));
-        this.Thursday.setSelected(contractDataDTO.getDaysWeekToWork().get("Thursday"));
-        this.Friday.setSelected(contractDataDTO.getDaysWeekToWork().get("Friday"));
-        this.Saturday.setSelected(contractDataDTO.getDaysWeekToWork().get("Saturday"));
-        this.Sunday.setSelected(contractDataDTO.getDaysWeekToWork().get("Sunday"));
+        this.Monday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.MONDAY));
+        this.Tuesday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.TUESDAY));
+        this.Wednesday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.WEDNESDAY));
+        this.Thursday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.THURSDAY));
+        this.Friday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.FRIDAY));
+        this.Saturday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.SATURDAY));
+        this.Sunday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.SUNDAY));
         this.laboralCategory.setText(contractDataDTO.getLaboralCategory());
     }
 }
