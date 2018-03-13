@@ -2,6 +2,7 @@ package gmoldes.domain.dto;
 
 import java.time.DayOfWeek;
 import java.util.Map;
+import java.util.Set;
 
 public class ProvisionalContractDataDTO {
 
@@ -14,12 +15,12 @@ public class ProvisionalContractDataDTO {
     private String durationDays;
     private String workDayType;
     private String numberHoursPerWeek;
-    private Map<DayOfWeek, Boolean> daysWeekToWork;
+    private Set<DayOfWeek> daysWeekToWork;
     private String laboralCategory;
 
     public ProvisionalContractDataDTO(String employerFullName, String employeeFullName, String quoteAccountCode, String contractType,
                                       String dateFrom, String dateTo, String durationDays, String workDayType,
-                                      String numberHoursPerWeek, Map<DayOfWeek, Boolean> daysWeekToWork, String laboralCategory) {
+                                      String numberHoursPerWeek, Set<DayOfWeek> daysWeekToWork, String laboralCategory) {
         this.employerFullName = employerFullName;
         this.employeeFullName = employeeFullName;
         this.quoteAccountCode = quoteAccountCode;
@@ -105,11 +106,11 @@ public class ProvisionalContractDataDTO {
         this.numberHoursPerWeek = numberHoursPerWeek;
     }
 
-    public Map<DayOfWeek, Boolean> getDaysWeekToWork() {
+    public Set<DayOfWeek> getDaysWeekToWork() {
         return daysWeekToWork;
     }
 
-    public void setDaysWeekToWork(Map<DayOfWeek, Boolean> daysWeekToWork) {
+    public void setDaysWeekToWork(Set<DayOfWeek> daysWeekToWork) {
         this.daysWeekToWork = daysWeekToWork;
     }
 
@@ -136,7 +137,7 @@ public class ProvisionalContractDataDTO {
         private String durationDays;
         private String workDayType;
         private String numberHoursPerWeek;
-        private Map<DayOfWeek, Boolean> daysWeekToWork;
+        private Set<DayOfWeek> daysWeekToWork;
         private String laborCategory;
 
         public ProvisionalContractDataDTO.DataBuilder withEmployerFullName (String employerFullName) {
@@ -184,7 +185,7 @@ public class ProvisionalContractDataDTO {
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withDaysWeekToWork(Map<DayOfWeek, Boolean> daysWeekToWork) {
+        public ProvisionalContractDataDTO.DataBuilder withDaysWeekToWork(Set<DayOfWeek> daysWeekToWork) {
             this.daysWeekToWork = daysWeekToWork;
             return this;
         }

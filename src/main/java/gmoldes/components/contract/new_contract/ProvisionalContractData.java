@@ -84,13 +84,13 @@ private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hecho
         this.numDaysContract.setText(contractDataDTO.getDurationDays());
         this.workDayType.setText(contractDataDTO.getWorkDayType());
         this.numberHoursPerWeek.setText(contractDataDTO.getNumberHoursPerWeek());
-        this.Monday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.MONDAY));
-        this.Tuesday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.TUESDAY));
-        this.Wednesday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.WEDNESDAY));
-        this.Thursday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.THURSDAY));
-        this.Friday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.FRIDAY));
-        this.Saturday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.SATURDAY));
-        this.Sunday.setSelected(contractDataDTO.getDaysWeekToWork().get(DayOfWeek.SUNDAY));
+        this.Monday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.MONDAY));
+        this.Tuesday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.TUESDAY));
+        this.Wednesday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.WEDNESDAY));
+        this.Thursday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.THURSDAY));
+        this.Friday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.FRIDAY));
+        this.Saturday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.SATURDAY));
+        this.Sunday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.SUNDAY));
         this.laboralCategory.setText(contractDataDTO.getLaboralCategory());
     }
 }

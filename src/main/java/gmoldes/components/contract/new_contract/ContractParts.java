@@ -22,6 +22,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -83,9 +84,6 @@ public class ContractParts extends HBox {
 
     private void onSelectEmployer(ClientDTO newEmployerSelected){
         employerName.setText(newEmployerSelected.getPersonOrCompanyName());
-//        KeyEvent ke = new KeyEvent(KeyEvent.KEY_RELEASED,"", "",
-//                KeyCode.UNDEFINED, false, false, false, false);
-//        employerName.fireEvent(ke);
 
         final SelectEmployerEvent selectEmployerEvent = new SelectEmployerEvent(newEmployerSelected);
         onSelectEmployerEventHandler.handle(selectEmployerEvent);
@@ -94,8 +92,9 @@ public class ContractParts extends HBox {
     private void onSelectEmployee(PersonDTO newPersonValue){
         if(newPersonValue != null) {
             employeeName.setText(newPersonValue.getApellidos().concat(", ").concat(newPersonValue.getNom_rzsoc()));
-//            KeyEvent ke = new KeyEvent(KeyEvent.KEY_RELEASED,"", "", KeyCode.UNDEFINED, false, false, false, false);
-//            employeeName.fireEvent(ke);
+            List<PersonDTO> personDTOList = new ArrayList<>();
+            personDTOList.add(newPersonValue);
+            refreshEmployees(personDTOList);
         }
     }
 

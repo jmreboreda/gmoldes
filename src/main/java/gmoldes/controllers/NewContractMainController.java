@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -79,10 +80,6 @@ public class NewContractMainController extends VBox {
     }
 
     private void refreshProvisionalContractData(){
-        if (!contractData.isValidDataInContractData()){
-            System.out.println("Hay campos obligatorios sin cumplimentar en la pestaña \"Contrato\".");
-            //return;
-        }
         ProvisionalContractDataDTO contractDataDTO = retrieveProvisionalContractDataDTO();
         provisionalContractData.refreshData(contractDataDTO);
     }
@@ -99,9 +96,6 @@ public class NewContractMainController extends VBox {
 
     private void onSearchEmployers(SearchEmployersEvent searchEmployersEvent){
         String pattern = searchEmployersEvent.getPattern();
-//        if(pattern == null){
-//            pattern = "";
-//        }
         if(pattern.isEmpty()){
             contractParts.clearEmployersData();
             contractParts.clearEmployerCCC();
@@ -113,9 +107,6 @@ public class NewContractMainController extends VBox {
 
     private void onSearchEmployees(SearchEmployeesEvent searchEmployeesEvent){
         String pattern = searchEmployeesEvent.getPattern();
-        if(pattern == null){
-            pattern = "";
-        }
         if(pattern.isEmpty()){
             contractParts.clearEmployeesData();
             return;
@@ -125,6 +116,11 @@ public class NewContractMainController extends VBox {
     }
 
     private void onSelectEmployer(SelectEmployerEvent selectEmployerEvent){
+        ClientDTO selectedEmployer  = selectEmployerEvent.getSelectedEmployer();
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+        clientDTOList.add(selectedEmployer);
+        contractParts.refreshEmployers(clientDTOList);
+
         Integer selectedEmployerId = selectEmployerEvent.getSelectedEmployer().getId();
         List<ClientCCCDTO> clientCCCDTOList = retrieveClientCCCById(selectedEmployerId);
         contractParts.refreshEmployerCCC(clientCCCDTOList);

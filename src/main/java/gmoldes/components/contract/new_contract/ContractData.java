@@ -170,11 +170,6 @@ public class ContractData extends AnchorPane {
 
     public ProvisionalContractDataDTO getAllData(){
 
-        if(!isValidDataInContractData()){
-
-            //return null;
-        }
-
         String contractType = null;
         if(this.contractType.getSelectionModel().getSelectedItem() != null){
             contractType = this.contractType.getSelectionModel().getSelectedItem().toString();
@@ -218,35 +213,28 @@ public class ContractData extends AnchorPane {
             }
         }
 
-        Map<DayOfWeek, Boolean> daysWeekToWork = new HashMap<>();
-        daysWeekToWork.put(DayOfWeek.MONDAY, false);
-        daysWeekToWork.put(DayOfWeek.TUESDAY, false);
-        daysWeekToWork.put(DayOfWeek.WEDNESDAY, false);
-        daysWeekToWork.put(DayOfWeek.THURSDAY, false);
-        daysWeekToWork.put(DayOfWeek.FRIDAY, false);
-        daysWeekToWork.put(DayOfWeek.SATURDAY, false);
-        daysWeekToWork.put(DayOfWeek.SUNDAY, false);
+        Set<DayOfWeek> daysWeekToWork = new HashSet<>();
 
         if(Monday.isSelected()){
-            daysWeekToWork.put(DayOfWeek.MONDAY, true);
+            daysWeekToWork.add(DayOfWeek.MONDAY);
         }
         if(Tuesday.isSelected()){
-            daysWeekToWork.put(DayOfWeek.TUESDAY, true);
+            daysWeekToWork.add(DayOfWeek.TUESDAY);
         }
         if(Wednesday.isSelected()){
-            daysWeekToWork.put(DayOfWeek.WEDNESDAY, true);
+            daysWeekToWork.add(DayOfWeek.WEDNESDAY);
         }
         if(Thursday.isSelected()){
-            daysWeekToWork.put(DayOfWeek.THURSDAY, true);
+            daysWeekToWork.add(DayOfWeek.THURSDAY);
         }
         if(Friday.isSelected()){
-            daysWeekToWork.put(DayOfWeek.FRIDAY, true);
+            daysWeekToWork.add(DayOfWeek.FRIDAY);
         }
         if(Saturday.isSelected()){
-            daysWeekToWork.put(DayOfWeek.SATURDAY, true);
+            daysWeekToWork.add(DayOfWeek.SATURDAY);
         }
         if(Sunday.isSelected()){
-            daysWeekToWork.put(DayOfWeek.SUNDAY, true);
+            daysWeekToWork.add(DayOfWeek.SUNDAY);
         }
 
         String laborCategory = "";
@@ -345,6 +333,12 @@ public class ContractData extends AnchorPane {
 
         ObservableList<ContractTypeDTO> contractTypeDTOS = FXCollections.observableArrayList(contractTypeDTOList);
         contractType.setItems(contractTypeDTOS);
+        for(ContractTypeDTO contractTypeDTO : contractTypeDTOS){
+            if(contractTypeDTO.getDescripctto().contains("Normal") ||
+                    contractTypeDTO.getDescripctto().contains("Ordinario")){
+                contractType.getSelectionModel().select(contractTypeDTO);
+            }
+        }
     }
 
     private void hourNotificationControlSetup(){
