@@ -78,7 +78,7 @@ public class NewContractMainController extends VBox {
     private void onOkButton(MouseEvent event){
         System.out.println(event.getSource() + " clicked!");
         Boolean isAllDataOk = verifyAllContractData();
-        System.out.println("Tutto ok!!!");
+        System.out.println("Va tutto bene ... i palle!!!");
     }
 
     private void refreshProvisionalContractData(){

@@ -74,7 +74,7 @@ public class DaysOfWeekCheckboxGroup extends HBox{
         if(saturdayCheck.isSelected()){
             daysWeekToWork.add(DayOfWeek.SATURDAY);
         }
-        if(saturdayCheck.isSelected()){
+        if(sundayCheck.isSelected()){
             daysWeekToWork.add(DayOfWeek.SUNDAY);
         }
 

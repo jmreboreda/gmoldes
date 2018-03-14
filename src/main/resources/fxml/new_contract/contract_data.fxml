@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import gmoldes.components.contract.new_contract.CustomTextFieldHoursWorkWeek?>
 <?import gmoldes.components.generic_components.DaysOfWeekCheckboxGroup?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -81,19 +82,21 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <Label prefHeight="16.0" prefWidth="231.0" text="Horas de trabajo por semana" GridPane.columnIndex="4" GridPane.columnSpan="5" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets bottom="15.0" />
-               </GridPane.margin>
-               <padding>
-                  <Insets left="30.0" />
-               </padding>
-            </Label>
-            <TextField fx:id="hoursWorkWeek" alignment="CENTER" disable="true" prefHeight="26.0" prefWidth="143.0" GridPane.columnIndex="7" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets bottom="15.0" left="10.0" />
-               </GridPane.margin>
-            </TextField>
+            <CustomTextFieldHoursWorkWeek fx:id="hoursWorkWeek" alignment="CENTER" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="4">
+            </CustomTextFieldHoursWorkWeek>
+            <!--<Label prefHeight="16.0" prefWidth="231.0" text="Horas de trabajo por semana" GridPane.columnIndex="4" GridPane.columnSpan="5" GridPane.rowIndex="4">-->
+               <!--<GridPane.margin>-->
+                  <!--<Insets bottom="15.0" />-->
+               <!--</GridPane.margin>-->
+               <!--<padding>-->
+                  <!--<Insets left="30.0" />-->
+               <!--</padding>-->
+            <!--</Label>-->
+            <!--<TextField fx:id="hoursWorkWeek" alignment="CENTER" disable="true" prefHeight="26.0" prefWidth="143.0" GridPane.columnIndex="7" GridPane.rowIndex="4">-->
+               <!--<GridPane.margin>-->
+                  <!--<Insets bottom="15.0" left="10.0" />-->
+               <!--</GridPane.margin>-->
+            <!--</TextField>-->
             <Label text="Días Jornada" wrapText="true" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="10.0" />
@@ -108,7 +111,8 @@
                </opaqueInsets>
                <GridPane.margin>
                   <Insets />
-               </GridPane.margin></DaysOfWeekCheckboxGroup>
+               </GridPane.margin>
+            </DaysOfWeekCheckboxGroup>
             <Label text="Categoría" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets left="10.0" />

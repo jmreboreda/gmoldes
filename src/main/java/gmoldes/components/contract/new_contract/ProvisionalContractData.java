@@ -40,19 +40,19 @@ public class ProvisionalContractData extends AnchorPane {
     @FXML
     private Set<DayOfWeek> daysWeekToWork;
     @FXML
-    private CheckBox Monday;
+    private CheckBox monday;
     @FXML
-    private CheckBox Tuesday;
+    private CheckBox tuesday;
     @FXML
-    private CheckBox Wednesday;
+    private CheckBox wednesday;
     @FXML
-    private CheckBox Thursday;
+    private CheckBox thursday;
     @FXML
-    private CheckBox Friday;
+    private CheckBox friday;
     @FXML
-    private CheckBox Saturday;
+    private CheckBox saturday;
     @FXML
-    private CheckBox Sunday;
+    private CheckBox sunday;
     @FXML
     private Label laborCategory;
 
@@ -66,13 +66,13 @@ private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hecho
 
         this.parent = ViewLoader.load(this, CURRENT_CONTRACT_FXML);
         Tooltip tooltip = new Tooltip(MODIFIED_DATA_WILL_NOT_BE_SAVED);
-        this.Monday.setTooltip(tooltip);
-        this.Tuesday.setTooltip(tooltip);
-        this.Wednesday.setTooltip(tooltip);
-        this.Thursday.setTooltip(tooltip);
-        this.Friday.setTooltip(tooltip);
-        this.Saturday.setTooltip(tooltip);
-        this.Sunday.setTooltip(tooltip);
+        this.monday.setTooltip(tooltip);
+        this.tuesday.setTooltip(tooltip);
+        this.wednesday.setTooltip(tooltip);
+        this.thursday.setTooltip(tooltip);
+        this.friday.setTooltip(tooltip);
+        this.saturday.setTooltip(tooltip);
+        this.sunday.setTooltip(tooltip);
     }
 
     public void refreshData(ProvisionalContractDataDTO contractDataDTO){
@@ -85,38 +85,38 @@ private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hecho
         this.numDaysContract.setText(contractDataDTO.getDurationDays());
         this.workDayType.setText(contractDataDTO.getWorkDayType());
         this.numberHoursPerWeek.setText(contractDataDTO.getNumberHoursPerWeek());
-        this.Monday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.MONDAY));
-        this.Tuesday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.TUESDAY));
-        this.Wednesday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.WEDNESDAY));
-        this.Thursday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.THURSDAY));
-        this.Friday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.FRIDAY));
-        this.Saturday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.SATURDAY));
-        this.Sunday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.SUNDAY));
+        this.monday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.MONDAY));
+        this.tuesday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.TUESDAY));
+        this.wednesday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.WEDNESDAY));
+        this.thursday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.THURSDAY));
+        this.friday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.FRIDAY));
+        this.saturday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.SATURDAY));
+        this.sunday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.SUNDAY));
         this.laborCategory.setText(contractDataDTO.getLaboralCategory());
     }
 
     public ProvisionalContractDataDTO getAllProvisionalContractData() {
 
         Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
-        if(this.Monday.isSelected()){
+        if(this.monday.isSelected()){
             dayOfWeekSet.add(DayOfWeek.MONDAY);
         }
-        if(this.Tuesday.isSelected()){
+        if(this.tuesday.isSelected()){
             dayOfWeekSet.add(DayOfWeek.TUESDAY);
         }
-        if(this.Wednesday.isSelected()){
+        if(this.wednesday.isSelected()){
             dayOfWeekSet.add(DayOfWeek.WEDNESDAY);
         }
-        if(this.Thursday.isSelected()){
+        if(this.thursday.isSelected()){
             dayOfWeekSet.add(DayOfWeek.THURSDAY);
         }
-        if(this.Friday.isSelected()){
+        if(this.friday.isSelected()){
             dayOfWeekSet.add(DayOfWeek.FRIDAY);
         }
-        if(this.Saturday.isSelected()){
+        if(this.saturday.isSelected()){
             dayOfWeekSet.add(DayOfWeek.SATURDAY);
         }
-        if(this.Sunday.isSelected()){
+        if(this.sunday.isSelected()){
             dayOfWeekSet.add(DayOfWeek.SUNDAY);
         }
 
