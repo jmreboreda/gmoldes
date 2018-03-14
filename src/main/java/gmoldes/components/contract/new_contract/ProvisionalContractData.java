@@ -8,9 +8,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 
 import java.time.DayOfWeek;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ProvisionalContractData extends AnchorPane {
 
@@ -37,7 +38,7 @@ public class ProvisionalContractData extends AnchorPane {
     @FXML
     private Label numberHoursPerWeek;
     @FXML
-    private HBox hBoxDaysWeekToWork;
+    private Set<DayOfWeek> daysWeekToWork;
     @FXML
     private CheckBox Monday;
     @FXML
@@ -53,7 +54,7 @@ public class ProvisionalContractData extends AnchorPane {
     @FXML
     private CheckBox Sunday;
     @FXML
-    private Label laboralCategory;
+    private Label laborCategory;
 
 
     @FXML
@@ -91,6 +92,46 @@ private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hecho
         this.Friday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.FRIDAY));
         this.Saturday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.SATURDAY));
         this.Sunday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.SUNDAY));
-        this.laboralCategory.setText(contractDataDTO.getLaboralCategory());
+        this.laborCategory.setText(contractDataDTO.getLaboralCategory());
+    }
+
+    public ProvisionalContractDataDTO getAllProvisionalContractData() {
+
+        Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
+        if(this.Monday.isSelected()){
+            dayOfWeekSet.add(DayOfWeek.MONDAY);
+        }
+        if(this.Tuesday.isSelected()){
+            dayOfWeekSet.add(DayOfWeek.TUESDAY);
+        }
+        if(this.Wednesday.isSelected()){
+            dayOfWeekSet.add(DayOfWeek.WEDNESDAY);
+        }
+        if(this.Thursday.isSelected()){
+            dayOfWeekSet.add(DayOfWeek.THURSDAY);
+        }
+        if(this.Friday.isSelected()){
+            dayOfWeekSet.add(DayOfWeek.FRIDAY);
+        }
+        if(this.Saturday.isSelected()){
+            dayOfWeekSet.add(DayOfWeek.SATURDAY);
+        }
+        if(this.Sunday.isSelected()){
+            dayOfWeekSet.add(DayOfWeek.SUNDAY);
+        }
+
+        return ProvisionalContractDataDTO.create()
+                .withEmployerFullName(this.employerName.getText())
+                .withEmployeeFullName(this.employeeName.getText())
+                .withQuoteAccountCode(this.quoteAccountCode.getText())
+                .withContractType(this.contractType.getText())
+                .withDateFrom(this.dateFrom.getText())
+                .withDateTo(this.dateTo.getText())
+                .withDurationDays(this.numDaysContract.getText())
+                .withWorkDayType(this.workDayType.getText())
+                .withNumberHoursPerWeek(this.numberHoursPerWeek.getText())
+                .withDaysWeekToWork(dayOfWeekSet)
+                .withLaboralCategory(this.laborCategory.getText())
+                .build();
     }
 }

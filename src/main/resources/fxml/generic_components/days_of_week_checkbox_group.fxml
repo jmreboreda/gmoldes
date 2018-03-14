@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<fx:root fx:id="daysOfWeekCheckBoxGroup" type="HBox" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <CheckBox fx:id="mondayCheck" mnemonicParsing="false">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="tuesdayCheck" mnemonicParsing="false">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="wednesdayCheck" mnemonicParsing="false">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="thursdayCheck" mnemonicParsing="false">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="fridayCheck" mnemonicParsing="false">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="saturdayCheck" mnemonicParsing="false">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="sundayCheck" mnemonicParsing="false">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </CheckBox>
+   </children>
+</fx:root>

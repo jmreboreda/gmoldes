@@ -2,6 +2,7 @@ package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
+import gmoldes.components.generic_components.DaysOfWeekCheckboxGroup;
 import gmoldes.controllers.ContractTypeController;
 import gmoldes.domain.dto.ContractTypeDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
@@ -25,13 +26,10 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
-import static java.time.format.TextStyle.FULL;
 
 
 public class ContractData extends AnchorPane {
@@ -76,6 +74,8 @@ public class ContractData extends AnchorPane {
     private RadioButton radioButtonFullWorkDay;
     @FXML
     private RadioButton radioButtonPartialWorkDay;
+    @FXML
+    private DaysOfWeekCheckboxGroup daysOfWeekCheckBoxGroup;
     @FXML
     private CheckBox Monday;
     @FXML
@@ -213,29 +213,7 @@ public class ContractData extends AnchorPane {
             }
         }
 
-        Set<DayOfWeek> daysWeekToWork = new HashSet<>();
-
-        if(Monday.isSelected()){
-            daysWeekToWork.add(DayOfWeek.MONDAY);
-        }
-        if(Tuesday.isSelected()){
-            daysWeekToWork.add(DayOfWeek.TUESDAY);
-        }
-        if(Wednesday.isSelected()){
-            daysWeekToWork.add(DayOfWeek.WEDNESDAY);
-        }
-        if(Thursday.isSelected()){
-            daysWeekToWork.add(DayOfWeek.THURSDAY);
-        }
-        if(Friday.isSelected()){
-            daysWeekToWork.add(DayOfWeek.FRIDAY);
-        }
-        if(Saturday.isSelected()){
-            daysWeekToWork.add(DayOfWeek.SATURDAY);
-        }
-        if(Sunday.isSelected()){
-            daysWeekToWork.add(DayOfWeek.SUNDAY);
-        }
+        Set<DayOfWeek> daysWeekToWork = daysOfWeekCheckBoxGroup.getWorkDaysOfTheWeek();
 
         String laborCategory = "";
         if(laborCategoryDescriptionInput.getText() != null){
@@ -334,8 +312,8 @@ public class ContractData extends AnchorPane {
         ObservableList<ContractTypeDTO> contractTypeDTOS = FXCollections.observableArrayList(contractTypeDTOList);
         contractType.setItems(contractTypeDTOS);
         for(ContractTypeDTO contractTypeDTO : contractTypeDTOS){
-            if(contractTypeDTO.getDescripctto().contains("Normal") ||
-                    contractTypeDTO.getDescripctto().contains("Ordinario")){
+            if(contractTypeDTO.getDescripctto().toLowerCase().contains(Parameters.NORMAL_CONTRACT_TYPE) ||
+                    contractTypeDTO.getDescripctto().toLowerCase().contains(Parameters.ORDINARY_CONTRACT_TYPE)){
                 contractType.getSelectionModel().select(contractTypeDTO);
             }
         }

@@ -228,7 +228,7 @@
                   <Insets left="10.0" />
                </padding>
             </Label>
-            <Label fx:id="laboralCategory" prefHeight="18.0" prefWidth="405.0" textFill="#1807ac" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="6" />
+            <Label fx:id="laborCategory" prefHeight="18.0" prefWidth="405.0" textFill="#1807ac" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="6" />
             <Label alignment="CENTER" prefHeight="16.0" prefWidth="228.0" text="Codigo Cuenta Cotización" GridPane.columnIndex="4" GridPane.columnSpan="2">
                <font>
                   <Font name="System Bold" size="10.0" />

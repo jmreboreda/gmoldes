@@ -77,6 +77,8 @@ public class NewContractMainController extends VBox {
 
     private void onOkButton(MouseEvent event){
         System.out.println(event.getSource() + " clicked!");
+        Boolean isAllDataOk = verifyAllContractData();
+        System.out.println("Tutto ok!!!");
     }
 
     private void refreshProvisionalContractData(){
@@ -159,5 +161,12 @@ public class NewContractMainController extends VBox {
 
     private List<ClientCCCDTO> retrieveClientCCCById(Integer id){
         return clientCCCController.findAllCCCByClientId(id);
+    }
+
+    private Boolean verifyAllContractData(){
+        ProvisionalContractData provisionalContractData = new ProvisionalContractData();
+        ProvisionalContractDataDTO allContractData = provisionalContractData.getAllProvisionalContractData();
+
+        return true;
     }
 }

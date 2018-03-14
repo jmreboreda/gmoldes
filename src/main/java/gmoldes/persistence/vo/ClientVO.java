@@ -12,7 +12,7 @@ import java.util.Set;
 @NamedQueries(value = {
         @NamedQuery(
                 name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER,
-                query = "select p from ClientVO as p where p.tipoclte = 'Asesoría' and lower(p.nom_rzsoc) like lower(:code) and p.cltactivo = true order by p.nom_rzsoc"
+                query = "select p from ClientVO as p where p.tipoclte like '%Asesoría%' and lower(p.nom_rzsoc) like lower(:code) and p.cltactivo = true order by p.nom_rzsoc"
         ),
         @NamedQuery(
                 name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER,
