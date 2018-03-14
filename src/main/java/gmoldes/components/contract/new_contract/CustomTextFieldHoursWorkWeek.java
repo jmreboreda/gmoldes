@@ -6,6 +6,7 @@ import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -35,6 +36,12 @@ public class CustomTextFieldHoursWorkWeek extends HBox {
     @FXML
     private void initialize(){
 
+        this.labelOfTextField.setPrefHeight(25);
+        this.labelOfTextField.setPrefWidth(28);
+        this.labelOfTextField.setText(Parameters.HOURS_WORK_WEEK_TEXT);
+        this.labelOfTextField.setMinWidth(215);
+        this.textFieldComponent.setMaxWidth(60);
+        this.setMargin(textFieldComponent, new Insets(0, 0, 0, 10));
 
     }
 

@@ -101,10 +101,6 @@ public class ContractData extends AnchorPane {
     private void initialize(){
         logger.info("Initializing contract data fxml ...");
 
-        this.hoursWorkWeek.getLabelTextField().setText(Parameters.HOURS_WORK_WEEK_TEXT);
-        this.hoursWorkWeek.getLabelTextField().setMinWidth(215);
-        this.hoursWorkWeek.getTextFieldComponent().setMaxWidth(60);
-
         dateFrom.setOnAction(this::onDateAction);
 
         dateTo.setOnAction(this::onDateAction);
