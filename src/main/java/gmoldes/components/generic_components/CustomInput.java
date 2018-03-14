@@ -1,12 +1,9 @@
-package gmoldes.components.contract.new_contract;
+package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
-import gmoldes.components.generic_components.CustomInput;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,13 +11,12 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
 import javafx.scene.layout.HBox;
 
 import java.time.Duration;
 import java.util.regex.Pattern;
 
-public class CustomInputHoursWorkWeek extends CustomInput {
+public class CustomInput extends HBox {
 
     private static final String CUSTOM_TEXTFIELD = "/fxml/generic_components/custom_textfield.fxml";
 
@@ -33,7 +29,7 @@ public class CustomInputHoursWorkWeek extends CustomInput {
     @FXML
     private TextField textFieldComponent;
 
-    public CustomInputHoursWorkWeek() {
+    public CustomInput() {
 
         this.parent = ViewLoader.load(this, CUSTOM_TEXTFIELD);
     }
