@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-public class DaysOfWeekCheckboxGroup extends HBox{
+public class CustomDaysOfWeekSelector extends HBox{
 
     private static final String DAYS_OF_WEEK_CHECKBOX_GROUP = "/fxml/generic_components/days_of_week_checkbox_group.fxml";
 
@@ -35,7 +35,7 @@ public class DaysOfWeekCheckboxGroup extends HBox{
     @FXML
     private CheckBox sundayCheck;
 
-    public DaysOfWeekCheckboxGroup() {
+    public CustomDaysOfWeekSelector() {
 
         this.parent = ViewLoader.load(this, DAYS_OF_WEEK_CHECKBOX_GROUP);
     }

@@ -68,7 +68,7 @@ public class NewContractMainController extends VBox {
             }
         });
 
-        contractData.setOnChangeContractDataHoursWorkWeek(this::onChangeContractDataHoursWorkWeek);
+        contractData.getInputHoursWorkWeek().setOnChangeContractDataHoursWorkWeek(this::onChangeContractDataHoursWorkWeek);
         contractParts.setOnSearchEmployers(this::onSearchEmployers);
         contractParts.setOnSearchEmployees(this::onSearchEmployees);
         contractParts.setOnSelectEmployer(this::onSelectEmployer);

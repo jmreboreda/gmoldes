@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import gmoldes.components.contract.new_contract.CustomTextFieldHoursWorkWeek?>
-<?import gmoldes.components.generic_components.DaysOfWeekCheckboxGroup?>
+<?import gmoldes.components.contract.new_contract.CustomInputHoursWorkWeek?>
+<?import gmoldes.components.generic_components.CustomDaysOfWeekSelector?>
+<?import gmoldes.components.generic_components.CustomInputDate?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -82,21 +83,8 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <CustomTextFieldHoursWorkWeek fx:id="hoursWorkWeek" alignment="CENTER" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="4">
-            </CustomTextFieldHoursWorkWeek>
-            <!--<Label prefHeight="16.0" prefWidth="231.0" text="Horas de trabajo por semana" GridPane.columnIndex="4" GridPane.columnSpan="5" GridPane.rowIndex="4">-->
-               <!--<GridPane.margin>-->
-                  <!--<Insets bottom="15.0" />-->
-               <!--</GridPane.margin>-->
-               <!--<padding>-->
-                  <!--<Insets left="30.0" />-->
-               <!--</padding>-->
-            <!--</Label>-->
-            <!--<TextField fx:id="hoursWorkWeek" alignment="CENTER" disable="true" prefHeight="26.0" prefWidth="143.0" GridPane.columnIndex="7" GridPane.rowIndex="4">-->
-               <!--<GridPane.margin>-->
-                  <!--<Insets bottom="15.0" left="10.0" />-->
-               <!--</GridPane.margin>-->
-            <!--</TextField>-->
+            <CustomInputHoursWorkWeek fx:id="hoursWorkWeek" alignment="CENTER" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="4">
+            </CustomInputHoursWorkWeek>
             <Label text="Días Jornada" wrapText="true" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="10.0" />
@@ -105,14 +93,14 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <DaysOfWeekCheckboxGroup fx:id="daysOfWeekCheckBoxGroup" alignment="CENTER" spacing="25.0" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="5">
+            <CustomDaysOfWeekSelector fx:id="daysOfWeekCheckBoxGroup" alignment="CENTER" spacing="25.0" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="5">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
-            </DaysOfWeekCheckboxGroup>
+            </CustomDaysOfWeekSelector>
             <Label text="Categoría" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets left="10.0" />
@@ -132,23 +120,14 @@
                   <Insets />
                </GridPane.margin>
             </DatePicker>
-            <Label prefHeight="16.0" prefWidth="137.0" text="Notificación">
+            <Label prefHeight="14.0" prefWidth="90.0" text="Notificación">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
-               <padding>
-                  <Insets top="10.0" />
-               </padding>
             </Label>
-            <DatePicker fx:id="dateNotification" GridPane.columnIndex="1">
-               <GridPane.margin>
-                  <Insets top="10.0" />
-               </GridPane.margin>
-            </DatePicker>
+            <CustomInputDate fx:id="dateInput" alignment="CENTER" GridPane.columnIndex="1">
+            </CustomInputDate>
             <TextField fx:id="hourNotification" promptText="hh:mm" GridPane.columnIndex="2">
-               <GridPane.margin>
-                  <Insets left="5.0" top="10.0" />
-               </GridPane.margin>
             </TextField>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
                <children>

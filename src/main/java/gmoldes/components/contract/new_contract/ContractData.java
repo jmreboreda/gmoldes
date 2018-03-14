@@ -1,8 +1,7 @@
 package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
-import gmoldes.components.generic_components.DaysOfWeekCheckboxGroup;
+import gmoldes.components.generic_components.CustomDaysOfWeekSelector;
 import gmoldes.controllers.ContractTypeController;
 import gmoldes.domain.dto.ContractTypeDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
@@ -13,7 +12,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -22,7 +20,6 @@ import javafx.scene.layout.AnchorPane;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -42,9 +39,6 @@ public class ContractData extends AnchorPane {
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private DecimalFormat decimalFormatter = new DecimalFormat("0.00##");
 
-    private EventHandler<ChangeContractDataHoursWorkWeekEvent> changeContractDataHoursWorkWeekEventHandler;
-
-
     private Parent parent;
 
     @FXML
@@ -62,7 +56,7 @@ public class ContractData extends AnchorPane {
     @FXML
     private ToggleGroup grWorkDay;
     @FXML
-    private CustomTextFieldHoursWorkWeek hoursWorkWeek;
+    private CustomInputHoursWorkWeek hoursWorkWeek;
     @FXML
     private RadioButton radioButtonUndefinedContractDuration;
     @FXML
@@ -74,7 +68,7 @@ public class ContractData extends AnchorPane {
     @FXML
     private RadioButton radioButtonPartialWorkDay;
     @FXML
-    private DaysOfWeekCheckboxGroup daysOfWeekCheckBoxGroup;
+    private CustomDaysOfWeekSelector daysOfWeekCheckBoxGroup;
     @FXML
     private CheckBox Monday;
     @FXML
@@ -102,21 +96,7 @@ public class ContractData extends AnchorPane {
         logger.info("Initializing contract data fxml ...");
 
         dateFrom.setOnAction(this::onDateAction);
-
         dateTo.setOnAction(this::onDateAction);
-
-        this. hoursWorkWeek.getTextFieldComponent().setOnAction(this::onHoursWorkWeekChanged);
-        hoursWorkWeek.getTextFieldComponent().focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
-            if (!newPropertyValue)   // Textfield out focus
-            {
-                if(!hoursWorkWeek.getTextFieldComponent().getText().isEmpty()){
-                    onHoursWorkWeekChanged(new ActionEvent());
-                }
-                else{
-                    hoursWorkWeek.getTextFieldComponent().setText("00:00");
-                }
-            }
-        });
 
         init();
 
@@ -136,19 +116,6 @@ public class ContractData extends AnchorPane {
         }
         else{
             durationDaysContract.setText("");
-        }
-    }
-
-    private void onHoursWorkWeekChanged(ActionEvent event){
-
-        if(!hoursWorkWeek.verifyHoursWorkWeekChangeIsValid()){
-
-            return;
-
-        }else {
-            Duration hoursWorkWeekDuration = Utilities.converterTimeStringToDuration(hoursWorkWeek.getTextFieldComponent().getText());
-            ChangeContractDataHoursWorkWeekEvent contractDataHoursWorkWeekEvent = new ChangeContractDataHoursWorkWeekEvent(hoursWorkWeekDuration);
-            changeContractDataHoursWorkWeekEventHandler.handle(contractDataHoursWorkWeekEvent);
         }
     }
 
@@ -186,14 +153,14 @@ public class ContractData extends AnchorPane {
         String workDayType = "";
         String numberHoursPerWeek = "";
         if(radioButtonFullWorkDay.isSelected()){
-            hoursWorkWeek.getTextFieldComponent().setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
+            hoursWorkWeek.getInputComponent().setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
             workDayType = FULL_WORKDAY;
             numberHoursPerWeek = Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK);
         }
         if(radioButtonPartialWorkDay.isSelected()){
             workDayType = PARTIAL_WORKDAY;
-            if(hoursWorkWeek.getTextFieldComponent().getText() != null){
-                numberHoursPerWeek = hoursWorkWeek.getTextFieldComponent().getText();
+            if(hoursWorkWeek.getInputComponent().getText() != null){
+                numberHoursPerWeek = hoursWorkWeek.getInputComponent().getText();
             }
         }
 
@@ -217,13 +184,13 @@ public class ContractData extends AnchorPane {
     }
 
     private void notificationDateControlSetup(){
-        dateNotification.setConverter(Utilities.converter);
-        dateNotification.showWeekNumbersProperty().set(false);
-        dateNotification.setEditable(false);
-        dateNotification.setValue(LocalDate.now());
-
-        DateTimeFormatter hourFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        hourNotification.setText(hourFormatter.format(LocalTime.now()));
+//        dateNotification.setConverter(Utilities.converter);
+//        dateNotification.showWeekNumbersProperty().set(false);
+//        dateNotification.setEditable(false);
+//        dateNotification.setValue(LocalDate.now());
+//
+//        DateTimeFormatter hourFormatter = DateTimeFormatter.ofPattern("HH:mm");
+//        hourNotification.setText(hourFormatter.format(LocalTime.now()));
 
         hourNotificationControlSetup();
     }
@@ -259,17 +226,17 @@ public class ContractData extends AnchorPane {
 
     private void workDayDataControlSetup(){
         radioButtonFullWorkDay.setSelected(true);
-        hoursWorkWeek.getTextFieldComponent().setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
+        hoursWorkWeek.getInputComponent().setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
         grWorkDay.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle old_toggle, Toggle new_toggle) {
                 if (radioButtonFullWorkDay.isSelected()) {
-                    hoursWorkWeek.getTextFieldComponent().setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
-                    hoursWorkWeek.getTextFieldComponent().setDisable(true);
+                    hoursWorkWeek.getInputComponent().setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
+                    hoursWorkWeek.getInputComponent().setDisable(true);
                 }else{
-                    hoursWorkWeek.getTextFieldComponent().setDisable(false);
-                    hoursWorkWeek.getTextFieldComponent().setText("00:00");
-                    hoursWorkWeek.getTextFieldComponent().requestFocus();
+                    hoursWorkWeek.getInputComponent().setDisable(false);
+                    hoursWorkWeek.getInputComponent().setText("00:00");
+                    hoursWorkWeek.getInputComponent().requestFocus();
                 }
             }
         });
@@ -306,12 +273,13 @@ public class ContractData extends AnchorPane {
     }
 
     public String getHoursWorkWeek(){
-        return hoursWorkWeek.getTextFieldComponent().getText();
+        return this.hoursWorkWeek.getInputComponent().getText();
     }
 
-    public void setOnChangeContractDataHoursWorkWeek(EventHandler<ChangeContractDataHoursWorkWeekEvent> changeContractDataHoursWorkWeekEventHandler){
-        this.changeContractDataHoursWorkWeekEventHandler = changeContractDataHoursWorkWeekEventHandler;
+    public CustomInputHoursWorkWeek getInputHoursWorkWeek(){
+        return this.hoursWorkWeek;
     }
+
 
     @Override
     public String toString(){
