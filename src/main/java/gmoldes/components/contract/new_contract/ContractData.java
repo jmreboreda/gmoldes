@@ -146,7 +146,9 @@ public class ContractData extends AnchorPane {
     private void onHoursWorkWeekChanged(ActionEvent event){
 
         if(!hoursWorkWeek.verifyHoursWorkWeekChangeIsValid()){
+
             return;
+
         }else {
             Duration hoursWorkWeekDuration = Utilities.converterTimeStringToDuration(hoursWorkWeek.getTextFieldComponent().getText());
             ChangeContractDataHoursWorkWeekEvent contractDataHoursWorkWeekEvent = new ChangeContractDataHoursWorkWeekEvent(hoursWorkWeekDuration);
@@ -285,8 +287,8 @@ public class ContractData extends AnchorPane {
         ObservableList<ContractTypeDTO> contractTypeDTOS = FXCollections.observableArrayList(contractTypeDTOList);
         contractType.setItems(contractTypeDTOS);
         for(ContractTypeDTO contractTypeDTO : contractTypeDTOS){
-            if(contractTypeDTO.getDescripctto().toUpperCase().contains(Parameters.NORMAL_CONTRACT_TYPE) ||
-                    contractTypeDTO.getDescripctto().toUpperCase().contains(Parameters.ORDINARY_CONTRACT_TYPE)){
+            if(contractTypeDTO.getDescripctto().toUpperCase().contains(Parameters.NORMAL_CONTRACT_TYPE_DESCRIPTION) ||
+                    contractTypeDTO.getDescripctto().toUpperCase().contains(Parameters.ORDINARY_CONTRACT_TYPE_DESCRIPTION)){
                 contractType.getSelectionModel().select(contractTypeDTO);
             }
         }
