@@ -32,9 +32,6 @@ public class ContractData extends AnchorPane {
 
     private static final Logger logger = Logger.getLogger(ContractData.class.getSimpleName());
     private static final String CONTRACT_DATA_FXML = "/fxml/new_contract/contract_data.fxml";
-    private static final String FULL_WORKDAY = "A tiempo completo";
-    private static final String PARTIAL_WORKDAY = "A tiempo parcial";
-    private static final String UNDEFINED_DURATION = "Indefinido";
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
     private DecimalFormat decimalFormatter = new DecimalFormat("0.00##");
@@ -68,7 +65,7 @@ public class ContractData extends AnchorPane {
     @FXML
     private RadioButton radioButtonPartialWorkDay;
     @FXML
-    private DaysOfWeekSelector daysOfWeekCheckBoxGroup;
+    private DaysOfWeekSelector daysOfWeekToWorkSelector;
     @FXML
     private CheckBox Monday;
     @FXML
@@ -139,7 +136,7 @@ public class ContractData extends AnchorPane {
         String durationContract = "";
         if(this.radioButtonUndefinedContractDuration.isSelected()) {
             if (this.dateFrom.getValue() != null) {
-                durationContract = UNDEFINED_DURATION;
+                durationContract = Parameters.UNDEFINED_DURATION;
             }
         }
 
@@ -154,17 +151,17 @@ public class ContractData extends AnchorPane {
         String numberHoursPerWeek = "";
         if(radioButtonFullWorkDay.isSelected()){
             hoursWorkWeek.getInputComponent().setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
-            workDayType = FULL_WORKDAY;
+            workDayType = Parameters.FULL_WORKDAY;
             numberHoursPerWeek = Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK);
         }
         if(radioButtonPartialWorkDay.isSelected()){
-            workDayType = PARTIAL_WORKDAY;
+            workDayType = Parameters.PARTIAL_WORKDAY;
             if(hoursWorkWeek.getInputComponent().getText() != null){
                 numberHoursPerWeek = hoursWorkWeek.getInputComponent().getText();
             }
         }
 
-        Set<DayOfWeek> daysWeekToWork = daysOfWeekCheckBoxGroup.getWorkDaysOfTheWeek();
+        Set<DayOfWeek> daysWeekToWork = daysOfWeekToWorkSelector.getDaysOfWeek();
 
         String laborCategory = "";
         if(laborCategoryDescriptionInput.getText() != null){

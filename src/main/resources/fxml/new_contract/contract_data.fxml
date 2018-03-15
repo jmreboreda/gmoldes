@@ -93,7 +93,7 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <DaysOfWeekSelector fx:id="daysOfWeekCheckBoxGroup" alignment="CENTER" spacing="25.0" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="5">
+            <DaysOfWeekSelector fx:id="daysOfWeekToWorkSelector" alignment="CENTER" spacing="25.0" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="5">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
