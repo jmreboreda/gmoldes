@@ -13,6 +13,7 @@ import gmoldes.forms.TimeRecord;
 import gmoldes.services.Printer;
 import gmoldes.services.TimeRecordPDFCreator;
 import gmoldes.utilities.Message;
+import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.beans.binding.BooleanExpression;
 import javafx.collections.FXCollections;
@@ -47,7 +48,7 @@ public class TimeRecordData extends VBox {
     private static final String LINUX_TEMPORAL_DIR = "/Temp/Borrame";
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
     private static final Integer LAST_MONTH_INDEX_IN_MONTHNAME = 11;
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
 
     private Parent parent;
 

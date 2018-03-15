@@ -1,7 +1,8 @@
 package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.components.generic_components.CustomDaysOfWeekSelector;
+import gmoldes.components.generic_components.DateInput;
+import gmoldes.components.generic_components.DaysOfWeekSelector;
 import gmoldes.controllers.ContractTypeController;
 import gmoldes.domain.dto.ContractTypeDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
@@ -21,7 +22,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -36,13 +36,13 @@ public class ContractData extends AnchorPane {
     private static final String PARTIAL_WORKDAY = "A tiempo parcial";
     private static final String UNDEFINED_DURATION = "Indefinido";
 
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
     private DecimalFormat decimalFormatter = new DecimalFormat("0.00##");
 
     private Parent parent;
 
     @FXML
-    private DatePicker dateNotification;
+    private DateInput dateNotification;
     @FXML
     private TextField hourNotification;
     @FXML
@@ -68,7 +68,7 @@ public class ContractData extends AnchorPane {
     @FXML
     private RadioButton radioButtonPartialWorkDay;
     @FXML
-    private CustomDaysOfWeekSelector daysOfWeekCheckBoxGroup;
+    private DaysOfWeekSelector daysOfWeekCheckBoxGroup;
     @FXML
     private CheckBox Monday;
     @FXML
@@ -103,7 +103,7 @@ public class ContractData extends AnchorPane {
     }
 
     private void init(){
-        notificationDateControlSetup();
+        hourNotificationControlSetup();
         contractDurationControlSetup();
         workDayDataControlSetup();
         loadContractType();
@@ -181,18 +181,6 @@ public class ContractData extends AnchorPane {
                 .withDaysWeekToWork(daysWeekToWork)
                 .withLaboralCategory(laborCategory)
                 .build();
-    }
-
-    private void notificationDateControlSetup(){
-//        dateNotification.setConverter(Utilities.converter);
-//        dateNotification.showWeekNumbersProperty().set(false);
-//        dateNotification.setEditable(false);
-//        dateNotification.setValue(LocalDate.now());
-//
-//        DateTimeFormatter hourFormatter = DateTimeFormatter.ofPattern("HH:mm");
-//        hourNotification.setText(hourFormatter.format(LocalTime.now()));
-
-        hourNotificationControlSetup();
     }
 
     private void contractDurationControlSetup(){
@@ -278,14 +266,5 @@ public class ContractData extends AnchorPane {
 
     public CustomInputHoursWorkWeek getInputHoursWorkWeek(){
         return this.hoursWorkWeek;
-    }
-
-
-    @Override
-    public String toString(){
-        return "Fecha notificación: " + this.dateNotification.getValue() + "\n"
-                + "Hora notificación: " + this.hourNotification.getText() + "\n"
-                + "Fecha desde: " + this.dateFrom.getValue() + "\n"
-                + "Fecha hasta: " + this.dateTo.getValue() + "\n";
     }
 }

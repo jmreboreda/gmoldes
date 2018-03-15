@@ -19,7 +19,7 @@ public class Utilities {
 
     public static StringConverter converter = new StringConverter<LocalDate>() {
         DateTimeFormatter dateFormatter =
-                DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         @Override
         public String toString(LocalDate date) {
             if (date != null) {
@@ -107,7 +107,7 @@ public class Utilities {
 
     public static boolean validateDate(String date) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
             dateFormat.setLenient(false);
             dateFormat.parse(date);
         } catch (ParseException e) {

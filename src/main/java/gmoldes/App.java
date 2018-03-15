@@ -3,7 +3,6 @@ package gmoldes;
 
 import gmoldes.check.InitialChecks;
 import gmoldes.controllers.InitialMenuController;
-import gmoldes.domain.NieNif;
 import gmoldes.domain.dto.ContractDTO;
 import gmoldes.domain.dto.IDCControlDTO;
 import gmoldes.utilities.Message;
@@ -17,7 +16,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class App extends Application{
+public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -50,7 +49,7 @@ public class App extends Application{
     }
 
     private void alertByContractExpiration(Stage primaryStage){
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(gmoldes.utilities.Parameters.DEFAULT_DATE_FORMAT);
         String alert = "";
         String missingExceededText = "";
         List<ContractDTO> contractsExpiration = InitialChecks.contractExpirationControl();
