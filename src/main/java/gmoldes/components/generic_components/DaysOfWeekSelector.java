@@ -4,19 +4,17 @@ import gmoldes.components.ViewLoader;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.HBox;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-public class CustomDaysOfWeekSelector extends HBox{
+public class DaysOfWeekSelector extends HBox{
 
-    private static final String DAYS_OF_WEEK_CHECKBOX_GROUP = "/fxml/generic_components/days_of_week_checkbox_group.fxml";
+    private static final String DAYS_OF_WEEK_SELECTOR = "/fxml/generic_components/days_of_week_selector.fxml";
 
     private Parent parent;
 
@@ -35,9 +33,9 @@ public class CustomDaysOfWeekSelector extends HBox{
     @FXML
     private CheckBox sundayCheck;
 
-    public CustomDaysOfWeekSelector() {
+    public DaysOfWeekSelector() {
 
-        this.parent = ViewLoader.load(this, DAYS_OF_WEEK_CHECKBOX_GROUP);
+        this.parent = ViewLoader.load(this, DAYS_OF_WEEK_SELECTOR);
     }
 
     @FXML
@@ -53,7 +51,7 @@ public class CustomDaysOfWeekSelector extends HBox{
 
     }
 
-    public Set<DayOfWeek> getWorkDaysOfTheWeek(){
+    public Set<DayOfWeek> getDaysOfWeek(){
         Set<DayOfWeek> daysWeekToWork = new HashSet<>();
 
         if(mondayCheck.isSelected()){
@@ -79,5 +77,17 @@ public class CustomDaysOfWeekSelector extends HBox{
         }
 
         return daysWeekToWork;
+    }
+
+    public void setDaysOfWeek(Set<DayOfWeek> daysOfWeekSet){
+
+        mondayCheck.setSelected(daysOfWeekSet.contains(DayOfWeek.MONDAY));
+        tuesdayCheck.setSelected(daysOfWeekSet.contains(DayOfWeek.TUESDAY));
+        wednesdayCheck.setSelected(daysOfWeekSet.contains(DayOfWeek.WEDNESDAY));
+        thursdayCheck.setSelected(daysOfWeekSet.contains(DayOfWeek.THURSDAY));
+        fridayCheck.setSelected(daysOfWeekSet.contains(DayOfWeek.FRIDAY));
+        saturdayCheck.setSelected(daysOfWeekSet.contains(DayOfWeek.SATURDAY));
+        sundayCheck.setSelected(daysOfWeekSet.contains(DayOfWeek.SUNDAY));
+
     }
 }

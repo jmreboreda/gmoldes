@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import gmoldes.components.generic_components.DateInput?>
+<?import gmoldes.components.generic_components.TextInput?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.*?>
+<fx:root type="HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <RadioButton fx:id="radioButtonUndefined" contentDisplay="CENTER" minWidth="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="95.0" text="Indefinido" />
+      <RadioButton fx:id="radioButtonTemporal" contentDisplay="CENTER" minWidth="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Temporal">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </RadioButton>
+      <DateInput fx:id="dateFrom">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </DateInput>
+      <DateInput fx:id="dateTo">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </DateInput>
+      <TextInput fx:id="durationDays">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </TextInput>
+   </children>
+</fx:root>

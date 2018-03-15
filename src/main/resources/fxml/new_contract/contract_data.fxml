@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import gmoldes.components.contract.new_contract.CustomInputHoursWorkWeek?>
-<?import gmoldes.components.generic_components.CustomDaysOfWeekSelector?>
-<?import gmoldes.components.generic_components.CustomInputDate?>
+<?import gmoldes.components.generic_components.DaysOfWeekSelector?>
+<?import gmoldes.components.generic_components.DateInput?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -93,14 +93,14 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <CustomDaysOfWeekSelector fx:id="daysOfWeekCheckBoxGroup" alignment="CENTER" spacing="25.0" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="5">
+            <DaysOfWeekSelector fx:id="daysOfWeekToWorkSelector" alignment="CENTER" spacing="25.0" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="5">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
-            </CustomDaysOfWeekSelector>
+            </DaysOfWeekSelector>
             <Label text="Categoría" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets left="10.0" />
@@ -125,8 +125,8 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <CustomInputDate fx:id="dateInput" alignment="CENTER" GridPane.columnIndex="1">
-            </CustomInputDate>
+            <DateInput fx:id="dateNotification" alignment="CENTER" GridPane.columnIndex="1">
+            </DateInput>
             <TextField fx:id="hourNotification" promptText="hh:mm" GridPane.columnIndex="2">
             </TextField>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">

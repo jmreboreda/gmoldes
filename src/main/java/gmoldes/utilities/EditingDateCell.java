@@ -70,7 +70,7 @@ public class EditingDateCell extends TableCell<ContractScheduleDayDTO, LocalDate
 
     private void createTextField() {
         Pattern datePattern = Pattern.compile("\\d{2}[-/]\\d{2}[-/]\\d{4}");
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         textField = new TextField(getString());
         textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
         textField.setOnKeyPressed(t -> {
@@ -97,7 +97,7 @@ public class EditingDateCell extends TableCell<ContractScheduleDayDTO, LocalDate
     }
 
     private String getString() {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
 
         return getItem() == null ? null : dateFormatter.format(getItem());
     }

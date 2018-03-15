@@ -5,6 +5,7 @@ import gmoldes.controllers.ContractController;
 import gmoldes.controllers.TypesContractVariationsController;
 import gmoldes.domain.dto.ContractDTO;
 import gmoldes.domain.dto.IDCControlDTO;
+import gmoldes.utilities.Parameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +40,7 @@ public class InitialChecks {
     }
 
     public static List<IDCControlDTO> findPendingQuoteDataReportIDC() throws ParseException {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         List<IDCControlDTO> idcControlDTOList = new ArrayList<>();
         ContractController controller = new ContractController();
         List<ContractDTO> contractDTOList = controller.findPendingIDC();

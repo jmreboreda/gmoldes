@@ -43,7 +43,7 @@ public class DatePickerCell<S, T> extends TableCell<ContractScheduleDayDTO, Loca
 
         super.updateItem(item, empty);
 
-        SimpleDateFormat smp = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat smp = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
 
         if (null == this.datePicker) {
             System.out.println("datePicker is NULL");
@@ -125,7 +125,7 @@ public class DatePickerCell<S, T> extends TableCell<ContractScheduleDayDTO, Loca
         LocalDate date = datePicker.getValue();
         int index = getIndex();
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         setText(dateFormatter.format(date));
         commitEdit(date);
 
