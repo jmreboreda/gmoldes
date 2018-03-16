@@ -4,28 +4,43 @@
 <?import gmoldes.components.generic_components.TextInput?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.layout.*?>
-<fx:root type="HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+
+
+<fx:root alignment="CENTER_LEFT" type="HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <RadioButton fx:id="radioButtonUndefined" contentDisplay="CENTER" minWidth="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="95.0" text="Indefinido" />
-      <RadioButton fx:id="radioButtonTemporal" contentDisplay="CENTER" minWidth="80.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Temporal">
+      <RadioButton fx:id="radioButtonUndefined" minHeight="26.0" mnemonicParsing="false" selected="true" text="Indefinido">
+      <toggleGroup>
+      <ToggleGroup fx:id="grContractDuration" />
+      </toggleGroup>
          <HBox.margin>
-            <Insets left="10.0" />
+            <Insets />
+         </HBox.margin>
+      <!--<HBox.margin>-->
+      <!--<Insets top="12.0" />-->
+      <!--</HBox.margin>-->
+      </RadioButton>
+      <RadioButton fx:id="radioButtonTemporal" minHeight="26.0" mnemonicParsing="false" text="Temporal" toggleGroup="$grContractDuration">
+         <HBox.margin>
+            <Insets left="15.0" />
          </HBox.margin>
       </RadioButton>
-      <DateInput fx:id="dateFrom">
+
+
+      <DateInput fx:id="dateFrom" alignment="CENTER">
          <HBox.margin>
-            <Insets left="10.0" />
+            <Insets left="15.0" />
          </HBox.margin>
       </DateInput>
-      <DateInput fx:id="dateTo">
+      <DateInput fx:id="dateTo" alignment="CENTER">
          <HBox.margin>
-            <Insets left="10.0" />
+            <Insets left="15.0" />
          </HBox.margin>
       </DateInput>
-      <TextInput fx:id="durationDays">
+      <TextInput fx:id="durationContractDays" alignment="CENTER">
          <HBox.margin>
-            <Insets left="10.0" />
+            <Insets left="5.0" />
          </HBox.margin>
       </TextInput>
    </children>

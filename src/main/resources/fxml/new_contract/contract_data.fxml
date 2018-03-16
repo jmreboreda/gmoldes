@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import gmoldes.components.contract.new_contract.CustomInputHoursWorkWeek?>
-<?import gmoldes.components.generic_components.DaysOfWeekSelector?>
+<?import gmoldes.components.generic_components.ContractDuration?>
 <?import gmoldes.components.generic_components.DateInput?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-
+<?import gmoldes.components.generic_components.DaysOfWeekSelector?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import gmoldes.components.generic_components.TextInput?>
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane>
@@ -63,28 +55,18 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Desde" GridPane.columnIndex="4" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets left="3.0" />
-               </GridPane.margin>
-            </Label>
-            <Label text="Hasta" GridPane.columnIndex="6" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets left="8.0" />
-               </GridPane.margin>
-            </Label>
-            <TextField fx:id="durationDaysContract" alignment="CENTER" disable="true" editable="false" GridPane.columnIndex="8" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets left="5.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
+            <ContractDuration fx:id="contractDuration" GridPane.columnIndex="1"  GridPane.rowIndex="3" GridPane.columnSpan="8">
+            </ContractDuration>
             <Label text="Jornada" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <CustomInputHoursWorkWeek fx:id="hoursWorkWeek" alignment="CENTER" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="4">
-            </CustomInputHoursWorkWeek>
+            <!--<CustomInputHoursWorkWeek fx:id="hoursWorkWeek" alignment="CENTER" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="4">-->
+            <!--</CustomInputHoursWorkWeek>-->
+            <TextInput fx:id="hoursWorkWeek" alignment="CENTER" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="4">
+
+            </TextInput>
             <Label text="Días Jornada" wrapText="true" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="10.0" />
@@ -109,43 +91,17 @@
             <TextField fx:id="laborCategoryDescriptionInput" promptText="Categoría laboral del trabajador" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets />
-               </GridPane.margin></TextField>
-            <DatePicker fx:id="dateFrom" GridPane.columnIndex="5" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets />
                </GridPane.margin>
-            </DatePicker>
-            <DatePicker fx:id="dateTo" disable="true" GridPane.columnIndex="7" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </DatePicker>
+            </TextField>
             <Label prefHeight="14.0" prefWidth="90.0" text="Notificación">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <DateInput fx:id="dateNotification" alignment="CENTER" GridPane.columnIndex="1">
+            <DateInput fx:id="dateNotification" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2">
             </DateInput>
-            <TextField fx:id="hourNotification" promptText="hh:mm" GridPane.columnIndex="2">
+            <TextField fx:id="hourNotification" alignment="CENTER_LEFT" promptText="hh:mm" GridPane.columnIndex="2">
             </TextField>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
-               <children>
-                  <RadioButton fx:id="radioButtonUndefinedContractDuration" maxHeight="18.0" maxWidth="100.0" minHeight="18.0" minWidth="100.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="100.0" selected="true" text="Indefinido">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="grContractDuration" />
-                     </toggleGroup>
-                     <HBox.margin>
-                        <Insets top="12.0" />
-                     </HBox.margin>
-                  </RadioButton>
-                  <RadioButton fx:id="radioButtonTemporalContractDuration" mnemonicParsing="false" prefHeight="18.0" prefWidth="100.0" text="Temporal" toggleGroup="$grContractDuration">
-                     <HBox.margin>
-                        <Insets left="15.0" top="12.0" />
-                     </HBox.margin>
-                  </RadioButton>
-               </children>
-            </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4">
                <children>
                   <RadioButton fx:id="radioButtonFullWorkDay" maxHeight="18.0" maxWidth="100.0" minHeight="18.0" minWidth="100.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="100.0" selected="true" text="Completa">

@@ -42,13 +42,12 @@ public class CustomInputHoursWorkWeek extends CustomInput {
     private void initialize(){
 
         this.labelOfTextField.setPrefHeight(25);
-        this.labelOfTextField.setPrefWidth(28);
         this.labelOfTextField.setText(Parameters.HOURS_WORK_WEEK_TEXT);
-        this.labelOfTextField.setMinWidth(215);
+        this.labelOfTextField.setMinWidth(150);
+
         this.textFieldComponent.setMaxWidth(60);
         setMargin(textFieldComponent, new Insets(0, 0, 0, 10));
         textFieldComponent.setDisable(true);
-
         this. textFieldComponent.setOnAction(this::onHoursWorkWeekChanged);
         textFieldComponent.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             if (!newPropertyValue)   // Textfield out focus

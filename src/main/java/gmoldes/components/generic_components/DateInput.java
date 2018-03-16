@@ -2,6 +2,8 @@ package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.utilities.Utilities;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -14,6 +16,7 @@ import java.time.LocalDate;
 public class DateInput extends HBox {
 
     private static final String DATE_INPUT = "/fxml/generic_components/date_input.fxml";
+    private EventHandler<ActionEvent> actionEventHandler;
 
     private Parent parent;
 
@@ -30,15 +33,19 @@ public class DateInput extends HBox {
     @FXML
     private void initialize(){
 
-        this.dateInput.setPrefHeight(25);
-        this.labelDate.setPrefWidth(28);
-        this.dateInput.setMinWidth(100);
-        setMargin(dateInput, new Insets(0, 0, 0, 0));
+        this.dateInput.setMaxWidth(130);
+        setMargin(dateInput, new Insets(0, 0, 0, 5));
 
         dateInput.setConverter(Utilities.converter);
         dateInput.showWeekNumbersProperty().set(false);
         dateInput.setEditable(false);
         dateInput.setValue(LocalDate.now());
+
+        dateInput.setOnAction(this::onAction);
+    }
+
+    private void onAction(ActionEvent event){
+        actionEventHandler.handle(event);
     }
 
     public LocalDate getDate(){
@@ -51,5 +58,9 @@ public class DateInput extends HBox {
 
     public void setLabelText(String text){
         this.labelDate.setText(text);
+    }
+
+    public void setOnAction(EventHandler<ActionEvent> event){
+        this.actionEventHandler = event;
     }
 }

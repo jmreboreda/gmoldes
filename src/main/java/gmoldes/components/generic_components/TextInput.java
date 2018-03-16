@@ -1,15 +1,12 @@
 package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.utilities.Utilities;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-
-import java.time.LocalDate;
 
 public class TextInput extends HBox {
 
@@ -18,9 +15,9 @@ public class TextInput extends HBox {
     private Parent parent;
 
     @FXML
-    private Label labelDate;
+    private Label textLabel;
     @FXML
-    private DatePicker dateInput;
+    private TextField textField;
 
     public TextInput() {
 
@@ -30,26 +27,21 @@ public class TextInput extends HBox {
     @FXML
     private void initialize(){
 
-        this.dateInput.setPrefHeight(25);
-        this.labelDate.setPrefWidth(28);
-        this.dateInput.setMinWidth(100);
-        setMargin(dateInput, new Insets(0, 0, 0, 0));
+        this.textLabel.setPrefWidth(28);
+        this.textField.setMaxWidth(50);
+        setMargin(textField, new Insets(0, 0, 0, 0));
 
-        dateInput.setConverter(Utilities.converter);
-        dateInput.showWeekNumbersProperty().set(false);
-        dateInput.setEditable(false);
-        dateInput.setValue(LocalDate.now());
     }
 
-    public LocalDate getDate(){
-        return this.dateInput.getValue();
+    public String getText(){
+        return this.textField.getText();
     }
 
-    public void setDate(LocalDate date){
-        this.dateInput.setValue(date);
+    public void setText(String text){
+        this.textField.setText(text);
     }
 
-    public void setLabelText(String text){
-        this.labelDate.setText(text);
+    public void setTextLabel (String text){
+        this.textLabel.setText(text);
     }
 }

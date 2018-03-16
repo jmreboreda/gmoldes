@@ -8,11 +8,8 @@
 
 <fx:root type="HBox" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="textLabel" prefHeight="26.0" text="Label" />
-      <TextField fx:id="textComponent" prefHeight="26.0">
-         <HBox.margin>
-            <Insets left="10.0" />
-         </HBox.margin>
+      <Label fx:id="textLabel" text="" />
+      <TextField fx:id="textField">
       </TextField>
    </children>
 </fx:root>
