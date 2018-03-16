@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 public class CustomInput extends HBox {
 
-    private static final String CUSTOM_TEXTFIELD = "/fxml/generic_components/custom_textfield.fxml";
+    private static final String CUSTOM_TEXTFIELD = "/fxml/generic_components/textfield_input.fxml";
 
     private EventHandler<ChangeContractDataHoursWorkWeekEvent> changeContractDataHoursWorkWeekEventHandler;
 

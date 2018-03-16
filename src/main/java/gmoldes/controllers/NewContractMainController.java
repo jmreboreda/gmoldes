@@ -68,7 +68,6 @@ public class NewContractMainController extends VBox {
             }
         });
 
-        //contractData.getInputHoursWorkWeek().setOnChangeContractDataHoursWorkWeek(this::onChangeContractDataHoursWorkWeek);
         contractParts.setOnSearchEmployers(this::onSearchEmployers);
         contractParts.setOnSearchEmployees(this::onSearchEmployees);
         contractParts.setOnSelectEmployer(this::onSelectEmployer);
@@ -88,7 +87,7 @@ public class NewContractMainController extends VBox {
 
     private ProvisionalContractDataDTO retrieveProvisionalContractDataDTO(){
         ProvisionalContractDataDTO partsDTO = contractParts.getAllData();
-        ProvisionalContractDataDTO dataDTO = contractData.getAllData();
+        ProvisionalContractDataDTO dataDTO = contractData.getAllProvisionalContractData();
         dataDTO.setEmployerFullName(partsDTO.getEmployerFullName());
         dataDTO.setEmployeeFullName(partsDTO.getEmployeeFullName());
         dataDTO.setQuoteAccountCode(partsDTO.getQuoteAccountCode());

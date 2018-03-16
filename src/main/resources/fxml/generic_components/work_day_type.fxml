@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import gmoldes.components.generic_components.TextInput?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+
+<fx:root alignment="CENTER_LEFT" type="HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <RadioButton fx:id="radioButtonFullWorkDay" minHeight="26.0" mnemonicParsing="false" selected="true" text="A tiempo completo">
+      <toggleGroup>
+      <ToggleGroup fx:id="grWorkDay" />
+      </toggleGroup>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      <!--<HBox.margin>-->
+      <!--<Insets top="12.0" />-->
+      <!--</HBox.margin>-->
+      </RadioButton>
+      <RadioButton fx:id="radioButtonPartialWorkDay" minHeight="26.0" mnemonicParsing="false" text="A tiempo parcial" toggleGroup="$grWorkDay">
+         <HBox.margin>
+            <Insets left="15.0" />
+         </HBox.margin>
+      </RadioButton>
+      <TextInput fx:id="hoursWorkWeek" alignment="CENTER">
+         <HBox.margin>
+            <Insets left="5.0" />
+         </HBox.margin>
+      </TextInput>
+   </children>
+</fx:root>

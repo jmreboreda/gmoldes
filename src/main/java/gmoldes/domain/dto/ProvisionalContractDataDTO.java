@@ -16,11 +16,11 @@ public class ProvisionalContractDataDTO {
     private String workDayType;
     private String numberHoursPerWeek;
     private Set<DayOfWeek> daysWeekToWork;
-    private String laboralCategory;
+    private String laborCategory;
 
     public ProvisionalContractDataDTO(String employerFullName, String employeeFullName, String quoteAccountCode, String contractType,
                                       String dateFrom, String dateTo, String durationDays, String workDayType,
-                                      String numberHoursPerWeek, Set<DayOfWeek> daysWeekToWork, String laboralCategory) {
+                                      String numberHoursPerWeek, Set<DayOfWeek> daysWeekToWork, String laborCategory) {
         this.employerFullName = employerFullName;
         this.employeeFullName = employeeFullName;
         this.quoteAccountCode = quoteAccountCode;
@@ -31,7 +31,7 @@ public class ProvisionalContractDataDTO {
         this.workDayType = workDayType;
         this.numberHoursPerWeek = numberHoursPerWeek;
         this.daysWeekToWork = daysWeekToWork;
-        this.laboralCategory = laboralCategory;
+        this.laborCategory = laborCategory;
     }
 
     public String getEmployerFullName() {
@@ -114,12 +114,12 @@ public class ProvisionalContractDataDTO {
         this.daysWeekToWork = daysWeekToWork;
     }
 
-    public String getLaboralCategory() {
-        return laboralCategory;
+    public String getLaborCategory() {
+        return laborCategory;
     }
 
-    public void setLaboralCategory(String laboralCategory) {
-        this.laboralCategory = laboralCategory;
+    public void setLaborCategory(String laborCategory) {
+        this.laborCategory = laborCategory;
     }
 
     public static ProvisionalContractDataDTO.DataBuilder create() {
@@ -190,7 +190,7 @@ public class ProvisionalContractDataDTO {
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withLaboralCategory(String laborCategory) {
+        public ProvisionalContractDataDTO.DataBuilder withLaborCategory(String laborCategory) {
             this.laborCategory = laborCategory;
             return this;
         }

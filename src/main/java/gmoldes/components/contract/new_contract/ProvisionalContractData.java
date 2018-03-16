@@ -38,8 +38,6 @@ public class ProvisionalContractData extends AnchorPane {
     @FXML
     private Label numberHoursPerWeek;
     @FXML
-    private Set<DayOfWeek> daysWeekToWork;
-    @FXML
     private CheckBox monday;
     @FXML
     private CheckBox tuesday;
@@ -56,9 +54,8 @@ public class ProvisionalContractData extends AnchorPane {
     @FXML
     private Label laborCategory;
 
-
-    @FXML
     private ProvisionalContractData provisionalContractData;
+    private Set<DayOfWeek> daysWeekToWork;
 
 private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hechos aquí directamente no se tendrán en cuenta en el contrato final.";
 
@@ -92,7 +89,7 @@ private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hecho
         this.friday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.FRIDAY));
         this.saturday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.SATURDAY));
         this.sunday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.SUNDAY));
-        this.laborCategory.setText(contractDataDTO.getLaboralCategory());
+        this.laborCategory.setText(contractDataDTO.getLaborCategory());
     }
 
     public ProvisionalContractDataDTO getAllProvisionalContractData() {
@@ -131,7 +128,7 @@ private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hecho
                 .withWorkDayType(this.workDayType.getText())
                 .withNumberHoursPerWeek(this.numberHoursPerWeek.getText())
                 .withDaysWeekToWork(dayOfWeekSet)
-                .withLaboralCategory(this.laborCategory.getText())
+                .withLaborCategory(this.laborCategory.getText())
                 .build();
     }
 }

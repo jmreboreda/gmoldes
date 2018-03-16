@@ -8,6 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import gmoldes.components.generic_components.TextInput?>
+<?import gmoldes.components.generic_components.WorkDayType?>
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane>
@@ -64,9 +65,9 @@
             </Label>
             <!--<CustomInputHoursWorkWeek fx:id="hoursWorkWeek" alignment="CENTER" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="4">-->
             <!--</CustomInputHoursWorkWeek>-->
-            <TextInput fx:id="hoursWorkWeek" alignment="CENTER" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="4">
+            <!--<TextInput fx:id="hoursWorkWeek" alignment="CENTER" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="4">-->
 
-            </TextInput>
+            <!--</TextInput>-->
             <Label text="Días Jornada" wrapText="true" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="10.0" />
@@ -102,23 +103,27 @@
             </DateInput>
             <TextField fx:id="hourNotification" alignment="CENTER_LEFT" promptText="hh:mm" GridPane.columnIndex="2">
             </TextField>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4">
-               <children>
-                  <RadioButton fx:id="radioButtonFullWorkDay" maxHeight="18.0" maxWidth="100.0" minHeight="18.0" minWidth="100.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="100.0" selected="true" text="Completa">
-                     <HBox.margin>
-                        <Insets top="12.0" />
-                     </HBox.margin>
-                     <toggleGroup>
-                        <ToggleGroup fx:id="grWorkDay" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton fx:id="radioButtonPartialWorkDay" mnemonicParsing="false" text="Tiempo parcial" toggleGroup="$grWorkDay">
-                     <HBox.margin>
-                        <Insets left="15.0" top="12.0" />
-                     </HBox.margin>
-                  </RadioButton>
-               </children>
-            </HBox>
+            <!--<HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4">-->
+               <!--<children>-->
+                  <!--<RadioButton fx:id="radioButtonFullWorkDay" maxHeight="18.0" maxWidth="100.0" minHeight="18.0" minWidth="100.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="100.0" selected="true" text="Completa">-->
+                     <!--<HBox.margin>-->
+                        <!--<Insets top="12.0" />-->
+                     <!--</HBox.margin>-->
+                     <!--<toggleGroup>-->
+                        <!--<ToggleGroup fx:id="grWorkDay" />-->
+                     <!--</toggleGroup>-->
+                  <!--</RadioButton>-->
+                  <!--<RadioButton fx:id="radioButtonPartialWorkDay" mnemonicParsing="false" text="Tiempo parcial" toggleGroup="$grWorkDay">-->
+                     <!--<HBox.margin>-->
+                        <!--<Insets left="15.0" top="12.0" />-->
+                     <!--</HBox.margin>-->
+                  <!--</RadioButton>-->
+               <!--</children>-->
+            <!--</HBox>-->
+            <WorkDayType fx:id="workDayType" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.columnSpan="7">
+
+            </WorkDayType>
+
          </children>
       </GridPane>
    </children>

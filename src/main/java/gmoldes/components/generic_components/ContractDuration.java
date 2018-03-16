@@ -57,6 +57,7 @@ public class ContractDuration extends HBox {
         this.dateTo.setDisable(true);
 
         this.durationContractDays.setText(null);
+        this.durationContractDays.setTextLabel("");
         this.durationContractDays.setDisable(true);
 
         grContractDuration.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
