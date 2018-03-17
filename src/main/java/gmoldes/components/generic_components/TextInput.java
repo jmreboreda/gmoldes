@@ -1,8 +1,8 @@
 package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
 import gmoldes.components.contract.events.ChangeTextInputEvent;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -38,6 +38,7 @@ public class TextInput extends HBox {
         textField.setAlignment(Pos.CENTER);
         setMargin(textField, new Insets(0, 0, 0, 0));
 
+        textField.setOnAction(this::setOnAction);
     }
 
     public String getText(){
@@ -46,10 +47,6 @@ public class TextInput extends HBox {
 
     public void setText(String text){
         this.textField.setText(text);
-        if(getText() != null) {
-            ChangeTextInputEvent changeTextInputEvent = new ChangeTextInputEvent(getText());
-//            this.changeInputEventHandler.handle(changeTextInputEvent);
-        }
     }
 
     public void setTextLabel (String text){
@@ -72,7 +69,12 @@ public class TextInput extends HBox {
         this.textField.requestFocus();
     }
 
-    public void setOnAction(EventHandler<ChangeTextInputEvent> handler) {
+    private void setOnAction(ActionEvent event) {
+        ChangeTextInputEvent changeTextInputEvent = new ChangeTextInputEvent(this.textField.getText());
+        this.changeInputEventHandler.handle(changeTextInputEvent);
+    }
+
+    public void setOnTextInputChange(EventHandler<ChangeTextInputEvent> handler){
         this.changeInputEventHandler = handler;
     }
 }

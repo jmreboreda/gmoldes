@@ -60,7 +60,7 @@ public class DateInput extends HBox {
         this.labelDate.setText(text);
     }
 
-    public void setOnAction(EventHandler<ActionEvent> event){
-        this.actionEventHandler = event;
+    public void setOnAction(EventHandler<ActionEvent> eventHandler){
+        this.actionEventHandler = eventHandler;
     }
 }

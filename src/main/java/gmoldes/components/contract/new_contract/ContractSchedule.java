@@ -2,6 +2,7 @@ package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
+import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.dto.ContractScheduleDayDTO;
 import gmoldes.utilities.*;
 import javafx.collections.FXCollections;
@@ -61,7 +62,7 @@ public class ContractSchedule extends AnchorPane {
     @FXML
     private TableColumn<ContractScheduleDayDTO, Duration> totalDayHours;
     @FXML
-    private TextField hoursWorkWeek;
+    private TextInput hoursWorkWeek;
 
 
     public ContractSchedule() {
@@ -105,6 +106,7 @@ public class ContractSchedule extends AnchorPane {
         pmFrom.setStyle("-fx-alignment: CENTER;");
         pmTo.setStyle("-fx-alignment: CENTER;");
         totalDayHours.setStyle("-fx-alignment: CENTER-RIGHT;");
+        hoursWorkWeek.setInputMinWidth(75D);
 
         amFrom.setOnEditCommit(this::updateTableItemList);
         amTo.setOnEditCommit(this::updateTableItemList);

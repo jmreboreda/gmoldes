@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import gmoldes.components.generic_components.TextInput?>
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
@@ -55,11 +56,11 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="hoursWorkWeek" alignment="CENTER_RIGHT" editable="false" text="0:00">
+                        <TextInput fx:id="hoursWorkWeek" alignment="CENTER_RIGHT" text="0:00">
                            <VBox.margin>
                               <Insets right="5.0" top="5.0" />
                            </VBox.margin>
-                        </TextField>
+                        </TextInput>
                      </children>
                   </VBox>
                </children>

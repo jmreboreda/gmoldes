@@ -44,8 +44,6 @@ public class ContractData extends AnchorPane {
     private ContractDuration contractDuration;
     @FXML
     private ToggleGroup grWorkDay;
-//    @FXML
-//    private TextInput hoursWorkWeek;
     @FXML
     private WorkDayType workDayType;
     @FXML
@@ -183,19 +181,7 @@ public class ContractData extends AnchorPane {
         return this.workDayType.getHoursWorkWeek();
     }
 
-    public void setOnChangeContractDataHoursWorkWeek(EventHandler<ChangeContractDataHoursWorkWeekEvent> handler){
-        contractDuration.setOnChangeContractDataHoursWorkWeek(handler);
-
-//        EventHandler<ChangeTextInputEvent> changeTextInputEventHandler = new EventHandler<ChangeTextInputEvent>() {
-//            @Override
-//            public void handle(ChangeTextInputEvent event) {
-//                contractDuration.setOnChangeDurationContractDays(changeTextInputEventHandler);
-//            }
-//        };
-//        contractDuration.setOnChangeDurationContractDays(changeTextInputEventHandler);
+    public void setOnChangeContractDataHoursWorkWeek(EventHandler<ChangeTextInputEvent> handler){
+        contractDuration.setOnChangeDurationContractDays(handler);
     }
-
-//    public void setOnChangeDurationContractDays(){
-//        contractDuration.setOnChangeDurationContractDays(EventHandler<ChangeTextInputEvent> change);
-//    }
 }
