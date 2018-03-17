@@ -26,7 +26,7 @@
       </RadioButton>
       <TextInput fx:id="hoursWorkWeek" alignment="CENTER">
          <HBox.margin>
-            <Insets left="5.0" />
+            <Insets left="20.0" />
          </HBox.margin>
       </TextInput>
    </children>

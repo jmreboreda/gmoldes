@@ -1,13 +1,15 @@
 package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
+import gmoldes.components.contract.events.ChangeTextInputEvent;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -19,6 +21,8 @@ import java.time.temporal.ChronoUnit;
 public class ContractDuration extends HBox {
 
     private static final String CONTRACT_DURATION = "/fxml/generic_components/contract_duration.fxml";
+    private EventHandler<ChangeContractDataHoursWorkWeekEvent> changeContractDataHoursWorkWeekEventHandler;
+    private EventHandler<ChangeTextInputEvent> changeTextInputEventHandler;
 
     private Parent parent;
 
@@ -57,7 +61,8 @@ public class ContractDuration extends HBox {
         this.dateTo.setDisable(true);
 
         this.durationContractDays.setText(null);
-        this.durationContractDays.setTextLabel("");
+        this.durationContractDays.setLabelPreferredWidth(40D);
+        this.durationContractDays.setTextLabel("Días");
         this.durationContractDays.setDisable(true);
 
         grContractDuration.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -79,6 +84,7 @@ public class ContractDuration extends HBox {
 
         this.dateFrom.setOnAction(this::onDateAction);
         this.dateTo.setOnAction(this::onDateAction);
+        this.durationContractDays.setOnAction(this::onDurationContractDaysAction);
     }
 
     private void onDateAction(ActionEvent actionEvent){
@@ -89,6 +95,13 @@ public class ContractDuration extends HBox {
         else{
             this.durationContractDays.setText(null);
         }
+    }
+
+    private void onDurationContractDaysAction(ChangeTextInputEvent changeTextInputEvent){
+//        Duration contractDaysDuration = Utilities.converterTimeStringToDuration(changeTextInputEvent.getInputText());
+//        ChangeContractDataHoursWorkWeekEvent contractDataHoursWorkWeekEvent = new ChangeContractDataHoursWorkWeekEvent(contractDaysDuration);
+//        this.changeContractDataHoursWorkWeekEventHandler.handle(contractDataHoursWorkWeekEvent);
+//        setOnChangeDurationContractDays(changeTextInputEvent);
     }
 
     public LocalDate getDateFrom() {
@@ -113,5 +126,13 @@ public class ContractDuration extends HBox {
 
     public Boolean radioButtonTemporalIsSelected(){
         return this.radioButtonTemporal.isSelected();
+    }
+
+    public void setOnChangeContractDataHoursWorkWeek(EventHandler<ChangeContractDataHoursWorkWeekEvent> handler){
+        this.changeContractDataHoursWorkWeekEventHandler = handler;
+    }
+
+    public void setOnChangeDurationContractDays(EventHandler<ChangeTextInputEvent> changeTextInputEventHandler) {
+        this.changeTextInputEventHandler = changeTextInputEventHandler;
     }
 }

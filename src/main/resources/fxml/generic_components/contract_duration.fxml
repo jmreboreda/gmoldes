@@ -7,7 +7,6 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
 
-
 <fx:root alignment="CENTER_LEFT" type="HBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <RadioButton fx:id="radioButtonUndefined" minHeight="26.0" mnemonicParsing="false" selected="true" text="Indefinido">
@@ -40,7 +39,7 @@
       </DateInput>
       <TextInput fx:id="durationContractDays" alignment="CENTER">
          <HBox.margin>
-            <Insets left="5.0" />
+            <Insets left="10.0" />
          </HBox.margin>
       </TextInput>
    </children>

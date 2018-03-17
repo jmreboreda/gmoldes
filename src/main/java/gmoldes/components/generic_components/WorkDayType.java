@@ -5,16 +5,12 @@ import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
-
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 public class WorkDayType extends HBox {
 
@@ -48,7 +44,8 @@ public class WorkDayType extends HBox {
 
         this.hoursWorkWeek.setText(null);
         this.hoursWorkWeek.setTextLabel(Parameters.HOURS_WORK_WEEK_TEXT);
-        this.hoursWorkWeek.setMinHeight(250);
+        this.hoursWorkWeek.setLabelPreferredWidth(215D);
+        this.hoursWorkWeek.setInputMinWidth(75D);
         this.hoursWorkWeek.setDisable(true);
 
         grWorkDay.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -60,7 +57,7 @@ public class WorkDayType extends HBox {
                 }else{
                     hoursWorkWeek.setDisable(false);
                     hoursWorkWeek.setText("00:00");
-                    hoursWorkWeek.requestFocus();
+                    hoursWorkWeek.inputRequestFocus();
                 }
             }
         });

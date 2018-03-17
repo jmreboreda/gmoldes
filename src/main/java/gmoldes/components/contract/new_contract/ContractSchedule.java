@@ -19,6 +19,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
+import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -167,7 +168,16 @@ public class ContractSchedule extends AnchorPane {
             durationAM = Duration.between(selectedItemRow.getAmFrom(), selectedItemRow.getAmTo());
         }
         if(selectedItemRow.getPmFrom() != null && selectedItemRow.getPmTo() != null){
-            durationPM = Duration.between(selectedItemRow.getPmFrom(), selectedItemRow.getPmTo());
+            LocalTime pmFrom = selectedItemRow.getPmFrom();
+            LocalTime pmTo =  selectedItemRow.getPmTo();
+            if(pmTo == LocalTime.parse("00:00"))
+            {
+                durationPM = Duration.between(pmFrom, LocalTime.MIDNIGHT).plus(Duration.ofDays(1));
+            }
+            else {
+                durationPM = Duration.between(pmFrom, pmTo);
+            }
+
         }
 
         return durationAM.plus(durationPM);

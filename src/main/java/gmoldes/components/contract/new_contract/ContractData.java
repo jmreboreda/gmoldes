@@ -1,6 +1,8 @@
 package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
+import gmoldes.components.contract.events.ChangeTextInputEvent;
 import gmoldes.components.generic_components.*;
 import gmoldes.controllers.ContractTypeController;
 import gmoldes.domain.dto.ContractTypeDTO;
@@ -9,11 +11,11 @@ import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -80,7 +82,6 @@ public class ContractData extends AnchorPane {
 
     private void init(){
         hourNotificationControlSetup();
-        workDayDataControlSetup();
         loadContractType();
     }
 
@@ -148,24 +149,6 @@ public class ContractData extends AnchorPane {
                 .build();
     }
 
-    private void workDayDataControlSetup(){
-//        this.workDayType.setRadioButtonFullWorkDay(true);
-//        hoursWorkWeek.setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
-//        grWorkDay.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-//            public void changed(ObservableValue<? extends Toggle> ov,
-//                                Toggle old_toggle, Toggle new_toggle) {
-//                if (workDayType.radioButtonFullWorkDayIsSelected()) {
-//                    hoursWorkWeek.setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
-//                    hoursWorkWeek.setDisable(true);
-//                }else{
-//                    hoursWorkWeek.setDisable(false);
-//                    hoursWorkWeek.setText("00:00");
-//                    hoursWorkWeek.requestFocus();
-//                }
-//            }
-//        });
-    }
-
     private void loadContractType(){
 
         ContractTypeController contractTypeController = new ContractTypeController();
@@ -199,4 +182,20 @@ public class ContractData extends AnchorPane {
     public String getHoursWorkWeek(){
         return this.workDayType.getHoursWorkWeek();
     }
+
+    public void setOnChangeContractDataHoursWorkWeek(EventHandler<ChangeContractDataHoursWorkWeekEvent> handler){
+        contractDuration.setOnChangeContractDataHoursWorkWeek(handler);
+
+//        EventHandler<ChangeTextInputEvent> changeTextInputEventHandler = new EventHandler<ChangeTextInputEvent>() {
+//            @Override
+//            public void handle(ChangeTextInputEvent event) {
+//                contractDuration.setOnChangeDurationContractDays(changeTextInputEventHandler);
+//            }
+//        };
+//        contractDuration.setOnChangeDurationContractDays(changeTextInputEventHandler);
+    }
+
+//    public void setOnChangeDurationContractDays(){
+//        contractDuration.setOnChangeDurationContractDays(EventHandler<ChangeTextInputEvent> change);
+//    }
 }
