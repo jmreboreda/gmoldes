@@ -1,19 +1,23 @@
 package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.utilities.Parameters;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class ScheduleRow {
 
-    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-MM-yyyy");
+    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
     private static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("HH:mm");
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
     private String today = LocalDate.now().format(dateFormatter);
@@ -24,19 +28,19 @@ public class ScheduleRow {
     private Parent parent;
 
     @FXML
-    private TextField dayOfWeek;
+    private DayOfWeek dayOfWeek;
     @FXML
-    private TextField date;
+    private LocalDate date;
     @FXML
-    private TextField amFrom;
+    private LocalTime amFrom;
     @FXML
-    private TextField amTo;
+    private LocalTime amTo;
     @FXML
-    private TextField pmFrom;
+    private LocalTime pmFrom;
     @FXML
-    private TextField pmTo;
+    private LocalTime pmTo;
     @FXML
-    private TextField hoursOfDay;
+    private Duration hoursOfDay;
 
 
     public ScheduleRow() {
@@ -47,4 +51,6 @@ public class ScheduleRow {
     public void initialize() {
 
     }
+
+
 }

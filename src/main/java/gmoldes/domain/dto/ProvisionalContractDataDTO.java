@@ -1,6 +1,8 @@
 package gmoldes.domain.dto;
 
+import java.time.DayOfWeek;
 import java.util.Map;
+import java.util.Set;
 
 public class ProvisionalContractDataDTO {
 
@@ -13,12 +15,12 @@ public class ProvisionalContractDataDTO {
     private String durationDays;
     private String workDayType;
     private String numberHoursPerWeek;
-    private Map<String, Boolean> daysWeekToWork;
-    private String laboralCategory;
+    private Set<DayOfWeek> daysWeekToWork;
+    private String laborCategory;
 
     public ProvisionalContractDataDTO(String employerFullName, String employeeFullName, String quoteAccountCode, String contractType,
                                       String dateFrom, String dateTo, String durationDays, String workDayType,
-                                      String numberHoursPerWeek, Map<String, Boolean> daysWeekToWork, String laboralCategory) {
+                                      String numberHoursPerWeek, Set<DayOfWeek> daysWeekToWork, String laborCategory) {
         this.employerFullName = employerFullName;
         this.employeeFullName = employeeFullName;
         this.quoteAccountCode = quoteAccountCode;
@@ -29,7 +31,7 @@ public class ProvisionalContractDataDTO {
         this.workDayType = workDayType;
         this.numberHoursPerWeek = numberHoursPerWeek;
         this.daysWeekToWork = daysWeekToWork;
-        this.laboralCategory = laboralCategory;
+        this.laborCategory = laborCategory;
     }
 
     public String getEmployerFullName() {
@@ -104,20 +106,20 @@ public class ProvisionalContractDataDTO {
         this.numberHoursPerWeek = numberHoursPerWeek;
     }
 
-    public Map<String, Boolean> getDaysWeekToWork() {
+    public Set<DayOfWeek> getDaysWeekToWork() {
         return daysWeekToWork;
     }
 
-    public void setDaysWeekToWork(Map<String, Boolean> daysWeekToWork) {
+    public void setDaysWeekToWork(Set<DayOfWeek> daysWeekToWork) {
         this.daysWeekToWork = daysWeekToWork;
     }
 
-    public String getLaboralCategory() {
-        return laboralCategory;
+    public String getLaborCategory() {
+        return laborCategory;
     }
 
-    public void setLaboralCategory(String laboralCategory) {
-        this.laboralCategory = laboralCategory;
+    public void setLaborCategory(String laborCategory) {
+        this.laborCategory = laborCategory;
     }
 
     public static ProvisionalContractDataDTO.DataBuilder create() {
@@ -135,8 +137,8 @@ public class ProvisionalContractDataDTO {
         private String durationDays;
         private String workDayType;
         private String numberHoursPerWeek;
-        private Map<String, Boolean> daysWeekToWork;
-        private String laboralCategory;
+        private Set<DayOfWeek> daysWeekToWork;
+        private String laborCategory;
 
         public ProvisionalContractDataDTO.DataBuilder withEmployerFullName (String employerFullName) {
             this.employerFullName = employerFullName;
@@ -183,19 +185,19 @@ public class ProvisionalContractDataDTO {
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withDaysWeekToWork(Map<String, Boolean> daysWeekToWork) {
+        public ProvisionalContractDataDTO.DataBuilder withDaysWeekToWork(Set<DayOfWeek> daysWeekToWork) {
             this.daysWeekToWork = daysWeekToWork;
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withLaboralCategory(String laboralCategory) {
-            this.laboralCategory = laboralCategory;
+        public ProvisionalContractDataDTO.DataBuilder withLaborCategory(String laborCategory) {
+            this.laborCategory = laborCategory;
             return this;
         }
 
         public ProvisionalContractDataDTO build() {
             return new ProvisionalContractDataDTO(this.employerFullName, this.employeeFullName, this.quoteAccountCode, this.contractType, this.dateFrom,
-            this.dateTo, this.durationDays, this.workDayType, this.numberHoursPerWeek, this.daysWeekToWork, this.laboralCategory);
+            this.dateTo, this.durationDays, this.workDayType, this.numberHoursPerWeek, this.daysWeekToWork, this.laborCategory);
         }
     }
 }

@@ -3,8 +3,10 @@ package gmoldes.domain.dto;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 
 public class ContractScheduleDayDTO {
 
@@ -14,9 +16,9 @@ public class ContractScheduleDayDTO {
     private final SimpleObjectProperty<LocalTime> amTo;
     private final SimpleObjectProperty<LocalTime> pmFrom;
     private final SimpleObjectProperty<LocalTime> pmTo;
-    private final SimpleObjectProperty<String> totalDayHours;
+    private final SimpleObjectProperty<Duration> totalDayHours;
 
-    public ContractScheduleDayDTO(String dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, String totalDayHours) {
+    public ContractScheduleDayDTO(String dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, Duration totalDayHours) {
         this.dayOfWeek = new SimpleStringProperty(dayOfWeek);
         this.date = new SimpleObjectProperty<>(date);
         this.amFrom = new SimpleObjectProperty<>(amFrom);
@@ -98,15 +100,71 @@ public class ContractScheduleDayDTO {
         this.pmTo.set(pmTo);
     }
 
-    public String getTotalDayHours() {
+    public Duration getTotalDayHours() {
         return totalDayHours.get();
     }
 
-    public SimpleObjectProperty<String> totalDayHoursProperty() {
+    public SimpleObjectProperty<Duration> totalDayHoursProperty() {
         return totalDayHours;
     }
 
-    public void setTotalDayHours(String totalDayHours) {
+    public void setTotalDayHours(Duration totalDayHours) {
         this.totalDayHours.set(totalDayHours);
     }
+
+    public static ContractScheduleDayDTO.ContractScheduleDTOBuilder create() {
+        return new ContractScheduleDayDTO.ContractScheduleDTOBuilder();
+    }
+
+    public static class ContractScheduleDTOBuilder {
+
+        private String dayOfWeek;
+        private LocalDate date;
+        private LocalTime amFrom;
+        private LocalTime amTo;
+        private LocalTime pmFrom;
+        private LocalTime pmTo;
+        private Duration totalDayHours;
+
+        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withDayOfWeek(String dayOfWeek) {
+            this.dayOfWeek = dayOfWeek;
+            return this;
+        }
+
+        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withDate(LocalDate date) {
+            this.dayOfWeek = dayOfWeek;
+            return this;
+        }
+
+        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withAmFrom(LocalTime amFrom) {
+            this.amFrom = amFrom;
+            return this;
+        }
+
+        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withAmTo(LocalTime amTo) {
+            this.amTo = amTo;
+            return this;
+        }
+
+        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withPmFrom(LocalTime pmFrom) {
+            this.pmFrom = pmFrom;
+            return this;
+        }
+
+        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withPmTo(LocalTime pmTo) {
+            this.pmTo = pmTo;
+            return this;
+        }
+
+        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withTotalDayHours(Duration totalDayHours) {
+            this.totalDayHours = totalDayHours;
+            return this;
+        }
+
+        public ContractScheduleDayDTO build() {
+            return new ContractScheduleDayDTO(this.dayOfWeek, this.date, this.amFrom, this.amTo, this.pmFrom,
+                    this.pmTo, this.totalDayHours);
+        }
+    }
+
 }

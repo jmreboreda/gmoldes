@@ -1,9 +1,6 @@
 package gmoldes.utilities;
 
 import javafx.util.StringConverter;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -12,6 +9,7 @@ import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -21,7 +19,7 @@ public class Utilities {
 
     public static StringConverter converter = new StringConverter<LocalDate>() {
         DateTimeFormatter dateFormatter =
-                DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         @Override
         public String toString(LocalDate date) {
             if (date != null) {
@@ -40,7 +38,49 @@ public class Utilities {
         }
     };
 
-    public static Date verifyHourValue(String time){
+    public static Duration converterTimeStringToDuration(String timeAsString){
+        String minutes = null;
+        if(timeAsString.length() == 5){
+            minutes = timeAsString.substring(3,5);
+        }
+        else if(timeAsString.length() == 4){
+            minutes = timeAsString.substring(2,4);
+        }
+
+        assert minutes != null;
+        if(Integer.parseInt(minutes) > Parameters.MAXIMUM_VALUE_MINUTES_IN_HOUR) {
+
+            return null;
+        }
+
+        String stringDuration = timeAsString.replace(":", "H");
+        stringDuration = "PT" + stringDuration + "M";
+
+        return Duration.parse(stringDuration);
+    }
+
+    public static  String converterDurationToTimeString(Duration duration){
+        if(duration == Duration.ZERO){
+            return "0:00";
+        }
+
+        String durationToString = duration.toString();
+        durationToString = durationToString.replace("PT","");
+        durationToString = durationToString.replace("H",":");
+        durationToString = durationToString.replace("M","");
+
+        Long durationHours = duration.toHours();
+        Long durationMinutes = duration.toMinutes();
+        Long minutes = durationMinutes - durationHours * 60;
+
+        if(minutes == 0 ){
+            durationToString = durationToString + "00";
+        }
+
+        return durationToString;
+    }
+
+    public static Date validateStringAsTime(String time){
         Date hour;
         DateFormat hourFormatter = new SimpleDateFormat("HH:mm");
         hourFormatter.setLenient(false);
@@ -67,7 +107,7 @@ public class Utilities {
 
     public static boolean validateDate(String date) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
             dateFormat.setLenient(false);
             dateFormat.parse(date);
         } catch (ParseException e) {

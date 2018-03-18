@@ -14,12 +14,11 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
 
 import gmoldes.utilities.Message;
+import gmoldes.utilities.Parameters;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
 
 public class Printer {
-
-    private static final String DEFAULT_PRINTER = "KONICA MINOLTA";
 
     public static String printPDF(String pathToPDF, Map<String, String> printAttributes) throws IOException, PrinterException {
 
@@ -82,7 +81,7 @@ public class Printer {
             for (PrintService printService : printServicesForAttributes) {
 //                AttributeSet attributes = getAttributesForPrintService(printService);
 //                DocFlavor[] docF = getSupportedDocFlavorForPrintService(printService);
-                if (printService.getName().contains(DEFAULT_PRINTER)) {
+                if (printService.getName().contains(Parameters.DEFAULT_PRINTER)) {
                     serviceForPrint = printService;
                     break;
                 } else {

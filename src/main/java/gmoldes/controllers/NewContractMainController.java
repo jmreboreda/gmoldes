@@ -1,14 +1,14 @@
 package gmoldes.controllers;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.events.SearchEmployeesEvent;
-import gmoldes.components.contract.events.SearchEmployersEvent;
-import gmoldes.components.contract.events.SelectEmployerEvent;
+import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.new_contract.*;
 import gmoldes.domain.dto.ClientCCCDTO;
 import gmoldes.domain.dto.ClientDTO;
 import gmoldes.domain.dto.PersonDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
+import gmoldes.utilities.Parameters;
+import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -17,6 +17,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -69,6 +71,14 @@ public class NewContractMainController extends VBox {
         contractParts.setOnSearchEmployers(this::onSearchEmployers);
         contractParts.setOnSearchEmployees(this::onSearchEmployees);
         contractParts.setOnSelectEmployer(this::onSelectEmployer);
+        contractData.setOnChangeContractDataHoursWorkWeek(this::onChangeContractDataHoursWorkWeek);
+        contractSchedule.setOnChangeScheduleDuration(this::onChangeScheduleDuration);
+    }
+
+    private void onOkButton(MouseEvent event){
+        System.out.println(event.getSource() + " clicked!");
+        Boolean isAllDataOk = verifyAllContractData();
+        System.out.println("Va tutto bene ... i palle!!!");
     }
 
     private void refreshProvisionalContractData(){
@@ -76,13 +86,9 @@ public class NewContractMainController extends VBox {
         provisionalContractData.refreshData(contractDataDTO);
     }
 
-    private void onOkButton(MouseEvent event){
-        System.out.println(event.getSource() + " clicked!");
-    }
-
     private ProvisionalContractDataDTO retrieveProvisionalContractDataDTO(){
         ProvisionalContractDataDTO partsDTO = contractParts.getAllData();
-        ProvisionalContractDataDTO dataDTO = contractData.getAllData();
+        ProvisionalContractDataDTO dataDTO = contractData.getAllProvisionalContractData();
         dataDTO.setEmployerFullName(partsDTO.getEmployerFullName());
         dataDTO.setEmployeeFullName(partsDTO.getEmployeeFullName());
         dataDTO.setQuoteAccountCode(partsDTO.getQuoteAccountCode());
@@ -92,16 +98,9 @@ public class NewContractMainController extends VBox {
 
     private void onSearchEmployers(SearchEmployersEvent searchEmployersEvent){
         String pattern = searchEmployersEvent.getPattern();
-        String employersNameSelectedItem = searchEmployersEvent.getEmployersNameSelectedItem();
-        if(pattern == null){
-            pattern = "";
-        }
         if(pattern.isEmpty()){
             contractParts.clearEmployersData();
             contractParts.clearEmployerCCC();
-            return;
-        }
-        if(pattern.equals(employersNameSelectedItem)){
             return;
         }
         List<ClientDTO> employers = findClientsByNamePattern(pattern);
@@ -110,15 +109,8 @@ public class NewContractMainController extends VBox {
 
     private void onSearchEmployees(SearchEmployeesEvent searchEmployeesEvent){
         String pattern = searchEmployeesEvent.getPattern();
-        String employeesNameSelectedItem = searchEmployeesEvent.getEmployeesNameSelectedItem();
-        if(pattern == null){
-            pattern = "";
-        }
         if(pattern.isEmpty()){
             contractParts.clearEmployeesData();
-            return;
-        }
-        if(pattern.equals(employeesNameSelectedItem)){
             return;
         }
         List<PersonDTO> employees = findPersonsByNamePattern(pattern);
@@ -126,9 +118,37 @@ public class NewContractMainController extends VBox {
     }
 
     private void onSelectEmployer(SelectEmployerEvent selectEmployerEvent){
+        ClientDTO selectedEmployer  = selectEmployerEvent.getSelectedEmployer();
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+        clientDTOList.add(selectedEmployer);
+        contractParts.refreshEmployers(clientDTOList);
+
         Integer selectedEmployerId = selectEmployerEvent.getSelectedEmployer().getId();
         List<ClientCCCDTO> clientCCCDTOList = retrieveClientCCCById(selectedEmployerId);
         contractParts.refreshEmployerCCC(clientCCCDTOList);
+    }
+
+    private void onChangeContractDataHoursWorkWeek(ChangeContractDataHoursWorkWeekEvent event){
+        Duration scheduleHoursWorkWeekDuration = Utilities.converterTimeStringToDuration(contractSchedule.getHoursWorkWeek());
+        Duration contractDataWorkWeekDuration = event.getContractDataHoursWorkWeek();
+        if(scheduleHoursWorkWeekDuration != Duration.ZERO){
+            if(contractDataWorkWeekDuration.compareTo(scheduleHoursWorkWeekDuration) != 0){
+                System.out.println("El total de horas de la pestaña \"Horario\" es distinto que el total de horas de la pestaña \"Contrato\".");
+            }
+        }
+    }
+
+    private void onChangeScheduleDuration(ChangeScheduleDurationEvent event){
+        if(event.getContractScheduleTotalHoursDuration().compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0){
+            System.out.println("Exceso de semana laboral.");
+            return;
+        }
+
+        Duration duration = Utilities.converterTimeStringToDuration(contractData.getHoursWorkWeek());
+        assert duration != null;
+        if(event.getContractScheduleTotalHoursDuration().compareTo(duration) > 0){
+            System.out.println("El total de horas de la pestaña \"Horario\" es mayor que el total de horas de la pestaña \"Contrato\".");
+        }
     }
 
     private List<ClientDTO> findClientsByNamePattern(String pattern){
@@ -141,5 +161,12 @@ public class NewContractMainController extends VBox {
 
     private List<ClientCCCDTO> retrieveClientCCCById(Integer id){
         return clientCCCController.findAllCCCByClientId(id);
+    }
+
+    private Boolean verifyAllContractData(){
+        ProvisionalContractData provisionalContractData = new ProvisionalContractData();
+        ProvisionalContractDataDTO allContractData = provisionalContractData.getAllProvisionalContractData();
+
+        return true;
     }
 }
