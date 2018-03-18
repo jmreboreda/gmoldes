@@ -1,6 +1,7 @@
 package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
 import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
 import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.dto.ContractScheduleDayDTO;

@@ -128,9 +128,9 @@ public class NewContractMainController extends VBox {
         contractParts.refreshEmployerCCC(clientCCCDTOList);
     }
 
-    private void onChangeContractDataHoursWorkWeek(ChangeTextInputEvent event){
+    private void onChangeContractDataHoursWorkWeek(ChangeContractDataHoursWorkWeekEvent event){
         Duration scheduleHoursWorkWeekDuration = Utilities.converterTimeStringToDuration(contractSchedule.getHoursWorkWeek());
-        Duration contractDataWorkWeekDuration = Utilities.converterTimeStringToDuration(event.getInputText());
+        Duration contractDataWorkWeekDuration = event.getContractDataHoursWorkWeek();
         if(scheduleHoursWorkWeekDuration != Duration.ZERO){
             if(contractDataWorkWeekDuration.compareTo(scheduleHoursWorkWeekDuration) != 0){
                 System.out.println("El total de horas de la pestaña \"Horario\" es distinto que el total de horas de la pestaña \"Contrato\".");
@@ -139,7 +139,6 @@ public class NewContractMainController extends VBox {
     }
 
     private void onChangeScheduleDuration(ChangeScheduleDurationEvent event){
-
         if(event.getContractScheduleTotalHoursDuration().compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0){
             System.out.println("Exceso de semana laboral.");
             return;

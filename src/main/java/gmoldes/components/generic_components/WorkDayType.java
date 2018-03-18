@@ -1,10 +1,13 @@
 package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.RadioButton;
@@ -12,9 +15,14 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 
+import java.time.Duration;
+import java.util.regex.Pattern;
+
 public class WorkDayType extends HBox {
 
     private static final String WORK_DAY_TYPE = "/fxml/generic_components/work_day_type.fxml";
+    private EventHandler<ChangeContractDataHoursWorkWeekEvent> changeContractDataHoursWorkWeekEventHandler;
+
 
     private Parent parent;
 
@@ -47,6 +55,8 @@ public class WorkDayType extends HBox {
         this.hoursWorkWeek.setLabelPreferredWidth(215D);
         this.hoursWorkWeek.setInputMinWidth(75D);
         this.hoursWorkWeek.setDisable(true);
+        this.hoursWorkWeek.setOnAction(this::onChangeDurationContractDays);
+
 
         grWorkDay.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov,
@@ -61,6 +71,18 @@ public class WorkDayType extends HBox {
                 }
             }
         });
+    }
+
+    private void onChangeDurationContractDays(ActionEvent actionEvent){
+        if(!verifyHoursWorkWeekChangeIsValid()){
+
+            return;
+
+        }else {
+            Duration duration = Utilities.converterTimeStringToDuration(hoursWorkWeek.getText());
+            ChangeContractDataHoursWorkWeekEvent changeContractDataHoursWorkWeekEvent = new ChangeContractDataHoursWorkWeekEvent(duration);
+            this.changeContractDataHoursWorkWeekEventHandler.handle(changeContractDataHoursWorkWeekEvent);
+        }
     }
 
     public String getHoursWorkWeek() {
@@ -85,5 +107,35 @@ public class WorkDayType extends HBox {
 
     public Boolean radioButtonPartialWorkDayIsSelected(){
         return this.radioButtonPartialWorkDay.isSelected();
+    }
+
+    private Boolean verifyHoursWorkWeekChangeIsValid(){
+        Pattern timePattern = Pattern.compile("\\d{2}[:]\\d{2}");
+        if(!timePattern.matcher(hoursWorkWeek.getText()).matches()) {
+            this.hoursWorkWeek.setText("00:00");
+
+            return false;
+        }
+
+        String hoursWorkPerWeek = hoursWorkWeek.getText();
+        if((Utilities.converterTimeStringToDuration(hoursWorkPerWeek) == null)) {
+            hoursWorkWeek.setText("00:00");
+
+            return false;
+        }
+
+        Duration durationEnteredByUser = Utilities.converterTimeStringToDuration(hoursWorkPerWeek);
+        assert durationEnteredByUser != null;
+        if(durationEnteredByUser.compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK ) > 0 ){
+            hoursWorkWeek.setText("00:00");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public void setOnChangeContractDataHoursWorkWeek(EventHandler<ChangeContractDataHoursWorkWeekEvent> handler){
+        this.changeContractDataHoursWorkWeekEventHandler = handler;
     }
 }

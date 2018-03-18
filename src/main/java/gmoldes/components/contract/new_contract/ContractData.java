@@ -181,7 +181,7 @@ public class ContractData extends AnchorPane {
         return this.workDayType.getHoursWorkWeek();
     }
 
-    public void setOnChangeContractDataHoursWorkWeek(EventHandler<ChangeTextInputEvent> handler){
-        contractDuration.setOnChangeDurationContractDays(handler);
+    public void setOnChangeContractDataHoursWorkWeek(EventHandler<ChangeContractDataHoursWorkWeekEvent> handler){
+        workDayType.setOnChangeContractDataHoursWorkWeek(handler);
     }
 }

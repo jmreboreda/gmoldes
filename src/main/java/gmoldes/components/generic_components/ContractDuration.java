@@ -1,6 +1,7 @@
 package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
 import gmoldes.components.contract.events.ChangeTextInputEvent;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
@@ -23,7 +24,6 @@ import java.util.regex.Pattern;
 public class ContractDuration extends HBox {
 
     private static final String CONTRACT_DURATION = "/fxml/generic_components/contract_duration.fxml";
-    private EventHandler<ChangeTextInputEvent> changeTextInputEventHandler;
 
     private Parent parent;
 
@@ -85,7 +85,6 @@ public class ContractDuration extends HBox {
 
         this.dateFrom.setOnAction(this::onDateAction);
         this.dateTo.setOnAction(this::onDateAction);
-        this.durationContractDays.setOnTextInputChange(this::onChangeDurationContractDays);
     }
 
     private void onDateAction(ActionEvent actionEvent){
@@ -95,16 +94,6 @@ public class ContractDuration extends HBox {
         }
         else{
             this.durationContractDays.setText(null);
-        }
-    }
-
-    private void onChangeDurationContractDays(ChangeTextInputEvent changeTextInputEvent){
-        if(!verifyHoursWorkWeekChangeIsValid()){
-
-            return;
-
-        }else {
-            this.changeTextInputEventHandler.handle(changeTextInputEvent);
         }
     }
 
@@ -130,35 +119,5 @@ public class ContractDuration extends HBox {
 
     public Boolean radioButtonTemporalIsSelected(){
         return this.radioButtonTemporal.isSelected();
-    }
-
-    private Boolean verifyHoursWorkWeekChangeIsValid(){
-        Pattern timePattern = Pattern.compile("\\d{2}[:]\\d{2}");
-        if(!timePattern.matcher(this.durationContractDays.getText()).matches()) {
-            this.durationContractDays.setText("00:00");
-
-            return false;
-        }
-
-        String hoursWorkPerWeek = durationContractDays.getText();
-        if((Utilities.converterTimeStringToDuration(hoursWorkPerWeek) == null)) {
-            durationContractDays.setText("00:00");
-
-            return false;
-        }
-
-        Duration durationEnteredByUser = Utilities.converterTimeStringToDuration(hoursWorkPerWeek);
-        assert durationEnteredByUser != null;
-        if(durationEnteredByUser.compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK ) > 0 ){
-            durationContractDays.setText("00:00");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public void setOnChangeDurationContractDays(EventHandler<ChangeTextInputEvent> changeTextInputEventHandler) {
-        this.changeTextInputEventHandler = changeTextInputEventHandler;
     }
 }

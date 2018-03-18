@@ -16,7 +16,7 @@ import javafx.scene.layout.HBox;
 public class TextInput extends HBox {
 
     private static final String TEXT_INPUT = "/fxml/generic_components/text_input.fxml";
-    private EventHandler<ChangeTextInputEvent> changeInputEventHandler;
+    private EventHandler<ActionEvent> actionEventHandler;
 
     private Parent parent;
 
@@ -38,7 +38,7 @@ public class TextInput extends HBox {
         textField.setAlignment(Pos.CENTER);
         setMargin(textField, new Insets(0, 0, 0, 0));
 
-        textField.setOnAction(this::setOnAction);
+        textField.setOnAction(this::onAction);
     }
 
     public String getText(){
@@ -69,12 +69,12 @@ public class TextInput extends HBox {
         this.textField.requestFocus();
     }
 
-    private void setOnAction(ActionEvent event) {
-        ChangeTextInputEvent changeTextInputEvent = new ChangeTextInputEvent(this.textField.getText());
-        this.changeInputEventHandler.handle(changeTextInputEvent);
+    private void onAction(ActionEvent event){
+        actionEventHandler.handle(event);
     }
 
-    public void setOnTextInputChange(EventHandler<ChangeTextInputEvent> handler){
-        this.changeInputEventHandler = handler;
+    public void setOnAction(EventHandler<ActionEvent> eventHandler){
+        this.actionEventHandler = eventHandler;
     }
+
 }
