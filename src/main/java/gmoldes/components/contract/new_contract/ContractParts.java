@@ -3,6 +3,7 @@ package gmoldes.components.contract.new_contract;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.SearchEmployeesEvent;
 import gmoldes.components.contract.events.SearchEmployersEvent;
+import gmoldes.components.contract.events.SelectEmployeeEvent;
 import gmoldes.components.contract.events.SelectEmployerEvent;
 import gmoldes.domain.dto.ClientCCCDTO;
 import gmoldes.domain.dto.ClientDTO;
@@ -32,6 +33,8 @@ public class ContractParts extends HBox {
     private EventHandler<SearchEmployersEvent> onEmployerNamePatternChangedEventHandler;
     private EventHandler<SearchEmployeesEvent> onEmployeeNamePatternChangedEventHandler;
     private EventHandler<SelectEmployerEvent> onSelectEmployerEventHandler;
+    private EventHandler<SelectEmployeeEvent> onSelectEmployeeEventHandler;
+
 
     private Parent parent;
 
@@ -83,19 +86,29 @@ public class ContractParts extends HBox {
     }
 
     private void onSelectEmployer(ClientDTO newEmployerSelected){
-        employerName.setText(newEmployerSelected.getPersonOrCompanyName());
-
+        if(newEmployerSelected == null){
+            return;
+        }
+        employerName.setText(newEmployerSelected.toString());
         final SelectEmployerEvent selectEmployerEvent = new SelectEmployerEvent(newEmployerSelected);
         onSelectEmployerEventHandler.handle(selectEmployerEvent);
     }
 
     private void onSelectEmployee(PersonDTO newPersonValue){
-        if(newPersonValue != null) {
-            employeeName.setText(newPersonValue.getApellidos().concat(", ").concat(newPersonValue.getNom_rzsoc()));
-            List<PersonDTO> personDTOList = new ArrayList<>();
-            personDTOList.add(newPersonValue);
-            refreshEmployees(personDTOList);
+        if(newPersonValue == null){
+            return;
         }
+        employeeName.setText(newPersonValue.toString());
+        final SelectEmployeeEvent selectEmployeeEvent = new SelectEmployeeEvent(newPersonValue);
+        onSelectEmployeeEventHandler.handle(selectEmployeeEvent);
+    }
+
+    public ClientDTO getSelectedEmployer(){
+        return employersNames.getSelectionModel().getSelectedItem();
+    }
+
+    public Integer getEmployersNamesSize(){
+        return employersNames.getItems().size();
     }
 
     public ProvisionalContractDataDTO getAllData(){
@@ -121,25 +134,35 @@ public class ContractParts extends HBox {
     }
 
     public void clearEmployersData(){
+        if(employerName.getText().isEmpty() &&
+                employersNames.getItems().isEmpty()){
+            return;
+        }
         employerName.clear();
         clearEmployersNames();
     }
 
     public void clearEmployersNames(){
-        if(!employersNames.getItems().isEmpty()) {
-            employersNames.getItems().clear();
+        if(employersNames.getItems().isEmpty()) {
+           return;
         }
+        employersNames.getItems().clear();
     }
 
     public void clearEmployeesData(){
-        employeeName.clear();
-        clearEmployeesNames();
+        if(employeeName.getText().isEmpty() &&
+                employeesNames.getItems().isEmpty()){
+            return;
+        }
+            employeeName.clear();
+            clearEmployeesNames();
     }
 
     public void clearEmployeesNames(){
-        if(!employeesNames.getItems().isEmpty()) {
-            employeesNames.getItems().clear();
+        if(employeesNames.getItems().isEmpty()) {
+            return;
         }
+        employeesNames.getItems().clear();
     }
 
     public void clearEmployerCCC(){
@@ -177,5 +200,9 @@ public class ContractParts extends HBox {
 
     public void setOnSelectEmployer(EventHandler<SelectEmployerEvent> handler){
         this.onSelectEmployerEventHandler = handler;
+    }
+
+    public void setOnSelectEmployee(EventHandler<SelectEmployeeEvent> handler){
+        this.onSelectEmployeeEventHandler = handler;
     }
 }

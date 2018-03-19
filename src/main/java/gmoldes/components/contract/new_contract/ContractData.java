@@ -2,8 +2,10 @@ package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
-import gmoldes.components.contract.events.ChangeTextInputEvent;
-import gmoldes.components.generic_components.*;
+import gmoldes.components.generic_components.ContractDuration;
+import gmoldes.components.generic_components.DateInput;
+import gmoldes.components.generic_components.DaysOfWeekSelector;
+import gmoldes.components.generic_components.WorkDayType;
 import gmoldes.controllers.ContractTypeController;
 import gmoldes.domain.dto.ContractTypeDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
@@ -14,13 +16,19 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 

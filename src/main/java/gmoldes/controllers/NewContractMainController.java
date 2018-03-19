@@ -7,6 +7,7 @@ import gmoldes.domain.dto.ClientCCCDTO;
 import gmoldes.domain.dto.ClientDTO;
 import gmoldes.domain.dto.PersonDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
+import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
@@ -71,6 +72,7 @@ public class NewContractMainController extends VBox {
         contractParts.setOnSearchEmployers(this::onSearchEmployers);
         contractParts.setOnSearchEmployees(this::onSearchEmployees);
         contractParts.setOnSelectEmployer(this::onSelectEmployer);
+        contractParts.setOnSelectEmployee(this::onSelectEmployee);
         contractData.setOnChangeContractDataHoursWorkWeek(this::onChangeContractDataHoursWorkWeek);
         contractSchedule.setOnChangeScheduleDuration(this::onChangeScheduleDuration);
     }
@@ -118,14 +120,20 @@ public class NewContractMainController extends VBox {
     }
 
     private void onSelectEmployer(SelectEmployerEvent selectEmployerEvent){
-        ClientDTO selectedEmployer  = selectEmployerEvent.getSelectedEmployer();
+        ClientDTO selectedEmployer = selectEmployerEvent.getSelectedEmployer();
         List<ClientDTO> clientDTOList = new ArrayList<>();
         clientDTOList.add(selectedEmployer);
         contractParts.refreshEmployers(clientDTOList);
 
         Integer selectedEmployerId = selectEmployerEvent.getSelectedEmployer().getId();
-        List<ClientCCCDTO> clientCCCDTOList = retrieveClientCCCById(selectedEmployerId);
-        contractParts.refreshEmployerCCC(clientCCCDTOList);
+        updateClientCCC(selectedEmployerId);
+    }
+
+    private void onSelectEmployee(SelectEmployeeEvent selectEmployeeEvent){
+        PersonDTO selectedEmployee = selectEmployeeEvent.getSelectedEmployee();
+        List<PersonDTO> personDTOList = new ArrayList<>();
+        personDTOList.add(selectedEmployee);
+        contractParts.refreshEmployees(personDTOList);
     }
 
     private void onChangeContractDataHoursWorkWeek(ChangeContractDataHoursWorkWeekEvent event){
@@ -133,21 +141,24 @@ public class NewContractMainController extends VBox {
         Duration contractDataWorkWeekDuration = event.getContractDataHoursWorkWeek();
         if(scheduleHoursWorkWeekDuration != Duration.ZERO){
             if(contractDataWorkWeekDuration.compareTo(scheduleHoursWorkWeekDuration) != 0){
-                System.out.println("El total de horas de la pestaña \"Horario\" es distinto que el total de horas de la pestaña \"Contrato\".");
+                Message.warningMessage(tabPane.getScene().getWindow(),"Información del sistema",
+                        "El total de horas de la pestaña \"Contrato\" es distinto que el total de horas de la pestaña \"Horario\".");
             }
         }
     }
 
     private void onChangeScheduleDuration(ChangeScheduleDurationEvent event){
         if(event.getContractScheduleTotalHoursDuration().compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0){
-            System.out.println("Exceso de semana laboral.");
+            Message.warningMessage(tabPane.getScene().getWindow(),"Información del sistema",
+                    "Excedido el máximo de horas de la semana laboral legal.");
             return;
         }
 
         Duration duration = Utilities.converterTimeStringToDuration(contractData.getHoursWorkWeek());
         assert duration != null;
         if(event.getContractScheduleTotalHoursDuration().compareTo(duration) > 0){
-            System.out.println("El total de horas de la pestaña \"Horario\" es mayor que el total de horas de la pestaña \"Contrato\".");
+            Message.warningMessage(tabPane.getScene().getWindow(),"Información del sistema",
+                    "El total de horas de la pestaña \"Horario\" es mayor que el total de horas de la pestaña \"Contrato\".");
         }
     }
 
@@ -159,8 +170,9 @@ public class NewContractMainController extends VBox {
         return personController.findAllPersonsByNamePatternInAlphabeticalOrder(pattern);
     }
 
-    private List<ClientCCCDTO> retrieveClientCCCById(Integer id){
-        return clientCCCController.findAllCCCByClientId(id);
+    private void updateClientCCC(Integer id){
+        List<ClientCCCDTO> clientCCCDTOList = clientCCCController.findAllCCCByClientId(id);
+        contractParts.refreshEmployerCCC(clientCCCDTOList);
     }
 
     private Boolean verifyAllContractData(){
