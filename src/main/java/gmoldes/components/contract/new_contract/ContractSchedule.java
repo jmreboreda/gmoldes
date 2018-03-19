@@ -73,6 +73,14 @@ public class ContractSchedule extends AnchorPane {
     @FXML
     public void initialize() {
 
+        dayOfWeek.setText(Parameters.DAY_OF_WEEK_TEXT);
+        date.setText(Parameters.DATE_LABEL_TEXT);
+        amFrom.setText(Parameters.TIME_AM_FROM_TEXT);
+        amTo.setText(Parameters.TIME_AM_TO_TEXT);
+        pmFrom.setText(Parameters.TIME_PM_FROM_TEXT);
+        pmTo.setText(Parameters.TIME_PM_TO_TEXT);
+        totalDayHours.setText(Parameters.TIME_DURATION_WORK_DAY_TEXT);
+
         contract_schedule_table.setEditable(true);
 
         Callback<TableColumn<ContractScheduleDayDTO, String>, TableCell<ContractScheduleDayDTO, String>> cellStringFactory =
@@ -108,6 +116,8 @@ public class ContractSchedule extends AnchorPane {
         pmTo.setStyle("-fx-alignment: CENTER;");
         totalDayHours.setStyle("-fx-alignment: CENTER-RIGHT;");
         hoursWorkWeek.setInputMinWidth(75D);
+        hoursWorkWeek.setStyle("-fx-alignment: CENTER-RIGHT;");
+
 
         amFrom.setOnEditCommit(this::updateTableItemList);
         amTo.setOnEditCommit(this::updateTableItemList);
@@ -115,6 +125,9 @@ public class ContractSchedule extends AnchorPane {
         pmTo.setOnEditCommit(this::updateTableItemList);
 
         contract_schedule_table.setOnKeyPressed(this::verifyRequestWithSpecialKeyCode);
+
+        contract_schedule_table.getStyleClass().clear();
+        contract_schedule_table.getStyleClass().add("/css_stylesheet/modena");
 
         List<ContractScheduleDayDTO> contractScheduleDayDTOList = new ArrayList<>();
         for(int i = 0; i <= FINAL_ROW_TABLE; i++){

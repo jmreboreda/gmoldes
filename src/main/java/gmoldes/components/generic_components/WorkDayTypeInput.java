@@ -18,7 +18,7 @@ import javafx.scene.layout.HBox;
 import java.time.Duration;
 import java.util.regex.Pattern;
 
-public class WorkDayType extends HBox {
+public class WorkDayTypeInput extends HBox {
 
     private static final String WORK_DAY_TYPE = "/fxml/generic_components/work_day_type.fxml";
     private EventHandler<ChangeContractDataHoursWorkWeekEvent> changeContractDataHoursWorkWeekEventHandler;
@@ -35,7 +35,7 @@ public class WorkDayType extends HBox {
     @FXML
     private TextInput hoursWorkWeek;
 
-    public WorkDayType() {
+    public WorkDayTypeInput() {
 
         this.parent = ViewLoader.load(this, WORK_DAY_TYPE);
     }

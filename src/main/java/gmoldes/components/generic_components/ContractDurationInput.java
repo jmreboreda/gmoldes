@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.regex.Pattern;
 
-public class ContractDuration extends HBox {
+public class ContractDurationInput extends HBox {
 
     private static final String CONTRACT_DURATION = "/fxml/generic_components/contract_duration.fxml";
 
@@ -40,7 +40,7 @@ public class ContractDuration extends HBox {
     @FXML
     private TextInput durationContractDays;
 
-    public ContractDuration() {
+    public ContractDurationInput() {
 
         this.parent = ViewLoader.load(this, CONTRACT_DURATION);
     }

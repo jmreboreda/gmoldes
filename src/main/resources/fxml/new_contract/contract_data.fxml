@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import gmoldes.components.generic_components.ContractDuration?>
+<?import gmoldes.components.generic_components.ContractDurationInput?>
 <?import gmoldes.components.generic_components.DateInput?>
 <?import gmoldes.components.generic_components.DaysOfWeekSelector?>
-<?import gmoldes.components.generic_components.WorkDayType?>
+<?import gmoldes.components.generic_components.WorkDayTypeInput?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -54,8 +54,8 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <ContractDuration fx:id="contractDuration" GridPane.columnIndex="1"  GridPane.rowIndex="3" GridPane.columnSpan="8">
-            </ContractDuration>
+            <ContractDurationInput fx:id="contractDuration" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.columnSpan="8">
+            </ContractDurationInput>
             <Label text="Jornada" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="10.0" />
@@ -96,9 +96,9 @@
             </DateInput>
             <TextField fx:id="hourNotification" alignment="CENTER_LEFT" promptText="hh:mm" GridPane.columnIndex="2">
             </TextField>
-            <WorkDayType fx:id="workDayType" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.columnSpan="7">
+            <WorkDayTypeInput fx:id="workDayType" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.columnSpan="7">
 
-            </WorkDayType>
+            </WorkDayTypeInput>
 
          </children>
       </GridPane>

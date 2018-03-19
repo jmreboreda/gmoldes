@@ -2,10 +2,10 @@ package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
-import gmoldes.components.generic_components.ContractDuration;
+import gmoldes.components.generic_components.ContractDurationInput;
 import gmoldes.components.generic_components.DateInput;
 import gmoldes.components.generic_components.DaysOfWeekSelector;
-import gmoldes.components.generic_components.WorkDayType;
+import gmoldes.components.generic_components.WorkDayTypeInput;
 import gmoldes.controllers.ContractTypeController;
 import gmoldes.domain.dto.ContractTypeDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
@@ -49,11 +49,11 @@ public class ContractData extends AnchorPane {
     @FXML
     private ChoiceBox<ContractTypeDTO> contractType;
     @FXML
-    private ContractDuration contractDuration;
+    private ContractDurationInput contractDuration;
     @FXML
     private ToggleGroup grWorkDay;
     @FXML
-    private WorkDayType workDayType;
+    private WorkDayTypeInput workDayType;
     @FXML
     private DaysOfWeekSelector daysOfWeekToWorkSelector;
     @FXML
