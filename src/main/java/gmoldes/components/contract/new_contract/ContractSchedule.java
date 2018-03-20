@@ -22,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
 import java.sql.Time;
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -84,33 +85,27 @@ public class ContractSchedule extends AnchorPane {
 
         contract_schedule_table.setEditable(true);
 
-        Callback<TableColumn<ContractScheduleDayDTO, String>, TableCell<ContractScheduleDayDTO, String>> cellStringFactory =
-                p -> new EditingStringCell();
-        dayOfWeek.setCellFactory(cellStringFactory);
-
-        Callback<TableColumn<ContractScheduleDayDTO, LocalDate>, TableCell<ContractScheduleDayDTO, LocalDate>> cellDateFactory =
-                p -> new EditingDateCell();
-        date.setCellFactory(cellDateFactory);
-
-        Callback<TableColumn<ContractScheduleDayDTO, LocalTime>, TableCell<ContractScheduleDayDTO, LocalTime>> cellTimeFactory =
-                p -> new EditingTimeCell();
-        amFrom.setCellFactory(cellTimeFactory);
-        amTo.setCellFactory(cellTimeFactory);
-        pmFrom.setCellFactory(cellTimeFactory);
-        pmTo.setCellFactory(cellTimeFactory);
-
-        Callback<TableColumn<ContractScheduleDayDTO, Duration>, TableCell<ContractScheduleDayDTO, Duration>> cellDurationFactory =
-                p -> new EditingDurationCell();
-        totalDayHours.setCellFactory(cellDurationFactory);
+        dayOfWeek.setCellFactory(param -> new EditingStringCell());
+        date.setCellFactory(param -> new EditingDateCell());
+        amFrom.setCellFactory(param -> new EditingTimeCell());
+        amTo.setCellFactory(param -> new EditingTimeCell());
+        pmFrom.setCellFactory(param -> new EditingTimeCell());
+        pmTo.setCellFactory(param -> new EditingTimeCell());
+        totalDayHours.setCellFactory(param -> new EditingDurationCell());
 
         dayOfWeek.setCellValueFactory(new PropertyValueFactory<>("dayOfWeek"));
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        date.getStyleClass().add("tableDateStyle");
         amFrom.setCellValueFactory(new PropertyValueFactory<>("amFrom"));
+        amFrom.getStyleClass().add("tableTimeStyle");
         amTo.setCellValueFactory(new PropertyValueFactory<>("amTo"));
+        amTo.getStyleClass().add("tableTimeStyle");
         pmFrom.setCellValueFactory(new PropertyValueFactory<>("pmFrom"));
+        pmFrom.getStyleClass().add("tableTimeStyle");
         pmTo.setCellValueFactory(new PropertyValueFactory<>("pmTo"));
+        pmTo.getStyleClass().add("tableTimeStyle");
         totalDayHours.setCellValueFactory(new PropertyValueFactory<>("totalDayHours"));
-        totalDayHours.getStyleClass().add("totalDayHours_style");
+        totalDayHours.getStyleClass().add("tableTotalDayHoursStyle");
         hoursWorkWeek.setInputMinWidth(75D);
 
 

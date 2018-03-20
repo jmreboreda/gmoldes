@@ -26,14 +26,20 @@
                          }
 
 #contract_schedule_table .table-column{
-    -fx-alignment: CENTER;
     -fx-text-fill: #006400;
 }
 
-.totalDayHours_style {
-  -fx-alignment: CENTER-RIGHT;
-  -fx-text-fill: #006400;
-  -fx-font-weight: bold;
+.tableDateStyle{
+    -fx-alignment: CENTER;
+}
+
+.tableTimeStyle{
+    -fx-alignment: CENTER;
+}
+
+.tableTotalDayHoursStyle {
+    -fx-alignment: CENTER-RIGHT;
+    -fx-font-weight: bold;
 }
 
 /*
