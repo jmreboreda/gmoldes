@@ -16,10 +16,8 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 
 import java.text.DecimalFormat;
@@ -38,7 +36,6 @@ public class ContractData extends AnchorPane {
     private static final String CONTRACT_DATA_FXML = "/fxml/new_contract/contract_data.fxml";
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
-    private DecimalFormat decimalFormatter = new DecimalFormat("0.00##");
 
     private Parent parent;
 
@@ -50,8 +47,6 @@ public class ContractData extends AnchorPane {
     private ChoiceBox<ContractTypeDTO> contractType;
     @FXML
     private ContractDurationInput contractDuration;
-    @FXML
-    private ToggleGroup grWorkDay;
     @FXML
     private WorkDayTypeInput workDayType;
     @FXML
