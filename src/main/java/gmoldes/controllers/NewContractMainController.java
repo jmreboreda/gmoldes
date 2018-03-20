@@ -15,7 +15,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
@@ -80,8 +79,13 @@ public class NewContractMainController extends VBox {
 
     private void onOkButton(MouseEvent event){
         System.out.println(event.getSource() + " clicked!");
-        Boolean isAllDataOk = verifyAllContractData();
-        System.out.println("Va tutto bene ... i palle!!!");
+        if(!verifyContractParts()){
+            return;
+        }
+
+        if(!verifyContractData()){
+
+        }
     }
 
     private void refreshProvisionalContractData(){
@@ -142,24 +146,24 @@ public class NewContractMainController extends VBox {
         Duration contractDataWorkWeekDuration = event.getContractDataHoursWorkWeek();
         if(scheduleHoursWorkWeekDuration != Duration.ZERO){
             if(contractDataWorkWeekDuration.compareTo(scheduleHoursWorkWeekDuration) != 0){
-                Message.warningMessage(tabPane.getScene().getWindow(),"Información del sistema",
-                        "El total de horas de la pestaña \"Contrato\" es distinto que el total de horas de la pestaña \"Horario\".");
+                Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
+                        Parameters.CONTRACT_HOURS_DIFFERENT_FROM_SCHEDULE_HOURS);
             }
         }
     }
 
     private void onChangeScheduleDuration(ChangeScheduleDurationEvent event){
         if(event.getContractScheduleTotalHoursDuration().compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0){
-            Message.warningMessage(tabPane.getScene().getWindow(),"Información del sistema",
-                    "Excedido el máximo de horas de la semana laboral legal.");
+            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+                    Parameters.EXCEEDED_MAXIMUM_LEGAL_WEEKLY_HOURS);
             return;
         }
 
         Duration duration = Utilities.converterTimeStringToDuration(contractData.getHoursWorkWeek());
         assert duration != null;
         if(event.getContractScheduleTotalHoursDuration().compareTo(duration) > 0){
-            Message.warningMessage(tabPane.getScene().getWindow(),"Información del sistema",
-                    "El total de horas de la pestaña \"Horario\" es mayor que el total de horas de la pestaña \"Contrato\".");
+            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
+                    Parameters.SCHEDULE_HOURS_GREATER_THAN_CONTRACT_HOURS);
         }
     }
 
@@ -179,6 +183,35 @@ public class NewContractMainController extends VBox {
     private Boolean verifyAllContractData(){
         ProvisionalContractData provisionalContractData = new ProvisionalContractData();
         ProvisionalContractDataDTO allContractData = provisionalContractData.getAllProvisionalContractData();
+
+        return true;
+    }
+
+    private Boolean verifyContractParts(){
+
+        if(contractParts.getSelectedEmployer() == null){
+            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
+                    Parameters.EMPLOYER_IS_NOT_SELECTED);
+            return false;
+        }
+
+        if(contractParts.getSelectedCCC() == null){
+            if(!Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_NULL_CCC_CODE_IS_CORRECT)){
+                return false;
+            }
+        }
+
+        if(contractParts.getSelectedEmployee() == null){
+            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
+                    Parameters.EMPLOYEE_IS_NOT_SELECTED);
+            return false;
+        }
+
+        return true;
+    }
+
+    private Boolean verifyContractData(){
+
 
         return true;
     }

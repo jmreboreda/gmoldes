@@ -26,7 +26,15 @@ public class Parameters {
     public static final String TIME_PM_TO_TEXT = "Tarde hasta";
     public static final String TIME_DURATION_WORK_DAY_TEXT = "Jornada:\nHoras de\nduración";
 
+    /** Messages */
+    public static final String SYSTEM_INFORMATION_TEXT = "Información del sistema";
+    public static final String EXCEEDED_MAXIMUM_LEGAL_WEEKLY_HOURS = "Excedido el máximo de horas de la semana laboral legal.";
+    public static final String SCHEDULE_HOURS_GREATER_THAN_CONTRACT_HOURS = "El total de horas de la pestaña \"Horario\" es mayor que el total de horas de la pestaña \"Contrato\".";
+    public static final String CONTRACT_HOURS_DIFFERENT_FROM_SCHEDULE_HOURS = "El total de horas de la pestaña \"Contrato\" es distinto que el total de horas de la pestaña \"Horario\".";
 
+    public static final String EMPLOYER_IS_NOT_SELECTED = "No se ha seleccionado el cliente/empleador.";
+    public static final String EMPLOYEE_IS_NOT_SELECTED = "No se ha seleccionado el empleado.";
+    public static final String QUESTION_NULL_CCC_CODE_IS_CORRECT = "El CCC no está disponible o no ha sido seleccionado. ¿Es correcto?";
 
     /** Various */
     public static final Integer MAXIMUM_VALUE_MINUTES_IN_HOUR = 59;

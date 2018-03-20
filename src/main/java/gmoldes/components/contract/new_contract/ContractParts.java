@@ -9,6 +9,7 @@ import gmoldes.domain.dto.ClientCCCDTO;
 import gmoldes.domain.dto.ClientDTO;
 import gmoldes.domain.dto.PersonDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
+import gmoldes.utilities.Parameters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -106,6 +107,22 @@ public class ContractParts extends HBox {
     public ClientDTO getSelectedEmployer(){
         return employersNames.getSelectionModel().getSelectedItem();
     }
+
+    public PersonDTO getSelectedEmployee(){
+        return employeesNames.getSelectionModel().getSelectedItem();
+    }
+
+    public ClientCCCDTO getSelectedCCC(){
+        if(cotizationCode.getItems().isEmpty()) {
+            return null;
+        }
+        else if(cotizationCode.getSelectionModel().getSelectedItem() == null){
+            return null;
+        }
+
+        return cotizationCode.getSelectionModel().getSelectedItem();
+    }
+
 
     public Integer getEmployersNamesSize(){
         return employersNames.getItems().size();

@@ -57,20 +57,6 @@ public class ContractData extends AnchorPane {
     @FXML
     private DaysOfWeekSelector daysOfWeekToWorkSelector;
     @FXML
-    private CheckBox Monday;
-    @FXML
-    private CheckBox Tuesday;
-    @FXML
-    private CheckBox Wednesday;
-    @FXML
-    private CheckBox Thursday;
-    @FXML
-    private CheckBox Friday;
-    @FXML
-    private CheckBox Saturday;
-    @FXML
-    private CheckBox Sunday;
-    @FXML
     private TextField laborCategoryDescriptionInput;
 
     public ContractData() {
