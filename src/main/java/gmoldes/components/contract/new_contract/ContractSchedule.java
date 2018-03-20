@@ -15,6 +15,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -26,8 +27,10 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ContractSchedule extends AnchorPane {
 
@@ -85,7 +88,17 @@ public class ContractSchedule extends AnchorPane {
 
         contract_schedule_table.setEditable(true);
 
-        dayOfWeek.setCellFactory(param -> new EditingStringCell());
+        final ObservableList<String> daysOfWeek = FXCollections.observableArrayList();
+        for(Integer i = 1; i <= 7; i++ ){
+            daysOfWeek.add(DayOfWeek.of(i).getDisplayName(TextStyle.FULL, Locale.getDefault()));
+        }
+        dayOfWeek.setCellFactory(param -> {
+                    ComboBoxTableCell<ContractScheduleDayDTO, String> comboBoxTableCell = new ComboBoxTableCell<>(daysOfWeek);
+                    comboBoxTableCell.setPickOnBounds(true);
+                    comboBoxTableCell.updateSelected(true);
+                    return comboBoxTableCell;
+                });
+
         date.setCellFactory(param -> new EditingDateCell());
         amFrom.setCellFactory(param -> new EditingTimeCell());
         amTo.setCellFactory(param -> new EditingTimeCell());
@@ -95,18 +108,19 @@ public class ContractSchedule extends AnchorPane {
 
         dayOfWeek.setCellValueFactory(new PropertyValueFactory<>("dayOfWeek"));
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        date.getStyleClass().add("tableDateStyle");
         amFrom.setCellValueFactory(new PropertyValueFactory<>("amFrom"));
-        amFrom.getStyleClass().add("tableTimeStyle");
         amTo.setCellValueFactory(new PropertyValueFactory<>("amTo"));
-        amTo.getStyleClass().add("tableTimeStyle");
         pmFrom.setCellValueFactory(new PropertyValueFactory<>("pmFrom"));
-        pmFrom.getStyleClass().add("tableTimeStyle");
         pmTo.setCellValueFactory(new PropertyValueFactory<>("pmTo"));
-        pmTo.getStyleClass().add("tableTimeStyle");
         totalDayHours.setCellValueFactory(new PropertyValueFactory<>("totalDayHours"));
-        totalDayHours.getStyleClass().add("tableTotalDayHoursStyle");
         hoursWorkWeek.setInputMinWidth(75D);
+
+        date.getStyleClass().add("tableDateStyle");
+        amFrom.getStyleClass().add("tableTimeStyle");
+        amTo.getStyleClass().add("tableTimeStyle");
+        pmFrom.getStyleClass().add("tableTimeStyle");
+        pmTo.getStyleClass().add("tableTimeStyle");
+        totalDayHours.getStyleClass().add("tableTotalDayHoursStyle");
 
 
         amFrom.setOnEditCommit(this::updateTableItemList);
@@ -180,7 +194,6 @@ public class ContractSchedule extends AnchorPane {
             else {
                 durationPM = Duration.between(pmFrom, pmTo);
             }
-
         }
 
         return durationAM.plus(durationPM);

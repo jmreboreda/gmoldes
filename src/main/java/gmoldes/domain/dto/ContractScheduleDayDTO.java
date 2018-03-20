@@ -132,7 +132,7 @@ public class ContractScheduleDayDTO {
         }
 
         public ContractScheduleDayDTO.ContractScheduleDTOBuilder withDate(LocalDate date) {
-            this.dayOfWeek = dayOfWeek;
+            this.date = date;
             return this;
         }
 
