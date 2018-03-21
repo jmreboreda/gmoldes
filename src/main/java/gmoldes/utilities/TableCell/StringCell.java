@@ -1,4 +1,4 @@
-package gmoldes.utilities;
+package gmoldes.utilities.TableCell;
 
 import gmoldes.domain.dto.ContractScheduleDayDTO;
 import javafx.geometry.Pos;
@@ -7,11 +7,11 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
-public class EditingStringCell extends TableCell<ContractScheduleDayDTO, String> {
+public class StringCell extends TableCell<ContractScheduleDayDTO, String> {
 
     private TextField textField;
 
-    public EditingStringCell() {}
+    public StringCell() {}
 
     @Override
     public void startEdit() {

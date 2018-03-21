@@ -1,28 +1,26 @@
 package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
 import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
 import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.dto.ContractScheduleDayDTO;
 import gmoldes.utilities.*;
+import gmoldes.utilities.TableCell.DateCell;
+import gmoldes.utilities.TableCell.DurationCell;
+import gmoldes.utilities.TableCell.TimeCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Callback;
 
-import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -98,13 +96,12 @@ public class ContractSchedule extends AnchorPane {
                     comboBoxTableCell.updateSelected(true);
                     return comboBoxTableCell;
                 });
-
-        date.setCellFactory(param -> new EditingDateCell());
-        amFrom.setCellFactory(param -> new EditingTimeCell());
-        amTo.setCellFactory(param -> new EditingTimeCell());
-        pmFrom.setCellFactory(param -> new EditingTimeCell());
-        pmTo.setCellFactory(param -> new EditingTimeCell());
-        totalDayHours.setCellFactory(param -> new EditingDurationCell());
+        date.setCellFactory(param -> new DateCell());
+        amFrom.setCellFactory(param -> new TimeCell());
+        amTo.setCellFactory(param -> new TimeCell());
+        pmFrom.setCellFactory(param -> new TimeCell());
+        pmTo.setCellFactory(param -> new TimeCell());
+        totalDayHours.setCellFactory(param -> new DurationCell());
 
         dayOfWeek.setCellValueFactory(new PropertyValueFactory<>("dayOfWeek"));
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -148,7 +145,7 @@ public class ContractSchedule extends AnchorPane {
         ContractScheduleDayDTO selectedItemDay = contract_schedule_table.getItems().get(editedRow);
 
         if(editedColumn == DAY_OF_WEEK_COLUMN){
-            selectedItemDay.setDayOfWeek((String) event.getNewValue());
+            selectedItemDay.setDayOfWeek((DayOfWeek) event.getNewValue());
         }
         if(editedColumn == DATE_COLUMN){
             selectedItemDay.setDate((LocalDate) event.getNewValue());

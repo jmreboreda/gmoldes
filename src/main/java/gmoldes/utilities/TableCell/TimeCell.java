@@ -1,4 +1,4 @@
-package gmoldes.utilities;
+package gmoldes.utilities.TableCell;
 
 import gmoldes.domain.dto.ContractScheduleDayDTO;
 import javafx.geometry.Pos;
@@ -14,11 +14,11 @@ import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-public class EditingTimeCell extends TableCell<ContractScheduleDayDTO, LocalTime> {
+public class TimeCell extends TableCell<ContractScheduleDayDTO, LocalTime> {
 
     private TextField textField;
 
-    public EditingTimeCell() {}
+    public TimeCell() {}
 
     @Override
     public void startEdit() {

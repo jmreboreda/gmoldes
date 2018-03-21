@@ -1,6 +1,7 @@
-package gmoldes.utilities;
+package gmoldes.utilities.TableCell;
 
 import gmoldes.domain.dto.ContractScheduleDayDTO;
+import gmoldes.utilities.Parameters;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
@@ -15,11 +16,11 @@ import java.time.format.FormatStyle;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-public class EditingDateCell extends TableCell<ContractScheduleDayDTO, LocalDate> {
+public class DateCell extends TableCell<ContractScheduleDayDTO, LocalDate> {
 
     private TextField textField;
 
-    public EditingDateCell() {}
+    public DateCell() {}
 
     @Override
     public void startEdit() {

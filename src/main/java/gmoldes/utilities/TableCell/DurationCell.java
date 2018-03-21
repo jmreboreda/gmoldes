@@ -1,4 +1,4 @@
-package gmoldes.utilities;
+package gmoldes.utilities.TableCell;
 
 import gmoldes.domain.dto.ContractScheduleDayDTO;
 import javafx.geometry.Pos;
@@ -13,11 +13,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
-public class EditingDurationCell extends TableCell<ContractScheduleDayDTO, Duration> {
+public class DurationCell extends TableCell<ContractScheduleDayDTO, Duration> {
 
     private TextField textField;
 
-    public EditingDurationCell() {}
+    public DurationCell() {}
 
     @Override
     public void startEdit() {
@@ -53,16 +53,6 @@ public class EditingDurationCell extends TableCell<ContractScheduleDayDTO, Durat
 
     private String getString() {
         Duration duration = getItem();
-//        Long hours = duration.toHours();
-//        Long minutesOfHours = duration.toMinutes();
-//        Long minutes = minutesOfHours - hours * 60;
-//
-//        String minutesString = minutes.toString();
-//        if(minutesString.length() < 2){
-//            minutesString = minutesString + "0";
-//        }
-//        String durationToString = hours.toString() + ":" + minutesString + " ";
-
         if(duration == Duration.ZERO){
             return "0:00";
         }
