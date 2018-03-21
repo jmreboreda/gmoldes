@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -78,6 +79,35 @@ public class Utilities {
         }
 
         return durationToString;
+    }
+
+    public static DayOfWeek converterStringToDayOfWeek(String dayOfWeekString){
+        DayOfWeek dayOfWeek = null;
+        switch (dayOfWeekString) {
+            case "lunes":
+                dayOfWeek = DayOfWeek.MONDAY;
+                break;
+            case "martes":
+                dayOfWeek = DayOfWeek.TUESDAY;
+                break;
+            case "miércoles":
+                dayOfWeek = DayOfWeek.WEDNESDAY;
+                break;
+            case "jueves":
+                dayOfWeek = DayOfWeek.THURSDAY;
+                break;
+            case "viernes":
+                dayOfWeek = DayOfWeek.FRIDAY;
+                break;
+            case "sábado":
+                dayOfWeek = DayOfWeek.SATURDAY;
+                break;
+            case "domingo":
+                dayOfWeek = DayOfWeek.SUNDAY;
+                break;
+        }
+
+        return dayOfWeek;
     }
 
     public static Date validateStringAsTime(String time){

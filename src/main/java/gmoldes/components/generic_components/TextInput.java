@@ -61,6 +61,10 @@ public class TextInput extends HBox {
         this.textField.setPrefWidth(width);
     }
 
+    public void setEditable(Boolean bol){
+        this.textField.setEditable(bol);
+    }
+
     public void setInputMinWidth(Double width){
         this.textField.setMinWidth(width);
     }

@@ -87,8 +87,8 @@ public class ContractSchedule extends AnchorPane {
         contract_schedule_table.setEditable(true);
 
         final ObservableList<String> daysOfWeek = FXCollections.observableArrayList();
-        for(Integer i = 1; i <= 7; i++ ){
-            daysOfWeek.add(DayOfWeek.of(i).getDisplayName(TextStyle.FULL, Locale.getDefault()));
+        for(Integer numberOfDayOfWeek = 1; numberOfDayOfWeek <= 7; numberOfDayOfWeek++ ){
+            daysOfWeek.add(DayOfWeek.of(numberOfDayOfWeek).getDisplayName(TextStyle.FULL, Locale.getDefault()));
         }
         dayOfWeek.setCellFactory(param -> {
                     ComboBoxTableCell<ContractScheduleDayDTO, String> comboBoxTableCell = new ComboBoxTableCell<>(daysOfWeek);
@@ -119,11 +119,10 @@ public class ContractSchedule extends AnchorPane {
         pmTo.getStyleClass().add("tableTimeStyle");
         totalDayHours.getStyleClass().add("tableTotalDayHoursStyle");
 
-
-        amFrom.setOnEditCommit(this::updateTableItemList);
-        amTo.setOnEditCommit(this::updateTableItemList);
-        pmFrom.setOnEditCommit(this::updateTableItemList);
-        pmTo.setOnEditCommit(this::updateTableItemList);
+        amFrom.setOnEditCommit(this::updateTotalWeekHours);
+        amTo.setOnEditCommit(this::updateTotalWeekHours);
+        pmFrom.setOnEditCommit(this::updateTotalWeekHours);
+        pmTo.setOnEditCommit(this::updateTotalWeekHours);
 
         contract_schedule_table.setOnKeyPressed(this::verifyRequestWithSpecialKeyCode);
 
@@ -138,18 +137,12 @@ public class ContractSchedule extends AnchorPane {
         refreshTable(data);
     }
 
-    private void updateTableItemList(TableColumn.CellEditEvent event){
+    private void updateTotalWeekHours(TableColumn.CellEditEvent event){
         int editedRow = event.getTablePosition().getRow();
         int editedColumn = event.getTablePosition().getColumn();
 
         ContractScheduleDayDTO selectedItemDay = contract_schedule_table.getItems().get(editedRow);
 
-        if(editedColumn == DAY_OF_WEEK_COLUMN){
-            selectedItemDay.setDayOfWeek((DayOfWeek) event.getNewValue());
-        }
-        if(editedColumn == DATE_COLUMN){
-            selectedItemDay.setDate((LocalDate) event.getNewValue());
-        }
         if(editedColumn == AM_FROM_COLUMN){
             selectedItemDay.setAmFrom((LocalTime) event.getNewValue());
         }

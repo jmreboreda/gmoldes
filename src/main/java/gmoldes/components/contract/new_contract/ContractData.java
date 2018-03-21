@@ -23,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,7 @@ public class ContractData extends AnchorPane {
     private static final String CONTRACT_DATA_FXML = "/fxml/new_contract/contract_data.fxml";
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
 
     private Parent parent;
 
@@ -152,6 +154,7 @@ public class ContractData extends AnchorPane {
     }
 
     private void hourNotificationControlSetup(){
+        hourNotification.setText(timeFormatter.format(LocalTime.now()));
         hourNotification.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             if (!newPropertyValue)
             {

@@ -42,5 +42,7 @@ public class Parameters {
     public static final String DATE_FROM_TEXT = "Desde";
     public static final String DATE_TO_TEXT = "Hasta";
     public static final String DEFAULT_DATE_FORMAT = "dd-MM-yyyy";
+    public static final String DEFAULT_TIME_FORMAT = "HH:mm";
+
 
 }

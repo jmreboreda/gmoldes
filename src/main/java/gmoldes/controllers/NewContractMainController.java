@@ -78,13 +78,13 @@ public class NewContractMainController extends VBox {
     }
 
     private void onOkButton(MouseEvent event){
-        System.out.println(event.getSource() + " clicked!");
-        if(!verifyContractParts()){
+
+        if(!NewContractDataVerifier.verifyContractParts(contractParts, tabPane)){
             return;
         }
 
-        if(!verifyContractData()){
-
+        if(!NewContractDataVerifier.verifyContractData(contractData, tabPane)){
+            return;
         }
     }
 
@@ -183,35 +183,6 @@ public class NewContractMainController extends VBox {
     private Boolean verifyAllContractData(){
         ProvisionalContractData provisionalContractData = new ProvisionalContractData();
         ProvisionalContractDataDTO allContractData = provisionalContractData.getAllProvisionalContractData();
-
-        return true;
-    }
-
-    private Boolean verifyContractParts(){
-
-        if(contractParts.getSelectedEmployer() == null){
-            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
-                    Parameters.EMPLOYER_IS_NOT_SELECTED);
-            return false;
-        }
-
-        if(contractParts.getSelectedCCC() == null){
-            if(!Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_NULL_CCC_CODE_IS_CORRECT)){
-                return false;
-            }
-        }
-
-        if(contractParts.getSelectedEmployee() == null){
-            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
-                    Parameters.EMPLOYEE_IS_NOT_SELECTED);
-            return false;
-        }
-
-        return true;
-    }
-
-    private Boolean verifyContractData(){
-
 
         return true;
     }

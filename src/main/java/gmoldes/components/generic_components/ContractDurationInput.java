@@ -61,10 +61,10 @@ public class ContractDurationInput extends HBox {
         this.dateTo.setDate(null);
         this.dateTo.setDisable(true);
 
-        this.durationContractDays.setText(null);
         this.durationContractDays.setLabelPreferredWidth(40D);
         this.durationContractDays.setTextLabel("Días");
         this.durationContractDays.setDisable(true);
+        this.durationContractDays.setEditable(false);
 
         grContractDuration.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov,
