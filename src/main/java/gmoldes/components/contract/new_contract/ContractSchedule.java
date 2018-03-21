@@ -87,9 +87,14 @@ public class ContractSchedule extends AnchorPane {
         contract_schedule_table.setEditable(true);
 
         final ObservableList<String> daysOfWeek = FXCollections.observableArrayList();
-        for(Integer numberOfDayOfWeek = 1; numberOfDayOfWeek <= 7; numberOfDayOfWeek++ ){
-            daysOfWeek.add(DayOfWeek.of(numberOfDayOfWeek).getDisplayName(TextStyle.FULL, Locale.getDefault()));
-        }
+        daysOfWeek.add(DayOfWeek.MONDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
+        daysOfWeek.add(DayOfWeek.TUESDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
+        daysOfWeek.add(DayOfWeek.WEDNESDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
+        daysOfWeek.add(DayOfWeek.THURSDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
+        daysOfWeek.add(DayOfWeek.FRIDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
+        daysOfWeek.add(DayOfWeek.SATURDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
+        daysOfWeek.add(DayOfWeek.SUNDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
+
         dayOfWeek.setCellFactory(param -> {
                     ComboBoxTableCell<ContractScheduleDayDTO, String> comboBoxTableCell = new ComboBoxTableCell<>(daysOfWeek);
                     comboBoxTableCell.setPickOnBounds(true);
