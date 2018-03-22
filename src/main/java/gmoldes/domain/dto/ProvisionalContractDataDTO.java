@@ -1,5 +1,8 @@
 package gmoldes.domain.dto;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+
 import java.time.DayOfWeek;
 import java.util.Map;
 import java.util.Set;
@@ -17,10 +20,11 @@ public class ProvisionalContractDataDTO {
     private String numberHoursPerWeek;
     private Set<DayOfWeek> daysWeekToWork;
     private String laborCategory;
+    private String status;
 
     public ProvisionalContractDataDTO(String employerFullName, String employeeFullName, String quoteAccountCode, String contractType,
                                       String dateFrom, String dateTo, String durationDays, String workDayType,
-                                      String numberHoursPerWeek, Set<DayOfWeek> daysWeekToWork, String laborCategory) {
+                                      String numberHoursPerWeek, Set<DayOfWeek> daysWeekToWork, String laborCategory, String status) {
         this.employerFullName = employerFullName;
         this.employeeFullName = employeeFullName;
         this.quoteAccountCode = quoteAccountCode;
@@ -32,6 +36,7 @@ public class ProvisionalContractDataDTO {
         this.numberHoursPerWeek = numberHoursPerWeek;
         this.daysWeekToWork = daysWeekToWork;
         this.laborCategory = laborCategory;
+        this.status = status;
     }
 
     public String getEmployerFullName() {
@@ -122,6 +127,14 @@ public class ProvisionalContractDataDTO {
         this.laborCategory = laborCategory;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public static ProvisionalContractDataDTO.DataBuilder create() {
         return new ProvisionalContractDataDTO.DataBuilder();
     }
@@ -139,6 +152,7 @@ public class ProvisionalContractDataDTO {
         private String numberHoursPerWeek;
         private Set<DayOfWeek> daysWeekToWork;
         private String laborCategory;
+        private String status;
 
         public ProvisionalContractDataDTO.DataBuilder withEmployerFullName (String employerFullName) {
             this.employerFullName = employerFullName;
@@ -195,9 +209,14 @@ public class ProvisionalContractDataDTO {
             return this;
         }
 
+        public ProvisionalContractDataDTO.DataBuilder withStatus(String status) {
+            this.status = status;
+            return this;
+        }
+
         public ProvisionalContractDataDTO build() {
             return new ProvisionalContractDataDTO(this.employerFullName, this.employeeFullName, this.quoteAccountCode, this.contractType, this.dateFrom,
-            this.dateTo, this.durationDays, this.workDayType, this.numberHoursPerWeek, this.daysWeekToWork, this.laborCategory);
+            this.dateTo, this.durationDays, this.workDayType, this.numberHoursPerWeek, this.daysWeekToWork, this.laborCategory, this.status);
         }
     }
 }

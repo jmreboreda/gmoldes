@@ -17,6 +17,9 @@ public class Parameters {
     public static final Duration LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK = Duration.parse("PT40H"); // 40 hours of work per week.
     public static final String NORMAL_CONTRACT_TYPE_DESCRIPTION = "NORMAL";
     public static final String ORDINARY_CONTRACT_TYPE_DESCRIPTION = "ORDINARIO";
+    public static final String NOT_REVISED = "No revisado.";
+    public static final String REVISION_WITH_ERRORS = "Revisado. Con errores.";
+    public static final String REVISION_WITHOUT_ERRORS = "Revisado. Sin errores.";
 
     /** Contract schedule */
     public static final String DAY_OF_WEEK_TEXT = "Día de la\n semana";

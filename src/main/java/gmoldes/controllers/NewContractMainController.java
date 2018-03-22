@@ -80,16 +80,27 @@ public class NewContractMainController extends VBox {
     private void onOkButton(MouseEvent event){
 
         if(!NewContractDataVerifier.verifyContractParts(contractParts, tabPane)){
+        setStatusRevisionErrors(Parameters.REVISION_WITH_ERRORS);
             return;
         }
 
         if(!NewContractDataVerifier.verifyContractData(contractData, contractSchedule, tabPane)){
+            setStatusRevisionErrors(Parameters.REVISION_WITH_ERRORS);
             return;
         }
 
         if(!NewContractDataVerifier.verifyContractSchedule(contractData, contractSchedule, tabPane)){
+            setStatusRevisionErrors(Parameters.REVISION_WITH_ERRORS);
             return;
         }
+
+        setStatusRevisionErrors(Parameters.REVISION_WITHOUT_ERRORS);
+    }
+
+    private void setStatusRevisionErrors(String statusText){
+        ProvisionalContractDataDTO dataDTO = retrieveProvisionalContractDataDTO();
+        dataDTO.setStatus(statusText);
+        provisionalContractData.refreshData(dataDTO);
     }
 
     private void refreshProvisionalContractData(){
@@ -100,9 +111,11 @@ public class NewContractMainController extends VBox {
     private ProvisionalContractDataDTO retrieveProvisionalContractDataDTO(){
         ProvisionalContractDataDTO partsDTO = contractParts.getAllData();
         ProvisionalContractDataDTO dataDTO = contractData.getAllProvisionalContractData();
+        ProvisionalContractDataDTO dataStatus = provisionalContractData.getAllProvisionalContractData();
         dataDTO.setEmployerFullName(partsDTO.getEmployerFullName());
         dataDTO.setEmployeeFullName(partsDTO.getEmployeeFullName());
         dataDTO.setQuoteAccountCode(partsDTO.getQuoteAccountCode());
+        dataDTO.setStatus(dataStatus.getStatus());
 
         return dataDTO;
     }

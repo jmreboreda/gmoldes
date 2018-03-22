@@ -53,6 +53,8 @@ public class ProvisionalContractData extends AnchorPane {
     private CheckBox sunday;
     @FXML
     private Label laborCategory;
+    @FXML
+    private Label status;
 
     private ProvisionalContractData provisionalContractData;
     private Set<DayOfWeek> daysWeekToWork;
@@ -82,6 +84,7 @@ private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hecho
         this.saturday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.SATURDAY));
         this.sunday.setSelected(contractDataDTO.getDaysWeekToWork().contains(DayOfWeek.SUNDAY));
         this.laborCategory.setText(contractDataDTO.getLaborCategory());
+        this.status.setText(contractDataDTO.getStatus());
     }
 
     public ProvisionalContractDataDTO getAllProvisionalContractData() {
@@ -121,6 +124,7 @@ private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hecho
                 .withNumberHoursPerWeek(this.numberHoursPerWeek.getText())
                 .withDaysWeekToWork(dayOfWeekSet)
                 .withLaborCategory(this.laborCategory.getText())
+                .withStatus(this.status.getText())
                 .build();
     }
 }

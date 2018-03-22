@@ -17,6 +17,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
@@ -54,6 +55,7 @@ public class ContractData extends AnchorPane {
     private DaysOfWeekSelector daysOfWeekToWork;
     @FXML
     private TextField laborCategoryDescriptionInput;
+
 
     public ContractData() {
 
