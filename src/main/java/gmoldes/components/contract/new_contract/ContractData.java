@@ -20,7 +20,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -52,7 +51,7 @@ public class ContractData extends AnchorPane {
     @FXML
     private WorkDayTypeInput workDayType;
     @FXML
-    private DaysOfWeekSelector daysOfWeekToWorkSelector;
+    private DaysOfWeekSelector daysOfWeekToWork;
     @FXML
     private TextField laborCategoryDescriptionInput;
 
@@ -119,7 +118,7 @@ public class ContractData extends AnchorPane {
             }
         }
 
-        Set<DayOfWeek> daysWeekToWork = daysOfWeekToWorkSelector.getDaysOfWeek();
+        Set<DayOfWeek> daysWeekToWork = daysOfWeekToWork.getDaysOfWeek();
 
         String laborCategory = "";
         if(laborCategoryDescriptionInput.getText() != null){
@@ -154,7 +153,7 @@ public class ContractData extends AnchorPane {
     }
 
     private void hourNotificationControlSetup(){
-        hourNotification.setText(timeFormatter.format(LocalTime.now()));
+        //hourNotification.setText(timeFormatter.format(LocalTime.now()));
         hourNotification.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             if (!newPropertyValue)
             {
@@ -169,8 +168,20 @@ public class ContractData extends AnchorPane {
         });
     }
 
+    public String getHourNotification(){
+        return this.hourNotification.getText();
+    }
+
     public String getHoursWorkWeek(){
         return this.workDayType.getHoursWorkWeek();
+    }
+
+    public Set<DayOfWeek> getDaysOfWeekToWork(){
+        return this.daysOfWeekToWork.getDaysOfWeek();
+    }
+
+    public String getLaborCategory(){
+        return this.laborCategoryDescriptionInput.getText();
     }
 
     public void setOnChangeContractDataHoursWorkWeek(EventHandler<ChangeContractDataHoursWorkWeekEvent> handler){

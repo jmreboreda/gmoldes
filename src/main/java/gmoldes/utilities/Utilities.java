@@ -105,6 +105,9 @@ public class Utilities {
             case "domingo":
                 dayOfWeek = DayOfWeek.SUNDAY;
                 break;
+
+                default: dayOfWeek = null;
+                break;
         }
 
         return dayOfWeek;

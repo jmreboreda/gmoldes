@@ -1,10 +1,17 @@
 package gmoldes.controllers;
 
+import com.sun.org.apache.xerces.internal.impl.dv.xs.DayDV;
 import gmoldes.components.contract.new_contract.ContractData;
 import gmoldes.components.contract.new_contract.ContractParts;
+import gmoldes.components.contract.new_contract.ContractSchedule;
+import gmoldes.components.generic_components.DaysOfWeekSelector;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import javafx.scene.control.TabPane;
+
+import java.time.DayOfWeek;
+import java.util.HashSet;
+import java.util.Set;
 
 public class NewContractDataVerifier {
 
@@ -34,9 +41,47 @@ public class NewContractDataVerifier {
         return true;
     }
 
-    public static Boolean verifyContractData(ContractData contractData, TabPane tabPane){
+    public static Boolean verifyContractData(ContractData contractData, ContractSchedule contractSchedule, TabPane tabPane){
 
+        if(contractData.getHourNotification().isEmpty()){
+            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
+                    Parameters.HOUR_NOTIFICATION_IS_NOT_ESTABLISHED);
+            return false;
+        }
+        if(!contractData.getHoursWorkWeek().equals(contractSchedule.getHoursWorkWeek())){
+            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
+                    Parameters.DIFFERENT_NUMBER_HOURS_CONTRACT_DATA_AND_CONTRACT_SCHEDULE);
+            return false;
+        }
+        if(contractData.getDaysOfWeekToWork().size() == 0){
+            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
+                    Parameters.DAYS_TO_WORK_ARE_NOT_SELECTED);
+            return false;
+        }
+        if(contractData.getLaborCategory().length() == 0){
+            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
+                    Parameters.LABOR_CATEGORY_IS_NOT_ESTABLISHED);
+            return false;
+        }
 
         return true;
     }
+
+    public static Boolean verifyContractSchedule(ContractData contractData, ContractSchedule contractSchedule, TabPane tabPane){
+
+        Set<DayOfWeek> contractDataDaysOfWeekToWork = contractData.getDaysOfWeekToWork();
+        Set<DayOfWeek> contractScheduleDayOfWeekToWork = contractSchedule.getTableColumnDayOfWeekData();
+//        System.out.println("ContractData: " + contractDataDaysOfWeekToWork.toString() + "\n" +
+//        "ContractSchedule: " + contractScheduleDayOfWeekToWork.toString() + "\n---------------\n");
+
+       if(!contractDataDaysOfWeekToWork.equals(contractScheduleDayOfWeekToWork)){
+           Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
+                   Parameters.WORKING_DAYS_ARE_DIFFERENT_IN_CONTRACTDATA_AND_CONTRACTSCHEDULE);
+           return false;
+       }
+
+        return true;
+    }
+
+
 }

@@ -26,9 +26,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class ContractSchedule extends AnchorPane {
 
@@ -292,6 +290,22 @@ public class ContractSchedule extends AnchorPane {
 
     public String getHoursWorkWeek(){
         return hoursWorkWeek.getText();
+    }
+
+    public Set<DayOfWeek> getTableColumnDayOfWeekData(){
+
+        Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
+        for(Integer i = INITIAL_ROW_TABLE; i<= FINAL_ROW_TABLE; i++) {
+            if(dayOfWeek.getCellData(i) != null) {
+                dayOfWeekSet.add(Utilities.converterStringToDayOfWeek(dayOfWeek.getCellData(i)));
+            }
+//            else{
+//                dayOfWeekSet.add(null);
+//            }
+        }
+
+        return dayOfWeekSet;
+
     }
 
     public void setOnChangeScheduleDuration(EventHandler<ChangeScheduleDurationEvent> handler){

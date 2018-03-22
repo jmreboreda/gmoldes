@@ -83,7 +83,11 @@ public class NewContractMainController extends VBox {
             return;
         }
 
-        if(!NewContractDataVerifier.verifyContractData(contractData, tabPane)){
+        if(!NewContractDataVerifier.verifyContractData(contractData, contractSchedule, tabPane)){
+            return;
+        }
+
+        if(!NewContractDataVerifier.verifyContractSchedule(contractData, contractSchedule, tabPane)){
             return;
         }
     }
