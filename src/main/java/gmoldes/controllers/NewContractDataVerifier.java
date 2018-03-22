@@ -1,16 +1,13 @@
 package gmoldes.controllers;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.DayDV;
 import gmoldes.components.contract.new_contract.ContractData;
 import gmoldes.components.contract.new_contract.ContractParts;
 import gmoldes.components.contract.new_contract.ContractSchedule;
-import gmoldes.components.generic_components.DaysOfWeekSelector;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import javafx.scene.control.TabPane;
 
 import java.time.DayOfWeek;
-import java.util.HashSet;
 import java.util.Set;
 
 public class NewContractDataVerifier {

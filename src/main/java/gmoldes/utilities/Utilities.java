@@ -13,7 +13,9 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class Utilities {
@@ -83,31 +85,26 @@ public class Utilities {
 
     public static DayOfWeek converterStringToDayOfWeek(String dayOfWeekString){
         DayOfWeek dayOfWeek = null;
-        switch (dayOfWeekString) {
-            case "lunes":
+        if (dayOfWeekString.equals(DayOfWeek.MONDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
                 dayOfWeek = DayOfWeek.MONDAY;
-                break;
-            case "martes":
-                dayOfWeek = DayOfWeek.TUESDAY;
-                break;
-            case "miércoles":
-                dayOfWeek = DayOfWeek.WEDNESDAY;
-                break;
-            case "jueves":
-                dayOfWeek = DayOfWeek.THURSDAY;
-                break;
-            case "viernes":
-                dayOfWeek = DayOfWeek.FRIDAY;
-                break;
-            case "sábado":
-                dayOfWeek = DayOfWeek.SATURDAY;
-                break;
-            case "domingo":
-                dayOfWeek = DayOfWeek.SUNDAY;
-                break;
-
-                default: dayOfWeek = null;
-                break;
+        }
+        else if (dayOfWeekString.equals(DayOfWeek.TUESDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+            dayOfWeek = DayOfWeek.TUESDAY;
+        }
+        else if (dayOfWeekString.equals(DayOfWeek.WEDNESDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+            dayOfWeek = DayOfWeek.WEDNESDAY;
+        }
+        else if (dayOfWeekString.equals(DayOfWeek.THURSDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+            dayOfWeek = DayOfWeek.THURSDAY;
+        }
+        else if (dayOfWeekString.equals(DayOfWeek.FRIDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+            dayOfWeek = DayOfWeek.FRIDAY;
+        }
+        else if (dayOfWeekString.equals(DayOfWeek.SATURDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+            dayOfWeek = DayOfWeek.SATURDAY;
+        }
+        else if (dayOfWeekString.equals(DayOfWeek.SUNDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+            dayOfWeek = DayOfWeek.SUNDAY;
         }
 
         return dayOfWeek;

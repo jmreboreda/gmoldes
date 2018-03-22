@@ -62,14 +62,6 @@ private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hecho
     public ProvisionalContractData() {
 
         this.parent = ViewLoader.load(this, CURRENT_CONTRACT_FXML);
-        Tooltip tooltip = new Tooltip(MODIFIED_DATA_WILL_NOT_BE_SAVED);
-        this.monday.setTooltip(tooltip);
-        this.tuesday.setTooltip(tooltip);
-        this.wednesday.setTooltip(tooltip);
-        this.thursday.setTooltip(tooltip);
-        this.friday.setTooltip(tooltip);
-        this.saturday.setTooltip(tooltip);
-        this.sunday.setTooltip(tooltip);
     }
 
     public void refreshData(ProvisionalContractDataDTO contractDataDTO){
