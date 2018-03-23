@@ -18,6 +18,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,11 @@ public class NewContractMainController extends VBox {
 
     private static final Logger logger = Logger.getLogger(NewContractMainController.class.getSimpleName());
     private static final String MAIN_FXML = "/fxml/new_contract/contract_main.fxml";
+
+    private static final String OPERATING_SYSTEM = System.getProperty("os.name");
+    private static final String USER_HOME = System.getProperty("user.home");
+    private static final String WINDOWS_TEMPORAL_DIR = "/AppData/Local/Temp/Borrame";
+    private static final String LINUX_TEMPORAL_DIR = "/Temp/Borrame";
 
     private ClientController clientController = new ClientController();
     private PersonController personController = new PersonController();
@@ -62,6 +69,7 @@ public class NewContractMainController extends VBox {
     @FXML
     public void initialize() {
         contractActionComponents.setOnOkButton(this::onOkButton);
+        contractActionComponents.setOnViewPDFButton(this::onViewPDFButton);
         tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
@@ -97,10 +105,35 @@ public class NewContractMainController extends VBox {
         setStatusRevisionErrors(Parameters.REVISION_WITHOUT_ERRORS);
     }
 
+    private void onViewPDFButton(MouseEvent mouseEvent){
+        if(OPERATING_SYSTEM.toLowerCase().contains("linux")){
+            final String PROGRAM = "okular" + " ";
+            final String documentPath = USER_HOME + "/Intellij/gmoldes/src/main/resources/pdf_forms/DGM_002_Registro_Horario.pdf";
+            try
+            {
+                Process p = Runtime.getRuntime().exec (PROGRAM + documentPath);
+            }
+            catch (IOException e)
+            {
+                System.out.println("No se ha podido ejecutar \"" + PROGRAM + documentPath + "\"" );
+            }
+        }
+
+    }
+
     private void setStatusRevisionErrors(String statusText){
         ProvisionalContractDataDTO dataDTO = retrieveProvisionalContractDataDTO();
         dataDTO.setStatus(statusText);
         provisionalContractData.refreshData(dataDTO);
+        if(statusText.equals(Parameters.REVISION_WITHOUT_ERRORS)){
+            if(!Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_SAVE_NEW_CONTRACT)){
+                contractActionComponents.enablePDFButton(true);
+                return;
+            }
+        }
+
+        //TODO Save contract in database
+        //contractActionComponents.enablePDFButton(true);
     }
 
     private void refreshProvisionalContractData(){
@@ -110,12 +143,12 @@ public class NewContractMainController extends VBox {
 
     private ProvisionalContractDataDTO retrieveProvisionalContractDataDTO(){
         ProvisionalContractDataDTO partsDTO = contractParts.getAllData();
+        ProvisionalContractDataDTO dataStatusDTO = provisionalContractData.getAllProvisionalContractData();
         ProvisionalContractDataDTO dataDTO = contractData.getAllProvisionalContractData();
-        ProvisionalContractDataDTO dataStatus = provisionalContractData.getAllProvisionalContractData();
         dataDTO.setEmployerFullName(partsDTO.getEmployerFullName());
         dataDTO.setEmployeeFullName(partsDTO.getEmployeeFullName());
         dataDTO.setQuoteAccountCode(partsDTO.getQuoteAccountCode());
-        dataDTO.setStatus(dataStatus.getStatus());
+        dataDTO.setStatus(dataStatusDTO.getStatus());
 
         return dataDTO;
     }

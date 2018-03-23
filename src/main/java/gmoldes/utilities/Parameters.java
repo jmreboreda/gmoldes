@@ -9,6 +9,10 @@ public class Parameters {
     /** Printer */
     public static final String DEFAULT_PRINTER = "KONICA MINOLTA";
 
+    /** Colors */
+    public static final String GREEN_COLOR = "-fx-text-fill: #006400;";
+    public static final String RED_COLOR ="-fx-text-fill: #c90c0c;";
+
     /** Contract data */
     public static final String FULL_WORKDAY = "A tiempo completo";
     public static final String PARTIAL_WORKDAY = "A tiempo parcial";
@@ -17,9 +21,9 @@ public class Parameters {
     public static final Duration LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK = Duration.parse("PT40H"); // 40 hours of work per week.
     public static final String NORMAL_CONTRACT_TYPE_DESCRIPTION = "NORMAL";
     public static final String ORDINARY_CONTRACT_TYPE_DESCRIPTION = "ORDINARIO";
-    public static final String NOT_REVISED = "No revisado.";
-    public static final String REVISION_WITH_ERRORS = "Revisado. Con errores.";
-    public static final String REVISION_WITHOUT_ERRORS = "Revisado. Sin errores.";
+    public static final String NOT_REVISED = " No revisado.";
+    public static final String REVISION_WITH_ERRORS = " Revisado. Con errores o datos pendientes.";
+    public static final String REVISION_WITHOUT_ERRORS = " Revisado. Sin errores ni datos pendientes.";
 
     /** Contract schedule */
     public static final String DAY_OF_WEEK_TEXT = "Día de la\n semana";
@@ -45,7 +49,8 @@ public class Parameters {
     public static final String LABOR_CATEGORY_IS_NOT_ESTABLISHED = "Pestaña \"Contrato\"\nNo se ha establecido la categoría laboral.";
     public static final String WORKING_DAYS_ARE_DIFFERENT_IN_CONTRACTDATA_AND_CONTRACTSCHEDULE = "Los días de semana a trabajar en la pestaña \"Contrato\" " +
             "son distintos de los de la pestaña \"Horario\".";
-
+    public static final String QUESTION_SAVE_NEW_CONTRACT = "El contrato no tiene errores ni datos pendientes.\n¿Desea guardar el contrato en la base de datos?";
+    public static final String INVALID_CONTRACT_DURATION = "El número de días de duración del contrato es erróneo.";
     /** Various */
     public static final Integer MAXIMUM_VALUE_MINUTES_IN_HOUR = 59;
     public static final String DATE_LABEL_TEXT = "Fecha";

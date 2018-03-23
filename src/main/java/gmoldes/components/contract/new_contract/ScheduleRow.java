@@ -23,7 +23,7 @@ public class ScheduleRow {
     private String today = LocalDate.now().format(dateFormatter);
     private String hour = LocalDate.now().format(timeFormatter);
 
-    private static final String SCHEDULE_ROW_FXML = "/fxml/new_contract/contract_schedule.fxml";
+    private static final String SCHEDULE_ROW_FXML = "/fxml/new_contract/contract_schedule_table.fxml";
 
     private Parent parent;
 

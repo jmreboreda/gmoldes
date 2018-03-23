@@ -113,6 +113,10 @@ public class ContractDurationInput extends HBox {
         this.dateTo.setDate(dateTo);
     }
 
+    public String getDuration(){
+        return this.durationContractDays.getText();
+    }
+
     public Boolean radioButtonUndefinedIsSelected(){
         return this.radioButtonUndefined.isSelected();
     }

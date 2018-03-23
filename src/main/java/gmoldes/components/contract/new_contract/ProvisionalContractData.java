@@ -2,6 +2,10 @@ package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
+import gmoldes.utilities.Parameters;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.SetChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.CheckBox;
@@ -56,14 +60,22 @@ public class ProvisionalContractData extends AnchorPane {
     @FXML
     private Label status;
 
-    private ProvisionalContractData provisionalContractData;
-    private Set<DayOfWeek> daysWeekToWork;
-
-private static final String MODIFIED_DATA_WILL_NOT_BE_SAVED = "Los cambios hechos aquí directamente no se tendrán en cuenta en el contrato final.";
+//    private ProvisionalContractData provisionalContractData;
+//    private Set<DayOfWeek> daysWeekToWork;
 
     public ProvisionalContractData() {
 
         this.parent = ViewLoader.load(this, CURRENT_CONTRACT_FXML);
+        this.status.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if(status.getText().equals(Parameters.REVISION_WITHOUT_ERRORS)){
+                    status.setStyle(Parameters.GREEN_COLOR);
+                }else{
+                    status.setStyle(Parameters.RED_COLOR);
+                }
+            }
+        });
     }
 
     public void refreshData(ProvisionalContractDataDTO contractDataDTO){

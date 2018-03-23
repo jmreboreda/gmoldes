@@ -18,9 +18,12 @@ public class ContractActionComponents extends AnchorPane {
     private Parent parent;
 
     private EventHandler<MouseEvent> OkButtonEventHandler;
+    private EventHandler<MouseEvent>viewPDFButtonEventHandler;
 
     @FXML
     private Button OkButton;
+    @FXML
+    private Button viewPDFButton;
     @FXML
     private Button exitButton;
 
@@ -28,11 +31,16 @@ public class ContractActionComponents extends AnchorPane {
 
         this.parent = ViewLoader.load(this, CURRENT_CONTRACT_FXML);
         OkButton.setOnMouseClicked(this::onOkButton);
+        viewPDFButton.setOnMouseClicked(this::onViewPDFButton);
         exitButton.setOnMouseClicked(this::onExitButton);
     }
 
     private void onOkButton(MouseEvent event){
         this.OkButtonEventHandler.handle(event);
+    }
+
+    private void onViewPDFButton(MouseEvent event){
+        this.viewPDFButtonEventHandler.handle(event);
     }
 
     private void onExitButton(MouseEvent event){
@@ -42,6 +50,13 @@ public class ContractActionComponents extends AnchorPane {
 
     public void setOnOkButton(EventHandler<MouseEvent> OkButtonEventHandler){
         this.OkButtonEventHandler = OkButtonEventHandler;
+    }
 
+    public void setOnViewPDFButton(EventHandler<MouseEvent> viewPDFButtonEventHandler){
+        this.viewPDFButtonEventHandler = viewPDFButtonEventHandler;
+    }
+
+    public void enablePDFButton(Boolean bol){
+        this.viewPDFButton.setDisable(!bol);
     }
 }

@@ -174,6 +174,10 @@ public class ContractData extends AnchorPane {
         return this.hourNotification.getText();
     }
 
+    public Integer getContractDurationDays(){
+        return Integer.parseInt(this.contractDuration.getDuration());
+    }
+
     public String getHoursWorkWeek(){
         return this.workDayType.getHoursWorkWeek();
     }

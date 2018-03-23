@@ -45,6 +45,12 @@ public class NewContractDataVerifier {
                     Parameters.HOUR_NOTIFICATION_IS_NOT_ESTABLISHED);
             return false;
         }
+        if(contractData.getContractDurationDays() <= 0){
+            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
+                    Parameters.INVALID_CONTRACT_DURATION);
+            return false;
+        }
+
         if(!contractData.getHoursWorkWeek().equals(contractSchedule.getHoursWorkWeek())){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
                     Parameters.DIFFERENT_NUMBER_HOURS_CONTRACT_DATA_AND_CONTRACT_SCHEDULE);
@@ -68,8 +74,6 @@ public class NewContractDataVerifier {
 
         Set<DayOfWeek> contractDataDaysOfWeekToWork = contractData.getDaysOfWeekToWork();
         Set<DayOfWeek> contractScheduleDayOfWeekToWork = contractSchedule.getTableColumnDayOfWeekData();
-//        System.out.println("ContractData: " + contractDataDaysOfWeekToWork.toString() + "\n" +
-//        "ContractSchedule: " + contractScheduleDayOfWeekToWork.toString() + "\n---------------\n");
 
        if(!contractDataDaysOfWeekToWork.equals(contractScheduleDayOfWeekToWork)){
            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
@@ -79,6 +83,4 @@ public class NewContractDataVerifier {
 
         return true;
     }
-
-
 }
