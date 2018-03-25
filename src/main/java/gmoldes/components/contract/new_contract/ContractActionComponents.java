@@ -59,4 +59,8 @@ public class ContractActionComponents extends AnchorPane {
     public void enablePDFButton(Boolean bol){
         this.viewPDFButton.setDisable(!bol);
     }
+
+    public void enableOkButton(Boolean bol){
+        this.OkButton.setDisable(!bol);
+    }
 }

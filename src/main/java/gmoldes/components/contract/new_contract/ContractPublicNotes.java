@@ -15,15 +15,17 @@ public class ContractPublicNotes extends AnchorPane {
     @FXML
     private TextArea taPublicNotes;
 
-
-
     public ContractPublicNotes() {
         this.parent = ViewLoader.load(this, PUBLIC_NOTES_FXML);
     }
-
 
     @FXML
     private void initialize(){
         taPublicNotes.setStyle("-fx-text-fill: #1807ac");
     }
+
+    public String getPublicNotes(){
+        return this.taPublicNotes.getText();
+    }
 }
+

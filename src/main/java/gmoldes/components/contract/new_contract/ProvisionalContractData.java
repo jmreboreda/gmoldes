@@ -60,12 +60,10 @@ public class ProvisionalContractData extends AnchorPane {
     @FXML
     private Label status;
 
-//    private ProvisionalContractData provisionalContractData;
-//    private Set<DayOfWeek> daysWeekToWork;
-
     public ProvisionalContractData() {
 
         this.parent = ViewLoader.load(this, CURRENT_CONTRACT_FXML);
+        this.status.setText(Parameters.NOT_REVISED);
         this.status.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {

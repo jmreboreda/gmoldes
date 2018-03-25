@@ -45,10 +45,20 @@ public class NewContractDataVerifier {
                     Parameters.HOUR_NOTIFICATION_IS_NOT_ESTABLISHED);
             return false;
         }
-        if(contractData.getContractDurationDays() <= 0){
+
+        if(contractData.getContractType() == null){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
-                    Parameters.INVALID_CONTRACT_DURATION);
+                    Parameters.CONTRACT_TYPE_NOT_SELECTED);
             return false;
+        }
+
+        if(contractData.getContractDurationDays() != null) {
+            Integer contractDurationDays = Integer.parseInt(contractData.getContractDurationDays());
+            if (contractDurationDays <= 0) {
+                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+                        Parameters.INVALID_CONTRACT_DURATION);
+                return false;
+            }
         }
 
         if(!contractData.getHoursWorkWeek().equals(contractSchedule.getHoursWorkWeek())){

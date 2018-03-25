@@ -1,7 +1,10 @@
 package gmoldes.manager;
 
 
+import gmoldes.domain.Contract;
 import gmoldes.domain.dto.ContractDTO;
+import gmoldes.domain.dto.OldContractToSaveDTO;
+import gmoldes.mappers.MapperContractDTOVO;
 import gmoldes.mappers.MapperContractVODTO;
 import gmoldes.persistence.dao.ContractDAO;
 import gmoldes.persistence.vo.ContractVO;
@@ -14,6 +17,16 @@ import java.util.List;
 public class ContractManager {
 
     public ContractManager() {
+    }
+
+    public Integer saveOldContract(OldContractToSaveDTO oldContractToSaveDTO){
+        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
+        MapperOldContractToSaveDTOVO mapperOldContractToSaveDTOVO = new MapperOldContractToSaveDTOVO();
+        Integer newContractNumber = contractDAO.findHighestContractNumber() + 1;
+        oldContractToSaveDTO.setContractNumber(newContractNumber);
+        ContractVO contractVO = mapperOldContractToSaveDTOVO.mapOldContractToSaveDTOVO((oldContractToSaveDTO));
+
+        return contractDAO.create(contractVO);
     }
 
     public List<ContractDTO> findAllContractsByClientIdInPeriod(Integer clientId, Date referenceDate){

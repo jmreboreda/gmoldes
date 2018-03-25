@@ -23,4 +23,8 @@ public class ContractPrivateNotes extends AnchorPane {
     private void initialize(){
         taPrivateNotes.setStyle("-fx-text-fill: #8b0000");
     }
+
+    public String getPrivateNotes(){
+        return this.taPrivateNotes.getText();
+    }
 }

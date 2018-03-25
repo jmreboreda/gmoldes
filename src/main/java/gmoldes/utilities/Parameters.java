@@ -51,6 +51,8 @@ public class Parameters {
             "son distintos de los de la pestaña \"Horario\".";
     public static final String QUESTION_SAVE_NEW_CONTRACT = "El contrato no tiene errores ni datos pendientes.\n¿Desea guardar el contrato en la base de datos?";
     public static final String INVALID_CONTRACT_DURATION = "El número de días de duración del contrato es erróneo.";
+    public static final String CONTRACT_TYPE_NOT_SELECTED = "No se ha seleccionado el tipo de contrato.";
+
     /** Various */
     public static final Integer MAXIMUM_VALUE_MINUTES_IN_HOUR = 59;
     public static final String DATE_LABEL_TEXT = "Fecha";
@@ -58,6 +60,8 @@ public class Parameters {
     public static final String DATE_TO_TEXT = "Hasta";
     public static final String DEFAULT_DATE_FORMAT = "dd-MM-yyyy";
     public static final String DEFAULT_TIME_FORMAT = "HH:mm";
+
+    public static final  Integer ID_INITIAL_CONTRACT_TYPE_VARIATION = 100;
 
 
 }

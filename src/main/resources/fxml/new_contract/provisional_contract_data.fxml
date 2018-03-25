@@ -252,7 +252,7 @@
                   <Insets left="10.0" />
                </padding>
             </Label>
-            <Label fx:id="status" prefHeight="21.0" prefWidth="423.0" text=" No revisado" textFill="#c90c0c" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="7" />
+            <Label fx:id="status" prefHeight="21.0" prefWidth="423.0" textFill="#c90c0c" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="7" />
          </children>
          <cursor>
             <Cursor fx:constant="HAND" />

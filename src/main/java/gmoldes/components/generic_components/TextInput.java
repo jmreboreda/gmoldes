@@ -37,6 +37,7 @@ public class TextInput extends HBox {
         this.textField.setMaxWidth(50);
         textField.setAlignment(Pos.CENTER);
         setMargin(textField, new Insets(0, 0, 0, 0));
+        textField.setText(null);
 
         textField.setOnAction(this::onAction);
     }

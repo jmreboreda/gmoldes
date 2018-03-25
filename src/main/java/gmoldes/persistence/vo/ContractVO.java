@@ -1,8 +1,13 @@
 package gmoldes.persistence.vo;
 
+import gmoldes.domain.dto.ContractDTO;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "contratoshistorico")
@@ -14,6 +19,10 @@ import java.sql.Date;
         @NamedQuery(
                 name = ContractVO.IDC_CONTROL,
                 query = "select p from ContractVO p where p.idc is null and date(p.f_desde) - date (now()) <= 3"
+        ),
+        @NamedQuery(
+                name = ContractVO.FIND_HIGHEST_CONTRACT_NUMBER,
+                query = "select max(numcontrato) from ContractVO"
         ),
         @NamedQuery(
                 name = ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID,
@@ -55,6 +64,7 @@ import java.sql.Date;
 public class ContractVO implements Serializable {
     public static final String FIND_CONTRACTS_EXPIRATION = "ContractVO.FIND_CONTRACTS_EXPIRATION";
     public static final String IDC_CONTROL = "ContractVO.IDC_CONTROL";
+    public static final String FIND_HIGHEST_CONTRACT_NUMBER = "ContractVO.FIND_HIGHEST_CONTRACT_NUMBER";
     public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID";
     public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD = "ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD";
     public static final String FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID";
@@ -294,4 +304,164 @@ public class ContractVO implements Serializable {
     public void setPreavisofin(Date preavisofin) {
         this.preavisofin = preavisofin;
     }
+
+
+//    public static ContractVO.ContractBuilder create() {
+//        return new ContractVO.ContractBuilder();
+//    }
+//
+//    public static class ContractBuilder {
+//
+//        private Integer id;
+//        private Integer numcontrato;
+//        private Integer numvariacion;
+//        private Integer tipovariacion;
+//        private Integer idcliente_gm;
+//        private String clientegm_name;
+//        private String contrato_ccc;
+//        private Integer idtrabajador;
+//        private String trabajador_name;
+//        private String categoria;
+//        private String jor_trab;
+//        private String jor_trab_dias;
+//        private String jor_tipo;
+//        private String tipoctto;
+//        private Date f_desde;
+//        private Date f_hasta;
+//        private String id_ctto_inem;
+//        private Boolean envigor;
+//        private String notas_gestor;
+//        private String notas_privadas;
+//        private Character duracion;
+//        private Integer subrogacion;
+//        private Date idc;
+//        private Date preavisofin;
+//
+//        public ContractVO.ContractBuilder withId(Integer id) {
+//            this.id = id;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withContractNumber(Integer contractNumber) {
+//            this.numcontrato = contractNumber;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withVariationNumber(Integer variationNumber) {
+//            this.numvariacion = variationNumber;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withVariationType(Integer variationType) {
+//            this.tipovariacion = variationType;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withClientGMId(Integer clientGMId) {
+//            this.idcliente_gm = clientGMId;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withClientGMName(String clientGMName) {
+//            this.clientegm_name = clientGMName;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withQuoteAccountCode(String quoteAccountCode) {
+//            this.contrato_ccc = quoteAccountCode;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withWorkerId(Integer workerId) {
+//            this.idtrabajador = workerId;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withWorkerName(String workerName) {
+//            this.trabajador_name = workerName;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withLaborCategory(String laborCategory) {
+//            this.categoria = laborCategory;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withWeeklyWorkHours(String weeklyWorkHours) {
+//            this.jor_trab = weeklyWorkHours;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withDaysOfWeekToWork(String jor_trab_dias) {
+//            this.jor_trab_dias = jor_trab_dias;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withFullPartialWorkday(String fullPartialWorkday) {
+//            this.jor_tipo = fullPartialWorkday;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withTypeOfContract(String typeOfContract) {
+//            this.tipoctto = typeOfContract;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withDateFrom(LocalDate dateFrom) {
+//            this.f_desde = Date.valueOf(dateFrom);
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withDateTo(LocalDate dateTo) {
+//            this.f_hasta = Date.valueOf(dateTo);
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
+//            this.id_ctto_inem = identificationContractNumberINEM;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withCurrentContract(Boolean currentContract) {
+//            this.envigor = currentContract;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withNotesForManager(String notesForManager) {
+//            this.notas_gestor = notesForManager;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withPrivateNotes(String privateNotes) {
+//            this.notas_privadas = privateNotes;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withIndefiniteOrTemporalContract(Character indefiniteOrTemporalContract) {
+//            this.duracion = indefiniteOrTemporalContract;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withSurrogateContract(Integer surrogateContract) {
+//            this.subrogacion = surrogateContract;
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withQuoteDataReportIDC(LocalDate quoteDataReportIDC) {
+//            this.idc = Date.valueOf(quoteDataReportIDC);
+//            return this;
+//        }
+//
+//        public ContractVO.ContractBuilder withEndOfContractNotice(LocalDate endOfContractNotice) {
+//            this.preavisofin = Date.valueOf(endOfContractNotice);
+//            return this;
+//        }
+//
+//        public ContractVO build() {
+//            return new ContractVO(this.id, this.numcontrato, this.numvariacion, this.tipovariacion, this.idcliente_gm, this.clientegm_name,
+//                    this.contrato_ccc, this.idtrabajador, this.trabajador_name, this.categoria, this.jor_trab, this.jor_trab_dias, this.jor_tipo,
+//                    this.tipoctto, this.f_desde, this.f_hasta, this.id_ctto_inem, this.envigor, this.notas_gestor, this.notas_privadas,
+//                    this.duracion, this.subrogacion, this.idc, this.preavisofin);
+//        }
+//    }
 }

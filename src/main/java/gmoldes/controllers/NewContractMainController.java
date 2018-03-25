@@ -3,10 +3,8 @@ package gmoldes.controllers;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.new_contract.*;
-import gmoldes.domain.dto.ClientCCCDTO;
-import gmoldes.domain.dto.ClientDTO;
-import gmoldes.domain.dto.PersonDTO;
-import gmoldes.domain.dto.ProvisionalContractDataDTO;
+import gmoldes.domain.dto.*;
+import gmoldes.manager.ContractManager;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
@@ -18,9 +16,9 @@ import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -126,14 +124,13 @@ public class NewContractMainController extends VBox {
         dataDTO.setStatus(statusText);
         provisionalContractData.refreshData(dataDTO);
         if(statusText.equals(Parameters.REVISION_WITHOUT_ERRORS)){
-            if(!Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_SAVE_NEW_CONTRACT)){
+            if(Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_SAVE_NEW_CONTRACT)){
+                persistOldContract();
+            }
+            else {
                 contractActionComponents.enablePDFButton(true);
-                return;
             }
         }
-
-        //TODO Save contract in database
-        //contractActionComponents.enablePDFButton(true);
     }
 
     private void refreshProvisionalContractData(){
@@ -230,10 +227,41 @@ public class NewContractMainController extends VBox {
         contractParts.refreshEmployerCCC(clientCCCDTOList);
     }
 
-    private Boolean verifyAllContractData(){
-        ProvisionalContractData provisionalContractData = new ProvisionalContractData();
-        ProvisionalContractDataDTO allContractData = provisionalContractData.getAllProvisionalContractData();
+    private void persistOldContract(){
+        LocalDate endOfContractNotice = null;
+        if (contractData.getDateTo() == null){
+            endOfContractNotice = LocalDate.of(9999,12,31);
+        }
 
-        return true;
+        OldContractToSaveDTO oldContractToSaveDTO = OldContractToSaveDTO.create()
+                .withVariationType(Parameters.ID_INITIAL_CONTRACT_TYPE_VARIATION)
+                .withVariationNumber(0)
+                .withClientGMId(contractParts.getSelectedEmployer().getId())
+                .withClientGMName(contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                .withQuoteAccountCode(contractParts.getSelectedCCC().toString())
+                .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
+                .withWorkerName(contractParts.getSelectedEmployee().toString())
+                .withLaborCategory(contractData.getLaborCategory())
+                .withWeeklyWorkHours(contractData.getHoursWorkWeek())
+                .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork())
+                .withFullPartialWorkday(contractData.getFullPartialWorkDay())
+                .withTypeOfContract(contractData.getContractType().getDescripctto())
+                .withDateFrom(contractData.getDateFrom())
+                .withDateTo(contractData.getDateTo())
+                .withCurrentContract(true)
+                .withNotesForManager(contractPublicNotes.getPublicNotes())
+                .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
+                .withQuoteDataReportIDC(null)
+                .withEndOfContractNotice(endOfContractNotice)
+                .build();
+
+        ContractManager contractManager = new ContractManager();
+        Integer contractNumber = contractManager.saveOldContract(oldContractToSaveDTO);
+        if (contractNumber != null){
+            contractActionComponents.enableOkButton(false);
+        }
+        contractActionComponents.enablePDFButton(true);
+
+        System.out.println(oldContractToSaveDTO.toString());
     }
 }

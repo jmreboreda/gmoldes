@@ -23,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -146,16 +147,9 @@ public class ContractData extends AnchorPane {
 
         ObservableList<ContractTypeDTO> contractTypeDTOS = FXCollections.observableArrayList(contractTypeDTOList);
         contractType.setItems(contractTypeDTOS);
-        for(ContractTypeDTO contractTypeDTO : contractTypeDTOS){
-            if(contractTypeDTO.getDescripctto().toUpperCase().contains(Parameters.NORMAL_CONTRACT_TYPE_DESCRIPTION) ||
-                    contractTypeDTO.getDescripctto().toUpperCase().contains(Parameters.ORDINARY_CONTRACT_TYPE_DESCRIPTION)){
-                contractType.getSelectionModel().select(contractTypeDTO);
-            }
-        }
     }
 
     private void hourNotificationControlSetup(){
-        //hourNotification.setText(timeFormatter.format(LocalTime.now()));
         hourNotification.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             if (!newPropertyValue)
             {
@@ -174,8 +168,28 @@ public class ContractData extends AnchorPane {
         return this.hourNotification.getText();
     }
 
-    public Integer getContractDurationDays(){
-        return Integer.parseInt(this.contractDuration.getDuration());
+    public ContractTypeDTO getContractType(){
+        return this.contractType.getValue();
+    }
+
+    public String getContractDurationDays(){
+        return this.contractDuration.getDuration();
+    }
+
+    public String getFullPartialWorkDay(){
+        if(this.workDayType.radioButtonFullWorkDayIsSelected()){
+            return Parameters.FULL_WORKDAY;
+        }
+
+        return Parameters.PARTIAL_WORKDAY;
+    }
+
+    public LocalDate getDateFrom(){
+        return this.contractDuration.getDateFrom();
+    }
+
+    public LocalDate getDateTo(){
+        return this.contractDuration.getDateTo();
     }
 
     public String getHoursWorkWeek(){
