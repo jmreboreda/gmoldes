@@ -5,11 +5,17 @@ import gmoldes.check.InitialChecks;
 import gmoldes.controllers.InitialMenuController;
 import gmoldes.domain.dto.ContractDTO;
 import gmoldes.domain.dto.IDCControlDTO;
+import gmoldes.services.EmailSender;
+import gmoldes.utilities.EmailData;
 import gmoldes.utilities.Message;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;

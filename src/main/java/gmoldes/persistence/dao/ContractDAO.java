@@ -1,7 +1,6 @@
 package gmoldes.persistence.dao;
 
 
-import gmoldes.domain.dto.IDCControlDTO;
 import gmoldes.persistence.vo.ContractVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
@@ -49,11 +48,11 @@ public class ContractDAO {
             session.saveOrUpdate(contractVO);
             session.getTransaction().commit();
         }
-        catch (org.hibernate.exception.ConstraintViolationException cve){
-
+        catch (Exception e){
+            System.err.println("No se ha podido persistir el contrato: " + e.getMessage());
         }
 
-        return contractVO.getId();
+        return contractVO.getNumcontrato();
     }
 
     public int establishCurrentContract(){

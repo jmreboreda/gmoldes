@@ -21,10 +21,6 @@ import java.util.Set;
                 query = "select p from ContractVO p where p.idc is null and date(p.f_desde) - date (now()) <= 3"
         ),
         @NamedQuery(
-                name = ContractVO.FIND_HIGHEST_CONTRACT_NUMBER,
-                query = "select max(numcontrato) from ContractVO"
-        ),
-        @NamedQuery(
                 name = ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID,
                 query = "select p from ContractVO p where p.idcliente_gm = :code order by p.trabajador_name"
         ),

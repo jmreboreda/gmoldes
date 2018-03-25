@@ -19,8 +19,6 @@ public class Parameters {
     public static final String UNDEFINED_DURATION = "Indefinido";
     public static final String HOURS_WORK_WEEK_TEXT = "Horas de trabajo por semana";
     public static final Duration LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK = Duration.parse("PT40H"); // 40 hours of work per week.
-    public static final String NORMAL_CONTRACT_TYPE_DESCRIPTION = "NORMAL";
-    public static final String ORDINARY_CONTRACT_TYPE_DESCRIPTION = "ORDINARIO";
     public static final String NOT_REVISED = " No revisado.";
     public static final String REVISION_WITH_ERRORS = " Revisado. Con errores o datos pendientes.";
     public static final String REVISION_WITHOUT_ERRORS = " Revisado. Sin errores ni datos pendientes.";
@@ -52,6 +50,8 @@ public class Parameters {
     public static final String QUESTION_SAVE_NEW_CONTRACT = "El contrato no tiene errores ni datos pendientes.\n¿Desea guardar el contrato en la base de datos?";
     public static final String INVALID_CONTRACT_DURATION = "El número de días de duración del contrato es erróneo.";
     public static final String CONTRACT_TYPE_NOT_SELECTED = "No se ha seleccionado el tipo de contrato.";
+    public static final String CONTRACT_SAVED_OK = "Contrato guardado con el número ";
+    public static final String QUESTION_SEND_MAIL_TO_CONTRACT_AGENT = "¿Se envía correo-e de datos al gestor?";
 
     /** Various */
     public static final Integer MAXIMUM_VALUE_MINUTES_IN_HOUR = 59;

@@ -276,7 +276,7 @@ public class OldContractToSaveDTO {
                 quoteAccountCode + " :: " + workerId + " :: " + workerName + " :: " + laborCategory + " :: " +
                 weeklyWorkHours + " :: " + daysOfWeekToWork + " :: " + fullPartialWorkday + " :: " + typeOfContract + " :: " +
                 dateFrom + " :: " + dateTo + " :: " + identificationContractNumberINEM + " :: " + currentContract + " :: " +
-                notesForManager + " :: " + privateNotes;
+                notesForManager + " :: " + privateNotes + " :: " + quoteDataReportIDC + " :: " + endOfContractNotice;
     }
 
     public static ContractBuilder create() {
