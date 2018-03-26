@@ -260,6 +260,11 @@ public class NewContractMainController extends VBox {
         ContractManager contractManager = new ContractManager();
         Integer contractNumber = contractManager.saveOldContract(oldContractToSaveDTO);
         if (contractNumber != null) {
+            contractParts.setMouseTransparent(true);
+            contractData.setMouseTransparent(true);
+            contractSchedule.setMouseTransparent(true);
+            contractPublicNotes.setMouseTransparent(true);
+            contractPrivateNotes.setMouseTransparent(true);
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
                     Parameters.CONTRACT_SAVED_OK + contractNumber);
             contractActionComponents.enableOkButton(false);
