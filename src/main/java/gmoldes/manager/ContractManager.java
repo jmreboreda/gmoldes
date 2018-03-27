@@ -1,11 +1,10 @@
 package gmoldes.manager;
 
 
-import gmoldes.domain.Contract;
 import gmoldes.domain.dto.ContractDTO;
 import gmoldes.domain.dto.OldContractToSaveDTO;
-import gmoldes.mappers.MapperContractDTOVO;
 import gmoldes.mappers.MapperContractVODTO;
+import gmoldes.mappers.MapperOldContractToSaveDTOVO;
 import gmoldes.persistence.dao.ContractDAO;
 import gmoldes.persistence.vo.ContractVO;
 

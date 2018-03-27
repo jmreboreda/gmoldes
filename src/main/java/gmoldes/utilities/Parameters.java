@@ -16,7 +16,8 @@ public class Parameters {
     /** Contract data */
     public static final String FULL_WORKDAY = "A tiempo completo";
     public static final String PARTIAL_WORKDAY = "A tiempo parcial";
-    public static final String UNDEFINED_DURATION = "Indefinido";
+    public static final String UNDEFINED_DURATION_TEXT = "Indefinido";
+    public static final String TEMPORAL_DURATION_TEXT = "Temporal";
     public static final String HOURS_WORK_WEEK_TEXT = "Horas de trabajo por semana";
     public static final Duration LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK = Duration.parse("PT40H"); // 40 hours of work per week.
     public static final String NOT_REVISED = " No revisado.";
@@ -60,8 +61,13 @@ public class Parameters {
     public static final String DATE_TO_TEXT = "Hasta";
     public static final String DEFAULT_DATE_FORMAT = "dd-MM-yyyy";
     public static final String DEFAULT_TIME_FORMAT = "HH:mm";
+    public static final Integer ID_INITIAL_CONTRACT_TYPE_VARIATION = 100;
 
-    public static final  Integer ID_INITIAL_CONTRACT_TYPE_VARIATION = 100;
+    /** ContractDataSubfolder*/
+    public static final String NEW_CONTRACT_TEXT = "Nuevo contrato";
+
+
+
 
 
 }

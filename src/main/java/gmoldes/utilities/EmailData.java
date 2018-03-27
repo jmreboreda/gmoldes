@@ -34,56 +34,28 @@ public class EmailData {
         return emailFrom;
     }
 
-    public void setEmailFrom(InternetAddress emailFrom) {
-        this.emailFrom = emailFrom;
-    }
-
     public InternetAddress getEmailTo() {
         return emailTo;
-    }
-
-    public void setEmailTo(InternetAddress emailTo) {
-        this.emailTo = emailTo;
     }
 
     public InternetAddress getEmailDeliveryNotification() {
         return emailDeliveryNotification;
     }
 
-    public void setEmailDeliveryNotification(InternetAddress emailDeliveryNotification) {
-        this.emailDeliveryNotification = emailDeliveryNotification;
-    }
-
     public String getEmailSubject() {
         return emailSubject;
-    }
-
-    public void setEmailSubject(String emailSubject) {
-        this.emailSubject = emailSubject;
     }
 
     public String getEmailMessageText() {
         return emailMessageText;
     }
 
-    public void setEmailMessageText(String emailMessageText) {
-        this.emailMessageText = emailMessageText;
-    }
-
     public Path getAttachedPath() {
         return attachedPath;
     }
 
-    public void setAttachedPath(Path attachedPath) {
-        this.attachedPath = attachedPath;
-    }
-
     public String getAttachedName() {
         return attachedName;
-    }
-
-    public void setAttachedName(String attachedName) {
-        this.attachedName = attachedName;
     }
 
     public static EmailDataBuilder create() {

@@ -4,7 +4,9 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.new_contract.*;
 import gmoldes.domain.dto.*;
+import gmoldes.forms.ContractDataSubfolder;
 import gmoldes.manager.ContractManager;
+import gmoldes.manager.StudyManager;
 import gmoldes.services.EmailSender;
 import gmoldes.utilities.*;
 import javafx.beans.value.ChangeListener;
@@ -21,8 +23,10 @@ import javax.mail.internet.InternetAddress;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -268,19 +272,21 @@ public class NewContractMainController extends VBox {
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
                     Parameters.CONTRACT_SAVED_OK + contractNumber);
             contractActionComponents.enableOkButton(false);
-        }
-        contractActionComponents.enablePDFButton(true);
 
-        if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
-            Path path = Paths.get("/home/jmrb/Descargas/Calendar.zip");
-            try {
-                sendEmailToContractAgent(path);
-            } catch (AddressException e) {
-                e.printStackTrace();
+            ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(contractNumber);
+            System.out.println(contractDataSubfolder.toString());
+
+            if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
+                Path path = Paths.get("/home/jmrb/Descargas/Calendar.zip");
+                try {
+                    sendEmailToContractAgent(path);
+                } catch (AddressException e) {
+                    e.printStackTrace();
+                }
             }
         }
-
-        System.out.println(oldContractToSaveDTO.toString());
+        //TODO create PDF with contract data for the ContractAgent
+        contractActionComponents.enablePDFButton(true);
     }
 
     private void sendEmailToContractAgent(Path path) throws AddressException {
@@ -307,5 +313,60 @@ public class NewContractMainController extends VBox {
         }else{
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_NOT_SEND_OK);
         }
+    }
+
+    private ContractDataSubfolder createContractDataSubfolder(Integer contractNumber){
+
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
+
+        Integer studyId = Integer.parseInt(this.contractParts.getSelectedEmployee().getNivestud().toString());
+        StudyManager studyManager = new StudyManager();
+        StudyDTO studyDTO = studyManager.findStudyById(studyId);
+        String employeeMaxStudyLevel = studyDTO.getStudyLevelDescription();
+
+        String contractTypeDescription = this.contractData.getContractType().getDescripctto();
+        if(this.contractData.getUndefinedTemporalContract().equals(Parameters.UNDEFINED_DURATION_TEXT)){
+            contractTypeDescription = contractTypeDescription + ", " + Parameters.UNDEFINED_DURATION_TEXT;
+        }else{
+            contractTypeDescription = contractTypeDescription + ", " + Parameters.TEMPORAL_DURATION_TEXT;
+        }
+        if(this.contractData.getFullPartialWorkDay().equals(Parameters.FULL_WORKDAY)){
+            contractTypeDescription = contractTypeDescription + ", " + Parameters.FULL_WORKDAY;
+        }else{
+            contractTypeDescription = contractTypeDescription + ", " + Parameters.PARTIAL_WORKDAY;
+            contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + " horas/semana]";
+        }
+        Duration contractDurationDays = Duration.ZERO;
+        if(this.contractData.getContractDurationDays() != null){
+            contractDurationDays = Duration.parse("P" + this.contractData.getContractDurationDays() + "D");
+        }
+
+        return ContractDataSubfolder.create()
+                .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
+                .withOfficialContractNumber(null)
+                .withEmployerFullName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                .withNotificationDate(this.contractData.getDateNotification())
+                .withNotificationHour(LocalTime.parse(contractData.getHourNotification()))
+                .withEmployeeFullName(this.contractParts.getSelectedEmployee().toString())
+                .withEmployeeNif(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
+                .withEmployeeNASS(this.contractParts.getSelectedEmployee().getNumafss())
+                .withEmployeeBirthDate(dateFormatter.format(this.contractParts.getSelectedEmployee().getFechanacim()))
+                .withEmployeeCivilState(this.contractParts.getSelectedEmployee().getEstciv())
+                .withEmployeeNationality(this.contractParts.getSelectedEmployee().getNacionalidad())
+                .withEmployeeFullAddress(this.contractParts.getSelectedEmployee().getDireccion() + "   " + this.contractParts.getSelectedEmployee().getCodpostal()
+                + "   " + this.contractParts.getSelectedEmployee().getLocalidad())
+                .withEmployeeMaxStudyLevel(employeeMaxStudyLevel)
+                .withDayOfWeekSet(this.contractData.getDaysOfWeekToWork())
+                .withContractTypeDescription(contractTypeDescription)
+                .withStartDate(this.contractData.getDateFrom())
+                .withEndDate(this.contractData.getDateTo())
+                .withDurationDays(contractDurationDays)
+                .withSchedule(null)
+                .withAdditionalData(this.contractPublicNotes.getPublicNotes())
+                .withLaborCategory(this.contractData.getLaborCategory())
+                .withGmContractNumber(contractNumber.toString() + " - 0")
+                .build();
+
+
     }
 }

@@ -49,7 +49,7 @@ public class ContractDAO {
             session.getTransaction().commit();
         }
         catch (Exception e){
-            System.err.println("No se ha podido persistir el contrato: " + e.getMessage());
+            System.err.println("No se ha podido guardar el contrato: " + e.getMessage());
         }
 
         return contractVO.getNumcontrato();

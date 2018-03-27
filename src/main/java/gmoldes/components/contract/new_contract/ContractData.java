@@ -17,14 +17,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -96,7 +94,7 @@ public class ContractData extends AnchorPane {
         String durationContract = "";
         if(this.contractDuration.radioButtonUndefinedIsSelected()) {
             if (this.contractDuration.getDateFrom() != null) {
-                durationContract = Parameters.UNDEFINED_DURATION;
+                durationContract = Parameters.UNDEFINED_DURATION_TEXT;
             }
         }
 
@@ -164,12 +162,26 @@ public class ContractData extends AnchorPane {
         });
     }
 
+    public LocalDate getDateNotification(){
+        return this.dateNotification.getDate();
+    }
+
     public String getHourNotification(){
         return this.hourNotification.getText();
     }
 
     public ContractTypeDTO getContractType(){
         return this.contractType.getValue();
+    }
+
+    public String getUndefinedTemporalContract(){
+        if(this.contractDuration.radioButtonUndefinedIsSelected()){
+            return Parameters.UNDEFINED_DURATION_TEXT;
+        }
+        else{
+            return Parameters.TEMPORAL_DURATION_TEXT;
+        }
+
     }
 
     public String getContractDurationDays(){
