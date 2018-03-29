@@ -140,6 +140,30 @@ public class ContractSchedule extends AnchorPane {
         refreshTable(data);
     }
 
+    public TableColumn<ContractScheduleDayDTO, String> getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public TableColumn<ContractScheduleDayDTO, LocalDate> getDate() {
+        return date;
+    }
+
+    public TableColumn<ContractScheduleDayDTO, LocalTime> getAmFrom() {
+        return amFrom;
+    }
+
+    public TableColumn<ContractScheduleDayDTO, LocalTime> getAmTo() {
+        return amTo;
+    }
+
+    public TableColumn<ContractScheduleDayDTO, LocalTime> getPmFrom() {
+        return pmFrom;
+    }
+
+    public TableColumn<ContractScheduleDayDTO, LocalTime> getPmTo() {
+        return pmTo;
+    }
+
     private void updateTotalWeekHours(TableColumn.CellEditEvent event){
         int editedRow = event.getTablePosition().getRow();
         int editedColumn = event.getTablePosition().getColumn();
@@ -288,6 +312,10 @@ public class ContractSchedule extends AnchorPane {
         }
     }
 
+    public ObservableList<ContractScheduleDayDTO> getContractScheduleTableItems(){
+        return contract_schedule_table.getItems();
+    }
+
     public String getHoursWorkWeek(){
         return hoursWorkWeek.getText();
     }
@@ -299,13 +327,9 @@ public class ContractSchedule extends AnchorPane {
             if(dayOfWeek.getCellData(i) != null) {
                 dayOfWeekSet.add(Utilities.converterStringToDayOfWeek(dayOfWeek.getCellData(i)));
             }
-//            else{
-//                dayOfWeekSet.add(null);
-//            }
         }
 
         return dayOfWeekSet;
-
     }
 
     public void setOnChangeScheduleDuration(EventHandler<ChangeScheduleDurationEvent> handler){

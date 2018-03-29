@@ -8,8 +8,9 @@ public class MapperStudyVODTO {
     public StudyDTO mapStudyVODTO(StudyVO studyVO) {
 
         return StudyDTO.create()
-                .withId(studyVO.getIdestudio())
-                .withStudyLevelDescription(studyVO.getDescripest())
+                .withId(studyVO.getId())
+                .withStudyId(studyVO.getStudy_id())
+                .withDescription(studyVO.getStudy_description())
                 .build();
     }
 }

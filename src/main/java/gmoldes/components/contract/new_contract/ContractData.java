@@ -181,7 +181,6 @@ public class ContractData extends AnchorPane {
         else{
             return Parameters.TEMPORAL_DURATION_TEXT;
         }
-
     }
 
     public String getContractDurationDays(){

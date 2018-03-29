@@ -1,5 +1,8 @@
 package gmoldes.forms;
 
+import gmoldes.utilities.Parameters;
+import gmoldes.utilities.Utilities;
+
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -11,6 +14,7 @@ public class ContractDataSubfolder {
     private String notificationType;
     private String officialContractNumber;
     private String employerFullName;
+    private String employerQuoteAccountCode;
     private LocalDate notificationDate;
     private LocalTime notificationHour;
     private String employeeFullName;
@@ -26,21 +30,22 @@ public class ContractDataSubfolder {
     private LocalDate startDate;
     private LocalDate endDate;
     private Duration durationDays;
-    private Set<WorkDay> schedule;
+    private Set<WorkDaySchedule> schedule;
     private String additionalData;
     private String laborCategory;
     private String gmContractNumber;
 
-    public ContractDataSubfolder(String notificationType, String officialContractNumber, String employerFullName, LocalDate notificationDate,
+    public ContractDataSubfolder(String notificationType, String officialContractNumber, String employerFullName, String employerQuoteAccountCode, LocalDate notificationDate,
                                  LocalTime notificationHour, String employeeFullName, String employeeNif, String employeeNASS,
                                  String employeeBirthDate, String employeeCivilState, String employeeNationality, String employeeFullAddress,
                                  String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, String contractTypeDescription,
-                                 LocalDate startDate, LocalDate endDate, Duration durationDays, Set<WorkDay> schedule,
+                                 LocalDate startDate, LocalDate endDate, Duration durationDays, Set<WorkDaySchedule> schedule,
                                  String additionalData, String laborCategory, String gmContractNumber) {
 
         this.notificationType = notificationType;
         this.officialContractNumber = officialContractNumber;
         this.employerFullName = employerFullName;
+        this.employerQuoteAccountCode = employerQuoteAccountCode;
         this.notificationDate = notificationDate;
         this.notificationHour = notificationHour;
         this.employeeFullName = employeeFullName;
@@ -72,6 +77,10 @@ public class ContractDataSubfolder {
 
     public String getEmployerFullName() {
         return employerFullName;
+    }
+
+    public String getEmployerQuoteAccountCode() {
+        return employerQuoteAccountCode;
     }
 
     public LocalDate getNotificationDate() {
@@ -134,7 +143,7 @@ public class ContractDataSubfolder {
         return durationDays;
     }
 
-    public Set<WorkDay> getSchedule() {
+    public Set<WorkDaySchedule> getSchedule() {
         return schedule;
     }
 
@@ -152,10 +161,20 @@ public class ContractDataSubfolder {
 
     @Override
     public String toString(){
-        return notificationType + "::" + officialContractNumber + "::" + employerFullName + "::" + notificationDate + "::" + notificationHour + "::" +
-                employeeFullName + "::" + employeeNif + "::" + employeeNASS + "::" + employeeBirthDate + "::" + employeeCivilState + "::" +
-                employeeNationality + "::" + employeeFullAddress + "::" + employeeMaxStudyLevel + "::" + dayOfWeekSet + "::" + contractTypeDescription + "::" +
-                startDate + "::" + endDate + "::" + durationDays + "::" + schedule + "::" + additionalData + "::" + laborCategory + "::" + gmContractNumber;
+        return notificationType + "::" + officialContractNumber + "::" + employerFullName + "::" + employerQuoteAccountCode  + "::" + notificationDate + "::" +
+                notificationHour + "::" + employeeFullName + "::" + employeeNif + "::" + employeeNASS + "::" + employeeBirthDate + "::" +
+                employeeCivilState + "::" + employeeNationality + "::" + employeeFullAddress + "::" + employeeMaxStudyLevel + "::" + dayOfWeekSet + "::" +
+                contractTypeDescription + "::" + startDate + "::" + endDate + "::" + durationDays + "::" + schedule + "::" + additionalData + "::" +
+                laborCategory + "::" + gmContractNumber;
+    }
+
+    public String toFileName(){
+
+        return Utilities.replaceWithUnderscore(employerFullName)
+                + "_" +
+                Utilities.replaceWithUnderscore(Parameters.NEW_CONTRACT_TEXT.toLowerCase())
+                + "_" +
+                Utilities.replaceWithUnderscore(employeeFullName);
     }
 
     public static ContractDataSubfolder.ContractDataSubfolderBuilder create() {
@@ -167,6 +186,7 @@ public class ContractDataSubfolder {
         private String notificationType;
         private String officialContractNumber;
         private String employerFullName;
+        private String employerQuoteAccountCode;
         private LocalDate notificationDate;
         private LocalTime notificationHour;
         private String employeeFullName;
@@ -182,7 +202,7 @@ public class ContractDataSubfolder {
         private LocalDate startDate;
         private LocalDate endDate;
         private Duration durationDays;
-        private Set<WorkDay> schedule;
+        private Set<WorkDaySchedule> schedule;
         private String additionalData;
         private String laborCategory;
         private String gmContractNumber;
@@ -199,6 +219,11 @@ public class ContractDataSubfolder {
 
         public ContractDataSubfolder.ContractDataSubfolderBuilder withEmployerFullName(String employerFullName) {
             this.employerFullName = employerFullName;
+            return this;
+        }
+
+        public ContractDataSubfolder.ContractDataSubfolderBuilder withEmployerQuoteAccountCode(String employerQuoteAccountCode) {
+            this.employerQuoteAccountCode = employerQuoteAccountCode;
             return this;
         }
 
@@ -277,7 +302,7 @@ public class ContractDataSubfolder {
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withSchedule(Set<WorkDay> schedule) {
+        public ContractDataSubfolder.ContractDataSubfolderBuilder withSchedule(Set<WorkDaySchedule> schedule) {
             this.schedule = schedule;
             return this;
         }
@@ -299,10 +324,11 @@ public class ContractDataSubfolder {
 
 
         public ContractDataSubfolder build() {
-            return new ContractDataSubfolder(this.notificationType, this.officialContractNumber,this.employerFullName, this.notificationDate,
-            this.notificationHour, this.employeeFullName, this.employeeNif, this.employeeNASS, this.employeeBirthDate, this.employeeCivilState,
-            this.employeeNationality, this.employeeFullAddress, this.employeeMaxStudyLevel, this.dayOfWeekSet, this.contractTypeDescription, this.startDate,
-            this.endDate, this.durationDays, this.schedule, this.additionalData, this.laborCategory, this.gmContractNumber);
+            return new ContractDataSubfolder(this.notificationType, this.officialContractNumber,this.employerFullName, this.employerQuoteAccountCode,
+                    this.notificationDate, this.notificationHour, this.employeeFullName, this.employeeNif, this.employeeNASS, this.employeeBirthDate,
+                    this.employeeCivilState, this.employeeNationality, this.employeeFullAddress, this.employeeMaxStudyLevel, this.dayOfWeekSet,
+                    this.contractTypeDescription, this.startDate, this.endDate, this.durationDays, this.schedule, this.additionalData,
+                    this.laborCategory, this.gmContractNumber);
         }
     }
 }

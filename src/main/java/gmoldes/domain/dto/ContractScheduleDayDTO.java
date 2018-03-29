@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class ContractScheduleDayDTO {
 
-    private final SimpleObjectProperty<DayOfWeek> dayOfWeek;
+    private final SimpleObjectProperty<String> dayOfWeek;
     private final SimpleObjectProperty<LocalDate> date;
     private final SimpleObjectProperty<LocalTime> amFrom;
     private final SimpleObjectProperty<LocalTime> amTo;
@@ -19,7 +19,7 @@ public class ContractScheduleDayDTO {
     private final SimpleObjectProperty<LocalTime> pmTo;
     private final SimpleObjectProperty<Duration> totalDayHours;
 
-    public ContractScheduleDayDTO(DayOfWeek dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, Duration totalDayHours) {
+    public ContractScheduleDayDTO(String dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, Duration totalDayHours) {
         this.dayOfWeek = new SimpleObjectProperty<>(dayOfWeek);
         this.date = new SimpleObjectProperty<>(date);
         this.amFrom = new SimpleObjectProperty<>(amFrom);
@@ -29,7 +29,7 @@ public class ContractScheduleDayDTO {
         this.totalDayHours = new SimpleObjectProperty<>(totalDayHours);
     }
 
-    public DayOfWeek getDayOfWeek() {
+    public String getDayOfWeek() {
         return dayOfWeek.get();
     }
 
@@ -37,7 +37,7 @@ public class ContractScheduleDayDTO {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+    public void setDayOfWeek(String dayOfWeek) {
         this.dayOfWeek.set(dayOfWeek);
     }
 
@@ -119,7 +119,7 @@ public class ContractScheduleDayDTO {
 
     public static class ContractScheduleDTOBuilder {
 
-        private DayOfWeek dayOfWeek;
+        private String dayOfWeek;
         private LocalDate date;
         private LocalTime amFrom;
         private LocalTime amTo;
@@ -127,7 +127,7 @@ public class ContractScheduleDayDTO {
         private LocalTime pmTo;
         private Duration totalDayHours;
 
-        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withDayOfWeek(DayOfWeek dayOfWeek) {
+        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withDayOfWeek(String dayOfWeek) {
             this.dayOfWeek = dayOfWeek;
             return this;
         }

@@ -52,6 +52,7 @@ public class Parameters {
     public static final String INVALID_CONTRACT_DURATION = "El número de días de duración del contrato es erróneo.";
     public static final String CONTRACT_TYPE_NOT_SELECTED = "No se ha seleccionado el tipo de contrato.";
     public static final String CONTRACT_SAVED_OK = "Contrato guardado con el número ";
+    public static final String CONTRACT_NOT_SAVED_OK = "El contrato no ha podido guardarse en la base de datos.";
     public static final String QUESTION_SEND_MAIL_TO_CONTRACT_AGENT = "¿Se envía correo-e de datos al gestor?";
 
     /** Various */

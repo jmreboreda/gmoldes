@@ -59,6 +59,10 @@ public class ProvisionalContractData extends AnchorPane {
     private Label laborCategory;
     @FXML
     private Label status;
+    @FXML
+    private Label numContractText;
+    @FXML
+    private Label contractNumber;
 
     public ProvisionalContractData() {
 
@@ -74,6 +78,21 @@ public class ProvisionalContractData extends AnchorPane {
                 }
             }
         });
+
+        numContractText.setStyle(Parameters.GREEN_COLOR);
+        contractNumber.setStyle(Parameters.GREEN_COLOR);
+    }
+
+    public void setContractText(String text){
+        this.numContractText.setText(text);
+    }
+
+    public void setContractNumber(Integer number){
+        this.contractNumber.setText(number.toString());
+    }
+
+    public String getContractNumber(){
+        return this.contractNumber.getText();
     }
 
     public void refreshData(ProvisionalContractDataDTO contractDataDTO){

@@ -10,9 +10,14 @@
    <children>
       <HBox alignment="TOP_RIGHT">
          <children>
+            <Button fx:id="sendMailButton" disable="true" maxHeight="70.0" maxWidth="80.0" minHeight="70.0" minWidth="80.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Enviar correo al gestor" textAlignment="CENTER" textFill="BLUE" wrapText="true">
+               <HBox.margin>
+                  <Insets bottom="15.0" left="405.0" right="20.0" top="15.0" />
+               </HBox.margin>
+            </Button>
             <Button fx:id="OkButton" maxHeight="70.0" maxWidth="80.0" minHeight="70.0" minWidth="80.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Aceptar" textFill="#02430e">
                <HBox.margin>
-                  <Insets bottom="15.0" left="500.0" right="20.0" top="15.0" />
+                  <Insets bottom="15.0" right="20.0" top="15.0" />
                </HBox.margin>
                <font>
                   <Font size="13.0" />
