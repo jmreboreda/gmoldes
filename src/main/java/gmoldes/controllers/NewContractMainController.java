@@ -6,11 +6,13 @@ import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.new_contract.*;
 import gmoldes.domain.dto.*;
 import gmoldes.forms.ContractDataSubfolder;
+import gmoldes.forms.ContractDataToContractAgent;
 import gmoldes.forms.WorkDaySchedule;
 import gmoldes.manager.ContractManager;
 import gmoldes.manager.StudyManager;
 import gmoldes.services.ContractAgentNotificator;
 import gmoldes.services.ContractDataSubfolderPDFCreator;
+import gmoldes.services.ContractDataToContractAgentPDFCreator;
 import gmoldes.utilities.EmailParameters;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
@@ -30,11 +32,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.TextStyle;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -101,28 +101,13 @@ public class NewContractMainController extends VBox {
 
     private void onSendMailButton(MouseEvent event){
         Boolean isSendOk = false;
-        String temporalDir = null;
-        Path pathOut = null;
+        Path pathOut;
 
         if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
             Integer contractNumber = Integer.parseInt(provisionalContractData.getContractNumber());
-            ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(contractNumber);
-            if(OPERATING_SYSTEM.toLowerCase().contains("linux")){
-                temporalDir = LINUX_TEMPORAL_DIR;
-            }
-            else if(OPERATING_SYSTEM.toLowerCase().contains("windows")){
-                temporalDir = WINDOWS_TEMPORAL_DIR;
-            }
-
-            Path pathToContractDataSubfolder = Paths.get(USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(".pdf"));
-            try {
-                Files.createDirectories(pathToContractDataSubfolder.getParent());
-                pathOut = ContractDataSubfolderPDFCreator.createContractDataSubfolderPDF(contractDataSubfolder, pathToContractDataSubfolder);
-            } catch (IOException | DocumentException e) {
-                e.printStackTrace();
-            }
-
-            String attachedFileName = contractDataSubfolder.toFileName().concat(".pdf");
+            ContractDataToContractAgent contractDataToContractAgent = createContractDataToContractAgent();
+            pathOut = retrievePathToContractDataToContractAgentPDF(contractDataToContractAgent);
+            String attachedFileName = contractDataToContractAgent.toFileName().concat(".pdf");
             ContractAgentNotificator agentNotificator = new ContractAgentNotificator();
             try {
                 isSendOk = agentNotificator.sendEmailToContractAgent(pathOut, attachedFileName, this.contractParts);
@@ -159,14 +144,15 @@ public class NewContractMainController extends VBox {
     }
 
     private void onViewPDFButton(MouseEvent mouseEvent) {
-        if (OPERATING_SYSTEM.toLowerCase().contains("linux")) {
-            final String documentPath = USER_HOME  + "/Intellij/gmoldes/src/main/resources/pdf_forms/DGM_003_Datos_Alta_o_Cambio_Contrato_Trabajo_A3_LO_Version2.pdf";
-            try {
-                String[] command = {"sh", "-c", "xdg-open " + documentPath};
-                Process p = Runtime.getRuntime().exec(command);
-            } catch (IOException e) {
-                System.out.println("No se ha podido abrir el documento \"" + documentPath + "\"");
-            }
+        Path pathOut;
+
+        ContractDataToContractAgent contractDataToContractAgent = createContractDataToContractAgent();
+        pathOut = retrievePathToContractDataToContractAgentPDF(contractDataToContractAgent);
+        try {
+            String[] command = {"sh", "-c", "xdg-open " + pathOut};
+            Process p = Runtime.getRuntime().exec(command);
+        } catch (IOException e) {
+            System.out.println("No se ha podido abrir el documento \"" + contractDataToContractAgent.toFileName().concat(".pdf") + "\"");
         }
     }
 
@@ -278,7 +264,7 @@ public class NewContractMainController extends VBox {
     }
 
     private void persistOldContractToSave() {
-        ContractDataSubfolder contractDataSubfolder = null;
+        //ContractDataSubfolder contractDataSubfolder = null;
         LocalDate endOfContractNotice = null;
         if (contractData.getDateTo() == null) {
             endOfContractNotice = LocalDate.of(9999, 12, 31);
@@ -325,6 +311,114 @@ public class NewContractMainController extends VBox {
         contractActionComponents.enablePDFButton(true);
     }
 
+    private ContractDataToContractAgent createContractDataToContractAgent(){
+
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
+
+        Integer studyId = Integer.parseInt(this.contractParts.getSelectedEmployee().getNivestud().toString());
+        StudyManager studyManager = new StudyManager();
+        StudyDTO studyDTO = studyManager.findStudyById(studyId);
+        String employeeMaximumStudyLevel = studyDTO.getStudyDescription();
+
+        String contractTypeDescription = this.contractData.getContractType().getDescripctto();
+        if(this.contractData.getUndefinedTemporalContract().equals(Parameters.UNDEFINED_DURATION_TEXT)){
+            contractTypeDescription = contractTypeDescription + ", " + Parameters.UNDEFINED_DURATION_TEXT;
+        }else{
+            contractTypeDescription = contractTypeDescription + ", " + Parameters.TEMPORAL_DURATION_TEXT;
+        }
+
+        if(this.contractData.getFullPartialWorkDay().equals(Parameters.FULL_WORKDAY)){
+            contractTypeDescription = contractTypeDescription + ", " + Parameters.FULL_WORKDAY;
+        }else{
+            contractTypeDescription = contractTypeDescription + ", " + Parameters.PARTIAL_WORKDAY;
+            contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + " horas/semana]";
+        }
+
+        Duration contractDurationDays = Duration.ZERO;
+        if(this.contractData.getContractDurationDays() != null){
+            contractDurationDays = Duration.parse("P" + this.contractData.getContractDurationDays() + "D");
+        }
+
+        /* Construction of schedule with scheduleDays */
+        ObservableList<ContractScheduleDayDTO> tableItemList = contractSchedule.getContractScheduleTableItems();
+        Integer selectedRow = 0;
+        String dayOfWeek = "";
+        LocalDate date = null;
+        LocalTime amFrom = null;
+        LocalTime amTo = null;
+        LocalTime pmFrom = null;
+        LocalTime pmTo = null;
+        Duration durationHours = null;
+        Set<WorkDaySchedule> schedule = new HashSet<>();
+        for (ContractScheduleDayDTO dayDTO : tableItemList){
+            ContractScheduleDayDTO selectedItemRow = tableItemList.get(selectedRow);
+
+            /* Only for non empty rows */
+            if(selectedItemRow.getTotalDayHours() != null) {
+
+                if (selectedItemRow.getDayOfWeek() != null) {
+                    dayOfWeek = selectedItemRow.getDayOfWeek();
+                }
+                if (selectedItemRow.getDate() != null) {
+                    date = selectedItemRow.getDate();
+                }
+                if (selectedItemRow.getAmFrom() != null) {
+                    amFrom = selectedItemRow.getAmFrom();
+                }
+                if (selectedItemRow.getAmTo() != null) {
+                    amTo = selectedItemRow.getAmTo();
+                }
+                if (selectedItemRow.getPmFrom() != null) {
+                    pmFrom = selectedItemRow.getPmFrom();
+                }
+                if (selectedItemRow.getPmTo() != null) {
+                    pmTo = selectedItemRow.getPmTo();
+                }
+                if (selectedItemRow.getTotalDayHours() != null) {
+                    durationHours = selectedItemRow.getTotalDayHours();
+                }
+
+                WorkDaySchedule scheduleDay = WorkDaySchedule.create()
+                        .withDayOfWeek(dayOfWeek)
+                        .withDate(date)
+                        .withAmFrom(amFrom)
+                        .withAmTo(amTo)
+                        .withPmFrom(pmFrom)
+                        .withPmTo(pmTo)
+                        .withDurationHours(durationHours)
+                        .build();
+                schedule.add(scheduleDay);
+            }
+            selectedRow++;
+        }
+
+        return ContractDataToContractAgent.create()
+                .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
+                .withOfficialContractNumber(null)
+                .withEmployerFullName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                .withEmployerQuoteAccountCode(this.contractParts.getSelectedCCC().getCcc_inss())
+                .withNotificationDate(this.contractData.getDateNotification())
+                .withNotificationHour(LocalTime.parse(contractData.getHourNotification()))
+                .withEmployeeFullName(this.contractParts.getSelectedEmployee().toString())
+                .withEmployeeNif(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
+                .withEmployeeNASS(this.contractParts.getSelectedEmployee().getNumafss())
+                .withEmployeeBirthDate(dateFormatter.format(this.contractParts.getSelectedEmployee().getFechanacim()))
+                .withEmployeeCivilState(this.contractParts.getSelectedEmployee().getEstciv())
+                .withEmployeeNationality(this.contractParts.getSelectedEmployee().getNacionalidad())
+                .withEmployeeFullAddress(this.contractParts.getSelectedEmployee().getDireccion() + "  " + this.contractParts.getSelectedEmployee().getCodpostal()
+                        + " " + this.contractParts.getSelectedEmployee().getLocalidad())
+                .withEmployeeMaxStudyLevel(employeeMaximumStudyLevel)
+                .withDayOfWeekSet(this.contractData.getDaysOfWeekToWork())
+                .withContractTypeDescription(contractTypeDescription)
+                .withStartDate(this.contractData.getDateFrom())
+                .withEndDate(this.contractData.getDateTo())
+                .withDurationDays(contractDurationDays)
+                .withSchedule(schedule)
+                .withAdditionalData(this.contractPublicNotes.getPublicNotes())
+                .withLaborCategory(this.contractData.getLaborCategory())
+                .build();
+    }
+
     private ContractDataSubfolder createContractDataSubfolder(Integer contractNumber){
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
@@ -353,8 +447,7 @@ public class NewContractMainController extends VBox {
             contractDurationDays = Duration.parse("P" + this.contractData.getContractDurationDays() + "D");
         }
 
-
-
+        /* Construction of schedule with scheduleDays */
         ObservableList<ContractScheduleDayDTO> tableItemList = contractSchedule.getContractScheduleTableItems();
         Integer selectedRow = 0;
         String dayOfWeek = "";
@@ -367,44 +460,45 @@ public class NewContractMainController extends VBox {
         Set<WorkDaySchedule> schedule = new HashSet<>();
         for (ContractScheduleDayDTO dayDTO : tableItemList){
             ContractScheduleDayDTO selectedItemRow = tableItemList.get(selectedRow);
-            if(selectedItemRow.getDayOfWeek() != null) {
-                dayOfWeek = selectedItemRow.getDayOfWeek();
-            }
-            if(selectedItemRow.getDate() != null){
-                date = selectedItemRow.getDate();
-            }
-            if(selectedItemRow.getAmFrom() != null){
-                amFrom = selectedItemRow.getAmFrom();
-            }
-            if(selectedItemRow.getAmTo() != null){
-                amTo = selectedItemRow.getAmTo();
-            }
-            if(selectedItemRow.getPmFrom() != null){
-                pmFrom = selectedItemRow.getPmFrom();
-            }
-            if(selectedItemRow.getPmTo() != null){
-                pmTo = selectedItemRow.getPmTo();
-            }
-            if(selectedItemRow.getTotalDayHours() != null){
-                durationHours = selectedItemRow.getTotalDayHours();
-            }
 
-            WorkDaySchedule scheduleDay = WorkDaySchedule.create()
-                    .withDayOfWeek(dayOfWeek)
-                    .withDate(date)
-                    .withAmFrom(amFrom)
-                    .withAmTo(amTo)
-                    .withPmFrom(pmFrom)
-                    .withPmTo(pmTo)
-                    .withDurationHours(durationHours)
-                    .build();
-            schedule.add(scheduleDay);
+            /* Only for non empty rows */
+            if(selectedItemRow.getTotalDayHours() != null) {
+
+                if (selectedItemRow.getDayOfWeek() != null) {
+                    dayOfWeek = selectedItemRow.getDayOfWeek();
+                }
+                if (selectedItemRow.getDate() != null) {
+                    date = selectedItemRow.getDate();
+                }
+                if (selectedItemRow.getAmFrom() != null) {
+                    amFrom = selectedItemRow.getAmFrom();
+                }
+                if (selectedItemRow.getAmTo() != null) {
+                    amTo = selectedItemRow.getAmTo();
+                }
+                if (selectedItemRow.getPmFrom() != null) {
+                    pmFrom = selectedItemRow.getPmFrom();
+                }
+                if (selectedItemRow.getPmTo() != null) {
+                    pmTo = selectedItemRow.getPmTo();
+                }
+                if (selectedItemRow.getTotalDayHours() != null) {
+                    durationHours = selectedItemRow.getTotalDayHours();
+                }
+
+                WorkDaySchedule scheduleDay = WorkDaySchedule.create()
+                        .withDayOfWeek(dayOfWeek)
+                        .withDate(date)
+                        .withAmFrom(amFrom)
+                        .withAmTo(amTo)
+                        .withPmFrom(pmFrom)
+                        .withPmTo(pmTo)
+                        .withDurationHours(durationHours)
+                        .build();
+                schedule.add(scheduleDay);
+            }
             selectedRow++;
         }
-
-
-
-
 
         return ContractDataSubfolder.create()
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
@@ -432,5 +526,47 @@ public class NewContractMainController extends VBox {
                 .withLaborCategory(this.contractData.getLaborCategory())
                 .withGmContractNumber(contractNumber.toString() + " - 0")
                 .build();
+    }
+
+    private Path retrievePathToContractDataToContractAgentPDF(ContractDataToContractAgent contractDataToContractAgent){
+        String temporalDir = null;
+        Path pathOut = null;
+        if(OPERATING_SYSTEM.toLowerCase().contains("linux")){
+            temporalDir = LINUX_TEMPORAL_DIR;
+        }
+        else if(OPERATING_SYSTEM.toLowerCase().contains("windows")){
+            temporalDir = WINDOWS_TEMPORAL_DIR;
+        }
+
+        Path pathToContractDataToContractAgent = Paths.get(USER_HOME, temporalDir, contractDataToContractAgent.toFileName().concat(".pdf"));
+        try {
+            Files.createDirectories(pathToContractDataToContractAgent.getParent());
+            pathOut = ContractDataToContractAgentPDFCreator.createContractDataToContractAgentPDF(contractDataToContractAgent, pathToContractDataToContractAgent);
+        } catch (IOException | DocumentException e) {
+            e.printStackTrace();
+        }
+
+        return pathOut;
+    }
+
+    private Path retrievePathToContractDataSubfolderPDF(ContractDataSubfolder contractDataSubfolder){
+        String temporalDir = null;
+        Path pathOut = null;
+        if(OPERATING_SYSTEM.toLowerCase().contains("linux")){
+            temporalDir = LINUX_TEMPORAL_DIR;
+        }
+        else if(OPERATING_SYSTEM.toLowerCase().contains("windows")){
+            temporalDir = WINDOWS_TEMPORAL_DIR;
+        }
+
+        Path pathToContractDataSubfolder = Paths.get(USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(".pdf"));
+        try {
+            Files.createDirectories(pathToContractDataSubfolder.getParent());
+            pathOut = ContractDataSubfolderPDFCreator.createContractDataSubfolderPDF(contractDataSubfolder, pathToContractDataSubfolder);
+        } catch (IOException | DocumentException e) {
+            e.printStackTrace();
+        }
+
+        return pathOut;
     }
 }

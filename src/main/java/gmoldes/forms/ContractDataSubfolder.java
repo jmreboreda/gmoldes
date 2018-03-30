@@ -159,15 +159,6 @@ public class ContractDataSubfolder {
         return gmContractNumber;
     }
 
-    @Override
-    public String toString(){
-        return notificationType + "::" + officialContractNumber + "::" + employerFullName + "::" + employerQuoteAccountCode  + "::" + notificationDate + "::" +
-                notificationHour + "::" + employeeFullName + "::" + employeeNif + "::" + employeeNASS + "::" + employeeBirthDate + "::" +
-                employeeCivilState + "::" + employeeNationality + "::" + employeeFullAddress + "::" + employeeMaxStudyLevel + "::" + dayOfWeekSet + "::" +
-                contractTypeDescription + "::" + startDate + "::" + endDate + "::" + durationDays + "::" + schedule + "::" + additionalData + "::" +
-                laborCategory + "::" + gmContractNumber;
-    }
-
     public String toFileName(){
 
         return Utilities.replaceWithUnderscore(employerFullName)
@@ -177,8 +168,8 @@ public class ContractDataSubfolder {
                 Utilities.replaceWithUnderscore(employeeFullName);
     }
 
-    public static ContractDataSubfolder.ContractDataSubfolderBuilder create() {
-        return new ContractDataSubfolder.ContractDataSubfolderBuilder();
+    public static ContractDataSubfolderBuilder create() {
+        return new ContractDataSubfolderBuilder();
     }
 
     public static class ContractDataSubfolderBuilder {
@@ -207,117 +198,117 @@ public class ContractDataSubfolder {
         private String laborCategory;
         private String gmContractNumber;
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withNotificationType(String notificationType) {
+        public ContractDataSubfolderBuilder withNotificationType(String notificationType) {
             this.notificationType = notificationType;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withOfficialContractNumber(String officialContractNumber) {
+        public ContractDataSubfolderBuilder withOfficialContractNumber(String officialContractNumber) {
             this.officialContractNumber = officialContractNumber;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withEmployerFullName(String employerFullName) {
+        public ContractDataSubfolderBuilder withEmployerFullName(String employerFullName) {
             this.employerFullName = employerFullName;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withEmployerQuoteAccountCode(String employerQuoteAccountCode) {
+        public ContractDataSubfolderBuilder withEmployerQuoteAccountCode(String employerQuoteAccountCode) {
             this.employerQuoteAccountCode = employerQuoteAccountCode;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withNotificationDate(LocalDate notificationDate) {
+        public ContractDataSubfolderBuilder withNotificationDate(LocalDate notificationDate) {
             this.notificationDate = notificationDate;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withNotificationHour(LocalTime notificationHour) {
+        public ContractDataSubfolderBuilder withNotificationHour(LocalTime notificationHour) {
             this.notificationHour = notificationHour;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withEmployeeFullName(String employeeFullName) {
+        public ContractDataSubfolderBuilder withEmployeeFullName(String employeeFullName) {
             this.employeeFullName = employeeFullName;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withEmployeeNif(String employeeNif) {
+        public ContractDataSubfolderBuilder withEmployeeNif(String employeeNif) {
             this.employeeNif = employeeNif;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withEmployeeNASS(String employeeNASS) {
+        public ContractDataSubfolderBuilder withEmployeeNASS(String employeeNASS) {
             this.employeeNASS = employeeNASS;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withEmployeeBirthDate(String employeeBirthDate) {
+        public ContractDataSubfolderBuilder withEmployeeBirthDate(String employeeBirthDate) {
             this.employeeBirthDate = employeeBirthDate;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withEmployeeCivilState(String employeeCivilState) {
+        public ContractDataSubfolderBuilder withEmployeeCivilState(String employeeCivilState) {
             this.employeeCivilState = employeeCivilState;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withEmployeeNationality(String employeeNationality) {
+        public ContractDataSubfolderBuilder withEmployeeNationality(String employeeNationality) {
             this.employeeNationality = employeeNationality;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withEmployeeFullAddress(String employeeFullAddress) {
+        public ContractDataSubfolderBuilder withEmployeeFullAddress(String employeeFullAddress) {
             this.employeeFullAddress = employeeFullAddress;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withEmployeeMaxStudyLevel(String employeeMaxStudyLevel) {
+        public ContractDataSubfolderBuilder withEmployeeMaxStudyLevel(String employeeMaxStudyLevel) {
             this.employeeMaxStudyLevel = employeeMaxStudyLevel;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withDayOfWeekSet(Set<DayOfWeek> dayOfWeekSet) {
+        public ContractDataSubfolderBuilder withDayOfWeekSet(Set<DayOfWeek> dayOfWeekSet) {
             this.dayOfWeekSet = dayOfWeekSet;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withContractTypeDescription(String contractTypeDescription) {
+        public ContractDataSubfolderBuilder withContractTypeDescription(String contractTypeDescription) {
             this.contractTypeDescription = contractTypeDescription;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withStartDate(LocalDate startDate) {
+        public ContractDataSubfolderBuilder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withEndDate(LocalDate endDate) {
+        public ContractDataSubfolderBuilder withEndDate(LocalDate endDate) {
             this.endDate = endDate;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withDurationDays(Duration durationDays) {
+        public ContractDataSubfolderBuilder withDurationDays(Duration durationDays) {
             this.durationDays = durationDays;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withSchedule(Set<WorkDaySchedule> schedule) {
+        public ContractDataSubfolderBuilder withSchedule(Set<WorkDaySchedule> schedule) {
             this.schedule = schedule;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withAdditionalData(String additionalData) {
+        public ContractDataSubfolderBuilder withAdditionalData(String additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withLaborCategory(String laborCategory) {
+        public ContractDataSubfolderBuilder withLaborCategory(String laborCategory) {
             this.laborCategory = laborCategory;
             return this;
         }
 
-        public ContractDataSubfolder.ContractDataSubfolderBuilder withGmContractNumber(String gmContractNumber) {
+        public ContractDataSubfolderBuilder withGmContractNumber(String gmContractNumber) {
             this.gmContractNumber = gmContractNumber;
             return this;
         }

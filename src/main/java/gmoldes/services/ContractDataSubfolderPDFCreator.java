@@ -79,7 +79,8 @@ public class ContractDataSubfolderPDFCreator {
         }else{
             contractDataSubfolderPDFFields.setField("durationDays", Parameters.UNDEFINED_DURATION_TEXT);
         }
-        /** */
+
+        /* Start of the form fill loop*/
         for(WorkDaySchedule workDay : contractDataSubfolder.getSchedule()){
             if(workDay.getDayOfWeek().equals(DayOfWeek.MONDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))){
                 String workDayPDF = "";
@@ -354,6 +355,11 @@ public class ContractDataSubfolderPDFCreator {
                 contractDataSubfolderPDFFields.setField("hoursSeven", durationHours);
             }
         }
+
+        contractDataSubfolderPDFFields.setField("additionalData",contractDataSubfolder.getAdditionalData());
+        contractDataSubfolderPDFFields.setField("laborCategory",contractDataSubfolder.getLaborCategory());
+        contractDataSubfolderPDFFields.setField("GMcontractNumber",contractDataSubfolder.getGmContractNumber());
+
         stamp.setFormFlattening(true);
         stamp.close();
 
