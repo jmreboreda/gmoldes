@@ -341,55 +341,7 @@ public class NewContractMainController extends VBox {
             contractDurationDays = Duration.parse("P" + this.contractData.getContractDurationDays() + "D");
         }
 
-        /* Construction of schedule with scheduleDays */
-        ObservableList<ContractScheduleDayDTO> tableItemList = contractSchedule.getContractScheduleTableItems();
-        String dayOfWeek = "";
-        LocalDate date = null;
-        LocalTime amFrom = null;
-        LocalTime amTo = null;
-        LocalTime pmFrom = null;
-        LocalTime pmTo = null;
-        Duration durationHours = null;
-        Set<WorkDaySchedule> schedule = new HashSet<>();
-        for(Integer i = Parameters.FIRST_ROW_SCHEDULE_TABLE; i <= Parameters.LAST_ROW_SCHEDULE_TABLE; i++){
-            ContractScheduleDayDTO selectedItemRow = tableItemList.get(i);
-            /* Only for non empty rows */
-            if(selectedItemRow.getTotalDayHours() != Duration.ZERO) {
-
-                if (selectedItemRow.getDayOfWeek() != null) {
-                    dayOfWeek = selectedItemRow.getDayOfWeek();
-                }
-                if (selectedItemRow.getDate() != null) {
-                    date = selectedItemRow.getDate();
-                }
-                if (selectedItemRow.getAmFrom() != null) {
-                    amFrom = selectedItemRow.getAmFrom();
-                }
-                if (selectedItemRow.getAmTo() != null) {
-                    amTo = selectedItemRow.getAmTo();
-                }
-                if (selectedItemRow.getPmFrom() != null) {
-                    pmFrom = selectedItemRow.getPmFrom();
-                }
-                if (selectedItemRow.getPmTo() != null) {
-                    pmTo = selectedItemRow.getPmTo();
-                }
-                if (selectedItemRow.getTotalDayHours() != null) {
-                    durationHours = selectedItemRow.getTotalDayHours();
-                }
-
-                WorkDaySchedule scheduleDay = WorkDaySchedule.create()
-                        .withDayOfWeek(dayOfWeek)
-                        .withDate(date)
-                        .withAmFrom(amFrom)
-                        .withAmTo(amTo)
-                        .withPmFrom(pmFrom)
-                        .withPmTo(pmTo)
-                        .withDurationHours(durationHours)
-                        .build();
-                schedule.add(scheduleDay);
-            }
-        }
+        Set<WorkDaySchedule> schedule = retrieveScheduleWithScheduleDays();
 
         return ContractDataToContractAgent.create()
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
@@ -446,7 +398,37 @@ public class NewContractMainController extends VBox {
             contractDurationDays = Duration.parse("P" + this.contractData.getContractDurationDays() + "D");
         }
 
-        /* Construction of schedule with scheduleDays */
+        Set<WorkDaySchedule> schedule = retrieveScheduleWithScheduleDays();
+
+        return ContractDataSubfolder.create()
+                .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
+                .withOfficialContractNumber(null)
+                .withEmployerFullName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                .withEmployerQuoteAccountCode(this.contractParts.getSelectedCCC().getCcc_inss())
+                .withNotificationDate(this.contractData.getDateNotification())
+                .withNotificationHour(LocalTime.parse(contractData.getHourNotification()))
+                .withEmployeeFullName(this.contractParts.getSelectedEmployee().toString())
+                .withEmployeeNif(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
+                .withEmployeeNASS(this.contractParts.getSelectedEmployee().getNumafss())
+                .withEmployeeBirthDate(dateFormatter.format(this.contractParts.getSelectedEmployee().getFechanacim()))
+                .withEmployeeCivilState(this.contractParts.getSelectedEmployee().getEstciv())
+                .withEmployeeNationality(this.contractParts.getSelectedEmployee().getNacionalidad())
+                .withEmployeeFullAddress(this.contractParts.getSelectedEmployee().getDireccion() + "  " + this.contractParts.getSelectedEmployee().getCodpostal()
+                + " " + this.contractParts.getSelectedEmployee().getLocalidad())
+                .withEmployeeMaxStudyLevel(employeeMaximumStudyLevel)
+                .withDayOfWeekSet(this.contractData.getDaysOfWeekToWork())
+                .withContractTypeDescription(contractTypeDescription)
+                .withStartDate(this.contractData.getDateFrom())
+                .withEndDate(this.contractData.getDateTo())
+                .withDurationDays(contractDurationDays)
+                .withSchedule(schedule)
+                .withAdditionalData(this.contractPublicNotes.getPublicNotes())
+                .withLaborCategory(this.contractData.getLaborCategory())
+                .withGmContractNumber(contractNumber.toString() + " - 0")
+                .build();
+    }
+
+    private Set<WorkDaySchedule> retrieveScheduleWithScheduleDays(){
         ObservableList<ContractScheduleDayDTO> tableItemList = contractSchedule.getContractScheduleTableItems();
         String dayOfWeek = "";
         LocalDate date = null;
@@ -460,7 +442,6 @@ public class NewContractMainController extends VBox {
             ContractScheduleDayDTO selectedItemRow = tableItemList.get(i);
             /* Only for non empty rows */
             if(selectedItemRow.getTotalDayHours() != Duration.ZERO) {
-
                 if (selectedItemRow.getDayOfWeek() != null) {
                     dayOfWeek = selectedItemRow.getDayOfWeek();
                 }
@@ -496,32 +477,7 @@ public class NewContractMainController extends VBox {
             }
         }
 
-        return ContractDataSubfolder.create()
-                .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
-                .withOfficialContractNumber(null)
-                .withEmployerFullName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
-                .withEmployerQuoteAccountCode(this.contractParts.getSelectedCCC().getCcc_inss())
-                .withNotificationDate(this.contractData.getDateNotification())
-                .withNotificationHour(LocalTime.parse(contractData.getHourNotification()))
-                .withEmployeeFullName(this.contractParts.getSelectedEmployee().toString())
-                .withEmployeeNif(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
-                .withEmployeeNASS(this.contractParts.getSelectedEmployee().getNumafss())
-                .withEmployeeBirthDate(dateFormatter.format(this.contractParts.getSelectedEmployee().getFechanacim()))
-                .withEmployeeCivilState(this.contractParts.getSelectedEmployee().getEstciv())
-                .withEmployeeNationality(this.contractParts.getSelectedEmployee().getNacionalidad())
-                .withEmployeeFullAddress(this.contractParts.getSelectedEmployee().getDireccion() + "  " + this.contractParts.getSelectedEmployee().getCodpostal()
-                + " " + this.contractParts.getSelectedEmployee().getLocalidad())
-                .withEmployeeMaxStudyLevel(employeeMaximumStudyLevel)
-                .withDayOfWeekSet(this.contractData.getDaysOfWeekToWork())
-                .withContractTypeDescription(contractTypeDescription)
-                .withStartDate(this.contractData.getDateFrom())
-                .withEndDate(this.contractData.getDateTo())
-                .withDurationDays(contractDurationDays)
-                .withSchedule(schedule)
-                .withAdditionalData(this.contractPublicNotes.getPublicNotes())
-                .withLaborCategory(this.contractData.getLaborCategory())
-                .withGmContractNumber(contractNumber.toString() + " - 0")
-                .build();
+        return schedule;
     }
 
     private Path retrievePathToContractDataToContractAgentPDF(ContractDataToContractAgent contractDataToContractAgent){
