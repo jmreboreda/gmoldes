@@ -23,7 +23,7 @@
                   <Font size="13.0" />
                </font>
             </Button>
-            <Button fx:id="viewPDFButton" disable="true" maxHeight="70.0" maxWidth="80.0" minHeight="70.0" minWidth="80.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Ver PDF" textAlignment="CENTER" textFill="#1807ac" wrapText="true">
+            <Button fx:id="viewPDFButton" disable="true" maxHeight="70.0" maxWidth="80.0" minHeight="70.0" minWidth="80.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Ver PDF para gestor" textAlignment="CENTER" textFill="#1807ac" wrapText="true">
                <HBox.margin>
                   <Insets bottom="15.0" right="20.0" top="15.0" />
                </HBox.margin>

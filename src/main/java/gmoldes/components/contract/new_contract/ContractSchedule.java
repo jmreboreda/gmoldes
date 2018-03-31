@@ -31,8 +31,6 @@ import java.util.*;
 public class ContractSchedule extends AnchorPane {
 
     private static final String SCHEDULE_FXML = "/fxml/new_contract/contract_schedule_table.fxml";
-    private static final Integer INITIAL_ROW_TABLE = 0;
-    private static final Integer FINAL_ROW_TABLE = 6;
     private static final Integer DAY_OF_WEEK_COLUMN = 0;
     private static final Integer DATE_COLUMN = 1;
     private static final Integer AM_FROM_COLUMN = 2;
@@ -130,7 +128,7 @@ public class ContractSchedule extends AnchorPane {
         contract_schedule_table.setOnKeyPressed(this::verifyRequestWithSpecialKeyCode);
 
         List<ContractScheduleDayDTO> contractScheduleDayDTOList = new ArrayList<>();
-        for(int i = 0; i <= FINAL_ROW_TABLE; i++){
+        for(int i = 0; i <= Parameters.LAST_ROW_SCHEDULE_TABLE; i++){
             contractScheduleDayDTOList.add(
                     ContractScheduleDayDTO.create()
                             .withTotalDayHours(Duration.ZERO)
@@ -240,7 +238,7 @@ public class ContractSchedule extends AnchorPane {
 
     private void deleteAllDataForSelectedRow(){
         Integer selectedRow = contract_schedule_table.getSelectionModel().getSelectedIndex();
-        if(selectedRow >= INITIAL_ROW_TABLE ){
+        if(selectedRow >= Parameters.FIRST_ROW_SCHEDULE_TABLE){
             ContractScheduleDayDTO selectedItemRow = contract_schedule_table.getItems().get(selectedRow);
 
             selectedItemRow.setDayOfWeek(null);
@@ -255,8 +253,8 @@ public class ContractSchedule extends AnchorPane {
     }
 
     private Boolean verifyRowAndRowData(Integer selectedRow){
-        if(selectedRow >= INITIAL_ROW_TABLE &&
-                selectedRow <= FINAL_ROW_TABLE &&
+        if(selectedRow >= Parameters.FIRST_ROW_SCHEDULE_TABLE &&
+                selectedRow <= Parameters.LAST_ROW_SCHEDULE_TABLE &&
                 verifySelectedRowContainsData(selectedRow)) {
             return true;
             }
@@ -323,7 +321,7 @@ public class ContractSchedule extends AnchorPane {
     public Set<DayOfWeek> getTableColumnDayOfWeekData(){
 
         Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
-        for(Integer i = INITIAL_ROW_TABLE; i<= FINAL_ROW_TABLE; i++) {
+        for(Integer i = Parameters.FIRST_ROW_SCHEDULE_TABLE; i<= Parameters.LAST_ROW_SCHEDULE_TABLE; i++) {
             if(dayOfWeek.getCellData(i) != null) {
                 dayOfWeekSet.add(Utilities.converterStringToDayOfWeek(dayOfWeek.getCellData(i)));
             }

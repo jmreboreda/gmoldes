@@ -25,6 +25,8 @@ public class Parameters {
     public static final String REVISION_WITHOUT_ERRORS = " Revisado. Sin errores ni datos pendientes.";
 
     /** Contract schedule */
+    public static final Integer FIRST_ROW_SCHEDULE_TABLE = 0;
+    public static final Integer LAST_ROW_SCHEDULE_TABLE = 6;
     public static final String DAY_OF_WEEK_TEXT = "Día de la\n semana";
     public static final String TIME_AM_FROM_TEXT = "Mañana desde";
     public static final String TIME_AM_TO_TEXT = "Mañana hasta";
@@ -56,6 +58,9 @@ public class Parameters {
     public static final String QUESTION_SEND_MAIL_TO_CONTRACT_AGENT = "¿Se envía correo-e de datos al gestor?";
 
     /** Various */
+    public static final String WINDOWS_TEMPORAL_DIR = "\"/AppData/Local/Temp/Borrame\"";
+    public static final String LINUX_TEMPORAL_DIR = "/Temp/Borrame";
+
     public static final Integer MAXIMUM_VALUE_MINUTES_IN_HOUR = 59;
     public static final String DATE_LABEL_TEXT = "Fecha";
     public static final String DATE_FROM_TEXT = "Desde";

@@ -22,12 +22,12 @@ public class PersonDTO {
     private String direccion;
     private String localidad;
     private BigDecimal codpostal;
-    private Character nivestud;
+    private Integer nivestud;
     private String nacionalidad;
 
     public PersonDTO(Integer idpersona, String apellidos, String nom_rzsoc, String nifcif, Short nifcifdup,
                      String numafss, Date fechanacim, String estciv, String direccion, String localidad,
-                     BigDecimal codpostal, Character nivestud, String nacionalidad) {
+                     BigDecimal codpostal, Integer nivestud, String nacionalidad) {
         this.idpersona = idpersona;
         this.apellidos = apellidos;
         this.nom_rzsoc = nom_rzsoc;
@@ -131,11 +131,11 @@ public class PersonDTO {
         this.codpostal = codpostal;
     }
 
-    public Character getNivestud() {
+    public Integer getNivestud() {
         return nivestud;
     }
 
-    public void setNivestud(Character nivestud) {
+    public void setNivestud(Integer nivestud) {
         this.nivestud = nivestud;
     }
 
@@ -169,7 +169,7 @@ public class PersonDTO {
         private String direccion;
         private String localidad;
         private BigDecimal codpostal;
-        private Character nivestud;
+        private Integer nivestud;
         private String nacionalidad;
 
         public PersonDTO.PersonBuilder withIdpersona(Integer idpersona) {
@@ -227,7 +227,7 @@ public class PersonDTO {
             return this;
         }
 
-        public PersonDTO.PersonBuilder withNivestud(Character nivestud) {
+        public PersonDTO.PersonBuilder withNivestud(Integer nivestud) {
             this.nivestud = nivestud;
             return this;
         }

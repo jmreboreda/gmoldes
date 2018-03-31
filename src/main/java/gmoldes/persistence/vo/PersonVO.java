@@ -7,7 +7,7 @@ import java.sql.Date;
 
 
 @Entity
-@Table(name = "personas")
+@Table(name = "person")
 @NamedQueries(value = {
         @NamedQuery(
                 name = PersonVO.FIND_ALL_PERSONS_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER,
@@ -32,11 +32,11 @@ public class PersonVO implements Serializable {
 
 
     @Id
-    @SequenceGenerator(name = "autoincremento",
-            sequenceName = "autoincremento",
+    @SequenceGenerator(name = "person_id_seq",
+            sequenceName = "person_id_seq",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "autoincremento")
+            generator = "person_id_seq")
     @Column(name = "idpersona", updatable = false)
     private Integer idpersona;
     private String apellidos;
@@ -50,7 +50,7 @@ public class PersonVO implements Serializable {
     private String localidad;
     private BigDecimal codpostal;
     @Column(name = "nivestud", length = 2)
-    private Character nivestud;
+    private Integer nivestud;
     private String nacionalidad;
 
     public Integer getIdpersona() {
@@ -141,11 +141,11 @@ public class PersonVO implements Serializable {
         this.codpostal = codpostal;
     }
 
-    public Character getNivestud() {
+    public Integer getNivestud() {
         return nivestud;
     }
 
-    public void setNivestud(Character nivestud) {
+    public void setNivestud(Integer nivestud) {
         this.nivestud = nivestud;
     }
 

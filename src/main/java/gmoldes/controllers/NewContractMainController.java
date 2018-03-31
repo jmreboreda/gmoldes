@@ -13,6 +13,7 @@ import gmoldes.manager.StudyManager;
 import gmoldes.services.ContractAgentNotificator;
 import gmoldes.services.ContractDataSubfolderPDFCreator;
 import gmoldes.services.ContractDataToContractAgentPDFCreator;
+import gmoldes.services.Printer;
 import gmoldes.utilities.EmailParameters;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
@@ -27,6 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import javax.mail.internet.AddressException;
+import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -45,8 +47,6 @@ public class NewContractMainController extends VBox {
 
     private static final String OPERATING_SYSTEM = System.getProperty("os.name");
     private static final String USER_HOME = System.getProperty("user.home");
-    private static final String WINDOWS_TEMPORAL_DIR = "/AppData/Local/Temp/Borrame";
-    private static final String LINUX_TEMPORAL_DIR = "/Temp/Borrame";
 
     private ClientController clientController = new ClientController();
     private PersonController personController = new PersonController();
@@ -104,7 +104,6 @@ public class NewContractMainController extends VBox {
         Path pathOut;
 
         if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
-            Integer contractNumber = Integer.parseInt(provisionalContractData.getContractNumber());
             ContractDataToContractAgent contractDataToContractAgent = createContractDataToContractAgent();
             pathOut = retrievePathToContractDataToContractAgentPDF(contractDataToContractAgent);
             String attachedFileName = contractDataToContractAgent.toFileName().concat(".pdf");
@@ -305,6 +304,9 @@ public class NewContractMainController extends VBox {
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.CONTRACT_SAVED_OK + contractNumber);
             contractActionComponents.enableOkButton(false);
             contractActionComponents.enableSendMailButton(true);
+
+            printSubfoldersOfTheContract(Integer.parseInt(provisionalContractData.getContractNumber()));
+
         }else{
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.CONTRACT_NOT_SAVED_OK);
         }
@@ -341,7 +343,6 @@ public class NewContractMainController extends VBox {
 
         /* Construction of schedule with scheduleDays */
         ObservableList<ContractScheduleDayDTO> tableItemList = contractSchedule.getContractScheduleTableItems();
-        Integer selectedRow = 0;
         String dayOfWeek = "";
         LocalDate date = null;
         LocalTime amFrom = null;
@@ -350,11 +351,10 @@ public class NewContractMainController extends VBox {
         LocalTime pmTo = null;
         Duration durationHours = null;
         Set<WorkDaySchedule> schedule = new HashSet<>();
-        for (ContractScheduleDayDTO dayDTO : tableItemList){
-            ContractScheduleDayDTO selectedItemRow = tableItemList.get(selectedRow);
-
+        for(Integer i = Parameters.FIRST_ROW_SCHEDULE_TABLE; i <= Parameters.LAST_ROW_SCHEDULE_TABLE; i++){
+            ContractScheduleDayDTO selectedItemRow = tableItemList.get(i);
             /* Only for non empty rows */
-            if(selectedItemRow.getTotalDayHours() != null) {
+            if(selectedItemRow.getTotalDayHours() != Duration.ZERO) {
 
                 if (selectedItemRow.getDayOfWeek() != null) {
                     dayOfWeek = selectedItemRow.getDayOfWeek();
@@ -389,7 +389,6 @@ public class NewContractMainController extends VBox {
                         .build();
                 schedule.add(scheduleDay);
             }
-            selectedRow++;
         }
 
         return ContractDataToContractAgent.create()
@@ -449,7 +448,6 @@ public class NewContractMainController extends VBox {
 
         /* Construction of schedule with scheduleDays */
         ObservableList<ContractScheduleDayDTO> tableItemList = contractSchedule.getContractScheduleTableItems();
-        Integer selectedRow = 0;
         String dayOfWeek = "";
         LocalDate date = null;
         LocalTime amFrom = null;
@@ -458,11 +456,10 @@ public class NewContractMainController extends VBox {
         LocalTime pmTo = null;
         Duration durationHours = null;
         Set<WorkDaySchedule> schedule = new HashSet<>();
-        for (ContractScheduleDayDTO dayDTO : tableItemList){
-            ContractScheduleDayDTO selectedItemRow = tableItemList.get(selectedRow);
-
+        for(Integer i = Parameters.FIRST_ROW_SCHEDULE_TABLE; i <= Parameters.LAST_ROW_SCHEDULE_TABLE; i++){
+            ContractScheduleDayDTO selectedItemRow = tableItemList.get(i);
             /* Only for non empty rows */
-            if(selectedItemRow.getTotalDayHours() != null) {
+            if(selectedItemRow.getTotalDayHours() != Duration.ZERO) {
 
                 if (selectedItemRow.getDayOfWeek() != null) {
                     dayOfWeek = selectedItemRow.getDayOfWeek();
@@ -497,7 +494,6 @@ public class NewContractMainController extends VBox {
                         .build();
                 schedule.add(scheduleDay);
             }
-            selectedRow++;
         }
 
         return ContractDataSubfolder.create()
@@ -532,10 +528,10 @@ public class NewContractMainController extends VBox {
         String temporalDir = null;
         Path pathOut = null;
         if(OPERATING_SYSTEM.toLowerCase().contains("linux")){
-            temporalDir = LINUX_TEMPORAL_DIR;
+            temporalDir = Parameters.LINUX_TEMPORAL_DIR;
         }
         else if(OPERATING_SYSTEM.toLowerCase().contains("windows")){
-            temporalDir = WINDOWS_TEMPORAL_DIR;
+            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
         }
 
         Path pathToContractDataToContractAgent = Paths.get(USER_HOME, temporalDir, contractDataToContractAgent.toFileName().concat(".pdf"));
@@ -553,10 +549,10 @@ public class NewContractMainController extends VBox {
         String temporalDir = null;
         Path pathOut = null;
         if(OPERATING_SYSTEM.toLowerCase().contains("linux")){
-            temporalDir = LINUX_TEMPORAL_DIR;
+            temporalDir = Parameters.LINUX_TEMPORAL_DIR;
         }
         else if(OPERATING_SYSTEM.toLowerCase().contains("windows")){
-            temporalDir = WINDOWS_TEMPORAL_DIR;
+            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
         }
 
         Path pathToContractDataSubfolder = Paths.get(USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(".pdf"));
@@ -568,5 +564,26 @@ public class NewContractMainController extends VBox {
         }
 
         return pathOut;
+    }
+
+    private void printSubfoldersOfTheContract(Integer contractNumber){
+        /** Contract data subfolder */
+        ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(contractNumber);
+        Path pathToContractDataSubfolder = retrievePathToContractDataSubfolderPDF(contractDataSubfolder);
+
+        Map<String, String> attributes = new HashMap<>();
+        attributes.put("papersize","A3");
+        attributes.put("sides", "ONE_SIDED");
+        attributes.put("chromacity","MONOCHROME");
+        attributes.put("orientation","LANDSCAPE");
+
+        try {
+            Printer.printPDF(pathToContractDataSubfolder.toString(), attributes);
+        } catch (IOException | PrinterException e) {
+            e.printStackTrace();
+        }
+
+        //TODO Subfolder record of contract history
+        /** Subfolder record of contract history */
     }
 }
