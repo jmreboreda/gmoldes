@@ -70,7 +70,7 @@ public class ContractData extends AnchorPane {
     }
 
     private void init(){
-        hourNotificationControlSetup();
+        this.hourNotification.setInputMinWidth(75D);
         loadContractType();
     }
 
@@ -145,22 +145,6 @@ public class ContractData extends AnchorPane {
 
         ObservableList<ContractTypeDTO> contractTypeDTOS = FXCollections.observableArrayList(contractTypeDTOList);
         contractType.setItems(contractTypeDTOS);
-    }
-
-    private void hourNotificationControlSetup(){
-        this.hourNotification.setInputMinWidth(75D);
-        hourNotification.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
-            if (!newPropertyValue)
-            {
-                Date hour = Utilities.validateStringAsTime(hourNotification.getText());
-                if(hour == null){
-                    hourNotification.setText("");
-                }else{
-                    SimpleDateFormat hourFormatter = new SimpleDateFormat("HH:mm");
-                    hourNotification.setText(hourFormatter.format(hour));
-                }
-            }
-        });
     }
 
     public LocalDate getDateNotification(){

@@ -40,7 +40,7 @@ public class NewContractDataVerifier {
 
     public static Boolean verifyContractData(ContractData contractData, ContractSchedule contractSchedule, TabPane tabPane){
 
-        if(contractData.getHourNotification().isEmpty()){
+        if(contractData.getHourNotification() == null){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
                     Parameters.HOUR_NOTIFICATION_IS_NOT_ESTABLISHED);
             return false;
