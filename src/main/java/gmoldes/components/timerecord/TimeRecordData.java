@@ -42,10 +42,6 @@ import java.util.stream.Collectors;
 public class TimeRecordData extends VBox {
 
     private static final String TIME_RECORD_FXML = "/fxml/time_record/timerecord_data.fxml";
-    private static final String OPERATING_SYSTEM = System.getProperty("os.name");
-    private static final String USER_HOME = System.getProperty("user.home");
-    private static final String WINDOWS_TEMPORAL_DIR = "/AppData/Local/Temp/Borrame";
-    private static final String LINUX_TEMPORAL_DIR = "/Temp/Borrame";
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
     private static final Integer LAST_MONTH_INDEX_IN_MONTHNAME = 11;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
@@ -136,33 +132,43 @@ public class TimeRecordData extends VBox {
         loadClientForTimeRecord(new ActionEvent());
     }
 
-    private void onCreateTimeRecordPDF(MouseEvent event){
+    private void onCreateTimeRecordPDF(MouseEvent event) {
         TimeRecord timeRecord = createTimeRecord();
-        String pathToTimeRecordPDF = createTimeRecordPDF(timeRecord).toString();
+        Path pathToTimeRecordPDF = null;
+        try {
+            pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord);
+            if(pathToTimeRecordPDF == null){
+                Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.TIME_RECORD_PDF_NOT_CREATED);
+                return;
+            }
+
+        } catch (IOException | DocumentException e) {
+            Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.TIME_RECORD_PDF_NOT_CREATED);
+            e.printStackTrace();
+        }
         Message.warningMessage(createPDFButton.getScene().getWindow(),"Información del sistema", "Registro horario creado en:" + "\n" + pathToTimeRecordPDF + "\n");
     }
 
     private void onPrintTimeRecord(MouseEvent event){
         TimeRecord timeRecord = createTimeRecord();
-        String pathToTimeRecordPDF = createTimeRecordPDF(timeRecord).toString();
-
-        Map<String, String> attributes = new HashMap<>();
-        attributes.put("papersize","A4");
-        attributes.put("sides", "DUPLEX");
-        attributes.put("chromacity","MONOCHROME");
-        attributes.put("orientation","LANDSCAPE");
-
+        Path pathToTimeRecordPDF = null;
         try {
-            String resultPrint = Printer.printPDF(pathToTimeRecordPDF, attributes);
-            Utilities.deleteFileFromPath(pathToTimeRecordPDF);
-            if(resultPrint.equals("ok")) {
-                Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "Registro horario enviado a la impresora." + "\n");
-            }else{
-                Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "No existe impresora para imprimir el registro horario" +
-                        " con los atributos indicados." + "\n");
+            pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord);
+            if(pathToTimeRecordPDF == null){
+                Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.TIME_RECORD_PDF_NOT_CREATED);
+                return;
             }
-        } catch (IOException | PrinterException e) {
+        } catch (IOException | DocumentException e) {
+            Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.TIME_RECORD_PDF_NOT_CREATED);
             e.printStackTrace();
+        }
+
+        String resultPrint = TimeRecordPDFCreator.printTimeRecord(pathToTimeRecordPDF);
+        if(resultPrint.equals("ok")) {
+            Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "Registro horario enviado a la impresora." + "\n");
+        }else{
+            Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "No existe impresora para imprimir el registro horario" +
+                    " con los atributos indicados." + "\n");
         }
     }
 
@@ -182,25 +188,6 @@ public class TimeRecordData extends VBox {
                 .withEmployeeNIF(data.getEmployeeNif())
                 .withNumberHoursPerWeek(data.getHoursByWeek())
                 .build();
-    }
-
-    private Path createTimeRecordPDF(TimeRecord timeRecord) {
-        String temporalDir = null;
-        if(OPERATING_SYSTEM.toLowerCase().contains("windows")){
-            temporalDir = WINDOWS_TEMPORAL_DIR;
-        }else if(OPERATING_SYSTEM.toLowerCase().contains("linux")){
-            temporalDir = LINUX_TEMPORAL_DIR;
-        }
-        Path pathToTimeRecordPDF = Paths.get(USER_HOME, temporalDir, timeRecord.toFileName().concat(".pdf"));
-
-        try {
-            Files.createDirectories(pathToTimeRecordPDF.getParent());
-            pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord, pathToTimeRecordPDF);
-        } catch (DocumentException | IOException e) {
-            e.printStackTrace();
-        }
-
-        return pathToTimeRecordPDF;
     }
 
     private void onChangeEmployer(ActionEvent event){

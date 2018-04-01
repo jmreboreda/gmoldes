@@ -20,6 +20,7 @@ public class ContractActionComponents extends AnchorPane {
     private EventHandler<MouseEvent> SendMailButtonEventHandler;
     private EventHandler<MouseEvent> OkButtonEventHandler;
     private EventHandler<MouseEvent> viewPDFButtonEventHandler;
+    private EventHandler<MouseEvent> onExistButtonEventHandler;
 
     @FXML
     private Button sendMailButton;
@@ -52,8 +53,7 @@ public class ContractActionComponents extends AnchorPane {
     }
 
     private void onExitButton(MouseEvent event){
-        Stage stage = (Stage) exitButton.getScene().getWindow();
-        stage.close();
+        onExistButtonEventHandler.handle(event);
     }
 
     public void enableSendMailButton(Boolean bol){
@@ -77,5 +77,9 @@ public class ContractActionComponents extends AnchorPane {
 
     public void setOnViewPDFButton(EventHandler<MouseEvent> viewPDFButtonEventHandler){
         this.viewPDFButtonEventHandler = viewPDFButtonEventHandler;
+    }
+
+    public void setOnExitButton(EventHandler<MouseEvent> event){
+        this.onExistButtonEventHandler = event;
     }
 }

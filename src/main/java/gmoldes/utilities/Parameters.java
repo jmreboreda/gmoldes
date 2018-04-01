@@ -63,7 +63,8 @@ public class Parameters {
     public static final String CONTRACT_SAVED_OK = "Contrato guardado con el número ";
     public static final String CONTRACT_NOT_SAVED_OK = "El contrato no ha podido guardarse en la base de datos.";
     public static final String QUESTION_SEND_MAIL_TO_CONTRACT_AGENT = "¿Se envía correo-e de datos al gestor?";
-
+    public static final String CONTRACT_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT = "Contrato guardado pero no enviado al gestor.\n ¿Es correcto?";
+    public static final String TIME_RECORD_PDF_NOT_CREATED = "No se ha podido crear el PDF del registro horario.";
     /** Various */
     public static final String WINDOWS_TEMPORAL_DIR = "\"/AppData/Local/Temp/Borrame\"";
     public static final String LINUX_TEMPORAL_DIR = "/Temp/Borrame";
@@ -77,7 +78,7 @@ public class Parameters {
     public static final Integer ID_INITIAL_CONTRACT_TYPE_VARIATION = 100;
 
     /** ContractDataSubfolder*/
-    public static final String NEW_CONTRACT_TEXT = "Nuevo contrato nº";
+    public static final String NEW_CONTRACT_TEXT = "Nuevo contrato";
 
 
 

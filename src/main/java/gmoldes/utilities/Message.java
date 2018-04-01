@@ -70,4 +70,17 @@ public class Message {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    public static void errorMessage(Window window, String title, String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.initModality(Modality.WINDOW_MODAL);
+        alert.initOwner(window);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setResizable(true);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

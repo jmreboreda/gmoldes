@@ -7,13 +7,11 @@ import gmoldes.components.contract.new_contract.*;
 import gmoldes.domain.dto.*;
 import gmoldes.forms.ContractDataSubfolder;
 import gmoldes.forms.ContractDataToContractAgent;
+import gmoldes.forms.TimeRecord;
 import gmoldes.forms.WorkDaySchedule;
 import gmoldes.manager.ContractManager;
 import gmoldes.manager.StudyManager;
-import gmoldes.services.ContractAgentNotificator;
-import gmoldes.services.ContractDataSubfolderPDFCreator;
-import gmoldes.services.ContractDataToContractAgentPDFCreator;
-import gmoldes.services.Printer;
+import gmoldes.services.*;
 import gmoldes.utilities.EmailParameters;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
@@ -26,6 +24,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
 import javax.mail.internet.AddressException;
 import java.awt.print.PrinterException;
 import java.io.IOException;
@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.TextStyle;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -47,6 +48,9 @@ public class NewContractMainController extends VBox {
     private ClientController clientController = new ClientController();
     private PersonController personController = new PersonController();
     private ClientCCCController clientCCCController = new ClientCCCController();
+
+    private Boolean contractHasBeenSavedInDatabase = false;
+    private Boolean contractHasBeenSentToContractAgent = false;
 
     private Parent parent;
 
@@ -80,6 +84,7 @@ public class NewContractMainController extends VBox {
         contractActionComponents.setOnSendMailButton(this::onSendMailButton);
         contractActionComponents.setOnOkButton(this::onOkButton);
         contractActionComponents.setOnViewPDFButton(this::onViewPDFButton);
+        contractActionComponents.setOnExitButton(this::onExitButton);
         tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
@@ -93,6 +98,18 @@ public class NewContractMainController extends VBox {
         contractParts.setOnSelectEmployee(this::onSelectEmployee);
         contractData.setOnChangeContractDataHoursWorkWeek(this::onChangeContractDataHoursWorkWeek);
         contractSchedule.setOnChangeScheduleDuration(this::onChangeScheduleDuration);
+    }
+
+    private void onExitButton(MouseEvent event){
+        if(contractHasBeenSavedInDatabase){
+            if(!contractHasBeenSentToContractAgent){
+                if(!Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.CONTRACT_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT)){
+                    return;
+                }
+            }
+        }
+        Stage stage = (Stage) tabPane.getScene().getWindow();
+        stage.close();
     }
 
     private void onSendMailButton(MouseEvent event){
@@ -111,6 +128,7 @@ public class NewContractMainController extends VBox {
             }
             if(isSendOk){
                 Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_SEND_OK);
+                contractHasBeenSentToContractAgent = true;
                 contractActionComponents.enableSendMailButton(false);
             }else{
                 Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_NOT_SEND_OK);
@@ -290,7 +308,8 @@ public class NewContractMainController extends VBox {
         ContractManager contractManager = new ContractManager();
         Integer contractNumber = contractManager.saveOldContract(oldContractToSaveDTO);
         if (contractNumber != null) {
-            provisionalContractData.setContractText(Parameters.NEW_CONTRACT_TEXT);
+            contractHasBeenSavedInDatabase = true;
+            provisionalContractData.setContractText(Parameters.NEW_CONTRACT_TEXT + " nº");
             provisionalContractData.setContractNumber(contractNumber);
             contractParts.setMouseTransparent(true);
             contractData.setMouseTransparent(true);
@@ -301,6 +320,7 @@ public class NewContractMainController extends VBox {
             contractActionComponents.enableOkButton(false);
             contractActionComponents.enableSendMailButton(true);
 
+            verifyPrintTimeRecord();
             printSubfoldersOfTheContract(Integer.parseInt(provisionalContractData.getContractNumber()));
 
         }else{
@@ -516,6 +536,33 @@ public class NewContractMainController extends VBox {
         }
 
         return pathOut;
+    }
+
+    private void verifyPrintTimeRecord(){
+        if(this.contractData.getFullPartialWorkDay().equals(Parameters.PARTIAL_WORKDAY)){
+            TimeRecord timeRecord = TimeRecord.create()
+                    .withNameOfMonth(this.contractData.getDateFrom().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()))
+                    .withYearNumber(Integer.toString(contractData.getDateFrom().getYear()))
+                    .withEnterpriseName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                    .withQuoteAccountCode(this.contractParts.getSelectedCCC().getCcc_inss())
+                    .withEmployeeName(this.contractParts.getSelectedEmployee().getApellidos() + ", " + this.contractParts.getSelectedEmployee().getNom_rzsoc())
+                    .withEmployeeNIF(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
+                    .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + Parameters.HOURS_WORK_WEEK_TEXT)
+                    .build();
+
+            Path pathToTimeRecordPDF = null;
+            try {
+                pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord);
+                if(pathToTimeRecordPDF == null){
+                    Message.errorMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.TIME_RECORD_PDF_NOT_CREATED);
+                    return;
+                }
+            } catch (IOException | DocumentException e) {
+                Message.errorMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.TIME_RECORD_PDF_NOT_CREATED);
+                e.printStackTrace();
+            }
+            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT, "Registro horario creado en:" + "\n" + pathToTimeRecordPDF + "\n");
+        }
     }
 
     private void printSubfoldersOfTheContract(Integer contractNumber){

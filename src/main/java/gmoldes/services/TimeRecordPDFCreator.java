@@ -5,12 +5,19 @@ import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 import gmoldes.forms.TimeRecord;
+import gmoldes.utilities.Message;
+import gmoldes.utilities.Parameters;
+import gmoldes.utilities.Utilities;
 
+import java.awt.print.PrinterException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TimeRecordPDFCreator {
 
@@ -19,10 +26,23 @@ public class TimeRecordPDFCreator {
     public TimeRecordPDFCreator() {
     }
 
-    public static Path createTimeRecordPDF(TimeRecord timeRecord, Path pathOut) throws IOException, DocumentException {
+    public static Path createTimeRecordPDF(TimeRecord timeRecord) throws IOException, DocumentException {
+
+        String temporalDir = null;
+        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
+            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
+        }else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("linux")){
+            temporalDir = Parameters.LINUX_TEMPORAL_DIR;
+        }
+
+        Path pathToTimeRecordPDF = Paths.get(Parameters.USER_HOME, temporalDir, timeRecord.toFileName().concat(".pdf"));
+        Path directoriesTree = Files.createDirectories(pathToTimeRecordPDF.getParent());
+        if(directoriesTree == null){
+            return null;
+        }
 
         PdfReader reader = new PdfReader(PATH_TO_PDF_TEMPLATE);
-        PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(pathOut.toString()));
+        PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(pathToTimeRecordPDF.toString()));
 
         AcroFields timeRecordPDFFields = stamp.getAcroFields();
         //HashMap map = timeRecordPDF.getFields();
@@ -39,6 +59,25 @@ public class TimeRecordPDFCreator {
         stamp.setFormFlattening(true);
         stamp.close();
 
-        return pathOut;
+        return pathToTimeRecordPDF;
+    }
+
+    public static String printTimeRecord(Path pathToTimeRecordPDF){
+        Map<String, String> attributes = new HashMap<>();
+        attributes.put("papersize","A4");
+        attributes.put("sides", "DUPLEX");
+        attributes.put("chromacity","MONOCHROME");
+        attributes.put("orientation","LANDSCAPE");
+
+        String resultPrint = null;
+        try {
+            resultPrint = Printer.printPDF(pathToTimeRecordPDF.toString(), attributes);
+            Utilities.deleteFileFromPath(pathToTimeRecordPDF.toString());
+
+        } catch (IOException | PrinterException e) {
+            e.printStackTrace();
+        }
+
+        return resultPrint;
     }
 }

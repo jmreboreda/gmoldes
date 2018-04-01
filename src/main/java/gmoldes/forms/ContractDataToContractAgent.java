@@ -7,6 +7,7 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 public class ContractDataToContractAgent {
@@ -154,9 +155,13 @@ public class ContractDataToContractAgent {
 
     public String toFileName(){
 
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd_MM_yyyy");
+
         return Utilities.replaceWithUnderscore(employerFullName)
                 + "_" +
                 Utilities.replaceWithUnderscore(Parameters.NEW_CONTRACT_TEXT.toLowerCase())
+                + "_" +
+                startDate.format(dateFormatter)
                 + "_" +
                 Utilities.replaceWithUnderscore(employeeFullName);
     }
