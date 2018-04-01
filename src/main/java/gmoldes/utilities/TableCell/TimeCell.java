@@ -75,7 +75,7 @@ public class TimeCell extends TableCell<ContractScheduleDayDTO, LocalTime> {
         textField = new TextField(getString());
         textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
         textField.setOnKeyReleased(t -> {
-            if (t.getCode() == KeyCode.ENTER) {
+            if (t.getCode() == KeyCode.ENTER && textField.getText() != null) {
                 if(timePattern.matcher(textField.getText()).matches()) {
                     try {
                         if(LocalTime.parse(textField.getText(), timeFormatter).isBefore(LocalTime.MAX)){

@@ -54,7 +54,7 @@ public class DurationCell extends TableCell<ContractScheduleDayDTO, Duration> {
     private String getString() {
         Duration duration = getItem();
         if(duration == Duration.ZERO){
-            return "0:00";
+            return "00:00";
         }
 
         String durationToString = duration.toString();

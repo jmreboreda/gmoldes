@@ -58,7 +58,6 @@ public class Printer {
 
         PrintService printServiceForAttributes = getPrintServiceForAttributes(datts);
         if(printServiceForAttributes == null){
-            System.out.println("No printer can print the PDF with those attributes...");
             return "fail";
         }
         else {

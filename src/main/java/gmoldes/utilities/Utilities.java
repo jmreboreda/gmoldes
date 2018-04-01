@@ -64,7 +64,7 @@ public class Utilities {
 
     public static  String converterDurationToTimeString(Duration duration){
         if(duration == Duration.ZERO){
-            return "0:00";
+            return "00:00";
         }
 
         String durationToString = duration.toString();

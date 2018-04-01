@@ -26,7 +26,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-
 import javax.mail.internet.AddressException;
 import java.awt.print.PrinterException;
 import java.io.IOException;
@@ -44,9 +43,6 @@ public class NewContractMainController extends VBox {
 
     private static final Logger logger = Logger.getLogger(NewContractMainController.class.getSimpleName());
     private static final String MAIN_FXML = "/fxml/new_contract/contract_main.fxml";
-
-    private static final String OPERATING_SYSTEM = System.getProperty("os.name");
-    private static final String USER_HOME = System.getProperty("user.home");
 
     private ClientController clientController = new ClientController();
     private PersonController personController = new PersonController();
@@ -483,14 +479,14 @@ public class NewContractMainController extends VBox {
     private Path retrievePathToContractDataToContractAgentPDF(ContractDataToContractAgent contractDataToContractAgent){
         String temporalDir = null;
         Path pathOut = null;
-        if(OPERATING_SYSTEM.toLowerCase().contains("linux")){
+        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("linux")){
             temporalDir = Parameters.LINUX_TEMPORAL_DIR;
         }
-        else if(OPERATING_SYSTEM.toLowerCase().contains("windows")){
+        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
             temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
         }
 
-        Path pathToContractDataToContractAgent = Paths.get(USER_HOME, temporalDir, contractDataToContractAgent.toFileName().concat(".pdf"));
+        Path pathToContractDataToContractAgent = Paths.get(Parameters.USER_HOME, temporalDir, contractDataToContractAgent.toFileName().concat(".pdf"));
         try {
             Files.createDirectories(pathToContractDataToContractAgent.getParent());
             pathOut = ContractDataToContractAgentPDFCreator.createContractDataToContractAgentPDF(contractDataToContractAgent, pathToContractDataToContractAgent);
@@ -504,14 +500,14 @@ public class NewContractMainController extends VBox {
     private Path retrievePathToContractDataSubfolderPDF(ContractDataSubfolder contractDataSubfolder){
         String temporalDir = null;
         Path pathOut = null;
-        if(OPERATING_SYSTEM.toLowerCase().contains("linux")){
+        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("linux")){
             temporalDir = Parameters.LINUX_TEMPORAL_DIR;
         }
-        else if(OPERATING_SYSTEM.toLowerCase().contains("windows")){
+        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
             temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
         }
 
-        Path pathToContractDataSubfolder = Paths.get(USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(".pdf"));
+        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(".pdf"));
         try {
             Files.createDirectories(pathToContractDataSubfolder.getParent());
             pathOut = ContractDataSubfolderPDFCreator.createContractDataSubfolderPDF(contractDataSubfolder, pathToContractDataSubfolder);
@@ -534,7 +530,11 @@ public class NewContractMainController extends VBox {
         attributes.put("orientation","LANDSCAPE");
 
         try {
-            Printer.printPDF(pathToContractDataSubfolder.toString(), attributes);
+            String printOk = Printer.printPDF(pathToContractDataSubfolder.toString(), attributes);
+            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
+            if(!printOk.equals("ok")){
+                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_PARAMETERS);
+            }
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
         }

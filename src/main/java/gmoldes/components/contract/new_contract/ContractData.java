@@ -2,10 +2,7 @@ package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
-import gmoldes.components.generic_components.ContractDurationInput;
-import gmoldes.components.generic_components.DateInput;
-import gmoldes.components.generic_components.DaysOfWeekSelector;
-import gmoldes.components.generic_components.WorkDayTypeInput;
+import gmoldes.components.generic_components.*;
 import gmoldes.controllers.ContractTypeController;
 import gmoldes.domain.dto.ContractTypeDTO;
 import gmoldes.domain.dto.ProvisionalContractDataDTO;
@@ -20,9 +17,12 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +43,7 @@ public class ContractData extends AnchorPane {
     @FXML
     private DateInput dateNotification;
     @FXML
-    private TextField hourNotification;
+    private TimeInput24HoursClock hourNotification;
     @FXML
     private ChoiceBox<ContractTypeDTO> contractType;
     @FXML
@@ -148,6 +148,7 @@ public class ContractData extends AnchorPane {
     }
 
     private void hourNotificationControlSetup(){
+        this.hourNotification.setInputMinWidth(75D);
         hourNotification.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             if (!newPropertyValue)
             {

@@ -2,6 +2,7 @@ package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeTextInputEvent;
+import gmoldes.utilities.Utilities;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,6 +12,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class TextInput extends HBox {
@@ -38,6 +42,13 @@ public class TextInput extends HBox {
         textField.setAlignment(Pos.CENTER);
         setMargin(textField, new Insets(0, 0, 0, 0));
         textField.setText(null);
+
+        textField.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
+            if (!newPropertyValue)
+            {
+              this.actionEventHandler.handle(new ActionEvent());
+            }
+        });
 
         textField.setOnAction(this::onAction);
     }

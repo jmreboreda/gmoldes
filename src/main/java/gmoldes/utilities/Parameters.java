@@ -8,6 +8,13 @@ public class Parameters {
 
     /** Printer */
     public static final String DEFAULT_PRINTER = "KONICA MINOLTA";
+    public static final String NO_PRINTER_FOR_THESE_PARAMETERS = "No hay impresora para imprimir con los atributos indicados.";
+    public static final String CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK = "Se ha enviado a la impresora la carpetilla de datos del contrato.";
+    public static final String SUBFOLFER_RECORD_OF_CONTRACT_HISTORY_TO_PRINTER_OK = "Se ha enviado a la impresora la carpetilla de expediente del contrato.";
+
+    /** System */
+    public static final String OPERATING_SYSTEM = System.getProperty("os.name");
+    public static final String USER_HOME = System.getProperty("user.home");
 
     /** Colors */
     public static final String GREEN_COLOR = "-fx-text-fill: #006400;";
@@ -70,7 +77,7 @@ public class Parameters {
     public static final Integer ID_INITIAL_CONTRACT_TYPE_VARIATION = 100;
 
     /** ContractDataSubfolder*/
-    public static final String NEW_CONTRACT_TEXT = "Nuevo contrato";
+    public static final String NEW_CONTRACT_TEXT = "Nuevo contrato nº";
 
 
 
