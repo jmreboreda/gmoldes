@@ -1,14 +1,12 @@
 package gmoldes.components.contract.new_contract;
 
 import gmoldes.components.ViewLoader;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 
 public class ContractActionComponents extends AnchorPane {
@@ -20,7 +18,7 @@ public class ContractActionComponents extends AnchorPane {
     private EventHandler<MouseEvent> SendMailButtonEventHandler;
     private EventHandler<MouseEvent> OkButtonEventHandler;
     private EventHandler<MouseEvent> viewPDFButtonEventHandler;
-    private EventHandler<MouseEvent> onExistButtonEventHandler;
+    private EventHandler<MouseEvent> onExitButtonEventHandler;
 
     @FXML
     private Button sendMailButton;
@@ -53,7 +51,7 @@ public class ContractActionComponents extends AnchorPane {
     }
 
     private void onExitButton(MouseEvent event){
-        onExistButtonEventHandler.handle(event);
+        onExitButtonEventHandler.handle(event);
     }
 
     public void enableSendMailButton(Boolean bol){
@@ -80,6 +78,6 @@ public class ContractActionComponents extends AnchorPane {
     }
 
     public void setOnExitButton(EventHandler<MouseEvent> event){
-        this.onExistButtonEventHandler = event;
+        this.onExitButtonEventHandler = event;
     }
 }

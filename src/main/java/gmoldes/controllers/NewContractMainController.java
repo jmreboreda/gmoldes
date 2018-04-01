@@ -18,7 +18,6 @@ import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TabPane;
@@ -176,9 +175,8 @@ public class NewContractMainController extends VBox {
         if (statusText.equals(Parameters.REVISION_WITHOUT_ERRORS)) {
             if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_SAVE_NEW_CONTRACT)) {
                 persistOldContractToSave();
-            } else {
-                contractActionComponents.enablePDFButton(true);
             }
+            contractActionComponents.enablePDFButton(true);
         }
     }
 
@@ -326,7 +324,6 @@ public class NewContractMainController extends VBox {
         }else{
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.CONTRACT_NOT_SAVED_OK);
         }
-        contractActionComponents.enablePDFButton(true);
     }
 
     private ContractDataToContractAgent createContractDataToContractAgent(){
@@ -357,7 +354,7 @@ public class NewContractMainController extends VBox {
             contractDurationDays = Duration.parse("P" + this.contractData.getContractDurationDays() + "D");
         }
 
-        Set<WorkDaySchedule> schedule = retrieveScheduleWithScheduleDays();
+        Set<WorkDaySchedule> schedule = this.contractSchedule.retrieveScheduleWithScheduleDays();
 
         return ContractDataToContractAgent.create()
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
@@ -414,7 +411,7 @@ public class NewContractMainController extends VBox {
             contractDurationDays = Duration.parse("P" + this.contractData.getContractDurationDays() + "D");
         }
 
-        Set<WorkDaySchedule> schedule = retrieveScheduleWithScheduleDays();
+        Set<WorkDaySchedule> schedule = this.contractSchedule.retrieveScheduleWithScheduleDays();
 
         return ContractDataSubfolder.create()
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
@@ -442,58 +439,6 @@ public class NewContractMainController extends VBox {
                 .withLaborCategory(this.contractData.getLaborCategory())
                 .withGmContractNumber(contractNumber.toString() + " - 0")
                 .build();
-    }
-
-    private Set<WorkDaySchedule> retrieveScheduleWithScheduleDays(){
-        ObservableList<ContractScheduleDayDTO> tableItemList = contractSchedule.getContractScheduleTableItems();
-        String dayOfWeek = "";
-        LocalDate date = null;
-        LocalTime amFrom = null;
-        LocalTime amTo = null;
-        LocalTime pmFrom = null;
-        LocalTime pmTo = null;
-        Duration durationHours = null;
-        Set<WorkDaySchedule> schedule = new HashSet<>();
-        for(Integer i = Parameters.FIRST_ROW_SCHEDULE_TABLE; i <= Parameters.LAST_ROW_SCHEDULE_TABLE; i++){
-            ContractScheduleDayDTO selectedItemRow = tableItemList.get(i);
-            /* Only for non empty rows */
-            if(selectedItemRow.getTotalDayHours() != Duration.ZERO) {
-                if (selectedItemRow.getDayOfWeek() != null) {
-                    dayOfWeek = selectedItemRow.getDayOfWeek();
-                }
-                if (selectedItemRow.getDate() != null) {
-                    date = selectedItemRow.getDate();
-                }
-                if (selectedItemRow.getAmFrom() != null) {
-                    amFrom = selectedItemRow.getAmFrom();
-                }
-                if (selectedItemRow.getAmTo() != null) {
-                    amTo = selectedItemRow.getAmTo();
-                }
-                if (selectedItemRow.getPmFrom() != null) {
-                    pmFrom = selectedItemRow.getPmFrom();
-                }
-                if (selectedItemRow.getPmTo() != null) {
-                    pmTo = selectedItemRow.getPmTo();
-                }
-                if (selectedItemRow.getTotalDayHours() != null) {
-                    durationHours = selectedItemRow.getTotalDayHours();
-                }
-
-                WorkDaySchedule scheduleDay = WorkDaySchedule.create()
-                        .withDayOfWeek(dayOfWeek)
-                        .withDate(date)
-                        .withAmFrom(amFrom)
-                        .withAmTo(amTo)
-                        .withPmFrom(pmFrom)
-                        .withPmTo(pmTo)
-                        .withDurationHours(durationHours)
-                        .build();
-                schedule.add(scheduleDay);
-            }
-        }
-
-        return schedule;
     }
 
     private Path retrievePathToContractDataToContractAgentPDF(ContractDataToContractAgent contractDataToContractAgent){
@@ -550,6 +495,7 @@ public class NewContractMainController extends VBox {
                     .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + Parameters.HOURS_WORK_WEEK_TEXT)
                     .build();
 
+            /* Create the TimeRecordPDF */
             Path pathToTimeRecordPDF = null;
             try {
                 pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord);
@@ -562,6 +508,15 @@ public class NewContractMainController extends VBox {
                 e.printStackTrace();
             }
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT, "Registro horario creado en:" + "\n" + pathToTimeRecordPDF + "\n");
+
+            /* Print the TimeRecord */
+            String resultPrint = TimeRecordPDFCreator.printTimeRecord(pathToTimeRecordPDF);
+            if(resultPrint.equals("ok")) {
+                Message.warningMessage(tabPane.getScene().getWindow(), "Sistema", "Registro horario enviado a la impresora." + "\n");
+            }else{
+                Message.warningMessage(tabPane.getScene().getWindow(), "Sistema", "No existe impresora para imprimir el registro horario" +
+                        " con los atributos indicados." + "\n");
+            }
         }
     }
 

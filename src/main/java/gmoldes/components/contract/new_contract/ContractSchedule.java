@@ -4,6 +4,7 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
 import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.dto.ContractScheduleDayDTO;
+import gmoldes.forms.WorkDaySchedule;
 import gmoldes.utilities.*;
 import gmoldes.utilities.TableCell.DateCell;
 import gmoldes.utilities.TableCell.DurationCell;
@@ -310,10 +311,6 @@ public class ContractSchedule extends AnchorPane {
         }
     }
 
-    public ObservableList<ContractScheduleDayDTO> getContractScheduleTableItems(){
-        return contract_schedule_table.getItems();
-    }
-
     public String getHoursWorkWeek(){
         return hoursWorkWeek.getText();
     }
@@ -328,6 +325,58 @@ public class ContractSchedule extends AnchorPane {
         }
 
         return dayOfWeekSet;
+    }
+
+    public Set<WorkDaySchedule> retrieveScheduleWithScheduleDays(){
+        ObservableList<ContractScheduleDayDTO> tableItemList = contract_schedule_table.getItems();
+        String dayOfWeek = "";
+        LocalDate date = null;
+        LocalTime amFrom = null;
+        LocalTime amTo = null;
+        LocalTime pmFrom = null;
+        LocalTime pmTo = null;
+        Duration durationHours = null;
+        Set<WorkDaySchedule> schedule = new HashSet<>();
+        for(Integer i = Parameters.FIRST_ROW_SCHEDULE_TABLE; i <= Parameters.LAST_ROW_SCHEDULE_TABLE; i++){
+            ContractScheduleDayDTO selectedItemRow = tableItemList.get(i);
+            /* Only for non empty rows */
+            if(selectedItemRow.getTotalDayHours() != Duration.ZERO) {
+                if (selectedItemRow.getDayOfWeek() != null) {
+                    dayOfWeek = selectedItemRow.getDayOfWeek();
+                }
+                if (selectedItemRow.getDate() != null) {
+                    date = selectedItemRow.getDate();
+                }
+                if (selectedItemRow.getAmFrom() != null) {
+                    amFrom = selectedItemRow.getAmFrom();
+                }
+                if (selectedItemRow.getAmTo() != null) {
+                    amTo = selectedItemRow.getAmTo();
+                }
+                if (selectedItemRow.getPmFrom() != null) {
+                    pmFrom = selectedItemRow.getPmFrom();
+                }
+                if (selectedItemRow.getPmTo() != null) {
+                    pmTo = selectedItemRow.getPmTo();
+                }
+                if (selectedItemRow.getTotalDayHours() != null) {
+                    durationHours = selectedItemRow.getTotalDayHours();
+                }
+
+                WorkDaySchedule scheduleDay = WorkDaySchedule.create()
+                        .withDayOfWeek(dayOfWeek)
+                        .withDate(date)
+                        .withAmFrom(amFrom)
+                        .withAmTo(amTo)
+                        .withPmFrom(pmFrom)
+                        .withPmTo(pmTo)
+                        .withDurationHours(durationHours)
+                        .build();
+                schedule.add(scheduleDay);
+            }
+        }
+
+        return schedule;
     }
 
     public void setOnChangeScheduleDuration(EventHandler<ChangeScheduleDurationEvent> handler){
