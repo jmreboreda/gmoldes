@@ -66,7 +66,7 @@ public class Parameters {
     public static final String CONTRACT_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT = "Contrato guardado pero no enviado al gestor.\n ¿Es correcto?";
     public static final String TIME_RECORD_PDF_NOT_CREATED = "No se ha podido crear el PDF del registro horario.";
     /** Various */
-    public static final String WINDOWS_TEMPORAL_DIR = "\"/AppData/Local/Temp/Borrame\"";
+    public static final String WINDOWS_TEMPORAL_DIR = "/AppData/Local/Temp/Borrame";
     public static final String LINUX_TEMPORAL_DIR = "/Temp/Borrame";
 
     public static final Integer MAXIMUM_VALUE_MINUTES_IN_HOUR = 59;

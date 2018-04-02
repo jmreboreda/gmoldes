@@ -157,14 +157,26 @@ public class NewContractMainController extends VBox {
 
     private void onViewPDFButton(MouseEvent mouseEvent) {
         Path pathOut;
+        Process p = null;
 
         ContractDataToContractAgent contractDataToContractAgent = createContractDataToContractAgent();
         pathOut = retrievePathToContractDataToContractAgentPDF(contractDataToContractAgent);
-        try {
-            String[] command = {"sh", "-c", "xdg-open " + pathOut};
-            Process p = Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            System.out.println("No se ha podido abrir el documento \"" + contractDataToContractAgent.toFileName().concat(".pdf") + "\"");
+        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("linux")) {
+            try {
+                String[] command = {"sh", "-c", "xdg-open " + pathOut};
+                p = Runtime.getRuntime().exec(command);
+            } catch (IOException e) {
+                System.out.println("No se ha podido abrir el documento \"" + contractDataToContractAgent.toFileName().concat(".pdf") + "\"");
+                e.printStackTrace();
+            }
+        }else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
+            String[] command = {"cmd","/c","start","\"visor\"","\"" + pathOut + "\""};
+            try {
+                p = Runtime.getRuntime().exec(command);
+            } catch (IOException e) {
+                System.out.println("No se ha podido abrir el documento \"" + contractDataToContractAgent.toFileName().concat(".pdf") + "\"");
+                e.printStackTrace();
+            }
         }
     }
 
@@ -492,7 +504,7 @@ public class NewContractMainController extends VBox {
                     .withQuoteAccountCode(this.contractParts.getSelectedCCC().getCcc_inss())
                     .withEmployeeName(this.contractParts.getSelectedEmployee().getApellidos() + ", " + this.contractParts.getSelectedEmployee().getNom_rzsoc())
                     .withEmployeeNIF(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
-                    .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + Parameters.HOURS_WORK_WEEK_TEXT)
+                    .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + " " + Parameters.HOURS_WORK_WEEK_TEXT)
                     .build();
 
             /* Create the TimeRecordPDF */
