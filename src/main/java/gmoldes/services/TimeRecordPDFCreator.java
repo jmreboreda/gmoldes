@@ -4,13 +4,11 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
-import gmoldes.forms.TimeRecord;
-import gmoldes.utilities.Message;
+import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 
 import java.awt.print.PrinterException;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;

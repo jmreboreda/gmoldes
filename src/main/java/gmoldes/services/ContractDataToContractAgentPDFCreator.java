@@ -4,9 +4,8 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
-import gmoldes.forms.ContractDataSubfolder;
-import gmoldes.forms.ContractDataToContractAgent;
-import gmoldes.forms.WorkDaySchedule;
+import gmoldes.components.contract.new_contract.forms.ContractDataToContractAgent;
+import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 

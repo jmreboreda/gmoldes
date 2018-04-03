@@ -1,6 +1,6 @@
 package gmoldes.utilities.TableCell;
 
-import gmoldes.domain.dto.ContractScheduleDayDTO;
+import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
 import gmoldes.utilities.Parameters;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;

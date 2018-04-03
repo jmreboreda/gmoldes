@@ -1,6 +1,6 @@
 package gmoldes.services;
 
-import gmoldes.components.contract.new_contract.ContractParts;
+import gmoldes.components.contract.new_contract.components.ContractParts;
 import gmoldes.utilities.EmailData;
 import gmoldes.utilities.EmailParameters;
 import javax.mail.MessagingException;

@@ -1,7 +1,6 @@
 package gmoldes.components.contract.events;
 
-import gmoldes.domain.dto.ClientDTO;
-import gmoldes.domain.dto.PersonDTO;
+import gmoldes.domain.person.dto.PersonDTO;
 import javafx.event.Event;
 import javafx.event.EventType;
 

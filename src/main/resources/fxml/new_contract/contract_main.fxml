@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import gmoldes.components.contract.new_contract.ContractActionComponents?>
-<?import gmoldes.components.contract.new_contract.ContractData?>
-<?import gmoldes.components.contract.new_contract.ContractHeader?>
-<?import gmoldes.components.contract.new_contract.ContractParts?>
-<?import gmoldes.components.contract.new_contract.ContractPrivateNotes?>
-<?import gmoldes.components.contract.new_contract.ContractPublicNotes?>
-<?import gmoldes.components.contract.new_contract.ContractSchedule?>
-<?import gmoldes.components.contract.new_contract.ProvisionalContractData?>
+<?import gmoldes.components.contract.new_contract.components.ContractActionComponents?>
+<?import gmoldes.components.contract.new_contract.components.ContractData?>
+<?import gmoldes.components.contract.new_contract.components.ContractHeader?>
+<?import gmoldes.components.contract.new_contract.components.ContractParts?>
+<?import gmoldes.components.contract.new_contract.components.ContractPrivateNotes?>
+<?import gmoldes.components.contract.new_contract.components.ContractPublicNotes?>
+<?import gmoldes.components.contract.new_contract.components.ContractSchedule?>
+<?import gmoldes.components.contract.new_contract.components.ProvisionalContractData?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.VBox?>

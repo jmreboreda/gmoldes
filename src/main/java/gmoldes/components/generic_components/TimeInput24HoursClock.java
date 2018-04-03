@@ -86,7 +86,9 @@ public class TimeInput24HoursClock extends HBox {
 
     private void onAction(ActionEvent event) {
         Pattern timePatternOne = Pattern.compile("\\d{2}[:]\\d{2}");
-
+        if(textField.getText() == null){
+            return;
+        }
         if (!timePatternOne.matcher(textField.getText()).matches()) {
             this.textField.setText(null);
         } else {

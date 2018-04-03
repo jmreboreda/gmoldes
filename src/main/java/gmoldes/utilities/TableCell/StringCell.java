@@ -1,7 +1,6 @@
 package gmoldes.utilities.TableCell;
 
-import gmoldes.domain.dto.ContractScheduleDayDTO;
-import javafx.geometry.Pos;
+import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;

@@ -1,21 +1,15 @@
 package gmoldes;
 
 
-import gmoldes.check.InitialChecks;
-import gmoldes.controllers.InitialMenuController;
-import gmoldes.domain.dto.ContractDTO;
-import gmoldes.domain.dto.IDCControlDTO;
-import gmoldes.services.EmailSender;
-import gmoldes.utilities.EmailData;
+import gmoldes.domain.check.InitialChecks;
+import gmoldes.components.initial_menu.InitialMenuController;
+import gmoldes.domain.contract.dto.ContractDTO;
+import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.utilities.Message;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
