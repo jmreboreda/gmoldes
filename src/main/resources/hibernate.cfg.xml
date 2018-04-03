@@ -31,14 +31,14 @@
         <property name="hibernate.hbm2ddl.auto">validate</property>
  
         <!-- Annotated entity classes -->
-        <mapping class="gmoldes.persistence.vo.ClientVO"/>
-        <mapping class="gmoldes.persistence.vo.ContractVO"/>
-        <mapping class="gmoldes.persistence.vo.PersonVO"/>
-        <mapping class="gmoldes.persistence.vo.TypesContractVariationsVO"/>
-        <mapping class="gmoldes.persistence.vo.ContractTypeVO"/>
-        <mapping class="gmoldes.persistence.vo.ClientCCCVO"/>
-        <mapping class="gmoldes.persistence.vo.StudyVO"/>
-        <mapping class="gmoldes.persistence.vo.ServiceGMVO"/>
+        <mapping class="gmoldes.domain.client.persistence.vo.ClientVO"/>
+        <mapping class="gmoldes.components.contract.persistence.vo.ContractVO"/>
+        <mapping class="gmoldes.domain.person.vo.PersonVO"/>
+        <mapping class="gmoldes.components.contract.persistence.vo.TypesContractVariationsVO"/>
+        <mapping class="gmoldes.components.contract.persistence.vo.ContractTypeVO"/>
+        <mapping class="gmoldes.domain.client.persistence.vo.ClientCCCVO"/>
+        <mapping class="gmoldes.domain.person.vo.StudyVO"/>
+        <mapping class="gmoldes.domain.client.persistence.vo.ServiceGMVO"/>
 
     </session-factory>
 </hibernate-configuration>

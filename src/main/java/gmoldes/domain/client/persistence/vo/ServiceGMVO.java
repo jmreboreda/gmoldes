@@ -1,4 +1,4 @@
-package gmoldes.domain.client.vo;
+package gmoldes.domain.client.persistence.vo;
 
 import gmoldes.domain.client.persistence.vo.ClientVO;
 
