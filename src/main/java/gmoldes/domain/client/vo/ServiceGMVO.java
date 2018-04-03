@@ -1,4 +1,6 @@
-package gmoldes.persistence.vo;
+package gmoldes.domain.client.vo;
+
+import gmoldes.domain.client.persistence.vo.ClientVO;
 
 import javax.persistence.*;
 import java.io.Serializable;

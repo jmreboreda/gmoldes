@@ -1,4 +1,4 @@
-package gmoldes.persistence.vo;
+package gmoldes.domain.person.vo;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package gmoldes.domain;
+package gmoldes.domain.nie_nif;
 
 import java.util.regex.Pattern;
 

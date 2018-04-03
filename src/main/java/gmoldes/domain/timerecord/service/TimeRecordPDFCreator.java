@@ -1,10 +1,11 @@
-package gmoldes.services;
+package gmoldes.domain.timerecord.service;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 import gmoldes.components.timerecord.forms.TimeRecord;
+import gmoldes.services.Printer;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 

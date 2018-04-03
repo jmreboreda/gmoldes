@@ -1,8 +1,8 @@
 package gmoldes.domain.client.manager;
 
 import gmoldes.domain.client.dto.ClientCCCDTO;
-import gmoldes.persistence.dao.ClientCCCDAO;
-import gmoldes.persistence.vo.ClientCCCVO;
+import gmoldes.domain.client.persistence.dao.ClientCCCDAO;
+import gmoldes.domain.client.persistence.vo.ClientCCCVO;
 
 import java.util.ArrayList;
 import java.util.List;

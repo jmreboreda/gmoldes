@@ -1,12 +1,11 @@
-package gmoldes.persistence.dao;
+package gmoldes.domain.client.persistence.dao;
 
 
-import gmoldes.persistence.vo.ClientVO;
+import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 

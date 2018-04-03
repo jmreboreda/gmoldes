@@ -1,4 +1,4 @@
-package gmoldes.utilities;
+package gmoldes.services.Email;
 
 import javax.mail.internet.InternetAddress;
 import java.nio.file.Path;

@@ -2,7 +2,7 @@ package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
-import gmoldes.utilities.Parameters;
+import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,9 +15,7 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 public class WorkDayTypeInput extends HBox {
@@ -53,7 +51,7 @@ public class WorkDayTypeInput extends HBox {
         this.radioButtonPartialWorkDay.setMinHeight(25);
 
         this.hoursWorkWeek.setText(null);
-        this.hoursWorkWeek.setTextLabel(Parameters.HOURS_WORK_WEEK_TEXT);
+        this.hoursWorkWeek.setTextLabel(ContractConstants.HOURS_WORK_WEEK_TEXT);
         this.hoursWorkWeek.setLabelPreferredWidth(215D);
         this.hoursWorkWeek.setInputMinWidth(75D);
         this.hoursWorkWeek.setDisable(true);
@@ -64,7 +62,7 @@ public class WorkDayTypeInput extends HBox {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle old_toggle, Toggle new_toggle) {
                 if(grWorkDay.getSelectedToggle() == radioButtonFullWorkDay){
-                    hoursWorkWeek.setText(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
+                    hoursWorkWeek.setText(Utilities.converterDurationToTimeString(ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
                     hoursWorkWeek.setDisable(true);
                 }else{
                     hoursWorkWeek.setDisable(false);
@@ -128,7 +126,7 @@ public class WorkDayTypeInput extends HBox {
 
         Duration durationEnteredByUser = Utilities.converterTimeStringToDuration(hoursWorkPerWeek);
         assert durationEnteredByUser != null;
-        if(durationEnteredByUser.compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK ) > 0 ){
+        if(durationEnteredByUser.compareTo(ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK ) > 0 ){
             hoursWorkWeek.setText("00:00");
 
             return false;

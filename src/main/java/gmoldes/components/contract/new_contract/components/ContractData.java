@@ -95,7 +95,7 @@ public class ContractData extends AnchorPane {
         String durationContract = "";
         if(this.contractDuration.radioButtonUndefinedIsSelected()) {
             if (this.contractDuration.getDateFrom() != null) {
-                durationContract = Parameters.UNDEFINED_DURATION_TEXT;
+                durationContract = ContractConstants.UNDEFINED_DURATION_TEXT;
             }
         }
 
@@ -109,12 +109,12 @@ public class ContractData extends AnchorPane {
         String workDayType = "";
         String numberHoursPerWeek = "";
         if(this.workDayType.radioButtonFullWorkDayIsSelected()){
-            this.workDayType.setHoursWorkWeek(Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
-            workDayType = Parameters.FULL_WORKDAY;
-            numberHoursPerWeek = Utilities.converterDurationToTimeString(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK);
+            this.workDayType.setHoursWorkWeek(Utilities.converterDurationToTimeString(ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK));
+            workDayType = ContractConstants.FULL_WORKDAY;
+            numberHoursPerWeek = Utilities.converterDurationToTimeString(ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK);
         }
         if(this.workDayType.radioButtonPartialWorkDayIsSelected()){
-            workDayType = Parameters.PARTIAL_WORKDAY;
+            workDayType = ContractConstants.PARTIAL_WORKDAY;
             if(this.workDayType.getHoursWorkWeek() != null){
                 numberHoursPerWeek = this.workDayType.getHoursWorkWeek();
             }
@@ -162,10 +162,10 @@ public class ContractData extends AnchorPane {
 
     public String getUndefinedTemporalContract(){
         if(this.contractDuration.radioButtonUndefinedIsSelected()){
-            return Parameters.UNDEFINED_DURATION_TEXT;
+            return ContractConstants.UNDEFINED_DURATION_TEXT;
         }
         else{
-            return Parameters.TEMPORAL_DURATION_TEXT;
+            return ContractConstants.TEMPORAL_DURATION_TEXT;
         }
     }
 
@@ -175,10 +175,10 @@ public class ContractData extends AnchorPane {
 
     public String getFullPartialWorkDay(){
         if(this.workDayType.radioButtonFullWorkDayIsSelected()){
-            return Parameters.FULL_WORKDAY;
+            return ContractConstants.FULL_WORKDAY;
         }
 
-        return Parameters.PARTIAL_WORKDAY;
+        return ContractConstants.PARTIAL_WORKDAY;
     }
 
     public LocalDate getDateFrom(){

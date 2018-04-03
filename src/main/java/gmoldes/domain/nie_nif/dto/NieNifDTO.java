@@ -1,4 +1,4 @@
-package gmoldes.domain.dto;
+package gmoldes.domain.nie_nif.dto;
 
 public class NieNifDTO {
 
@@ -41,7 +41,7 @@ public class NieNifDTO {
         return firstLetterNIF + numbersNIF + lastLetterNIF;
     }
 
-    public static NieNifDTO.NieNifDTOBuilder create() {
+    public static NieNifDTOBuilder create() {
         return new NieNifDTO.NieNifDTOBuilder();
     }
 
@@ -51,17 +51,17 @@ public class NieNifDTO {
         private String numbersNIF;
         private String lastLetterNIF;
 
-        public NieNifDTO.NieNifDTOBuilder withFirstLetterNIF(String firstLetterNIF) {
+        public NieNifDTOBuilder withFirstLetterNIF(String firstLetterNIF) {
             this.firstLetterNIF = firstLetterNIF;
             return this;
         }
 
-        public NieNifDTO.NieNifDTOBuilder withNumbersNIF(String numbersNIF) {
+        public NieNifDTOBuilder withNumbersNIF(String numbersNIF) {
             this.numbersNIF = numbersNIF;
             return this;
         }
 
-        public NieNifDTO.NieNifDTOBuilder withLastLetterNIF(String lastLetterNIF) {
+        public NieNifDTOBuilder withLastLetterNIF(String lastLetterNIF) {
             this.lastLetterNIF = lastLetterNIF;
             return this;
         }

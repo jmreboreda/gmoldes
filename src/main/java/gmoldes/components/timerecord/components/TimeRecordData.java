@@ -7,10 +7,10 @@ import gmoldes.components.contract.controllers.ContractController;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.timerecord.TimeRecordCandidateDataDTO;
-import gmoldes.domain.timerecord.TimeRecordClientDTO;
+import gmoldes.domain.timerecord.dto.TimeRecordCandidateDataDTO;
+import gmoldes.domain.timerecord.dto.TimeRecordClientDTO;
 import gmoldes.components.timerecord.forms.TimeRecord;
-import gmoldes.services.TimeRecordPDFCreator;
+import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
@@ -134,12 +134,12 @@ public class TimeRecordData extends VBox {
         try {
             pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord);
             if(pathToTimeRecordPDF == null){
-                Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.TIME_RECORD_PDF_NOT_CREATED);
+                Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
                 return;
             }
 
         } catch (IOException | DocumentException e) {
-            Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.TIME_RECORD_PDF_NOT_CREATED);
+            Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
             e.printStackTrace();
         }
         Message.warningMessage(createPDFButton.getScene().getWindow(),"Información del sistema", "Registro horario creado en:" + "\n" + pathToTimeRecordPDF + "\n");
@@ -151,11 +151,11 @@ public class TimeRecordData extends VBox {
         try {
             pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord);
             if(pathToTimeRecordPDF == null){
-                Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.TIME_RECORD_PDF_NOT_CREATED);
+                Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
                 return;
             }
         } catch (IOException | DocumentException e) {
-            Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.TIME_RECORD_PDF_NOT_CREATED);
+            Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
             e.printStackTrace();
         }
 

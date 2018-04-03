@@ -1,4 +1,4 @@
-package gmoldes.domain.timerecord;
+package gmoldes.domain.timerecord.dto;
 
 public class TimeRecordCandidateDataDTO {
 

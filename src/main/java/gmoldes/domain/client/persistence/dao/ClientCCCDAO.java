@@ -1,7 +1,7 @@
-package gmoldes.persistence.dao;
+package gmoldes.domain.client.persistence.dao;
 
 
-import gmoldes.persistence.vo.ClientCCCVO;
+import gmoldes.domain.client.persistence.vo.ClientCCCVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

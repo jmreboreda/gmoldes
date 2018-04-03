@@ -1,12 +1,12 @@
-package gmoldes.services;
+package gmoldes.components.contract.new_contract.services;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
-import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
+import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.new_contract.forms.ContractDataToContractAgent;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
-import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 
 import java.io.FileOutputStream;
@@ -17,71 +17,71 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-public class ContractDataSubfolderPDFCreator {
+public class NewContractDataToContractAgentPDFCreator {
 
-    private static final String PATH_TO_PDF_TEMPLATE = "/pdf_forms/DGM_003_Datos_Alta_o_Cambio_Contrato_Trabajo_A3_LO_Version2.pdf";
+    private static final String PATH_TO_PDF_TEMPLATE = "/pdf_forms/Datos_Alta_o_Cambio_Contrato_Trabajo_A4_Notificar_Gestor.pdf";
 
-    public ContractDataSubfolderPDFCreator() {
+    public NewContractDataToContractAgentPDFCreator() {
     }
 
-    public static Path createContractDataSubfolderPDF(ContractDataSubfolder contractDataSubfolder, Path pathOut) throws IOException, DocumentException {
+    public static Path createContractDataToContractAgentPDF(ContractDataToContractAgent contractDataToContractAgent, Path pathOut) throws IOException, DocumentException {
 
         PdfReader reader = new PdfReader(PATH_TO_PDF_TEMPLATE);
         PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(pathOut.toString()));
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        AcroFields contractDataSubfolderPDFFields = stamp.getAcroFields();
-        contractDataSubfolderPDFFields.setField("notificationType",contractDataSubfolder.getNotificationType());
-        contractDataSubfolderPDFFields.setField("officialContractNumber",null);
-        contractDataSubfolderPDFFields.setField("employerFullName",contractDataSubfolder.getEmployerFullName());
-        contractDataSubfolderPDFFields.setField("employerCCC",contractDataSubfolder.getEmployerQuoteAccountCode());
-        contractDataSubfolderPDFFields.setField("notificationDate",contractDataSubfolder.getNotificationDate().format(dateFormatter));
-        contractDataSubfolderPDFFields.setField("notificationHour",contractDataSubfolder.getNotificationHour().format(timeFormatter));
-        contractDataSubfolderPDFFields.setField("employeeFullName",contractDataSubfolder.getEmployeeFullName());
-        contractDataSubfolderPDFFields.setField("employeeNIF",contractDataSubfolder.getEmployeeNif());
-        contractDataSubfolderPDFFields.setField("employeeNASS",contractDataSubfolder.getEmployeeNASS());
-        contractDataSubfolderPDFFields.setField("employeeBirthDate",contractDataSubfolder.getEmployeeBirthDate());
-        contractDataSubfolderPDFFields.setField("employeeCivilState",contractDataSubfolder.getEmployeeCivilState());
-        contractDataSubfolderPDFFields.setField("employeeNationality",contractDataSubfolder.getEmployeeNationality());
-        contractDataSubfolderPDFFields.setField("employeeFullAddress",contractDataSubfolder.getEmployeeFullAddress());
-        contractDataSubfolderPDFFields.setField("employeeMaxStudyLevel",contractDataSubfolder.getEmployeeMaxStudyLevel());
-        if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.MONDAY)) {
-            contractDataSubfolderPDFFields.setField("monday", "Yes");
+        AcroFields contractDataSToContractAgentPDFFields = stamp.getAcroFields();
+        contractDataSToContractAgentPDFFields.setField("notificationType",contractDataToContractAgent.getNotificationType());
+        contractDataSToContractAgentPDFFields.setField("officialContractNumber",null);
+        contractDataSToContractAgentPDFFields.setField("employerFullName",contractDataToContractAgent.getEmployerFullName());
+        contractDataSToContractAgentPDFFields.setField("employerCCC",contractDataToContractAgent.getEmployerQuoteAccountCode());
+        contractDataSToContractAgentPDFFields.setField("notificationDate",contractDataToContractAgent.getNotificationDate().format(dateFormatter));
+        contractDataSToContractAgentPDFFields.setField("notificationHour",contractDataToContractAgent.getNotificationHour().format(timeFormatter));
+        contractDataSToContractAgentPDFFields.setField("employeeFullName",contractDataToContractAgent.getEmployeeFullName());
+        contractDataSToContractAgentPDFFields.setField("employeeNIF",contractDataToContractAgent.getEmployeeNif());
+        contractDataSToContractAgentPDFFields.setField("employeeNASS",contractDataToContractAgent.getEmployeeNASS());
+        contractDataSToContractAgentPDFFields.setField("employeeBirthDate",contractDataToContractAgent.getEmployeeBirthDate());
+        contractDataSToContractAgentPDFFields.setField("employeeCivilState",contractDataToContractAgent.getEmployeeCivilState());
+        contractDataSToContractAgentPDFFields.setField("employeeNationality",contractDataToContractAgent.getEmployeeNationality());
+        contractDataSToContractAgentPDFFields.setField("employeeFullAddress",contractDataToContractAgent.getEmployeeFullAddress());
+        contractDataSToContractAgentPDFFields.setField("employeeMaxStudyLevel",contractDataToContractAgent.getEmployeeMaxStudyLevel());
+        if(contractDataToContractAgent.getDayOfWeekSet().contains(DayOfWeek.MONDAY)) {
+            contractDataSToContractAgentPDFFields.setField("monday", "Yes");
         }
-        if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.TUESDAY)) {
-            contractDataSubfolderPDFFields.setField("tuesday", "Yes");
+        if(contractDataToContractAgent.getDayOfWeekSet().contains(DayOfWeek.TUESDAY)) {
+            contractDataSToContractAgentPDFFields.setField("tuesday", "Yes");
         }
-        if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.THURSDAY)) {
-            contractDataSubfolderPDFFields.setField("thursday", "Yes");
+        if(contractDataToContractAgent.getDayOfWeekSet().contains(DayOfWeek.THURSDAY)) {
+            contractDataSToContractAgentPDFFields.setField("thursday", "Yes");
         }
-        if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.WEDNESDAY)) {
-            contractDataSubfolderPDFFields.setField("wednesday", "Yes");
+        if(contractDataToContractAgent.getDayOfWeekSet().contains(DayOfWeek.WEDNESDAY)) {
+            contractDataSToContractAgentPDFFields.setField("wednesday", "Yes");
         }
-        if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.FRIDAY)) {
-            contractDataSubfolderPDFFields.setField("friday", "Yes");
+        if(contractDataToContractAgent.getDayOfWeekSet().contains(DayOfWeek.FRIDAY)) {
+            contractDataSToContractAgentPDFFields.setField("friday", "Yes");
         }
-        if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.SATURDAY)) {
-            contractDataSubfolderPDFFields.setField("saturday", "Yes");
+        if(contractDataToContractAgent.getDayOfWeekSet().contains(DayOfWeek.SATURDAY)) {
+            contractDataSToContractAgentPDFFields.setField("saturday", "Yes");
         }
-        if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.SUNDAY)) {
-            contractDataSubfolderPDFFields.setField("sunday", "Yes");
+        if(contractDataToContractAgent.getDayOfWeekSet().contains(DayOfWeek.SUNDAY)) {
+            contractDataSToContractAgentPDFFields.setField("sunday", "Yes");
         }
-        contractDataSubfolderPDFFields.setField("contractType",contractDataSubfolder.getContractTypeDescription());
-        contractDataSubfolderPDFFields.setField("startDate", contractDataSubfolder.getStartDate().format(dateFormatter));
-        if(contractDataSubfolder.getEndDate() != null) {
-            contractDataSubfolderPDFFields.setField("endDate", contractDataSubfolder.getEndDate().format(dateFormatter));
+        contractDataSToContractAgentPDFFields.setField("contractType",contractDataToContractAgent.getContractTypeDescription());
+        contractDataSToContractAgentPDFFields.setField("startDate", contractDataToContractAgent.getStartDate().format(dateFormatter));
+        if(contractDataToContractAgent.getEndDate() != null) {
+            contractDataSToContractAgentPDFFields.setField("endDate", contractDataToContractAgent.getEndDate().format(dateFormatter));
         }else{
-            contractDataSubfolderPDFFields.setField("endDate", null);
+            contractDataSToContractAgentPDFFields.setField("endDate", null);
         }
-        if(contractDataSubfolder.getDurationDays().toDays() > 0) {
-            contractDataSubfolderPDFFields.setField("durationDays", contractDataSubfolder.getDurationDays().toDays() + " días");
+        if(contractDataToContractAgent.getDurationDays().toDays() > 0) {
+            contractDataSToContractAgentPDFFields.setField("durationDays", contractDataToContractAgent.getDurationDays().toDays() + " días");
         }else{
-            contractDataSubfolderPDFFields.setField("durationDays", Parameters.UNDEFINED_DURATION_TEXT);
+            contractDataSToContractAgentPDFFields.setField("durationDays", ContractConstants.UNDEFINED_DURATION_TEXT);
         }
 
         /* Start of the form fill loop*/
-        for(WorkDaySchedule workDay : contractDataSubfolder.getSchedule()){
+        for(WorkDaySchedule workDay : contractDataToContractAgent.getSchedule()){
             if(workDay.getDayOfWeek().equals(DayOfWeek.MONDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))){
                 String workDayPDF = "";
                 String dateOne = "";
@@ -112,13 +112,13 @@ public class ContractDataSubfolderPDFCreator {
                 if(workDay.getDurationHours() != null){
                     durationHours = Utilities.converterDurationToTimeString(workDay.getDurationHours());
                 }
-                contractDataSubfolderPDFFields.setField("dayOne", workDayPDF);
-                contractDataSubfolderPDFFields.setField("dateOne", dateOne);
-                contractDataSubfolderPDFFields.setField("A1AMfrom",A1AMfrom);
-                contractDataSubfolderPDFFields.setField("A1AMto", A1AMto);
-                contractDataSubfolderPDFFields.setField("A1PMfrom", A1PMfrom);
-                contractDataSubfolderPDFFields.setField("A1PMto", A1PMto);
-                contractDataSubfolderPDFFields.setField("hoursOne", durationHours);
+                contractDataSToContractAgentPDFFields.setField("dayOne", workDayPDF);
+                contractDataSToContractAgentPDFFields.setField("dateOne", dateOne);
+                contractDataSToContractAgentPDFFields.setField("A1AMfrom",A1AMfrom);
+                contractDataSToContractAgentPDFFields.setField("A1AMto", A1AMto);
+                contractDataSToContractAgentPDFFields.setField("A1PMfrom", A1PMfrom);
+                contractDataSToContractAgentPDFFields.setField("A1PMto", A1PMto);
+                contractDataSToContractAgentPDFFields.setField("hoursOne", durationHours);
             }
 
             if(workDay.getDayOfWeek().equals(DayOfWeek.TUESDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))){
@@ -151,13 +151,13 @@ public class ContractDataSubfolderPDFCreator {
                 if(workDay.getDurationHours() != null){
                     durationHours = Utilities.converterDurationToTimeString(workDay.getDurationHours());
                 }
-                contractDataSubfolderPDFFields.setField("dayTwo", workDayPDF);
-                contractDataSubfolderPDFFields.setField("dateTwo", dateTwo);
-                contractDataSubfolderPDFFields.setField("A2AMfrom",A2AMfrom );
-                contractDataSubfolderPDFFields.setField("A2AMto", A2AMto);
-                contractDataSubfolderPDFFields.setField("A2PMfrom", A2PMfrom);
-                contractDataSubfolderPDFFields.setField("A2PMto", A2PMto);
-                contractDataSubfolderPDFFields.setField("hoursTwo", durationHours);
+                contractDataSToContractAgentPDFFields.setField("dayTwo", workDayPDF);
+                contractDataSToContractAgentPDFFields.setField("dateTwo", dateTwo);
+                contractDataSToContractAgentPDFFields.setField("A2AMfrom",A2AMfrom );
+                contractDataSToContractAgentPDFFields.setField("A2AMto", A2AMto);
+                contractDataSToContractAgentPDFFields.setField("A2PMfrom", A2PMfrom);
+                contractDataSToContractAgentPDFFields.setField("A2PMto", A2PMto);
+                contractDataSToContractAgentPDFFields.setField("hoursTwo", durationHours);
             }
 
             if(workDay.getDayOfWeek().equals(DayOfWeek.WEDNESDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))){
@@ -190,13 +190,13 @@ public class ContractDataSubfolderPDFCreator {
                 if(workDay.getDurationHours() != null){
                     durationHours = Utilities.converterDurationToTimeString(workDay.getDurationHours());
                 }
-                contractDataSubfolderPDFFields.setField("dayThree", workDayPDF);
-                contractDataSubfolderPDFFields.setField("dateThree", dateThree);
-                contractDataSubfolderPDFFields.setField("A3AMfrom",A3AMfrom );
-                contractDataSubfolderPDFFields.setField("A3AMto", A3AMto);
-                contractDataSubfolderPDFFields.setField("A3PMfrom", A3PMfrom);
-                contractDataSubfolderPDFFields.setField("A3PMto", A3PMto);
-                contractDataSubfolderPDFFields.setField("hoursThree", durationHours);
+                contractDataSToContractAgentPDFFields.setField("dayThree", workDayPDF);
+                contractDataSToContractAgentPDFFields.setField("dateThree", dateThree);
+                contractDataSToContractAgentPDFFields.setField("A3AMfrom",A3AMfrom );
+                contractDataSToContractAgentPDFFields.setField("A3AMto", A3AMto);
+                contractDataSToContractAgentPDFFields.setField("A3PMfrom", A3PMfrom);
+                contractDataSToContractAgentPDFFields.setField("A3PMto", A3PMto);
+                contractDataSToContractAgentPDFFields.setField("hoursThree", durationHours);
             }
 
             if(workDay.getDayOfWeek().equals(DayOfWeek.THURSDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))){
@@ -229,13 +229,13 @@ public class ContractDataSubfolderPDFCreator {
                 if(workDay.getDurationHours() != null){
                     durationHours = Utilities.converterDurationToTimeString(workDay.getDurationHours());
                 }
-                contractDataSubfolderPDFFields.setField("dayFour", workDayPDF);
-                contractDataSubfolderPDFFields.setField("dateFour", dateFour);
-                contractDataSubfolderPDFFields.setField("A4AMfrom",A4AMfrom );
-                contractDataSubfolderPDFFields.setField("A4AMto", A4AMto);
-                contractDataSubfolderPDFFields.setField("A4PMfrom", A4PMfrom);
-                contractDataSubfolderPDFFields.setField("A4PMto", A4PMto);
-                contractDataSubfolderPDFFields.setField("hoursFour", durationHours);
+                contractDataSToContractAgentPDFFields.setField("dayFour", workDayPDF);
+                contractDataSToContractAgentPDFFields.setField("dateFour", dateFour);
+                contractDataSToContractAgentPDFFields.setField("A4AMfrom",A4AMfrom );
+                contractDataSToContractAgentPDFFields.setField("A4AMto", A4AMto);
+                contractDataSToContractAgentPDFFields.setField("A4PMfrom", A4PMfrom);
+                contractDataSToContractAgentPDFFields.setField("A4PMto", A4PMto);
+                contractDataSToContractAgentPDFFields.setField("hoursFour", durationHours);
             }
 
             if(workDay.getDayOfWeek().equals(DayOfWeek.FRIDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))){
@@ -268,13 +268,13 @@ public class ContractDataSubfolderPDFCreator {
                 if(workDay.getDurationHours() != null){
                     durationHours = Utilities.converterDurationToTimeString(workDay.getDurationHours());
                 }
-                contractDataSubfolderPDFFields.setField("dayFive", workDayPDF);
-                contractDataSubfolderPDFFields.setField("dateFive", dateFive);
-                contractDataSubfolderPDFFields.setField("A5AMfrom",A5AMfrom );
-                contractDataSubfolderPDFFields.setField("A5AMto", A5AMto);
-                contractDataSubfolderPDFFields.setField("A5PMfrom", A5PMfrom);
-                contractDataSubfolderPDFFields.setField("A5PMto", A5PMto);
-                contractDataSubfolderPDFFields.setField("hoursFive", durationHours);
+                contractDataSToContractAgentPDFFields.setField("dayFive", workDayPDF);
+                contractDataSToContractAgentPDFFields.setField("dateFive", dateFive);
+                contractDataSToContractAgentPDFFields.setField("A5AMfrom",A5AMfrom );
+                contractDataSToContractAgentPDFFields.setField("A5AMto", A5AMto);
+                contractDataSToContractAgentPDFFields.setField("A5PMfrom", A5PMfrom);
+                contractDataSToContractAgentPDFFields.setField("A5PMto", A5PMto);
+                contractDataSToContractAgentPDFFields.setField("hoursFive", durationHours);
             }
 
             if(workDay.getDayOfWeek().equals(DayOfWeek.SATURDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))){
@@ -307,13 +307,13 @@ public class ContractDataSubfolderPDFCreator {
                 if(workDay.getDurationHours() != null){
                     durationHours = Utilities.converterDurationToTimeString(workDay.getDurationHours());
                 }
-                contractDataSubfolderPDFFields.setField("daySix", workDayPDF);
-                contractDataSubfolderPDFFields.setField("dateSix", dateSix);
-                contractDataSubfolderPDFFields.setField("A6AMfrom",A6AMfrom );
-                contractDataSubfolderPDFFields.setField("A6AMto", A6AMto);
-                contractDataSubfolderPDFFields.setField("A6PMfrom", A6PMfrom);
-                contractDataSubfolderPDFFields.setField("A6PMto", A6PMto);
-                contractDataSubfolderPDFFields.setField("hoursSix", durationHours);
+                contractDataSToContractAgentPDFFields.setField("daySix", workDayPDF);
+                contractDataSToContractAgentPDFFields.setField("dateSix", dateSix);
+                contractDataSToContractAgentPDFFields.setField("A6AMfrom",A6AMfrom );
+                contractDataSToContractAgentPDFFields.setField("A6AMto", A6AMto);
+                contractDataSToContractAgentPDFFields.setField("A6PMfrom", A6PMfrom);
+                contractDataSToContractAgentPDFFields.setField("A6PMto", A6PMto);
+                contractDataSToContractAgentPDFFields.setField("hoursSix", durationHours);
             }
 
             if(workDay.getDayOfWeek().equals(DayOfWeek.SUNDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))){
@@ -346,19 +346,18 @@ public class ContractDataSubfolderPDFCreator {
                 if(workDay.getDurationHours() != null){
                     durationHours = Utilities.converterDurationToTimeString(workDay.getDurationHours());
                 }
-                contractDataSubfolderPDFFields.setField("daySeven", workDayPDF);
-                contractDataSubfolderPDFFields.setField("dateSeven", dateSeven);
-                contractDataSubfolderPDFFields.setField("A7AMfrom",A7AMfrom );
-                contractDataSubfolderPDFFields.setField("A7AMto", A7AMto);
-                contractDataSubfolderPDFFields.setField("A7PMfrom", A7PMfrom);
-                contractDataSubfolderPDFFields.setField("A7PMto", A7PMto);
-                contractDataSubfolderPDFFields.setField("hoursSeven", durationHours);
+                contractDataSToContractAgentPDFFields.setField("daySeven", workDayPDF);
+                contractDataSToContractAgentPDFFields.setField("dateSeven", dateSeven);
+                contractDataSToContractAgentPDFFields.setField("A7AMfrom",A7AMfrom );
+                contractDataSToContractAgentPDFFields.setField("A7AMto", A7AMto);
+                contractDataSToContractAgentPDFFields.setField("A7PMfrom", A7PMfrom);
+                contractDataSToContractAgentPDFFields.setField("A7PMto", A7PMto);
+                contractDataSToContractAgentPDFFields.setField("hoursSeven", durationHours);
             }
         }
 
-        contractDataSubfolderPDFFields.setField("additionalData",contractDataSubfolder.getAdditionalData());
-        contractDataSubfolderPDFFields.setField("laborCategory",contractDataSubfolder.getLaborCategory());
-        contractDataSubfolderPDFFields.setField("GMcontractNumber",contractDataSubfolder.getGmContractNumber());
+        contractDataSToContractAgentPDFFields.setField("additionalData",contractDataToContractAgent.getAdditionalData());
+        contractDataSToContractAgentPDFFields.setField("laborCategory",contractDataToContractAgent.getLaborCategory());
 
         stamp.setFormFlattening(true);
         stamp.close();

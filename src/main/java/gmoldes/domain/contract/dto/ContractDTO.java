@@ -281,11 +281,11 @@ public class ContractDTO {
         this.endOfContractNotice = endOfContractNotice;
     }
 
-    public static ContractBuilder create() {
-        return new ContractBuilder();
+    public static ContractDTOBuilder create() {
+        return new ContractDTOBuilder();
     }
 
-    public static class ContractBuilder {
+    public static class ContractDTOBuilder {
 
         private Integer id;
         private Integer contractNumber;
@@ -312,122 +312,122 @@ public class ContractDTO {
         private LocalDate quoteDataReportIDC;
         private LocalDate endOfContractNotice;
 
-        public ContractBuilder withId(Integer id) {
+        public ContractDTOBuilder withId(Integer id) {
             this.id = id;
             return this;
         }
 
-        public ContractBuilder withContractNumber(Integer contractNumber) {
+        public ContractDTOBuilder withContractNumber(Integer contractNumber) {
             this.contractNumber = contractNumber;
             return this;
         }
 
-        public ContractBuilder withVariationNumber(Integer variationNumber) {
+        public ContractDTOBuilder withVariationNumber(Integer variationNumber) {
             this.variationNumber = variationNumber;
             return this;
         }
 
-        public ContractBuilder withVariationType(Integer variationType) {
+        public ContractDTOBuilder withVariationType(Integer variationType) {
             this.variationType = variationType;
             return this;
         }
 
-        public ContractBuilder withClientGMId(Integer clientGMId) {
+        public ContractDTOBuilder withClientGMId(Integer clientGMId) {
             this.clientGMId = clientGMId;
             return this;
         }
 
-        public ContractBuilder withClientGMName(String clientGMName) {
+        public ContractDTOBuilder withClientGMName(String clientGMName) {
             this.clientGMName = clientGMName;
             return this;
         }
 
-        public ContractBuilder withQuoteAccountCode(String quoteAccountCode) {
+        public ContractDTOBuilder withQuoteAccountCode(String quoteAccountCode) {
             this.quoteAccountCode = quoteAccountCode;
             return this;
         }
 
-        public ContractBuilder withWorkerId(Integer workerId) {
+        public ContractDTOBuilder withWorkerId(Integer workerId) {
             this.workerId = workerId;
             return this;
         }
 
-        public ContractBuilder withWorkerName(String workerName) {
+        public ContractDTOBuilder withWorkerName(String workerName) {
             this.workerName = workerName;
             return this;
         }
 
-        public ContractBuilder withLaborCategory(String laborCategory) {
+        public ContractDTOBuilder withLaborCategory(String laborCategory) {
             this.laborCategory = laborCategory;
             return this;
         }
 
-        public ContractBuilder withWeeklyWorkHours(String weeklyWorkHours) {
+        public ContractDTOBuilder withWeeklyWorkHours(String weeklyWorkHours) {
             this.weeklyWorkHours = weeklyWorkHours;
             return this;
         }
 
-        public ContractBuilder withDaysOfWeekToWork(Set<DayOfWeek> jor_trab_dias) {
+        public ContractDTOBuilder withDaysOfWeekToWork(Set<DayOfWeek> jor_trab_dias) {
             this.daysOfWeekToWork = jor_trab_dias;
             return this;
         }
 
-        public ContractBuilder withFullPartialWorkday(String fullPartialWorkday) {
+        public ContractDTOBuilder withFullPartialWorkday(String fullPartialWorkday) {
             this.fullPartialWorkday = fullPartialWorkday;
             return this;
         }
 
-        public ContractBuilder withTypeOfContract(String typeOfContract) {
+        public ContractDTOBuilder withTypeOfContract(String typeOfContract) {
             this.typeOfContract = typeOfContract;
             return this;
         }
 
-        public ContractBuilder withDateFrom(LocalDate dateFrom) {
+        public ContractDTOBuilder withDateFrom(LocalDate dateFrom) {
             this.dateFrom = dateFrom;
             return this;
         }
 
-        public ContractBuilder withDateTo(LocalDate dateTo) {
+        public ContractDTOBuilder withDateTo(LocalDate dateTo) {
             this.dateTo = dateTo;
             return this;
         }
 
-        public ContractBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
+        public ContractDTOBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
             this.identificationContractNumberINEM = identificationContractNumberINEM;
             return this;
         }
 
-        public ContractBuilder withCurrentContract(Boolean currentContract) {
+        public ContractDTOBuilder withCurrentContract(Boolean currentContract) {
             this.currentContract = currentContract;
             return this;
         }
 
-        public ContractBuilder withNotesForManager(String notesForManager) {
+        public ContractDTOBuilder withNotesForManager(String notesForManager) {
             this.notesForManager = notesForManager;
             return this;
         }
 
-        public ContractBuilder withPrivateNotes(String privateNotes) {
+        public ContractDTOBuilder withPrivateNotes(String privateNotes) {
             this.privateNotes = privateNotes;
             return this;
         }
 
-        public ContractBuilder withIndefiniteOrTemporalContract(Character indefiniteOrTemporalContract) {
+        public ContractDTOBuilder withIndefiniteOrTemporalContract(Character indefiniteOrTemporalContract) {
             this.indefiniteOrTemporalContract = indefiniteOrTemporalContract;
             return this;
         }
 
-        public ContractBuilder withSurrogateContract(Integer surrogateContract) {
+        public ContractDTOBuilder withSurrogateContract(Integer surrogateContract) {
             this.surrogateContract = surrogateContract;
             return this;
         }
 
-        public ContractBuilder withQuoteDataReportIDC(LocalDate quoteDataReportIDC) {
+        public ContractDTOBuilder withQuoteDataReportIDC(LocalDate quoteDataReportIDC) {
             this.quoteDataReportIDC = quoteDataReportIDC;
             return this;
         }
 
-        public ContractBuilder withEndOfContractNotice(LocalDate endOfContractNotice) {
+        public ContractDTOBuilder withEndOfContractNotice(LocalDate endOfContractNotice) {
             this.endOfContractNotice = endOfContractNotice;
             return this;
         }

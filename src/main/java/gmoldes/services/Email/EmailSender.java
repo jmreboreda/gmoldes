@@ -1,7 +1,4 @@
-package gmoldes.services;
-
-import gmoldes.utilities.EmailData;
-import gmoldes.utilities.EmailParameters;
+package gmoldes.services.Email;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;

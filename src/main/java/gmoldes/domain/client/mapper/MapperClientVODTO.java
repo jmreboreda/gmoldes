@@ -1,7 +1,7 @@
 package gmoldes.domain.client.mapper;
 
 import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.persistence.vo.ClientVO;
+import gmoldes.domain.client.persistence.vo.ClientVO;
 
 public class MapperClientVODTO {
 

@@ -72,13 +72,13 @@ public class ContractSchedule extends AnchorPane {
     public void initialize() {
 
         contract_schedule_table.setId("contract_schedule_table");
-        dayOfWeek.setText(Parameters.DAY_OF_WEEK_TEXT);
+        dayOfWeek.setText(ContractConstants.DAY_OF_WEEK_COLUMN_TITLE);
         date.setText(Parameters.DATE_LABEL_TEXT);
-        amFrom.setText(Parameters.TIME_AM_FROM_TEXT);
-        amTo.setText(Parameters.TIME_AM_TO_TEXT);
-        pmFrom.setText(Parameters.TIME_PM_FROM_TEXT);
-        pmTo.setText(Parameters.TIME_PM_TO_TEXT);
-        totalDayHours.setText(Parameters.TIME_DURATION_WORK_DAY_TEXT);
+        amFrom.setText(ContractConstants.TIME_AM_FROM_COLUMN_TITLE);
+        amTo.setText(ContractConstants.TIME_AM_TO_COLUMN_TITLE);
+        pmFrom.setText(ContractConstants.TIME_PM_FROM_COLUMN_TITLE);
+        pmTo.setText(ContractConstants.TIME_PM_TO_COLUMN_TITLE);
+        totalDayHours.setText(ContractConstants.TIME_DURATION_WORK_DAY_COLUMN_TITLE);
 
         contract_schedule_table.setEditable(true);
 
@@ -128,7 +128,7 @@ public class ContractSchedule extends AnchorPane {
         contract_schedule_table.setOnKeyPressed(this::verifyRequestWithSpecialKeyCode);
 
         List<ContractScheduleDayDTO> contractScheduleDayDTOList = new ArrayList<>();
-        for(int i = 0; i <= Parameters.LAST_ROW_SCHEDULE_TABLE; i++){
+        for(int i = 0; i <= ContractConstants.LAST_ROW_SCHEDULE_TABLE; i++){
             contractScheduleDayDTOList.add(
                     ContractScheduleDayDTO.create()
                             .withTotalDayHours(Duration.ZERO)
@@ -238,7 +238,7 @@ public class ContractSchedule extends AnchorPane {
 
     private void deleteAllDataForSelectedRow(){
         Integer selectedRow = contract_schedule_table.getSelectionModel().getSelectedIndex();
-        if(selectedRow >= Parameters.FIRST_ROW_SCHEDULE_TABLE){
+        if(selectedRow >= ContractConstants.FIRST_ROW_SCHEDULE_TABLE){
             ContractScheduleDayDTO selectedItemRow = contract_schedule_table.getItems().get(selectedRow);
 
             selectedItemRow.setDayOfWeek(null);
@@ -253,8 +253,8 @@ public class ContractSchedule extends AnchorPane {
     }
 
     private Boolean verifyRowAndRowData(Integer selectedRow){
-        if(selectedRow >= Parameters.FIRST_ROW_SCHEDULE_TABLE &&
-                selectedRow <= Parameters.LAST_ROW_SCHEDULE_TABLE &&
+        if(selectedRow >= ContractConstants.FIRST_ROW_SCHEDULE_TABLE &&
+                selectedRow <= ContractConstants.LAST_ROW_SCHEDULE_TABLE &&
                 verifySelectedRowContainsData(selectedRow)) {
             return true;
             }
@@ -317,7 +317,7 @@ public class ContractSchedule extends AnchorPane {
     public Set<DayOfWeek> getTableColumnDayOfWeekData(){
 
         Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
-        for(Integer i = Parameters.FIRST_ROW_SCHEDULE_TABLE; i<= Parameters.LAST_ROW_SCHEDULE_TABLE; i++) {
+        for(Integer i = ContractConstants.FIRST_ROW_SCHEDULE_TABLE; i<= ContractConstants.LAST_ROW_SCHEDULE_TABLE; i++) {
             if(dayOfWeek.getCellData(i) != null) {
                 dayOfWeekSet.add(Utilities.converterStringToDayOfWeek(dayOfWeek.getCellData(i)));
             }
@@ -329,7 +329,7 @@ public class ContractSchedule extends AnchorPane {
     public Set<WorkDaySchedule> retrieveScheduleWithScheduleDays(){
         ObservableList<ContractScheduleDayDTO> tableItemList = contract_schedule_table.getItems();
         Set<WorkDaySchedule> schedule = new HashSet<>();
-        for(Integer i = Parameters.FIRST_ROW_SCHEDULE_TABLE; i <= Parameters.LAST_ROW_SCHEDULE_TABLE; i++){
+        for(Integer i = ContractConstants.FIRST_ROW_SCHEDULE_TABLE; i <= ContractConstants.LAST_ROW_SCHEDULE_TABLE; i++){
             String dayOfWeek = "";
             LocalDate date = null;
             LocalTime amFrom = null;

@@ -1,4 +1,4 @@
-package gmoldes.domain.dto;
+package gmoldes.domain.person.dto;
 
 public class StudyDTO {
 

@@ -1,16 +1,18 @@
-package gmoldes.services;
+package gmoldes.components.contract.new_contract.services;
 
 import gmoldes.components.contract.new_contract.components.ContractParts;
-import gmoldes.utilities.EmailData;
-import gmoldes.utilities.EmailParameters;
+import gmoldes.services.Email.EmailData;
+import gmoldes.services.Email.EmailParameters;
+import gmoldes.services.Email.EmailSender;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.nio.file.Path;
 
-public class ContractAgentNotificator {
+public class NewContractAgentNotificator {
 
-    public ContractAgentNotificator() {
+    public NewContractAgentNotificator() {
     }
 
     public Boolean sendEmailToContractAgent(Path path, String fileName, ContractParts contractParts) throws AddressException {

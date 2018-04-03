@@ -297,11 +297,11 @@ public class ContractVO implements Serializable {
     }
 
 
-//    public static ContractVO.ContractBuilder create() {
-//        return new ContractVO.ContractBuilder();
+//    public static ContractVO.ContractDTOBuilder create() {
+//        return new ContractVO.ContractDTOBuilder();
 //    }
 //
-//    public static class ContractBuilder {
+//    public static class ContractDTOBuilder {
 //
 //        private Integer id;
 //        private Integer numcontrato;
@@ -328,122 +328,122 @@ public class ContractVO implements Serializable {
 //        private Date idc;
 //        private Date preavisofin;
 //
-//        public ContractVO.ContractBuilder withId(Integer id) {
+//        public ContractVO.ContractDTOBuilder withId(Integer id) {
 //            this.id = id;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withContractNumber(Integer contractNumber) {
+//        public ContractVO.ContractDTOBuilder withContractNumber(Integer contractNumber) {
 //            this.numcontrato = contractNumber;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withVariationNumber(Integer variationNumber) {
+//        public ContractVO.ContractDTOBuilder withVariationNumber(Integer variationNumber) {
 //            this.numvariacion = variationNumber;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withVariationType(Integer variationType) {
+//        public ContractVO.ContractDTOBuilder withVariationType(Integer variationType) {
 //            this.tipovariacion = variationType;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withClientGMId(Integer clientGMId) {
+//        public ContractVO.ContractDTOBuilder withClientGMId(Integer clientGMId) {
 //            this.idcliente_gm = clientGMId;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withClientGMName(String clientGMName) {
+//        public ContractVO.ContractDTOBuilder withClientGMName(String clientGMName) {
 //            this.clientegm_name = clientGMName;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withQuoteAccountCode(String quoteAccountCode) {
+//        public ContractVO.ContractDTOBuilder withQuoteAccountCode(String quoteAccountCode) {
 //            this.contrato_ccc = quoteAccountCode;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withWorkerId(Integer workerId) {
+//        public ContractVO.ContractDTOBuilder withWorkerId(Integer workerId) {
 //            this.idtrabajador = workerId;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withWorkerName(String workerName) {
+//        public ContractVO.ContractDTOBuilder withWorkerName(String workerName) {
 //            this.trabajador_name = workerName;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withLaborCategory(String laborCategory) {
+//        public ContractVO.ContractDTOBuilder withLaborCategory(String laborCategory) {
 //            this.categoria = laborCategory;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withWeeklyWorkHours(String weeklyWorkHours) {
+//        public ContractVO.ContractDTOBuilder withWeeklyWorkHours(String weeklyWorkHours) {
 //            this.jor_trab = weeklyWorkHours;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withDaysOfWeekToWork(String jor_trab_dias) {
+//        public ContractVO.ContractDTOBuilder withDaysOfWeekToWork(String jor_trab_dias) {
 //            this.jor_trab_dias = jor_trab_dias;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withFullPartialWorkday(String fullPartialWorkday) {
+//        public ContractVO.ContractDTOBuilder withFullPartialWorkday(String fullPartialWorkday) {
 //            this.jor_tipo = fullPartialWorkday;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withTypeOfContract(String typeOfContract) {
+//        public ContractVO.ContractDTOBuilder withTypeOfContract(String typeOfContract) {
 //            this.tipoctto = typeOfContract;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withDateFrom(LocalDate dateFrom) {
+//        public ContractVO.ContractDTOBuilder withDateFrom(LocalDate dateFrom) {
 //            this.f_desde = Date.valueOf(dateFrom);
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withDateTo(LocalDate dateTo) {
+//        public ContractVO.ContractDTOBuilder withDateTo(LocalDate dateTo) {
 //            this.f_hasta = Date.valueOf(dateTo);
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
+//        public ContractVO.ContractDTOBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
 //            this.id_ctto_inem = identificationContractNumberINEM;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withCurrentContract(Boolean currentContract) {
+//        public ContractVO.ContractDTOBuilder withCurrentContract(Boolean currentContract) {
 //            this.envigor = currentContract;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withNotesForManager(String notesForManager) {
+//        public ContractVO.ContractDTOBuilder withNotesForManager(String notesForManager) {
 //            this.notas_gestor = notesForManager;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withPrivateNotes(String privateNotes) {
+//        public ContractVO.ContractDTOBuilder withPrivateNotes(String privateNotes) {
 //            this.notas_privadas = privateNotes;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withIndefiniteOrTemporalContract(Character indefiniteOrTemporalContract) {
+//        public ContractVO.ContractDTOBuilder withIndefiniteOrTemporalContract(Character indefiniteOrTemporalContract) {
 //            this.duracion = indefiniteOrTemporalContract;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withSurrogateContract(Integer surrogateContract) {
+//        public ContractVO.ContractDTOBuilder withSurrogateContract(Integer surrogateContract) {
 //            this.subrogacion = surrogateContract;
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withQuoteDataReportIDC(LocalDate quoteDataReportIDC) {
+//        public ContractVO.ContractDTOBuilder withQuoteDataReportIDC(LocalDate quoteDataReportIDC) {
 //            this.idc = Date.valueOf(quoteDataReportIDC);
 //            return this;
 //        }
 //
-//        public ContractVO.ContractBuilder withEndOfContractNotice(LocalDate endOfContractNotice) {
+//        public ContractVO.ContractDTOBuilder withEndOfContractNotice(LocalDate endOfContractNotice) {
 //            this.preavisofin = Date.valueOf(endOfContractNotice);
 //            return this;
 //        }

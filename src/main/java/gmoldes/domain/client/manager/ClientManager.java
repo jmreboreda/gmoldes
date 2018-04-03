@@ -2,10 +2,10 @@ package gmoldes.domain.client.manager;
 
 
 import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.timerecord.TimeRecordClientDTO;
-import gmoldes.persistence.dao.ClientDAO;
+import gmoldes.domain.timerecord.dto.TimeRecordClientDTO;
+import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.components.contract.persistence.dao.ContractDAO;
-import gmoldes.persistence.vo.ClientVO;
+import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.components.contract.persistence.vo.ContractVO;
 
 import java.util.ArrayList;

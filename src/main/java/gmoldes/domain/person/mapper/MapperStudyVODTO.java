@@ -1,7 +1,7 @@
 package gmoldes.domain.person.mapper;
 
-import gmoldes.domain.dto.StudyDTO;
-import gmoldes.persistence.vo.StudyVO;
+import gmoldes.domain.person.dto.StudyDTO;
+import gmoldes.domain.person.vo.StudyVO;
 
 public class MapperStudyVODTO {
 

@@ -65,11 +65,11 @@ public class ProvisionalContractData extends AnchorPane {
     public ProvisionalContractData() {
 
         this.parent = ViewLoader.load(this, CURRENT_CONTRACT_FXML);
-        this.status.setText(Parameters.NOT_REVISED);
+        this.status.setText(ContractConstants.NOT_REVISED);
         this.status.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-                if(status.getText().equals(Parameters.REVISION_WITHOUT_ERRORS)){
+                if(status.getText().equals(ContractConstants.REVISION_WITHOUT_ERRORS)){
                     status.setStyle(Parameters.GREEN_COLOR);
                 }else{
                     status.setStyle(Parameters.RED_COLOR);

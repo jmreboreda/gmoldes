@@ -1,9 +1,9 @@
 package gmoldes.domain.person.manager;
 
-import gmoldes.domain.dto.StudyDTO;
+import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.mapper.MapperStudyVODTO;
-import gmoldes.persistence.dao.StudyDAO;
-import gmoldes.persistence.vo.StudyVO;
+import gmoldes.domain.person.dao.StudyDAO;
+import gmoldes.domain.person.vo.StudyVO;
 
 public class StudyManager {
 

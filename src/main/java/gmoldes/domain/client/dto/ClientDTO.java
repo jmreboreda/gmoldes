@@ -144,11 +144,11 @@ public class ClientDTO {
         return getPersonOrCompanyName();
     }
 
-    public static ClientDTO.PersonBuilder create() {
-        return new ClientDTO.PersonBuilder();
+    public static ClientDTOBuilder create() {
+        return new ClientDTOBuilder();
     }
 
-    public static class PersonBuilder {
+    public static class ClientDTOBuilder {
 
         private Integer id;
         private Integer clientId;
@@ -163,62 +163,62 @@ public class ClientDTO {
         private Date withoutActivity;
         private String clientType;
 
-        public ClientDTO.PersonBuilder withId(Integer id) {
+        public ClientDTOBuilder withId(Integer id) {
             this.id = id;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withClientId(Integer clientId) {
+        public ClientDTOBuilder withClientId(Integer clientId) {
             this.clientId = clientId;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withNieNIF(String nieNIF) {
+        public ClientDTOBuilder withNieNIF(String nieNIF) {
             this.nieNIF = nieNIF;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withNieNIF_dup(Short nieNIF_dup) {
+        public ClientDTOBuilder withNieNIF_dup(Short nieNIF_dup) {
             this.nieNIF_dup = nieNIF_dup;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withPersonOrCompanyName(String personOrCompanyName) {
+        public ClientDTOBuilder withPersonOrCompanyName(String personOrCompanyName) {
             this.personOrCompanyName = personOrCompanyName;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withNumberOfTimes(Short numberOfTimes) {
+        public ClientDTOBuilder withNumberOfTimes(Short numberOfTimes) {
             this.numberOfTimes = numberOfTimes;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withCodeInSigaProgram(Character codeInSigaProgram) {
+        public ClientDTOBuilder withCodeInSigaProgram(Character codeInSigaProgram) {
             this.codeInSigaProgram = codeInSigaProgram;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withDateFrom(Date dateFrom) {
+        public ClientDTOBuilder withDateFrom(Date dateFrom) {
             this.dateFrom = dateFrom;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withDateTo(Date dateTo) {
+        public ClientDTOBuilder withDateTo(Date dateTo) {
             this.dateTo = dateTo;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withIsActive(Boolean isActive) {
+        public ClientDTOBuilder withIsActive(Boolean isActive) {
             this.isActive = isActive;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withWithOutActivity(Date withoutActivity) {
+        public ClientDTOBuilder withWithOutActivity(Date withoutActivity) {
             this.withoutActivity = withoutActivity;
             return this;
         }
 
-        public ClientDTO.PersonBuilder withClientType(String clientType) {
+        public ClientDTOBuilder withClientType(String clientType) {
             this.clientType = clientType;
             return this;
         }

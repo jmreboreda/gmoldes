@@ -110,11 +110,11 @@ public class ContractScheduleDayDTO {
         this.totalDayHours.set(totalDayHours);
     }
 
-    public static ContractScheduleDayDTO.ContractScheduleDTOBuilder create() {
-        return new ContractScheduleDayDTO.ContractScheduleDTOBuilder();
+    public static ContractScheduleDayDTOBuilder create() {
+        return new ContractScheduleDayDTOBuilder();
     }
 
-    public static class ContractScheduleDTOBuilder {
+    public static class ContractScheduleDayDTOBuilder {
 
         private String dayOfWeek;
         private LocalDate date;
@@ -124,37 +124,37 @@ public class ContractScheduleDayDTO {
         private LocalTime pmTo;
         private Duration totalDayHours;
 
-        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withDayOfWeek(String dayOfWeek) {
+        public ContractScheduleDayDTOBuilder withDayOfWeek(String dayOfWeek) {
             this.dayOfWeek = dayOfWeek;
             return this;
         }
 
-        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withDate(LocalDate date) {
+        public ContractScheduleDayDTOBuilder withDate(LocalDate date) {
             this.date = date;
             return this;
         }
 
-        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withAmFrom(LocalTime amFrom) {
+        public ContractScheduleDayDTOBuilder withAmFrom(LocalTime amFrom) {
             this.amFrom = amFrom;
             return this;
         }
 
-        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withAmTo(LocalTime amTo) {
+        public ContractScheduleDayDTOBuilder withAmTo(LocalTime amTo) {
             this.amTo = amTo;
             return this;
         }
 
-        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withPmFrom(LocalTime pmFrom) {
+        public ContractScheduleDayDTOBuilder withPmFrom(LocalTime pmFrom) {
             this.pmFrom = pmFrom;
             return this;
         }
 
-        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withPmTo(LocalTime pmTo) {
+        public ContractScheduleDayDTOBuilder withPmTo(LocalTime pmTo) {
             this.pmTo = pmTo;
             return this;
         }
 
-        public ContractScheduleDayDTO.ContractScheduleDTOBuilder withTotalDayHours(Duration totalDayHours) {
+        public ContractScheduleDayDTOBuilder withTotalDayHours(Duration totalDayHours) {
             this.totalDayHours = totalDayHours;
             return this;
         }

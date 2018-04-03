@@ -1,7 +1,7 @@
 package gmoldes.domain.client.controllers;
 
 import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.timerecord.TimeRecordClientDTO;
+import gmoldes.domain.timerecord.dto.TimeRecordClientDTO;
 import gmoldes.domain.client.manager.ClientManager;
 
 import java.util.List;

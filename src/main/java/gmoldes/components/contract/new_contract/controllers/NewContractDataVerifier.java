@@ -19,19 +19,19 @@ public class NewContractDataVerifier {
 
         if(contractParts.getSelectedEmployer() == null){
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
-                    Parameters.EMPLOYER_IS_NOT_SELECTED);
+                    ContractVerifierConstants.EMPLOYER_IS_NOT_SELECTED);
             return false;
         }
 
         if(contractParts.getSelectedCCC() == null){
-            if(!Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_NULL_CCC_CODE_IS_CORRECT)){
+            if(!Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_NULL_CCC_CODE_IS_CORRECT)){
                 return false;
             }
         }
 
         if(contractParts.getSelectedEmployee() == null){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
-                    Parameters.EMPLOYEE_IS_NOT_SELECTED);
+                    ContractVerifierConstants.EMPLOYEE_IS_NOT_SELECTED);
             return false;
         }
 
@@ -42,13 +42,13 @@ public class NewContractDataVerifier {
 
         if(contractData.getHourNotification() == null){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
-                    Parameters.HOUR_NOTIFICATION_IS_NOT_ESTABLISHED);
+                    ContractVerifierConstants.HOUR_NOTIFICATION_IS_NOT_ESTABLISHED);
             return false;
         }
 
         if(contractData.getContractType() == null){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
-                    Parameters.CONTRACT_TYPE_NOT_SELECTED);
+                    ContractVerifierConstants.CONTRACT_TYPE_NOT_SELECTED);
             return false;
         }
 
@@ -56,24 +56,24 @@ public class NewContractDataVerifier {
             Integer contractDurationDays = Integer.parseInt(contractData.getContractDurationDays());
             if (contractDurationDays <= 0) {
                 Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
-                        Parameters.INVALID_CONTRACT_DURATION);
+                        ContractVerifierConstants.INVALID_CONTRACT_DURATION);
                 return false;
             }
         }
 
         if(!contractData.getHoursWorkWeek().equals(contractSchedule.getHoursWorkWeek())){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
-                    Parameters.DIFFERENT_NUMBER_HOURS_CONTRACT_DATA_AND_CONTRACT_SCHEDULE);
+                    ContractVerifierConstants.DIFFERENT_NUMBER_HOURS_CONTRACT_DATA_AND_CONTRACT_SCHEDULE);
             return false;
         }
         if(contractData.getDaysOfWeekToWork().size() == 0){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
-                    Parameters.DAYS_TO_WORK_ARE_NOT_SELECTED);
+                    ContractVerifierConstants.DAYS_TO_WORK_ARE_NOT_SELECTED);
             return false;
         }
         if(contractData.getLaborCategory().length() == 0){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
-                    Parameters.LABOR_CATEGORY_IS_NOT_ESTABLISHED);
+                    ContractVerifierConstants.LABOR_CATEGORY_IS_NOT_ESTABLISHED);
             return false;
         }
 
@@ -87,7 +87,7 @@ public class NewContractDataVerifier {
 
        if(!contractDataDaysOfWeekToWork.equals(contractScheduleDayOfWeekToWork)){
            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
-                   Parameters.WORKING_DAYS_ARE_DIFFERENT_IN_CONTRACTDATA_AND_CONTRACTSCHEDULE);
+                   ContractVerifierConstants.WORKING_DAYS_ARE_DIFFERENT_IN_CONTRACTDATA_AND_CONTRACTSCHEDULE);
            return false;
        }
 

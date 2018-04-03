@@ -4,6 +4,10 @@ import com.lowagie.text.DocumentException;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.new_contract.components.*;
+import gmoldes.components.contract.new_contract.services.NewContractAgentNotificator;
+import gmoldes.components.contract.new_contract.services.NewContractDataSubfolderPDFCreator;
+import gmoldes.components.contract.new_contract.services.NewContractDataToContractAgentPDFCreator;
+import gmoldes.components.timerecord.components.TimeRecordConstants;
 import gmoldes.domain.client.controllers.ClientCCCController;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.contract.dto.OldContractToSaveDTO;
@@ -11,16 +15,17 @@ import gmoldes.domain.contract.dto.ProvisionalContractDataDTO;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.dto.*;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractAgent;
 import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.manager.ContractManager;
+import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
+import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.services.*;
-import gmoldes.utilities.EmailParameters;
+import gmoldes.services.Email.EmailParameters;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
@@ -110,7 +115,7 @@ public class NewContractMainController extends VBox {
     private void onExitButton(MouseEvent event){
         if(contractHasBeenSavedInDatabase){
             if(!contractHasBeenSentToContractAgent){
-                if(!Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.CONTRACT_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT)){
+                if(!Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT)){
                     return;
                 }
             }
@@ -123,11 +128,11 @@ public class NewContractMainController extends VBox {
         Boolean isSendOk = false;
         Path pathOut;
 
-        if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
+        if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
             ContractDataToContractAgent contractDataToContractAgent = createContractDataToContractAgent();
             pathOut = retrievePathToContractDataToContractAgentPDF(contractDataToContractAgent);
             String attachedFileName = contractDataToContractAgent.toFileName().concat(".pdf");
-            ContractAgentNotificator agentNotificator = new ContractAgentNotificator();
+            NewContractAgentNotificator agentNotificator = new NewContractAgentNotificator();
             try {
                 isSendOk = agentNotificator.sendEmailToContractAgent(pathOut, attachedFileName, this.contractParts);
             } catch (AddressException e) {
@@ -146,21 +151,21 @@ public class NewContractMainController extends VBox {
     private void onOkButton(MouseEvent event) {
 
         if (!NewContractDataVerifier.verifyContractParts(contractParts, tabPane)) {
-            setStatusRevisionErrors(Parameters.REVISION_WITH_ERRORS);
+            setStatusRevisionErrors(ContractConstants.REVISION_WITH_ERRORS);
             return;
         }
 
         if (!NewContractDataVerifier.verifyContractData(contractData, contractSchedule, tabPane)) {
-            setStatusRevisionErrors(Parameters.REVISION_WITH_ERRORS);
+            setStatusRevisionErrors(ContractConstants.REVISION_WITH_ERRORS);
             return;
         }
 
         if (!NewContractDataVerifier.verifyContractSchedule(contractData, contractSchedule, tabPane)) {
-            setStatusRevisionErrors(Parameters.REVISION_WITH_ERRORS);
+            setStatusRevisionErrors(ContractConstants.REVISION_WITH_ERRORS);
             return;
         }
 
-        setStatusRevisionErrors(Parameters.REVISION_WITHOUT_ERRORS);
+        setStatusRevisionErrors(ContractConstants.REVISION_WITHOUT_ERRORS);
     }
 
     private void onViewPDFButton(MouseEvent mouseEvent) {
@@ -192,8 +197,8 @@ public class NewContractMainController extends VBox {
         ProvisionalContractDataDTO dataDTO = retrieveProvisionalContractDataDTO();
         dataDTO.setStatus(statusText);
         provisionalContractData.refreshData(dataDTO);
-        if (statusText.equals(Parameters.REVISION_WITHOUT_ERRORS)) {
-            if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.QUESTION_SAVE_NEW_CONTRACT)) {
+        if (statusText.equals(ContractConstants.REVISION_WITHOUT_ERRORS)) {
+            if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
                 persistOldContractToSave();
             }
             contractActionComponents.enablePDFButton(true);
@@ -261,15 +266,15 @@ public class NewContractMainController extends VBox {
         if (scheduleHoursWorkWeekDuration != Duration.ZERO) {
             if (contractDataWorkWeekDuration.compareTo(scheduleHoursWorkWeekDuration) != 0) {
                 Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
-                        Parameters.CONTRACT_HOURS_DIFFERENT_FROM_SCHEDULE_HOURS);
+                        ContractMainControllerConstants.CONTRACT_HOURS_DIFFERENT_FROM_SCHEDULE_HOURS);
             }
         }
     }
 
     private void onChangeScheduleDuration(ChangeScheduleDurationEvent event) {
-        if (event.getContractScheduleTotalHoursDuration().compareTo(Parameters.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0) {
+        if (event.getContractScheduleTotalHoursDuration().compareTo(ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0) {
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
-                    Parameters.EXCEEDED_MAXIMUM_LEGAL_WEEKLY_HOURS);
+                    ContractMainControllerConstants.EXCEEDED_MAXIMUM_LEGAL_WEEKLY_HOURS);
             return;
         }
 
@@ -277,7 +282,7 @@ public class NewContractMainController extends VBox {
         assert duration != null;
         if (event.getContractScheduleTotalHoursDuration().compareTo(duration) > 0) {
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
-                    Parameters.SCHEDULE_HOURS_GREATER_THAN_CONTRACT_HOURS);
+                    ContractMainControllerConstants.SCHEDULE_HOURS_GREATER_THAN_CONTRACT_HOURS);
         }
     }
 
@@ -302,7 +307,7 @@ public class NewContractMainController extends VBox {
         }
 
         OldContractToSaveDTO oldContractToSaveDTO = OldContractToSaveDTO.create()
-                .withVariationType(Parameters.ID_INITIAL_CONTRACT_TYPE_VARIATION)
+                .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
                 .withVariationNumber(0)
                 .withClientGMId(contractParts.getSelectedEmployer().getId())
                 .withClientGMName(contractParts.getSelectedEmployer().getPersonOrCompanyName())
@@ -334,7 +339,7 @@ public class NewContractMainController extends VBox {
             contractSchedule.setMouseTransparent(true);
             contractPublicNotes.setMouseTransparent(true);
             contractPrivateNotes.setMouseTransparent(true);
-            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.CONTRACT_SAVED_OK + contractNumber);
+            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_SAVED_OK + contractNumber);
             contractActionComponents.enableOkButton(false);
             contractActionComponents.enableSendMailButton(true);
 
@@ -342,7 +347,7 @@ public class NewContractMainController extends VBox {
             printSubfoldersOfTheContract(Integer.parseInt(provisionalContractData.getContractNumber()));
 
         }else{
-            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.CONTRACT_NOT_SAVED_OK);
+            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);
         }
     }
 
@@ -356,16 +361,16 @@ public class NewContractMainController extends VBox {
         String employeeMaximumStudyLevel = studyDTO.getStudyDescription();
 
         String contractTypeDescription = this.contractData.getContractType().getDescripctto();
-        if(this.contractData.getUndefinedTemporalContract().equals(Parameters.UNDEFINED_DURATION_TEXT)){
-            contractTypeDescription = contractTypeDescription + ", " + Parameters.UNDEFINED_DURATION_TEXT;
+        if(this.contractData.getUndefinedTemporalContract().equals(ContractConstants.UNDEFINED_DURATION_TEXT)){
+            contractTypeDescription = contractTypeDescription + ", " + ContractConstants.UNDEFINED_DURATION_TEXT;
         }else{
-            contractTypeDescription = contractTypeDescription + ", " + Parameters.TEMPORAL_DURATION_TEXT;
+            contractTypeDescription = contractTypeDescription + ", " + ContractConstants.TEMPORAL_DURATION_TEXT;
         }
 
-        if(this.contractData.getFullPartialWorkDay().equals(Parameters.FULL_WORKDAY)){
-            contractTypeDescription = contractTypeDescription + ", " + Parameters.FULL_WORKDAY;
+        if(this.contractData.getFullPartialWorkDay().equals(ContractConstants.FULL_WORKDAY)){
+            contractTypeDescription = contractTypeDescription + ", " + ContractConstants.FULL_WORKDAY;
         }else{
-            contractTypeDescription = contractTypeDescription + ", " + Parameters.PARTIAL_WORKDAY;
+            contractTypeDescription = contractTypeDescription + ", " + ContractConstants.PARTIAL_WORKDAY;
             contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + " horas/semana]";
         }
 
@@ -413,16 +418,16 @@ public class NewContractMainController extends VBox {
         String employeeMaximumStudyLevel = studyDTO.getStudyDescription();
 
         String contractTypeDescription = this.contractData.getContractType().getDescripctto();
-        if(this.contractData.getUndefinedTemporalContract().equals(Parameters.UNDEFINED_DURATION_TEXT)){
-            contractTypeDescription = contractTypeDescription + ", " + Parameters.UNDEFINED_DURATION_TEXT;
+        if(this.contractData.getUndefinedTemporalContract().equals(ContractConstants.UNDEFINED_DURATION_TEXT)){
+            contractTypeDescription = contractTypeDescription + ", " + ContractConstants.UNDEFINED_DURATION_TEXT;
         }else{
-            contractTypeDescription = contractTypeDescription + ", " + Parameters.TEMPORAL_DURATION_TEXT;
+            contractTypeDescription = contractTypeDescription + ", " + ContractConstants.TEMPORAL_DURATION_TEXT;
         }
 
-        if(this.contractData.getFullPartialWorkDay().equals(Parameters.FULL_WORKDAY)){
-            contractTypeDescription = contractTypeDescription + ", " + Parameters.FULL_WORKDAY;
+        if(this.contractData.getFullPartialWorkDay().equals(ContractConstants.FULL_WORKDAY)){
+            contractTypeDescription = contractTypeDescription + ", " + ContractConstants.FULL_WORKDAY;
         }else{
-            contractTypeDescription = contractTypeDescription + ", " + Parameters.PARTIAL_WORKDAY;
+            contractTypeDescription = contractTypeDescription + ", " + ContractConstants.PARTIAL_WORKDAY;
             contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + " horas/semana]";
         }
 
@@ -474,7 +479,7 @@ public class NewContractMainController extends VBox {
         Path pathToContractDataToContractAgent = Paths.get(Parameters.USER_HOME, temporalDir, contractDataToContractAgent.toFileName().concat(".pdf"));
         try {
             Files.createDirectories(pathToContractDataToContractAgent.getParent());
-            pathOut = ContractDataToContractAgentPDFCreator.createContractDataToContractAgentPDF(contractDataToContractAgent, pathToContractDataToContractAgent);
+            pathOut = NewContractDataToContractAgentPDFCreator.createContractDataToContractAgentPDF(contractDataToContractAgent, pathToContractDataToContractAgent);
         } catch (IOException | DocumentException e) {
             e.printStackTrace();
         }
@@ -495,7 +500,7 @@ public class NewContractMainController extends VBox {
         Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(".pdf"));
         try {
             Files.createDirectories(pathToContractDataSubfolder.getParent());
-            pathOut = ContractDataSubfolderPDFCreator.createContractDataSubfolderPDF(contractDataSubfolder, pathToContractDataSubfolder);
+            pathOut = NewContractDataSubfolderPDFCreator.createContractDataSubfolderPDF(contractDataSubfolder, pathToContractDataSubfolder);
         } catch (IOException | DocumentException e) {
             e.printStackTrace();
         }
@@ -504,7 +509,7 @@ public class NewContractMainController extends VBox {
     }
 
     private void verifyPrintTimeRecord(){
-        if(this.contractData.getFullPartialWorkDay().equals(Parameters.PARTIAL_WORKDAY)){
+        if(this.contractData.getFullPartialWorkDay().equals(ContractConstants.PARTIAL_WORKDAY)){
             TimeRecord timeRecord = TimeRecord.create()
                     .withNameOfMonth(this.contractData.getDateFrom().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()))
                     .withYearNumber(Integer.toString(contractData.getDateFrom().getYear()))
@@ -512,7 +517,7 @@ public class NewContractMainController extends VBox {
                     .withQuoteAccountCode(this.contractParts.getSelectedCCC().getCcc_inss())
                     .withEmployeeName(this.contractParts.getSelectedEmployee().getApellidos() + ", " + this.contractParts.getSelectedEmployee().getNom_rzsoc())
                     .withEmployeeNIF(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
-                    .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + " " + Parameters.HOURS_WORK_WEEK_TEXT)
+                    .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + " " + ContractConstants.HOURS_WORK_WEEK_TEXT)
                     .build();
 
             /* Create the TimeRecordPDF */
@@ -520,11 +525,11 @@ public class NewContractMainController extends VBox {
             try {
                 pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord);
                 if(pathToTimeRecordPDF == null){
-                    Message.errorMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.TIME_RECORD_PDF_NOT_CREATED);
+                    Message.errorMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
                     return;
                 }
             } catch (IOException | DocumentException e) {
-                Message.errorMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.TIME_RECORD_PDF_NOT_CREATED);
+                Message.errorMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
                 e.printStackTrace();
             }
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT, "Registro horario creado en:" + "\n" + pathToTimeRecordPDF + "\n");
@@ -553,7 +558,7 @@ public class NewContractMainController extends VBox {
 
         try {
             String printOk = Printer.printPDF(pathToContractDataSubfolder.toString(), attributes);
-            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
+            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
                 Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_PARAMETERS);
             }

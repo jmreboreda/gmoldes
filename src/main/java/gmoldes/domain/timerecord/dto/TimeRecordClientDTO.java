@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gmoldes.domain.timerecord;
+package gmoldes.domain.timerecord.dto;
 
 
 public class TimeRecordClientDTO {

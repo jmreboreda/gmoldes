@@ -131,11 +131,11 @@ public class ProvisionalContractDataDTO {
         this.status = status;
     }
 
-    public static ProvisionalContractDataDTO.DataBuilder create() {
-        return new ProvisionalContractDataDTO.DataBuilder();
+    public static ProvisionalContractDataDTOBuilder create() {
+        return new ProvisionalContractDataDTOBuilder();
     }
 
-    public static class DataBuilder {
+    public static class ProvisionalContractDataDTOBuilder {
 
         private String employerFullName;
         private String employeeFullName;
@@ -150,62 +150,62 @@ public class ProvisionalContractDataDTO {
         private String laborCategory;
         private String status;
 
-        public ProvisionalContractDataDTO.DataBuilder withEmployerFullName (String employerFullName) {
+        public ProvisionalContractDataDTOBuilder withEmployerFullName (String employerFullName) {
             this.employerFullName = employerFullName;
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withEmployeeFullName(String employeeFullName) {
+        public ProvisionalContractDataDTOBuilder withEmployeeFullName(String employeeFullName) {
             this.employeeFullName = employeeFullName;
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withQuoteAccountCode(String quoteAccountCode) {
+        public ProvisionalContractDataDTOBuilder withQuoteAccountCode(String quoteAccountCode) {
             this.quoteAccountCode = quoteAccountCode;
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withContractType(String contractType) {
+        public ProvisionalContractDataDTOBuilder withContractType(String contractType) {
             this.contractType = contractType;
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withDateFrom(String dateFrom) {
+        public ProvisionalContractDataDTOBuilder withDateFrom(String dateFrom) {
             this.dateFrom = dateFrom;
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withDateTo(String dateTo) {
+        public ProvisionalContractDataDTOBuilder withDateTo(String dateTo) {
             this.dateTo = dateTo;
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withDurationDays(String durationDays) {
+        public ProvisionalContractDataDTOBuilder withDurationDays(String durationDays) {
             this.durationDays = durationDays;
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withWorkDayType(String workDayType) {
+        public ProvisionalContractDataDTOBuilder withWorkDayType(String workDayType) {
             this.workDayType = workDayType;
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withNumberHoursPerWeek(String numberHoursPerWeek) {
+        public ProvisionalContractDataDTOBuilder withNumberHoursPerWeek(String numberHoursPerWeek) {
             this.numberHoursPerWeek = numberHoursPerWeek;
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withDaysWeekToWork(Set<DayOfWeek> daysWeekToWork) {
+        public ProvisionalContractDataDTOBuilder withDaysWeekToWork(Set<DayOfWeek> daysWeekToWork) {
             this.daysWeekToWork = daysWeekToWork;
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withLaborCategory(String laborCategory) {
+        public ProvisionalContractDataDTOBuilder withLaborCategory(String laborCategory) {
             this.laborCategory = laborCategory;
             return this;
         }
 
-        public ProvisionalContractDataDTO.DataBuilder withStatus(String status) {
+        public ProvisionalContractDataDTOBuilder withStatus(String status) {
             this.status = status;
             return this;
         }
