@@ -9,10 +9,13 @@ import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class Utilities {
@@ -61,7 +64,7 @@ public class Utilities {
 
     public static  String converterDurationToTimeString(Duration duration){
         if(duration == Duration.ZERO){
-            return "0:00";
+            return "00:00";
         }
 
         String durationToString = duration.toString();
@@ -78,6 +81,33 @@ public class Utilities {
         }
 
         return durationToString;
+    }
+
+    public static DayOfWeek converterStringToDayOfWeek(String dayOfWeekString){
+        DayOfWeek dayOfWeek = null;
+        if (dayOfWeekString.equals(DayOfWeek.MONDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+                dayOfWeek = DayOfWeek.MONDAY;
+        }
+        else if (dayOfWeekString.equals(DayOfWeek.TUESDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+            dayOfWeek = DayOfWeek.TUESDAY;
+        }
+        else if (dayOfWeekString.equals(DayOfWeek.WEDNESDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+            dayOfWeek = DayOfWeek.WEDNESDAY;
+        }
+        else if (dayOfWeekString.equals(DayOfWeek.THURSDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+            dayOfWeek = DayOfWeek.THURSDAY;
+        }
+        else if (dayOfWeekString.equals(DayOfWeek.FRIDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+            dayOfWeek = DayOfWeek.FRIDAY;
+        }
+        else if (dayOfWeekString.equals(DayOfWeek.SATURDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+            dayOfWeek = DayOfWeek.SATURDAY;
+        }
+        else if (dayOfWeekString.equals(DayOfWeek.SUNDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {
+            dayOfWeek = DayOfWeek.SUNDAY;
+        }
+
+        return dayOfWeek;
     }
 
     public static Date validateStringAsTime(String time){

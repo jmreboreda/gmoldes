@@ -1,28 +1,32 @@
 package gmoldes.utilities;
 
-import javafx.scene.input.KeyCode;
-
-import java.time.Duration;
-
 public class Parameters {
 
     /** Printer */
     public static final String DEFAULT_PRINTER = "KONICA MINOLTA";
+    public static final String NO_PRINTER_FOR_THESE_PARAMETERS = "No hay impresora para imprimir con los atributos indicados.";
 
-    /** Contract data */
-    public static final String FULL_WORKDAY = "A tiempo completo";
-    public static final String PARTIAL_WORKDAY = "A tiempo parcial";
-    public static final String UNDEFINED_DURATION = "Indefinido";
-    public static final String HOURS_WORK_WEEK_TEXT = "Horas de trabajo por semana";
-    public static final Duration LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK = Duration.parse("PT40H"); // 40 hours of work per week.
-    public static final String NORMAL_CONTRACT_TYPE_DESCRIPTION = "NORMAL";
-    public static final String ORDINARY_CONTRACT_TYPE_DESCRIPTION = "ORDINARIO";
+    /** System */
+    public static final String OPERATING_SYSTEM = System.getProperty("os.name");
+    public static final String USER_HOME = System.getProperty("user.home");
+    public static final String WINDOWS_TEMPORAL_DIR = "/AppData/Local/Temp/Borrame";
+    public static final String LINUX_TEMPORAL_DIR = "/Temp/Borrame";
 
-    /** Various */
-    public static final Integer MAXIMUM_VALUE_MINUTES_IN_HOUR = 59;
+
+    /** Colors */
+    public static final String GREEN_COLOR = "-fx-text-fill: #006400;";
+    public static final String RED_COLOR ="-fx-text-fill: #c90c0c;";
+
+    /** Messages */
+    public static final String SYSTEM_INFORMATION_TEXT = "Información del sistema";
     public static final String DATE_LABEL_TEXT = "Fecha";
     public static final String DATE_FROM_TEXT = "Desde";
     public static final String DATE_TO_TEXT = "Hasta";
     public static final String DEFAULT_DATE_FORMAT = "dd-MM-yyyy";
+    public static final String DEFAULT_TIME_FORMAT = "HH:mm";
+    public static final String NEW_CONTRACT_TEXT = "Nuevo contrato";
+
+    /** Various */
+    public static final Integer MAXIMUM_VALUE_MINUTES_IN_HOUR = 59;
 
 }

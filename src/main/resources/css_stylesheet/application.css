@@ -1,6 +1,6 @@
 .root{
             -fx-font-size: 11pt;
-            -fx-font-family: "Open Sans";
+            -fx-font-family: "Arial";
             }
 
 .choice-box .label {
@@ -10,12 +10,36 @@
              .context-menu {
             -fx-font-size: 12pt;
             -fx-text-fill: #0000FF;
-            /*-fx-background-color: #FFFFE0;*/
             }
 
 .tab:selected .tab-label {
     -fx-alignment: CENTER;
     -fx-text-fill: #660000;
+}
+
+/*******************************************************
+                    Contract Schedule
+*******************************************************/
+#contract_schedule_table .column-header .label {
+                             -fx-text-fill: #191970;
+                             -fx-font-weight: normal;
+                         }
+
+#contract_schedule_table .table-column{
+    -fx-text-fill: #006400;
+}
+
+.tableDateStyle{
+    -fx-alignment: CENTER;
+}
+
+.tableTimeStyle{
+    -fx-alignment: CENTER;
+}
+
+.tableTotalDayHoursStyle {
+    -fx-alignment: CENTER-RIGHT;
+    -fx-font-weight: bold;
 }
 
 /*

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<fx:root fx:id="provisionalContractData" style="-fx-background-color: #dcdcdc;" type="AnchorPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="provisionalContractData" style="-fx-background-color: #dcdcdc;" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane style="-fx-background-color: #dcdcdc;">
          <columnConstraints>
@@ -130,7 +130,7 @@
                   <Insets left="10.0" />
                </padding>
             </Label>
-            <HBox prefHeight="20.0" prefWidth="270.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="5">
+            <HBox mouseTransparent="true" prefHeight="20.0" prefWidth="270.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="5">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -241,7 +241,7 @@
                <GridPane.margin>
                   <Insets bottom="25.0" />
                </GridPane.margin></Label>
-            <Label text="Horario" wrapText="true" GridPane.rowIndex="7">
+            <Label text="Status contrato" wrapText="true" GridPane.rowIndex="7">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -252,7 +252,9 @@
                   <Insets left="10.0" />
                </padding>
             </Label>
-            <Label prefHeight="16.0" prefWidth="114.0" text="No revisado" textFill="#c90c0c" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Label fx:id="status" prefHeight="21.0" prefWidth="423.0" textFill="#c90c0c" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="7" />
+            <Label fx:id="numContractText" alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="151.0" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+            <Label fx:id="contractNumber" alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="68.0" GridPane.columnIndex="5" GridPane.rowIndex="7" />
          </children>
          <cursor>
             <Cursor fx:constant="HAND" />

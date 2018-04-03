@@ -1,10 +1,10 @@
 package gmoldes;
 
 
-import gmoldes.check.InitialChecks;
-import gmoldes.controllers.InitialMenuController;
-import gmoldes.domain.dto.ContractDTO;
-import gmoldes.domain.dto.IDCControlDTO;
+import gmoldes.domain.check.InitialChecks;
+import gmoldes.components.initial_menu.InitialMenuController;
+import gmoldes.domain.contract.dto.ContractDTO;
+import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.utilities.Message;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -20,7 +20,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        
+
         initialControlProcesses(primaryStage);
 
         /* Initial menu */

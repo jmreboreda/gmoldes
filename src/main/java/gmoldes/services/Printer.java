@@ -4,6 +4,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.print.*;
@@ -53,11 +54,10 @@ public class Printer {
             datts.add(OrientationRequested.PORTRAIT);
         }
         datts.add(new Copies(1));
-        datts.add(new JobName("GmoldesJob", null));
+        datts.add(new JobName("GmoldesJob", Locale.getDefault()));
 
         PrintService printServiceForAttributes = getPrintServiceForAttributes(datts);
         if(printServiceForAttributes == null){
-            System.out.println("No printer can print the PDF with those attributes...");
             return "fail";
         }
         else {
