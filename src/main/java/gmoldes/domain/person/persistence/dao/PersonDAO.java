@@ -1,8 +1,8 @@
-package gmoldes.domain.person.dao;
+package gmoldes.domain.person.persistence.dao;
 
 
 import gmoldes.domain.client.persistence.vo.ClientVO;
-import gmoldes.domain.person.vo.PersonVO;
+import gmoldes.domain.person.persistence.vo.PersonVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

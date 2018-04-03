@@ -1,7 +1,7 @@
-package gmoldes.domain.person.dao;
+package gmoldes.domain.person.persistence.dao;
 
 
-import gmoldes.domain.person.vo.StudyVO;
+import gmoldes.domain.person.persistence.vo.StudyVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
