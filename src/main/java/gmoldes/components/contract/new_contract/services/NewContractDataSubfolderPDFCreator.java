@@ -19,7 +19,7 @@ import java.util.Locale;
 
 public class NewContractDataSubfolderPDFCreator {
 
-    private static final String PATH_TO_PDF_TEMPLATE = "/pdf_forms/DGM_003_Datos_Alta_o_Cambio_Contrato_Trabajo_A3_LO_Version2.pdf";
+    private static final String PATH_TO_PDF_TEMPLATE = "/pdf_forms/DGM_003_Datos_Alta_o_Cambio_Contrato_Trabajo.pdf";
 
     public NewContractDataSubfolderPDFCreator() {
     }
