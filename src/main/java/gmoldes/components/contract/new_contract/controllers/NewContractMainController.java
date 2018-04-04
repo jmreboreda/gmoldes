@@ -32,7 +32,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -92,6 +95,11 @@ public class NewContractMainController extends VBox {
 
     @FXML
     public void initialize() {
+
+        setTabIcon();
+
+
+
         contractActionComponents.setOnSendMailButton(this::onSendMailButton);
         contractActionComponents.setOnOkButton(this::onOkButton);
         contractActionComponents.setOnViewPDFButton(this::onViewPDFButton);
@@ -109,6 +117,25 @@ public class NewContractMainController extends VBox {
         contractParts.setOnSelectEmployee(this::onSelectEmployee);
         contractData.setOnChangeContractDataHoursWorkWeek(this::onChangeContractDataHoursWorkWeek);
         contractSchedule.setOnChangeScheduleDuration(this::onChangeScheduleDuration);
+    }
+
+    private void setTabIcon(){
+        Tab contractPartsPane = tabPane.getTabs().get(0);
+        ImageView iconParts = new ImageView(new Image("/pics/new_contract_icon/contract_parts_icon.png"));
+        iconParts.setFitWidth(20); iconParts.setFitHeight(20);
+        contractPartsPane.setGraphic(iconParts);
+
+        Tab contractDataPane = tabPane.getTabs().get(1);
+        ImageView iconData = new ImageView(new Image("/pics/new_contract_icon/contract_data_icon.png"));
+        iconData.setFitWidth(20); iconData.setFitHeight(20);
+        contractDataPane.setGraphic(iconData);
+
+        Tab contractSchedulePane = tabPane.getTabs().get(2);
+        ImageView iconSchedule = new ImageView(new Image("/pics/new_contract_icon/contract_schedule_icon.png"));
+        iconSchedule.setFitWidth(20); iconSchedule.setFitHeight(20);
+        contractSchedulePane.setGraphic(iconSchedule);
+
+
     }
 
     private void onExitButton(MouseEvent event){
