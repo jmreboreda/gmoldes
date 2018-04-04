@@ -96,10 +96,6 @@ public class NewContractMainController extends VBox {
     @FXML
     public void initialize() {
 
-        setTabIcon();
-
-
-
         contractActionComponents.setOnSendMailButton(this::onSendMailButton);
         contractActionComponents.setOnOkButton(this::onOkButton);
         contractActionComponents.setOnViewPDFButton(this::onViewPDFButton);
@@ -117,9 +113,12 @@ public class NewContractMainController extends VBox {
         contractParts.setOnSelectEmployee(this::onSelectEmployee);
         contractData.setOnChangeContractDataHoursWorkWeek(this::onChangeContractDataHoursWorkWeek);
         contractSchedule.setOnChangeScheduleDuration(this::onChangeScheduleDuration);
+
+        setTabPaneIcon();
+
     }
 
-    private void setTabIcon(){
+    private void setTabPaneIcon(){
         Tab contractPartsPane = tabPane.getTabs().get(0);
         ImageView iconParts = new ImageView(new Image("/pics/new_contract_icon/contract_parts_icon.png"));
         iconParts.setFitWidth(20); iconParts.setFitHeight(20);
@@ -135,7 +134,15 @@ public class NewContractMainController extends VBox {
         iconSchedule.setFitWidth(20); iconSchedule.setFitHeight(20);
         contractSchedulePane.setGraphic(iconSchedule);
 
+        Tab publicNotesPane = tabPane.getTabs().get(3);
+        ImageView iconPublicNotes = new ImageView(new Image("/pics/new_contract_icon/public_notes_icon.png"));
+        iconPublicNotes.setFitWidth(20); iconPublicNotes.setFitHeight(20);
+        publicNotesPane.setGraphic(iconPublicNotes);
 
+        Tab privateNotesPane = tabPane.getTabs().get(4);
+        ImageView iconPrivateNotes = new ImageView(new Image("/pics/new_contract_icon/private_notes_icon.png"));
+        iconPrivateNotes.setFitWidth(20); iconPrivateNotes.setFitHeight(20);
+        privateNotesPane.setGraphic(iconPrivateNotes);
     }
 
     private void onExitButton(MouseEvent event){
