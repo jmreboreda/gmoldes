@@ -10,6 +10,7 @@ import gmoldes.components.contract.new_contract.forms.ContractDataToContractAgen
 import gmoldes.components.contract.new_contract.services.NewContractAgentNotificator;
 import gmoldes.components.contract.new_contract.services.NewContractDataSubfolderPDFCreator;
 import gmoldes.components.contract.new_contract.services.NewContractDataToContractAgentPDFCreator;
+import gmoldes.components.contract.new_contract.services.NewContractRecordHistorySubfolderPDFCreator;
 import gmoldes.components.timerecord.components.TimeRecordConstants;
 import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.client.controllers.ClientCCCController;
@@ -339,12 +340,20 @@ public class NewContractMainController extends VBox {
             endOfContractNotice = LocalDate.of(9999, 12, 31);
         }
 
+        String quoteAccountCode = null;
+
+        if(contractParts.getSelectedCCC() == null){
+            quoteAccountCode = "";
+        }else{
+            quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
+        }
+
         OldContractToSaveDTO oldContractToSaveDTO = OldContractToSaveDTO.create()
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
                 .withVariationNumber(0)
                 .withClientGMId(contractParts.getSelectedEmployer().getId())
                 .withClientGMName(contractParts.getSelectedEmployer().getPersonOrCompanyName())
-                .withQuoteAccountCode(contractParts.getSelectedCCC().toString())
+                .withQuoteAccountCode(quoteAccountCode)
                 .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
                 .withWorkerName(contractParts.getSelectedEmployee().toString())
                 .withLaborCategory(contractData.getLaborCategory())
@@ -388,6 +397,14 @@ public class NewContractMainController extends VBox {
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
 
+        String quoteAccountCode = null;
+
+        if(contractParts.getSelectedCCC() == null){
+            quoteAccountCode = "";
+        }else{
+            quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
+        }
+
         Integer studyId = Integer.parseInt(this.contractParts.getSelectedEmployee().getNivestud().toString());
         StudyManager studyManager = new StudyManager();
         StudyDTO studyDTO = studyManager.findStudyById(studyId);
@@ -418,7 +435,7 @@ public class NewContractMainController extends VBox {
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
                 .withOfficialContractNumber(null)
                 .withEmployerFullName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
-                .withEmployerQuoteAccountCode(this.contractParts.getSelectedCCC().getCcc_inss())
+                .withEmployerQuoteAccountCode(quoteAccountCode)
                 .withNotificationDate(this.contractData.getDateNotification())
                 .withNotificationHour(LocalTime.parse(contractData.getHourNotification()))
                 .withEmployeeFullName(this.contractParts.getSelectedEmployee().toString())
@@ -444,6 +461,14 @@ public class NewContractMainController extends VBox {
     private ContractDataSubfolder createContractDataSubfolder(Integer contractNumber){
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
+
+        String quoteAccountCode = null;
+
+        if(contractParts.getSelectedCCC() == null){
+            quoteAccountCode = "";
+        }else{
+            quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
+        }
 
         Integer studyId = Integer.parseInt(this.contractParts.getSelectedEmployee().getNivestud().toString());
         StudyManager studyManager = new StudyManager();
@@ -475,7 +500,7 @@ public class NewContractMainController extends VBox {
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
                 .withOfficialContractNumber(null)
                 .withEmployerFullName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
-                .withEmployerQuoteAccountCode(this.contractParts.getSelectedCCC().getCcc_inss())
+                .withEmployerQuoteAccountCode(quoteAccountCode)
                 .withNotificationDate(this.contractData.getDateNotification())
                 .withNotificationHour(LocalTime.parse(contractData.getHourNotification()))
                 .withEmployeeFullName(this.contractParts.getSelectedEmployee().toString())
@@ -541,13 +566,44 @@ public class NewContractMainController extends VBox {
         return pathOut;
     }
 
+    private Path retrievePathToContractRecordHistorySubfolderPDF(ContractDataSubfolder contractDataSubfolder){
+        String temporalDir = null;
+        Path pathOut = null;
+        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("linux")){
+            temporalDir = Parameters.LINUX_TEMPORAL_DIR;
+        }
+        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
+            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
+        }
+
+        String fileName = "Expediente_contrato_trabajo_" + Utilities.replaceWithUnderscore(contractDataSubfolder.getEmployeeFullName());
+
+        Path pathToContractRecordHistorySubfolder = Paths.get(Parameters.USER_HOME, temporalDir, fileName.concat(".pdf"));
+        try {
+            Files.createDirectories(pathToContractRecordHistorySubfolder.getParent());
+            pathOut = NewContractRecordHistorySubfolderPDFCreator.createContractRecordHistorySubfolderPDF(contractDataSubfolder, pathToContractRecordHistorySubfolder);
+        } catch (IOException | DocumentException e) {
+            e.printStackTrace();
+        }
+
+        return pathOut;
+    }
+
     private void verifyPrintTimeRecord(){
         if(this.contractData.getFullPartialWorkDay().equals(ContractConstants.PARTIAL_WORKDAY)){
+            String quoteAccountCode = null;
+
+            if(contractParts.getSelectedCCC() == null){
+                quoteAccountCode = "";
+            }else{
+                quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
+            }
+
             TimeRecord timeRecord = TimeRecord.create()
                     .withNameOfMonth(this.contractData.getDateFrom().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()))
                     .withYearNumber(Integer.toString(contractData.getDateFrom().getYear()))
                     .withEnterpriseName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
-                    .withQuoteAccountCode(this.contractParts.getSelectedCCC().getCcc_inss())
+                    .withQuoteAccountCode(quoteAccountCode)
                     .withEmployeeName(this.contractParts.getSelectedEmployee().getApellidos() + ", " + this.contractParts.getSelectedEmployee().getNom_rzsoc())
                     .withEmployeeNIF(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
                     .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + " " + ContractConstants.HOURS_WORK_WEEK_TEXT)
@@ -601,5 +657,18 @@ public class NewContractMainController extends VBox {
 
         //TODO Subfolder record of contract history
         /** Subfolder record of contract history */
+
+        Path pathToContractRecordHistorySubfolder = retrievePathToContractRecordHistorySubfolderPDF(contractDataSubfolder);
+
+        try {
+            String printOk = Printer.printPDF(pathToContractRecordHistorySubfolder.toString(), attributes);
+            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SUBFOLFER_RECORD_OF_CONTRACT_HISTORY_TO_PRINTER_OK);
+            if(!printOk.equals("ok")){
+                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_PARAMETERS);
+            }
+        } catch (IOException | PrinterException e) {
+            e.printStackTrace();
+        }
+
     }
 }

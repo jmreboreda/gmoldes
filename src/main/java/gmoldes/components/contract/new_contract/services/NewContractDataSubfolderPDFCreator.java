@@ -52,11 +52,11 @@ public class NewContractDataSubfolderPDFCreator {
         if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.TUESDAY)) {
             contractDataSubfolderPDFFields.setField("tuesday", "Yes");
         }
-        if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.THURSDAY)) {
-            contractDataSubfolderPDFFields.setField("thursday", "Yes");
-        }
         if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.WEDNESDAY)) {
             contractDataSubfolderPDFFields.setField("wednesday", "Yes");
+        }
+        if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.THURSDAY)) {
+            contractDataSubfolderPDFFields.setField("thursday", "Yes");
         }
         if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.FRIDAY)) {
             contractDataSubfolderPDFFields.setField("friday", "Yes");
