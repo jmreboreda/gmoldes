@@ -486,7 +486,7 @@ public class NewContractMainController extends VBox {
             contractTypeDescription = contractTypeDescription + ", " + ContractConstants.FULL_WORKDAY;
         }else{
             contractTypeDescription = contractTypeDescription + ", " + ContractConstants.PARTIAL_WORKDAY;
-            contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + " horas/semana]";
+            //contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + " horas/semana]";
         }
 
         Duration contractDurationDays = Duration.ZERO;
@@ -513,6 +513,7 @@ public class NewContractMainController extends VBox {
                 + " " + this.contractParts.getSelectedEmployee().getLocalidad())
                 .withEmployeeMaxStudyLevel(employeeMaximumStudyLevel)
                 .withDayOfWeekSet(this.contractData.getDaysOfWeekToWork())
+                .withHoursWorkWeek(Utilities.converterTimeStringToDuration(this.contractData.getHoursWorkWeek()))
                 .withContractTypeDescription(contractTypeDescription)
                 .withStartDate(this.contractData.getDateFrom())
                 .withEndDate(this.contractData.getDateTo())
@@ -655,7 +656,6 @@ public class NewContractMainController extends VBox {
             e.printStackTrace();
         }
 
-        //TODO Subfolder record of contract history
         /** Subfolder record of contract history */
 
         Path pathToContractRecordHistorySubfolder = retrievePathToContractRecordHistorySubfolderPDF(contractDataSubfolder);

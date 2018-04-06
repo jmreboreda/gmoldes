@@ -29,7 +29,6 @@ public class NewContractRecordHistorySubfolderPDFCreator {
         PdfReader reader = new PdfReader(PATH_TO_PDF_TEMPLATE);
         PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(pathOut.toString()));
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
         String workDays = "";
 
@@ -78,7 +77,7 @@ public class NewContractRecordHistorySubfolderPDFCreator {
         }
         contractDataSubfolderPDFFields.setField("contractTypeDescription",contractDataSubfolder.getContractTypeDescription());
         contractDataSubfolderPDFFields.setField("laborCategory",contractDataSubfolder.getLaborCategory());
-        contractDataSubfolderPDFFields.setField("hoursWorkWeek", "TO-DO");
+        contractDataSubfolderPDFFields.setField("hoursWorkWeek", Utilities.converterDurationToTimeString(contractDataSubfolder.getHoursWorkWeek()));
 
         contractDataSubfolderPDFFields.setField("workDays",workDays);
 
