@@ -34,16 +34,16 @@ public class NewContractRecordHistorySubfolderPDFCreator {
         String workDays = "";
 
         AcroFields contractDataSubfolderPDFFields = stamp.getAcroFields();
-        contractDataSubfolderPDFFields.setField("employerName",contractDataSubfolder.getEmployerFullName());
+        contractDataSubfolderPDFFields.setField("employerFullName",contractDataSubfolder.getEmployerFullName());
         contractDataSubfolderPDFFields.setField("quoteAccountCode",contractDataSubfolder.getEmployerQuoteAccountCode());
-        contractDataSubfolderPDFFields.setField("employeeName",contractDataSubfolder.getEmployeeFullName());
+        contractDataSubfolderPDFFields.setField("employeeFullName",contractDataSubfolder.getEmployeeFullName());
         contractDataSubfolderPDFFields.setField("employeeNIF",contractDataSubfolder.getEmployeeNif());
         contractDataSubfolderPDFFields.setField("employeeNASS",contractDataSubfolder.getEmployeeNASS());
-        contractDataSubfolderPDFFields.setField("birthDate",contractDataSubfolder.getEmployeeBirthDate());
-        contractDataSubfolderPDFFields.setField("civilState",contractDataSubfolder.getEmployeeCivilState());
-        contractDataSubfolderPDFFields.setField("nationality",contractDataSubfolder.getEmployeeNationality());
-        contractDataSubfolderPDFFields.setField("address",contractDataSubfolder.getEmployeeFullAddress());
-        contractDataSubfolderPDFFields.setField("studyLevel",contractDataSubfolder.getEmployeeMaxStudyLevel());
+        contractDataSubfolderPDFFields.setField("employeeBirthDate",contractDataSubfolder.getEmployeeBirthDate());
+        contractDataSubfolderPDFFields.setField("employeeCivilState",contractDataSubfolder.getEmployeeCivilState());
+        contractDataSubfolderPDFFields.setField("employeeNationality",contractDataSubfolder.getEmployeeNationality());
+        contractDataSubfolderPDFFields.setField("employeeAddress",contractDataSubfolder.getEmployeeFullAddress());
+        contractDataSubfolderPDFFields.setField("employeeMaximumStudyLevel",contractDataSubfolder.getEmployeeMaxStudyLevel());
         if(contractDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.MONDAY)) {
             workDays = workDays + "l";
         }
