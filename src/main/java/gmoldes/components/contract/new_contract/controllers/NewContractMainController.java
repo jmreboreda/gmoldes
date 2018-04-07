@@ -658,7 +658,8 @@ public class NewContractMainController extends VBox {
 
         /** Subfolder record of contract history */
 
-        Path pathToContractRecordHistorySubfolder = retrievePathToContractRecordHistorySubfolderPDF(contractDataSubfolder);
+        ContractDataSubfolder copy = contractDataSubfolder;
+        Path pathToContractRecordHistorySubfolder = retrievePathToContractRecordHistorySubfolderPDF(copy);
 
         try {
             String printOk = Printer.printPDF(pathToContractRecordHistorySubfolder.toString(), attributes);
