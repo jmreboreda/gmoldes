@@ -334,14 +334,12 @@ public class NewContractMainController extends VBox {
     }
 
     private void persistOldContractToSave() {
-        //ContractDataSubfolder contractDataSubfolder = null;
         LocalDate endOfContractNotice = null;
         if (contractData.getDateTo() == null) {
             endOfContractNotice = LocalDate.of(9999, 12, 31);
         }
 
-        String quoteAccountCode = null;
-
+        String quoteAccountCode;
         if(contractParts.getSelectedCCC() == null){
             quoteAccountCode = "";
         }else{
@@ -421,7 +419,7 @@ public class NewContractMainController extends VBox {
             contractTypeDescription = contractTypeDescription + ", " + ContractConstants.FULL_WORKDAY;
         }else{
             contractTypeDescription = contractTypeDescription + ", " + ContractConstants.PARTIAL_WORKDAY;
-            contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + " horas/semana]";
+            contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT +  "]";
         }
 
         Duration contractDurationDays = Duration.ZERO;
@@ -486,7 +484,6 @@ public class NewContractMainController extends VBox {
             contractTypeDescription = contractTypeDescription + ", " + ContractConstants.FULL_WORKDAY;
         }else{
             contractTypeDescription = contractTypeDescription + ", " + ContractConstants.PARTIAL_WORKDAY;
-            //contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + " horas/semana]";
         }
 
         Duration contractDurationDays = Duration.ZERO;
@@ -528,10 +525,10 @@ public class NewContractMainController extends VBox {
     private Path retrievePathToContractDataToContractAgentPDF(ContractDataToContractAgent contractDataToContractAgent){
         String temporalDir = null;
         Path pathOut = null;
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("linux")){
-            temporalDir = Parameters.LINUX_TEMPORAL_DIR;
+        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
+            temporalDir =Parameters.LINUX_TEMPORAL_DIR;
         }
-        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
+        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
             temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
         }
 
@@ -549,14 +546,14 @@ public class NewContractMainController extends VBox {
     private Path retrievePathToContractDataSubfolderPDF(ContractDataSubfolder contractDataSubfolder){
         String temporalDir = null;
         Path pathOut = null;
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("linux")){
+        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
             temporalDir = Parameters.LINUX_TEMPORAL_DIR;
         }
-        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
+        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
             temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
         }
 
-        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(".pdf"));
+        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
         try {
             Files.createDirectories(pathToContractDataSubfolder.getParent());
             pathOut = NewContractDataSubfolderPDFCreator.createContractDataSubfolderPDF(contractDataSubfolder, pathToContractDataSubfolder);
@@ -570,16 +567,16 @@ public class NewContractMainController extends VBox {
     private Path retrievePathToContractRecordHistorySubfolderPDF(ContractDataSubfolder contractDataSubfolder){
         String temporalDir = null;
         Path pathOut = null;
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("linux")){
+        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
             temporalDir = Parameters.LINUX_TEMPORAL_DIR;
         }
-        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
+        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
             temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
         }
 
-        String fileName = "Expediente_contrato_trabajo_" + Utilities.replaceWithUnderscore(contractDataSubfolder.getEmployeeFullName());
+        String fileName = ContractConstants.CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT + Utilities.replaceWithUnderscore(contractDataSubfolder.getEmployeeFullName());
 
-        Path pathToContractRecordHistorySubfolder = Paths.get(Parameters.USER_HOME, temporalDir, fileName.concat(".pdf"));
+        Path pathToContractRecordHistorySubfolder = Paths.get(Parameters.USER_HOME, temporalDir, fileName.concat(Parameters.PDF_EXTENSION));
         try {
             Files.createDirectories(pathToContractRecordHistorySubfolder.getParent());
             pathOut = NewContractRecordHistorySubfolderPDFCreator.createContractRecordHistorySubfolderPDF(contractDataSubfolder, pathToContractRecordHistorySubfolder);
@@ -607,7 +604,7 @@ public class NewContractMainController extends VBox {
                     .withQuoteAccountCode(quoteAccountCode)
                     .withEmployeeName(this.contractParts.getSelectedEmployee().getApellidos() + ", " + this.contractParts.getSelectedEmployee().getNom_rzsoc())
                     .withEmployeeNIF(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
-                    .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + " " + ContractConstants.HOURS_WORK_WEEK_TEXT)
+                    .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT)
                     .build();
 
             /* Create the TimeRecordPDF */
@@ -622,15 +619,14 @@ public class NewContractMainController extends VBox {
                 Message.errorMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
                 e.printStackTrace();
             }
-            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT, "Registro horario creado en:" + "\n" + pathToTimeRecordPDF + "\n");
+            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_CREATED_IN + pathToTimeRecordPDF + "\n");
 
             /* Print the TimeRecord */
             String resultPrint = TimeRecordPDFCreator.printTimeRecord(pathToTimeRecordPDF);
             if(resultPrint.equals("ok")) {
-                Message.warningMessage(tabPane.getScene().getWindow(), "Sistema", "Registro horario enviado a la impresora." + "\n");
+                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_SENT_TO_PRINTER);
             }else{
-                Message.warningMessage(tabPane.getScene().getWindow(), "Sistema", "No existe impresora para imprimir el registro horario" +
-                        " con los atributos indicados." + "\n");
+                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }
         }
     }
@@ -650,26 +646,23 @@ public class NewContractMainController extends VBox {
             String printOk = Printer.printPDF(pathToContractDataSubfolder.toString(), attributes);
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
-                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_PARAMETERS);
+                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
         }
 
         /** Subfolder record of contract history */
-
-        ContractDataSubfolder copy = contractDataSubfolder;
-        Path pathToContractRecordHistorySubfolder = retrievePathToContractRecordHistorySubfolderPDF(copy);
+        Path pathToContractRecordHistorySubfolder = retrievePathToContractRecordHistorySubfolderPDF(contractDataSubfolder);
 
         try {
             String printOk = Printer.printPDF(pathToContractRecordHistorySubfolder.toString(), attributes);
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SUBFOLFER_RECORD_OF_CONTRACT_HISTORY_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
-                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_PARAMETERS);
+                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
         }
-
     }
 }
