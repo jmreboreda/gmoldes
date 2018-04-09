@@ -123,6 +123,7 @@ public class TimeRecordData extends VBox {
         contractType.setCellValueFactory(new PropertyValueFactory<TimeRecordCandidateDataDTO,String>("contractType"));
         dateFrom.setCellValueFactory(new PropertyValueFactory<TimeRecordCandidateDataDTO,String>("dateFrom"));
         dateTo.setCellValueFactory(new PropertyValueFactory<TimeRecordCandidateDataDTO,String>("dateTo"));
+        hoursByWeek.setStyle("-fx-alignment: CENTER;");
         dateFrom.setStyle("-fx-alignment: CENTER;");
         dateTo.setStyle("-fx-alignment: CENTER;");
 
