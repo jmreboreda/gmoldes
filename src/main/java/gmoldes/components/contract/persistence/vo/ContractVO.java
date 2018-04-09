@@ -29,7 +29,7 @@ import java.sql.Date;
                         "and tipovariacion < 800 " +
                         "and concat(trim(to_char(extract(year from p.f_desde),'9999')), trim(to_char(extract(month from p.f_desde),'09'))) <= :initialperiod " +
                         "and (concat(trim(to_char(extract(year from p.f_hasta),'9999')), trim(to_char(extract(month from p.f_hasta),'09'))) >= :initialperiod " +
-                        "or p.f_hasta is null) and (jor_tipo = 'Parcial' or tipoctto = 'Formación') order by p.trabajador_name, p.f_desde"
+                        "or p.f_hasta is null) and (jor_tipo = 'A tiempo parcial' or tipoctto = 'Formación') order by p.trabajador_name, p.f_desde"
         ),
         @NamedQuery(
                 name = ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID,
@@ -44,11 +44,11 @@ import java.sql.Date;
                 query = "select p from ContractVO p where tipovariacion < 800" +
                         "and concat(trim(to_char(extract(year from p.f_desde),'9999')), trim(to_char(extract(month from p.f_desde),'09'))) <= :yearMonth " +
                         "and (concat(trim(to_char(extract(year from p.f_hasta),'9999')), trim(to_char(extract(month from p.f_hasta),'09'))) >= :yearMonth " +
-                        "or p.f_hasta is null) and (jor_tipo = 'Parcial' or tipoctto = 'Formación') order by p.clientegm_name"
+                        "or p.f_hasta is null) and (jor_tipo = 'A tiempo parcial' or tipoctto = 'Formación') order by p.clientegm_name"
         ),
         @NamedQuery(
                 name = ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED,
-                query = "select p from ContractVO p where p.envigor = true and (p.jor_tipo = 'Parcial' or tipoctto = 'Formación') order by p.clientegm_name"
+                query = "select p from ContractVO p where p.envigor = true and (p.jor_tipo = 'A tiempo parcial' or tipoctto = 'Formación') order by p.clientegm_name"
         )
 })
 

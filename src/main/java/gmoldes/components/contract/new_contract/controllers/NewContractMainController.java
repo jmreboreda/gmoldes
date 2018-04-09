@@ -346,6 +346,12 @@ public class NewContractMainController extends VBox {
             quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
         }
 
+        Boolean isCurrentContract = false;
+        if(contractData.getDateFrom().isBefore(LocalDate.now()) ||
+                contractData.getDateFrom().isEqual(LocalDate.now())){
+            isCurrentContract = true;
+        }
+
         OldContractToSaveDTO oldContractToSaveDTO = OldContractToSaveDTO.create()
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
                 .withVariationNumber(0)
@@ -361,7 +367,7 @@ public class NewContractMainController extends VBox {
                 .withTypeOfContract(contractData.getContractType().getDescripctto())
                 .withDateFrom(contractData.getDateFrom())
                 .withDateTo(contractData.getDateTo())
-                .withCurrentContract(true)
+                .withCurrentContract(isCurrentContract)
                 .withNotesForManager(contractPublicNotes.getPublicNotes())
                 .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
                 .withQuoteDataReportIDC(null)
@@ -419,7 +425,7 @@ public class NewContractMainController extends VBox {
             contractTypeDescription = contractTypeDescription + ", " + ContractConstants.FULL_WORKDAY;
         }else{
             contractTypeDescription = contractTypeDescription + ", " + ContractConstants.PARTIAL_WORKDAY;
-            contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT +  "]";
+            contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase() +  "]";
         }
 
         Duration contractDurationDays = Duration.ZERO;
@@ -483,7 +489,8 @@ public class NewContractMainController extends VBox {
         if(this.contractData.getFullPartialWorkDay().equals(ContractConstants.FULL_WORKDAY)){
             contractTypeDescription = contractTypeDescription + ", " + ContractConstants.FULL_WORKDAY;
         }else{
-            contractTypeDescription = contractTypeDescription + ", " + ContractConstants.PARTIAL_WORKDAY;
+            contractTypeDescription = contractTypeDescription + ", " + ContractConstants.PARTIAL_WORKDAY +
+            " [" + contractData.getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase() + "]";
         }
 
         Duration contractDurationDays = Duration.ZERO;
@@ -604,7 +611,7 @@ public class NewContractMainController extends VBox {
                     .withQuoteAccountCode(quoteAccountCode)
                     .withEmployeeName(this.contractParts.getSelectedEmployee().getApellidos() + ", " + this.contractParts.getSelectedEmployee().getNom_rzsoc())
                     .withEmployeeNIF(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
-                    .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT)
+                    .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase())
                     .build();
 
             /* Create the TimeRecordPDF */
