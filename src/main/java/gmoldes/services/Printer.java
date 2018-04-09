@@ -23,7 +23,7 @@ public class Printer {
 
     public static String printPDF(String pathToPDF, Map<String, String> printAttributes) throws IOException, PrinterException {
 
-        PrintService serviceForPrint = null;
+        //PrintService serviceForPrint = null;
         PDDocument PDFDocumentLoaded = PDDocument.load(new File(pathToPDF));
 
 //        PDViewerPreferences PDFDocumentPreferences = PDFDocumentLoaded.getDocumentCatalog().getViewerPreferences();

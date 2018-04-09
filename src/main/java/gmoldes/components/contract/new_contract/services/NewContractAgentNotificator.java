@@ -24,7 +24,7 @@ public class NewContractAgentNotificator {
                 .withEmailDeliveryNotification(new InternetAddress(EmailParameters.EMAIL_DELIVERY_NOTIFICATION))
                 .withEmailSubject(EmailParameters.TEXT_NEW_CONTRACT_IN_MAIL_SUBJECT + contractParts.getSelectedEmployee() +
                         " [" + contractParts.getSelectedEmployer() + "]")
-                .withEmailMessageText(EmailParameters .STANDARD_TEXT_SEND_CONTRACT_DATA)
+                .withEmailMessageText(EmailParameters .STANDARD_TEXT_SEND_CONTRACT_DATA + EmailParameters.STANDARD_LOPD_TEXT_SEND_MAIL)
                 .withAttachedPath(path)
                 .withAttachedName(fileName)
                 .build();

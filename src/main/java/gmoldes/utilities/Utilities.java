@@ -198,7 +198,7 @@ public class Utilities {
 
         try {
             if (!cifPattern.matcher(nifNotDNI).matches()) {
-                // No cumple el patrón
+                /* No cumple el patrón */
                 return false;
             }
 

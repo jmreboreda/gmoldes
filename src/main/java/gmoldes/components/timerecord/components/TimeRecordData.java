@@ -2,6 +2,7 @@ package gmoldes.components.timerecord.components;
 
 import com.lowagie.text.DocumentException;
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.components.contract.controllers.ContractController;
 import gmoldes.domain.person.controllers.PersonController;
@@ -182,7 +183,7 @@ public class TimeRecordData extends VBox {
                 .withQuoteAccountCode(data.getQuoteAccountCode())
                 .withEmployeeName(data.getEmployeeFullName())
                 .withEmployeeNIF(data.getEmployeeNif())
-                .withNumberHoursPerWeek(data.getHoursByWeek())
+                .withNumberHoursPerWeek(data.getHoursByWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase())
                 .build();
     }
 

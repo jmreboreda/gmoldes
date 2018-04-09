@@ -28,6 +28,7 @@ public class ContractDataSubfolder {
     private String employeeFullAddress;
     private String employeeMaxStudyLevel;
     private Set<DayOfWeek> dayOfWeekSet;
+    private Duration hoursWorkWeek;
     private String contractTypeDescription;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -40,7 +41,7 @@ public class ContractDataSubfolder {
     public ContractDataSubfolder(String notificationType, String officialContractNumber, String employerFullName, String employerQuoteAccountCode, LocalDate notificationDate,
                                  LocalTime notificationHour, String employeeFullName, String employeeNif, String employeeNASS,
                                  String employeeBirthDate, String employeeCivilState, String employeeNationality, String employeeFullAddress,
-                                 String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, String contractTypeDescription,
+                                 String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, Duration hoursWorkWeek, String contractTypeDescription,
                                  LocalDate startDate, LocalDate endDate, Duration durationDays, Set<WorkDaySchedule> schedule,
                                  String additionalData, String laborCategory, String gmContractNumber) {
 
@@ -59,6 +60,7 @@ public class ContractDataSubfolder {
         this.employeeFullAddress = employeeFullAddress;
         this.employeeMaxStudyLevel = employeeMaxStudyLevel;
         this.dayOfWeekSet = dayOfWeekSet;
+        this.hoursWorkWeek = hoursWorkWeek;
         this.contractTypeDescription = contractTypeDescription;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -129,6 +131,10 @@ public class ContractDataSubfolder {
         return dayOfWeekSet;
     }
 
+    public Duration getHoursWorkWeek() {
+        return hoursWorkWeek;
+    }
+
     public String getContractTypeDescription() {
         return contractTypeDescription;
     }
@@ -196,6 +202,7 @@ public class ContractDataSubfolder {
         private String employeeFullAddress;
         private String employeeMaxStudyLevel;
         private Set<DayOfWeek> dayOfWeekSet;
+        private Duration hoursWorkWeek;
         private String contractTypeDescription;
         private LocalDate startDate;
         private LocalDate endDate;
@@ -280,6 +287,11 @@ public class ContractDataSubfolder {
             return this;
         }
 
+        public ContractDataSubfolderBuilder withHoursWorkWeek(Duration hoursWorkWeek) {
+            this.hoursWorkWeek = hoursWorkWeek;
+            return this;
+        }
+
         public ContractDataSubfolderBuilder withContractTypeDescription(String contractTypeDescription) {
             this.contractTypeDescription = contractTypeDescription;
             return this;
@@ -325,7 +337,7 @@ public class ContractDataSubfolder {
             return new ContractDataSubfolder(this.notificationType, this.officialContractNumber,this.employerFullName, this.employerQuoteAccountCode,
                     this.notificationDate, this.notificationHour, this.employeeFullName, this.employeeNif, this.employeeNASS, this.employeeBirthDate,
                     this.employeeCivilState, this.employeeNationality, this.employeeFullAddress, this.employeeMaxStudyLevel, this.dayOfWeekSet,
-                    this.contractTypeDescription, this.startDate, this.endDate, this.durationDays, this.schedule, this.additionalData,
+                    this.hoursWorkWeek, this.contractTypeDescription, this.startDate, this.endDate, this.durationDays, this.schedule, this.additionalData,
                     this.laborCategory, this.gmContractNumber);
         }
     }

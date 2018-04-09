@@ -2,8 +2,8 @@ package gmoldes.domain.person.manager;
 
 
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.person.dao.PersonDAO;
-import gmoldes.domain.person.vo.PersonVO;
+import gmoldes.domain.person.persistence.dao.PersonDAO;
+import gmoldes.domain.person.persistence.vo.PersonVO;
 
 import java.util.ArrayList;
 import java.util.List;

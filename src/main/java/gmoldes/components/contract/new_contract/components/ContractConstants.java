@@ -9,7 +9,7 @@ public class ContractConstants {
     public static final String PARTIAL_WORKDAY = "A tiempo parcial";
     public static final String UNDEFINED_DURATION_TEXT = "Indefinido";
     public static final String TEMPORAL_DURATION_TEXT = "Temporal";
-    public static final String HOURS_WORK_WEEK_TEXT = "Horas de trabajo por semana";
+    public static final String HOURS_WORK_WEEK_TEXT = " Horas de trabajo por semana";
     public static final Duration LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK = Duration.parse("PT40H"); // 40 hours of work per week.
     public static final String NOT_REVISED = " No revisado.";
     public static final String REVISION_WITH_ERRORS = " Revisado. Con errores o datos pendientes.";
@@ -27,6 +27,7 @@ public class ContractConstants {
     public static final String TIME_PM_TO_COLUMN_TITLE = "Tarde hasta";
     public static final String TIME_DURATION_WORK_DAY_COLUMN_TITLE = "Jornada:\nHoras de\nduración";
 
-
+    /** Contract forms*/
+    public static final String CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT = "Expediente_contrato_trabajo_";
 
 }
