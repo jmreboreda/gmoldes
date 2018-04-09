@@ -346,12 +346,6 @@ public class NewContractMainController extends VBox {
             quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
         }
 
-        Boolean isCurrentContract = false;
-        if(contractData.getDateFrom().isBefore(LocalDate.now()) ||
-                contractData.getDateFrom().isEqual(LocalDate.now())){
-            isCurrentContract = true;
-        }
-
         OldContractToSaveDTO oldContractToSaveDTO = OldContractToSaveDTO.create()
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
                 .withVariationNumber(0)
@@ -367,7 +361,7 @@ public class NewContractMainController extends VBox {
                 .withTypeOfContract(contractData.getContractType().getDescripctto())
                 .withDateFrom(contractData.getDateFrom())
                 .withDateTo(contractData.getDateTo())
-                .withCurrentContract(isCurrentContract)
+                .withCurrentContract(contractData.isCurrentContract())
                 .withNotesForManager(contractPublicNotes.getPublicNotes())
                 .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
                 .withQuoteDataReportIDC(null)

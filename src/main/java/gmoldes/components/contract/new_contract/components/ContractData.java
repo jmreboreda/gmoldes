@@ -189,6 +189,14 @@ public class ContractData extends AnchorPane {
         return this.contractDuration.getDateTo();
     }
 
+    public Boolean isCurrentContract(){
+        if(getDateFrom().isAfter(LocalDate.now())){
+            return false;
+        }
+
+        return true;
+    }
+
     public String getHoursWorkWeek(){
         return this.workDayType.getHoursWorkWeek();
     }
