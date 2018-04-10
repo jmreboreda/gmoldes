@@ -39,13 +39,13 @@ public class App extends Application {
     }
 
     private void initialControlProcesses(Stage primaryStage) throws ParseException {
-        updateCurrentContractsInDatabase();
+        updateContractsInForceInDatabase();
         alertByContractExpiration(primaryStage);
         alertOfPendingIDC(primaryStage);
     }
 
-    private void updateCurrentContractsInDatabase(){
-        InitialChecks.UpdateCurrentContracts();
+    private void updateContractsInForceInDatabase(){
+        InitialChecks.UpdateContractsInForce();
     }
 
     private void alertByContractExpiration(Stage primaryStage){

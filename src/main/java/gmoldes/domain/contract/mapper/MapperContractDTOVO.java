@@ -31,7 +31,7 @@ public class MapperContractDTOVO {
         contractVO.setTipoctto(contractDTO.getTypeOfContract());
         contractVO.setF_desde(Date.valueOf(contractDTO.getDateFrom()));
         contractVO.setF_hasta(Date.valueOf(contractDTO.getDateTo()));
-        contractVO.setEnvigor(contractDTO.getCurrentContract());
+        contractVO.setEnvigor(contractDTO.getContractInForce());
         contractVO.setNotas_gestor(contractDTO.getNotesForManager());
         contractVO.setNotas_privadas(contractDTO.getPrivateNotes());
         contractVO.setIdc(Date.valueOf(contractDTO.getQuoteDataReportIDC()));

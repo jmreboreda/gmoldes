@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class ProvisionalContractData extends AnchorPane {
 
-    private static final String CURRENT_CONTRACT_FXML = "/fxml/new_contract/provisional_contract_data.fxml";
+    private static final String CONTRACT_IN_CONSTRUCTION_FXML = "/fxml/new_contract/provisional_contract_data.fxml";
 
     private Parent parent;
 
@@ -64,7 +64,7 @@ public class ProvisionalContractData extends AnchorPane {
 
     public ProvisionalContractData() {
 
-        this.parent = ViewLoader.load(this, CURRENT_CONTRACT_FXML);
+        this.parent = ViewLoader.load(this, CONTRACT_IN_CONSTRUCTION_FXML);
         this.status.setText(ContractConstants.NOT_REVISED);
         this.status.textProperty().addListener(new ChangeListener<String>() {
             @Override

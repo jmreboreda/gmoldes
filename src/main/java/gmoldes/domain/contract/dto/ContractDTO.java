@@ -30,7 +30,7 @@ public class ContractDTO {
     private LocalDate dateFrom;
     private LocalDate dateTo;
     private String identificationContractNumberINEM;
-    private Boolean currentContract;
+    private Boolean contractInForce;
     private String notesForManager;
     private String privateNotes;
     private Character indefiniteOrTemporalContract;
@@ -55,7 +55,7 @@ public class ContractDTO {
                        LocalDate dateFrom,
                        LocalDate dateTo,
                        String identificationContractNumberINEM,
-                       Boolean currentContract,
+                       Boolean contractInForce,
                        String notesForManager,
                        String privateNotes,
                        Character indefiniteOrTemporalContract,
@@ -80,7 +80,7 @@ public class ContractDTO {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.identificationContractNumberINEM = identificationContractNumberINEM;
-        this.currentContract = currentContract;
+        this.contractInForce = contractInForce;
         this.notesForManager = notesForManager;
         this.privateNotes = privateNotes;
         this.indefiniteOrTemporalContract = indefiniteOrTemporalContract;
@@ -225,12 +225,12 @@ public class ContractDTO {
         this.identificationContractNumberINEM = identificationContractNumberINEM;
     }
 
-    public Boolean getCurrentContract() {
-        return currentContract;
+    public Boolean getContractInForce() {
+        return contractInForce;
     }
 
-    public void setCurrentContract(Boolean currentContract) {
-        this.currentContract = currentContract;
+    public void setContractInForce(Boolean contractInForce) {
+        this.contractInForce = contractInForce;
     }
 
     public String getNotesForManager() {
@@ -304,7 +304,7 @@ public class ContractDTO {
         private LocalDate dateFrom;
         private LocalDate dateTo;
         private String identificationContractNumberINEM;
-        private Boolean currentContract;
+        private Boolean contractInForce;
         private String notesForManager;
         private String privateNotes;
         private Character indefiniteOrTemporalContract;
@@ -397,8 +397,8 @@ public class ContractDTO {
             return this;
         }
 
-        public ContractDTOBuilder withCurrentContract(Boolean currentContract) {
-            this.currentContract = currentContract;
+        public ContractDTOBuilder withContractInForce(Boolean contractInForce) {
+            this.contractInForce = contractInForce;
             return this;
         }
 
@@ -435,7 +435,7 @@ public class ContractDTO {
         public ContractDTO build() {
             return new ContractDTO(this.id, this.contractNumber, this.variationNumber, this.variationType, this.clientGMId, this.clientGMName,
             this.quoteAccountCode, this.workerId, this.workerName, this.laborCategory, this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday,
-            this.typeOfContract, this.dateFrom, this.dateTo, this.identificationContractNumberINEM, this.currentContract, this.notesForManager, this.privateNotes,
+            this.typeOfContract, this.dateFrom, this.dateTo, this.identificationContractNumberINEM, this.contractInForce, this.notesForManager, this.privateNotes,
             this.indefiniteOrTemporalContract, this.surrogateContract, this.quoteDataReportIDC, this.endOfContractNotice);
         }
     }

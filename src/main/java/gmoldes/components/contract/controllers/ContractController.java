@@ -25,16 +25,16 @@ public class ContractController {
         return contractManager.findAllActiveContractsByClientId(id);
     }
 
-    public int establishCurrentContracts(){
+    public int establishContractsInForce(){
 
         ContractManager manager = new ContractManager();
-        return manager.establishCurrentContract();
+        return manager.establishContractInForce();
     }
 
-    public int establishNotCurrentContracts(){
+    public int establishContractsNotInForce(){
 
         ContractManager manager = new ContractManager();
-        return manager.establishNotCurrentContract();
+        return manager.establishContractNotInForce();
     }
 
     public List<ContractDTO> findContractsExpiration(){

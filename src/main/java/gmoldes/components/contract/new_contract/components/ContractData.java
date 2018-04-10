@@ -189,8 +189,9 @@ public class ContractData extends AnchorPane {
         return this.contractDuration.getDateTo();
     }
 
-    public Boolean isCurrentContract(){
-        if(getDateFrom().isAfter(LocalDate.now())){
+    public Boolean isContractInForceAtDate(LocalDate date){
+        if(getDateFrom().isAfter(date) ||
+                getDateTo().isBefore(date)){
             return false;
         }
 

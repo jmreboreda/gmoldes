@@ -361,7 +361,7 @@ public class NewContractMainController extends VBox {
                 .withTypeOfContract(contractData.getContractType().getDescripctto())
                 .withDateFrom(contractData.getDateFrom())
                 .withDateTo(contractData.getDateTo())
-                .withCurrentContract(contractData.isCurrentContract())
+                .withContractInForce(contractData.isContractInForceAtDate(LocalDate.now()))
                 .withNotesForManager(contractPublicNotes.getPublicNotes())
                 .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
                 .withQuoteDataReportIDC(null)

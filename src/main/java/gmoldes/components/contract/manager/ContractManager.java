@@ -44,7 +44,7 @@ public class ContractManager {
                     .withClientGMName(contractVO.getClientegm_name())
                     .withQuoteAccountCode(contractVO.getContrato_ccc())
                     .withIndefiniteOrTemporalContract(contractVO.getDuracion())
-                    .withCurrentContract(contractVO.getEnvigor())
+                    .withContractInForce(contractVO.getEnvigor())
                     .withDateFrom(contractVO.getF_desde().toLocalDate())
                     .withDateTo(dateTo)
                     .withId(contractVO.getId())
@@ -85,7 +85,7 @@ public class ContractManager {
                     .withClientGMName(contractVO.getClientegm_name())
                     .withQuoteAccountCode(contractVO.getContrato_ccc())
                     .withIndefiniteOrTemporalContract(contractVO.getDuracion())
-                    .withCurrentContract(contractVO.getEnvigor())
+                    .withContractInForce(contractVO.getEnvigor())
                     .withDateFrom(contractVO.getF_desde().toLocalDate())
                     .withDateTo(dateTo)
                     .withId(contractVO.getId())
@@ -126,7 +126,7 @@ public class ContractManager {
                     .withClientGMName(contractVO.getClientegm_name())
                     .withQuoteAccountCode(contractVO.getContrato_ccc())
                     .withIndefiniteOrTemporalContract(contractVO.getDuracion())
-                    .withCurrentContract(contractVO.getEnvigor())
+                    .withContractInForce(contractVO.getEnvigor())
                     .withDateFrom(contractVO.getF_desde().toLocalDate())
                     .withDateTo(dateTo)
                     .withId(contractVO.getId())
@@ -150,17 +150,17 @@ public class ContractManager {
         return contractDTOList;
     }
 
-    public int establishCurrentContract(){
+    public int establishContractInForce(){
 
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        return contractDAO.establishCurrentContract();
+        return contractDAO.establishContractInForce();
 
     }
 
-    public int establishNotCurrentContract(){
+    public int establishContractNotInForce(){
 
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        return contractDAO.establishNotCurrentContract();
+        return contractDAO.establishContractNotInForce();
     }
 
     public List<ContractDTO> findContractsExpiration(){
