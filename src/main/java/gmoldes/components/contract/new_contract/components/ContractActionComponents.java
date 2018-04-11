@@ -57,6 +57,7 @@ public class ContractActionComponents extends AnchorPane {
     public void enableSendMailButton(Boolean bol){
         this.sendMailButton.setDisable(!bol);
     }
+
     public void enablePDFButton(Boolean bol){
         this.viewPDFButton.setDisable(!bol);
     }
