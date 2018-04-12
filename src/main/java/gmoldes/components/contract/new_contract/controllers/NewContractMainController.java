@@ -208,7 +208,7 @@ public class NewContractMainController extends VBox {
 
         ContractDataToContractAgent contractDataToContractAgent = createContractDataToContractAgent();
         pathOut = retrievePathToContractDataToContractAgentPDF(contractDataToContractAgent);
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("linux")) {
+        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)) {
             try {
                 String[] command = {"sh", "-c", "xdg-open " + pathOut};
                 p = Runtime.getRuntime().exec(command);

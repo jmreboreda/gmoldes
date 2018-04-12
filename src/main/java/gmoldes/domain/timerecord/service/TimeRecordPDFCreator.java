@@ -28,9 +28,9 @@ public class TimeRecordPDFCreator {
     public static Path createTimeRecordPDF(TimeRecord timeRecord) throws IOException, DocumentException {
 
         String temporalDir = null;
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
+        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
             temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
-        }else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("linux")){
+        }else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
             temporalDir = Parameters.LINUX_TEMPORAL_DIR;
         }
 
