@@ -27,6 +27,7 @@ import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.services.Email.EmailParameters;
 import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
+import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
@@ -208,6 +209,7 @@ public class NewContractMainController extends VBox {
 
         ContractDataToContractAgent contractDataToContractAgent = createContractDataToContractAgent();
         pathOut = retrievePathToContractDataToContractAgentPDF(contractDataToContractAgent);
+
         if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)) {
             try {
                 String[] command = {"sh", "-c", "xdg-open " + pathOut};
@@ -524,14 +526,18 @@ public class NewContractMainController extends VBox {
     }
 
     private Path retrievePathToContractDataToContractAgentPDF(ContractDataToContractAgent contractDataToContractAgent){
-        String temporalDir = null;
+        //String temporalDir = null;
         Path pathOut = null;
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
-            temporalDir =Parameters.LINUX_TEMPORAL_DIR;
-        }
-        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
-            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
-        }
+
+        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
+        String temporalDir = maybePath.get().toString();
+
+//        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
+//            temporalDir =Parameters.LINUX_TEMPORAL_DIR;
+//        }
+//        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
+//            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
+//        }
 
         Path pathToContractDataToContractAgent = Paths.get(Parameters.USER_HOME, temporalDir, contractDataToContractAgent.toFileName().concat(".pdf"));
         try {
@@ -545,14 +551,19 @@ public class NewContractMainController extends VBox {
     }
 
     private Path retrievePathToContractDataSubfolderPDF(ContractDataSubfolder contractDataSubfolder){
-        String temporalDir = null;
+        //String temporalDir = null;
         Path pathOut = null;
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
-            temporalDir = Parameters.LINUX_TEMPORAL_DIR;
-        }
-        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
-            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
-        }
+
+        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
+        String temporalDir = maybePath.get().toString();
+
+
+//        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
+//            temporalDir = Parameters.LINUX_TEMPORAL_DIR;
+//        }
+//        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
+//            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
+//        }
 
         Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
         try {
@@ -566,14 +577,19 @@ public class NewContractMainController extends VBox {
     }
 
     private Path retrievePathToContractRecordHistorySubfolderPDF(ContractDataSubfolder contractDataSubfolder){
-        String temporalDir = null;
+        //String temporalDir = null;
         Path pathOut = null;
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
-            temporalDir = Parameters.LINUX_TEMPORAL_DIR;
-        }
-        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
-            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
-        }
+
+        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
+        String temporalDir = maybePath.get().toString();
+
+
+//        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
+//            temporalDir = Parameters.LINUX_TEMPORAL_DIR;
+//        }
+//        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
+//            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
+//        }
 
         String fileName = ContractConstants.CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT + Utilities.replaceWithUnderscore(contractDataSubfolder.getEmployeeFullName());
 
