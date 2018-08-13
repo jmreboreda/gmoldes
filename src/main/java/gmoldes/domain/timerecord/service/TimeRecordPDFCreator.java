@@ -28,11 +28,8 @@ public class TimeRecordPDFCreator {
     }
 
     public static Path createTimeRecordPDF(TimeRecord timeRecord) throws IOException, DocumentException {
-
-        String temporalDir = null;
-
         final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
-        temporalDir = maybePath.get().toString();
+        String temporalDir = maybePath.get().toString();
 
         Path pathToTimeRecordPDF = Paths.get(Parameters.USER_HOME, temporalDir, timeRecord.toFileName().concat(".pdf"));
         Path directoriesTree = Files.createDirectories(pathToTimeRecordPDF.getParent());

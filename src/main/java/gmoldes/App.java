@@ -1,13 +1,14 @@
 package gmoldes;
 
 
-import gmoldes.domain.check.InitialChecks;
 import gmoldes.components.initial_menu.InitialMenuController;
-import gmoldes.domain.contract.dto.ContractDTO;
+import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.check.dto.IDCControlDTO;
+import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.utilities.Message;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
 
 import java.text.ParseException;
@@ -21,7 +22,15 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        /* Initial control processes */
+        ProgressIndicator indicator = new ProgressIndicator();
+        Scene initialScene = new Scene(indicator);
+        primaryStage.setScene(initialScene);
+        primaryStage.show();
+
         initialControlProcesses(primaryStage);
+
+        initialScene.getWindow().hide();
 
         /* Initial menu */
         InitialMenuController controller = new InitialMenuController();
@@ -31,6 +40,7 @@ public class App extends Application {
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
+        
     }
 
     public static void main( String[] args ){
@@ -39,6 +49,7 @@ public class App extends Application {
     }
 
     private void initialControlProcesses(Stage primaryStage) throws ParseException {
+
         updateContractsInForceInDatabase();
         alertByContractExpiration(primaryStage);
         alertOfPendingIDC(primaryStage);

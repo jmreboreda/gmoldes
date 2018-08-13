@@ -190,8 +190,10 @@ public class ContractData extends AnchorPane {
     }
 
     public Boolean isContractInForceAtDate(LocalDate date){
-        if(getDateFrom().isAfter(date) ||
-                getDateTo().isBefore(date)){
+        if(getDateFrom().isAfter(date)){
+            return false;
+        }
+        if(getDateTo() != null && getDateTo().isBefore(date)){
             return false;
         }
 
