@@ -280,9 +280,8 @@ public class TimeRecordData extends VBox {
     private String retrievePeriodForTimeRecord(){
         Integer numberMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
         String numberMonthS = numberMonth.toString();
-        if(numberMonthS.length() < 2){
-            numberMonthS = "0" + numberMonthS;
-        }
+
+        numberMonthS = (numberMonthS.length() == 2) ? numberMonthS : "0" + numberMonthS;
 
         return (yearNumber.getText()).concat(numberMonthS);
     }

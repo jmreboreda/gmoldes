@@ -31,14 +31,12 @@ public class ContractManager {
     public List<ContractDTO> findAllContractsByClientIdInPeriod(Integer clientId, Date referenceDate){
 
         List<ContractDTO> contractDTOList = new ArrayList<>();
-        LocalDate dateTo = null;
 
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractVO> contractVOList = contractDAO.findAllContractsByClientIdInPeriod(clientId, referenceDate);
         for (ContractVO contractVO : contractVOList) {
-            if(contractVO.getF_hasta() != null){
-                dateTo = contractVO.getF_hasta().toLocalDate();
-            }
+            LocalDate dateTo = (contractVO.getF_hasta() != null) ? contractVO.getF_hasta().toLocalDate() : null;
+
             ContractDTO contractDTO = ContractDTO.create()
                     .withLaborCategory(contractVO.getCategoria())
                     .withClientGMName(contractVO.getClientegm_name())
@@ -64,7 +62,6 @@ public class ContractManager {
                     .build();
 
             contractDTOList.add(contractDTO);
-            dateTo = null;
         }
         return contractDTOList;
     }
@@ -72,14 +69,12 @@ public class ContractManager {
     public List<ContractDTO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String yearMonth){
 
         List<ContractDTO> contractDTOList = new ArrayList<>();
-        LocalDate dateTo = null;
 
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractVO> contractVOList = contractDAO.findAllContractsWithTimeRecordByClientIdInPeriod(clientId, yearMonth);
         for (ContractVO contractVO : contractVOList) {
-            if(contractVO.getF_hasta() != null){
-                dateTo = contractVO.getF_hasta().toLocalDate();
-            }
+            LocalDate dateTo = (contractVO.getF_hasta() != null) ? contractVO.getF_hasta().toLocalDate() : null;
+
             ContractDTO contractDTO = ContractDTO.create()
                     .withLaborCategory(contractVO.getCategoria())
                     .withClientGMName(contractVO.getClientegm_name())
@@ -105,7 +100,6 @@ public class ContractManager {
                     .build();
 
             contractDTOList.add(contractDTO);
-            dateTo = null;
         }
         return contractDTOList;
     }
@@ -113,14 +107,12 @@ public class ContractManager {
     public List<ContractDTO> findAllActiveContractsByClientId(Integer clientId) {
 
         List<ContractDTO> contractDTOList = new ArrayList<>();
-        LocalDate dateTo = null;
 
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractVO> contractVOList = contractDAO.findAllActiveContractsByClientId(clientId);
         for (ContractVO contractVO : contractVOList) {
-            if(contractVO.getF_hasta() != null){
-                dateTo = contractVO.getF_hasta().toLocalDate();
-            }
+            LocalDate dateTo = (contractVO.getF_hasta() != null) ? contractVO.getF_hasta().toLocalDate() : null;
+
             ContractDTO contractDTO = ContractDTO.create()
                     .withLaborCategory(contractVO.getCategoria())
                     .withClientGMName(contractVO.getClientegm_name())

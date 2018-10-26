@@ -9,6 +9,10 @@ public class PersonController {
 
     private PersonManager personManager = new PersonManager();
 
+    public List<PersonDTO> findAllPersonInAlphabeticalOrder(){
+        return personManager.findAllPersonInAlphabeticalOrder();
+    }
+
     public PersonDTO findPersonById(Integer id){
 
         return personManager.findPersonById(id);

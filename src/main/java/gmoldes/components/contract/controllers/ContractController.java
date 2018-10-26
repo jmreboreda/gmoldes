@@ -27,23 +27,21 @@ public class ContractController {
 
     public int establishContractsInForce(){
 
-        ContractManager manager = new ContractManager();
-        return manager.establishContractInForce();
+        return contractManager.establishContractInForce();
     }
 
     public int establishContractsNotInForce(){
 
-        ContractManager manager = new ContractManager();
-        return manager.establishContractNotInForce();
+        return contractManager.establishContractNotInForce();
     }
 
     public List<ContractDTO> findContractsExpiration(){
-        ContractManager manager = new ContractManager();
-        return manager.findContractsExpiration();
+
+        return contractManager.findContractsExpiration();
     }
 
     public List<ContractDTO> findPendingIDC(){
-        ContractManager manager = new ContractManager();
-        return manager.findPendingIDC();
+
+        return contractManager.findPendingIDC();
     }
 }

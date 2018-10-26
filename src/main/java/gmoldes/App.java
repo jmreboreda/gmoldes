@@ -8,8 +8,12 @@ import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.utilities.Message;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -30,7 +34,7 @@ public class App extends Application {
 
         initialControlProcesses(primaryStage);
 
-        initialScene.getWindow().hide();
+//        initialScene.getWindow().hide();
 
         /* Initial menu */
         InitialMenuController controller = new InitialMenuController();
@@ -51,6 +55,7 @@ public class App extends Application {
     private void initialControlProcesses(Stage primaryStage) throws ParseException {
 
         updateContractsInForceInDatabase();
+        primaryStage.getScene().getWindow().hide();
         alertByContractExpiration(primaryStage);
         alertOfPendingIDC(primaryStage);
     }
