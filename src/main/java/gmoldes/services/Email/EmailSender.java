@@ -39,6 +39,7 @@ public class EmailSender {
         MimeMessage message = new MimeMessage(session);
         message.setFrom(emailData.getEmailFrom());
         message.addRecipient(Message.RecipientType.TO, emailData.getEmailTo());
+        message.addRecipient(Message.RecipientType.BCC, emailData.getEmailDeliveryNotification());
         message.setSubject(emailData.getEmailSubject());
         message.addHeader("Disposition-Notification-To", emailData.getEmailDeliveryNotification().toString());
 //        message.addHeader("Return-Receipt-To", emailData.getEmailDeliveryNotification().toString());

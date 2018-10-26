@@ -48,7 +48,7 @@ public class MapperContractVODTO {
                 .withDateFrom(contractVO.getF_desde().toLocalDate())
                 .withDateTo(dateTo)
                 .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())
-                .withCurrentContract(contractVO.getEnvigor())
+                .withContractInForce(contractVO.getEnvigor())
                 .withNotesForManager(contractVO.getNotas_gestor())
                 .withPrivateNotes(contractVO.getNotas_privadas())
                 .withIndefiniteOrTemporalContract(contractVO.getDuracion())

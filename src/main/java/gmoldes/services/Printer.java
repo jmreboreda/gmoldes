@@ -17,7 +17,10 @@ import javax.print.attribute.standard.*;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.printing.PDFPageable;
+import org.apache.pdfbox.printing.PDFPrintable;
+import org.apache.pdfbox.printing.Scaling;
 
 public class Printer {
 
@@ -63,6 +66,7 @@ public class Printer {
         else {
             PrinterJob printerJob = PrinterJob.getPrinterJob();
             printerJob.setPageable(new PDFPageable(PDFDocumentLoaded));
+            printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.SHRINK_TO_FIT));
             printerJob.setPrintService(printServiceForAttributes);
             printerJob.print(datts);
         }

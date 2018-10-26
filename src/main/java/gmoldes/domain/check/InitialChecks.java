@@ -19,15 +19,15 @@ import java.util.List;
 public class InitialChecks {
 
     private static final Logger logger = LoggerFactory.getLogger(InitialChecks.class.getSimpleName());
-    private static final String CURRENT_CONTRACT_UPDATE_TO = "Current contract update to ";
+    private static final String CONTRACT_IN_FORCE_UPDATE_TO = "Contract in force update to ";
 
-    public static void UpdateCurrentContracts(){
+    public static void UpdateContractsInForce(){
         ContractController controller = new ContractController();
 
-        int result = controller.establishCurrentContracts();
-        logger.info(CURRENT_CONTRACT_UPDATE_TO + "TRUE: " + result);
-        int result1 = controller.establishNotCurrentContracts();
-        logger.info(CURRENT_CONTRACT_UPDATE_TO + "FALSE: " + result1);
+        int result = controller.establishContractsInForce();
+        logger.info(CONTRACT_IN_FORCE_UPDATE_TO + "TRUE: " + result);
+        int result1 = controller.establishContractsNotInForce();
+        logger.info(CONTRACT_IN_FORCE_UPDATE_TO + "FALSE: " + result1);
     }
 
     public static List<ContractDTO> contractExpirationControl(){

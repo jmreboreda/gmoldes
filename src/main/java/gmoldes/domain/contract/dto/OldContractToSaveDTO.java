@@ -27,7 +27,7 @@ public class OldContractToSaveDTO {
     private LocalDate dateFrom;
     private LocalDate dateTo;
     private String identificationContractNumberINEM;
-    private Boolean currentContract;
+    private Boolean contractInForce;
     private String notesForManager;
     private String privateNotes;
     private Character indefiniteOrTemporalContract;
@@ -52,7 +52,7 @@ public class OldContractToSaveDTO {
                                 LocalDate dateFrom,
                                 LocalDate dateTo,
                                 String identificationContractNumberINEM,
-                                Boolean currentContract,
+                                Boolean contractInForce,
                                 String notesForManager,
                                 String privateNotes,
                                 Character indefiniteOrTemporalContract,
@@ -76,7 +76,7 @@ public class OldContractToSaveDTO {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.identificationContractNumberINEM = identificationContractNumberINEM;
-        this.currentContract = currentContract;
+        this.contractInForce = contractInForce;
         this.notesForManager = notesForManager;
         this.privateNotes = privateNotes;
         this.indefiniteOrTemporalContract = indefiniteOrTemporalContract;
@@ -213,12 +213,12 @@ public class OldContractToSaveDTO {
         this.identificationContractNumberINEM = identificationContractNumberINEM;
     }
 
-    public Boolean getCurrentContract() {
-        return currentContract;
+    public Boolean getContractInForce() {
+        return contractInForce;
     }
 
-    public void setCurrentContract(Boolean currentContract) {
-        this.currentContract = currentContract;
+    public void setContractInForce(Boolean contractInForce) {
+        this.contractInForce = contractInForce;
     }
 
     public String getNotesForManager() {
@@ -274,7 +274,7 @@ public class OldContractToSaveDTO {
         return  contractNumber+ " :: " + variationNumber + " :: " + variationType + " :: " + clientGMId + " :: " + clientGMName + " :: " +
                 quoteAccountCode + " :: " + workerId + " :: " + workerName + " :: " + laborCategory + " :: " +
                 weeklyWorkHours + " :: " + daysOfWeekToWork + " :: " + fullPartialWorkday + " :: " + typeOfContract + " :: " +
-                dateFrom + " :: " + dateTo + " :: " + identificationContractNumberINEM + " :: " + currentContract + " :: " +
+                dateFrom + " :: " + dateTo + " :: " + identificationContractNumberINEM + " :: " + contractInForce + " :: " +
                 notesForManager + " :: " + privateNotes + " :: " + quoteDataReportIDC + " :: " + endOfContractNotice;
     }
 
@@ -300,7 +300,7 @@ public class OldContractToSaveDTO {
         private LocalDate dateFrom;
         private LocalDate dateTo;
         private String identificationContractNumberINEM;
-        private Boolean currentContract;
+        private Boolean contractInForce;
         private String notesForManager;
         private String privateNotes;
         private Character indefiniteOrTemporalContract;
@@ -388,8 +388,8 @@ public class OldContractToSaveDTO {
             return this;
         }
 
-        public OldContractToSaveDTOBuilder withCurrentContract(Boolean currentContract) {
-            this.currentContract = currentContract;
+        public OldContractToSaveDTOBuilder withContractInForce(Boolean contractInForce) {
+            this.contractInForce = contractInForce;
             return this;
         }
 
@@ -426,7 +426,7 @@ public class OldContractToSaveDTO {
         public OldContractToSaveDTO build() {
             return new OldContractToSaveDTO(this.contractNumber, this.variationNumber, this.variationType, this.clientGMId, this.clientGMName,
             this.quoteAccountCode, this.workerId, this.workerName, this.laborCategory, this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday,
-            this.typeOfContract, this.dateFrom, this.dateTo, this.identificationContractNumberINEM, this.currentContract, this.notesForManager, this.privateNotes,
+            this.typeOfContract, this.dateFrom, this.dateTo, this.identificationContractNumberINEM, this.contractInForce, this.notesForManager, this.privateNotes,
             this.indefiniteOrTemporalContract, this.surrogateContract, this.quoteDataReportIDC,this.endOfContractNotice);
         }
     }

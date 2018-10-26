@@ -31,20 +31,18 @@ public class ContractManager {
     public List<ContractDTO> findAllContractsByClientIdInPeriod(Integer clientId, Date referenceDate){
 
         List<ContractDTO> contractDTOList = new ArrayList<>();
-        LocalDate dateTo = null;
 
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractVO> contractVOList = contractDAO.findAllContractsByClientIdInPeriod(clientId, referenceDate);
         for (ContractVO contractVO : contractVOList) {
-            if(contractVO.getF_hasta() != null){
-                dateTo = contractVO.getF_hasta().toLocalDate();
-            }
+            LocalDate dateTo = (contractVO.getF_hasta() != null) ? contractVO.getF_hasta().toLocalDate() : null;
+
             ContractDTO contractDTO = ContractDTO.create()
                     .withLaborCategory(contractVO.getCategoria())
                     .withClientGMName(contractVO.getClientegm_name())
                     .withQuoteAccountCode(contractVO.getContrato_ccc())
                     .withIndefiniteOrTemporalContract(contractVO.getDuracion())
-                    .withCurrentContract(contractVO.getEnvigor())
+                    .withContractInForce(contractVO.getEnvigor())
                     .withDateFrom(contractVO.getF_desde().toLocalDate())
                     .withDateTo(dateTo)
                     .withId(contractVO.getId())
@@ -64,7 +62,6 @@ public class ContractManager {
                     .build();
 
             contractDTOList.add(contractDTO);
-            dateTo = null;
         }
         return contractDTOList;
     }
@@ -72,20 +69,18 @@ public class ContractManager {
     public List<ContractDTO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String yearMonth){
 
         List<ContractDTO> contractDTOList = new ArrayList<>();
-        LocalDate dateTo = null;
 
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractVO> contractVOList = contractDAO.findAllContractsWithTimeRecordByClientIdInPeriod(clientId, yearMonth);
         for (ContractVO contractVO : contractVOList) {
-            if(contractVO.getF_hasta() != null){
-                dateTo = contractVO.getF_hasta().toLocalDate();
-            }
+            LocalDate dateTo = (contractVO.getF_hasta() != null) ? contractVO.getF_hasta().toLocalDate() : null;
+
             ContractDTO contractDTO = ContractDTO.create()
                     .withLaborCategory(contractVO.getCategoria())
                     .withClientGMName(contractVO.getClientegm_name())
                     .withQuoteAccountCode(contractVO.getContrato_ccc())
                     .withIndefiniteOrTemporalContract(contractVO.getDuracion())
-                    .withCurrentContract(contractVO.getEnvigor())
+                    .withContractInForce(contractVO.getEnvigor())
                     .withDateFrom(contractVO.getF_desde().toLocalDate())
                     .withDateTo(dateTo)
                     .withId(contractVO.getId())
@@ -105,7 +100,6 @@ public class ContractManager {
                     .build();
 
             contractDTOList.add(contractDTO);
-            dateTo = null;
         }
         return contractDTOList;
     }
@@ -113,20 +107,18 @@ public class ContractManager {
     public List<ContractDTO> findAllActiveContractsByClientId(Integer clientId) {
 
         List<ContractDTO> contractDTOList = new ArrayList<>();
-        LocalDate dateTo = null;
 
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractVO> contractVOList = contractDAO.findAllActiveContractsByClientId(clientId);
         for (ContractVO contractVO : contractVOList) {
-            if(contractVO.getF_hasta() != null){
-                dateTo = contractVO.getF_hasta().toLocalDate();
-            }
+            LocalDate dateTo = (contractVO.getF_hasta() != null) ? contractVO.getF_hasta().toLocalDate() : null;
+
             ContractDTO contractDTO = ContractDTO.create()
                     .withLaborCategory(contractVO.getCategoria())
                     .withClientGMName(contractVO.getClientegm_name())
                     .withQuoteAccountCode(contractVO.getContrato_ccc())
                     .withIndefiniteOrTemporalContract(contractVO.getDuracion())
-                    .withCurrentContract(contractVO.getEnvigor())
+                    .withContractInForce(contractVO.getEnvigor())
                     .withDateFrom(contractVO.getF_desde().toLocalDate())
                     .withDateTo(dateTo)
                     .withId(contractVO.getId())
@@ -150,17 +142,17 @@ public class ContractManager {
         return contractDTOList;
     }
 
-    public int establishCurrentContract(){
+    public int establishContractInForce(){
 
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        return contractDAO.establishCurrentContract();
+        return contractDAO.establishContractInForce();
 
     }
 
-    public int establishNotCurrentContract(){
+    public int establishContractNotInForce(){
 
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        return contractDAO.establishNotCurrentContract();
+        return contractDAO.establishContractNotInForce();
     }
 
     public List<ContractDTO> findContractsExpiration(){

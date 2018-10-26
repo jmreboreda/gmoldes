@@ -41,7 +41,7 @@ public class MapperOldContractToSaveDTOVO {
         contractVO.setTipoctto(oldContractToSaveDTO.getTypeOfContract());
         contractVO.setF_desde(Date.valueOf(oldContractToSaveDTO.getDateFrom()));
         contractVO.setF_hasta(dateTo);
-        contractVO.setEnvigor(oldContractToSaveDTO.getCurrentContract());
+        contractVO.setEnvigor(oldContractToSaveDTO.getContractInForce());
         contractVO.setNotas_gestor(oldContractToSaveDTO.getNotesForManager());
         contractVO.setNotas_privadas(oldContractToSaveDTO.getPrivateNotes());
         contractVO.setIdc(null);

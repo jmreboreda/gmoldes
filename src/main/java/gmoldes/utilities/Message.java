@@ -1,6 +1,7 @@
 package gmoldes.utilities;
 
 import gmoldes.App;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;

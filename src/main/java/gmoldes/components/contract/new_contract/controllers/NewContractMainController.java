@@ -27,6 +27,7 @@ import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.services.Email.EmailParameters;
 import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
+import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
@@ -44,6 +45,7 @@ import javafx.stage.Stage;
 import javax.mail.internet.AddressException;
 import java.awt.print.PrinterException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -66,6 +68,8 @@ public class NewContractMainController extends VBox {
 
     private Boolean contractHasBeenSavedInDatabase = false;
     private Boolean contractHasBeenSentToContractAgent = false;
+
+    private Process pdfViewerProcess = null;
 
     private Parent parent;
 
@@ -183,7 +187,6 @@ public class NewContractMainController extends VBox {
     }
 
     private void onOkButton(MouseEvent event) {
-
         if (!NewContractDataVerifier.verifyContractParts(contractParts, tabPane)) {
             setStatusRevisionErrors(ContractConstants.REVISION_WITH_ERRORS);
             return;
@@ -204,14 +207,14 @@ public class NewContractMainController extends VBox {
 
     private void onViewPDFButton(MouseEvent mouseEvent) {
         Path pathOut;
-        Process p = null;
 
         ContractDataToContractAgent contractDataToContractAgent = createContractDataToContractAgent();
         pathOut = retrievePathToContractDataToContractAgentPDF(contractDataToContractAgent);
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("linux")) {
+
+        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)) {
             try {
                 String[] command = {"sh", "-c", "xdg-open " + pathOut};
-                p = Runtime.getRuntime().exec(command);
+                pdfViewerProcess = Runtime.getRuntime().exec(command);
             } catch (IOException e) {
                 System.out.println("No se ha podido abrir el documento \"" + contractDataToContractAgent.toFileName().concat(".pdf") + "\"");
                 e.printStackTrace();
@@ -219,7 +222,7 @@ public class NewContractMainController extends VBox {
         }else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
             String[] command = {"cmd","/c","start","\"visor\"","\"" + pathOut + "\""};
             try {
-                p = Runtime.getRuntime().exec(command);
+                pdfViewerProcess = Runtime.getRuntime().exec(command);
             } catch (IOException e) {
                 System.out.println("No se ha podido abrir el documento \"" + contractDataToContractAgent.toFileName().concat(".pdf") + "\"");
                 e.printStackTrace();
@@ -234,8 +237,8 @@ public class NewContractMainController extends VBox {
         if (statusText.equals(ContractConstants.REVISION_WITHOUT_ERRORS)) {
             if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
                 persistOldContractToSave();
-            }
-            contractActionComponents.enablePDFButton(true);
+                contractActionComponents.enablePDFButton(true);
+                }
         }
     }
 
@@ -334,6 +337,7 @@ public class NewContractMainController extends VBox {
     }
 
     private void persistOldContractToSave() {
+
         LocalDate endOfContractNotice = null;
         if (contractData.getDateTo() == null) {
             endOfContractNotice = LocalDate.of(9999, 12, 31);
@@ -344,12 +348,6 @@ public class NewContractMainController extends VBox {
             quoteAccountCode = "";
         }else{
             quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
-        }
-
-        Boolean isCurrentContract = false;
-        if(contractData.getDateFrom().isBefore(LocalDate.now()) ||
-                contractData.getDateFrom().isEqual(LocalDate.now())){
-            isCurrentContract = true;
         }
 
         OldContractToSaveDTO oldContractToSaveDTO = OldContractToSaveDTO.create()
@@ -367,7 +365,7 @@ public class NewContractMainController extends VBox {
                 .withTypeOfContract(contractData.getContractType().getDescripctto())
                 .withDateFrom(contractData.getDateFrom())
                 .withDateTo(contractData.getDateTo())
-                .withCurrentContract(isCurrentContract)
+                .withContractInForce(contractData.isContractInForceAtDate(LocalDate.now()))
                 .withNotesForManager(contractPublicNotes.getPublicNotes())
                 .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
                 .withQuoteDataReportIDC(null)
@@ -530,14 +528,10 @@ public class NewContractMainController extends VBox {
     }
 
     private Path retrievePathToContractDataToContractAgentPDF(ContractDataToContractAgent contractDataToContractAgent){
-        String temporalDir = null;
         Path pathOut = null;
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
-            temporalDir =Parameters.LINUX_TEMPORAL_DIR;
-        }
-        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
-            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
-        }
+
+        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
+        String temporalDir = maybePath.get().toString();
 
         Path pathToContractDataToContractAgent = Paths.get(Parameters.USER_HOME, temporalDir, contractDataToContractAgent.toFileName().concat(".pdf"));
         try {
@@ -551,14 +545,10 @@ public class NewContractMainController extends VBox {
     }
 
     private Path retrievePathToContractDataSubfolderPDF(ContractDataSubfolder contractDataSubfolder){
-        String temporalDir = null;
         Path pathOut = null;
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
-            temporalDir = Parameters.LINUX_TEMPORAL_DIR;
-        }
-        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
-            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
-        }
+
+        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
+        String temporalDir = maybePath.get().toString();
 
         Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
         try {
@@ -572,14 +562,10 @@ public class NewContractMainController extends VBox {
     }
 
     private Path retrievePathToContractRecordHistorySubfolderPDF(ContractDataSubfolder contractDataSubfolder){
-        String temporalDir = null;
         Path pathOut = null;
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)){
-            temporalDir = Parameters.LINUX_TEMPORAL_DIR;
-        }
-        else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
-            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
-        }
+
+        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
+        String temporalDir = maybePath.get().toString();
 
         String fileName = ContractConstants.CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT + Utilities.replaceWithUnderscore(contractDataSubfolder.getEmployeeFullName());
 

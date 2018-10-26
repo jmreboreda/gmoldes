@@ -1,5 +1,6 @@
 package gmoldes.components.initial_menu;
 
+import com.sun.javafx.stage.StageHelper;
 import gmoldes.App;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.new_contract.controllers.NewContractMainController;
@@ -7,6 +8,7 @@ import gmoldes.components.timerecord.controllers.TimeRecordController;
 import gmoldes.domain.client.manager.ClientManager;
 import gmoldes.domain.person.manager.PersonManager;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.util.logging.Logger;
 
