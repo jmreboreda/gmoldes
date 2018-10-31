@@ -101,6 +101,12 @@ public class ContractDAO {
         return (Integer) query.getSingleResult();
     }
 
+    public List<ContractVO> findAllContractsSorted(){
+        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_SORTED, ContractVO.class);
+
+        return query.getResultList();
+    }
+
     public List<ContractVO> findAllClientWithActiveContractSorted(){
         TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED, ContractVO.class);
 

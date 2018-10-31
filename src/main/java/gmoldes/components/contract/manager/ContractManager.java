@@ -8,10 +8,12 @@ import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDT
 import gmoldes.components.contract.persistence.dao.ContractDAO;
 import gmoldes.components.contract.persistence.vo.ContractVO;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public class ContractManager {
 
@@ -26,6 +28,46 @@ public class ContractManager {
         ContractVO contractVO = mapperOldContractToSaveDTOVO.mapOldContractToSaveDTOVO((oldContractToSaveDTO));
 
         return contractDAO.create(contractVO);
+    }
+
+    public List<ContractDTO> findAllContractsSorted(){
+        List<ContractDTO> contractDTOList = new ArrayList<>();
+        MapperContractVODTO mapper = new MapperContractVODTO();
+
+        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
+        List<ContractVO> contractVOList = contractDAO.findAllContractsSorted();
+        for (ContractVO contractVO : contractVOList) {
+            LocalDate dateTo = (contractVO.getF_hasta() != null) ? contractVO.getF_hasta().toLocalDate() : null;
+            Set<DayOfWeek> daysOfWeekToWork = mapper.mapDaysOfWeekToWorkVODTO(contractVO);
+
+            ContractDTO contractDTO = ContractDTO.create()
+                    .withLaborCategory(contractVO.getCategoria())
+                    .withClientGMName(contractVO.getClientegm_name())
+                    .withQuoteAccountCode(contractVO.getContrato_ccc())
+                    .withIndefiniteOrTemporalContract(contractVO.getDuracion())
+                    .withContractInForce(contractVO.getEnvigor())
+                    .withDateFrom(contractVO.getF_desde().toLocalDate())
+                    .withDateTo(dateTo)
+                    .withId(contractVO.getId())
+                    .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())
+                    .withClientGMId(contractVO.getIdcliente_gm())
+                    .withWorkerId(contractVO.getIdtrabajador())
+                    .withFullPartialWorkday(contractVO.getJor_tipo())
+                    .withWeeklyWorkHours(contractVO.getJor_trab())
+                    .withDaysOfWeekToWork(daysOfWeekToWork)
+                    .withNotesForManager(contractVO.getNotas_gestor())
+                    .withPrivateNotes(contractVO.getNotas_privadas())
+                    .withContractNumber(contractVO.getNumcontrato())
+                    .withVariationNumber(contractVO.getNumvariacion())
+                    .withSurrogateContract(contractVO.getSubrogacion())
+                    .withTypeOfContract(contractVO.getTipoctto())
+                    .withVariationType(contractVO.getTipovariacion())
+                    .withWorkerName(contractVO.getTrabajador_name())
+                    .build();
+
+            contractDTOList.add(contractDTO);
+        }
+        return contractDTOList;
     }
 
     public List<ContractDTO> findAllContractsByClientIdInPeriod(Integer clientId, Date referenceDate){

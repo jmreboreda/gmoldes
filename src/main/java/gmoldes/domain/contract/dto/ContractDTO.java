@@ -281,6 +281,15 @@ public class ContractDTO {
         this.endOfContractNotice = endOfContractNotice;
     }
 
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("clientegm_id = " + getClientGMId() + "\t");
+        sb.append("clientegm_name = " + getClientGMName());
+
+        return sb.toString();
+    }
+
     public static ContractDTOBuilder create() {
         return new ContractDTOBuilder();
     }

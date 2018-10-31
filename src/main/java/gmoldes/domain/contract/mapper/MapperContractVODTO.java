@@ -60,7 +60,7 @@ public class MapperContractVODTO {
         return contractDTO;
     }
 
-    private Set<DayOfWeek> mapDaysOfWeekToWorkVODTO(ContractVO contractVO) {
+    public Set<DayOfWeek> mapDaysOfWeekToWorkVODTO(ContractVO contractVO) {
         String daysOfWork = contractVO.getJor_trab_dias();
         DayOfWeek[] daysOfWeek = DayOfWeek.values();
 
