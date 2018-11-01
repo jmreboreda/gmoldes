@@ -1,6 +1,6 @@
 package gmoldes.components.contract.persistence.vo;
 
-import gmoldes.domain.initialcontractdata.InitialContractData;
+import gmoldes.domain.initialcontractdata.InitialContractJSONData;
 import com.vladmihalcea.hibernate.type.array.IntArrayType;
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -40,7 +40,7 @@ public class InitialContractVO implements Serializable {
     private Date endingDate;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private InitialContractData initialContractData;
+    private InitialContractJSONData initialContractJSONData;
 
     public Integer getId() {
         return id;
@@ -90,11 +90,11 @@ public class InitialContractVO implements Serializable {
         this.endingDate = endingDate;
     }
 
-    public InitialContractData getInitialContractData() {
-        return initialContractData;
+    public InitialContractJSONData getInitialContractJSONData() {
+        return initialContractJSONData;
     }
 
-    public void setInitialContractData(InitialContractData initialContractData) {
-        this.initialContractData = initialContractData;
+    public void setInitialContractJSONData(InitialContractJSONData initialContractJSONData) {
+        this.initialContractJSONData = initialContractJSONData;
     }
 }

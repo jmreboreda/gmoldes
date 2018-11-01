@@ -5,7 +5,7 @@ import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.utilities.ContractsToJSON;
+import gmoldes.utilities.OldContractsToJSONUtility;
 import gmoldes.utilities.Message;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -29,8 +29,8 @@ public class App extends Application {
         primaryStage.setScene(initialScene);
         primaryStage.show();
 
-        ContractsToJSON ctJson = new ContractsToJSON();
-        ctJson.contractToJsonGenerator();
+        OldContractsToJSONUtility ctJson = new OldContractsToJSONUtility();
+        ctJson.oldContractToJsonGenerator();
 
         initialControlProcesses(primaryStage);
 

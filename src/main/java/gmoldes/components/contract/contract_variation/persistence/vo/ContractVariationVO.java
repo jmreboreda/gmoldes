@@ -1,4 +1,4 @@
-package gmoldes.components.contract_variation.persistence.vo;
+package gmoldes.components.contract.contract_variation.persistence.vo;
 
 import com.vladmihalcea.hibernate.type.array.IntArrayType;
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
@@ -6,6 +6,7 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import gmoldes.domain.initialcontractdata.ContractVariationJSONData;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -33,8 +34,8 @@ public class ContractVariationVO implements Serializable {
     private Integer contractNumber;
     private Integer variationType;
     @Type(type = "jsonb")
-    @Column(columnDefinition = "json")
-    private String variationData;
+    @Column(columnDefinition = "jsonb")
+    private ContractVariationJSONData contractVariationJSONData;
 
     public Integer getId() {
         return id;
@@ -60,11 +61,11 @@ public class ContractVariationVO implements Serializable {
         this.variationType = variationType;
     }
 
-    public String getVariationData() {
-        return variationData;
+    public ContractVariationJSONData getContractVariationJSONData() {
+        return contractVariationJSONData;
     }
 
-    public void setVariationData(String variationData) {
-        this.variationData = variationData;
+    public void setContractVariationJSONData(ContractVariationJSONData contractVariationJSONData) {
+        this.contractVariationJSONData = contractVariationJSONData;
     }
 }

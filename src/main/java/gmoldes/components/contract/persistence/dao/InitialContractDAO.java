@@ -2,7 +2,6 @@ package gmoldes.components.contract.persistence.dao;
 
 
 import gmoldes.components.contract.persistence.vo.InitialContractVO;
-import gmoldes.components.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

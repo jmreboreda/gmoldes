@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.time.Month;
 import java.util.Date;
 import java.util.List;
 
@@ -106,7 +107,7 @@ public class ContractDAO {
 
         return query.getResultList();
     }
-
+    
     public List<ContractVO> findAllClientWithActiveContractSorted(){
         TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED, ContractVO.class);
 
