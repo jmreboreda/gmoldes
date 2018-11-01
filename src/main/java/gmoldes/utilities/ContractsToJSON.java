@@ -11,6 +11,8 @@ import java.util.List;
 public class ContractsToJSON {
 
     private static final Integer INITIAL_CONTRACT_VARIATION_CODE = 0;
+    private static final Integer CONTRACT_SUBROGATION_CODE = 109;
+
 
     private ContractManager contractManager = new ContractManager();
 
@@ -22,14 +24,23 @@ public class ContractsToJSON {
     private void initialContractGenerator(List<ContractDTO> contractDTOList){
         Boolean isContractInForce = false;
         for (ContractDTO contractDTO : contractDTOList) {
-            if(contractDTO.getVariationNumber().equals(INITIAL_CONTRACT_VARIATION_CODE)){
-                InitialContractData initialContractData = new InitialContractData(
-                        contractDTO.getClientGMId(), contractDTO.getWorkerId(), contractDTO.getQuoteAccountCode(), contractDTO.getLaborCategory(),
-                        contractDTO.getWeeklyWorkHours(), contractDTO.getDaysOfWeekToWork().toString(), contractDTO.getFullPartialWorkday(),
-                        contractDTO.getIdentificationContractNumberINEM());
+            if(contractDTO.getVariationNumber().equals(INITIAL_CONTRACT_VARIATION_CODE) ||
+            contractDTO.getVariationType().equals(CONTRACT_SUBROGATION_CODE)){
+
+                InitialContractData initialContractData = InitialContractData.create()
+                        .withClientGMId(contractDTO.getClientGMId())
+                        .withWorkerId(contractDTO.getWorkerId())
+                        .withQuoteAccountCode(contractDTO.getQuoteAccountCode())
+                        .withLaborCategory(contractDTO.getLaborCategory())
+                        .withWeeklyWorkHours(contractDTO.getWeeklyWorkHours())
+                        .withDaysOfWeekToWork(contractDTO.getDaysOfWeekToWork().toString())
+                        .withFullPartialWorkday(contractDTO.getFullPartialWorkday())
+                        .withIdentificationContractNumberINEM(contractDTO.getIdentificationContractNumberINEM())
+                        .build();
 
                 for (ContractDTO contractDTOInForce : contractDTOList) {
-                    if(contractDTOInForce.getContractNumber().equals(contractDTO.getContractNumber())){
+                    if(contractDTOInForce.getContractNumber().equals(contractDTO.getContractNumber()) &&
+                            !contractDTOInForce.getVariationType().equals(CONTRACT_SUBROGATION_CODE)){
                         isContractInForce = contractDTOInForce.getContractInForce();
                     }
                 }
@@ -47,8 +58,8 @@ public class ContractsToJSON {
                 initialContractVO.setInitialContractData(initialContractData);
 
                 Integer id = initialContractDAO.create(initialContractVO);
-
                 isContractInForce = false;
+
                 System.out.println("Registro de contrato inicial: " + id);
             }
         }

@@ -21,7 +21,7 @@
                     <ContractParts fx:id="contractParts" />
                 </Tab>
                 <Tab text="Contrato">
-                    <ContractData fx:id="initialContractData" />
+                    <ContractData fx:id="contractData" />
                 </Tab>
                 <Tab text="Horario">
                     <ContractSchedule fx:id="contractSchedule" />
