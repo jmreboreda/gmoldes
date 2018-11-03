@@ -1,12 +1,16 @@
 package gmoldes.components.contract.manager;
 
 
-import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.domain.contract.dto.OldContractToSaveDTO;
-import gmoldes.domain.contract.mapper.MapperContractVODTO;
 import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDTOVO;
 import gmoldes.components.contract.persistence.dao.ContractDAO;
+import gmoldes.components.contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.persistence.vo.ContractVO;
+import gmoldes.components.contract.persistence.vo.InitialContractVO;
+import gmoldes.domain.contract.dto.ContractDTO;
+import gmoldes.domain.contract.dto.ContractJsonDTO;
+import gmoldes.domain.contract.dto.OldContractToSaveDTO;
+import gmoldes.domain.contract.mapper.MapperContractVODTO;
+import gmoldes.domain.contract.mapper.MapperInitialContractJsonVODTO;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -55,6 +59,7 @@ public class ContractManager {
                     .withFullPartialWorkday(contractVO.getJor_tipo())
                     .withWeeklyWorkHours(contractVO.getJor_trab())
                     .withDaysOfWeekToWork(daysOfWeekToWork)
+                    .withTypeOfContract(contractVO.getTipoctto())
                     .withNotesForManager(contractVO.getNotas_gestor())
                     .withPrivateNotes(contractVO.getNotas_privadas())
                     .withContractNumber(contractVO.getNumcontrato())
@@ -221,5 +226,50 @@ public class ContractManager {
         }
 
         return contractDTOList;
+    }
+
+    public List<ContractJsonDTO> findAllInitialContractSorted(){
+        List<ContractJsonDTO> initialContractJsonDTOList = new ArrayList<>();
+        MapperInitialContractJsonVODTO mapper = new MapperInitialContractJsonVODTO();
+
+        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractSorted();
+        for (InitialContractVO initialContractVO : initialContractVOList) {
+            LocalDate exppectedEndDate = initialContractVO.getExpectedEndDate() == null ? null : initialContractVO.getExpectedEndDate().toLocalDate();
+            LocalDate endingDate = initialContractVO.getEndingDate() == null ? null : initialContractVO.getEndingDate().toLocalDate();
+
+            Integer typeOfContract = null;
+
+            if(initialContractVO.getInitialContractJSONData().getTypeOfContract().toString().contains("Normal")){
+                typeOfContract = 1;
+            }
+            if(initialContractVO.getInitialContractJSONData().getTypeOfContract().toString().contains("Eventual")){
+                typeOfContract = 3;
+            }
+            if(initialContractVO.getInitialContractJSONData().getTypeOfContract().toString().contains("Obra")){
+                typeOfContract = 4;
+            }
+
+            ContractJsonDTO contractJsonDTO = ContractJsonDTO.create()
+                    .withContractNumber(initialContractVO.getContractNumber())
+                    .withVariationType(initialContractVO.getVariationType())
+                    .withStartDate(initialContractVO.getStartDate().toLocalDate())
+                    .withExpectedEndDate(exppectedEndDate)
+                    .withEndingDate(endingDate)
+                    .withClientGMId(initialContractVO.getInitialContractJSONData().getClientGMId())
+                    .withWorkerId(initialContractVO.getInitialContractJSONData().getWorkerId())
+                    .withTypeOfContract(initialContractVO.getInitialContractJSONData().getTypeOfContract())
+                    .withLaborCategory(initialContractVO.getInitialContractJSONData().getLaborCategory())
+                    .withWeeklyWorkHours(initialContractVO.getInitialContractJSONData().getWeeklyWorkHours())
+                    .withDaysOfWeekToWork(mapper.mapDaysOfWeekToWorkVODTO(initialContractVO))
+                    .withFullPartialWorkday(initialContractVO.getInitialContractJSONData().getFullPartialWorkday())
+                    .withIdentificationContractNumberINEM(initialContractVO.getInitialContractJSONData().getIdentificationContractNumberINEM())
+                    .withNotesForManager(initialContractVO.getInitialContractJSONData().getNotesForContractManager())
+                    .withPrivateNotes(initialContractVO.getInitialContractJSONData().getPrivateNotes())
+                    .build();
+
+            initialContractJsonDTOList.add(contractJsonDTO);
+        }
+        return initialContractJsonDTOList;
     }
 }

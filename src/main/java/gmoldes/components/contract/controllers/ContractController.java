@@ -2,6 +2,7 @@ package gmoldes.components.contract.controllers;
 
 import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.components.contract.manager.ContractManager;
+import gmoldes.domain.contract.dto.ContractJsonDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,11 @@ public class ContractController {
     public List<ContractDTO> findAllContractsByClientIdInPeriod(Integer clientId, Date referenceDate){
 
         return contractManager.findAllContractsByClientIdInPeriod(clientId, referenceDate);
+    }
+
+    public List<ContractJsonDTO> findAllInitialContractSorted(){
+
+        return contractManager.findAllInitialContractSorted();
     }
 
     public List<ContractDTO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String yearMonth){

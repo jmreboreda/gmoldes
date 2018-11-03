@@ -1,10 +1,14 @@
 package gmoldes.components.contract.persistence.dao;
 
 
+import gmoldes.components.contract.persistence.vo.ContractVO;
 import gmoldes.components.contract.persistence.vo.InitialContractVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class InitialContractDAO {
 
@@ -42,5 +46,11 @@ public class InitialContractDAO {
         }
 
         return initialContractVO.getId();
+    }
+
+    public List<InitialContractVO> findAllInitialContractSorted(){
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_INITIAL_CONTRACT_SORTED, InitialContractVO.class);
+
+        return query.getResultList();
     }
 }

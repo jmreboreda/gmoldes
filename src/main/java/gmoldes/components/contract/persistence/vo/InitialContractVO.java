@@ -15,6 +15,17 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 
+@NamedQueries(value = {
+        @NamedQuery(
+                name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_SORTED,
+                query = "select p from InitialContractVO p order by p.contractNumber, p.startDate"
+        ),
+        @NamedQuery(
+                name = InitialContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID,
+                query = "select p from ContractVO p where p.idcliente_gm = :code order by p.trabajador_name"
+        )
+})
+
 @Entity
 @Table(name = "initialcontract")
 @TypeDefs({
@@ -27,6 +38,9 @@ import java.sql.Date;
 })
 
 public class InitialContractVO implements Serializable {
+
+    public static final String FIND_ALL_INITIAL_CONTRACT_SORTED = "InitialContractVO.FIND_ALL_CONTRACTS_SORTED";
+    public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID = "InitialContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID";
 
     @Id
     @SequenceGenerator(name = "initialcontract_id_seq", sequenceName = "initialcontract_id_seq", allocationSize = 1)

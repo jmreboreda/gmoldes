@@ -1,6 +1,5 @@
 package gmoldes.domain.initialcontractdata;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class ContractVariationJSONData {
@@ -13,7 +12,8 @@ public class ContractVariationJSONData {
     private String laborCategory ;
     private String weeklyWorkHours;
     private String daysOfWeekToWork;
-    private String fullPartialWorkday;
+    private String fullPartialWorkDay;
+    private Integer contractType;
     private String identificationContractNumberINEM;
     private String notesForContractManager;
     private String privateNotes;
@@ -30,7 +30,8 @@ public class ContractVariationJSONData {
             String laborCategory,
             String weeklyWorkHours,
             String daysOfWeekToWork,
-            String fullPartialWorkday,
+            String fullPartialWorkDay,
+            Integer contractType,
             String identificationContractNumberINEM,
             String notesForContractManager,
             String privateNotes){
@@ -43,7 +44,8 @@ public class ContractVariationJSONData {
         this.laborCategory = laborCategory;
         this.weeklyWorkHours = weeklyWorkHours;
         this.daysOfWeekToWork = daysOfWeekToWork;
-        this.fullPartialWorkday = fullPartialWorkday;
+        this.fullPartialWorkDay = fullPartialWorkDay;
+        this.contractType = contractType;
         this.identificationContractNumberINEM = identificationContractNumberINEM;
         this.notesForContractManager = notesForContractManager;
         this.privateNotes = privateNotes;
@@ -113,12 +115,20 @@ public class ContractVariationJSONData {
         this.daysOfWeekToWork = daysOfWeekToWork;
     }
 
-    public String getFullPartialWorkday() {
-        return fullPartialWorkday;
+    public String getFullPartialWorkDay() {
+        return fullPartialWorkDay;
     }
 
-    public void setFullPartialWorkday(String fullPartialWorkday) {
-        this.fullPartialWorkday = fullPartialWorkday;
+    public void setFullPartialWorkDay(String fullPartialWorkDay) {
+        this.fullPartialWorkDay = fullPartialWorkDay;
+    }
+
+    public Integer getContractType() {
+        return contractType;
+    }
+
+    public void setContractType(Integer contractType) {
+        this.contractType = contractType;
     }
 
     public String getIdentificationContractNumberINEM() {
@@ -160,6 +170,7 @@ public class ContractVariationJSONData {
         private String weeklyWorkHours;
         private String daysOfWeekToWork;
         private String fullPartialWorkday;
+        private Integer contractType;
         private String identificationContractNumberINEM;
         private String notesForContractManager;
         private String privateNotes;
@@ -210,6 +221,10 @@ public class ContractVariationJSONData {
             return this;
         }
 
+        public ContractVariationJSONDataBuilder withContractType(Integer contractType) {
+            this.contractType = contractType;
+            return this;
+        }
 
         public ContractVariationJSONDataBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
             this.identificationContractNumberINEM = identificationContractNumberINEM;
@@ -228,7 +243,7 @@ public class ContractVariationJSONData {
 
         public ContractVariationJSONData build() {
             return new ContractVariationJSONData(this.clientGMId,  this.workerId, this.quoteAccountCode, this.dateFom, this.dateTo, this.laborCategory,
-                    this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday, this.identificationContractNumberINEM, this.notesForContractManager,
+                    this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday, this.contractType, this.identificationContractNumberINEM, this.notesForContractManager,
                     this.privateNotes);
         }
     }

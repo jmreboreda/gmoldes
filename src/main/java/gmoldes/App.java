@@ -1,10 +1,12 @@
 package gmoldes;
 
 
+import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.domain.contract.dto.ContractDTO;
+import gmoldes.domain.contract.dto.ContractJsonDTO;
 import gmoldes.utilities.OldContractsToJSONUtility;
 import gmoldes.utilities.Message;
 import javafx.application.Application;
@@ -29,8 +31,15 @@ public class App extends Application {
         primaryStage.setScene(initialScene);
         primaryStage.show();
 
-        OldContractsToJSONUtility ctJson = new OldContractsToJSONUtility();
-        ctJson.oldContractToJsonGenerator();
+//        OldContractsToJSONUtility ctJson = new OldContractsToJSONUtility();
+//        ctJson.oldContractToJsonGenerator();
+
+        ContractManager manager = new ContractManager();
+        List<ContractJsonDTO> contractList = manager.findAllInitialContractSorted();
+        for(ContractJsonDTO contract : contractList){
+
+            System.out.println(contract.toMyString());
+        }
 
         initialControlProcesses(primaryStage);
 
