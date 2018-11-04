@@ -84,8 +84,8 @@
 
                   <TableColumn maxWidth="-1.0" minWidth="325.0" prefWidth="-1.0" sortable="false" text="Fecha de">
                       <columns>
-                          <TableColumn fx:id="startDate" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="Inicio" />
-                          <TableColumn fx:id="endingDate" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="Finalización" />
+                          <TableColumn fx:id="dateFrom" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="Inicio" />
+                          <TableColumn fx:id="dateTo" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="Finalización" />
                       </columns>
                   </TableColumn>
 

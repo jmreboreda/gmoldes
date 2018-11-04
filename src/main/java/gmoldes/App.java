@@ -6,9 +6,9 @@ import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.domain.contract.dto.ContractJsonDTO;
-import gmoldes.utilities.OldContractsToJSONUtility;
+import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.utilities.Message;
+import gmoldes.utilities.OldContractsToJSONUtility;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
@@ -35,8 +35,8 @@ public class App extends Application {
 //        ctJson.oldContractToJsonGenerator();
 
         ContractManager manager = new ContractManager();
-        List<ContractJsonDTO> contractList = manager.findAllInitialContractSorted();
-        for(ContractJsonDTO contract : contractList){
+        List<InitialContractDTO> contractList = manager.findAllInitialContractSorted();
+        for(InitialContractDTO contract : contractList){
 
             System.out.println(contract.toMyString());
         }

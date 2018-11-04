@@ -102,8 +102,8 @@
                   <Insets left="10.0" />
                </padding>
             </Label>
-            <Label fx:id="startDate" alignment="CENTER" prefHeight="18.0" prefWidth="114.0" textFill="#1807ac" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label fx:id="endingDate" alignment="CENTER" prefHeight="18.0" prefWidth="114.0" textFill="#1807ac" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Label fx:id="dateFrom" alignment="CENTER" prefHeight="18.0" prefWidth="114.0" textFill="#1807ac" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="dateTo" alignment="CENTER" prefHeight="18.0" prefWidth="114.0" textFill="#1807ac" GridPane.columnIndex="3" GridPane.rowIndex="3" />
             <Label fx:id="numDaysContract" alignment="CENTER" prefHeight="18.0" prefWidth="114.0" textFill="#1807ac" GridPane.columnIndex="5" GridPane.rowIndex="3" />
             <Label text="Jornada:" wrapText="true" GridPane.rowIndex="4">
                <cursor>

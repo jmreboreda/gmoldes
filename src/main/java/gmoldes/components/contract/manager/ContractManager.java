@@ -7,10 +7,11 @@ import gmoldes.components.contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.persistence.vo.ContractVO;
 import gmoldes.components.contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.domain.contract.dto.ContractJsonDTO;
+import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.contract.dto.OldContractToSaveDTO;
 import gmoldes.domain.contract.mapper.MapperContractVODTO;
-import gmoldes.domain.contract.mapper.MapperInitialContractJsonVODTO;
+import gmoldes.domain.contract.mapper.MapperInitialContractDTOVO;
+import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -32,6 +33,16 @@ public class ContractManager {
         ContractVO contractVO = mapperOldContractToSaveDTOVO.mapOldContractToSaveDTOVO((oldContractToSaveDTO));
 
         return contractDAO.create(contractVO);
+    }
+
+    public Integer saveInitialContract(InitialContractDTO initialContractDTO){
+        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
+        MapperInitialContractDTOVO mapperInitialContractDTOVO = new MapperInitialContractDTOVO();
+        Integer newContractNumber = initialContractDAO.findHighestContractNumber() + 1;
+        initialContractDTO.setContractNumber(newContractNumber);
+        InitialContractVO initialContractVO = mapperInitialContractDTOVO.mapContractDTOVO(initialContractDTO);
+
+        return initialContractDAO.create(initialContractVO);
     }
 
     public List<ContractDTO> findAllContractsSorted(){
@@ -228,9 +239,9 @@ public class ContractManager {
         return contractDTOList;
     }
 
-    public List<ContractJsonDTO> findAllInitialContractSorted(){
-        List<ContractJsonDTO> initialContractJsonDTOList = new ArrayList<>();
-        MapperInitialContractJsonVODTO mapper = new MapperInitialContractJsonVODTO();
+    public List<InitialContractDTO> findAllInitialContractSorted(){
+        List<InitialContractDTO> initialContractDTOList = new ArrayList<>();
+        MapperInitialContractVODTO mapper = new MapperInitialContractVODTO();
 
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractSorted();
@@ -250,7 +261,7 @@ public class ContractManager {
                 typeOfContract = 4;
             }
 
-            ContractJsonDTO contractJsonDTO = ContractJsonDTO.create()
+            InitialContractDTO initialContractDTO = InitialContractDTO.create()
                     .withContractNumber(initialContractVO.getContractNumber())
                     .withVariationType(initialContractVO.getVariationType())
                     .withStartDate(initialContractVO.getStartDate().toLocalDate())
@@ -268,8 +279,8 @@ public class ContractManager {
                     .withPrivateNotes(initialContractVO.getInitialContractJSONData().getPrivateNotes())
                     .build();
 
-            initialContractJsonDTOList.add(contractJsonDTO);
+            initialContractDTOList.add(initialContractDTO);
         }
-        return initialContractJsonDTOList;
+        return initialContractDTOList;
     }
 }

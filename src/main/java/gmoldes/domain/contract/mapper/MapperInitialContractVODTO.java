@@ -5,7 +5,7 @@ import java.time.DayOfWeek;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MapperInitialContractJsonVODTO {
+public class MapperInitialContractVODTO {
 
     public Set<DayOfWeek> mapDaysOfWeekToWorkVODTO(InitialContractVO initialContractVO) {
         String daysOfWork = initialContractVO.getInitialContractJSONData().getDaysOfWeekToWork();

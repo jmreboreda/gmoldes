@@ -55,6 +55,8 @@ public class OldContractsToJSONUtility {
                     }
                 }
 
+
+
                 InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
                 InitialContractVO initialContractVO = new InitialContractVO();
 

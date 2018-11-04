@@ -18,7 +18,7 @@ public class ContractDAO {
             "update ContractVO as p set p.envigor = TRUE where p.envigor = FALSE and (p.f_desde <= date(now()) and (p.f_hasta > date(now()) or p.f_hasta is null))";
     private static final String ESTABLISH_CONTRACT_NOT_IN_FORCE =
             "update ContractVO as p set p.envigor = FALSE where p.envigor = TRUE and (p.f_desde > date(now()) or p.f_hasta < date(now()))";
-    private static final String FIND_HIGHEST_CONTRACT_NUMBER = "select max(numcontrato)from ContractVO";
+    private static final String FIND_HIGHEST_CONTRACT_NUMBER = "select max(numcontrato) from ContractVO";
 
     private SessionFactory sessionFactory;
     private Session session;

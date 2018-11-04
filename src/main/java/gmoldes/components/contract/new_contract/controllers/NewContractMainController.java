@@ -17,6 +17,7 @@ import gmoldes.domain.client.controllers.ClientCCCController;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.contract.dto.OldContractToSaveDTO;
 import gmoldes.domain.contract.dto.ProvisionalContractDataDTO;
 import gmoldes.domain.person.controllers.PersonController;
@@ -41,7 +42,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import javax.mail.internet.AddressException;
 import java.awt.print.PrinterException;
 import java.io.IOException;
@@ -236,6 +236,7 @@ public class NewContractMainController extends VBox {
         if (statusText.equals(ContractConstants.REVISION_WITHOUT_ERRORS)) {
             if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
                 persistOldContractToSave();
+                persistInitialContract();
                 contractActionComponents.enablePDFButton(true);
                 }
         }
@@ -374,24 +375,66 @@ public class NewContractMainController extends VBox {
         ContractManager contractManager = new ContractManager();
         Integer contractNumber = contractManager.saveOldContract(oldContractToSaveDTO);
         if (contractNumber != null) {
-            contractHasBeenSavedInDatabase = true;
-            provisionalContractData.setContractText(Parameters.NEW_CONTRACT_TEXT + " nº");
-            provisionalContractData.setContractNumber(contractNumber);
-            contractParts.setMouseTransparent(true);
-            contractData.setMouseTransparent(true);
-            contractSchedule.setMouseTransparent(true);
-            contractPublicNotes.setMouseTransparent(true);
-            contractPrivateNotes.setMouseTransparent(true);
-            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_SAVED_OK + contractNumber);
-            contractActionComponents.enableOkButton(false);
-            contractActionComponents.enableSendMailButton(true);
-
+            blockingInterfaceAfterContractPersistence(contractNumber);
             verifyPrintTimeRecord();
             printSubfoldersOfTheContract(Integer.parseInt(provisionalContractData.getContractNumber()));
 
         }else{
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);
         }
+    }
+
+    private void persistInitialContract(){
+        String quoteAccountCode;
+        if(contractParts.getSelectedCCC() == null){
+            quoteAccountCode = "";
+        }else{
+            quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
+        }
+
+        InitialContractDTO initialContractDTO = InitialContractDTO.create()
+                .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
+                .withStartDate(contractData.getDateFrom())
+                .withExpectedEndDate(contractData.getDateTo())
+                .withEndingDate(null)
+                .withIdentificationContractNumberINEM(null)
+                .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork())
+                .withWeeklyWorkHours(contractData.getHoursWorkWeek())
+                .withNotesForManager(contractPublicNotes.getPublicNotes())
+                .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
+                .withLaborCategory(contractData.getLaborCategory())
+                .withTypeOfContract(mapContractTypeStringToInteger(contractData.getContractType().getDescripctto()))
+                .withFullPartialWorkday(contractData.getFullPartialWorkDay())
+                .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
+                .withQuoteAccountCode(quoteAccountCode)
+                .withClientGMId(contractParts.getSelectedEmployer().getId())
+                .build();
+
+        ContractManager contractManager = new ContractManager();
+        Integer contractNumber = contractManager.saveInitialContract(initialContractDTO);
+        if (contractNumber != null) {
+            blockingInterfaceAfterContractPersistence(contractNumber);
+            verifyPrintTimeRecord();
+            printSubfoldersOfTheContract(Integer.parseInt(provisionalContractData.getContractNumber()));
+
+        }else{
+            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);
+        }
+    }
+
+    private void blockingInterfaceAfterContractPersistence(Integer contractNumber){
+        contractHasBeenSavedInDatabase = true;
+        provisionalContractData.setContractText(Parameters.NEW_CONTRACT_TEXT + " nº");
+        provisionalContractData.setContractNumber(contractNumber);
+        contractParts.setMouseTransparent(true);
+        contractData.setMouseTransparent(true);
+        contractSchedule.setMouseTransparent(true);
+        contractPublicNotes.setMouseTransparent(true);
+        contractPrivateNotes.setMouseTransparent(true);
+        Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_SAVED_OK + contractNumber);
+        contractActionComponents.enableOkButton(false);
+        contractActionComponents.enableSendMailButton(true);
+
     }
 
     private ContractDataToContractAgent createContractDataToContractAgent(){
@@ -656,5 +699,60 @@ public class NewContractMainController extends VBox {
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
         }
+    }
+
+    private Integer mapContractTypeStringToInteger(String contractType){
+        Integer typeOfContract = 999;
+
+        if(contractType.contains("Normal")){
+            typeOfContract = 1;
+        }
+        if(contractType.contains("Eventual")){
+            typeOfContract = 3;
+        }
+        if(contractType.contains("Obra")){
+            typeOfContract = 4;
+        }
+        if(contractType.contains("Formación")){
+            typeOfContract = 5;
+        }
+        if(contractType.contains("Prácticas")){
+            typeOfContract = 6;
+        }
+        if(contractType.contains("Subrogación")){
+            typeOfContract = 7;
+        }
+        if(contractType.contains("Socio")){
+            typeOfContract = 8;
+        }
+        if(contractType.contains("Administrador")){
+            typeOfContract = 9;
+        }
+        if(contractType.contains("relevo")){
+            typeOfContract = 10;
+        }
+        if(contractType.contains("embarazo")){
+            typeOfContract = 11;
+        }
+        if(contractType.contains("maternidad")){
+            typeOfContract = 12;
+        }
+        if(contractType.contains("Conversión")){
+            typeOfContract = 13;
+        }
+        if(contractType.contains("baja laboral")){
+            typeOfContract = 14;
+        }
+        if(contractType.contains("vacaciones")){
+            typeOfContract = 15;
+        }
+        if(contractType.contains("discontínuo")){
+            typeOfContract = 16;
+        }
+        if(contractType.contains("excedencia")){
+            typeOfContract = 17;
+        }
+
+        return typeOfContract;
     }
 }

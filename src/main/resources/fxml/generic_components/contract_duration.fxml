@@ -22,12 +22,12 @@
             <Insets left="15.0" />
          </HBox.margin>
       </RadioButton>
-      <DateInput fx:id="startDate" alignment="CENTER">
+      <DateInput fx:id="dateFrom" alignment="CENTER">
          <HBox.margin>
             <Insets left="15.0" />
          </HBox.margin>
       </DateInput>
-      <DateInput fx:id="endingDate" alignment="CENTER">
+      <DateInput fx:id="dateTo" alignment="CENTER">
          <HBox.margin>
             <Insets left="15.0" />
          </HBox.margin>
