@@ -3,8 +3,8 @@ package gmoldes.utilities;
 import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.components.contract.persistence.dao.InitialContractDAO;
-import gmoldes.components.contract.persistence.vo.InitialContractVO;
+import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
+import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.domain.initialcontractdata.ContractVariationJSONData;
 import gmoldes.domain.initialcontractdata.InitialContractJSONData;
@@ -39,7 +39,7 @@ public class OldContractsToJSONUtility {
                         .withWorkerId(contractDTO.getWorkerId())
                         .withQuoteAccountCode(contractDTO.getQuoteAccountCode())
                         .withLaborCategory(contractDTO.getLaborCategory())
-                        .withTypeOfContract(mapContractTypeStringToInteger(contractDTO.getTypeOfContract()))
+                        .withContractType(mapContractTypeStringToInteger(contractDTO.getContractType()))
                         .withWeeklyWorkHours(contractDTO.getWeeklyWorkHours())
                         .withDaysOfWeekToWork(contractDTO.getDaysOfWeekToWork().toString())
                         .withFullPartialWorkday(contractDTO.getFullPartialWorkday())
@@ -54,8 +54,6 @@ public class OldContractsToJSONUtility {
                         isContractInForce = contractDTOInForce.getContractInForce();
                     }
                 }
-
-
 
                 InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
                 InitialContractVO initialContractVO = new InitialContractVO();
@@ -83,20 +81,18 @@ public class OldContractsToJSONUtility {
             if (!contractDTO.getVariationNumber().equals(INITIAL_CONTRACT_VARIATION_CODE) &&
                     !contractDTO.getVariationType().equals(CONTRACT_SUBROGATION_CODE)) {
 
-                Date dateFrom = contractDTO.getDateFrom() == null ? null : Date.valueOf(contractDTO.getDateFrom());
-                Date dateTo = contractDTO.getDateTo() == null ? null : Date.valueOf(contractDTO.getDateTo());
+                Date endingDate = contractDTO.getDateTo() == null ? null : Date.valueOf(contractDTO.getDateTo());
+                Date expectedEndDate = contractDTO.getDateTo() == null ? null : Date.valueOf(contractDTO.getDateTo());
 
                 ContractVariationJSONData contractVariationJSONData = ContractVariationJSONData.create()
                         .withClientGMId(contractDTO.getClientGMId())
                         .withWorkerId(contractDTO.getWorkerId())
                         .withQuoteAccountCode(contractDTO.getQuoteAccountCode())
-                        .withDateFrom(dateFrom)
-                        .withDateTo(dateTo)
                         .withLaborCategory(contractDTO.getLaborCategory())
                         .withWeeklyWorkHours(contractDTO.getWeeklyWorkHours())
                         .withDaysOfWeekToWork(contractDTO.getDaysOfWeekToWork().toString())
                         .withFullPartialWorkday(contractDTO.getFullPartialWorkday())
-                        .withContractType(mapContractTypeStringToInteger(contractDTO.getTypeOfContract()))
+                        .withContractType(mapContractTypeStringToInteger(contractDTO.getContractType()))
                         .withIdentificationContractNumberINEM(contractDTO.getIdentificationContractNumberINEM())
                         .withNotesForContractManager(contractDTO.getNotesForManager())
                         .withPrivateNotes(contractDTO.getPrivateNotes())
@@ -107,6 +103,9 @@ public class OldContractsToJSONUtility {
 
                 contractVariationVO.setContractNumber(contractDTO.getContractNumber());
                 contractVariationVO.setVariationType(contractDTO.getVariationType());
+                contractVariationVO.setStartDate(Date.valueOf(contractDTO.getDateFrom()));
+                contractVariationVO.setExpectedEndDate(expectedEndDate);
+                contractVariationVO.setEndingDate(endingDate);
                 contractVariationVO.setContractVariationJSONData(contractVariationJSONData);
 
                 Integer id = contractVariationDAO.create(contractVariationVO);
@@ -117,58 +116,58 @@ public class OldContractsToJSONUtility {
     }
 
     private Integer mapContractTypeStringToInteger(String contractType){
-        Integer typeOfContract = 999;
+        Integer thisContractType = 999;
 
         if(contractType.contains("Normal")){
-            typeOfContract = 1;
+            thisContractType = 1;
         }
         if(contractType.contains("Eventual")){
-            typeOfContract = 3;
+            thisContractType = 3;
         }
         if(contractType.contains("Obra")){
-            typeOfContract = 4;
+            thisContractType = 4;
         }
         if(contractType.contains("Formación")){
-            typeOfContract = 5;
+            thisContractType = 5;
         }
         if(contractType.contains("Prácticas")){
-            typeOfContract = 6;
+            thisContractType = 6;
         }
         if(contractType.contains("Subrogación")){
-            typeOfContract = 7;
+            thisContractType = 7;
         }
         if(contractType.contains("Socio")){
-            typeOfContract = 8;
+            thisContractType = 8;
         }
         if(contractType.contains("Administrador")){
-            typeOfContract = 9;
+            thisContractType = 9;
         }
         if(contractType.contains("relevo")){
-            typeOfContract = 10;
+            thisContractType = 10;
         }
         if(contractType.contains("embarazo")){
-            typeOfContract = 11;
+            thisContractType = 11;
         }
         if(contractType.contains("maternidad")){
-            typeOfContract = 12;
+            thisContractType = 12;
         }
         if(contractType.contains("Conversión")){
-            typeOfContract = 13;
+            thisContractType = 13;
         }
         if(contractType.contains("baja laboral")){
-            typeOfContract = 14;
+            thisContractType = 14;
         }
         if(contractType.contains("vacaciones")){
-            typeOfContract = 15;
+            thisContractType = 15;
         }
         if(contractType.contains("discontínuo")){
-            typeOfContract = 16;
+            thisContractType = 16;
         }
         if(contractType.contains("excedencia")){
-            typeOfContract = 17;
+            thisContractType = 17;
         }
 
-        return typeOfContract;
+        return thisContractType;
     }
 }
 

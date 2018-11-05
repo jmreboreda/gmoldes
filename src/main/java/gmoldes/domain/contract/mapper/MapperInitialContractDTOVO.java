@@ -1,6 +1,6 @@
 package gmoldes.domain.contract.mapper;
 
-import gmoldes.components.contract.persistence.vo.InitialContractVO;
+import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.initialcontractdata.InitialContractJSONData;
 
@@ -11,7 +11,7 @@ public class MapperInitialContractDTOVO {
     public InitialContractVO mapContractDTOVO(InitialContractDTO initialContractDTO) {
 
         InitialContractJSONData initialContractJSONData = InitialContractJSONData.create()
-                .withTypeOfContract(initialContractDTO.getTypeOfContract())
+                .withContractType(initialContractDTO.getContractType())
                 .withClientGMId(initialContractDTO.getClientGMId())
                 .withDaysOfWeekToWork(initialContractDTO.getDaysOfWeekToWork().toString())
                 .withFullPartialWorkday(initialContractDTO.getFullPartialWorkday())

@@ -44,7 +44,7 @@ public class MapperContractVODTO {
                 .withWeeklyWorkHours(contractVO.getJor_trab())
                 .withDaysOfWeekToWork(daysOfWorkSet)
                 .withFullPartialWorkday(contractVO.getJor_tipo())
-                .withTypeOfContract(contractVO.getTipoctto())
+                .withTContractType(contractVO.getTipoctto())
                 .withDateFrom(contractVO.getF_desde().toLocalDate())
                 .withDateTo(dateTo)
                 .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())

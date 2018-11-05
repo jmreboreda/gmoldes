@@ -343,12 +343,7 @@ public class NewContractMainController extends VBox {
             endOfContractNotice = LocalDate.of(9999, 12, 31);
         }
 
-        String quoteAccountCode;
-        if(contractParts.getSelectedCCC() == null){
-            quoteAccountCode = "";
-        }else{
-            quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
-        }
+        String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 
         OldContractToSaveDTO oldContractToSaveDTO = OldContractToSaveDTO.create()
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
@@ -362,7 +357,7 @@ public class NewContractMainController extends VBox {
                 .withWeeklyWorkHours(contractData.getHoursWorkWeek())
                 .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork())
                 .withFullPartialWorkday(contractData.getFullPartialWorkDay())
-                .withTypeOfContract(contractData.getContractType().getDescripctto())
+                .withContractType(contractData.getContractType().getDescripctto())
                 .withDateFrom(contractData.getDateFrom())
                 .withDateTo(contractData.getDateTo())
                 .withContractInForce(contractData.isContractInForceAtDate(LocalDate.now()))
@@ -385,12 +380,8 @@ public class NewContractMainController extends VBox {
     }
 
     private void persistInitialContract(){
-        String quoteAccountCode;
-        if(contractParts.getSelectedCCC() == null){
-            quoteAccountCode = "";
-        }else{
-            quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
-        }
+
+        String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 
         InitialContractDTO initialContractDTO = InitialContractDTO.create()
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
@@ -403,7 +394,7 @@ public class NewContractMainController extends VBox {
                 .withNotesForManager(contractPublicNotes.getPublicNotes())
                 .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
                 .withLaborCategory(contractData.getLaborCategory())
-                .withTypeOfContract(mapContractTypeStringToInteger(contractData.getContractType().getDescripctto()))
+                .withContractType(mapContractTypeStringToInteger(contractData.getContractType().getDescripctto()))
                 .withFullPartialWorkday(contractData.getFullPartialWorkDay())
                 .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
                 .withQuoteAccountCode(quoteAccountCode)
@@ -702,57 +693,57 @@ public class NewContractMainController extends VBox {
     }
 
     private Integer mapContractTypeStringToInteger(String contractType){
-        Integer typeOfContract = 999;
+        Integer thisContractType = 999;
 
         if(contractType.contains("Normal")){
-            typeOfContract = 1;
+            thisContractType = 1;
         }
         if(contractType.contains("Eventual")){
-            typeOfContract = 3;
+            thisContractType = 3;
         }
         if(contractType.contains("Obra")){
-            typeOfContract = 4;
+            thisContractType = 4;
         }
         if(contractType.contains("Formación")){
-            typeOfContract = 5;
+            thisContractType = 5;
         }
         if(contractType.contains("Prácticas")){
-            typeOfContract = 6;
+            thisContractType = 6;
         }
         if(contractType.contains("Subrogación")){
-            typeOfContract = 7;
+            thisContractType = 7;
         }
         if(contractType.contains("Socio")){
-            typeOfContract = 8;
+            thisContractType = 8;
         }
         if(contractType.contains("Administrador")){
-            typeOfContract = 9;
+            thisContractType = 9;
         }
         if(contractType.contains("relevo")){
-            typeOfContract = 10;
+            thisContractType = 10;
         }
         if(contractType.contains("embarazo")){
-            typeOfContract = 11;
+            thisContractType = 11;
         }
         if(contractType.contains("maternidad")){
-            typeOfContract = 12;
+            thisContractType = 12;
         }
         if(contractType.contains("Conversión")){
-            typeOfContract = 13;
+            thisContractType = 13;
         }
         if(contractType.contains("baja laboral")){
-            typeOfContract = 14;
+            thisContractType = 14;
         }
         if(contractType.contains("vacaciones")){
-            typeOfContract = 15;
+            thisContractType = 15;
         }
         if(contractType.contains("discontínuo")){
-            typeOfContract = 16;
+            thisContractType = 16;
         }
         if(contractType.contains("excedencia")){
-            typeOfContract = 17;
+            thisContractType = 17;
         }
 
-        return typeOfContract;
+        return thisContractType;
     }
 }

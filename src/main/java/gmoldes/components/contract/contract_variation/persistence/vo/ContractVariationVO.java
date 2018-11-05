@@ -12,6 +12,7 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 
 @Entity
 @Table(name = "contractvariation")
@@ -33,6 +34,9 @@ public class ContractVariationVO implements Serializable {
     private Integer id;
     private Integer contractNumber;
     private Integer variationType;
+    private Date startDate;
+    private Date expectedEndDate;
+    private Date endingDate;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private ContractVariationJSONData contractVariationJSONData;
@@ -59,6 +63,30 @@ public class ContractVariationVO implements Serializable {
 
     public void setVariationType(Integer variationType) {
         this.variationType = variationType;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getExpectedEndDate() {
+        return expectedEndDate;
+    }
+
+    public void setExpectedEndDate(Date expectedEndDate) {
+        this.expectedEndDate = expectedEndDate;
+    }
+
+    public Date getEndingDate() {
+        return endingDate;
+    }
+
+    public void setEndingDate(Date endingDate) {
+        this.endingDate = endingDate;
     }
 
     public ContractVariationJSONData getContractVariationJSONData() {

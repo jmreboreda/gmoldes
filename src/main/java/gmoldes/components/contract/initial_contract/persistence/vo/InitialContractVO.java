@@ -1,4 +1,4 @@
-package gmoldes.components.contract.persistence.vo;
+package gmoldes.components.contract.initial_contract.persistence.vo;
 
 import gmoldes.domain.initialcontractdata.InitialContractJSONData;
 import com.vladmihalcea.hibernate.type.array.IntArrayType;

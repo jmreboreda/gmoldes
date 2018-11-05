@@ -14,6 +14,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -34,12 +37,18 @@ public class App extends Application {
 //        OldContractsToJSONUtility ctJson = new OldContractsToJSONUtility();
 //        ctJson.oldContractToJsonGenerator();
 
+//        Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+//        String clipboardData = "";
+
         ContractManager manager = new ContractManager();
         List<InitialContractDTO> contractList = manager.findAllInitialContractSorted();
         for(InitialContractDTO contract : contractList){
-
             System.out.println(contract.toMyString());
+//            clipboardData = clipboardData + contract.toMyString();
         }
+
+//        StringSelection ss = new StringSelection(clipboardData);
+//        cb.setContents(ss, ss);
 
         initialControlProcesses(primaryStage);
 

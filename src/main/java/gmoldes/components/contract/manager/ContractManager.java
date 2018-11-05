@@ -3,9 +3,9 @@ package gmoldes.components.contract.manager;
 
 import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDTOVO;
 import gmoldes.components.contract.persistence.dao.ContractDAO;
-import gmoldes.components.contract.persistence.dao.InitialContractDAO;
+import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.persistence.vo.ContractVO;
-import gmoldes.components.contract.persistence.vo.InitialContractVO;
+import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.contract.dto.OldContractToSaveDTO;
@@ -70,13 +70,13 @@ public class ContractManager {
                     .withFullPartialWorkday(contractVO.getJor_tipo())
                     .withWeeklyWorkHours(contractVO.getJor_trab())
                     .withDaysOfWeekToWork(daysOfWeekToWork)
-                    .withTypeOfContract(contractVO.getTipoctto())
+                    .withTContractType(contractVO.getTipoctto())
                     .withNotesForManager(contractVO.getNotas_gestor())
                     .withPrivateNotes(contractVO.getNotas_privadas())
                     .withContractNumber(contractVO.getNumcontrato())
                     .withVariationNumber(contractVO.getNumvariacion())
                     .withSurrogateContract(contractVO.getSubrogacion())
-                    .withTypeOfContract(contractVO.getTipoctto())
+                    .withTContractType(contractVO.getTipoctto())
                     .withVariationType(contractVO.getTipovariacion())
                     .withWorkerName(contractVO.getTrabajador_name())
                     .build();
@@ -114,7 +114,7 @@ public class ContractManager {
                     .withContractNumber(contractVO.getNumcontrato())
                     .withVariationNumber(contractVO.getNumvariacion())
                     .withSurrogateContract(contractVO.getSubrogacion())
-                    .withTypeOfContract(contractVO.getTipoctto())
+                    .withTContractType(contractVO.getTipoctto())
                     .withVariationType(contractVO.getTipovariacion())
                     .withWorkerName(contractVO.getTrabajador_name())
                     .build();
@@ -152,7 +152,7 @@ public class ContractManager {
                     .withContractNumber(contractVO.getNumcontrato())
                     .withVariationNumber(contractVO.getNumvariacion())
                     .withSurrogateContract(contractVO.getSubrogacion())
-                    .withTypeOfContract(contractVO.getTipoctto())
+                    .withTContractType(contractVO.getTipoctto())
                     .withVariationType(contractVO.getTipovariacion())
                     .withWorkerName(contractVO.getTrabajador_name())
                     .build();
@@ -190,7 +190,7 @@ public class ContractManager {
                     .withContractNumber(contractVO.getNumcontrato())
                     .withVariationNumber(contractVO.getNumvariacion())
                     .withSurrogateContract(contractVO.getSubrogacion())
-                    .withTypeOfContract(contractVO.getTipoctto())
+                    .withTContractType(contractVO.getTipoctto())
                     .withVariationType(contractVO.getTipovariacion())
                     .withWorkerName(contractVO.getTrabajador_name())
                     .build();
@@ -246,30 +246,18 @@ public class ContractManager {
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractSorted();
         for (InitialContractVO initialContractVO : initialContractVOList) {
-            LocalDate exppectedEndDate = initialContractVO.getExpectedEndDate() == null ? null : initialContractVO.getExpectedEndDate().toLocalDate();
+            LocalDate expectedEndDate = initialContractVO.getExpectedEndDate() == null ? null : initialContractVO.getExpectedEndDate().toLocalDate();
             LocalDate endingDate = initialContractVO.getEndingDate() == null ? null : initialContractVO.getEndingDate().toLocalDate();
-
-            Integer typeOfContract = null;
-
-            if(initialContractVO.getInitialContractJSONData().getTypeOfContract().toString().contains("Normal")){
-                typeOfContract = 1;
-            }
-            if(initialContractVO.getInitialContractJSONData().getTypeOfContract().toString().contains("Eventual")){
-                typeOfContract = 3;
-            }
-            if(initialContractVO.getInitialContractJSONData().getTypeOfContract().toString().contains("Obra")){
-                typeOfContract = 4;
-            }
 
             InitialContractDTO initialContractDTO = InitialContractDTO.create()
                     .withContractNumber(initialContractVO.getContractNumber())
                     .withVariationType(initialContractVO.getVariationType())
                     .withStartDate(initialContractVO.getStartDate().toLocalDate())
-                    .withExpectedEndDate(exppectedEndDate)
+                    .withExpectedEndDate(expectedEndDate)
                     .withEndingDate(endingDate)
                     .withClientGMId(initialContractVO.getInitialContractJSONData().getClientGMId())
                     .withWorkerId(initialContractVO.getInitialContractJSONData().getWorkerId())
-                    .withTypeOfContract(initialContractVO.getInitialContractJSONData().getTypeOfContract())
+                    .withContractType(initialContractVO.getInitialContractJSONData().getContractType())
                     .withLaborCategory(initialContractVO.getInitialContractJSONData().getLaborCategory())
                     .withWeeklyWorkHours(initialContractVO.getInitialContractJSONData().getWeeklyWorkHours())
                     .withDaysOfWeekToWork(mapper.mapDaysOfWeekToWorkVODTO(initialContractVO))
@@ -281,6 +269,7 @@ public class ContractManager {
 
             initialContractDTOList.add(initialContractDTO);
         }
+
         return initialContractDTOList;
     }
 }

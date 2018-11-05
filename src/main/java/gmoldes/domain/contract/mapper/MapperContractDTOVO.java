@@ -28,7 +28,7 @@ public class MapperContractDTOVO {
         contractVO.setJor_trab(contractDTO.getWeeklyWorkHours());
         contractVO.setJor_trab_dias(mapDaysOfWeekToWorkDTOVO(contractDTO.getDaysOfWeekToWork()));
         contractVO.setJor_tipo(contractDTO.getFullPartialWorkday());
-        contractVO.setTipoctto(contractDTO.getTypeOfContract());
+        contractVO.setTipoctto(contractDTO.getContractType());
         contractVO.setF_desde(Date.valueOf(contractDTO.getDateFrom()));
         contractVO.setF_hasta(Date.valueOf(contractDTO.getDateTo()));
         contractVO.setEnvigor(contractDTO.getContractInForce());

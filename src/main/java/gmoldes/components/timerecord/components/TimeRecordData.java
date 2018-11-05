@@ -222,7 +222,7 @@ public class TimeRecordData extends VBox {
                         contractDTO.getQuoteAccountCode(),
                         contractDTO.getFullPartialWorkday(),
                         contractDTO.getWeeklyWorkHours(),
-                        contractDTO.getTypeOfContract(),
+                        contractDTO.getContractType(),
                         dateFrom,
                         dateTo
                 );

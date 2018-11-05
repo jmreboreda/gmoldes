@@ -7,8 +7,6 @@ public class ContractVariationJSONData {
     private Integer clientGMId;
     private Integer workerId;
     private String quoteAccountCode;
-    private Date dateFrom;
-    private Date dateTo;
     private String laborCategory ;
     private String weeklyWorkHours;
     private String daysOfWeekToWork;
@@ -25,8 +23,6 @@ public class ContractVariationJSONData {
             Integer clientGMId,
             Integer workerId,
             String quoteAccountCode,
-            Date dateFrom,
-            Date dateTo,
             String laborCategory,
             String weeklyWorkHours,
             String daysOfWeekToWork,
@@ -39,8 +35,6 @@ public class ContractVariationJSONData {
         this.clientGMId = clientGMId;
         this.workerId = workerId;
         this.quoteAccountCode = quoteAccountCode;
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
         this.laborCategory = laborCategory;
         this.weeklyWorkHours = weeklyWorkHours;
         this.daysOfWeekToWork = daysOfWeekToWork;
@@ -73,22 +67,6 @@ public class ContractVariationJSONData {
 
     public void setQuoteAccountCode(String quoteAccountCode) {
         this.quoteAccountCode = quoteAccountCode;
-    }
-
-    public Date getDateFrom() {
-        return dateFrom;
-    }
-
-    public void setDateFrom(Date dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
-    public Date getDateTo() {
-        return dateTo;
-    }
-
-    public void setDateTo(Date dateTo) {
-        this.dateTo = dateTo;
     }
 
     public String getLaborCategory() {
@@ -164,8 +142,6 @@ public class ContractVariationJSONData {
         private Integer clientGMId;
         private Integer workerId;
         private String quoteAccountCode;
-        private Date dateFom;
-        private Date dateTo;
         private String laborCategory ;
         private String weeklyWorkHours;
         private String daysOfWeekToWork;
@@ -188,16 +164,6 @@ public class ContractVariationJSONData {
 
         public ContractVariationJSONDataBuilder withQuoteAccountCode(String quoteAccountCode) {
             this.quoteAccountCode = quoteAccountCode;
-            return this;
-        }
-
-        public ContractVariationJSONDataBuilder withDateFrom(Date dateFrom) {
-            this.dateFom = dateFrom;
-            return this;
-        }
-
-        public ContractVariationJSONDataBuilder withDateTo(Date dateTo) {
-            this.dateTo = dateTo;
             return this;
         }
 
@@ -242,7 +208,7 @@ public class ContractVariationJSONData {
         }
 
         public ContractVariationJSONData build() {
-            return new ContractVariationJSONData(this.clientGMId,  this.workerId, this.quoteAccountCode, this.dateFom, this.dateTo, this.laborCategory,
+            return new ContractVariationJSONData(this.clientGMId,  this.workerId, this.quoteAccountCode, this.laborCategory,
                     this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday, this.contractType, this.identificationContractNumberINEM, this.notesForContractManager,
                     this.privateNotes);
         }

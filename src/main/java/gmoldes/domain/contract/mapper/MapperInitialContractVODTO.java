@@ -1,6 +1,6 @@
 package gmoldes.domain.contract.mapper;
 
-import gmoldes.components.contract.persistence.vo.InitialContractVO;
+import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import java.time.DayOfWeek;
 import java.util.HashSet;
 import java.util.Set;

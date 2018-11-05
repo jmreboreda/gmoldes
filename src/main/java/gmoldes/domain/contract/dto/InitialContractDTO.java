@@ -23,7 +23,7 @@ public class InitialContractDTO {
     private String weeklyWorkHours;
     private Set<DayOfWeek> daysOfWeekToWork;
     private String fullPartialWorkday;
-    private Integer typeOfContract;
+    private Integer contractType;
     private LocalDate startDate;
     private LocalDate expectedEndDate;
     private LocalDate endingDate;
@@ -41,7 +41,7 @@ public class InitialContractDTO {
                               String weeklyWorkHours,
                               Set<DayOfWeek> daysOfWeekToWork,
                               String fullPartialWorkday,
-                              Integer typeOfContract,
+                              Integer contractType,
                               LocalDate startDate,
                               LocalDate expectedEndDate,
                               LocalDate endingDate,
@@ -59,7 +59,7 @@ public class InitialContractDTO {
         this.weeklyWorkHours = weeklyWorkHours;
         this.daysOfWeekToWork = daysOfWeekToWork;
         this.fullPartialWorkday = fullPartialWorkday;
-        this.typeOfContract = typeOfContract;
+        this.contractType = contractType;
         this.startDate = startDate;
         this.expectedEndDate = expectedEndDate;
         this.endingDate = endingDate;
@@ -148,12 +148,12 @@ public class InitialContractDTO {
         this.fullPartialWorkday = fullPartialWorkday;
     }
 
-    public Integer getTypeOfContract() {
-        return typeOfContract;
+    public Integer getContractType() {
+        return contractType;
     }
 
-    public void setTypeOfContract(Integer typeOfContract) {
-        this.typeOfContract = typeOfContract;
+    public void setContractType(Integer contractType) {
+        this.contractType = contractType;
     }
 
     public LocalDate getStartDate() {
@@ -214,7 +214,7 @@ public class InitialContractDTO {
         sb.append("StartDate: " + getStartDate() + "\t");
         sb.append("ExpectedEndDate: " + getExpectedEndDate() + "\t");
         sb.append("EndingDate: " + getEndingDate() + "\n");
-        sb.append("TypeOfContract: " + getTypeOfContract() + "\n");
+        sb.append("ContractType: " + getContractType() + "\n");
 
 
         return sb.toString();
@@ -236,7 +236,7 @@ public class InitialContractDTO {
         private String weeklyWorkHours;
         private Set<DayOfWeek> daysOfWeekToWork;
         private String fullPartialWorkday;
-        private Integer typeOfContract;
+        private Integer contractType;
         private LocalDate startDate;
         private LocalDate expectedEndDate;
         private LocalDate endingDate;
@@ -294,8 +294,8 @@ public class InitialContractDTO {
             return this;
         }
 
-        public InitialContracDTOBuilder withTypeOfContract(Integer typeOfContract) {
-            this.typeOfContract = typeOfContract;
+        public InitialContracDTOBuilder withContractType(Integer contractType) {
+            this.contractType = contractType;
             return this;
         }
 
@@ -331,7 +331,7 @@ public class InitialContractDTO {
 
         public InitialContractDTO build() {
             return new InitialContractDTO(this.id, this.contractNumber, this.variationType, this.clientGMId, this.quoteAccountCode, this.workerId, this.laborCategory, this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday,
-                    this.typeOfContract, this.startDate, this.expectedEndDate, this.endingDate, this.identificationContractNumberINEM, this.notesForManager, this.privateNotes);
+                    this.contractType, this.startDate, this.expectedEndDate, this.endingDate, this.identificationContractNumberINEM, this.notesForManager, this.privateNotes);
         }
     }
 }

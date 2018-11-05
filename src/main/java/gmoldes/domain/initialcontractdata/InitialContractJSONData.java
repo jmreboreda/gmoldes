@@ -5,7 +5,7 @@ public class InitialContractJSONData {
     private Integer clientGMId;
     private Integer workerId;
     private String quoteAccountCode;
-    private Integer typeOfContract;
+    private Integer contractType;
     private String laborCategory ;
     private String weeklyWorkHours;
     private String daysOfWeekToWork;
@@ -21,7 +21,7 @@ public class InitialContractJSONData {
             Integer clientGMId,
             Integer workerId,
             String quoteAccountCode,
-            Integer typeOfContract,
+            Integer contractType,
             String laborCategory,
             String weeklyWorkHours,
             String daysOfWeekToWork,
@@ -33,7 +33,7 @@ public class InitialContractJSONData {
         this.clientGMId = clientGMId;
         this.workerId = workerId;
         this.quoteAccountCode = quoteAccountCode;
-        this.typeOfContract = typeOfContract;
+        this.contractType = contractType;
         this.laborCategory = laborCategory;
         this.weeklyWorkHours = weeklyWorkHours;
         this.daysOfWeekToWork = daysOfWeekToWork;
@@ -67,12 +67,12 @@ public class InitialContractJSONData {
         this.quoteAccountCode = quoteAccountCode;
     }
 
-    public Integer getTypeOfContract() {
-        return typeOfContract;
+    public Integer getContractType() {
+        return contractType;
     }
 
-    public void setTypeOfContract(Integer typeOfContract) {
-        this.typeOfContract = typeOfContract;
+    public void setContractType(Integer contractType) {
+        this.contractType = contractType;
     }
 
     public String getLaborCategory() {
@@ -141,7 +141,7 @@ public class InitialContractJSONData {
         private Integer workerId;
         private String quoteAccountCode;
         private String laborCategory ;
-        private Integer typeOfContract;
+        private Integer contractType;
         private String weeklyWorkHours;
         private String daysOfWeekToWork;
         private String fullPartialWorkday;
@@ -165,8 +165,8 @@ public class InitialContractJSONData {
             return this;
         }
 
-        public InitialContractJSONDataBuilder withTypeOfContract(Integer typeOfContract) {
-            this.typeOfContract = typeOfContract;
+        public InitialContractJSONDataBuilder withContractType(Integer contractType) {
+            this.contractType = contractType;
             return this;
         }
 
@@ -207,7 +207,7 @@ public class InitialContractJSONData {
         }
 
         public InitialContractJSONData build() {
-            return new InitialContractJSONData(this.clientGMId,  this.workerId, this.quoteAccountCode, this.typeOfContract, this.laborCategory, this.weeklyWorkHours,
+            return new InitialContractJSONData(this.clientGMId,  this.workerId, this.quoteAccountCode, this.contractType, this.laborCategory, this.weeklyWorkHours,
                     this.daysOfWeekToWork, this.fullPartialWorkday, this.identificationContractNumberINEM, this.notesForContractManager, this.privateNotes);
         }
     }
