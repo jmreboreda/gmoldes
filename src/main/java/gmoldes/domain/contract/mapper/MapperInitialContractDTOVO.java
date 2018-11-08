@@ -2,7 +2,7 @@ package gmoldes.domain.contract.mapper;
 
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
-import gmoldes.domain.initialcontractdata.InitialContractJSONData;
+import gmoldes.domain.contractjsondata.InitialContractJSONData;
 
 import java.sql.Date;
 

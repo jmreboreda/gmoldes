@@ -6,8 +6,8 @@ import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.domain.initialcontractdata.ContractVariationJSONData;
-import gmoldes.domain.initialcontractdata.InitialContractJSONData;
+import gmoldes.domain.contractjsondata.ContractVariationJSONData;
+import gmoldes.domain.contractjsondata.InitialContractJSONData;
 import java.sql.Date;
 import java.util.List;
 
@@ -16,15 +16,10 @@ public class OldContractsToJSONUtility {
     private static final Integer INITIAL_CONTRACT_VARIATION_CODE = 0;
     private static final Integer CONTRACT_SUBROGATION_CODE = 109;
 
-    private static final Integer LABOR_CATEGORY_CHANGE = 210;
-    private static final Integer EXTENSION_CONTRACT = 220;
-    private static final Integer WORK_DAY_VARIATION = 230;
-
-
     private ContractManager contractManager = new ContractManager();
 
     public void oldContractToJsonGenerator() {
-        List<ContractDTO> contractDTOList = contractManager.findAllContractsSorted();
+        List<ContractDTO> contractDTOList = contractManager.findAllContractsOrderedByContractNumberAndVariation();
         initialOldContractToJSONGenerator(contractDTOList);
         oldContractVariationToJSONGenerator(contractDTOList);
     }

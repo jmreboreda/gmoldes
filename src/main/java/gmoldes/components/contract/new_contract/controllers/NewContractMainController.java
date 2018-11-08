@@ -615,13 +615,15 @@ public class NewContractMainController extends VBox {
 
     private void verifyPrintTimeRecord(){
         if(this.contractData.getFullPartialWorkDay().equals(ContractConstants.PARTIAL_WORKDAY)){
-            String quoteAccountCode = null;
+//            String quoteAccountCode = null;
+//
+//            if(contractParts.getSelectedCCC() == null){
+//                quoteAccountCode = "";
+//            }else{
+//                quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
+//            }
 
-            if(contractParts.getSelectedCCC() == null){
-                quoteAccountCode = "";
-            }else{
-                quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
-            }
+            String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 
             TimeRecord timeRecord = TimeRecord.create()
                     .withNameOfMonth(this.contractData.getDateFrom().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()))
@@ -737,7 +739,7 @@ public class NewContractMainController extends VBox {
         if(contractType.contains("vacaciones")){
             thisContractType = 15;
         }
-        if(contractType.contains("discontínuo")){
+        if(contractType.contains("discontinuo")){
             thisContractType = 16;
         }
         if(contractType.contains("excedencia")){

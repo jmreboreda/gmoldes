@@ -1,6 +1,4 @@
-package gmoldes.domain.initialcontractdata;
-
-import java.util.Date;
+package gmoldes.domain.contractjsondata;
 
 public class ContractVariationJSONData {
 

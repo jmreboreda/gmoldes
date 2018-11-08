@@ -1,6 +1,7 @@
 package gmoldes;
 
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
@@ -34,8 +35,11 @@ public class App extends Application {
         primaryStage.setScene(initialScene);
         primaryStage.show();
 
-//        OldContractsToJSONUtility ctJson = new OldContractsToJSONUtility();
-//        ctJson.oldContractToJsonGenerator();
+
+        if(false) {
+            OldContractsToJSONUtility ctJson = new OldContractsToJSONUtility();
+            ctJson.oldContractToJsonGenerator();
+        }
 
 //        Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
 //        String clipboardData = "";

@@ -1,4 +1,4 @@
-package gmoldes.domain.initialcontractdata;
+package gmoldes.domain.contractjsondata;
 
 public class InitialContractJSONData {
 

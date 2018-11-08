@@ -45,12 +45,12 @@ public class ContractManager {
         return initialContractDAO.create(initialContractVO);
     }
 
-    public List<ContractDTO> findAllContractsSorted(){
+    public List<ContractDTO> findAllContractsOrderedByContractNumberAndVariation(){
         List<ContractDTO> contractDTOList = new ArrayList<>();
         MapperContractVODTO mapper = new MapperContractVODTO();
 
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        List<ContractVO> contractVOList = contractDAO.findAllContractsSorted();
+        List<ContractVO> contractVOList = contractDAO.findAllContractsOrderedByContractNumberAndVariation();
         for (ContractVO contractVO : contractVOList) {
             LocalDate dateTo = (contractVO.getF_hasta() != null) ? contractVO.getF_hasta().toLocalDate() : null;
             Set<DayOfWeek> daysOfWeekToWork = mapper.mapDaysOfWeekToWorkVODTO(contractVO);

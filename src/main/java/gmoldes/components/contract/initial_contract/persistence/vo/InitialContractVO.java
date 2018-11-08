@@ -1,6 +1,6 @@
 package gmoldes.components.contract.initial_contract.persistence.vo;
 
-import gmoldes.domain.initialcontractdata.InitialContractJSONData;
+import gmoldes.domain.contractjsondata.InitialContractJSONData;
 import com.vladmihalcea.hibernate.type.array.IntArrayType;
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -39,7 +39,7 @@ import java.sql.Date;
 
 public class InitialContractVO implements Serializable {
 
-    public static final String FIND_ALL_INITIAL_CONTRACT_SORTED = "InitialContractVO.FIND_ALL_CONTRACTS_SORTED";
+    public static final String FIND_ALL_INITIAL_CONTRACT_SORTED = "InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_VARIATION";
     public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID = "InitialContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID";
 
     @Id

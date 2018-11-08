@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.time.Month;
 import java.util.Date;
 import java.util.List;
 
@@ -102,8 +101,8 @@ public class ContractDAO {
         return (Integer) query.getSingleResult();
     }
 
-    public List<ContractVO> findAllContractsSorted(){
-        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_SORTED, ContractVO.class);
+    public List<ContractVO> findAllContractsOrderedByContractNumberAndVariation(){
+        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_VARIATION, ContractVO.class);
 
         return query.getResultList();
     }
