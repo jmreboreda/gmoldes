@@ -51,7 +51,7 @@ public class InitialContractDAO {
     }
 
     public List<InitialContractVO> findAllInitialContractSorted(){
-        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_INITIAL_CONTRACT_SORTED, InitialContractVO.class);
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE, InitialContractVO.class);
 
         return query.getResultList();
     }
@@ -60,5 +60,12 @@ public class InitialContractDAO {
         Query query = session.createQuery(FIND_HIGHEST_INITIAL_CONTRACT_NUMBER);
 
         return (Integer) query.getSingleResult();
+    }
+
+    public InitialContractVO findInitialContractByContractNumber(Integer contractNumber){
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER, InitialContractVO.class);
+        query.setParameter("code", contractNumber);
+
+        return  query.getSingleResult();
     }
 }

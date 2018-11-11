@@ -1,7 +1,7 @@
 package gmoldes.components.contract.manager;
 
-import gmoldes.components.contract.persistence.dao.TypesContractVariationsDAO;
-import gmoldes.components.contract.persistence.vo.TypesContractVariationsVO;
+import gmoldes.components.contract.new_contract.persistence.dao.TypesContractVariationsDAO;
+import gmoldes.components.contract.new_contract.persistence.vo.TypesContractVariationsVO;
 
 public class TypesContractVariationsManager {
 

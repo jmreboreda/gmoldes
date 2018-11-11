@@ -76,9 +76,9 @@ public class Utilities {
         Long durationMinutes = duration.toMinutes();
         Long minutes = durationMinutes - durationHours * 60;
 
-        if(minutes == 0 ){
-            durationToString = durationToString + "00";
-        }
+        durationToString = minutes == 0 ? durationToString + "00" : durationToString;
+
+        durationToString = durationToString.length() < 5 ? "0" +  durationToString : durationToString;
 
         return durationToString;
     }

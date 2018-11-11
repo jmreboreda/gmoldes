@@ -1,13 +1,12 @@
 package gmoldes;
 
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import gmoldes.components.contract.manager.ContractManager;
+import gmoldes.components.contract.controllers.ContractInForceAtDateController;
 import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.domain.contract.dto.InitialContractDTO;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.OldContractsToJSONUtility;
 import javafx.application.Application;
@@ -15,9 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -41,15 +37,24 @@ public class App extends Application {
             ctJson.oldContractToJsonGenerator();
         }
 
+        ContractInForceAtDateController contractInForceAtDateController = new ContractInForceAtDateController();
+        Integer contractNumber = 30;
+        LocalDate date = LocalDate.now();
+        List<ContractNewVersionDTO> contractInForce = contractInForceAtDateController.findAllContractNewVersionByContractNumber(contractNumber);
+        for(ContractNewVersionDTO contractNewVersionDTO : contractInForce){
+            System.out.println(contractNewVersionDTO.toMyString());
+
+        }
+
 //        Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
 //        String clipboardData = "";
 
-        ContractManager manager = new ContractManager();
-        List<InitialContractDTO> contractList = manager.findAllInitialContractSorted();
-        for(InitialContractDTO contract : contractList){
-            System.out.println(contract.toMyString());
+//        ContractManager manager = new ContractManager();
+//        List<InitialContractDTO> contractList = manager.findAllInitialContractSorted();
+//        for(InitialContractDTO contract : contractList){
+//            System.out.println(contract.toMyString());
 //            clipboardData = clipboardData + contract.toMyString();
-        }
+//        }
 
 //        StringSelection ss = new StringSelection(clipboardData);
 //        cb.setContents(ss, ss);

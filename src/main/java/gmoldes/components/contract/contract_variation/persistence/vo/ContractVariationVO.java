@@ -6,6 +6,7 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contractjsondata.ContractVariationJSONData;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -13,6 +14,19 @@ import org.hibernate.annotations.TypeDefs;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+
+@NamedQueries(value = {
+        @NamedQuery(
+                name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER,
+                query = "select p from ContractVariationVO p where p.contractNumber = :code order by p.contractNumber, p.startDate"
+        )
+//        ,
+//        @NamedQuery(
+//                name = InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER,
+//                query = "select p from InitialContractVO p where contractNumber = :code"
+//
+//        )
+})
 
 @Entity
 @Table(name = "contractvariation")
@@ -26,6 +40,8 @@ import java.sql.Date;
 })
 
 public class ContractVariationVO implements Serializable {
+
+    public static final String FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER";
 
     @Id
     @SequenceGenerator(name = "contractvariation_id_seq", sequenceName = "contractvariation_id_seq", allocationSize = 1)

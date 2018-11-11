@@ -1,7 +1,7 @@
 package gmoldes.domain.contract.mapper;
 
 import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.components.contract.persistence.vo.ContractVO;
+import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
 
 import java.sql.Date;
 import java.time.DayOfWeek;

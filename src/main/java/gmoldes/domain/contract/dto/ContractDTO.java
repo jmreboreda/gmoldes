@@ -386,7 +386,7 @@ public class ContractDTO {
             return this;
         }
 
-        public ContractDTOBuilder withTContractType(String contractType) {
+        public ContractDTOBuilder withContractType(String contractType) {
             this.contractType = contractType;
             return this;
         }

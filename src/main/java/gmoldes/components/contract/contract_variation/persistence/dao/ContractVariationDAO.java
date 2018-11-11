@@ -2,9 +2,13 @@ package gmoldes.components.contract.contract_variation.persistence.dao;
 
 
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
+import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class ContractVariationDAO {
 
@@ -42,5 +46,13 @@ public class ContractVariationDAO {
         }
 
         return contractVariationVO.getId();
+    }
+
+    public List<ContractVariationVO> findAllContractVariationByContractNumber(Integer contractNumber){
+        TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER, ContractVariationVO.class);
+        query.setParameter("code", contractNumber);
+
+        return  query.getResultList();
+
     }
 }

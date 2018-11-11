@@ -17,12 +17,13 @@ import java.sql.Date;
 
 @NamedQueries(value = {
         @NamedQuery(
-                name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_SORTED,
+                name = InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE,
                 query = "select p from InitialContractVO p order by p.contractNumber, p.startDate"
         ),
         @NamedQuery(
-                name = InitialContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID,
-                query = "select p from ContractVO p where p.idcliente_gm = :code order by p.trabajador_name"
+                name = InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER,
+                query = "select p from InitialContractVO p where contractNumber = :code"
+
         )
 })
 
@@ -39,8 +40,8 @@ import java.sql.Date;
 
 public class InitialContractVO implements Serializable {
 
-    public static final String FIND_ALL_INITIAL_CONTRACT_SORTED = "InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_VARIATION";
-    public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID = "InitialContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID";
+    public static final String FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE = "InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE";
+    public static final String FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER = "InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER";
 
     @Id
     @SequenceGenerator(name = "initialcontract_id_seq", sequenceName = "initialcontract_id_seq", allocationSize = 1)

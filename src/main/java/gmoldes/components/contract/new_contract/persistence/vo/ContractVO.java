@@ -1,4 +1,4 @@
-package gmoldes.components.contract.persistence.vo;
+package gmoldes.components.contract.new_contract.persistence.vo;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -59,7 +59,7 @@ import java.sql.Date;
 public class ContractVO implements Serializable {
     public static final String FIND_CONTRACTS_EXPIRATION = "ContractVO.FIND_CONTRACTS_EXPIRATION";
     public static final String IDC_CONTROL = "ContractVO.IDC_CONTROL";
-    public static final String FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_VARIATION = "ContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_VARIATION";
+    public static final String FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_VARIATION = "ContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE";
     public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID";
     public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD = "ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD";
     public static final String FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID";

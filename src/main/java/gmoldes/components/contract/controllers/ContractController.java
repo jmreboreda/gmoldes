@@ -21,6 +21,11 @@ public class ContractController {
         return contractManager.findAllInitialContractSorted();
     }
 
+    public InitialContractDTO findInitialContractByContractNumber(Integer contractNumber){
+
+        return contractManager.findInitialContractByContractNumber(contractNumber);
+    }
+
     public List<ContractDTO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String yearMonth){
 
         return contractManager.findAllContractsWithTimeRecordByClientIdInPeriod(clientId, yearMonth);

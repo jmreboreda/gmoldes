@@ -1,15 +1,19 @@
 package gmoldes.components.contract.manager;
 
 
+import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
+import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDTOVO;
-import gmoldes.components.contract.persistence.dao.ContractDAO;
+import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
-import gmoldes.components.contract.persistence.vo.ContractVO;
+import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contract.dto.ContractDTO;
+import gmoldes.domain.contract.dto.ContractVariationDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.contract.dto.OldContractToSaveDTO;
 import gmoldes.domain.contract.mapper.MapperContractVODTO;
+import gmoldes.domain.contract.mapper.MapperContractVariationVODTO;
 import gmoldes.domain.contract.mapper.MapperInitialContractDTOVO;
 import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
 
@@ -70,13 +74,13 @@ public class ContractManager {
                     .withFullPartialWorkday(contractVO.getJor_tipo())
                     .withWeeklyWorkHours(contractVO.getJor_trab())
                     .withDaysOfWeekToWork(daysOfWeekToWork)
-                    .withTContractType(contractVO.getTipoctto())
+                    .withContractType(contractVO.getTipoctto())
                     .withNotesForManager(contractVO.getNotas_gestor())
                     .withPrivateNotes(contractVO.getNotas_privadas())
                     .withContractNumber(contractVO.getNumcontrato())
                     .withVariationNumber(contractVO.getNumvariacion())
                     .withSurrogateContract(contractVO.getSubrogacion())
-                    .withTContractType(contractVO.getTipoctto())
+                    .withContractType(contractVO.getTipoctto())
                     .withVariationType(contractVO.getTipovariacion())
                     .withWorkerName(contractVO.getTrabajador_name())
                     .build();
@@ -114,7 +118,7 @@ public class ContractManager {
                     .withContractNumber(contractVO.getNumcontrato())
                     .withVariationNumber(contractVO.getNumvariacion())
                     .withSurrogateContract(contractVO.getSubrogacion())
-                    .withTContractType(contractVO.getTipoctto())
+                    .withContractType(contractVO.getTipoctto())
                     .withVariationType(contractVO.getTipovariacion())
                     .withWorkerName(contractVO.getTrabajador_name())
                     .build();
@@ -152,7 +156,7 @@ public class ContractManager {
                     .withContractNumber(contractVO.getNumcontrato())
                     .withVariationNumber(contractVO.getNumvariacion())
                     .withSurrogateContract(contractVO.getSubrogacion())
-                    .withTContractType(contractVO.getTipoctto())
+                    .withContractType(contractVO.getTipoctto())
                     .withVariationType(contractVO.getTipovariacion())
                     .withWorkerName(contractVO.getTrabajador_name())
                     .build();
@@ -190,7 +194,7 @@ public class ContractManager {
                     .withContractNumber(contractVO.getNumcontrato())
                     .withVariationNumber(contractVO.getNumvariacion())
                     .withSurrogateContract(contractVO.getSubrogacion())
-                    .withTContractType(contractVO.getTipoctto())
+                    .withContractType(contractVO.getTipoctto())
                     .withVariationType(contractVO.getTipovariacion())
                     .withWorkerName(contractVO.getTrabajador_name())
                     .build();
@@ -271,5 +275,64 @@ public class ContractManager {
         }
 
         return initialContractDTOList;
+    }
+
+    public InitialContractDTO findInitialContractByContractNumber(Integer contractNumber){
+        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
+        InitialContractVO initialContractVO = initialContractDAO.findInitialContractByContractNumber(contractNumber);
+        MapperInitialContractVODTO mapper = new MapperInitialContractVODTO();
+
+
+        InitialContractDTO initialContractDTO = InitialContractDTO.create()
+                .withContractNumber(initialContractVO.getContractNumber())
+                .withVariationType(initialContractVO.getVariationType())
+                .withStartDate(initialContractVO.getStartDate().toLocalDate())
+                .withExpectedEndDate(initialContractVO.getExpectedEndDate().toLocalDate())
+                .withEndingDate(initialContractVO.getEndingDate().toLocalDate())
+                .withClientGMId(initialContractVO.getInitialContractJSONData().getClientGMId())
+                .withWorkerId(initialContractVO.getInitialContractJSONData().getWorkerId())
+                .withContractType(initialContractVO.getInitialContractJSONData().getContractType())
+                .withLaborCategory(initialContractVO.getInitialContractJSONData().getLaborCategory())
+                .withWeeklyWorkHours(initialContractVO.getInitialContractJSONData().getWeeklyWorkHours())
+                .withDaysOfWeekToWork(mapper.mapDaysOfWeekToWorkVODTO(initialContractVO))
+                .withFullPartialWorkday(initialContractVO.getInitialContractJSONData().getFullPartialWorkday())
+                .withIdentificationContractNumberINEM(initialContractVO.getInitialContractJSONData().getIdentificationContractNumberINEM())
+                .withNotesForManager(initialContractVO.getInitialContractJSONData().getNotesForContractManager())
+                .withPrivateNotes(initialContractVO.getInitialContractJSONData().getPrivateNotes())
+                .build();
+
+        return initialContractDTO;
+    }
+
+    public List<ContractVariationDTO> findAllContractVariationByContractNumber(Integer contractNumber){
+        List<ContractVariationDTO> contractVariationDTOList = new ArrayList<>();
+        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationByContractNumber(contractNumber);
+        MapperContractVariationVODTO mapper = new MapperContractVariationVODTO();
+
+        for(ContractVariationVO contractVariationVO : contractVariationVOList) {
+
+            ContractVariationDTO contractVariationDTO = ContractVariationDTO.create()
+                    .withContractNumber(contractVariationVO.getContractNumber())
+                    .withVariationType(contractVariationVO.getVariationType())
+                    .withStartDate(contractVariationVO.getStartDate().toLocalDate())
+                    .withExpectedEndDate(contractVariationVO.getExpectedEndDate().toLocalDate())
+                    .withEndingDate(contractVariationVO.getEndingDate().toLocalDate())
+                    .withClientGMId(contractVariationVO.getContractVariationJSONData().getClientGMId())
+                    .withWorkerId(contractVariationVO.getContractVariationJSONData().getWorkerId())
+                    .withContractType(contractVariationVO.getContractVariationJSONData().getContractType())
+                    .withLaborCategory(contractVariationVO.getContractVariationJSONData().getLaborCategory())
+                    .withWeeklyWorkHours(contractVariationVO.getContractVariationJSONData().getWeeklyWorkHours())
+                    .withDaysOfWeekToWork(mapper.mapDaysOfWeekToWorkVODTO(contractVariationVO))
+                    .withFullPartialWorkday(contractVariationVO.getContractVariationJSONData().getFullPartialWorkDay())
+                    .withIdentificationContractNumberINEM(contractVariationVO.getContractVariationJSONData().getIdentificationContractNumberINEM())
+                    .withNotesForManager(contractVariationVO.getContractVariationJSONData().getNotesForContractManager())
+                    .withPrivateNotes(contractVariationVO.getContractVariationJSONData().getPrivateNotes())
+                    .build();
+
+            contractVariationDTOList.add(contractVariationDTO);
+        }
+
+        return contractVariationDTOList;
     }
 }

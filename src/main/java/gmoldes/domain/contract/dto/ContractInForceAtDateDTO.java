@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 
-public class InitialContractDTO {
+public class ContractInForceAtDateDTO {
 
     private Integer id;
     private Integer contractNumber;
@@ -28,26 +28,23 @@ public class InitialContractDTO {
     private LocalDate expectedEndDate;
     private LocalDate endingDate;
     private String identificationContractNumberINEM;
-    private String notesForManager;
-    private String privateNotes;
 
-    public InitialContractDTO(Integer id,
-                              Integer contractNumber,
-                              Integer variationType,
-                              Integer clientGMId,
-                              String quoteAccountCode,
-                              Integer workerId,
-                              String laborCategory,
-                              String weeklyWorkHours,
-                              Set<DayOfWeek> daysOfWeekToWork,
-                              String fullPartialWorkday,
-                              Integer contractType,
-                              LocalDate startDate,
-                              LocalDate expectedEndDate,
-                              LocalDate endingDate,
-                              String identificationContractNumberINEM,
-                              String notesForManager,
-                              String privateNotes){
+    public ContractInForceAtDateDTO(Integer id,
+                                    Integer contractNumber,
+                                    Integer variationType,
+                                    Integer clientGMId,
+                                    String quoteAccountCode,
+                                    Integer workerId,
+                                    String laborCategory,
+                                    String weeklyWorkHours,
+                                    Set<DayOfWeek> daysOfWeekToWork,
+                                    String fullPartialWorkday,
+                                    Integer contractType,
+                                    LocalDate startDate,
+                                    LocalDate expectedEndDate,
+                                    LocalDate endingDate,
+                                    String identificationContractNumberINEM)
+                                    {
 
         this.id = id;
         this.contractNumber = contractNumber;
@@ -64,8 +61,6 @@ public class InitialContractDTO {
         this.expectedEndDate = expectedEndDate;
         this.endingDate = endingDate;
         this.identificationContractNumberINEM = identificationContractNumberINEM;
-        this.notesForManager = notesForManager;
-        this.privateNotes = privateNotes;
     }
 
     public Integer getId() {
@@ -188,22 +183,6 @@ public class InitialContractDTO {
         this.identificationContractNumberINEM = identificationContractNumberINEM;
     }
 
-    public String getNotesForManager() {
-        return notesForManager;
-    }
-
-    public void setNotesForManager(String notesForManager) {
-        this.notesForManager = notesForManager;
-    }
-
-    public String getPrivateNotes() {
-        return privateNotes;
-    }
-
-    public void setPrivateNotes(String privateNotes) {
-        this.privateNotes = privateNotes;
-    }
-
     //@Override
     public String toMyString(){
         StringBuilder sb = new StringBuilder();
@@ -220,11 +199,11 @@ public class InitialContractDTO {
         return sb.toString();
     }
 
-    public static InitialContractDTOBuilder create() {
-        return new InitialContractDTOBuilder();
+    public static InitialContracDTOBuilder create() {
+        return new InitialContracDTOBuilder();
     }
 
-    public static class InitialContractDTOBuilder {
+    public static class InitialContracDTOBuilder {
 
         private Integer id;
         private Integer contractNumber;
@@ -241,97 +220,85 @@ public class InitialContractDTO {
         private LocalDate expectedEndDate;
         private LocalDate endingDate;
         private String identificationContractNumberINEM;
-        private String notesForManager;
-        private String privateNotes;
 
-        public InitialContractDTOBuilder withId(Integer id) {
+        public InitialContracDTOBuilder withId(Integer id) {
             this.id = id;
             return this;
         }
 
-        public InitialContractDTOBuilder withContractNumber(Integer contractNumber) {
+        public InitialContracDTOBuilder withContractNumber(Integer contractNumber) {
             this.contractNumber = contractNumber;
             return this;
         }
 
-        public InitialContractDTOBuilder withVariationType(Integer variationType) {
+        public InitialContracDTOBuilder withVariationType(Integer variationType) {
             this.variationType = variationType;
             return this;
         }
 
-        public InitialContractDTOBuilder withClientGMId(Integer clientGMId) {
+        public InitialContracDTOBuilder withClientGMId(Integer clientGMId) {
             this.clientGMId = clientGMId;
             return this;
         }
 
-        public InitialContractDTOBuilder withQuoteAccountCode(String quoteAccountCode) {
+        public InitialContracDTOBuilder withQuoteAccountCode(String quoteAccountCode) {
             this.quoteAccountCode = quoteAccountCode;
             return this;
         }
 
-        public InitialContractDTOBuilder withWorkerId(Integer workerId) {
+        public InitialContracDTOBuilder withWorkerId(Integer workerId) {
             this.workerId = workerId;
             return this;
         }
 
-        public InitialContractDTOBuilder withLaborCategory(String laborCategory) {
+        public InitialContracDTOBuilder withLaborCategory(String laborCategory) {
             this.laborCategory = laborCategory;
             return this;
         }
 
-        public InitialContractDTOBuilder withWeeklyWorkHours(String weeklyWorkHours) {
+        public InitialContracDTOBuilder withWeeklyWorkHours(String weeklyWorkHours) {
             this.weeklyWorkHours = weeklyWorkHours;
             return this;
         }
 
-        public InitialContractDTOBuilder withDaysOfWeekToWork(Set<DayOfWeek> jor_trab_dias) {
+        public InitialContracDTOBuilder withDaysOfWeekToWork(Set<DayOfWeek> jor_trab_dias) {
             this.daysOfWeekToWork = jor_trab_dias;
             return this;
         }
 
-        public InitialContractDTOBuilder withFullPartialWorkday(String fullPartialWorkday) {
+        public InitialContracDTOBuilder withFullPartialWorkday(String fullPartialWorkday) {
             this.fullPartialWorkday = fullPartialWorkday;
             return this;
         }
 
-        public InitialContractDTOBuilder withContractType(Integer contractType) {
+        public InitialContracDTOBuilder withContractType(Integer contractType) {
             this.contractType = contractType;
             return this;
         }
 
-        public InitialContractDTOBuilder withStartDate(LocalDate startDate) {
+        public InitialContracDTOBuilder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public InitialContractDTOBuilder withExpectedEndDate(LocalDate expectedEndDate) {
+        public InitialContracDTOBuilder withExpectedEndDate(LocalDate expectedEndDate) {
             this.expectedEndDate = expectedEndDate;
             return this;
         }
 
-        public InitialContractDTOBuilder withEndingDate(LocalDate endingDate) {
+        public InitialContracDTOBuilder withEndingDate(LocalDate endingDate) {
             this.endingDate = endingDate;
             return this;
         }
 
-        public InitialContractDTOBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
+        public InitialContracDTOBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
             this.identificationContractNumberINEM = identificationContractNumberINEM;
             return this;
         }
 
-        public InitialContractDTOBuilder withNotesForManager(String notesForManager) {
-            this.notesForManager = notesForManager;
-            return this;
-        }
-
-        public InitialContractDTOBuilder withPrivateNotes(String privateNotes) {
-            this.privateNotes = privateNotes;
-            return this;
-        }
-
-        public InitialContractDTO build() {
-            return new InitialContractDTO(this.id, this.contractNumber, this.variationType, this.clientGMId, this.quoteAccountCode, this.workerId, this.laborCategory, this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday,
-                    this.contractType, this.startDate, this.expectedEndDate, this.endingDate, this.identificationContractNumberINEM, this.notesForManager, this.privateNotes);
+        public ContractInForceAtDateDTO build() {
+            return new ContractInForceAtDateDTO(this.id, this.contractNumber, this.variationType, this.clientGMId, this.quoteAccountCode, this.workerId, this.laborCategory, this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday,
+                    this.contractType, this.startDate, this.expectedEndDate, this.endingDate, this.identificationContractNumberINEM);
         }
     }
 }

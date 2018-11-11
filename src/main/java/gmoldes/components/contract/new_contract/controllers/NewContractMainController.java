@@ -404,9 +404,9 @@ public class NewContractMainController extends VBox {
         ContractManager contractManager = new ContractManager();
         Integer contractNumber = contractManager.saveInitialContract(initialContractDTO);
         if (contractNumber != null) {
-            blockingInterfaceAfterContractPersistence(contractNumber);
-            verifyPrintTimeRecord();
-            printSubfoldersOfTheContract(Integer.parseInt(provisionalContractData.getContractNumber()));
+//            blockingInterfaceAfterContractPersistence(contractNumber);
+//            verifyPrintTimeRecord();
+//            printSubfoldersOfTheContract(Integer.parseInt(provisionalContractData.getContractNumber()));
 
         }else{
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);

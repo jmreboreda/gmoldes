@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 
-public class InitialContractDTO {
+public class ContractVariationDTO {
 
     private Integer id;
     private Integer contractNumber;
@@ -31,23 +31,23 @@ public class InitialContractDTO {
     private String notesForManager;
     private String privateNotes;
 
-    public InitialContractDTO(Integer id,
-                              Integer contractNumber,
-                              Integer variationType,
-                              Integer clientGMId,
-                              String quoteAccountCode,
-                              Integer workerId,
-                              String laborCategory,
-                              String weeklyWorkHours,
-                              Set<DayOfWeek> daysOfWeekToWork,
-                              String fullPartialWorkday,
-                              Integer contractType,
-                              LocalDate startDate,
-                              LocalDate expectedEndDate,
-                              LocalDate endingDate,
-                              String identificationContractNumberINEM,
-                              String notesForManager,
-                              String privateNotes){
+    public ContractVariationDTO(Integer id,
+                                Integer contractNumber,
+                                Integer variationType,
+                                Integer clientGMId,
+                                String quoteAccountCode,
+                                Integer workerId,
+                                String laborCategory,
+                                String weeklyWorkHours,
+                                Set<DayOfWeek> daysOfWeekToWork,
+                                String fullPartialWorkday,
+                                Integer contractType,
+                                LocalDate startDate,
+                                LocalDate expectedEndDate,
+                                LocalDate endingDate,
+                                String identificationContractNumberINEM,
+                                String notesForManager,
+                                String privateNotes){
 
         this.id = id;
         this.contractNumber = contractNumber;
@@ -220,11 +220,11 @@ public class InitialContractDTO {
         return sb.toString();
     }
 
-    public static InitialContractDTOBuilder create() {
-        return new InitialContractDTOBuilder();
+    public static ContractVariationDTOBuilder create() {
+        return new ContractVariationDTOBuilder();
     }
 
-    public static class InitialContractDTOBuilder {
+    public static class ContractVariationDTOBuilder {
 
         private Integer id;
         private Integer contractNumber;
@@ -244,93 +244,93 @@ public class InitialContractDTO {
         private String notesForManager;
         private String privateNotes;
 
-        public InitialContractDTOBuilder withId(Integer id) {
+        public ContractVariationDTOBuilder withId(Integer id) {
             this.id = id;
             return this;
         }
 
-        public InitialContractDTOBuilder withContractNumber(Integer contractNumber) {
+        public ContractVariationDTOBuilder withContractNumber(Integer contractNumber) {
             this.contractNumber = contractNumber;
             return this;
         }
 
-        public InitialContractDTOBuilder withVariationType(Integer variationType) {
+        public ContractVariationDTOBuilder withVariationType(Integer variationType) {
             this.variationType = variationType;
             return this;
         }
 
-        public InitialContractDTOBuilder withClientGMId(Integer clientGMId) {
+        public ContractVariationDTOBuilder withClientGMId(Integer clientGMId) {
             this.clientGMId = clientGMId;
             return this;
         }
 
-        public InitialContractDTOBuilder withQuoteAccountCode(String quoteAccountCode) {
+        public ContractVariationDTOBuilder withQuoteAccountCode(String quoteAccountCode) {
             this.quoteAccountCode = quoteAccountCode;
             return this;
         }
 
-        public InitialContractDTOBuilder withWorkerId(Integer workerId) {
+        public ContractVariationDTOBuilder withWorkerId(Integer workerId) {
             this.workerId = workerId;
             return this;
         }
 
-        public InitialContractDTOBuilder withLaborCategory(String laborCategory) {
+        public ContractVariationDTOBuilder withLaborCategory(String laborCategory) {
             this.laborCategory = laborCategory;
             return this;
         }
 
-        public InitialContractDTOBuilder withWeeklyWorkHours(String weeklyWorkHours) {
+        public ContractVariationDTOBuilder withWeeklyWorkHours(String weeklyWorkHours) {
             this.weeklyWorkHours = weeklyWorkHours;
             return this;
         }
 
-        public InitialContractDTOBuilder withDaysOfWeekToWork(Set<DayOfWeek> jor_trab_dias) {
+        public ContractVariationDTOBuilder withDaysOfWeekToWork(Set<DayOfWeek> jor_trab_dias) {
             this.daysOfWeekToWork = jor_trab_dias;
             return this;
         }
 
-        public InitialContractDTOBuilder withFullPartialWorkday(String fullPartialWorkday) {
+        public ContractVariationDTOBuilder withFullPartialWorkday(String fullPartialWorkday) {
             this.fullPartialWorkday = fullPartialWorkday;
             return this;
         }
 
-        public InitialContractDTOBuilder withContractType(Integer contractType) {
+        public ContractVariationDTOBuilder withContractType(Integer contractType) {
             this.contractType = contractType;
             return this;
         }
 
-        public InitialContractDTOBuilder withStartDate(LocalDate startDate) {
+        public ContractVariationDTOBuilder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public InitialContractDTOBuilder withExpectedEndDate(LocalDate expectedEndDate) {
+        public ContractVariationDTOBuilder withExpectedEndDate(LocalDate expectedEndDate) {
             this.expectedEndDate = expectedEndDate;
             return this;
         }
 
-        public InitialContractDTOBuilder withEndingDate(LocalDate endingDate) {
+        public ContractVariationDTOBuilder withEndingDate(LocalDate endingDate) {
             this.endingDate = endingDate;
             return this;
         }
 
-        public InitialContractDTOBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
+        public ContractVariationDTOBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
             this.identificationContractNumberINEM = identificationContractNumberINEM;
             return this;
         }
 
-        public InitialContractDTOBuilder withNotesForManager(String notesForManager) {
+        public ContractVariationDTOBuilder withNotesForManager(String notesForManager) {
             this.notesForManager = notesForManager;
             return this;
         }
 
-        public InitialContractDTOBuilder withPrivateNotes(String privateNotes) {
+        public ContractVariationDTOBuilder withPrivateNotes(String privateNotes) {
             this.privateNotes = privateNotes;
             return this;
         }
 
-        public InitialContractDTO build() {
-            return new InitialContractDTO(this.id, this.contractNumber, this.variationType, this.clientGMId, this.quoteAccountCode, this.workerId, this.laborCategory, this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday,
+        public ContractVariationDTO build() {
+            return new ContractVariationDTO(this.id, this.contractNumber, this.variationType, this.clientGMId, this.quoteAccountCode, this.workerId, this.laborCategory, this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday,
                     this.contractType, this.startDate, this.expectedEndDate, this.endingDate, this.identificationContractNumberINEM, this.notesForManager, this.privateNotes);
         }
     }

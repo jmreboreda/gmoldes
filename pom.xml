@@ -131,10 +131,5 @@
           <artifactId>javax.json</artifactId>
           <version>1.1</version>
       </dependency>
-      <dependency>
-          <groupId>jmreboreda</groupId>
-          <artifactId>gmoldes</artifactId>
-          <version>1.0-SNAPSHOT</version>
-      </dependency>
-   </dependencies>
+    </dependencies>
 </project>

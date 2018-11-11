@@ -1,7 +1,7 @@
 package gmoldes.domain.contract.mapper;
 
 import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.components.contract.persistence.vo.ContractVO;
+import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -44,7 +44,7 @@ public class MapperContractVODTO {
                 .withWeeklyWorkHours(contractVO.getJor_trab())
                 .withDaysOfWeekToWork(daysOfWorkSet)
                 .withFullPartialWorkday(contractVO.getJor_tipo())
-                .withTContractType(contractVO.getTipoctto())
+                .withContractType(contractVO.getTipoctto())
                 .withDateFrom(contractVO.getF_desde().toLocalDate())
                 .withDateTo(dateTo)
                 .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())
