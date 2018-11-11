@@ -123,6 +123,7 @@ public class TimeRecordData extends VBox {
         contractType.setCellValueFactory(new PropertyValueFactory<TimeRecordCandidateDataDTO,String>("contractType"));
         dateFrom.setCellValueFactory(new PropertyValueFactory<TimeRecordCandidateDataDTO,String>("dateFrom"));
         dateTo.setCellValueFactory(new PropertyValueFactory<TimeRecordCandidateDataDTO,String>("dateTo"));
+        hoursByWeek.setStyle("-fx-alignment: CENTER;");
         dateFrom.setStyle("-fx-alignment: CENTER;");
         dateTo.setStyle("-fx-alignment: CENTER;");
 
@@ -221,7 +222,7 @@ public class TimeRecordData extends VBox {
                         contractDTO.getQuoteAccountCode(),
                         contractDTO.getFullPartialWorkday(),
                         contractDTO.getWeeklyWorkHours(),
-                        contractDTO.getTypeOfContract(),
+                        contractDTO.getContractType(),
                         dateFrom,
                         dateTo
                 );
@@ -279,9 +280,8 @@ public class TimeRecordData extends VBox {
     private String retrievePeriodForTimeRecord(){
         Integer numberMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
         String numberMonthS = numberMonth.toString();
-        if(numberMonthS.length() < 2){
-            numberMonthS = "0" + numberMonthS;
-        }
+
+        numberMonthS = (numberMonthS.length() == 2) ? numberMonthS : "0" + numberMonthS;
 
         return (yearNumber.getText()).concat(numberMonthS);
     }

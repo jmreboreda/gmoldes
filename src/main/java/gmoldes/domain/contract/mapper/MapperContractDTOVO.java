@@ -1,7 +1,7 @@
 package gmoldes.domain.contract.mapper;
 
 import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.components.contract.persistence.vo.ContractVO;
+import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
 
 import java.sql.Date;
 import java.time.DayOfWeek;
@@ -28,10 +28,10 @@ public class MapperContractDTOVO {
         contractVO.setJor_trab(contractDTO.getWeeklyWorkHours());
         contractVO.setJor_trab_dias(mapDaysOfWeekToWorkDTOVO(contractDTO.getDaysOfWeekToWork()));
         contractVO.setJor_tipo(contractDTO.getFullPartialWorkday());
-        contractVO.setTipoctto(contractDTO.getTypeOfContract());
+        contractVO.setTipoctto(contractDTO.getContractType());
         contractVO.setF_desde(Date.valueOf(contractDTO.getDateFrom()));
         contractVO.setF_hasta(Date.valueOf(contractDTO.getDateTo()));
-        contractVO.setEnvigor(contractDTO.getCurrentContract());
+        contractVO.setEnvigor(contractDTO.getContractInForce());
         contractVO.setNotas_gestor(contractDTO.getNotesForManager());
         contractVO.setNotas_privadas(contractDTO.getPrivateNotes());
         contractVO.setIdc(Date.valueOf(contractDTO.getQuoteDataReportIDC()));

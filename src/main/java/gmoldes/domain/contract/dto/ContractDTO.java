@@ -26,11 +26,11 @@ public class ContractDTO {
     private String weeklyWorkHours;
     private Set<DayOfWeek> daysOfWeekToWork;
     private String fullPartialWorkday;
-    private String typeOfContract;
+    private String contractType;
     private LocalDate dateFrom;
     private LocalDate dateTo;
     private String identificationContractNumberINEM;
-    private Boolean currentContract;
+    private Boolean contractInForce;
     private String notesForManager;
     private String privateNotes;
     private Character indefiniteOrTemporalContract;
@@ -51,11 +51,11 @@ public class ContractDTO {
                        String weeklyWorkHours,
                        Set<DayOfWeek> daysOfWeekToWork,
                        String fullPartialWorkday,
-                       String typeOfContract,
+                       String contractType,
                        LocalDate dateFrom,
                        LocalDate dateTo,
                        String identificationContractNumberINEM,
-                       Boolean currentContract,
+                       Boolean contractInForce,
                        String notesForManager,
                        String privateNotes,
                        Character indefiniteOrTemporalContract,
@@ -76,11 +76,11 @@ public class ContractDTO {
         this.weeklyWorkHours = weeklyWorkHours;
         this.daysOfWeekToWork = daysOfWeekToWork;
         this.fullPartialWorkday = fullPartialWorkday;
-        this.typeOfContract = typeOfContract;
+        this.contractType = contractType;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.identificationContractNumberINEM = identificationContractNumberINEM;
-        this.currentContract = currentContract;
+        this.contractInForce = contractInForce;
         this.notesForManager = notesForManager;
         this.privateNotes = privateNotes;
         this.indefiniteOrTemporalContract = indefiniteOrTemporalContract;
@@ -193,12 +193,12 @@ public class ContractDTO {
         this.fullPartialWorkday = fullPartialWorkday;
     }
 
-    public String getTypeOfContract() {
-        return typeOfContract;
+    public String getContractType() {
+        return contractType;
     }
 
-    public void setTypeOfContract(String typeOfContract) {
-        this.typeOfContract = typeOfContract;
+    public void setContractType(String contractType) {
+        this.contractType = contractType;
     }
 
     public LocalDate getDateFrom() {
@@ -225,12 +225,12 @@ public class ContractDTO {
         this.identificationContractNumberINEM = identificationContractNumberINEM;
     }
 
-    public Boolean getCurrentContract() {
-        return currentContract;
+    public Boolean getContractInForce() {
+        return contractInForce;
     }
 
-    public void setCurrentContract(Boolean currentContract) {
-        this.currentContract = currentContract;
+    public void setContractInForce(Boolean contractInForce) {
+        this.contractInForce = contractInForce;
     }
 
     public String getNotesForManager() {
@@ -281,6 +281,15 @@ public class ContractDTO {
         this.endOfContractNotice = endOfContractNotice;
     }
 
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("clientegm_id = " + getClientGMId() + "\t");
+        sb.append("clientegm_name = " + getClientGMName());
+
+        return sb.toString();
+    }
+
     public static ContractDTOBuilder create() {
         return new ContractDTOBuilder();
     }
@@ -300,11 +309,11 @@ public class ContractDTO {
         private String weeklyWorkHours;
         private Set<DayOfWeek> daysOfWeekToWork;
         private String fullPartialWorkday;
-        private String typeOfContract;
+        private String contractType;
         private LocalDate dateFrom;
         private LocalDate dateTo;
         private String identificationContractNumberINEM;
-        private Boolean currentContract;
+        private Boolean contractInForce;
         private String notesForManager;
         private String privateNotes;
         private Character indefiniteOrTemporalContract;
@@ -377,8 +386,8 @@ public class ContractDTO {
             return this;
         }
 
-        public ContractDTOBuilder withTypeOfContract(String typeOfContract) {
-            this.typeOfContract = typeOfContract;
+        public ContractDTOBuilder withContractType(String contractType) {
+            this.contractType = contractType;
             return this;
         }
 
@@ -397,8 +406,8 @@ public class ContractDTO {
             return this;
         }
 
-        public ContractDTOBuilder withCurrentContract(Boolean currentContract) {
-            this.currentContract = currentContract;
+        public ContractDTOBuilder withContractInForce(Boolean contractInForce) {
+            this.contractInForce = contractInForce;
             return this;
         }
 
@@ -435,7 +444,7 @@ public class ContractDTO {
         public ContractDTO build() {
             return new ContractDTO(this.id, this.contractNumber, this.variationNumber, this.variationType, this.clientGMId, this.clientGMName,
             this.quoteAccountCode, this.workerId, this.workerName, this.laborCategory, this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday,
-            this.typeOfContract, this.dateFrom, this.dateTo, this.identificationContractNumberINEM, this.currentContract, this.notesForManager, this.privateNotes,
+            this.contractType, this.dateFrom, this.dateTo, this.identificationContractNumberINEM, this.contractInForce, this.notesForManager, this.privateNotes,
             this.indefiniteOrTemporalContract, this.surrogateContract, this.quoteDataReportIDC, this.endOfContractNotice);
         }
     }

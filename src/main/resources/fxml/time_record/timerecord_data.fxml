@@ -74,7 +74,7 @@
                   <TableColumn maxWidth="-1.0" minWidth="325.0" prefWidth="-1.0" sortable="false" text="Jornada de trabajo">
                   <columns>
                     <TableColumn fx:id="workDayType" editable="false" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" sortable="false" text="Tipo" />
-                    <TableColumn fx:id="hoursByWeek" editable="false" maxWidth="-1.0" minWidth="175.0" prefWidth="-1.0" sortable="false" text="Duración" />
+                    <TableColumn fx:id="hoursByWeek" editable="false" maxWidth="-1.0" minWidth="175.0" prefWidth="-1.0" sortable="false" text="hh:mm por semana" />
                   </columns>
                   </TableColumn>
 

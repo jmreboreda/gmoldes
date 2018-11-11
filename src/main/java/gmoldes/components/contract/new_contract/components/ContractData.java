@@ -189,6 +189,17 @@ public class ContractData extends AnchorPane {
         return this.contractDuration.getDateTo();
     }
 
+    public Boolean isContractInForceAtDate(LocalDate date){
+        if(getDateFrom().isAfter(date)){
+            return false;
+        }
+        if(getDateTo() != null && getDateTo().isBefore(date)){
+            return false;
+        }
+
+        return true;
+    }
+
     public String getHoursWorkWeek(){
         return this.workDayType.getHoursWorkWeek();
     }

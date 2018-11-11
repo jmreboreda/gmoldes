@@ -6,6 +6,7 @@ import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.services.Printer;
+import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 
@@ -17,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class TimeRecordPDFCreator {
 
@@ -26,13 +28,8 @@ public class TimeRecordPDFCreator {
     }
 
     public static Path createTimeRecordPDF(TimeRecord timeRecord) throws IOException, DocumentException {
-
-        String temporalDir = null;
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
-            temporalDir = Parameters.WINDOWS_TEMPORAL_DIR;
-        }else if(Parameters.OPERATING_SYSTEM.toLowerCase().contains("linux")){
-            temporalDir = Parameters.LINUX_TEMPORAL_DIR;
-        }
+        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
+        String temporalDir = maybePath.get().toString();
 
         Path pathToTimeRecordPDF = Paths.get(Parameters.USER_HOME, temporalDir, timeRecord.toFileName().concat(".pdf"));
         Path directoriesTree = Files.createDirectories(pathToTimeRecordPDF.getParent());

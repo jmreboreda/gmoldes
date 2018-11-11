@@ -1,7 +1,7 @@
 package gmoldes.domain.contract.mapper;
 
 import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.components.contract.persistence.vo.ContractVO;
+import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -44,11 +44,11 @@ public class MapperContractVODTO {
                 .withWeeklyWorkHours(contractVO.getJor_trab())
                 .withDaysOfWeekToWork(daysOfWorkSet)
                 .withFullPartialWorkday(contractVO.getJor_tipo())
-                .withTypeOfContract(contractVO.getTipoctto())
+                .withContractType(contractVO.getTipoctto())
                 .withDateFrom(contractVO.getF_desde().toLocalDate())
                 .withDateTo(dateTo)
                 .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())
-                .withCurrentContract(contractVO.getEnvigor())
+                .withContractInForce(contractVO.getEnvigor())
                 .withNotesForManager(contractVO.getNotas_gestor())
                 .withPrivateNotes(contractVO.getNotas_privadas())
                 .withIndefiniteOrTemporalContract(contractVO.getDuracion())
@@ -60,7 +60,7 @@ public class MapperContractVODTO {
         return contractDTO;
     }
 
-    private Set<DayOfWeek> mapDaysOfWeekToWorkVODTO(ContractVO contractVO) {
+    public Set<DayOfWeek> mapDaysOfWeekToWorkVODTO(ContractVO contractVO) {
         String daysOfWork = contractVO.getJor_trab_dias();
         DayOfWeek[] daysOfWeek = DayOfWeek.values();
 

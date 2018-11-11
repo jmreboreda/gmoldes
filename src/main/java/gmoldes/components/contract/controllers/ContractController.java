@@ -2,6 +2,7 @@ package gmoldes.components.contract.controllers;
 
 import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.components.contract.manager.ContractManager;
+import gmoldes.domain.contract.dto.InitialContractDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,16 @@ public class ContractController {
         return contractManager.findAllContractsByClientIdInPeriod(clientId, referenceDate);
     }
 
+    public List<InitialContractDTO> findAllInitialContractSorted(){
+
+        return contractManager.findAllInitialContractSorted();
+    }
+
+    public InitialContractDTO findInitialContractByContractNumber(Integer contractNumber){
+
+        return contractManager.findInitialContractByContractNumber(contractNumber);
+    }
+
     public List<ContractDTO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String yearMonth){
 
         return contractManager.findAllContractsWithTimeRecordByClientIdInPeriod(clientId, yearMonth);
@@ -25,25 +36,23 @@ public class ContractController {
         return contractManager.findAllActiveContractsByClientId(id);
     }
 
-    public int establishCurrentContracts(){
+    public int establishContractsInForce(){
 
-        ContractManager manager = new ContractManager();
-        return manager.establishCurrentContract();
+        return contractManager.establishContractInForce();
     }
 
-    public int establishNotCurrentContracts(){
+    public int establishContractsNotInForce(){
 
-        ContractManager manager = new ContractManager();
-        return manager.establishNotCurrentContract();
+        return contractManager.establishContractNotInForce();
     }
 
     public List<ContractDTO> findContractsExpiration(){
-        ContractManager manager = new ContractManager();
-        return manager.findContractsExpiration();
+
+        return contractManager.findContractsExpiration();
     }
 
     public List<ContractDTO> findPendingIDC(){
-        ContractManager manager = new ContractManager();
-        return manager.findPendingIDC();
+
+        return contractManager.findPendingIDC();
     }
 }

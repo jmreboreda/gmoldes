@@ -1,13 +1,17 @@
 package gmoldes;
 
 
-import gmoldes.domain.check.InitialChecks;
+import gmoldes.components.contract.controllers.ContractInForceAtDateController;
 import gmoldes.components.initial_menu.InitialMenuController;
-import gmoldes.domain.contract.dto.ContractDTO;
+import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.check.dto.IDCControlDTO;
+import gmoldes.domain.contract.dto.ContractDTO;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.utilities.Message;
+import gmoldes.utilities.OldContractsToJSONUtility;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
 
 import java.text.ParseException;
@@ -21,7 +25,43 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        /* Initial control processes */
+        ProgressIndicator indicator = new ProgressIndicator();
+        Scene initialScene = new Scene(indicator);
+        primaryStage.setScene(initialScene);
+        primaryStage.show();
+
+
+        if(false) {
+            OldContractsToJSONUtility ctJson = new OldContractsToJSONUtility();
+            ctJson.oldContractToJsonGenerator();
+        }
+
+        ContractInForceAtDateController contractInForceAtDateController = new ContractInForceAtDateController();
+        Integer contractNumber = 30;
+        LocalDate date = LocalDate.now();
+        List<ContractNewVersionDTO> contractInForce = contractInForceAtDateController.findAllContractNewVersionByContractNumber(contractNumber);
+        for(ContractNewVersionDTO contractNewVersionDTO : contractInForce){
+            System.out.println(contractNewVersionDTO.toMyString());
+
+        }
+
+//        Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+//        String clipboardData = "";
+
+//        ContractManager manager = new ContractManager();
+//        List<InitialContractDTO> contractList = manager.findAllInitialContractSorted();
+//        for(InitialContractDTO contract : contractList){
+//            System.out.println(contract.toMyString());
+//            clipboardData = clipboardData + contract.toMyString();
+//        }
+
+//        StringSelection ss = new StringSelection(clipboardData);
+//        cb.setContents(ss, ss);
+
         initialControlProcesses(primaryStage);
+
+        initialScene.getWindow().hide();
 
         /* Initial menu */
         InitialMenuController controller = new InitialMenuController();
@@ -31,6 +71,7 @@ public class App extends Application {
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
+        
     }
 
     public static void main( String[] args ){
@@ -39,13 +80,15 @@ public class App extends Application {
     }
 
     private void initialControlProcesses(Stage primaryStage) throws ParseException {
-        updateCurrentContractsInDatabase();
+
+        updateContractsInForceInDatabase();
+        //primaryStage.getScene().getWindow().hide();
         alertByContractExpiration(primaryStage);
         alertOfPendingIDC(primaryStage);
     }
 
-    private void updateCurrentContractsInDatabase(){
-        InitialChecks.UpdateCurrentContracts();
+    private void updateContractsInForceInDatabase(){
+        InitialChecks.UpdateContractsInForce();
     }
 
     private void alertByContractExpiration(Stage primaryStage){

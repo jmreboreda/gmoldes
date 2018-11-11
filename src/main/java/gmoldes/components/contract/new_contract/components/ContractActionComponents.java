@@ -11,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class ContractActionComponents extends AnchorPane {
 
-    private static final String CURRENT_CONTRACT_FXML = "/fxml/new_contract/contract_action_components.fxml";
+    private static final String CONTRACT_ACTION_COMPONENTS_FXML = "/fxml/new_contract/contract_action_components.fxml";
 
     private Parent parent;
 
@@ -31,7 +31,7 @@ public class ContractActionComponents extends AnchorPane {
 
     public ContractActionComponents() {
 
-        this.parent = ViewLoader.load(this, CURRENT_CONTRACT_FXML);
+        this.parent = ViewLoader.load(this, CONTRACT_ACTION_COMPONENTS_FXML);
         sendMailButton.setOnMouseClicked(this::onSendMailButton);
         OkButton.setOnMouseClicked(this::onOkButton);
         viewPDFButton.setOnMouseClicked(this::onViewPDFButton);
@@ -57,6 +57,7 @@ public class ContractActionComponents extends AnchorPane {
     public void enableSendMailButton(Boolean bol){
         this.sendMailButton.setDisable(!bol);
     }
+
     public void enablePDFButton(Boolean bol){
         this.viewPDFButton.setDisable(!bol);
     }

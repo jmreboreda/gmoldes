@@ -4,6 +4,8 @@ import gmoldes.utilities.Utilities;
 
 public class TimeRecord {
 
+    private static final String TIME_RECORD_STRING_WITH_UNDERSCORE = "_Registro_Horario_";
+
     private String nameOfMonth;
     private String yearNumber;
     private String enterpriseName;
@@ -60,7 +62,7 @@ public class TimeRecord {
     public String toFileName(){
 
         return Utilities.replaceWithUnderscore(this.getEnterpriseName())
-                .concat("_Registro_Horario_")
+                .concat(TIME_RECORD_STRING_WITH_UNDERSCORE)
                 .concat(this.getNameOfMonth())
                 .concat("_")
                 .concat(this.getYearNumber())

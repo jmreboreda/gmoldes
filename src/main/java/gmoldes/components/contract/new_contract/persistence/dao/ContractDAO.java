@@ -1,7 +1,7 @@
-package gmoldes.components.contract.persistence.dao;
+package gmoldes.components.contract.new_contract.persistence.dao;
 
 
-import gmoldes.components.contract.persistence.vo.ContractVO;
+import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,11 +13,11 @@ import java.util.List;
 
 public class ContractDAO {
 
-    private static final String ESTABLISH_CURRENT_CONTRACT =
+    private static final String ESTABLISH_CONTRACT_IN_FORCE =
             "update ContractVO as p set p.envigor = TRUE where p.envigor = FALSE and (p.f_desde <= date(now()) and (p.f_hasta > date(now()) or p.f_hasta is null))";
-    private static final String ESTABLISH_NOT_CURRENT_CONTRACT =
+    private static final String ESTABLISH_CONTRACT_NOT_IN_FORCE =
             "update ContractVO as p set p.envigor = FALSE where p.envigor = TRUE and (p.f_desde > date(now()) or p.f_hasta < date(now()))";
-    private static final String FIND_HIGHEST_CONTRACT_NUMBER = "select max(numcontrato)from ContractVO";
+    private static final String FIND_HIGHEST_CONTRACT_NUMBER = "select max(numcontrato) from ContractVO";
 
     private SessionFactory sessionFactory;
     private Session session;
@@ -55,11 +55,11 @@ public class ContractDAO {
         return contractVO.getNumcontrato();
     }
 
-    public int establishCurrentContract(){
+    public int establishContractInForce(){
         int result = 0;
         try {
             session.beginTransaction();
-            Query query = session.createQuery(ESTABLISH_CURRENT_CONTRACT);
+            Query query = session.createQuery(ESTABLISH_CONTRACT_IN_FORCE);
             result = query.executeUpdate();
             session.getTransaction().commit();
         }catch(Exception e){
@@ -69,11 +69,11 @@ public class ContractDAO {
         return result;
     }
 
-    public int establishNotCurrentContract(){
+    public int establishContractNotInForce(){
         int result = 0;
         try {
             session.beginTransaction();
-            Query query = session.createQuery(ESTABLISH_NOT_CURRENT_CONTRACT);
+            Query query = session.createQuery(ESTABLISH_CONTRACT_NOT_IN_FORCE);
             result = query.executeUpdate();
             session.getTransaction().commit();
         }catch(Exception e){
@@ -101,6 +101,12 @@ public class ContractDAO {
         return (Integer) query.getSingleResult();
     }
 
+    public List<ContractVO> findAllContractsOrderedByContractNumberAndVariation(){
+        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_VARIATION, ContractVO.class);
+
+        return query.getResultList();
+    }
+    
     public List<ContractVO> findAllClientWithActiveContractSorted(){
         TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED, ContractVO.class);
 
