@@ -23,7 +23,6 @@ import java.sql.Date;
         @NamedQuery(
                 name = InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER,
                 query = "select p from InitialContractVO p where contractNumber = :code"
-
         )
 })
 
