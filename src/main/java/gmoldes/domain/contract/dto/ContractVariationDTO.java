@@ -24,6 +24,9 @@ public class ContractVariationDTO {
     private LocalDate endingDate;
     private ContractJsonData contractJsonData;
 
+    public ContractVariationDTO() {
+    }
+
     public ContractVariationDTO(Integer id,
                                 Integer contractNumber,
                                 Integer variationType,

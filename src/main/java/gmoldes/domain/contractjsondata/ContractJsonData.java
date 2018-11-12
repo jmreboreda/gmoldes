@@ -9,7 +9,7 @@ public class ContractJsonData {
     private String laborCategory ;
     private String weeklyWorkHours;
     private String daysOfWeekToWork;
-    private String fullPartialWorkday;
+    private String fullPartialWorkDay;
     private String identificationContractNumberINEM;
     private String notesForContractManager;
     private String privateNotes;
@@ -25,7 +25,7 @@ public class ContractJsonData {
             String laborCategory,
             String weeklyWorkHours,
             String daysOfWeekToWork,
-            String fullPartialWorkday,
+            String fullPartialWorkDay,
             String identificationContractNumberINEM,
             String notesForContractManager,
             String privateNotes){
@@ -37,7 +37,7 @@ public class ContractJsonData {
         this.laborCategory = laborCategory;
         this.weeklyWorkHours = weeklyWorkHours;
         this.daysOfWeekToWork = daysOfWeekToWork;
-        this.fullPartialWorkday = fullPartialWorkday;
+        this.fullPartialWorkDay = fullPartialWorkDay;
         this.identificationContractNumberINEM = identificationContractNumberINEM;
         this.notesForContractManager = notesForContractManager;
         this.privateNotes = privateNotes;
@@ -99,12 +99,12 @@ public class ContractJsonData {
         this.daysOfWeekToWork = daysOfWeekToWork;
     }
 
-    public String getFullPartialWorkday() {
-        return fullPartialWorkday;
+    public String getFullPartialWorkDay() {
+        return fullPartialWorkDay;
     }
 
-    public void setFullPartialWorkday(String fullPartialWorkday) {
-        this.fullPartialWorkday = fullPartialWorkday;
+    public void setFullPartialWorkDay(String fullPartialWorkDay) {
+        this.fullPartialWorkDay = fullPartialWorkDay;
     }
 
     public String getIdentificationContractNumberINEM() {
@@ -131,11 +131,11 @@ public class ContractJsonData {
         this.privateNotes = privateNotes;
     }
 
-    public static InitialContractJSONDataBuilder create() {
-        return new InitialContractJSONDataBuilder();
+    public static ContractJsonDataBuilder create() {
+        return new ContractJsonDataBuilder();
     }
 
-    public static class InitialContractJSONDataBuilder {
+    public static class ContractJsonDataBuilder {
 
         private Integer clientGMId;
         private Integer workerId;
@@ -144,71 +144,71 @@ public class ContractJsonData {
         private Integer contractType;
         private String weeklyWorkHours;
         private String daysOfWeekToWork;
-        private String fullPartialWorkday;
+        private String fullPartialWorkDay;
         private String identificationContractNumberINEM;
         private String notesForContractManager;
         private String privateNotes;
 
 
-        public InitialContractJSONDataBuilder withClientGMId(Integer clientGMId) {
+        public ContractJsonDataBuilder withClientGMId(Integer clientGMId) {
             this.clientGMId = clientGMId;
             return this;
         }
 
-        public InitialContractJSONDataBuilder withWorkerId(Integer workerId) {
+        public ContractJsonDataBuilder withWorkerId(Integer workerId) {
             this.workerId = workerId;
             return this;
         }
 
-        public InitialContractJSONDataBuilder withQuoteAccountCode(String quoteAccountCode) {
+        public ContractJsonDataBuilder withQuoteAccountCode(String quoteAccountCode) {
             this.quoteAccountCode = quoteAccountCode;
             return this;
         }
 
-        public InitialContractJSONDataBuilder withContractType(Integer contractType) {
+        public ContractJsonDataBuilder withContractType(Integer contractType) {
             this.contractType = contractType;
             return this;
         }
 
-        public InitialContractJSONDataBuilder withLaborCategory(String laborCategory) {
+        public ContractJsonDataBuilder withLaborCategory(String laborCategory) {
             this.laborCategory = laborCategory;
             return this;
         }
 
-        public InitialContractJSONDataBuilder withWeeklyWorkHours(String weeklyWorkHours) {
+        public ContractJsonDataBuilder withWeeklyWorkHours(String weeklyWorkHours) {
             this.weeklyWorkHours = weeklyWorkHours;
             return this;
         }
 
-        public InitialContractJSONDataBuilder withDaysOfWeekToWork(String jor_trab_dias) {
+        public ContractJsonDataBuilder withDaysOfWeekToWork(String jor_trab_dias) {
             this.daysOfWeekToWork = jor_trab_dias;
             return this;
         }
 
-        public InitialContractJSONDataBuilder withFullPartialWorkday(String fullPartialWorkday) {
-            this.fullPartialWorkday = fullPartialWorkday;
+        public ContractJsonDataBuilder withFullPartialWorkDay(String fullPartialWorkDay) {
+            this.fullPartialWorkDay = fullPartialWorkDay;
             return this;
         }
 
 
-        public InitialContractJSONDataBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
+        public ContractJsonDataBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
             this.identificationContractNumberINEM = identificationContractNumberINEM;
             return this;
         }
 
-        public InitialContractJSONDataBuilder withNotesForContractManager(String notesForContractManager) {
+        public ContractJsonDataBuilder withNotesForContractManager(String notesForContractManager) {
             this.notesForContractManager = notesForContractManager;
             return this;
         }
 
-        public InitialContractJSONDataBuilder withPrivateNotes(String privateNotes) {
+        public ContractJsonDataBuilder withPrivateNotes(String privateNotes) {
             this.privateNotes = privateNotes;
             return this;
         }
 
         public ContractJsonData build() {
             return new ContractJsonData(this.clientGMId,  this.workerId, this.quoteAccountCode, this.contractType, this.laborCategory, this.weeklyWorkHours,
-                    this.daysOfWeekToWork, this.fullPartialWorkday, this.identificationContractNumberINEM, this.notesForContractManager, this.privateNotes);
+                    this.daysOfWeekToWork, this.fullPartialWorkDay, this.identificationContractNumberINEM, this.notesForContractManager, this.privateNotes);
         }
     }
 }

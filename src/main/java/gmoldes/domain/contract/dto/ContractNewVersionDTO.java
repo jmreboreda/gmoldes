@@ -13,6 +13,9 @@ public class ContractNewVersionDTO {
     private Date endingDate;
     private ContractJsonData contractJsonData;
 
+    public ContractNewVersionDTO() {
+    }
+
     public ContractNewVersionDTO(Integer id,
                                  Integer contractNumber,
                                  Integer variationType,
@@ -87,8 +90,8 @@ public class ContractNewVersionDTO {
 
     public String toMyString(){
 
-        return "------------------------" + "\n" +
-                "Contrato: "+ getContractNumber()+ "\n" +
+        return "------------------------------------" + "\n" +
+                "Contrato: "+ getContractNumber() + " - VariationType: " + getVariationType() + "\n" +
                 "Fecha inicio: " + getStartDate();
     }
 

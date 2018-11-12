@@ -37,6 +37,7 @@ public class ContractInForceAtDateController {
                     .withStartDate(Date.valueOf(contractVariationDTO.getStartDate().toString()))
                     .withExpectedEndDate((Date.valueOf(contractVariationDTO.getExpectedEndDate().toString())))
                     .withEndingDate(Date.valueOf(contractVariationDTO.getEndingDate().toString()))
+                    .withContractJsonData(contractVariationDTO.getContractJsonData())
                     .build();
             contractInForceDTOList.add(contractNewVersionVariationDTO);
         }

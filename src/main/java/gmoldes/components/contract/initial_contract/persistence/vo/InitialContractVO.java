@@ -108,7 +108,7 @@ public class InitialContractVO implements Serializable {
         return contractJsonData;
     }
 
-    public void setContractJsonData(ContractJsonData initialContractJSONData) {
-        this.contractJsonData = initialContractJSONData;
+    public void setContractJsonData(ContractJsonData contractJsonData) {
+        this.contractJsonData = contractJsonData;
     }
 }

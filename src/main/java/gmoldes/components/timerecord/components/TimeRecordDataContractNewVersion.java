@@ -220,7 +220,7 @@ public class TimeRecordDataContractNewVersion extends VBox {
                         contractDTO.getWorkerName(),
                         employeeNIF,
                         contractDTO.getQuoteAccountCode(),
-                        contractDTO.getFullPartialWorkday(),
+                        contractDTO.getFullPartialWorkDay(),
                         contractDTO.getWeeklyWorkHours(),
                         contractDTO.getContractType(),
                         dateFrom,

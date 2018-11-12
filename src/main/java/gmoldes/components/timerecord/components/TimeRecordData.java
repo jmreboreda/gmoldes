@@ -5,7 +5,6 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
 import gmoldes.domain.client.controllers.ClientController;
-import gmoldes.components.contract.controllers.ContractController;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.domain.person.dto.PersonDTO;
@@ -221,7 +220,7 @@ public class TimeRecordData extends VBox {
                         contractDTO.getWorkerName(),
                         employeeNIF,
                         contractDTO.getQuoteAccountCode(),
-                        contractDTO.getFullPartialWorkday(),
+                        contractDTO.getFullPartialWorkDay(),
                         contractDTO.getWeeklyWorkHours(),
                         contractDTO.getContractType(),
                         dateFrom,
