@@ -1,6 +1,6 @@
 package gmoldes.domain.contract.dto;
 
-import gmoldes.domain.contractjsondata.ContractNewVersionJSONData;
+import gmoldes.domain.contractjsondata.ContractJsonData;
 import java.sql.Date;
 
 public class ContractNewVersionDTO {
@@ -11,16 +11,22 @@ public class ContractNewVersionDTO {
     private Date startDate;
     private Date expectedEndDate;
     private Date endingDate;
-    private ContractNewVersionJSONData contractNewVersionJSONData;
+    private ContractJsonData contractJsonData;
 
-    public ContractNewVersionDTO(Integer id, Integer contractNumber, Integer variationType, Date startDate, Date expectedEndDate, Date endingDate, ContractNewVersionJSONData contractNewVersionJSONData) {
+    public ContractNewVersionDTO(Integer id,
+                                 Integer contractNumber,
+                                 Integer variationType,
+                                 Date startDate,
+                                 Date expectedEndDate,
+                                 Date endingDate,
+                                 ContractJsonData contractJsonData) {
         this.id = id;
         this.contractNumber = contractNumber;
         this.variationType = variationType;
         this.startDate = startDate;
         this.expectedEndDate = expectedEndDate;
         this.endingDate = endingDate;
-        this.contractNewVersionJSONData = contractNewVersionJSONData;
+        this.contractJsonData = contractJsonData;
     }
 
     public Integer getId() {
@@ -71,12 +77,12 @@ public class ContractNewVersionDTO {
         this.endingDate = endingDate;
     }
 
-    public ContractNewVersionJSONData getContractNewVersionJSONData() {
-        return contractNewVersionJSONData;
+    public ContractJsonData getContractJsonData() {
+        return contractJsonData;
     }
 
-    public void setContractNewVersionJSONData(ContractNewVersionJSONData contractNewVersionJSONData) {
-        this.contractNewVersionJSONData = contractNewVersionJSONData;
+    public void setContractJsonData(ContractJsonData contractJsonData) {
+        this.contractJsonData = contractJsonData;
     }
 
     public String toMyString(){
@@ -98,7 +104,7 @@ public class ContractNewVersionDTO {
         private Date startDate;
         private Date expectedEndDate;
         private Date endingDate;
-        private ContractNewVersionJSONData contractNewVersionJSONData;
+        private ContractJsonData contractJsonData;
 
         public ContractNewVersionDTOBuilder withId(Integer id) {
             this.id = id;
@@ -130,13 +136,13 @@ public class ContractNewVersionDTO {
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withContractNewVersionJSONData(ContractNewVersionJSONData contractNewVersionJSONData) {
-            this.contractNewVersionJSONData = contractNewVersionJSONData;
+        public ContractNewVersionDTOBuilder withContractJsonData(ContractJsonData contractJsonData) {
+            this.contractJsonData = contractJsonData;
             return this;
         }
 
         public ContractNewVersionDTO build() {
-            return new ContractNewVersionDTO(this.id, this.contractNumber, this.variationType, this.startDate, this.expectedEndDate, this.endingDate, this.contractNewVersionJSONData);
+            return new ContractNewVersionDTO(this.id, this.contractNumber, this.variationType, this.startDate, this.expectedEndDate, this.endingDate, this.contractJsonData);
         }
     }
 

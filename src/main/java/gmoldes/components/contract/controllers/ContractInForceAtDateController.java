@@ -3,7 +3,6 @@ package gmoldes.components.contract.controllers;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.ContractVariationDTO;
-import gmoldes.domain.contract.dto.InitialContractDTO;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -17,14 +16,15 @@ public class ContractInForceAtDateController {
 
         List<ContractNewVersionDTO> contractInForceDTOList = new ArrayList<>();
 
-        InitialContractDTO initialContractDTO = contractManager.findInitialContractByContractNumber(contractNumber);
+        ContractNewVersionDTO contractNewVersionDTO = contractManager.findInitialContractByContractNumber(contractNumber);
         ContractNewVersionDTO contractNewVersionInitialDTO = ContractNewVersionDTO.create()
-                .withId(initialContractDTO.getId())
-                .withContractNumber(initialContractDTO.getContractNumber())
-                .withVariationType(initialContractDTO.getVariationType())
-                .withStartDate(Date.valueOf(initialContractDTO.getStartDate().toString()))
-                .withExpectedEndDate((Date.valueOf(initialContractDTO.getExpectedEndDate().toString())))
-                .withEndingDate(Date.valueOf(initialContractDTO.getEndingDate().toString()))
+                .withId(contractNewVersionDTO.getId())
+                .withContractNumber(contractNewVersionDTO.getContractNumber())
+                .withVariationType(contractNewVersionDTO.getVariationType())
+                .withStartDate(Date.valueOf(contractNewVersionDTO.getStartDate().toString()))
+                .withExpectedEndDate((Date.valueOf(contractNewVersionDTO.getExpectedEndDate().toString())))
+                .withEndingDate(Date.valueOf(contractNewVersionDTO.getEndingDate().toString()))
+                .withContractJsonData(contractNewVersionDTO.getContractJsonData())
                 .build();
         contractInForceDTOList.add(contractNewVersionInitialDTO);
 
@@ -44,19 +44,15 @@ public class ContractInForceAtDateController {
         return contractInForceDTOList;
     }
 
+    public List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
 
-
-    public List<InitialContractDTO> contractNewVersionDTOList = new ArrayList<>();
-
-    private InitialContractDTO findInitialContractByContractNumber(Integer contractNumber){
+    private ContractNewVersionDTO findInitialContractByContractNumber(Integer contractNumber){
 
         return contractManager.findInitialContractByContractNumber(contractNumber);
-
     }
 
     private List<ContractVariationDTO> findContractVariationByContractNumber(Integer contractNumber){
 
         return contractManager.findAllContractVariationByContractNumber(contractNumber);
     }
-
 }

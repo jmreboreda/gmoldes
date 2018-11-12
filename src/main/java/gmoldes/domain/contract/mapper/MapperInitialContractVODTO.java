@@ -8,7 +8,7 @@ import java.util.Set;
 public class MapperInitialContractVODTO {
 
     public Set<DayOfWeek> mapDaysOfWeekToWorkVODTO(InitialContractVO initialContractVO) {
-        String daysOfWork = initialContractVO.getInitialContractJSONData().getDaysOfWeekToWork();
+        String daysOfWork = initialContractVO.getContractJsonData().getDaysOfWeekToWork();
 
         Set<DayOfWeek> daysOfWeekSet = new HashSet<>();
 

@@ -1,6 +1,6 @@
 package gmoldes.domain.contractjsondata;
 
-public class ContractNewVersionJSONData {
+public class ContractJsonData {
 
     private Integer clientGMId;
     private Integer workerId;
@@ -14,10 +14,10 @@ public class ContractNewVersionJSONData {
     private String notesForContractManager;
     private String privateNotes;
 
-    public ContractNewVersionJSONData() {
+    public ContractJsonData() {
     }
 
-    public ContractNewVersionJSONData(
+    public ContractJsonData(
             Integer clientGMId,
             Integer workerId,
             String quoteAccountCode,
@@ -206,8 +206,8 @@ public class ContractNewVersionJSONData {
             return this;
         }
 
-        public ContractNewVersionJSONData build() {
-            return new ContractNewVersionJSONData(this.clientGMId,  this.workerId, this.quoteAccountCode, this.contractType, this.laborCategory, this.weeklyWorkHours,
+        public ContractJsonData build() {
+            return new ContractJsonData(this.clientGMId,  this.workerId, this.quoteAccountCode, this.contractType, this.laborCategory, this.weeklyWorkHours,
                     this.daysOfWeekToWork, this.fullPartialWorkday, this.identificationContractNumberINEM, this.notesForContractManager, this.privateNotes);
         }
     }

@@ -108,6 +108,8 @@ public class ClientManager {
         return clientDTOList;
     }
 
+
+
 //    public ClientDTO findPersonById(Integer id){
 //
 //        clientDAO = ClientDAO.ClientDAOFactory.getInstance();

@@ -8,10 +8,7 @@ import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
-import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.domain.contract.dto.ContractVariationDTO;
-import gmoldes.domain.contract.dto.InitialContractDTO;
-import gmoldes.domain.contract.dto.OldContractToSaveDTO;
+import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.MapperContractVODTO;
 import gmoldes.domain.contract.mapper.MapperContractVariationVODTO;
 import gmoldes.domain.contract.mapper.MapperInitialContractDTOVO;
@@ -39,7 +36,7 @@ public class ContractManager {
         return contractDAO.create(contractVO);
     }
 
-    public Integer saveInitialContract(InitialContractDTO initialContractDTO){
+    public Integer saveInitialContract(ContractNewVersionDTO initialContractDTO){
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         MapperInitialContractDTOVO mapperInitialContractDTOVO = new MapperInitialContractDTOVO();
         Integer newContractNumber = initialContractDAO.findHighestContractNumber() + 1;
@@ -243,65 +240,47 @@ public class ContractManager {
         return contractDTOList;
     }
 
-    public List<InitialContractDTO> findAllInitialContractSorted(){
-        List<InitialContractDTO> initialContractDTOList = new ArrayList<>();
+    public List<ContractNewVersionDTO> findAllInitialContractSorted(){
+        List<ContractNewVersionDTO> initialContractDTOList = new ArrayList<>();
         MapperInitialContractVODTO mapper = new MapperInitialContractVODTO();
 
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractSorted();
         for (InitialContractVO initialContractVO : initialContractVOList) {
-            LocalDate expectedEndDate = initialContractVO.getExpectedEndDate() == null ? null : initialContractVO.getExpectedEndDate().toLocalDate();
-            LocalDate endingDate = initialContractVO.getEndingDate() == null ? null : initialContractVO.getEndingDate().toLocalDate();
+//            LocalDate expectedEndDate = initialContractVO.getExpectedEndDate() == null ? null : initialContractVO.getExpectedEndDate().toLocalDate();
+//            LocalDate endingDate = initialContractVO.getEndingDate() == null ? null : initialContractVO.getEndingDate().toLocalDate();
 
-            InitialContractDTO initialContractDTO = InitialContractDTO.create()
+            ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                     .withContractNumber(initialContractVO.getContractNumber())
                     .withVariationType(initialContractVO.getVariationType())
-                    .withStartDate(initialContractVO.getStartDate().toLocalDate())
-                    .withExpectedEndDate(expectedEndDate)
-                    .withEndingDate(endingDate)
-                    .withClientGMId(initialContractVO.getInitialContractJSONData().getClientGMId())
-                    .withWorkerId(initialContractVO.getInitialContractJSONData().getWorkerId())
-                    .withContractType(initialContractVO.getInitialContractJSONData().getContractType())
-                    .withLaborCategory(initialContractVO.getInitialContractJSONData().getLaborCategory())
-                    .withWeeklyWorkHours(initialContractVO.getInitialContractJSONData().getWeeklyWorkHours())
-                    .withDaysOfWeekToWork(mapper.mapDaysOfWeekToWorkVODTO(initialContractVO))
-                    .withFullPartialWorkday(initialContractVO.getInitialContractJSONData().getFullPartialWorkday())
-                    .withIdentificationContractNumberINEM(initialContractVO.getInitialContractJSONData().getIdentificationContractNumberINEM())
-                    .withNotesForManager(initialContractVO.getInitialContractJSONData().getNotesForContractManager())
-                    .withPrivateNotes(initialContractVO.getInitialContractJSONData().getPrivateNotes())
+                    .withStartDate(initialContractVO.getStartDate())
+                    .withExpectedEndDate(initialContractVO.getExpectedEndDate())
+                    .withEndingDate(initialContractVO.getEndingDate())
+
                     .build();
 
-            initialContractDTOList.add(initialContractDTO);
+            initialContractDTOList.add(contractNewVersionDTO);
         }
 
         return initialContractDTOList;
     }
 
-    public InitialContractDTO findInitialContractByContractNumber(Integer contractNumber){
+    public ContractNewVersionDTO findInitialContractByContractNumber(Integer contractNumber){
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         InitialContractVO initialContractVO = initialContractDAO.findInitialContractByContractNumber(contractNumber);
         MapperInitialContractVODTO mapper = new MapperInitialContractVODTO();
 
 
-        InitialContractDTO initialContractDTO = InitialContractDTO.create()
+        ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                 .withContractNumber(initialContractVO.getContractNumber())
                 .withVariationType(initialContractVO.getVariationType())
-                .withStartDate(initialContractVO.getStartDate().toLocalDate())
-                .withExpectedEndDate(initialContractVO.getExpectedEndDate().toLocalDate())
-                .withEndingDate(initialContractVO.getEndingDate().toLocalDate())
-                .withClientGMId(initialContractVO.getInitialContractJSONData().getClientGMId())
-                .withWorkerId(initialContractVO.getInitialContractJSONData().getWorkerId())
-                .withContractType(initialContractVO.getInitialContractJSONData().getContractType())
-                .withLaborCategory(initialContractVO.getInitialContractJSONData().getLaborCategory())
-                .withWeeklyWorkHours(initialContractVO.getInitialContractJSONData().getWeeklyWorkHours())
-                .withDaysOfWeekToWork(mapper.mapDaysOfWeekToWorkVODTO(initialContractVO))
-                .withFullPartialWorkday(initialContractVO.getInitialContractJSONData().getFullPartialWorkday())
-                .withIdentificationContractNumberINEM(initialContractVO.getInitialContractJSONData().getIdentificationContractNumberINEM())
-                .withNotesForManager(initialContractVO.getInitialContractJSONData().getNotesForContractManager())
-                .withPrivateNotes(initialContractVO.getInitialContractJSONData().getPrivateNotes())
+                .withStartDate(initialContractVO.getStartDate())
+                .withExpectedEndDate(initialContractVO.getExpectedEndDate())
+                .withEndingDate(initialContractVO.getEndingDate())
+                .withContractJsonData(initialContractVO.getContractJsonData())
                 .build();
 
-        return initialContractDTO;
+        return contractNewVersionDTO;
     }
 
     public List<ContractVariationDTO> findAllContractVariationByContractNumber(Integer contractNumber){
@@ -318,16 +297,8 @@ public class ContractManager {
                     .withStartDate(contractVariationVO.getStartDate().toLocalDate())
                     .withExpectedEndDate(contractVariationVO.getExpectedEndDate().toLocalDate())
                     .withEndingDate(contractVariationVO.getEndingDate().toLocalDate())
-                    .withClientGMId(contractVariationVO.getContractVariationJSONData().getClientGMId())
-                    .withWorkerId(contractVariationVO.getContractVariationJSONData().getWorkerId())
-                    .withContractType(contractVariationVO.getContractVariationJSONData().getContractType())
-                    .withLaborCategory(contractVariationVO.getContractVariationJSONData().getLaborCategory())
-                    .withWeeklyWorkHours(contractVariationVO.getContractVariationJSONData().getWeeklyWorkHours())
-                    .withDaysOfWeekToWork(mapper.mapDaysOfWeekToWorkVODTO(contractVariationVO))
-                    .withFullPartialWorkday(contractVariationVO.getContractVariationJSONData().getFullPartialWorkDay())
-                    .withIdentificationContractNumberINEM(contractVariationVO.getContractVariationJSONData().getIdentificationContractNumberINEM())
-                    .withNotesForManager(contractVariationVO.getContractVariationJSONData().getNotesForContractManager())
-                    .withPrivateNotes(contractVariationVO.getContractVariationJSONData().getPrivateNotes())
+                    .withContractJsonData(contractVariationVO.getContractJsonData())
+
                     .build();
 
             contractVariationDTOList.add(contractVariationDTO);

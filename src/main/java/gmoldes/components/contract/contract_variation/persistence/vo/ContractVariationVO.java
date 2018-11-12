@@ -6,11 +6,11 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
-import gmoldes.domain.contractjsondata.ContractVariationJSONData;
+import gmoldes.domain.contractjsondata.ContractJsonData;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
@@ -55,7 +55,7 @@ public class ContractVariationVO implements Serializable {
     private Date endingDate;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private ContractVariationJSONData contractVariationJSONData;
+    private ContractJsonData contractJsonData;
 
     public Integer getId() {
         return id;
@@ -105,11 +105,11 @@ public class ContractVariationVO implements Serializable {
         this.endingDate = endingDate;
     }
 
-    public ContractVariationJSONData getContractVariationJSONData() {
-        return contractVariationJSONData;
+    public ContractJsonData getContractJsonData() {
+        return contractJsonData;
     }
 
-    public void setContractVariationJSONData(ContractVariationJSONData contractVariationJSONData) {
-        this.contractVariationJSONData = contractVariationJSONData;
+    public void setContractVariationJSONData(ContractJsonData contractJsonData) {
+        this.contractJsonData = contractJsonData;
     }
 }

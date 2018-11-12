@@ -1,12 +1,12 @@
 package gmoldes.components.contract.initial_contract.persistence.vo;
 
-import gmoldes.domain.contractjsondata.InitialContractJSONData;
 import com.vladmihalcea.hibernate.type.array.IntArrayType;
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import gmoldes.domain.contractjsondata.ContractJsonData;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -54,7 +54,7 @@ public class InitialContractVO implements Serializable {
     private Date endingDate;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private InitialContractJSONData initialContractJSONData;
+    private ContractJsonData contractJsonData;
 
     public Integer getId() {
         return id;
@@ -104,11 +104,11 @@ public class InitialContractVO implements Serializable {
         this.endingDate = endingDate;
     }
 
-    public InitialContractJSONData getInitialContractJSONData() {
-        return initialContractJSONData;
+    public ContractJsonData getContractJsonData() {
+        return contractJsonData;
     }
 
-    public void setInitialContractJSONData(InitialContractJSONData initialContractJSONData) {
-        this.initialContractJSONData = initialContractJSONData;
+    public void setContractJsonData(ContractJsonData initialContractJSONData) {
+        this.contractJsonData = initialContractJSONData;
     }
 }

@@ -2,16 +2,15 @@ package gmoldes.components.timerecord.components;
 
 import com.lowagie.text.DocumentException;
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
-import gmoldes.components.timerecord.controllers.TimeRecordController;
-import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.components.contract.controllers.ContractController;
-import gmoldes.domain.person.controllers.PersonController;
+import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.timerecord.forms.TimeRecord;
+import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.contract.dto.ContractDTO;
+import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.timerecord.dto.TimeRecordCandidateDataDTO;
 import gmoldes.domain.timerecord.dto.TimeRecordClientDTO;
-import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
@@ -37,7 +36,7 @@ import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TimeRecordData extends VBox {
+public class TimeRecordDataContractNewVersion extends VBox {
 
     private static final String TIME_RECORD_FXML = "/fxml/time_record/timerecord_data.fxml";
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
@@ -73,7 +72,7 @@ public class TimeRecordData extends VBox {
     @FXML
     private Button exitButton;
 
-    public TimeRecordData() {
+    public TimeRecordDataContractNewVersion() {
         this.parent = ViewLoader.load(this, TIME_RECORD_FXML);
     }
 
@@ -194,10 +193,10 @@ public class TimeRecordData extends VBox {
         if(clientForTimeRecord.getSelectionModel().getSelectedItem() == null){
             return;
         }
-        TimeRecordController timeRecordController = new TimeRecordController();
+        ContractController contractController = new ContractController();
         Integer idSelectedClient = clientForTimeRecord.getSelectionModel().getSelectedItem().getIdcliente();
         String yearMonth = retrievePeriodForTimeRecord();
-        List<ContractDTO> contractDTOList = timeRecordController.findAllContractsWithTimeRecordByClientIdInPeriod(idSelectedClient, yearMonth);
+        List<ContractDTO> contractDTOList = contractController.findAllContractsWithTimeRecordByClientIdInPeriod(idSelectedClient, yearMonth);
         List<TimeRecordCandidateDataDTO> candidates = loadCandidateDataForTimeRecord(contractDTOList);
         refreshCandidatesData(candidates);
     }
