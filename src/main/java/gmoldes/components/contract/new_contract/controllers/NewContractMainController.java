@@ -385,7 +385,7 @@ public class NewContractMainController extends VBox {
 
         String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 
-        ContractJsonData jsonData = ContractJsonData.create()
+        ContractJsonData contractJsonData = ContractJsonData.create()
                 .withIdentificationContractNumberINEM(null)
                 .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork().toString())
                 .withWeeklyWorkHours(contractData.getHoursWorkWeek())
@@ -404,7 +404,7 @@ public class NewContractMainController extends VBox {
                 .withStartDate(java.sql.Date.valueOf(contractData.getDateFrom()))
                 .withExpectedEndDate(java.sql.Date.valueOf(contractData.getDateTo()))
                 .withEndingDate(null)
-
+                .withContractJsonData(contractJsonData)
                 .build();
 
         ContractManager contractManager = new ContractManager();

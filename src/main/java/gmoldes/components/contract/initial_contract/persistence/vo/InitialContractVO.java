@@ -17,6 +17,15 @@ import java.sql.Date;
 
 @NamedQueries(value = {
         @NamedQuery(
+                name = InitialContractVO.FIND_ALL_CONTRACT_WITH_TIME_RECORD_BY_CLIENTID_AND_DATE,
+                query = "select p from InitialContractVO p where to_number(p.contractjsondata->>'clientGMId'::text, '999') = :codeClientId " +
+                        "and p.contractjsondata->> 'weeklyWorkHours'::text != '40:00' " +
+                        "and p.startdate <= :codeFinalDate and (endingdate is null or endingdate >= :codeInitialDate) " +
+                        "and (expectedenddate is null or expectedenddate >= :codeInitialDate) " +
+                        "and variationtype < 800 " +
+                        "order by contractnumber, startdate"
+        ),
+        @NamedQuery(
                 name = InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE,
                 query = "select p from InitialContractVO p order by p.contractNumber, p.startDate"
         ),
@@ -39,6 +48,7 @@ import java.sql.Date;
 
 public class InitialContractVO implements Serializable {
 
+    public static final String FIND_ALL_CONTRACT_WITH_TIME_RECORD_BY_CLIENTID_AND_DATE = "InitialContractVO.FIND_ALL_CONTRACT_WITH_TIME_RECORD_BY_CLIENTID_AND_DATE";
     public static final String FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE = "InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE";
     public static final String FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER = "InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER";
 

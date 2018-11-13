@@ -2,9 +2,11 @@ package gmoldes;
 
 
 import gmoldes.components.contract.controllers.ContractInForceAtDateController;
+import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.check.dto.IDCControlDTO;
+import gmoldes.domain.contract.Contract;
 import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.utilities.Message;
@@ -37,15 +39,19 @@ public class App extends Application {
             ctJson.oldContractToJsonGenerator();
         }
 
-        ContractInForceAtDateController contractInForceAtDateController = new ContractInForceAtDateController();
-        Integer contractNumber = 30;
-        LocalDate date = LocalDate.now();
-        List<ContractNewVersionDTO> contractInForce = contractInForceAtDateController.findAllContractNewVersionByContractNumber(contractNumber);
-        for(ContractNewVersionDTO contractNewVersionDTO : contractInForce){
-            System.out.println(contractNewVersionDTO.toMyString());
+//        ContractInForceAtDateController contractInForceAtDateController = new ContractInForceAtDateController();
+//        Integer contractNumber = 30;
+//        LocalDate date = LocalDate.now();
+//        List<ContractNewVersionDTO> contractInForce = contractInForceAtDateController.findAllContractNewVersionByContractNumber(contractNumber);
+//        for(ContractNewVersionDTO contractNewVersionDTO : contractInForce){
+//            System.out.println(contractNewVersionDTO.toMyString());
+//        }
 
-        }
-
+//        ContractManager manager = new ContractManager();
+//        List<ContractNewVersionDTO> list = manager.findAllNewContractVersionWithTimeRecordByClientIdInDate(17, LocalDate.of(2018,10,1));
+//        for(ContractNewVersionDTO dto : list){
+//            System.out.println(dto.getContractJsonData().toString());
+//        }
 //        Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
 //        String clipboardData = "";
 

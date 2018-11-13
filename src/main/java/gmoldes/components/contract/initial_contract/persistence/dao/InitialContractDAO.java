@@ -8,6 +8,8 @@ import org.hibernate.SessionFactory;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class InitialContractDAO {
@@ -67,5 +69,14 @@ public class InitialContractDAO {
         query.setParameter("code", contractNumber);
 
         return  query.getSingleResult();
+    }
+
+    public List<InitialContractVO> findAllNewContractVersionWithTimeRecordByClientIdInDate(Integer clientId, LocalDate initialDate, LocalDate finalDate){
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_CONTRACT_WITH_TIME_RECORD_BY_CLIENTID_AND_DATE, InitialContractVO.class);
+        query.setParameter("codeClientId", clientId);
+        query.setParameter("codeInitialDate", "'" + Date.valueOf(initialDate).toString()+ "'");
+        query.setParameter("codeFinalDate", "'" + Date.valueOf(finalDate).toString() + "'");
+
+        return  query.getResultList();
     }
 }

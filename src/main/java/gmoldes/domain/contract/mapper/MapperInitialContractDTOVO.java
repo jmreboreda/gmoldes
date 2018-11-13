@@ -2,36 +2,21 @@ package gmoldes.domain.contract.mapper;
 
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contractjsondata.ContractJsonData;
 import java.sql.Date;
 import java.time.LocalDate;
 
 public class MapperInitialContractDTOVO {
 
-    public InitialContractVO mapContractDTOVO(ContractNewVersionDTO initialContractDTO) {
-
-        ContractJsonData contractJsonData = ContractJsonData.create()
-                .withContractType(initialContractDTO.getContractJsonData().getContractType())
-                .withClientGMId(initialContractDTO.getContractJsonData().getClientGMId())
-                .withDaysOfWeekToWork(initialContractDTO.getContractJsonData().getDaysOfWeekToWork())
-                .withFullPartialWorkDay(initialContractDTO.getContractJsonData().getFullPartialWorkDay())
-                .withIdentificationContractNumberINEM(initialContractDTO.getContractJsonData().getIdentificationContractNumberINEM())
-                .withLaborCategory(initialContractDTO.getContractJsonData().getLaborCategory())
-                .withNotesForContractManager(initialContractDTO.getContractJsonData().getNotesForContractManager())
-                .withPrivateNotes(initialContractDTO.getContractJsonData().getPrivateNotes())
-                .withQuoteAccountCode(initialContractDTO.getContractJsonData().getQuoteAccountCode())
-                .withWeeklyWorkHours(initialContractDTO.getContractJsonData().getWeeklyWorkHours())
-                .withWorkerId(initialContractDTO.getContractJsonData().getWorkerId())
-                .build();
+    public InitialContractVO mapContractDTOVO(ContractNewVersionDTO contractNewVersionDTO) {
 
         InitialContractVO initialContractVO = new InitialContractVO();
-        initialContractVO.setContractNumber(initialContractDTO.getContractNumber());
-        initialContractVO.setVariationType(initialContractDTO.getVariationType());
-        initialContractVO.setStartDate(initialContractDTO.getStartDate());
-        initialContractVO.setExpectedEndDate(initialContractDTO.getExpectedEndDate());
-        LocalDate endingDate = initialContractDTO.getEndingDate().toLocalDate();
+        initialContractVO.setContractNumber(contractNewVersionDTO.getContractNumber());
+        initialContractVO.setVariationType(contractNewVersionDTO.getVariationType());
+        initialContractVO.setStartDate(contractNewVersionDTO.getStartDate());
+        initialContractVO.setExpectedEndDate(contractNewVersionDTO.getExpectedEndDate());
+        LocalDate endingDate = contractNewVersionDTO.getEndingDate().toLocalDate();
         initialContractVO.setEndingDate(Date.valueOf(endingDate));
-        initialContractVO.setContractJsonData(contractJsonData);
+        initialContractVO.setContractJsonData(contractNewVersionDTO.getContractJsonData());
 
         return initialContractVO;
     }

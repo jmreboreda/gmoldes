@@ -16,10 +16,7 @@ import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ContractManager {
 
@@ -162,6 +159,57 @@ public class ContractManager {
         }
         return contractDTOList;
     }
+
+    public List<ContractNewVersionDTO> findAllNewContractVersionWithTimeRecordByClientIdInDate(Integer clientId, LocalDate date){
+
+        List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(date.getYear(), date.getMonthValue() ,date.getDayOfMonth());
+        int lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int firstDayOfMonth = calendar.getMinimum(Calendar.DAY_OF_MONTH);
+
+        LocalDate initialDate = LocalDate.of(date.getYear(), date.getMonth(), firstDayOfMonth);
+        LocalDate finalDate = LocalDate.of(date.getYear(), date.getMonth(), lastDayOfMonth);
+
+
+        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllNewContractVersionWithTimeRecordByClientIdInDate(clientId, initialDate, finalDate);
+        for (InitialContractVO initialContractVO : initialContractVOList) {
+            LocalDate dateTo = (initialContractVO.getEndingDate() != null) ? initialContractVO.getEndingDate().toLocalDate() : null;
+
+            ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
+                   .withId(initialContractVO.getId())
+                    .withContractNumber(initialContractVO.getContractNumber())
+                    .withStartDate(initialContractVO.getStartDate())
+                    .withExpectedEndDate(initialContractVO.getExpectedEndDate())
+                    .withEndingDate(initialContractVO.getEndingDate())
+                    .withContractJsonData(initialContractVO.getContractJsonData())
+                    .build();
+
+            contractNewVersionDTOList.add(contractNewVersionDTO);
+        }
+
+//        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+//        List<ContractVariationVO> contractVariationVOList = ContractVariationDAO.findAllNewContractVersionWithTimeRecordByClientIdInDate(clientId, date);
+//        for (ContractVariationVO contractVariationVO : contractVariationVOList) {
+//            LocalDate dateTo = (contractVariationVO.getEndingDate() != null) ? contractVariationVO.getEndingDate().toLocalDate() : null;
+//
+//            ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
+//                    .withId(contractVariationVO.getId())
+//                    .withContractNumber(contractVariationVO.getContractNumber())
+//                    .withStartDate(contractVariationVO.getStartDate())
+//                    .withExpectedEndDate(contractVariationVO.getExpectedEndDate())
+//                    .withEndingDate(contractVariationVO.getEndingDate())
+//                    .withContractJsonData(contractVariationVO.getContractJsonData())
+//                    .build();
+//
+//            contractNewVersionDTOList.add(contractNewVersionDTO);
+//        }
+
+        return contractNewVersionDTOList;
+    }
+
 
     public List<ContractDTO> findAllActiveContractsByClientId(Integer clientId) {
 
