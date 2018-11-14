@@ -2,11 +2,13 @@ package gmoldes.components.timerecord.components;
 
 import com.lowagie.text.DocumentException;
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.timerecord.dto.TimeRecordCandidateDataDTO;
@@ -207,24 +209,29 @@ public class TimeRecordData extends VBox {
         if(!contractNewVersionDTOList.isEmpty()) {
 //            Integer employeeId;
             for (ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList) {
-                Integer employeeId = contractNewVersionDTO.getContractJsonData().getWorkerId();
-                PersonDTO employee = retrievePersonByPersonId(employeeId);
-                String employeeNIF = Utilities.formatAsNIF(employee.getNifcif());
-                String employeeName = employee.getApellidos() + ", " +employee.getNom_rzsoc();
-                String dateTo = contractNewVersionDTO.getEndingDate() != null ? contractNewVersionDTO.getEndingDate().toString() : "";
-                String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
+                if(!contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours().equals("40:00")) {
+                    Integer employeeId = contractNewVersionDTO.getContractJsonData().getWorkerId();
+                    PersonDTO employee = retrievePersonByPersonId(employeeId);
+                    String employeeNIF = Utilities.formatAsNIF(employee.getNifcif());
+                    String employeeName = employee.getApellidos() + ", " + employee.getNom_rzsoc();
+                    String dateTo = contractNewVersionDTO.getEndingDate() != null ? contractNewVersionDTO.getEndingDate().toString() : "";
+                    String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
 
-                TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
-                        employeeName,
-                        employeeNIF,
-                        contractNewVersionDTO.getContractJsonData().getQuoteAccountCode(),
-                        contractNewVersionDTO.getContractJsonData().getFullPartialWorkDay(),
-                        contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours(),
-                        contractNewVersionDTO.getContractJsonData().getContractType().toString(),
-                        dateFrom,
-                        dateTo
-                );
-                candidates.add(dataCandidates);
+                    ContractTypeController contractTypeController = new ContractTypeController();
+                    ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
+
+                    TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
+                            employeeName,
+                            employeeNIF,
+                            contractNewVersionDTO.getContractJsonData().getQuoteAccountCode(),
+                            contractNewVersionDTO.getContractJsonData().getFullPartialWorkDay(),
+                            contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours(),
+                            contractTypeDTO.getDescripctto(),
+                            dateFrom,
+                            dateTo
+                    );
+                    candidates.add(dataCandidates);
+                }
             }
         }
 

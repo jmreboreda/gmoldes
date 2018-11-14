@@ -15,4 +15,10 @@ public class ContractTypeController {
 
         return manager.findAllContractTypes();
     }
+
+    public ContractTypeDTO findContractTypeById(Integer contractTypeId) {
+        ContractTypeManager manager = new ContractTypeManager();
+
+        return manager.findContractTypeById(contractTypeId);
+    }
 }

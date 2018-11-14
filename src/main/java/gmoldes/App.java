@@ -45,16 +45,16 @@ public class App extends Application {
 //            System.out.println(contractNewVersionDTO.toMyString());
 //        }
 
-        ContractManager manager = new ContractManager();
-        List<ContractNewVersionDTO> contractNewVersionList = manager.findAllContractNewVersionByClientIdInMonthOfDate(17, LocalDate.of(2016,7,1));
-
-        for(ContractNewVersionDTO dto : contractNewVersionList){
-            if(!dto.getContractJsonData().getWeeklyWorkHours().contains("40:00")
-            ||
-            dto.getContractJsonData().getContractType().equals(421)){
-                System.out.println("ContractNewVersionNumber: " + dto.getContractNumber() + " -> weeklyWorkHours: " + dto.getContractJsonData().getWeeklyWorkHours() + " -> ContractType: " + dto.getContractJsonData().getContractType());
-            }
-        }
+//        ContractManager manager = new ContractManager();
+//        List<ContractNewVersionDTO> contractNewVersionList = manager.findAllContractNewVersionByClientIdInMonthOfDate(17, LocalDate.of(2016,7,1));
+//
+//        for(ContractNewVersionDTO dto : contractNewVersionList){
+//            if(!dto.getContractJsonData().getWeeklyWorkHours().contains("40:00")
+//            ||
+//            dto.getContractJsonData().getContractType().equals(421)){
+//                System.out.println("ContractNewVersionNumber: " + dto.getContractNumber() + " -> weeklyWorkHours: " + dto.getContractJsonData().getWeeklyWorkHours() + " -> ContractType: " + dto.getContractJsonData().getContractType());
+//            }
+//        }
 
 //        Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
 //        String clipboardData = "";
