@@ -47,14 +47,13 @@ public class ClientDAO {
             return clientVO.getId();
     }
 
-//    public ClientVO findClientById(Integer id){
-//
-//        Query query = session.createQuery(FIND_PERSON_BY_ID);
-//        query.setParameter("code", id);
-//        ClientVO clientVO =  (ClientVO) query.getSingleResult();
-//
-//        return clientVO;
-//    }
+    public ClientVO findClientByClientId(Integer clientId){
+
+        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_CLIENT_BY_CLIENTID, ClientVO.class);
+        query.setParameter("clientId", clientId);
+
+        return (ClientVO) query.getSingleResult();
+    }
 //
 //    public List<ClientVO> findAllPersonInAlphabeticalOrder(){
 //

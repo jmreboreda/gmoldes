@@ -21,6 +21,10 @@ import java.util.Set;
         @NamedQuery(
                 name = ClientVO.FIND_CLIENT_BY_SAME_NAME,
                 query = "select p from ClientVO as p where p.nom_rzsoc = :nom_rzsoc"
+        ),
+        @NamedQuery(
+                name = ClientVO.FIND_CLIENT_BY_CLIENTID,
+                query = "select p from ClientVO as p where p.idcliente = :clientId"
         )
 })
 
@@ -29,6 +33,7 @@ public class ClientVO implements Serializable {
     public static final String FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER = "ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER";
     public static final String FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER = "ClientVO.FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER";
     public static final String FIND_CLIENT_BY_SAME_NAME = "ClientVO.FIND_CLIENT_BY_SAME_NAME";
+    public static final String FIND_CLIENT_BY_CLIENTID = "ClientVO.FIND_CLIENT_BY_CLIENTID";
 
 
     @Id

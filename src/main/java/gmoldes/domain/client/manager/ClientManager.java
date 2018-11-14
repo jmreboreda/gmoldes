@@ -1,13 +1,16 @@
 package gmoldes.domain.client.manager;
 
 
+import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.timerecord.dto.TimeRecordClientDTO;
 import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,12 +111,30 @@ public class ClientManager {
         return clientDTOList;
     }
 
+    public List<ClientDTO> findAllClientWithContractNewVersionInMonth(LocalDate date){
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+        ContractManager contractManager = new ContractManager();
+        contractDAO = ContractDAO.ContractDAOFactory.getInstance();
+        List<ContractNewVersionDTO> contractNewVersionDTOList = contractManager.findAllContractNewVersionInMonthOfDate(date);
+        for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
+            Integer clientId = contractNewVersionDTO.getContractJsonData().getClientGMId();
+            clientDAO = ClientDAO.ClientDAOFactory.getInstance();
+            ClientVO clientVO = clientDAO.findClientByClientId(clientId);
+            ClientDTO clientDTO = ClientDTO.create()
+                    .withClientId(contractNewVersionDTO.getContractJsonData().getClientGMId())
+                    .withPersonOrCompanyName(clientVO.getNom_rzsoc())
+                    .build();
+            clientDTOList.add(clientDTO);
+        }
+        return clientDTOList;
+    }
+
 
 
 //    public ClientDTO findPersonById(Integer id){
 //
 //        clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-//        ClientVO clientVO = clientDAO.findClientById(id);
+//        ClientVO clientVO = clientDAO.findClientByClientId(id);
 //
 //
 //        return ClientDTO.create()

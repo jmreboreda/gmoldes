@@ -22,6 +22,8 @@ public class TimeRecordController extends VBox {
 
     private Parent parent;
 
+    ContractManager contractManager = new ContractManager();
+
     @FXML
     private TimeRecordHeader timeRecordHeader;
     @FXML
@@ -35,14 +37,19 @@ public class TimeRecordController extends VBox {
 
     public List<ContractDTO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String yearMonth){
 
-        ContractManager contractManager = new ContractManager();
+//        ContractManager contractManager = new ContractManager();
 
         return contractManager.findAllContractsWithTimeRecordByClientIdInPeriod(clientId, yearMonth);
     }
 
     public List<ContractNewVersionDTO> findAllContractsNewVersionWithTimeRecordByClientIdInPeriod(Integer clientId, LocalDate date){
 
-        ContractManager contractManager = new ContractManager();
+//        ContractManager contractManager = new ContractManager();
+
+        return contractManager.findAllContractNewVersionByClientIdInMonthOfDate(clientId, date);
+    }
+
+    public List<ContractNewVersionDTO> findAllContractNewVersionByClientIdInMonthOfDate(Integer clientId, LocalDate date){
 
         return contractManager.findAllContractNewVersionByClientIdInMonthOfDate(clientId, date);
     }

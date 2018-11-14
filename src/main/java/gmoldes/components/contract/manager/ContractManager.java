@@ -215,6 +215,55 @@ public class ContractManager {
         return contractNewVersionDTOList;
     }
 
+    public List<ContractNewVersionDTO> findAllContractNewVersionInMonthOfDate(LocalDate date){
+
+        List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(date.getYear(), date.getMonthValue() , date.getDayOfMonth());
+        Integer firstDayOfMonth = calendar.getMinimum(Calendar.DAY_OF_MONTH);
+        Integer lastDayOfMonth = calendar.getMaximum(Calendar.DAY_OF_MONTH);
+
+        LocalDate initialDate = LocalDate.of(date.getYear(), date.getMonth(), firstDayOfMonth);
+        LocalDate finalDate = LocalDate.of(date.getYear(), date.getMonth(), lastDayOfMonth);
+
+        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInPeriod(initialDate, finalDate);
+        for (InitialContractVO initialContractVO : initialContractVOList) {
+            LocalDate notNullExpectedEndDate = initialContractVO.getExpectedEndDate() != null ? initialContractVO.getExpectedEndDate().toLocalDate() : null;
+            LocalDate notNUllEndingDate = (initialContractVO.getEndingDate() != null) ? initialContractVO.getEndingDate().toLocalDate() : null;
+                ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
+                        .withId(initialContractVO.getId())
+                        .withContractNumber(initialContractVO.getContractNumber())
+                        .withStartDate(initialContractVO.getStartDate().toLocalDate())
+                        .withExpectedEndDate(notNullExpectedEndDate)
+                        .withEndingDate(notNUllEndingDate)
+                        .withContractJsonData(initialContractVO.getContractJsonData())
+                        .build();
+
+                contractNewVersionDTOList.add(contractNewVersionDTO);
+        }
+
+        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationInPeriod(initialDate, finalDate);
+        for (ContractVariationVO contractVariationVO : contractVariationVOList) {
+            LocalDate notNullExpectedEndDate = contractVariationVO.getExpectedEndDate() != null ? contractVariationVO.getExpectedEndDate().toLocalDate(): null;
+            LocalDate notNullEndingDate = (contractVariationVO.getEndingDate() != null) ? contractVariationVO.getEndingDate().toLocalDate() : null;
+                ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
+                        .withId(contractVariationVO.getId())
+                        .withContractNumber(contractVariationVO.getContractNumber())
+                        .withStartDate(contractVariationVO.getStartDate().toLocalDate())
+                        .withExpectedEndDate(notNullExpectedEndDate)
+                        .withEndingDate(notNullEndingDate)
+                        .withContractJsonData(contractVariationVO.getContractJsonData())
+                        .build();
+
+                contractNewVersionDTOList.add(contractNewVersionDTO);
+        }
+
+        return contractNewVersionDTOList;
+    }
+
 
     public List<ContractDTO> findAllActiveContractsByClientId(Integer clientId) {
 
