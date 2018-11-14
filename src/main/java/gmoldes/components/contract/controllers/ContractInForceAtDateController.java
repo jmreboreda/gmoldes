@@ -21,9 +21,9 @@ public class ContractInForceAtDateController {
                 .withId(contractNewVersionDTO.getId())
                 .withContractNumber(contractNewVersionDTO.getContractNumber())
                 .withVariationType(contractNewVersionDTO.getVariationType())
-                .withStartDate(Date.valueOf(contractNewVersionDTO.getStartDate().toString()))
-                .withExpectedEndDate((Date.valueOf(contractNewVersionDTO.getExpectedEndDate().toString())))
-                .withEndingDate(Date.valueOf(contractNewVersionDTO.getEndingDate().toString()))
+                .withStartDate(contractNewVersionDTO.getStartDate())
+                .withExpectedEndDate((contractNewVersionDTO.getExpectedEndDate()))
+                .withEndingDate(contractNewVersionDTO.getEndingDate())
                 .withContractJsonData(contractNewVersionDTO.getContractJsonData())
                 .build();
         contractInForceDTOList.add(contractNewVersionInitialDTO);
@@ -34,9 +34,9 @@ public class ContractInForceAtDateController {
                     .withId(contractVariationDTO.getId())
                     .withContractNumber(contractVariationDTO.getContractNumber())
                     .withVariationType(contractVariationDTO.getVariationType())
-                    .withStartDate(Date.valueOf(contractVariationDTO.getStartDate().toString()))
-                    .withExpectedEndDate((Date.valueOf(contractVariationDTO.getExpectedEndDate().toString())))
-                    .withEndingDate(Date.valueOf(contractVariationDTO.getEndingDate().toString()))
+                    .withStartDate(contractVariationDTO.getStartDate())
+                    .withExpectedEndDate((contractVariationDTO.getExpectedEndDate()))
+                    .withEndingDate(contractVariationDTO.getEndingDate())
                     .withContractJsonData(contractVariationDTO.getContractJsonData())
                     .build();
             contractInForceDTOList.add(contractNewVersionVariationDTO);

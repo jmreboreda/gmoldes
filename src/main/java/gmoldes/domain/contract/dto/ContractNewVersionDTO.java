@@ -2,15 +2,16 @@ package gmoldes.domain.contract.dto;
 
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class ContractNewVersionDTO {
 
     private Integer id;
     private Integer contractNumber;
     private Integer variationType;
-    private Date startDate;
-    private Date expectedEndDate;
-    private Date endingDate;
+    private LocalDate startDate;
+    private LocalDate expectedEndDate;
+    private LocalDate endingDate;
     private ContractJsonData contractJsonData;
 
     public ContractNewVersionDTO() {
@@ -19,9 +20,9 @@ public class ContractNewVersionDTO {
     public ContractNewVersionDTO(Integer id,
                                  Integer contractNumber,
                                  Integer variationType,
-                                 Date startDate,
-                                 Date expectedEndDate,
-                                 Date endingDate,
+                                 LocalDate startDate,
+                                 LocalDate expectedEndDate,
+                                 LocalDate endingDate,
                                  ContractJsonData contractJsonData) {
         this.id = id;
         this.contractNumber = contractNumber;
@@ -56,27 +57,27 @@ public class ContractNewVersionDTO {
         this.variationType = variationType;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getExpectedEndDate() {
+    public LocalDate getExpectedEndDate() {
         return expectedEndDate;
     }
 
-    public void setExpectedEndDate(Date expectedEndDate) {
+    public void setExpectedEndDate(LocalDate expectedEndDate) {
         this.expectedEndDate = expectedEndDate;
     }
 
-    public Date getEndingDate() {
+    public LocalDate getEndingDate() {
         return endingDate;
     }
 
-    public void setEndingDate(Date endingDate) {
+    public void setEndingDate(LocalDate endingDate) {
         this.endingDate = endingDate;
     }
 
@@ -104,9 +105,9 @@ public class ContractNewVersionDTO {
         private Integer id;
         private Integer contractNumber;
         private Integer variationType;
-        private Date startDate;
-        private Date expectedEndDate;
-        private Date endingDate;
+        private LocalDate startDate;
+        private LocalDate expectedEndDate;
+        private LocalDate endingDate;
         private ContractJsonData contractJsonData;
 
         public ContractNewVersionDTOBuilder withId(Integer id) {
@@ -124,17 +125,17 @@ public class ContractNewVersionDTO {
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withStartDate(Date startDate) {
+        public ContractNewVersionDTOBuilder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withExpectedEndDate(Date expectedEndDate) {
+        public ContractNewVersionDTOBuilder withExpectedEndDate(LocalDate expectedEndDate) {
             this.expectedEndDate = expectedEndDate;
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withEndingDate(Date endingDate) {
+        public ContractNewVersionDTOBuilder withEndingDate(LocalDate endingDate) {
             this.endingDate = endingDate;
             return this;
         }

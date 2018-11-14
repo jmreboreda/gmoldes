@@ -12,9 +12,9 @@ public class MapperInitialContractDTOVO {
         InitialContractVO initialContractVO = new InitialContractVO();
         initialContractVO.setContractNumber(contractNewVersionDTO.getContractNumber());
         initialContractVO.setVariationType(contractNewVersionDTO.getVariationType());
-        initialContractVO.setStartDate(contractNewVersionDTO.getStartDate());
-        initialContractVO.setExpectedEndDate(contractNewVersionDTO.getExpectedEndDate());
-        LocalDate endingDate = contractNewVersionDTO.getEndingDate().toLocalDate();
+        initialContractVO.setStartDate(java.sql.Date.valueOf(contractNewVersionDTO.getStartDate()));
+        initialContractVO.setExpectedEndDate(java.sql.Date.valueOf(contractNewVersionDTO.getExpectedEndDate()));
+        LocalDate endingDate = contractNewVersionDTO.getEndingDate();
         initialContractVO.setEndingDate(Date.valueOf(endingDate));
         initialContractVO.setContractJsonData(contractNewVersionDTO.getContractJsonData());
 

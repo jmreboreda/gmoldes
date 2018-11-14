@@ -401,8 +401,8 @@ public class NewContractMainController extends VBox {
 
         ContractNewVersionDTO initialContractDTO = ContractNewVersionDTO.create()
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
-                .withStartDate(java.sql.Date.valueOf(contractData.getDateFrom()))
-                .withExpectedEndDate(java.sql.Date.valueOf(contractData.getDateTo()))
+                .withStartDate(contractData.getDateFrom())
+                .withExpectedEndDate(contractData.getDateTo())
                 .withEndingDate(null)
                 .withContractJsonData(contractJsonData)
                 .build();
