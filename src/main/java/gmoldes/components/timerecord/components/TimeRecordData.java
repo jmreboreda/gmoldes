@@ -199,31 +199,6 @@ public class TimeRecordData extends VBox {
         Integer idSelectedClient = clientForTimeRecord.getSelectionModel().getSelectedItem().getIdcliente();
         String yearMonth = retrievePeriodForTimeRecord();
         List<ContractDTO> contractDTOList = timeRecordController.findAllContractsWithTimeRecordByClientIdInPeriod(idSelectedClient, yearMonth);
-        LocalDate date = retrieveDateForNewContractVersionTimeRecord();
-//        List<ContractNewVersionDTO> contractNewVersionDTOList = timeRecordController.findAllContractsNewVersionWithTimeRecordByClientIdInPeriod(idSelectedClient, date);
-        List<ContractDTO> contractDTOList = new ArrayList<>();
-        for (ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
-//            LocalDate dateTo = contractNewVersionDTO.getEndingDate() == null ? null : contractNewVersionDTO.getEndingDate();
-            System.out.println(contractNewVersionDTO.getContractJsonData().getIdentificationContractNumberINEM());
-            ContractDTO candidate = ContractDTO.create()
-                    .withVariationType(contractNewVersionDTO.getVariationType())
-                    .withContractType(contractNewVersionDTO.getContractJsonData().getContractType().toString())
-                    .withClientGMId(contractNewVersionDTO.getContractJsonData().getClientGMId())
-                    .withId(contractNewVersionDTO.getId())
-                    .withContractNumber(contractNewVersionDTO.getContractNumber())
-                    .withDaysOfWeekToWork(new HashSet<DayOfWeek>())
-                    .withClientGMName("Patata")
-                    .withContractInForce(null)
-                    .withDateFrom(contractNewVersionDTO.getStartDate())
-                    .withDateTo(contractNewVersionDTO.getEndingDate())
-                    .withClientGMId(contractNewVersionDTO.getContractJsonData().getClientGMId())
-                    .withDaysOfWeekToWork(new HashSet<DayOfWeek>())
-                    .withFullPartialWorkday(contractNewVersionDTO.getContractJsonData().getFullPartialWorkDay())
-                    .build();
-
-            contractDTOList.add(candidate);
-        }
-
         List<TimeRecordCandidateDataDTO> candidates = loadCandidateDataForTimeRecord(contractDTOList);
         refreshCandidatesData(candidates);
     }
@@ -311,12 +286,5 @@ public class TimeRecordData extends VBox {
         numberMonthS = (numberMonthS.length() == 2) ? numberMonthS : "0" + numberMonthS;
 
         return (yearNumber.getText()).concat(numberMonthS);
-    }
-
-    private LocalDate retrieveDateForNewContractVersionTimeRecord(){
-        Integer timeRecordMonthNumber = (monthName.getSelectionModel().getSelectedIndex()) + 1;
-        Integer timeRecordYearNumber = Integer.parseInt(yearNumber.getText());
-
-        return LocalDate.of(timeRecordYearNumber, timeRecordMonthNumber, 1);
     }
 }

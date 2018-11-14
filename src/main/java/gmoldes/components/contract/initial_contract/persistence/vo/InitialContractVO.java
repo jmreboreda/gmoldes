@@ -10,7 +10,6 @@ import gmoldes.domain.contractjsondata.ContractJsonData;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;

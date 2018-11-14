@@ -46,13 +46,13 @@ public class App extends Application {
 //        }
 
         ContractManager manager = new ContractManager();
-        List<ContractNewVersionDTO> contractNewVersionList = manager.findAllContractNewVersionByClientIdInMonthOfDate(11, LocalDate.of(2018,10,1));
+        List<ContractNewVersionDTO> contractNewVersionList = manager.findAllContractNewVersionByClientIdInMonthOfDate(5, LocalDate.of(2018,10,1));
 
         for(ContractNewVersionDTO dto : contractNewVersionList){
             if(!dto.getContractJsonData().getWeeklyWorkHours().contains("40:00")
             ||
             dto.getContractJsonData().getContractType().equals(421)){
-                System.out.println("ContractNewVersionNumber: " + dto.getContractNumber() + " -> weeklyWorkHours: " + dto.getContractJsonData().getWeeklyWorkHours());
+                System.out.println("ContractNewVersionNumber: " + dto.getContractNumber() + " -> weeklyWorkHours: " + dto.getContractJsonData().getWeeklyWorkHours() + " -> ContractType: " + dto.getContractJsonData().getContractType());
             }
         }
 

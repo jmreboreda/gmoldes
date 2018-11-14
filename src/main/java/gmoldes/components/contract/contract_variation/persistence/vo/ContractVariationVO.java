@@ -16,15 +16,14 @@ import java.sql.Date;
 
 @NamedQueries(value = {
         @NamedQuery(
-                name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER,
-                query = "select p from ContractVariationVO p where p.contractNumber = :code order by p.contractNumber, p.startDate"
-        )
-        ,
-        @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_IN_PERIOD,
                 query = "select p from ContractVariationVO  p where startDate <= :codeFinalDate and (endingDate is null or endingDate >= :codeInitialDate) " +
                         "and (expectedEndDate is null or expectedEndDate >= :codeInitialDate) " +
                         "and variationType < 800 order by contractNumber, startDate"
+        ),
+        @NamedQuery(
+                name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER,
+                query = "select p from ContractVariationVO p where p.contractNumber = :code order by p.contractNumber, p.startDate"
         )
 })
 
