@@ -214,7 +214,7 @@ public class TimeRecordData extends VBox {
                     PersonDTO employee = retrievePersonByPersonId(employeeId);
                     String employeeNIF = Utilities.formatAsNIF(employee.getNifcif());
                     String employeeName = employee.getApellidos() + ", " + employee.getNom_rzsoc();
-                    String dateTo = contractNewVersionDTO.getEndingDate() != null ? contractNewVersionDTO.getEndingDate().toString() : "";
+                    String dateTo = contractNewVersionDTO.getExpectedEndDate() != null ? dateFormatter.format(contractNewVersionDTO.getExpectedEndDate()) : "";
                     String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
 
                     ContractTypeController contractTypeController = new ContractTypeController();
