@@ -117,14 +117,17 @@ public class ClientManager {
         contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractManager.findAllContractNewVersionInMonthOfDate(date);
         for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
-            Integer clientId = contractNewVersionDTO.getContractJsonData().getClientGMId();
-            clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-            ClientVO clientVO = clientDAO.findClientByClientId(clientId);
-            ClientDTO clientDTO = ClientDTO.create()
-                    .withClientId(contractNewVersionDTO.getContractJsonData().getClientGMId())
-                    .withPersonOrCompanyName(clientVO.getNom_rzsoc())
-                    .build();
-            clientDTOList.add(clientDTO);
+            if(!contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours().equals("40:00")) {
+                Integer clientId = contractNewVersionDTO.getContractJsonData().getClientGMId();
+                clientDAO = ClientDAO.ClientDAOFactory.getInstance();
+                ClientVO clientVO = clientDAO.findClientByClientId(clientId);
+                ClientDTO clientDTO = ClientDTO.create()
+                        .withClientId(contractNewVersionDTO.getContractJsonData().getClientGMId())
+                        .withPersonOrCompanyName(clientVO.getNom_rzsoc())
+                        .build();
+
+                clientDTOList.add(clientDTO);
+            }
         }
         return clientDTOList;
     }
