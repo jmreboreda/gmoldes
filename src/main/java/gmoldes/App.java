@@ -46,7 +46,7 @@ public class App extends Application {
 //        }
 
         ContractManager manager = new ContractManager();
-        List<ContractNewVersionDTO> contractNewVersionList = manager.findAllContractNewVersionByClientIdInMonthOfDate(5, LocalDate.of(2018,10,1));
+        List<ContractNewVersionDTO> contractNewVersionList = manager.findAllContractNewVersionByClientIdInMonthOfDate(17, LocalDate.of(2016,7,1));
 
         for(ContractNewVersionDTO dto : contractNewVersionList){
             if(!dto.getContractJsonData().getWeeklyWorkHours().contains("40:00")
