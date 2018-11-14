@@ -1,8 +1,8 @@
 package gmoldes.components.contract.controllers;
 
-import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.domain.contract.dto.InitialContractDTO;
+import gmoldes.domain.contract.dto.ContractDTO;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -16,12 +16,12 @@ public class ContractController {
         return contractManager.findAllContractsByClientIdInPeriod(clientId, referenceDate);
     }
 
-    public List<InitialContractDTO> findAllInitialContractSorted(){
+    public List<ContractNewVersionDTO> findAllInitialContractSorted(){
 
         return contractManager.findAllInitialContractSorted();
     }
 
-    public InitialContractDTO findInitialContractByContractNumber(Integer contractNumber){
+    public ContractNewVersionDTO findInitialContractByContractNumber(Integer contractNumber){
 
         return contractManager.findInitialContractByContractNumber(contractNumber);
     }

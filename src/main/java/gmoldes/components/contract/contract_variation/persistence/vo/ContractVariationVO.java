@@ -6,8 +6,7 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
-import gmoldes.domain.contractjsondata.ContractVariationJSONData;
+import gmoldes.domain.contractjsondata.ContractJsonData;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -17,15 +16,15 @@ import java.sql.Date;
 
 @NamedQueries(value = {
         @NamedQuery(
+                name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_IN_PERIOD,
+                query = "select p from ContractVariationVO  p where startDate <= :codeFinalDate and (endingDate is null or endingDate >= :codeInitialDate) " +
+                        "and (expectedEndDate is null or expectedEndDate >= :codeInitialDate) " +
+                        "and variationType < 800 order by contractNumber, startDate"
+        ),
+        @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER,
                 query = "select p from ContractVariationVO p where p.contractNumber = :code order by p.contractNumber, p.startDate"
         )
-//        ,
-//        @NamedQuery(
-//                name = InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER,
-//                query = "select p from InitialContractVO p where contractNumber = :code"
-//
-//        )
 })
 
 @Entity
@@ -42,6 +41,7 @@ import java.sql.Date;
 public class ContractVariationVO implements Serializable {
 
     public static final String FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER";
+    public static final String FIND_ALL_CONTRACT_VARIATION_IN_PERIOD = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_IN_PERIOD";
 
     @Id
     @SequenceGenerator(name = "contractvariation_id_seq", sequenceName = "contractvariation_id_seq", allocationSize = 1)
@@ -55,7 +55,7 @@ public class ContractVariationVO implements Serializable {
     private Date endingDate;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private ContractVariationJSONData contractVariationJSONData;
+    private ContractJsonData contractJsonData;
 
     public Integer getId() {
         return id;
@@ -105,11 +105,11 @@ public class ContractVariationVO implements Serializable {
         this.endingDate = endingDate;
     }
 
-    public ContractVariationJSONData getContractVariationJSONData() {
-        return contractVariationJSONData;
+    public ContractJsonData getContractJsonData() {
+        return contractJsonData;
     }
 
-    public void setContractVariationJSONData(ContractVariationJSONData contractVariationJSONData) {
-        this.contractVariationJSONData = contractVariationJSONData;
+    public void setContractVariationJSONData(ContractJsonData contractJsonData) {
+        this.contractJsonData = contractJsonData;
     }
 }

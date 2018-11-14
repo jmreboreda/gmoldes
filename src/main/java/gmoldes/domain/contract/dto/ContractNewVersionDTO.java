@@ -1,26 +1,36 @@
 package gmoldes.domain.contract.dto;
 
-import gmoldes.domain.contractjsondata.ContractNewVersionJSONData;
+import gmoldes.domain.contractjsondata.ContractJsonData;
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class ContractNewVersionDTO {
 
     private Integer id;
     private Integer contractNumber;
     private Integer variationType;
-    private Date startDate;
-    private Date expectedEndDate;
-    private Date endingDate;
-    private ContractNewVersionJSONData contractNewVersionJSONData;
+    private LocalDate startDate;
+    private LocalDate expectedEndDate;
+    private LocalDate endingDate;
+    private ContractJsonData contractJsonData;
 
-    public ContractNewVersionDTO(Integer id, Integer contractNumber, Integer variationType, Date startDate, Date expectedEndDate, Date endingDate, ContractNewVersionJSONData contractNewVersionJSONData) {
+    public ContractNewVersionDTO() {
+    }
+
+    public ContractNewVersionDTO(Integer id,
+                                 Integer contractNumber,
+                                 Integer variationType,
+                                 LocalDate startDate,
+                                 LocalDate expectedEndDate,
+                                 LocalDate endingDate,
+                                 ContractJsonData contractJsonData) {
         this.id = id;
         this.contractNumber = contractNumber;
         this.variationType = variationType;
         this.startDate = startDate;
         this.expectedEndDate = expectedEndDate;
         this.endingDate = endingDate;
-        this.contractNewVersionJSONData = contractNewVersionJSONData;
+        this.contractJsonData = contractJsonData;
     }
 
     public Integer getId() {
@@ -47,42 +57,42 @@ public class ContractNewVersionDTO {
         this.variationType = variationType;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getExpectedEndDate() {
+    public LocalDate getExpectedEndDate() {
         return expectedEndDate;
     }
 
-    public void setExpectedEndDate(Date expectedEndDate) {
+    public void setExpectedEndDate(LocalDate expectedEndDate) {
         this.expectedEndDate = expectedEndDate;
     }
 
-    public Date getEndingDate() {
+    public LocalDate getEndingDate() {
         return endingDate;
     }
 
-    public void setEndingDate(Date endingDate) {
+    public void setEndingDate(LocalDate endingDate) {
         this.endingDate = endingDate;
     }
 
-    public ContractNewVersionJSONData getContractNewVersionJSONData() {
-        return contractNewVersionJSONData;
+    public ContractJsonData getContractJsonData() {
+        return contractJsonData;
     }
 
-    public void setContractNewVersionJSONData(ContractNewVersionJSONData contractNewVersionJSONData) {
-        this.contractNewVersionJSONData = contractNewVersionJSONData;
+    public void setContractJsonData(ContractJsonData contractJsonData) {
+        this.contractJsonData = contractJsonData;
     }
 
     public String toMyString(){
 
-        return "------------------------" + "\n" +
-                "Contrato: "+ getContractNumber()+ "\n" +
+        return "------------------------------------" + "\n" +
+                "Contrato: "+ getContractNumber() + " - VariationType: " + getVariationType() + "\n" +
                 "Fecha inicio: " + getStartDate();
     }
 
@@ -95,10 +105,10 @@ public class ContractNewVersionDTO {
         private Integer id;
         private Integer contractNumber;
         private Integer variationType;
-        private Date startDate;
-        private Date expectedEndDate;
-        private Date endingDate;
-        private ContractNewVersionJSONData contractNewVersionJSONData;
+        private LocalDate startDate;
+        private LocalDate expectedEndDate;
+        private LocalDate endingDate;
+        private ContractJsonData contractJsonData;
 
         public ContractNewVersionDTOBuilder withId(Integer id) {
             this.id = id;
@@ -115,28 +125,28 @@ public class ContractNewVersionDTO {
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withStartDate(Date startDate) {
+        public ContractNewVersionDTOBuilder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withExpectedEndDate(Date expectedEndDate) {
+        public ContractNewVersionDTOBuilder withExpectedEndDate(LocalDate expectedEndDate) {
             this.expectedEndDate = expectedEndDate;
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withEndingDate(Date endingDate) {
+        public ContractNewVersionDTOBuilder withEndingDate(LocalDate endingDate) {
             this.endingDate = endingDate;
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withContractNewVersionJSONData(ContractNewVersionJSONData contractNewVersionJSONData) {
-            this.contractNewVersionJSONData = contractNewVersionJSONData;
+        public ContractNewVersionDTOBuilder withContractJsonData(ContractJsonData contractJsonData) {
+            this.contractJsonData = contractJsonData;
             return this;
         }
 
         public ContractNewVersionDTO build() {
-            return new ContractNewVersionDTO(this.id, this.contractNumber, this.variationType, this.startDate, this.expectedEndDate, this.endingDate, this.contractNewVersionJSONData);
+            return new ContractNewVersionDTO(this.id, this.contractNumber, this.variationType, this.startDate, this.expectedEndDate, this.endingDate, this.contractJsonData);
         }
     }
 

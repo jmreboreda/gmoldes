@@ -1,13 +1,14 @@
 package gmoldes.components.contract.initial_contract.persistence.dao;
 
-
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 public class InitialContractDAO {
@@ -67,5 +68,18 @@ public class InitialContractDAO {
         query.setParameter("code", contractNumber);
 
         return  query.getSingleResult();
+    }
+
+    public List<InitialContractVO> findAllInitialContractInPeriod(LocalDate initialDate, LocalDate finalDate){
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_PERIOD, InitialContractVO.class);
+
+        java.util.Date initialUtilDate = Date.from(initialDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.util.Date finallUtilDate = Date.from(finalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        query.setParameter("codeInitialDate", initialUtilDate);
+        query.setParameter("codeFinalDate", finallUtilDate);
+
+        return  query.getResultList();
+
     }
 }

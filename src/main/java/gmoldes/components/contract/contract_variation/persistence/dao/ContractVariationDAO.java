@@ -8,6 +8,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import javax.persistence.TypedQuery;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 public class ContractVariationDAO {
@@ -55,4 +58,18 @@ public class ContractVariationDAO {
         return  query.getResultList();
 
     }
+
+    public List<ContractVariationVO> findAllContractVariationInPeriod(LocalDate initialDate, LocalDate finalDate){
+        TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_IN_PERIOD, ContractVariationVO.class);
+
+        java.util.Date initialUtilDate = Date.from(initialDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.util.Date finallUtilDate = Date.from(finalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        query.setParameter("codeInitialDate", initialUtilDate);
+        query.setParameter("codeFinalDate", finallUtilDate);
+
+        return  query.getResultList();
+
+    }
+
 }

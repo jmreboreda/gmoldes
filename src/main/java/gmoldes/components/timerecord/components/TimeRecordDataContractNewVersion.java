@@ -2,19 +2,15 @@ package gmoldes.components.timerecord.components;
 
 import com.lowagie.text.DocumentException;
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.controllers.ContractTypeController;
+import gmoldes.components.contract.controllers.ContractController;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
-import gmoldes.components.timerecord.controllers.TimeRecordController;
+import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.client.controllers.ClientController;
-import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.ContractTypeDTO;
-import gmoldes.domain.contract.dto.ContractTypeNewDTO;
+import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.timerecord.dto.TimeRecordCandidateDataDTO;
 import gmoldes.domain.timerecord.dto.TimeRecordClientDTO;
-import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
@@ -40,7 +36,7 @@ import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TimeRecordData extends VBox {
+public class TimeRecordDataContractNewVersion extends VBox {
 
     private static final String TIME_RECORD_FXML = "/fxml/time_record/timerecord_data.fxml";
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
@@ -76,7 +72,7 @@ public class TimeRecordData extends VBox {
     @FXML
     private Button exitButton;
 
-    public TimeRecordData() {
+    public TimeRecordDataContractNewVersion() {
         this.parent = ViewLoader.load(this, TIME_RECORD_FXML);
     }
 
@@ -197,42 +193,40 @@ public class TimeRecordData extends VBox {
         if(clientForTimeRecord.getSelectionModel().getSelectedItem() == null){
             return;
         }
-        TimeRecordController timeRecordController = new TimeRecordController();
+        ContractController contractController = new ContractController();
         Integer idSelectedClient = clientForTimeRecord.getSelectionModel().getSelectedItem().getIdcliente();
-        LocalDate date = retrieveDateForTimeRecord();
-        List<ContractNewVersionDTO> contractNewVersionDTOList = timeRecordController.findAllContractNewVersionByClientIdInMonthOfDate(idSelectedClient, date);
-        List<TimeRecordCandidateDataDTO> candidates = loadCandidateDataForTimeRecord(contractNewVersionDTOList);
+        String yearMonth = retrievePeriodForTimeRecord();
+        List<ContractDTO> contractDTOList = contractController.findAllContractsWithTimeRecordByClientIdInPeriod(idSelectedClient, yearMonth);
+        List<TimeRecordCandidateDataDTO> candidates = loadCandidateDataForTimeRecord(contractDTOList);
         refreshCandidatesData(candidates);
     }
 
-    private List<TimeRecordCandidateDataDTO> loadCandidateDataForTimeRecord(List<ContractNewVersionDTO> contractNewVersionDTOList){
+    private List<TimeRecordCandidateDataDTO> loadCandidateDataForTimeRecord(List<ContractDTO> contractDTOList){
         List<TimeRecordCandidateDataDTO> candidates = new ArrayList<>();
-        if(!contractNewVersionDTOList.isEmpty()) {
-//            Integer employeeId;
-            for (ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList) {
-                if(!contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours().equals("40:00")) {
-                    Integer employeeId = contractNewVersionDTO.getContractJsonData().getWorkerId();
-                    PersonDTO employee = retrievePersonByPersonId(employeeId);
-                    String employeeNIF = Utilities.formatAsNIF(employee.getNifcif());
-                    String employeeName = employee.getApellidos() + ", " + employee.getNom_rzsoc();
-                    String dateTo = contractNewVersionDTO.getExpectedEndDate() != null ? dateFormatter.format(contractNewVersionDTO.getExpectedEndDate()) : "";
-                    String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
-
-                    ContractTypeController contractTypeController = new ContractTypeController();
-                    ContractTypeNewDTO contractTypeNewDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
-
-                    TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
-                            employeeName,
-                            employeeNIF,
-                            contractNewVersionDTO.getContractJsonData().getQuoteAccountCode(),
-                            contractNewVersionDTO.getContractJsonData().getFullPartialWorkDay(),
-                            contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours(),
-                            contractTypeNewDTO.getColloquial(),
-                            dateFrom,
-                            dateTo
-                    );
-                    candidates.add(dataCandidates);
+        if(!contractDTOList.isEmpty()) {
+            Integer employeeId;
+            String dateTo;
+            for (ContractDTO contractDTO : contractDTOList) {
+                employeeId = contractDTO.getWorkerId();
+                String employeeNIF = retrieveNifByPersonId(employeeId);
+                if(contractDTO.getDateTo() != null){
+                    dateTo = dateFormatter.format(contractDTO.getDateTo());
+                }else{
+                    dateTo = "";
                 }
+                String dateFrom = dateFormatter.format(contractDTO.getDateFrom());
+
+                TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
+                        contractDTO.getWorkerName(),
+                        employeeNIF,
+                        contractDTO.getQuoteAccountCode(),
+                        contractDTO.getFullPartialWorkDay(),
+                        contractDTO.getWeeklyWorkHours(),
+                        contractDTO.getContractType(),
+                        dateFrom,
+                        dateTo
+                );
+                candidates.add(dataCandidates);
             }
         }
 
@@ -242,18 +236,8 @@ public class TimeRecordData extends VBox {
     private void loadClientForTimeRecord(ActionEvent event) {
         dataByTimeRecord.getItems().clear();
         ClientController clientController = new ClientController();
-        LocalDate yearMonthDayDate = retrieveDateForTimeRecord();
-        List<ClientDTO> clientWithTimeRecordContract = clientController.findAllClientWithContractNewVersionInMonth(yearMonthDayDate);
-
-        List<TimeRecordClientDTO> activeClientList = new ArrayList<>();
-        for(ClientDTO clientDTO: clientWithTimeRecordContract){
-            TimeRecordClientDTO timeRecordClientDTO= TimeRecordClientDTO.create()
-                    .withIdcliente(clientDTO.getClientId())
-                    .withNom_rzsoc(clientDTO.getPersonOrCompanyName())
-                    .build();
-
-            activeClientList.add(timeRecordClientDTO);
-        }
+        String yearMonth = retrievePeriodForTimeRecord();
+        List<TimeRecordClientDTO> activeClientList = clientController.findAllClientWithContractWithTimeRecordInPeriodSorted(yearMonth);
 
         List<TimeRecordClientDTO> clientListWithActiveContractWithoutDuplicates = retrieveClientListWithActiveContractWithoutDuplicates(activeClientList);
 
@@ -286,17 +270,19 @@ public class TimeRecordData extends VBox {
                 .sorted(Comparator.comparing(TimeRecordClientDTO::getNom_rzsoc)).collect(Collectors.toList());
     }
 
-    private PersonDTO retrievePersonByPersonId(Integer employeeId){
+    private String retrieveNifByPersonId(Integer employeeId){
         PersonController personController = new PersonController();
         PersonDTO employee = personController.findPersonById(employeeId);
 
-        return employee;
+        return Utilities.formatAsNIF(employee.getNifcif());
     }
 
-    private LocalDate retrieveDateForTimeRecord(){
-        Integer numberOfMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
-        Integer numberOfYear = Integer.parseInt(yearNumber.getText());
+    private String retrievePeriodForTimeRecord(){
+        Integer numberMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
+        String numberMonthS = numberMonth.toString();
 
-        return LocalDate.of(numberOfYear, numberOfMonth, 1);
+        numberMonthS = (numberMonthS.length() == 2) ? numberMonthS : "0" + numberMonthS;
+
+        return (yearNumber.getText()).concat(numberMonthS);
     }
 }

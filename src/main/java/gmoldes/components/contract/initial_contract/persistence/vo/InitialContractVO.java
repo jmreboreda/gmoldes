@@ -1,21 +1,26 @@
 package gmoldes.components.contract.initial_contract.persistence.vo;
 
-import gmoldes.domain.contractjsondata.InitialContractJSONData;
 import com.vladmihalcea.hibernate.type.array.IntArrayType;
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import gmoldes.domain.contractjsondata.ContractJsonData;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 
 @NamedQueries(value = {
+        @NamedQuery(
+                name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_PERIOD,
+                query = "select p from InitialContractVO  p where startDate <= :codeFinalDate and (endingDate is null or endingDate >= :codeInitialDate) " +
+                        "and (expectedEndDate is null or expectedEndDate >= :codeInitialDate) " +
+                        "and variationType < 800 order by contractNumber, startDate"
+        ),
         @NamedQuery(
                 name = InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE,
                 query = "select p from InitialContractVO p order by p.contractNumber, p.startDate"
@@ -39,6 +44,7 @@ import java.sql.Date;
 
 public class InitialContractVO implements Serializable {
 
+    public static final String FIND_ALL_INITIAL_CONTRACT_IN_PERIOD = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_PERIOD";
     public static final String FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE = "InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE";
     public static final String FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER = "InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER";
 
@@ -54,7 +60,7 @@ public class InitialContractVO implements Serializable {
     private Date endingDate;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private InitialContractJSONData initialContractJSONData;
+    private ContractJsonData contractJsonData;
 
     public Integer getId() {
         return id;
@@ -104,11 +110,11 @@ public class InitialContractVO implements Serializable {
         this.endingDate = endingDate;
     }
 
-    public InitialContractJSONData getInitialContractJSONData() {
-        return initialContractJSONData;
+    public ContractJsonData getContractJsonData() {
+        return contractJsonData;
     }
 
-    public void setInitialContractJSONData(InitialContractJSONData initialContractJSONData) {
-        this.initialContractJSONData = initialContractJSONData;
+    public void setContractJsonData(ContractJsonData contractJsonData) {
+        this.contractJsonData = contractJsonData;
     }
 }

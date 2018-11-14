@@ -1,7 +1,7 @@
 package gmoldes;
 
 
-import gmoldes.components.contract.controllers.ContractInForceAtDateController;
+import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.check.dto.IDCControlDTO;
@@ -37,14 +37,24 @@ public class App extends Application {
             ctJson.oldContractToJsonGenerator();
         }
 
-        ContractInForceAtDateController contractInForceAtDateController = new ContractInForceAtDateController();
-        Integer contractNumber = 30;
-        LocalDate date = LocalDate.now();
-        List<ContractNewVersionDTO> contractInForce = contractInForceAtDateController.findAllContractNewVersionByContractNumber(contractNumber);
-        for(ContractNewVersionDTO contractNewVersionDTO : contractInForce){
-            System.out.println(contractNewVersionDTO.toMyString());
+//        ContractInForceAtDateController contractInForceAtDateController = new ContractInForceAtDateController();
+//        Integer contractNumber = 30;
+//        LocalDate date = LocalDate.now();
+//        List<ContractNewVersionDTO> contractInForce = contractInForceAtDateController.findAllContractNewVersionByContractNumber(contractNumber);
+//        for(ContractNewVersionDTO contractNewVersionDTO : contractInForce){
+//            System.out.println(contractNewVersionDTO.toMyString());
+//        }
 
-        }
+//        ContractManager manager = new ContractManager();
+//        List<ContractNewVersionDTO> contractNewVersionList = manager.findAllContractNewVersionByClientIdInMonthOfDate(17, LocalDate.of(2016,7,1));
+//
+//        for(ContractNewVersionDTO dto : contractNewVersionList){
+//            if(!dto.getContractJsonData().getWeeklyWorkHours().contains("40:00")
+//            ||
+//            dto.getContractJsonData().getContractType().equals(421)){
+//                System.out.println("ContractNewVersionNumber: " + dto.getContractNumber() + " -> weeklyWorkHours: " + dto.getContractJsonData().getWeeklyWorkHours() + " -> ContractType: " + dto.getContractJsonData().getContractType());
+//            }
+//        }
 
 //        Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
 //        String clipboardData = "";

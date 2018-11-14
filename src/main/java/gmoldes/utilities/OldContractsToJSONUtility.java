@@ -2,12 +2,12 @@ package gmoldes.utilities;
 
 import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
-import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
+import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.domain.contractjsondata.ContractVariationJSONData;
-import gmoldes.domain.contractjsondata.InitialContractJSONData;
+import gmoldes.domain.contractjsondata.ContractJsonData;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class OldContractsToJSONUtility {
         for (ContractDTO contractDTO : contractDTOList) {
             if(contractDTO.getVariationNumber().equals(INITIAL_CONTRACT_VARIATION_CODE) ||
             contractDTO.getVariationType().equals(CONTRACT_SUBROGATION_CODE)){
-                InitialContractJSONData initialContractJSONData = InitialContractJSONData.create()
+                ContractJsonData contractJsonData = ContractJsonData.create()
                         .withClientGMId(contractDTO.getClientGMId())
                         .withWorkerId(contractDTO.getWorkerId())
                         .withQuoteAccountCode(contractDTO.getQuoteAccountCode())
@@ -37,7 +37,7 @@ public class OldContractsToJSONUtility {
                         .withContractType(mapContractTypeStringToInteger(contractDTO.getContractType()))
                         .withWeeklyWorkHours(contractDTO.getWeeklyWorkHours())
                         .withDaysOfWeekToWork(contractDTO.getDaysOfWeekToWork().toString())
-                        .withFullPartialWorkday(contractDTO.getFullPartialWorkday())
+                        .withFullPartialWorkDay(contractDTO.getFullPartialWorkDay())
                         .withIdentificationContractNumberINEM(contractDTO.getIdentificationContractNumberINEM())
                         .withNotesForContractManager(contractDTO.getNotesForManager())
                         .withPrivateNotes(contractDTO.getPrivateNotes())
@@ -60,7 +60,7 @@ public class OldContractsToJSONUtility {
                 initialContractVO.setExpectedEndDate(myExpectedEndDate);
                 Date myEndingDate = isContractInForce ? null : myExpectedEndDate;
                 initialContractVO.setEndingDate(myEndingDate);
-                initialContractVO.setInitialContractJSONData(initialContractJSONData);
+                initialContractVO.setContractJsonData(contractJsonData);
 
                 Integer id = initialContractDAO.create(initialContractVO);
                 isContractInForce = false;
@@ -79,14 +79,14 @@ public class OldContractsToJSONUtility {
                 Date endingDate = contractDTO.getDateTo() == null ? null : Date.valueOf(contractDTO.getDateTo());
                 Date expectedEndDate = contractDTO.getDateTo() == null ? null : Date.valueOf(contractDTO.getDateTo());
 
-                ContractVariationJSONData contractVariationJSONData = ContractVariationJSONData.create()
+                ContractJsonData contractJsonData = ContractJsonData.create()
                         .withClientGMId(contractDTO.getClientGMId())
                         .withWorkerId(contractDTO.getWorkerId())
                         .withQuoteAccountCode(contractDTO.getQuoteAccountCode())
                         .withLaborCategory(contractDTO.getLaborCategory())
                         .withWeeklyWorkHours(contractDTO.getWeeklyWorkHours())
                         .withDaysOfWeekToWork(contractDTO.getDaysOfWeekToWork().toString())
-                        .withFullPartialWorkday(contractDTO.getFullPartialWorkday())
+                        .withFullPartialWorkDay(contractDTO.getFullPartialWorkDay())
                         .withContractType(mapContractTypeStringToInteger(contractDTO.getContractType()))
                         .withIdentificationContractNumberINEM(contractDTO.getIdentificationContractNumberINEM())
                         .withNotesForContractManager(contractDTO.getNotesForManager())
@@ -101,7 +101,7 @@ public class OldContractsToJSONUtility {
                 contractVariationVO.setStartDate(Date.valueOf(contractDTO.getDateFrom()));
                 contractVariationVO.setExpectedEndDate(expectedEndDate);
                 contractVariationVO.setEndingDate(endingDate);
-                contractVariationVO.setContractVariationJSONData(contractVariationJSONData);
+                contractVariationVO.setContractVariationJSONData(contractJsonData);
 
                 Integer id = contractVariationDAO.create(contractVariationVO);
 

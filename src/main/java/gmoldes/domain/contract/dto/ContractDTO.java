@@ -25,7 +25,7 @@ public class ContractDTO {
     private String laborCategory;
     private String weeklyWorkHours;
     private Set<DayOfWeek> daysOfWeekToWork;
-    private String fullPartialWorkday;
+    private String fullPartialWorkDay;
     private String contractType;
     private LocalDate dateFrom;
     private LocalDate dateTo;
@@ -50,7 +50,7 @@ public class ContractDTO {
                        String laborCategory,
                        String weeklyWorkHours,
                        Set<DayOfWeek> daysOfWeekToWork,
-                       String fullPartialWorkday,
+                       String fullPartialWorkDay,
                        String contractType,
                        LocalDate dateFrom,
                        LocalDate dateTo,
@@ -75,7 +75,7 @@ public class ContractDTO {
         this.laborCategory = laborCategory;
         this.weeklyWorkHours = weeklyWorkHours;
         this.daysOfWeekToWork = daysOfWeekToWork;
-        this.fullPartialWorkday = fullPartialWorkday;
+        this.fullPartialWorkDay = fullPartialWorkDay;
         this.contractType = contractType;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
@@ -185,12 +185,12 @@ public class ContractDTO {
         this.daysOfWeekToWork = daysOfWeekToWork;
     }
 
-    public String getFullPartialWorkday() {
-        return fullPartialWorkday;
+    public String getFullPartialWorkDay() {
+        return fullPartialWorkDay;
     }
 
-    public void setFullPartialWorkday(String fullPartialWorkday) {
-        this.fullPartialWorkday = fullPartialWorkday;
+    public void setFullPartialWorkDay(String fullPartialWorkDay) {
+        this.fullPartialWorkDay = fullPartialWorkDay;
     }
 
     public String getContractType() {
@@ -308,7 +308,7 @@ public class ContractDTO {
         private String laborCategory;
         private String weeklyWorkHours;
         private Set<DayOfWeek> daysOfWeekToWork;
-        private String fullPartialWorkday;
+        private String fullPartialWorkDay;
         private String contractType;
         private LocalDate dateFrom;
         private LocalDate dateTo;
@@ -381,8 +381,8 @@ public class ContractDTO {
             return this;
         }
 
-        public ContractDTOBuilder withFullPartialWorkday(String fullPartialWorkday) {
-            this.fullPartialWorkday = fullPartialWorkday;
+        public ContractDTOBuilder withFullPartialWorkday(String fullPartialWorkDay) {
+            this.fullPartialWorkDay = fullPartialWorkDay;
             return this;
         }
 
@@ -443,7 +443,7 @@ public class ContractDTO {
 
         public ContractDTO build() {
             return new ContractDTO(this.id, this.contractNumber, this.variationNumber, this.variationType, this.clientGMId, this.clientGMName,
-            this.quoteAccountCode, this.workerId, this.workerName, this.laborCategory, this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkday,
+            this.quoteAccountCode, this.workerId, this.workerName, this.laborCategory, this.weeklyWorkHours, this.daysOfWeekToWork, this.fullPartialWorkDay,
             this.contractType, this.dateFrom, this.dateTo, this.identificationContractNumberINEM, this.contractInForce, this.notesForManager, this.privateNotes,
             this.indefiniteOrTemporalContract, this.surrogateContract, this.quoteDataReportIDC, this.endOfContractNotice);
         }

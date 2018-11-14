@@ -10,7 +10,7 @@ import java.util.Set;
 public class MapperContractVariationVODTO {
 
     public Set<DayOfWeek> mapDaysOfWeekToWorkVODTO(ContractVariationVO contractVariationVO) {
-        String daysOfWork = contractVariationVO.getContractVariationJSONData().getDaysOfWeekToWork();
+        String daysOfWork = contractVariationVO.getContractJsonData().getDaysOfWeekToWork();
 
         Set<DayOfWeek> daysOfWeekSet = new HashSet<>();
 

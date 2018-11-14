@@ -17,9 +17,10 @@ import gmoldes.domain.client.controllers.ClientCCCController;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.contract.dto.InitialContractDTO;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.OldContractToSaveDTO;
 import gmoldes.domain.contract.dto.ProvisionalContractDataDTO;
+import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.dto.StudyDTO;
@@ -42,6 +43,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import javax.mail.internet.AddressException;
 import java.awt.print.PrinterException;
 import java.io.IOException;
@@ -383,22 +385,26 @@ public class NewContractMainController extends VBox {
 
         String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 
-        InitialContractDTO initialContractDTO = InitialContractDTO.create()
+        ContractJsonData contractJsonData = ContractJsonData.create()
+                .withIdentificationContractNumberINEM(null)
+                .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork().toString())
+                .withWeeklyWorkHours(contractData.getHoursWorkWeek())
+                .withNotesForContractManager(contractPublicNotes.getPublicNotes())
+                .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
+                .withLaborCategory(contractData.getLaborCategory())
+                .withContractType(mapContractTypeStringToInteger(contractData.getContractType().getDescripctto()))
+                .withFullPartialWorkDay(contractData.getFullPartialWorkDay())
+                .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
+                .withQuoteAccountCode(quoteAccountCode)
+                .withClientGMId(contractParts.getSelectedEmployer().getId())
+                .build();
+
+        ContractNewVersionDTO initialContractDTO = ContractNewVersionDTO.create()
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
                 .withStartDate(contractData.getDateFrom())
                 .withExpectedEndDate(contractData.getDateTo())
                 .withEndingDate(null)
-                .withIdentificationContractNumberINEM(null)
-                .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork())
-                .withWeeklyWorkHours(contractData.getHoursWorkWeek())
-                .withNotesForManager(contractPublicNotes.getPublicNotes())
-                .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
-                .withLaborCategory(contractData.getLaborCategory())
-                .withContractType(mapContractTypeStringToInteger(contractData.getContractType().getDescripctto()))
-                .withFullPartialWorkday(contractData.getFullPartialWorkDay())
-                .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
-                .withQuoteAccountCode(quoteAccountCode)
-                .withClientGMId(contractParts.getSelectedEmployer().getId())
+                .withContractJsonData(contractJsonData)
                 .build();
 
         ContractManager contractManager = new ContractManager();
