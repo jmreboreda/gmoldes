@@ -9,6 +9,7 @@ import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.ContractTypeDTO;
+import gmoldes.domain.contract.dto.ContractTypeNewDTO;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.timerecord.dto.TimeRecordCandidateDataDTO;
@@ -218,7 +219,7 @@ public class TimeRecordData extends VBox {
                     String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
 
                     ContractTypeController contractTypeController = new ContractTypeController();
-                    ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
+                    ContractTypeNewDTO contractTypeNewDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
 
                     TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
                             employeeName,
@@ -226,7 +227,7 @@ public class TimeRecordData extends VBox {
                             contractNewVersionDTO.getContractJsonData().getQuoteAccountCode(),
                             contractNewVersionDTO.getContractJsonData().getFullPartialWorkDay(),
                             contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours(),
-                            contractTypeDTO.getDescripctto(),
+                            contractTypeNewDTO.getColloquial(),
                             dateFrom,
                             dateTo
                     );

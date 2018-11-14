@@ -5,6 +5,7 @@ import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeNewVO
 import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractTypeDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO;
+import gmoldes.domain.contract.dto.ContractTypeNewDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +31,16 @@ public class ContractTypeManager {
         return contractTypeDTOList;
     }
 
-    public ContractTypeDTO findContractTypeById(Integer contractTypeId){
+    public ContractTypeNewDTO findContractTypeById(Integer contractTypeId){
         ContractTypeNewDAO contractTypeNewDAO = ContractTypeNewDAO.ContractTypeDAOFactory.getInstance();
         ContractTypeNewVO contractTypeNewVO = contractTypeNewDAO.findContractTypeById(contractTypeId);
 
-        return new ContractTypeDTO(contractTypeNewVO.getId(), contractTypeNewVO.getContractcode(), contractTypeNewVO.getColloquial());
+        return new ContractTypeNewDTO(contractTypeNewVO.getId(),
+                contractTypeNewVO.getContractcode(),
+                contractTypeNewVO.getContractdescription(),
+                contractTypeNewVO.getColloquial(),
+                contractTypeNewVO.getIsinitialcontract(),
+                contractTypeNewVO.getIspartialtime(),
+                contractTypeNewVO.getIsfulltime());
     }
 }
