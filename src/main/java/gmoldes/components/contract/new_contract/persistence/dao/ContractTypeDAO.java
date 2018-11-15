@@ -1,13 +1,9 @@
 package gmoldes.components.contract.new_contract.persistence.dao;
 
 
-import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
-import javax.persistence.Query;
-import java.util.List;
 
 public class ContractTypeDAO {
 
@@ -33,10 +29,10 @@ public class ContractTypeDAO {
         this.session = session;
     }
 
-    public List<ContractTypeVO> findAllContractTypes(){
-
-        Query query = session.createNamedQuery(ContractTypeVO.FIND_ALL_CONTRACT_TYPES, ContractTypeVO.class);
-
-        return (List<ContractTypeVO>) query.getResultList();
-    }
+//    public List<ContractTypeVO> findAllContractTypes(){
+//
+//        Query query = session.createNamedQuery(ContractTypeVO.FIND_ALL_CONTRACT_TYPES, ContractTypeVO.class);
+//
+//        return (List<ContractTypeVO>) query.getResultList();
+//    }
 }
