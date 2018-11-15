@@ -1,7 +1,6 @@
 package gmoldes.components.contract.new_contract.persistence.dao;
 
 
-import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeNewVO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
@@ -34,19 +33,19 @@ public class ContractTypeNewDAO {
         this.session = session;
     }
 
-    public List<ContractTypeNewVO> findAllContractTypes(){
+    public List<ContractTypeVO> findAllContractTypes(){
 
-        Query query = session.createNamedQuery(ContractTypeNewVO.FIND_ALL_CONTRACT_TYPES, ContractTypeNewVO.class);
+        Query query = session.createNamedQuery(ContractTypeVO.FIND_ALL_CONTRACT_TYPES, ContractTypeVO.class);
 
-        return (List<ContractTypeNewVO>) query.getResultList();
+        return (List<ContractTypeVO>) query.getResultList();
     }
 
-    public ContractTypeNewVO findContractTypeById(Integer contractTypeId){
+    public ContractTypeVO findContractTypeById(Integer contractTypeId){
 
-        Query query = session.createNamedQuery(ContractTypeNewVO.FIND_CONTRACT_TYPE_BY_ID, ContractTypeNewVO.class);
+        Query query = session.createNamedQuery(ContractTypeVO.FIND_CONTRACT_TYPE_BY_ID, ContractTypeVO.class);
         query.setParameter("contractTypeId", contractTypeId);
 
-        return (ContractTypeNewVO) query.getSingleResult();
+        return (ContractTypeVO) query.getSingleResult();
     }
 
 

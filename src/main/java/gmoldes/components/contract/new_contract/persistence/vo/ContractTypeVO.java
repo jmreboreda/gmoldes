@@ -4,30 +4,37 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "tiposcontratos")
+@Table(name = "contracttype")
 @NamedQueries(value = {
         @NamedQuery(
                 name = ContractTypeVO.FIND_ALL_CONTRACT_TYPES,
-                query = "select p from ContractTypeVO p order by descripctto"
+                query = "select p from ContractTypeVO p where ismenuselectable = true and isinitialcontract = true order by contractdescription"
+        ),
+        @NamedQuery(
+                name = ContractTypeVO.FIND_CONTRACT_TYPE_BY_ID,
+                query = "select p from ContractTypeVO p where p.contractcode = :contractTypeId"
         )
 })
 
 public class ContractTypeVO implements Serializable{
 
     public static final String FIND_ALL_CONTRACT_TYPES = "ContractTypeVO.FIND_ALL_CONTRACT_TYPES";
+    public static final String FIND_CONTRACT_TYPE_BY_ID = "ContractTypeVO.FIND_CONTRACT_TYPE_BY_ID";
+
 
     @Id
-    @SequenceGenerator(name = "tiposcontratos_id_seq", sequenceName = "tiposcontratos_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tiposcontratos_id_seq")
+    @SequenceGenerator(name = "contracttype_id_seq", sequenceName = "contracttype_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contracttype_id_seq")
     @Column(name = "id", updatable = false)
     private Integer id;
-    private Integer idtipocontrato;
-    private String descripctto;
-    private Integer idsepe;
-    private String nombresepe;
-    private String duracionsepe;
-    private String jornadasepe;
-
+    private Integer contractcode;
+    private String contractdescription;
+    private String colloquial;
+    private Boolean isinitialcontract;
+    private Boolean istemporal;
+    private Boolean ispartialtime;
+    private Boolean isfulltime;
+    private Boolean ismenuselectable;
 
     public ContractTypeVO() {
     }
@@ -40,51 +47,67 @@ public class ContractTypeVO implements Serializable{
         this.id = id;
     }
 
-    public Integer getIdtipocontrato() {
-        return idtipocontrato;
+    public Integer getContractcode() {
+        return contractcode;
     }
 
-    public void setIdtipocontrato(Integer idtipocontrato) {
-        this.idtipocontrato = idtipocontrato;
+    public void setContractcode(Integer contractcode) {
+        this.contractcode = contractcode;
     }
 
-    public String getDescripctto() {
-        return descripctto;
+    public String getContractdescription() {
+        return contractdescription;
     }
 
-    public void setDescripctto(String descripctto) {
-        this.descripctto = descripctto;
+    public void setContractdescription(String contractdescription) {
+        this.contractdescription = contractdescription;
     }
 
-    public Integer getIdsepe() {
-        return idsepe;
+    public String getColloquial() {
+        return colloquial;
     }
 
-    public void setIdsepe(Integer idsepe) {
-        this.idsepe = idsepe;
+    public void setColloquial(String colloquial) {
+        this.colloquial = colloquial;
     }
 
-    public String getNombresepe() {
-        return nombresepe;
+    public Boolean getIsinitialcontract() {
+        return isinitialcontract;
     }
 
-    public void setNombresepe(String nombresepe) {
-        this.nombresepe = nombresepe;
+    public void setIsinitialcontract(Boolean isinitialcontract) {
+        this.isinitialcontract = isinitialcontract;
     }
 
-    public String getDuracionsepe() {
-        return duracionsepe;
+    public Boolean getIsTemporal() {
+        return istemporal;
     }
 
-    public void setDuracionsepe(String duracionsepe) {
-        this.duracionsepe = duracionsepe;
+    public void setIsTemporal(Boolean isTemporal) {
+        istemporal = isTemporal;
     }
 
-    public String getJornadasepe() {
-        return jornadasepe;
+    public Boolean getIspartialtime() {
+        return ispartialtime;
     }
 
-    public void setJornadasepe(String jornadasepe) {
-        this.jornadasepe = jornadasepe;
+    public void setIspartialtime(Boolean ispartialtime) {
+        this.ispartialtime = ispartialtime;
+    }
+
+    public Boolean getIsfulltime() {
+        return isfulltime;
+    }
+
+    public void setIsfulltime(Boolean isfulltime) {
+        this.isfulltime = isfulltime;
+    }
+
+    public Boolean getIsMenuSelectable() {
+        return ismenuselectable;
+    }
+
+    public void setIsMenuSelectable(Boolean ismenuselectable) {
+        this.ismenuselectable = ismenuselectable;
     }
 }
