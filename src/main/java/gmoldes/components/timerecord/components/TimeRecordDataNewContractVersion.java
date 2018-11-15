@@ -208,7 +208,6 @@ public class TimeRecordDataNewContractVersion extends VBox {
     private List<TimeRecordCandidateDataDTO> loadCandidateDataForTimeRecord(List<ContractNewVersionDTO> contractNewVersionDTOList){
         List<TimeRecordCandidateDataDTO> candidates = new ArrayList<>();
         if(!contractNewVersionDTOList.isEmpty()) {
-//            Integer employeeId;
             for (ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList) {
                 if(!contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours().equals("40:00")) {
                     Integer employeeId = contractNewVersionDTO.getContractJsonData().getWorkerId();
@@ -264,7 +263,11 @@ public class TimeRecordDataNewContractVersion extends VBox {
 
     private void refreshCandidatesData(List<TimeRecordCandidateDataDTO> candidates){
 
-        ObservableList<TimeRecordCandidateDataDTO> candidateObList = FXCollections.observableArrayList(candidates);
+        List<TimeRecordCandidateDataDTO> sortedCandidatesByName = candidates
+                .stream()
+                .sorted(Comparator.comparing(TimeRecordCandidateDataDTO::getEmployeeFullName)).collect(Collectors.toList());
+
+        ObservableList<TimeRecordCandidateDataDTO> candidateObList = FXCollections.observableArrayList(sortedCandidatesByName);
         dataByTimeRecord.setItems(candidateObList);
     }
 
