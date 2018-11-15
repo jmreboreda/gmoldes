@@ -18,7 +18,7 @@ public class ContractTypeNewDAO {
     public ContractTypeNewDAO() {
     }
 
-     public static class ContractTypeDAOFactory {
+     public static class ContractTypeNewDAOFactory {
 
         private static ContractTypeNewDAO contractTypeNewDAO;
 

@@ -15,24 +15,35 @@ public class ContractTypeManager {
     public ContractTypeManager() {
     }
 
-    public List<ContractTypeDTO> findAllContractTypes(){
-        ContractTypeDAO contractTypeDAO = ContractTypeDAO.ContractTypeDAOFactory.getInstance();
-        List<ContractTypeVO> contractTypeVOList = contractTypeDAO.findAllContractTypes();
+    public List<ContractTypeNewDTO> findAllContractTypes(){
+//        ContractTypeDAO contractTypeDAO = ContractTypeDAO.ContractTypeDAOFactory.getInstance();
+//        List<ContractTypeVO> contractTypeVOList = contractTypeDAO.findAllContractTypes();
+//
+        ContractTypeNewDAO contractTypeNewDAO = ContractTypeNewDAO.ContractTypeNewDAOFactory.getInstance();
+        List<ContractTypeNewVO> contractTypeNewVOList = contractTypeNewDAO.findAllContractTypes();
 
-        List<ContractTypeDTO> contractTypeDTOList = new ArrayList<>();
-        for(ContractTypeVO contractTypeVO : contractTypeVOList){
-            ContractTypeDTO contractTypeDTO = new ContractTypeDTO(
-                    contractTypeVO.getId(),
-                    contractTypeVO.getIdtipocontrato(),
-                    contractTypeVO.getDescripctto());
-            contractTypeDTOList.add(contractTypeDTO);
+        List<ContractTypeNewDTO> contractTypeNewDTOList = new ArrayList<>();
+        for(ContractTypeNewVO contractTypeNewVO : contractTypeNewVOList){
+            ContractTypeNewDTO contractTypeNewDTO = new ContractTypeNewDTO(
+                    contractTypeNewVO.getId(),
+                    contractTypeNewVO.getContractcode(),
+                    contractTypeNewVO.getContractdescription(),
+                    contractTypeNewVO.getColloquial(),
+                    contractTypeNewVO.getIsinitialcontract(),
+                    contractTypeNewVO.getIsTemporal(),
+                    contractTypeNewVO.getIspartialtime(),
+                    contractTypeNewVO.getIsfulltime(),
+                    contractTypeNewVO.getIsMenuSelectable()
+            );
+
+            contractTypeNewDTOList.add(contractTypeNewDTO);
         }
 
-        return contractTypeDTOList;
+        return contractTypeNewDTOList;
     }
 
     public ContractTypeNewDTO findContractTypeById(Integer contractTypeId){
-        ContractTypeNewDAO contractTypeNewDAO = ContractTypeNewDAO.ContractTypeDAOFactory.getInstance();
+        ContractTypeNewDAO contractTypeNewDAO = ContractTypeNewDAO.ContractTypeNewDAOFactory.getInstance();
         ContractTypeNewVO contractTypeNewVO = contractTypeNewDAO.findContractTypeById(contractTypeId);
 
         return new ContractTypeNewDTO(contractTypeNewVO.getId(),
@@ -40,7 +51,9 @@ public class ContractTypeManager {
                 contractTypeNewVO.getContractdescription(),
                 contractTypeNewVO.getColloquial(),
                 contractTypeNewVO.getIsinitialcontract(),
+                contractTypeNewVO.getIsTemporal(),
                 contractTypeNewVO.getIspartialtime(),
-                contractTypeNewVO.getIsfulltime());
+                contractTypeNewVO.getIsfulltime(),
+                contractTypeNewVO.getIsMenuSelectable());
     }
 }
