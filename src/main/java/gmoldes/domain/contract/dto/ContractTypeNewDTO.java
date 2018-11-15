@@ -88,7 +88,7 @@ public class ContractTypeNewDTO {
         this.ispartialtime = ispartialtime;
     }
 
-    public Boolean getIsfulltime() {
+    public Boolean getIsFullWorkDay() {
         return isfulltime;
     }
 

@@ -66,7 +66,6 @@ public class ContractData extends AnchorPane {
     }
 
     private void init(){
-//        contractType.setStyle("-fx-font: Normal 8pt \"Arial\"");
         dateNotification.setOnAction(this::onDateNotification);
         this.hourNotification.setInputMinWidth(75D);
         loadContractType();
@@ -172,6 +171,28 @@ public class ContractData extends AnchorPane {
         }
     }
 
+    public Boolean isUndefinedContract(){
+        if(this.contractDuration.radioButtonUndefinedIsSelected()) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public Boolean isTemporalContract(){
+        if(this.contractDuration.radioButtonTemporalIsSelected()) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public ContractDurationInput getContractDurationInput(){
+        return this.contractDuration;
+    }
+
     public String getContractDurationDays(){
         return this.contractDuration.getDuration();
     }
@@ -182,6 +203,28 @@ public class ContractData extends AnchorPane {
         }
 
         return ContractConstants.PARTIAL_WORKDAY;
+    }
+
+    public WorkDayTypeInput getWorkDayType(){
+        return this.workDayType;
+    }
+
+    public Boolean isFullWorkDay(){
+        if(this.workDayType.radioButtonFullWorkDayIsSelected()){
+            return true;
+        }
+        else{
+        }
+        return false;
+    }
+
+    public Boolean isPartialWorkDay(){
+        if(this.workDayType.radioButtonFullWorkDayIsSelected()){
+            return false;
+            }
+            else{
+        }
+            return true;
     }
 
     public LocalDate getDateFrom(){
