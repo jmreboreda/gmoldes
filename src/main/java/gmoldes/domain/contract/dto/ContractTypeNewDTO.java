@@ -7,23 +7,29 @@ public class ContractTypeNewDTO {
     private String contractdescription;
     private String colloquial;
     private Boolean isinitialcontract;
+    private Boolean istemporal;
     private Boolean ispartialtime;
     private Boolean isfulltime;
+    private Boolean ismenuselectable;
 
     public ContractTypeNewDTO(Integer id,
                               Integer contractcode,
                               String contractdescription,
                               String colloquial,
                               Boolean isinitialcontract,
+                              Boolean istemporal,
                               Boolean ispartialtime,
-                              Boolean isfulltime) {
+                              Boolean isfulltime,
+                              Boolean ismenuselectable) {
         this.id = id;
         this.contractcode = contractcode;
         this.contractdescription = contractdescription;
         this.colloquial = colloquial;
         this.isinitialcontract = isinitialcontract;
+        this.istemporal = istemporal;
         this.ispartialtime = ispartialtime;
         this.isfulltime = isfulltime;
+        this.ismenuselectable = ismenuselectable;
     }
 
     public Integer getId() {
@@ -66,6 +72,14 @@ public class ContractTypeNewDTO {
         this.isinitialcontract = isinitialcontract;
     }
 
+    public Boolean getIstemporal() {
+        return istemporal;
+    }
+
+    public void setIstemporal(Boolean istemporal) {
+        this.istemporal = istemporal;
+    }
+
     public Boolean getIspartialtime() {
         return ispartialtime;
     }
@@ -74,11 +88,23 @@ public class ContractTypeNewDTO {
         this.ispartialtime = ispartialtime;
     }
 
-    public Boolean getIsfulltime() {
+    public Boolean getIsFullWorkDay() {
         return isfulltime;
     }
 
     public void setIsfulltime(Boolean isfulltime) {
         this.isfulltime = isfulltime;
+    }
+
+    public Boolean getIsmenuselectable() {
+        return ismenuselectable;
+    }
+
+    public void setIsmenuselectable(Boolean ismenuselectable) {
+        this.ismenuselectable = ismenuselectable;
+    }
+
+    public String toString(){
+        return  getColloquial() + " [ " + getContractdescription() + " ] ";
     }
 }

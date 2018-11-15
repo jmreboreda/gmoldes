@@ -15,4 +15,6 @@ public class ContractVerifierConstants {
     public static final String QUESTION_SAVE_NEW_CONTRACT = "El contrato no tiene errores ni datos pendientes.\n¿Desea guardar el contrato en la base de datos?";
     public static final String INVALID_CONTRACT_DURATION = "El número de días de duración del contrato es erróneo.";
     public static final String CONTRACT_TYPE_NOT_SELECTED = "No se ha seleccionado el tipo de contrato.";
+    public static final String DURATION_CONTRACT_SELECTED_DOES_NOT_MATCH = "Hay discrepancia entre los datos seleccionados de duración del contrato.";
+    public static final String WORKDAY_TYPE_SELECTED_DOES_NOT_MATCH = "Hay discrepancia entre los datos seleccionados de duración de la jornada de trabajo.";
 }

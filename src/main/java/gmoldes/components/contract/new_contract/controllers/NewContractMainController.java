@@ -359,7 +359,7 @@ public class NewContractMainController extends VBox {
                 .withWeeklyWorkHours(contractData.getHoursWorkWeek())
                 .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork())
                 .withFullPartialWorkday(contractData.getFullPartialWorkDay())
-                .withContractType(contractData.getContractType().getDescripctto())
+                .withContractType(contractData.getContractType().getColloquial())
                 .withDateFrom(contractData.getDateFrom())
                 .withDateTo(contractData.getDateTo())
                 .withContractInForce(contractData.isContractInForceAtDate(LocalDate.now()))
@@ -392,7 +392,7 @@ public class NewContractMainController extends VBox {
                 .withNotesForContractManager(contractPublicNotes.getPublicNotes())
                 .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
                 .withLaborCategory(contractData.getLaborCategory())
-                .withContractType(mapContractTypeStringToInteger(contractData.getContractType().getDescripctto()))
+                .withContractType(mapContractTypeStringToInteger(contractData.getContractType().getContractdescription()))
                 .withFullPartialWorkDay(contractData.getFullPartialWorkDay())
                 .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
                 .withQuoteAccountCode(quoteAccountCode)
@@ -451,7 +451,7 @@ public class NewContractMainController extends VBox {
         StudyDTO studyDTO = studyManager.findStudyById(studyId);
         String employeeMaximumStudyLevel = studyDTO.getStudyDescription();
 
-        String contractTypeDescription = this.contractData.getContractType().getDescripctto();
+        String contractTypeDescription = this.contractData.getContractType().getColloquial();
         if(this.contractData.getUndefinedTemporalContract().equals(ContractConstants.UNDEFINED_DURATION_TEXT)){
             contractTypeDescription = contractTypeDescription + ", " + ContractConstants.UNDEFINED_DURATION_TEXT;
         }else{
@@ -516,7 +516,7 @@ public class NewContractMainController extends VBox {
         StudyDTO studyDTO = studyManager.findStudyById(studyId);
         String employeeMaximumStudyLevel = studyDTO.getStudyDescription();
 
-        String contractTypeDescription = this.contractData.getContractType().getDescripctto();
+        String contractTypeDescription = this.contractData.getContractType().getColloquial();
         if(this.contractData.getUndefinedTemporalContract().equals(ContractConstants.UNDEFINED_DURATION_TEXT)){
             contractTypeDescription = contractTypeDescription + ", " + ContractConstants.UNDEFINED_DURATION_TEXT;
         }else{

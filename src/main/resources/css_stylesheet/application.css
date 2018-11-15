@@ -42,6 +42,10 @@
     -fx-font-weight: bold;
 }
 
+#contractType .label{
+          -fx-font-size: 10pt;
+}
+
 /*
     -fx-base: rgb(255, 255, 204);
     -fx-background: rgb(224, 224, 224);

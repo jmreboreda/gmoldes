@@ -8,7 +8,7 @@ import java.io.Serializable;
 @NamedQueries(value = {
         @NamedQuery(
                 name = ContractTypeNewVO.FIND_ALL_CONTRACT_TYPES,
-                query = "select p from ContractTypeNewVO p order by contractdescription"
+                query = "select p from ContractTypeNewVO p where ismenuselectable = true and isinitialcontract = true order by contractdescription"
         ),
         @NamedQuery(
                 name = ContractTypeNewVO.FIND_CONTRACT_TYPE_BY_ID,
@@ -31,8 +31,10 @@ public class ContractTypeNewVO implements Serializable{
     private String contractdescription;
     private String colloquial;
     private Boolean isinitialcontract;
+    private Boolean istemporal;
     private Boolean ispartialtime;
     private Boolean isfulltime;
+    private Boolean ismenuselectable;
 
     public ContractTypeNewVO() {
     }
@@ -77,6 +79,14 @@ public class ContractTypeNewVO implements Serializable{
         this.isinitialcontract = isinitialcontract;
     }
 
+    public Boolean getIsTemporal() {
+        return istemporal;
+    }
+
+    public void setIsTemporal(Boolean isTemporal) {
+        istemporal = isTemporal;
+    }
+
     public Boolean getIspartialtime() {
         return ispartialtime;
     }
@@ -91,5 +101,13 @@ public class ContractTypeNewVO implements Serializable{
 
     public void setIsfulltime(Boolean isfulltime) {
         this.isfulltime = isfulltime;
+    }
+
+    public Boolean getIsMenuSelectable() {
+        return ismenuselectable;
+    }
+
+    public void setIsMenuSelectable(Boolean ismenuselectable) {
+        this.ismenuselectable = ismenuselectable;
     }
 }
