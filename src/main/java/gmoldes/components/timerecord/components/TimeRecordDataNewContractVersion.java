@@ -8,7 +8,6 @@ import gmoldes.components.timerecord.controllers.TimeRecordController;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.contract.dto.ContractTypeNewDTO;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
@@ -40,7 +39,7 @@ import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TimeRecordData extends VBox {
+public class TimeRecordDataNewContractVersion extends VBox {
 
     private static final String TIME_RECORD_FXML = "/fxml/time_record/timerecord_data.fxml";
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
@@ -76,7 +75,7 @@ public class TimeRecordData extends VBox {
     @FXML
     private Button exitButton;
 
-    public TimeRecordData() {
+    public TimeRecordDataNewContractVersion() {
         this.parent = ViewLoader.load(this, TIME_RECORD_FXML);
     }
 
@@ -197,9 +196,10 @@ public class TimeRecordData extends VBox {
         if(clientForTimeRecord.getSelectionModel().getSelectedItem() == null){
             return;
         }
+
         TimeRecordController timeRecordController = new TimeRecordController();
         Integer idSelectedClient = clientForTimeRecord.getSelectionModel().getSelectedItem().getIdcliente();
-        LocalDate date = retrieveDateForTimeRecord();
+        LocalDate date = retrieveDateForTimeRecordFromSelector();
         List<ContractNewVersionDTO> contractNewVersionDTOList = timeRecordController.findAllContractNewVersionByClientIdInMonthOfDate(idSelectedClient, date);
         List<TimeRecordCandidateDataDTO> candidates = loadCandidateDataForTimeRecord(contractNewVersionDTOList);
         refreshCandidatesData(candidates);
@@ -208,7 +208,6 @@ public class TimeRecordData extends VBox {
     private List<TimeRecordCandidateDataDTO> loadCandidateDataForTimeRecord(List<ContractNewVersionDTO> contractNewVersionDTOList){
         List<TimeRecordCandidateDataDTO> candidates = new ArrayList<>();
         if(!contractNewVersionDTOList.isEmpty()) {
-//            Integer employeeId;
             for (ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList) {
                 if(!contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours().equals("40:00")) {
                     Integer employeeId = contractNewVersionDTO.getContractJsonData().getWorkerId();
@@ -242,7 +241,8 @@ public class TimeRecordData extends VBox {
     private void loadClientForTimeRecord(ActionEvent event) {
         dataByTimeRecord.getItems().clear();
         ClientController clientController = new ClientController();
-        LocalDate yearMonthDayDate = retrieveDateForTimeRecord();
+        LocalDate yearMonthDayDate = retrieveDateForTimeRecordFromSelector();
+
         List<ClientDTO> clientWithTimeRecordContract = clientController.findAllClientWithContractNewVersionInMonth(yearMonthDayDate);
 
         List<TimeRecordClientDTO> activeClientList = new ArrayList<>();
@@ -263,7 +263,11 @@ public class TimeRecordData extends VBox {
 
     private void refreshCandidatesData(List<TimeRecordCandidateDataDTO> candidates){
 
-        ObservableList<TimeRecordCandidateDataDTO> candidateObList = FXCollections.observableArrayList(candidates);
+        List<TimeRecordCandidateDataDTO> sortedCandidatesByName = candidates
+                .stream()
+                .sorted(Comparator.comparing(TimeRecordCandidateDataDTO::getEmployeeFullName)).collect(Collectors.toList());
+
+        ObservableList<TimeRecordCandidateDataDTO> candidateObList = FXCollections.observableArrayList(sortedCandidatesByName);
         dataByTimeRecord.setItems(candidateObList);
     }
 
@@ -293,10 +297,22 @@ public class TimeRecordData extends VBox {
         return employee;
     }
 
-    private LocalDate retrieveDateForTimeRecord(){
-        Integer numberOfMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
-        Integer numberOfYear = Integer.parseInt(yearNumber.getText());
+    private LocalDate retrieveDateForTimeRecordFromSelector(){
 
-        return LocalDate.of(numberOfYear, numberOfMonth, 1);
+        Integer numberOfMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
+        Integer numberOfYear = null;
+
+        try {
+
+            numberOfYear = Integer.parseInt(yearNumber.getText());
+
+        } catch (NumberFormatException excepcion) {
+
+            yearNumber.setText(String.valueOf(LocalDate.now().getYear()));
+            clientForTimeRecord.getSelectionModel().clearSelection();
+            return LocalDate.now();
+        }
+
+        return  LocalDate.of(numberOfYear, numberOfMonth, 15);
     }
 }

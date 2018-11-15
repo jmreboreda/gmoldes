@@ -3,21 +3,22 @@ package gmoldes.components.contract.manager;
 
 import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
+import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
+import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDTOVO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
-import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
-import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
-import gmoldes.domain.contract.dto.*;
+import gmoldes.domain.contract.dto.ContractDTO;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.contract.dto.ContractVariationDTO;
+import gmoldes.domain.contract.dto.OldContractToSaveDTO;
 import gmoldes.domain.contract.mapper.MapperContractVODTO;
 import gmoldes.domain.contract.mapper.MapperContractVariationVODTO;
 import gmoldes.domain.contract.mapper.MapperInitialContractDTOVO;
 import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
-
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 import java.util.*;
 
 public class ContractManager {
@@ -86,93 +87,40 @@ public class ContractManager {
         return contractDTOList;
     }
 
-    public List<ContractDTO> findAllContractsByClientIdInPeriod(Integer clientId, Date referenceDate){
-
-        List<ContractDTO> contractDTOList = new ArrayList<>();
-
-        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        List<ContractVO> contractVOList = contractDAO.findAllContractsByClientIdInPeriod(clientId, referenceDate);
-        for (ContractVO contractVO : contractVOList) {
-            LocalDate dateTo = (contractVO.getF_hasta() != null) ? contractVO.getF_hasta().toLocalDate() : null;
-
-            ContractDTO contractDTO = ContractDTO.create()
-                    .withLaborCategory(contractVO.getCategoria())
-                    .withClientGMName(contractVO.getClientegm_name())
-                    .withQuoteAccountCode(contractVO.getContrato_ccc())
-                    .withIndefiniteOrTemporalContract(contractVO.getDuracion())
-                    .withContractInForce(contractVO.getEnvigor())
-                    .withDateFrom(contractVO.getF_desde().toLocalDate())
-                    .withDateTo(dateTo)
-                    .withId(contractVO.getId())
-                    .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())
-                    .withClientGMId(contractVO.getIdcliente_gm())
-                    .withWorkerId(contractVO.getIdtrabajador())
-                    .withFullPartialWorkday(contractVO.getJor_tipo())
-                    .withWeeklyWorkHours(contractVO.getJor_trab())
-                    .withNotesForManager(contractVO.getNotas_gestor())
-                    .withPrivateNotes(contractVO.getNotas_privadas())
-                    .withContractNumber(contractVO.getNumcontrato())
-                    .withVariationNumber(contractVO.getNumvariacion())
-                    .withSurrogateContract(contractVO.getSubrogacion())
-                    .withContractType(contractVO.getTipoctto())
-                    .withVariationType(contractVO.getTipovariacion())
-                    .withWorkerName(contractVO.getTrabajador_name())
-                    .build();
-
-            contractDTOList.add(contractDTO);
-        }
-        return contractDTOList;
-    }
-
-    public List<ContractDTO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String yearMonth){
-
-        List<ContractDTO> contractDTOList = new ArrayList<>();
-
-        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        List<ContractVO> contractVOList = contractDAO.findAllContractsWithTimeRecordByClientIdInPeriod(clientId, yearMonth);
-        for (ContractVO contractVO : contractVOList) {
-            LocalDate dateTo = (contractVO.getF_hasta() != null) ? contractVO.getF_hasta().toLocalDate() : null;
-
-            ContractDTO contractDTO = ContractDTO.create()
-                    .withLaborCategory(contractVO.getCategoria())
-                    .withClientGMName(contractVO.getClientegm_name())
-                    .withQuoteAccountCode(contractVO.getContrato_ccc())
-                    .withIndefiniteOrTemporalContract(contractVO.getDuracion())
-                    .withContractInForce(contractVO.getEnvigor())
-                    .withDateFrom(contractVO.getF_desde().toLocalDate())
-                    .withDateTo(dateTo)
-                    .withId(contractVO.getId())
-                    .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())
-                    .withClientGMId(contractVO.getIdcliente_gm())
-                    .withWorkerId(contractVO.getIdtrabajador())
-                    .withFullPartialWorkday(contractVO.getJor_tipo())
-                    .withWeeklyWorkHours(contractVO.getJor_trab())
-                    .withNotesForManager(contractVO.getNotas_gestor())
-                    .withPrivateNotes(contractVO.getNotas_privadas())
-                    .withContractNumber(contractVO.getNumcontrato())
-                    .withVariationNumber(contractVO.getNumvariacion())
-                    .withSurrogateContract(contractVO.getSubrogacion())
-                    .withContractType(contractVO.getTipoctto())
-                    .withVariationType(contractVO.getTipovariacion())
-                    .withWorkerName(contractVO.getTrabajador_name())
-                    .build();
-
-            contractDTOList.add(contractDTO);
-        }
-        return contractDTOList;
-    }
-
-    public List<ContractNewVersionDTO> findAllContractNewVersionByClientIdInMonthOfDate(Integer clientId, LocalDate date){
+    public List<ContractNewVersionDTO> findAllContractNewVersionByClientIdInMonthOfDate(Integer clientId, LocalDate dateReceived){
 
         List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(date.getYear(), date.getMonthValue() , date.getDayOfMonth());
-        Integer firstDayOfMonth = calendar.getMinimum(Calendar.DAY_OF_MONTH);
-        Integer lastDayOfMonth = calendar.getMaximum(Calendar.DAY_OF_MONTH);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(Date.from(dateReceived.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+//
+//        Integer firstDayOfMonth = calendar.getMinimum(Calendar.DAY_OF_MONTH);
+//        Integer lastDayOfMonth = calendar.getMaximum(Calendar.DAY_OF_MONTH);
+//
+//
+//        System.out.println("Desde ByClient: \n" +
+//                "---------------------------------------------------\n" +
+//                "calendar.getTime(): " + calendar.getTime() + "\n" +
+//                "dateReceived: " + dateReceived + "\n" +
+//                "firstDayOfMonth: " + firstDayOfMonth + " :: lastDayOfMonth: " + lastDayOfMonth + "\n");
+//
+//
+//        Integer monthReceived = dateReceived.getMonthValue();
+//        Integer yearReceived = dateReceived.getYear();
+//
+//        LocalDate initialDate = LocalDate.of(yearReceived, monthReceived, firstDayOfMonth);
+//        LocalDate finalDate = LocalDate.of(yearReceived, monthReceived, lastDayOfMonth);
 
-        LocalDate initialDate = LocalDate.of(date.getYear(), date.getMonth(), firstDayOfMonth);
-        LocalDate finalDate = LocalDate.of(date.getYear(), date.getMonth(), lastDayOfMonth);
+        Integer yearReceived = dateReceived.getYear();
+        Integer monthReceived = dateReceived.getMonth().getValue();
+        Integer dayReceived = dateReceived.getDayOfMonth();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(yearReceived, monthReceived - 1, dayReceived);
+
+        Integer firstDayOfMonth = calendar.getMinimum(Calendar.DAY_OF_MONTH);
+        LocalDate initialDate = LocalDate.of(yearReceived, monthReceived, firstDayOfMonth);
+        LocalDate finalDate =  LocalDate.of(yearReceived, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInPeriod(initialDate, finalDate);
@@ -215,17 +163,20 @@ public class ContractManager {
         return contractNewVersionDTOList;
     }
 
-    public List<ContractNewVersionDTO> findAllContractNewVersionInMonthOfDate(LocalDate date){
+    public List<ContractNewVersionDTO> findAllContractNewVersionInMonthOfDate(LocalDate dateReceived){
 
         List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(date.getYear(), date.getMonthValue() , date.getDayOfMonth());
-        Integer firstDayOfMonth = calendar.getMinimum(Calendar.DAY_OF_MONTH);
-        Integer lastDayOfMonth = calendar.getMaximum(Calendar.DAY_OF_MONTH);
+        Integer yearReceived = dateReceived.getYear();
+        Integer monthReceived = dateReceived.getMonth().getValue();
+        Integer dayReceived = dateReceived.getDayOfMonth();
 
-        LocalDate initialDate = LocalDate.of(date.getYear(), date.getMonth(), firstDayOfMonth);
-        LocalDate finalDate = LocalDate.of(date.getYear(), date.getMonth(), lastDayOfMonth);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(yearReceived, monthReceived - 1, dayReceived);
+
+        Integer firstDayOfMonth = calendar.getMinimum(Calendar.DAY_OF_MONTH);
+        LocalDate initialDate = LocalDate.of(yearReceived, monthReceived, firstDayOfMonth);
+        LocalDate finalDate =  LocalDate.of(yearReceived, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInPeriod(initialDate, finalDate);
@@ -262,45 +213,6 @@ public class ContractManager {
         }
 
         return contractNewVersionDTOList;
-    }
-
-
-    public List<ContractDTO> findAllActiveContractsByClientId(Integer clientId) {
-
-        List<ContractDTO> contractDTOList = new ArrayList<>();
-
-        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        List<ContractVO> contractVOList = contractDAO.findAllActiveContractsByClientId(clientId);
-        for (ContractVO contractVO : contractVOList) {
-            LocalDate dateTo = (contractVO.getF_hasta() != null) ? contractVO.getF_hasta().toLocalDate() : null;
-
-            ContractDTO contractDTO = ContractDTO.create()
-                    .withLaborCategory(contractVO.getCategoria())
-                    .withClientGMName(contractVO.getClientegm_name())
-                    .withQuoteAccountCode(contractVO.getContrato_ccc())
-                    .withIndefiniteOrTemporalContract(contractVO.getDuracion())
-                    .withContractInForce(contractVO.getEnvigor())
-                    .withDateFrom(contractVO.getF_desde().toLocalDate())
-                    .withDateTo(dateTo)
-                    .withId(contractVO.getId())
-                    .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())
-                    .withClientGMId(contractVO.getIdcliente_gm())
-                    .withWorkerId(contractVO.getIdtrabajador())
-                    .withFullPartialWorkday(contractVO.getJor_tipo())
-                    .withWeeklyWorkHours(contractVO.getJor_trab())
-                    .withNotesForManager(contractVO.getNotas_gestor())
-                    .withPrivateNotes(contractVO.getNotas_privadas())
-                    .withContractNumber(contractVO.getNumcontrato())
-                    .withVariationNumber(contractVO.getNumvariacion())
-                    .withSurrogateContract(contractVO.getSubrogacion())
-                    .withContractType(contractVO.getTipoctto())
-                    .withVariationType(contractVO.getTipovariacion())
-                    .withWorkerName(contractVO.getTrabajador_name())
-                    .build();
-
-            contractDTOList.add(contractDTO);
-        }
-        return contractDTOList;
     }
 
     public int establishContractInForce(){
@@ -349,16 +261,12 @@ public class ContractManager {
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractSorted();
         for (InitialContractVO initialContractVO : initialContractVOList) {
-//            LocalDate expectedEndDate = initialContractVO.getExpectedEndDate() == null ? null : initialContractVO.getExpectedEndDate().toLocalDate();
-//            LocalDate endingDate = initialContractVO.getEndingDate() == null ? null : initialContractVO.getEndingDate().toLocalDate();
-
             ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                     .withContractNumber(initialContractVO.getContractNumber())
                     .withVariationType(initialContractVO.getVariationType())
                     .withStartDate(initialContractVO.getStartDate().toLocalDate())
                     .withExpectedEndDate(initialContractVO.getExpectedEndDate().toLocalDate())
                     .withEndingDate(initialContractVO.getEndingDate().toLocalDate())
-
                     .build();
 
             initialContractDTOList.add(contractNewVersionDTO);

@@ -11,7 +11,7 @@ public class ContractTypeController {
     public ContractTypeController() {
     }
 
-    public List<ContractTypeDTO> findAllContractTypes() {
+    public List<ContractTypeNewDTO> findAllContractTypes() {
         ContractTypeManager manager = new ContractTypeManager();
 
         return manager.findAllContractTypes();
