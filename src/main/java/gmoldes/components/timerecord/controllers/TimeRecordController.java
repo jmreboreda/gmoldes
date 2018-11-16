@@ -2,7 +2,7 @@ package gmoldes.components.timerecord.controllers;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.components.timerecord.components.TimeRecordDataNewContractVersion;
+import gmoldes.components.timerecord.components.TimeRecordData;
 import gmoldes.components.timerecord.components.TimeRecordHeader;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import javafx.fxml.FXML;
@@ -25,7 +25,7 @@ public class TimeRecordController extends VBox {
     @FXML
     private TimeRecordHeader timeRecordHeader;
     @FXML
-    private TimeRecordDataNewContractVersion timeRecord;
+    private TimeRecordData timeRecord;
 
 
     public TimeRecordController() {

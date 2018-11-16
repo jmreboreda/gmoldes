@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import gmoldes.components.timerecord.components.TimeRecordDataNewContractVersion?>
+<?import gmoldes.components.timerecord.components.TimeRecordData?>
 <?import gmoldes.components.timerecord.components.TimeRecordHeader?>
 <?import javafx.scene.layout.VBox?>
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
       <TimeRecordHeader fx:id="timeRecordHeader"/>
-      <TimeRecordDataNewContractVersion fx:id="timeRecord"/>
+      <TimeRecordData fx:id="timeRecord"/>
 </fx:root>

@@ -39,7 +39,7 @@ import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TimeRecordDataNewContractVersion extends VBox {
+public class TimeRecordData extends VBox {
 
     private static final String TIME_RECORD_FXML = "/fxml/time_record/timerecord_data.fxml";
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
@@ -75,7 +75,7 @@ public class TimeRecordDataNewContractVersion extends VBox {
     @FXML
     private Button exitButton;
 
-    public TimeRecordDataNewContractVersion() {
+    public TimeRecordData() {
         this.parent = ViewLoader.load(this, TIME_RECORD_FXML);
     }
 
@@ -310,7 +310,7 @@ public class TimeRecordDataNewContractVersion extends VBox {
 
             yearNumber.setText(String.valueOf(LocalDate.now().getYear()));
             clientForTimeRecord.getSelectionModel().clearSelection();
-            return LocalDate.of(LocalDate.now().getYear(), numberOfMonth, 1);
+            return LocalDate.of(LocalDate.now().getYear(), numberOfMonth, 15);
         }
 
         return  LocalDate.of(numberOfYear, numberOfMonth, 15);

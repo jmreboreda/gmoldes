@@ -21,6 +21,7 @@ public class ContractVariationDTO {
     private Integer clientGMId;
     private LocalDate startDate;
     private LocalDate expectedEndDate;
+    private LocalDate modificationDate;
     private LocalDate endingDate;
     private ContractJsonData contractJsonData;
 
@@ -32,6 +33,7 @@ public class ContractVariationDTO {
                                 Integer variationType,
                                 LocalDate startDate,
                                 LocalDate expectedEndDate,
+                                LocalDate modificationDate,
                                 LocalDate endingDate,
                                 ContractJsonData contractJsonData){
 
@@ -41,6 +43,7 @@ public class ContractVariationDTO {
         this.clientGMId = clientGMId;
         this.startDate = startDate;
         this.expectedEndDate = expectedEndDate;
+        this.modificationDate = modificationDate;
         this.endingDate = endingDate;
         this.contractJsonData = contractJsonData;
 
@@ -94,6 +97,14 @@ public class ContractVariationDTO {
         this.expectedEndDate = expectedEndDate;
     }
 
+    public LocalDate getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(LocalDate modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
     public LocalDate getEndingDate() {
         return endingDate;
     }
@@ -137,6 +148,7 @@ public class ContractVariationDTO {
         private Integer variationType;
         private LocalDate startDate;
         private LocalDate expectedEndDate;
+        private LocalDate modificationDate;
         private LocalDate endingDate;
         private ContractJsonData contractJsonData;
 
@@ -165,6 +177,11 @@ public class ContractVariationDTO {
             return this;
         }
 
+        public ContractVariationDTOBuilder withModificationDate(LocalDate modificationDate) {
+            this.modificationDate = modificationDate;
+            return this;
+        }
+
         public ContractVariationDTOBuilder withEndingDate(LocalDate endingDate) {
             this.endingDate = endingDate;
             return this;
@@ -177,7 +194,7 @@ public class ContractVariationDTO {
         }
 
         public ContractVariationDTO build() {
-            return new ContractVariationDTO(this.id, this.contractNumber, this.variationType, this.startDate, this.expectedEndDate, this.endingDate, this.contractJsonData);
+            return new ContractVariationDTO(this.id, this.contractNumber, this.variationType, this.startDate, this.expectedEndDate, this.modificationDate, this.endingDate, this.contractJsonData);
         }
     }
 }

@@ -57,6 +57,7 @@ public class InitialContractVO implements Serializable {
     private Integer variationType;
     private Date startDate;
     private Date expectedEndDate;
+    private Date modificationDate;
     private Date endingDate;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
@@ -100,6 +101,14 @@ public class InitialContractVO implements Serializable {
 
     public void setExpectedEndDate(Date expectedEndDate) {
         this.expectedEndDate = expectedEndDate;
+    }
+
+    public Date getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Date modificationDate) {
+        this.modificationDate = modificationDate;
     }
 
     public Date getEndingDate() {
