@@ -310,7 +310,7 @@ public class TimeRecordDataNewContractVersion extends VBox {
 
             yearNumber.setText(String.valueOf(LocalDate.now().getYear()));
             clientForTimeRecord.getSelectionModel().clearSelection();
-            return LocalDate.now();
+            return LocalDate.of(LocalDate.now().getYear(), numberOfMonth, 1);
         }
 
         return  LocalDate.of(numberOfYear, numberOfMonth, 15);
