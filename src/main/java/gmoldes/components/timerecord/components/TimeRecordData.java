@@ -37,6 +37,7 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class TimeRecordData extends VBox {
@@ -302,15 +303,16 @@ public class TimeRecordData extends VBox {
         Integer numberOfMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
         Integer numberOfYear = null;
 
-        try {
+        try{
 
             numberOfYear = Integer.parseInt(yearNumber.getText());
 
-        } catch (NumberFormatException excepcion) {
+        }catch (NumberFormatException e){
 
             yearNumber.setText(String.valueOf(LocalDate.now().getYear()));
             clientForTimeRecord.getSelectionModel().clearSelection();
             return LocalDate.of(LocalDate.now().getYear(), numberOfMonth, 15);
+
         }
 
         return  LocalDate.of(numberOfYear, numberOfMonth, 15);
