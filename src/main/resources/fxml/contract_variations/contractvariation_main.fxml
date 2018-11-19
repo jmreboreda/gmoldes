@@ -3,7 +3,9 @@
 <?import gmoldes.components.contract.contract_variation.components.ContractVariationHeader?>
 <?import gmoldes.components.contract.contract_variation.components.ContractVariationParts?>
 <?import javafx.scene.layout.VBox?>
+<?import gmoldes.components.contract.new_contract.components.ContractActionComponents?>
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
       <ContractVariationHeader fx:id="contractVariationHeader"/>
       <ContractVariationParts fx:id="contractVariationParts"/>
+      <ContractActionComponents fx:id="contractVariationActionComponents"/>
 </fx:root>

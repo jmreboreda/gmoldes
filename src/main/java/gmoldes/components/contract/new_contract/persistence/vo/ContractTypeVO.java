@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Table(name = "contracttype")
 @NamedQueries(value = {
         @NamedQuery(
-                name = ContractTypeVO.FIND_ALL_CONTRACT_TYPES,
+                name = ContractTypeVO.FIND_ALL_CONTRACT_TYPES_SELECTABLES,
                 query = "select p from ContractTypeVO p where ismenuselectable = true and isinitialcontract = true order by contractdescription"
         ),
         @NamedQuery(
@@ -18,7 +18,7 @@ import java.io.Serializable;
 
 public class ContractTypeVO implements Serializable{
 
-    public static final String FIND_ALL_CONTRACT_TYPES = "ContractTypeVO.FIND_ALL_CONTRACT_TYPES";
+    public static final String FIND_ALL_CONTRACT_TYPES_SELECTABLES = "ContractTypeVO.FIND_ALL_CONTRACT_TYPES_SELECTABLES";
     public static final String FIND_CONTRACT_TYPE_BY_ID = "ContractTypeVO.FIND_CONTRACT_TYPE_BY_ID";
 
 

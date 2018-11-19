@@ -5,15 +5,15 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
+import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.ContractTypeNewDTO;
+import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.timerecord.dto.TimeRecordCandidateDataDTO;
 import gmoldes.domain.timerecord.dto.TimeRecordClientDTO;
-import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
@@ -37,7 +37,6 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class TimeRecordData extends VBox {
@@ -219,7 +218,7 @@ public class TimeRecordData extends VBox {
                     String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
 
                     ContractTypeController contractTypeController = new ContractTypeController();
-                    ContractTypeNewDTO contractTypeNewDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
+                    ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
 
                     TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
                             employeeName,
@@ -227,7 +226,7 @@ public class TimeRecordData extends VBox {
                             contractNewVersionDTO.getContractJsonData().getQuoteAccountCode(),
                             contractNewVersionDTO.getContractJsonData().getFullPartialWorkDay(),
                             contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours(),
-                            contractTypeNewDTO.getColloquial(),
+                            contractTypeDTO.getColloquial(),
                             dateFrom,
                             dateTo
                     );

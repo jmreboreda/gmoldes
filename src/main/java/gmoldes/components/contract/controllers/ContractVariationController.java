@@ -29,5 +29,4 @@ public class ContractVariationController extends VBox {
         logger.info("Initializing ContractVariation Main fxml");
         this.parent = ViewLoader.load(this, CONTRACTVARIATION_MAIN_FXML);
     }
-
 }

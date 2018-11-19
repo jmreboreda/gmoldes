@@ -1,10 +1,10 @@
 package gmoldes.components.contract.new_contract.components;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
 import gmoldes.components.generic_components.*;
-import gmoldes.components.contract.controllers.ContractTypeController;
-import gmoldes.domain.contract.dto.ContractTypeNewDTO;
+import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.contract.dto.ProvisionalContractDataDTO;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
@@ -41,7 +41,7 @@ public class ContractData extends AnchorPane {
     @FXML
     private TimeInput24HoursClock hourNotification;
     @FXML
-    private ChoiceBox<ContractTypeNewDTO> contractType;
+    private ChoiceBox<ContractTypeDTO> contractType;
     @FXML
     private ContractDurationInput contractDuration;
     @FXML
@@ -142,12 +142,12 @@ public class ContractData extends AnchorPane {
     private void loadContractType(){
 
         ContractTypeController contractTypeController = new ContractTypeController();
-        List<ContractTypeNewDTO> contractTypeNewDTOList = contractTypeController.findAllContractTypes();
+        List<ContractTypeDTO> contractTypeDTOList = contractTypeController.findAllSelectableContractTypes();
 
-        List<ContractTypeNewDTO> contractTypeListWithoutDuplicates = retrieveContractTypeWithoutDuplicatesSorted(contractTypeNewDTOList);
+        List<ContractTypeDTO> contractTypeListWithoutDuplicates = retrieveContractTypeWithoutDuplicatesSorted(contractTypeDTOList);
 
-        ObservableList<ContractTypeNewDTO> contractTypeNewDTOS = FXCollections.observableArrayList(contractTypeListWithoutDuplicates);
-        contractType.setItems(contractTypeNewDTOS);
+        ObservableList<ContractTypeDTO> contractTypeDTOS = FXCollections.observableArrayList(contractTypeListWithoutDuplicates);
+        contractType.setItems(contractTypeDTOS);
     }
 
     public LocalDate getDateNotification(){
@@ -158,7 +158,7 @@ public class ContractData extends AnchorPane {
         return this.hourNotification.getText();
     }
 
-    public ContractTypeNewDTO getContractType(){
+    public ContractTypeDTO getContractType(){
         return this.contractType.getValue();
     }
 
@@ -262,22 +262,22 @@ public class ContractData extends AnchorPane {
         workDayType.setOnChangeContractDataHoursWorkWeek(handler);
     }
 
-    private List<ContractTypeNewDTO> retrieveContractTypeWithoutDuplicatesSorted(List<ContractTypeNewDTO> contractTypeNewDTOList ){
+    private List<ContractTypeDTO> retrieveContractTypeWithoutDuplicatesSorted(List<ContractTypeDTO> contractTypeDTOList ){
 
-        List<ContractTypeNewDTO> contractTypeListWithoutDuplicates = new ArrayList<>();
+        List<ContractTypeDTO> contractTypeListWithoutDuplicates = new ArrayList<>();
 
-        Map<Integer, ContractTypeNewDTO> contractTypeMap = new HashMap<>();
+        Map<Integer, ContractTypeDTO> contractTypeMap = new HashMap<>();
 
-        for (ContractTypeNewDTO contractTypeNewDTO : contractTypeNewDTOList) {
-            contractTypeMap.put(contractTypeNewDTO.getId(), contractTypeNewDTO);
+        for (ContractTypeDTO contractTypeDTO : contractTypeDTOList) {
+            contractTypeMap.put(contractTypeDTO.getId(), contractTypeDTO);
         }
 
-        for (Map.Entry<Integer, ContractTypeNewDTO> itemMap : contractTypeMap.entrySet()) {
+        for (Map.Entry<Integer, ContractTypeDTO> itemMap : contractTypeMap.entrySet()) {
             contractTypeListWithoutDuplicates.add(itemMap.getValue());
         }
 
         return contractTypeListWithoutDuplicates
                 .stream()
-                .sorted(Comparator.comparing(ContractTypeNewDTO::getColloquial)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(ContractTypeDTO::getColloquial)).collect(Collectors.toList());
     }
 }

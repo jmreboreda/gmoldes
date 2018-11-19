@@ -1,8 +1,9 @@
 package gmoldes.components.contract.contract_variation.components;
 
-import gmoldes.ApplicationController;
+import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractInForceNowDataDTO;
 import gmoldes.utilities.Parameters;
 import javafx.collections.FXCollections;
@@ -23,13 +24,14 @@ public class ContractVariationParts extends VBox {
     private static final String CONTRACT_VARIATION_PARTS_FXML = "/fxml/contract_variations/contractvariation_parts.fxml";
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+    private ApplicationMainController applicationMainController = new ApplicationMainController();
 
     private Parent parent;
 
     @FXML
     private ChoiceBox<ClientDTO> client;
     @FXML
-    private ChoiceBox<ContractInForceNowDataDTO> contract;
+    private ChoiceBox<ContractFullDataDTO> contract;
 
     public ContractVariationParts() {
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_PARTS_FXML);
@@ -49,12 +51,17 @@ public class ContractVariationParts extends VBox {
         if(client.getSelectionModel().getSelectedItem() == null){
             return;
         }
+
+        ClientDTO selectedClient = client.getSelectionModel().getSelectedItem();
+        List<ContractFullDataDTO> contractFullDataDTOList = applicationMainController.findAllContractInForceByClientId(selectedClient.getClientId());
+
+        ObservableList<ContractFullDataDTO> contractFullDataDTOS = FXCollections.observableArrayList(contractFullDataDTOList);
+        contract.setItems(contractFullDataDTOS);
     }
 
     private void loadClientForContractVariation(ActionEvent event) {
         client.getItems().clear();
-        ApplicationController applicationController = new ApplicationController();
-        List<ClientDTO> clientDTOList = applicationController.findAllClientWithContractInForceAtDate(LocalDate.now());
+        List<ClientDTO> clientDTOList = applicationMainController.findAllClientWithContractInForceAtDate(LocalDate.now());
 
         List<ClientDTO> clientDTOListSorted = clientDTOList
                 .stream()
