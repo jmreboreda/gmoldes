@@ -335,7 +335,7 @@ public class ContractManager {
         // Initial contract
         List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
-        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractsInForceAtDate(LocalDate.now());
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllDataForInitialContractsInForceAtDate(LocalDate.now());
         for(InitialContractVO initialContractVO : initialContractVOList){
             ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                     .withStartDate(initialContractVO.getStartDate().toLocalDate())
@@ -350,7 +350,7 @@ public class ContractManager {
 
         //Contract variation
         ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
-        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationsInForceAtDate(LocalDate.now());
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllDataForContractVariationsInForceAtDate(LocalDate.now());
         for(ContractVariationVO contractVariationVO : contractVariationVOList){
             ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                     .withStartDate(contractVariationVO.getStartDate().toLocalDate())

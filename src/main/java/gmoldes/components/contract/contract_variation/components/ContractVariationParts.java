@@ -4,7 +4,6 @@ import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
-import gmoldes.domain.contract.dto.ContractInForceNowDataDTO;
 import gmoldes.utilities.Parameters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -53,7 +52,7 @@ public class ContractVariationParts extends VBox {
         }
 
         ClientDTO selectedClient = client.getSelectionModel().getSelectedItem();
-        List<ContractFullDataDTO> contractFullDataDTOList = applicationMainController.findAllContractInForceByClientId(selectedClient.getClientId());
+        List<ContractFullDataDTO> contractFullDataDTOList = applicationMainController.findAllDataForContractInForceByClientId(selectedClient.getClientId());
 
         ObservableList<ContractFullDataDTO> contractFullDataDTOS = FXCollections.observableArrayList(contractFullDataDTOList);
         contract.setItems(contractFullDataDTOS);

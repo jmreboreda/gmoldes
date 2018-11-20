@@ -2,6 +2,7 @@ package gmoldes.domain.contract.dto;
 
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.person.dto.PersonDTO;
+import java.text.DecimalFormat;
 
 public class ContractFullDataDTO {
 
@@ -54,7 +55,9 @@ public class ContractFullDataDTO {
     }
 
     public String toString(){
-        return employee.getApellidos() + ", " + employee.getNom_rzsoc();
+        DecimalFormat formatter = new DecimalFormat("0000");
+
+        return "[Contrato GM: " + formatter.format(getContractNewVersion().getContractNumber()) + "] " + employee.getApellidos() + ", " + employee.getNom_rzsoc();
     }
 
 

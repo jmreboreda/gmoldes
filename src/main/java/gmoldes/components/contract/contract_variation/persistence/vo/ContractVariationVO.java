@@ -19,6 +19,7 @@ import java.sql.Date;
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_IN_PERIOD,
                 query = "select p from ContractVariationVO  p where startDate <= :codeFinalDate and (endingDate is null or endingDate >= :codeInitialDate) " +
                         "and (expectedEndDate is null or expectedEndDate >= :codeInitialDate) " +
+                        "and (modificationDate is null or modificationDate >= :codeInitialDate) " +
                         "and variationType < 800 order by contractNumber, startDate"
         ),
         @NamedQuery(
@@ -26,7 +27,7 @@ import java.sql.Date;
                 query = "select p from ContractVariationVO p where p.contractNumber = :code order by p.contractNumber, p.startDate"
         ),
         @NamedQuery(
-                name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE,
+                name = ContractVariationVO.FIND_ALL_DATA_FOR_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE,
                 query = "select p from ContractVariationVO p where p.startDate <= :date and p.endingDate is null and p.modificationDate is null"
         ),
         @NamedQuery(
@@ -54,7 +55,7 @@ public class ContractVariationVO implements Serializable {
 
     public static final String FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER";
     public static final String FIND_ALL_CONTRACT_VARIATION_IN_PERIOD = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_IN_PERIOD";
-    public static final String FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE";
+    public static final String FIND_ALL_DATA_FOR_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE = "ContractVariationVO.FIND_ALL_DATA_FOR_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE";
     public static final String FIND_ALL_CONTRACT_VARIATIONS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE";
     public static final String FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_NOW_BY_CLIENT_ID = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_NOW_BY_CLIENT_ID";
 

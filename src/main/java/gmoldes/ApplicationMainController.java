@@ -16,8 +16,8 @@ public class ApplicationMainController {
         return applicationMainManager.findAllClientWithContractInForceAtDate(date);
     }
 
-    public List<ContractFullDataDTO> findAllContractInForceByClientId(Integer clientId){
+    public List<ContractFullDataDTO> findAllDataForContractInForceByClientId(Integer clientId){
 
-        return applicationMainManager.findAllContractInForceByClientId(clientId);
+        return applicationMainManager.findAllDataForContractInForceByClientId(clientId);
     }
 }

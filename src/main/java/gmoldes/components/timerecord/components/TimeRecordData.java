@@ -214,7 +214,7 @@ public class TimeRecordData extends VBox {
                     PersonDTO employee = retrievePersonByPersonId(employeeId);
                     String employeeNIF = Utilities.formatAsNIF(employee.getNifcif());
                     String employeeName = employee.getApellidos() + ", " + employee.getNom_rzsoc();
-                    String dateTo = contractNewVersionDTO.getExpectedEndDate() != null ? dateFormatter.format(contractNewVersionDTO.getExpectedEndDate()) : "";
+                    String dateTo = contractNewVersionDTO.getModificationDate() == null ? dateFormatter.format(contractNewVersionDTO.getExpectedEndDate()) : dateFormatter.format(contractNewVersionDTO.getModificationDate());
                     String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
 
                     ContractTypeController contractTypeController = new ContractTypeController();
@@ -230,6 +230,7 @@ public class TimeRecordData extends VBox {
                             dateFrom,
                             dateTo
                     );
+
                     candidates.add(dataCandidates);
                 }
             }
