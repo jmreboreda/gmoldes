@@ -73,6 +73,12 @@ public class NewContractDataVerifier {
             }
         }
 
+        if(contractData.getWorkDayType().radioButtonPartialWorkDayIsSelected() && contractData.getWorkDayType().getHoursWorkWeek().equals("00:00")){
+            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
+                    ContractVerifierConstants.PARTIAL_WORK_DAY_WITHOUT_HOURS_WORK_WEEK);
+            return false;
+        }
+
         if(!contractData.getHoursWorkWeek().equals(contractSchedule.getHoursWorkWeek())){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractVerifierConstants.DIFFERENT_NUMBER_HOURS_CONTRACT_DATA_AND_CONTRACT_SCHEDULE);
