@@ -1,7 +1,7 @@
 package gmoldes.domain.contract.dto;
 
 import gmoldes.domain.contractjsondata.ContractJsonData;
-import java.sql.Date;
+
 import java.time.LocalDate;
 
 public class ContractNewVersionDTO {

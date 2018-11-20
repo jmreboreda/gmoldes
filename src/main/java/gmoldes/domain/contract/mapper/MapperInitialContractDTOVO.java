@@ -2,8 +2,8 @@ package gmoldes.domain.contract.mapper;
 
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+
 import java.sql.Date;
-import java.time.LocalDate;
 
 
 public class MapperInitialContractDTOVO {
