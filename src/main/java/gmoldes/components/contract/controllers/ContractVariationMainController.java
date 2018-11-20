@@ -1,0 +1,94 @@
+package gmoldes.components.contract.controllers;
+
+import gmoldes.ApplicationMainController;
+import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.contract_variation.components.ContractVariationActionComponents;
+import gmoldes.components.contract.contract_variation.components.ContractVariationHeader;
+import gmoldes.components.contract.contract_variation.components.ContractVariationParts;
+import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.dto.ContractFullDataDTO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.awt.event.MouseAdapter;
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+public class ContractVariationMainController extends VBox {
+
+    private static final Logger logger = Logger.getLogger(ContractVariationMainController.class.getSimpleName());
+    private static final String CONTRACTVARIATION_MAIN_FXML = "/fxml/contract_variations/contractvariation_main.fxml";
+
+    private Parent parent;
+
+    private ApplicationMainController applicationMainController = new ApplicationMainController();
+
+    @FXML
+    private ContractVariationHeader contractVariationHeader;
+    @FXML
+    private ContractVariationParts contractVariationParts;
+    @FXML
+    private ContractVariationActionComponents contractVariationActionComponents;
+
+    @FXML
+    public void initialize() {
+
+        contractVariationParts.setOnLoadDataInClientSelector(this::clientSelectorLoadData);
+        contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
+        contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
+        contractVariationParts.loadDataInClientSelector();
+
+        contractVariationActionComponents.setOnExitButton(this::onExitButton);
+
+    }
+
+    public ContractVariationMainController() {
+        logger.info("Initializing ContractVariation Main fxml");
+        this.parent = ViewLoader.load(this, CONTRACTVARIATION_MAIN_FXML);
+    }
+
+    private void clientSelectorLoadData(ActionEvent event) {
+        contractVariationParts.getClientSelector().getItems().clear();
+        List<ClientDTO> clientDTOList = applicationMainController.findAllClientWithContractInForceAtDate(LocalDate.now());
+
+        List<ClientDTO> clientDTOListSorted = clientDTOList
+                .stream()
+                .sorted(Comparator.comparing(ClientDTO::getPersonOrCompanyName)).collect(Collectors.toList());
+
+        ObservableList<ClientDTO> clientDTOS = FXCollections.observableArrayList(clientDTOListSorted);
+        contractVariationParts.getClientSelector().setItems(clientDTOS);
+    }
+
+    private void onChangeEmployer(ActionEvent event){
+        contractVariationParts.getContractSelector().getItems().clear();
+        if(contractVariationParts.getClientSelector().getSelectionModel().getSelectedItem() == null){
+            return;
+        }
+
+        ClientDTO selectedClient = contractVariationParts.getClientSelector().getSelectionModel().getSelectedItem();
+        List<ContractFullDataDTO> contractFullDataDTOList = applicationMainController.findAllDataForContractInForceByClientId(selectedClient.getClientId());
+
+        ObservableList<ContractFullDataDTO> contractFullDataDTOS = FXCollections.observableArrayList(contractFullDataDTOList);
+        contractVariationParts.getContractSelector().setItems(contractFullDataDTOS);
+    }
+
+    private void onContractSelectorAction(ActionEvent event){
+
+    }
+
+    private void onExitButton(MouseEvent event){
+
+        Stage stage = (Stage) contractVariationParts.getScene().getWindow();
+        stage.close();
+    }
+}

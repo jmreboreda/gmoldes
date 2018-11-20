@@ -11,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class ContractVariationActionComponents extends AnchorPane {
 
-    private static final String CONTRACT_ACTION_COMPONENTS_FXML = "/fxml/new_contract/contractvariation_action_components.fxml";
+    private static final String CONTRACT_ACTION_COMPONENTS_FXML = "/fxml/contract_variations/contractvariation_action_components.fxml";
 
     private Parent parent;
 
@@ -53,6 +53,7 @@ public class ContractVariationActionComponents extends AnchorPane {
     private void onExitButton(MouseEvent event){
         onExitButtonEventHandler.handle(event);
     }
+
 
     public void enableSendMailButton(Boolean bol){
         this.sendMailButton.setDisable(!bol);

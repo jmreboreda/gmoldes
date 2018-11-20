@@ -4,28 +4,23 @@ import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
-import gmoldes.utilities.Parameters;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.VBox;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ContractVariationParts extends VBox {
 
     private static final String CONTRACT_VARIATION_PARTS_FXML = "/fxml/contract_variations/contractvariation_parts.fxml";
 
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
-    private ApplicationMainController applicationMainController = new ApplicationMainController();
-
     private Parent parent;
+
+    private EventHandler<ActionEvent> actionEventEventHandlerLoadDataInClientSelector;
+    private EventHandler<ActionEvent> actionEventEventHandlerClientSelectorAction;
+    private EventHandler<ActionEvent> actionEventEventHandlerContractSelectorAction;
+
 
     @FXML
     private ChoiceBox<ClientDTO> client;
@@ -33,40 +28,54 @@ public class ContractVariationParts extends VBox {
     private ChoiceBox<ContractFullDataDTO> contract;
 
     public ContractVariationParts() {
+
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_PARTS_FXML);
+
     }
 
     @FXML
     public void initialize() {
-
         client.setOnAction(this::onChangeEmployer);
-//        contract.setOnAction(this::loadDataForContractInForceSelected);
+        contract.setOnAction(this::onChangeEmployee);
+    }
 
-        loadClientForContractVariation(new ActionEvent());
+    public ChoiceBox<ClientDTO> getClientSelector() {
+        return client;
+    }
+
+    public void setClient(ChoiceBox<ClientDTO> client) {
+        this.client = client;
+    }
+
+    public ChoiceBox<ContractFullDataDTO> getContractSelector() {
+        return contract;
+    }
+
+    public void setContract(ChoiceBox<ContractFullDataDTO> contract) {
+        this.contract = contract;
     }
 
     private void onChangeEmployer(ActionEvent event){
-        contract.getItems().clear();
-        if(client.getSelectionModel().getSelectedItem() == null){
-            return;
-        }
-
-        ClientDTO selectedClient = client.getSelectionModel().getSelectedItem();
-        List<ContractFullDataDTO> contractFullDataDTOList = applicationMainController.findAllDataForContractInForceByClientId(selectedClient.getClientId());
-
-        ObservableList<ContractFullDataDTO> contractFullDataDTOS = FXCollections.observableArrayList(contractFullDataDTOList);
-        contract.setItems(contractFullDataDTOS);
+        actionEventEventHandlerClientSelectorAction.handle(event);
     }
 
-    private void loadClientForContractVariation(ActionEvent event) {
-        client.getItems().clear();
-        List<ClientDTO> clientDTOList = applicationMainController.findAllClientWithContractInForceAtDate(LocalDate.now());
+    private void onChangeEmployee(ActionEvent event){
+        this.actionEventEventHandlerContractSelectorAction.handle(event);
+    }
 
-        List<ClientDTO> clientDTOListSorted = clientDTOList
-                .stream()
-                .sorted(Comparator.comparing(ClientDTO::getPersonOrCompanyName)).collect(Collectors.toList());
+    public void loadDataInClientSelector() { actionEventEventHandlerLoadDataInClientSelector.handle(new ActionEvent());
 
-        ObservableList<ClientDTO> clientDTOS = FXCollections.observableArrayList(clientDTOListSorted);
-        client.setItems(clientDTOS);
+    }
+
+    public void setOnLoadDataInClientSelector(EventHandler<ActionEvent> actionEventEventHandlerLoadDataInClientSelector){
+        this.actionEventEventHandlerLoadDataInClientSelector = actionEventEventHandlerLoadDataInClientSelector;
+    }
+
+    public void setOnClientSelectorAction(EventHandler<ActionEvent> actionEventHandlerClientSelectorAction){
+        this.actionEventEventHandlerClientSelectorAction = actionEventHandlerClientSelectorAction;
+    }
+
+    public void setOnContractSelectorAction(EventHandler<ActionEvent> actionEventEventHandlerContractSelectorAction){
+        this.actionEventEventHandlerContractSelectorAction = actionEventEventHandlerContractSelectorAction;
     }
 }
