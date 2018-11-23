@@ -23,6 +23,11 @@ import java.sql.Date;
                         "and variationType < 800 order by contractNumber, startDate"
         ),
         @NamedQuery(
+        name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD,
+        query = "select p from InitialContractVO  p where startDate <= :codeFinalDate and (endingDate is null or endingDate >= :codeInitialDate) " +
+                "order by contractNumber, startDate, modificationDate"
+        ),
+        @NamedQuery(
                 name = InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE,
                 query = "select p from InitialContractVO p order by p.contractNumber, p.startDate"
         ),
@@ -54,6 +59,7 @@ import java.sql.Date;
 public class InitialContractVO implements Serializable {
 
     public static final String FIND_ALL_INITIAL_CONTRACT_IN_PERIOD = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_PERIOD";
+    public static final String FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD";
     public static final String FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE = "InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE";
     public static final String FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER = "InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER";
     public static final String FIND_ALL_DATA_FOR_INITIAL_CONTRACT_IN_FORCE_AT_DATE = "InitialContractVO.FIND_ALL_DATA_FOR_INITIAL_CONTRACT_IN_FORCE_AT_DATE";

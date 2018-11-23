@@ -271,13 +271,17 @@ public class ContractManager {
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractSorted();
         for (InitialContractVO initialContractVO : initialContractVOList) {
+            LocalDate expectedEndDate = initialContractVO.getExpectedEndDate() != null ? initialContractVO.getExpectedEndDate().toLocalDate() : null;
+            LocalDate modificationEndDate = initialContractVO.getModificationDate() != null ? initialContractVO.getModificationDate().toLocalDate() : null;
+            LocalDate endingDate = initialContractVO.getEndingDate() != null ? initialContractVO.getEndingDate().toLocalDate() : null;
+
             ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                     .withContractNumber(initialContractVO.getContractNumber())
                     .withVariationType(initialContractVO.getVariationType())
                     .withStartDate(initialContractVO.getStartDate().toLocalDate())
-                    .withExpectedEndDate(initialContractVO.getExpectedEndDate().toLocalDate())
-                    .withModificationDate(initialContractVO.getModificationDate().toLocalDate())
-                    .withEndingDate(initialContractVO.getEndingDate().toLocalDate())
+                    .withExpectedEndDate(expectedEndDate)
+                    .withModificationDate(modificationEndDate)
+                    .withEndingDate(endingDate)
                     .build();
 
             initialContractDTOList.add(contractNewVersionDTO);
@@ -335,7 +339,7 @@ public class ContractManager {
         // Initial contract
         List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
-        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllDataForInitialContractsInForceAtDate(LocalDate.now());
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInForceAtDate(LocalDate.now());
         for(InitialContractVO initialContractVO : initialContractVOList){
             ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                     .withStartDate(initialContractVO.getStartDate().toLocalDate())

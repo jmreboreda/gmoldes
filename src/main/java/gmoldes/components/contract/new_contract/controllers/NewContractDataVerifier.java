@@ -52,13 +52,13 @@ public class NewContractDataVerifier {
             return false;
         }
 
-        if(contractData.getContractType().getIstemporal() != contractData.getContractDurationInput().radioButtonTemporalIsSelected()){
+        if(contractData.getContractType().getIsTemporal() != contractData.getContractDurationInput().radioButtonTemporalIsSelected()){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractVerifierConstants.DURATION_CONTRACT_SELECTED_DOES_NOT_MATCH);
             return false;
         }
 
-        if(contractData.getContractType().getIsFullWorkDay() != contractData.getWorkDayType().radioButtonFullWorkDayIsSelected()){
+        if(contractData.getContractType().getIsFullTime() != contractData.getWorkDayType().radioButtonFullWorkDayIsSelected()){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractVerifierConstants.WORKDAY_TYPE_SELECTED_DOES_NOT_MATCH);
             return false;

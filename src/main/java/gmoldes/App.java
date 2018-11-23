@@ -5,20 +5,21 @@ import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.check.dto.IDCControlDTO;
-import gmoldes.domain.client.Client;
-import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.payroll_checklist.PayrollCheckList;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.OldContractsToJSONUtility;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
-
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -59,18 +60,24 @@ public class App extends Application {
 //            }
 //        }
 
-//        Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
-//        String clipboardData = "";
+        if(false) {
+            Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+            String clipboardData = "";
 
-//        ContractManager manager = new ContractManager();
-//        List<InitialContractDTO> contractList = manager.findAllInitialContractSorted();
-//        for(InitialContractDTO contract : contractList){
-//            System.out.println(contract.toMyString());
-//            clipboardData = clipboardData + contract.toMyString();
-//        }
+            ContractManager manager = new ContractManager();
+            List<ContractNewVersionDTO> contractList = manager.findAllInitialContractSorted();
+            for (ContractNewVersionDTO contract : contractList) {
+                //System.out.println(contract.toMyString());
+                clipboardData = clipboardData + contract.toClipboardString();
+            }
 
-//        StringSelection ss = new StringSelection(clipboardData);
-//        cb.setContents(ss, ss);
+            StringSelection ss = new StringSelection(clipboardData);
+            cb.setContents(ss, ss);
+        }
+
+        PayrollCheckList payrollCheckList = new PayrollCheckList();
+        payrollCheckList.loadClipboard(Month.DECEMBER, 2018);
+
 
         initialControlProcesses(primaryStage);
 

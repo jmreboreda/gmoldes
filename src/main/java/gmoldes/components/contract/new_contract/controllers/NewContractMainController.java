@@ -392,7 +392,7 @@ public class NewContractMainController extends VBox {
                 .withNotesForContractManager(contractPublicNotes.getPublicNotes())
                 .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
                 .withLaborCategory(contractData.getLaborCategory())
-                .withContractType(contractData.getContractType().getContractcode())
+                .withContractType(contractData.getContractType().getContractCode())
                 .withFullPartialWorkDay(contractData.getFullPartialWorkDay())
                 .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
                 .withQuoteAccountCode(quoteAccountCode)

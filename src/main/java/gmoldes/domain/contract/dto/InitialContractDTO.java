@@ -1,39 +1,50 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package gmoldes.domain.contract.dto;
+
 
 import gmoldes.domain.contractjsondata.ContractJsonData;
 
 import java.time.LocalDate;
 
-public class ContractNewVersionDTO {
+
+public class InitialContractDTO {
 
     private Integer id;
     private Integer contractNumber;
     private Integer variationType;
+    private Integer clientGMId;
     private LocalDate startDate;
     private LocalDate expectedEndDate;
     private LocalDate modificationDate;
     private LocalDate endingDate;
     private ContractJsonData contractJsonData;
 
-    public ContractNewVersionDTO() {
+    public InitialContractDTO() {
     }
 
-    public ContractNewVersionDTO(Integer id,
-                                 Integer contractNumber,
-                                 Integer variationType,
-                                 LocalDate startDate,
-                                 LocalDate expectedEndDate,
-                                 LocalDate modificationDate,
-                                 LocalDate endingDate,
-                                 ContractJsonData contractJsonData) {
+    public InitialContractDTO(Integer id,
+                              Integer contractNumber,
+                              Integer variationType,
+                              LocalDate startDate,
+                              LocalDate expectedEndDate,
+                              LocalDate modificationDate,
+                              LocalDate endingDate,
+                              ContractJsonData contractJsonData){
+
         this.id = id;
         this.contractNumber = contractNumber;
         this.variationType = variationType;
+        this.clientGMId = clientGMId;
         this.startDate = startDate;
         this.expectedEndDate = expectedEndDate;
         this.modificationDate = modificationDate;
         this.endingDate = endingDate;
         this.contractJsonData = contractJsonData;
+
     }
 
     public Integer getId() {
@@ -58,6 +69,14 @@ public class ContractNewVersionDTO {
 
     public void setVariationType(Integer variationType) {
         this.variationType = variationType;
+    }
+
+    public Integer getClientGMId() {
+        return clientGMId;
+    }
+
+    public void setClientGMId(Integer clientGMId) {
+        this.clientGMId = clientGMId;
     }
 
     public LocalDate getStartDate() {
@@ -100,22 +119,27 @@ public class ContractNewVersionDTO {
         this.contractJsonData = contractJsonData;
     }
 
+    //@Override
     public String toMyString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("-----------------------------------------------------" + "\n");
+        sb.append("ContractNumber: " + getContractNumber() + " -> INEM contrac number: " + getContractJsonData().getIdentificationContractNumberINEM() + "\n");
+        sb.append("ClientGMId: " + getClientGMId() + " -> WorkerId: " + getContractJsonData().getWorkerId() + "\n");
+        sb.append("DaysOfWeekToWork: " + getContractJsonData().getDaysOfWeekToWork() + "\n");
+        sb.append("StartDate: " + getStartDate() + "\t");
+        sb.append("ExpectedEndDate: " + getExpectedEndDate() + "\t");
+        sb.append("EndingDate: " + getEndingDate() + "\n");
+        sb.append("ContractType: " + getContractJsonData().getContractType() + "\n");
 
-        return "------------------------------------" + "\n" +
-                "Contrato: "+ getContractNumber() + " - VariationType: " + getVariationType() + "\n" +
-                "Fecha inicio: " + getStartDate();
+
+        return sb.toString();
     }
 
-    public String toClipboardString(){
-        return getContractNumber() + ";" + getStartDate() + ";" + getExpectedEndDate() + ";" + getModificationDate() + ";" + getEndingDate() + "\n";
+    public static InitialContractDTOBuilder create() {
+        return new InitialContractDTOBuilder();
     }
 
-    public static ContractNewVersionDTOBuilder create() {
-        return new ContractNewVersionDTOBuilder();
-    }
-
-    public static class ContractNewVersionDTOBuilder {
+    public static class InitialContractDTOBuilder {
 
         private Integer id;
         private Integer contractNumber;
@@ -126,49 +150,49 @@ public class ContractNewVersionDTO {
         private LocalDate endingDate;
         private ContractJsonData contractJsonData;
 
-        public ContractNewVersionDTOBuilder withId(Integer id) {
+        public InitialContractDTOBuilder withId(Integer id) {
             this.id = id;
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withContractNumber(Integer contractNumber) {
+        public InitialContractDTOBuilder withContractNumber(Integer contractNumber) {
             this.contractNumber = contractNumber;
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withVariationType(Integer variationType) {
+        public InitialContractDTOBuilder withVariationType(Integer variationType) {
             this.variationType = variationType;
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withStartDate(LocalDate startDate) {
+        public InitialContractDTOBuilder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withExpectedEndDate(LocalDate expectedEndDate) {
+        public InitialContractDTOBuilder withExpectedEndDate(LocalDate expectedEndDate) {
             this.expectedEndDate = expectedEndDate;
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withModificationDate(LocalDate modificationDate) {
+        public InitialContractDTOBuilder withModificationDate(LocalDate modificationDate) {
             this.modificationDate = modificationDate;
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withEndingDate(LocalDate endingDate) {
+        public InitialContractDTOBuilder withEndingDate(LocalDate endingDate) {
             this.endingDate = endingDate;
             return this;
         }
 
-        public ContractNewVersionDTOBuilder withContractJsonData(ContractJsonData contractJsonData) {
+
+        public InitialContractDTOBuilder withContractJsonData(ContractJsonData contractJsonData) {
             this.contractJsonData = contractJsonData;
             return this;
         }
 
-        public ContractNewVersionDTO build() {
-            return new ContractNewVersionDTO(this.id, this.contractNumber, this.variationType, this.startDate, this.expectedEndDate, this.modificationDate, this.endingDate, this.contractJsonData);
+        public InitialContractDTO build() {
+            return new InitialContractDTO(this.id, this.contractNumber, this.variationType, this.startDate, this.expectedEndDate, this.modificationDate, this.endingDate, this.contractJsonData);
         }
     }
-
 }
