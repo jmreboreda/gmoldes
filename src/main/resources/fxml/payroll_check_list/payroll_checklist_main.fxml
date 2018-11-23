@@ -3,7 +3,9 @@
 <?import gmoldes.components.payroll_check_list.components.PayrollCheckListHeader?>
 <?import javafx.scene.layout.VBox?>
 <?import gmoldes.components.payroll_check_list.components.PayrollCheckListData?>
+<?import gmoldes.components.payroll_check_list.components.PayrollCheckListAction?>
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
       <PayrollCheckListHeader fx:id="payrollCheckListHeader"/>
       <PayrollCheckListData fx:id="payrollCheckListData"/>
+      <PayrollCheckListAction fx:id="payrollCheckListAction"/>
 </fx:root>

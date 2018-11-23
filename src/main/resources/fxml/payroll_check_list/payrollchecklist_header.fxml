@@ -59,12 +59,20 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label alignment="CENTER" text="Listado de empresas y personal para la emisión de nóminas" textFill="#640000" GridPane.columnSpan="3" GridPane.rowIndex="1">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="332.0" text="Listado de empresas y personal " textAlignment="CENTER" textFill="#640000" GridPane.columnSpan="3" GridPane.rowIndex="1">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
                <GridPane.margin>
                   <Insets />
+               </GridPane.margin>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="330.0" text="para control de emisión de nóminas" textAlignment="CENTER" textFill="#640000" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="20.0" />
                </GridPane.margin>
             </Label>
          </children>

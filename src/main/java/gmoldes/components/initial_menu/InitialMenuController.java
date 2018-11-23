@@ -4,6 +4,7 @@ import gmoldes.App;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.ContractVariationMainController;
 import gmoldes.components.contract.new_contract.controllers.NewContractMainController;
+import gmoldes.components.payroll_check_list.controllers.PayrollCheckListMainController;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
 import gmoldes.domain.client.manager.ClientManager;
 import gmoldes.domain.person.manager.PersonManager;
@@ -38,6 +39,8 @@ public class InitialMenuController extends AnchorPane {
     @FXML
     private Button contractVariationButton;
     @FXML
+    private Button payrollCheckListButton;
+    @FXML
     private Button exitButton;
 
 
@@ -52,6 +55,7 @@ public class InitialMenuController extends AnchorPane {
         newContractButton.setOnMouseClicked(this::onNewContract);
         timeRecordButton.setOnMouseClicked(this::onTimeRecord);
         contractVariationButton.setOnMouseClicked(this::onContractVariation);
+        payrollCheckListButton.setOnMouseClicked(this::onPayrollCheckList);
         exitButton.setOnMouseClicked(this::onExit);
     }
 
@@ -85,6 +89,18 @@ public class InitialMenuController extends AnchorPane {
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage contractVariationStage = new Stage();
         contractVariationStage.setTitle("Variaciones de contratos de trabajo");
+        contractVariationStage.setScene(scene);
+        contractVariationStage.initOwner(primaryStage);
+        contractVariationStage.initModality(Modality.APPLICATION_MODAL);
+        contractVariationStage.show();
+    }
+
+    private void onPayrollCheckList(MouseEvent event){
+        PayrollCheckListMainController payrollCheckListMainController = new PayrollCheckListMainController();
+        Scene scene = new Scene(payrollCheckListMainController);
+        scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
+        Stage contractVariationStage = new Stage();
+        contractVariationStage.setTitle("Relación de personas para control de nóminas");
         contractVariationStage.setScene(scene);
         contractVariationStage.initOwner(primaryStage);
         contractVariationStage.initModality(Modality.APPLICATION_MODAL);
