@@ -96,7 +96,7 @@ public class PayrollCheckList {
         clipboard.setContents(ss, ss);
     }
 
-    public List<ContractNewVersionDTO> findAllContractInForceInPeriod(Month month, Integer year){
+    private List<ContractNewVersionDTO> findAllContractInForceInPeriod(Month month, Integer year){
 
         Integer monthReceived = month.getValue();
         Integer dayReceived = 15;

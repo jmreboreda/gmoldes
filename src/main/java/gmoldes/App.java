@@ -60,23 +60,8 @@ public class App extends Application {
 //            }
 //        }
 
-        if(false) {
-            Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
-            String clipboardData = "";
-
-            ContractManager manager = new ContractManager();
-            List<ContractNewVersionDTO> contractList = manager.findAllInitialContractSorted();
-            for (ContractNewVersionDTO contract : contractList) {
-                //System.out.println(contract.toMyString());
-                clipboardData = clipboardData + contract.toClipboardString();
-            }
-
-            StringSelection ss = new StringSelection(clipboardData);
-            cb.setContents(ss, ss);
-        }
-
         PayrollCheckList payrollCheckList = new PayrollCheckList();
-        payrollCheckList.loadClipboard(Month.DECEMBER, 2018);
+        payrollCheckList.loadClipboard(Month.NOVEMBER, 2018);
 
 
         initialControlProcesses(primaryStage);

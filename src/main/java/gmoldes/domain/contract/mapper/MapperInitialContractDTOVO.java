@@ -4,6 +4,7 @@ import gmoldes.components.contract.initial_contract.persistence.vo.InitialContra
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 
 public class MapperInitialContractDTOVO {
@@ -15,7 +16,8 @@ public class MapperInitialContractDTOVO {
         initialContractVO.setVariationType(contractNewVersionDTO.getVariationType());
         initialContractVO.setStartDate(java.sql.Date.valueOf(contractNewVersionDTO.getStartDate()));
         initialContractVO.setExpectedEndDate(java.sql.Date.valueOf(contractNewVersionDTO.getExpectedEndDate()));
-        initialContractVO.setModificationDate(java.sql.Date.valueOf(contractNewVersionDTO.getModificationDate()));
+        Date modificationDate = contractNewVersionDTO.getModificationDate() != null ? Date.valueOf(contractNewVersionDTO.getModificationDate()) : null;
+        initialContractVO.setModificationDate(modificationDate);
         Date endingDate = contractNewVersionDTO.getEndingDate() != null ? Date.valueOf(contractNewVersionDTO.getEndingDate()) : null;
         initialContractVO.setEndingDate(endingDate);
         initialContractVO.setContractJsonData(contractNewVersionDTO.getContractJsonData());
