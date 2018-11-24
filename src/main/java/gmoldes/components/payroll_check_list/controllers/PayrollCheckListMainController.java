@@ -33,6 +33,7 @@ public class PayrollCheckListMainController extends VBox {
     @FXML
     private PayrollCheckListAction payrollCheckListAction;
 
+
     public PayrollCheckListMainController() {
         logger.info("Initializing PayrollCheckList Main fxml");
         this.parent = ViewLoader.load(this, PAYROLL_CHECK_LIST_MAIN_FXML);
@@ -42,6 +43,7 @@ public class PayrollCheckListMainController extends VBox {
     public void initialize() {
 
         payrollCheckListData.setOnMonthChanged(this::onMonthChanged);
+        payrollCheckListData.setOnYearChanged(this::onYearChanged);
         payrollCheckListAction.setOnExitButton(this::onExit);
         payrollCheckListAction.setOnClipboardButton(this::onCopyToClipboard);
 
@@ -62,6 +64,20 @@ public class PayrollCheckListMainController extends VBox {
         );
 
         this.payrollCheckListData.getYear().setText(Integer.toString(LocalDate.now().getYear()));
+    }
+
+    private void onYearChanged(ActionEvent event){
+
+        try{
+
+            Integer.parseInt(payrollCheckListData.getYear().getText());
+
+        }catch (NumberFormatException e){
+
+            payrollCheckListData.getYear().setText(String.valueOf(LocalDate.now().getYear()));
+        }
+
+        onMonthChanged(event);
     }
 
     private void onMonthChanged(ActionEvent event){

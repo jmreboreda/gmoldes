@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -24,9 +25,7 @@ public class PayrollCheckListData extends VBox {
     private Parent parent;
 
     private EventHandler<ActionEvent> actionEventEventHandlerMonthChanged;
-//    private EventHandler<ActionEvent> actionEventEventHandlerClientSelectorAction;
-//    private EventHandler<ActionEvent> actionEventEventHandlerContractSelectorAction;
-
+    private EventHandler<ActionEvent> actionEventEventHandlerYearChanged;
 
     @FXML
     private ChoiceBox<Month> month;
@@ -51,6 +50,7 @@ public class PayrollCheckListData extends VBox {
         columnWorker.setCellValueFactory(new PropertyValueFactory<PayrollCheckListDTO,String>("workerFullName"));
 
         this.month.setOnAction(this::onMonthChanged);
+        this.year.setOnAction(this::onYearChanged);
 
     }
 
@@ -91,10 +91,18 @@ public class PayrollCheckListData extends VBox {
         this.actionEventEventHandlerMonthChanged.handle(event);
     }
 
+    private void onYearChanged(ActionEvent event){
 
+        actionEventEventHandlerYearChanged.handle(event);
+
+    }
 
     public void setOnMonthChanged(EventHandler<ActionEvent> actionEventEventHandlerMonthChanged){
         this.actionEventEventHandlerMonthChanged = actionEventEventHandlerMonthChanged;
+    }
+
+    public void setOnYearChanged(EventHandler<ActionEvent> actionEventEventHandlerYearChanged){
+        this.actionEventEventHandlerYearChanged = actionEventEventHandlerYearChanged;
     }
 
 //
