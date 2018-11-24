@@ -392,7 +392,7 @@ public class NewContractMainController extends VBox {
                 .withNotesForContractManager(contractPublicNotes.getPublicNotes())
                 .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
                 .withLaborCategory(contractData.getLaborCategory())
-                .withContractType(mapContractTypeStringToInteger(contractData.getContractType().getContractdescription()))
+                .withContractType(contractData.getContractType().getContractCode())
                 .withFullPartialWorkDay(contractData.getFullPartialWorkDay())
                 .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
                 .withQuoteAccountCode(quoteAccountCode)
@@ -403,6 +403,7 @@ public class NewContractMainController extends VBox {
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
                 .withStartDate(contractData.getDateFrom())
                 .withExpectedEndDate(contractData.getDateTo())
+                .withModificationDate(null)
                 .withEndingDate(null)
                 .withContractJsonData(contractJsonData)
                 .build();
@@ -700,58 +701,58 @@ public class NewContractMainController extends VBox {
         }
     }
 
-    private Integer mapContractTypeStringToInteger(String contractType){
-        Integer thisContractType = 999;
-
-        if(contractType.contains("Normal")){
-            thisContractType = 1;
-        }
-        if(contractType.contains("Eventual")){
-            thisContractType = 3;
-        }
-        if(contractType.contains("Obra")){
-            thisContractType = 4;
-        }
-        if(contractType.contains("Formación")){
-            thisContractType = 5;
-        }
-        if(contractType.contains("Prácticas")){
-            thisContractType = 6;
-        }
-        if(contractType.contains("Subrogación")){
-            thisContractType = 7;
-        }
-        if(contractType.contains("Socio")){
-            thisContractType = 8;
-        }
-        if(contractType.contains("Administrador")){
-            thisContractType = 9;
-        }
-        if(contractType.contains("relevo")){
-            thisContractType = 10;
-        }
-        if(contractType.contains("embarazo")){
-            thisContractType = 11;
-        }
-        if(contractType.contains("maternidad")){
-            thisContractType = 12;
-        }
-        if(contractType.contains("Conversión")){
-            thisContractType = 13;
-        }
-        if(contractType.contains("baja laboral")){
-            thisContractType = 14;
-        }
-        if(contractType.contains("vacaciones")){
-            thisContractType = 15;
-        }
-        if(contractType.contains("discontinuo")){
-            thisContractType = 16;
-        }
-        if(contractType.contains("excedencia")){
-            thisContractType = 17;
-        }
-
-        return thisContractType;
-    }
+//    private Integer mapContractTypeStringToInteger(String contractType){
+//        Integer thisContractType = 999;
+//
+//        if(contractType.contains("Normal")){
+//            thisContractType = 1;
+//        }
+//        if(contractType.contains("Eventual")){
+//            thisContractType = 3;
+//        }
+//        if(contractType.contains("Obra")){
+//            thisContractType = 4;
+//        }
+//        if(contractType.contains("Formación")){
+//            thisContractType = 5;
+//        }
+//        if(contractType.contains("Prácticas")){
+//            thisContractType = 6;
+//        }
+//        if(contractType.contains("Subrogación")){
+//            thisContractType = 7;
+//        }
+//        if(contractType.contains("Socio")){
+//            thisContractType = 8;
+//        }
+//        if(contractType.contains("Administrador")){
+//            thisContractType = 9;
+//        }
+//        if(contractType.contains("relevo")){
+//            thisContractType = 10;
+//        }
+//        if(contractType.contains("embarazo")){
+//            thisContractType = 11;
+//        }
+//        if(contractType.contains("maternidad")){
+//            thisContractType = 12;
+//        }
+//        if(contractType.contains("Conversión")){
+//            thisContractType = 13;
+//        }
+//        if(contractType.contains("baja laboral")){
+//            thisContractType = 14;
+//        }
+//        if(contractType.contains("vacaciones")){
+//            thisContractType = 15;
+//        }
+//        if(contractType.contains("discontinuo")){
+//            thisContractType = 16;
+//        }
+//        if(contractType.contains("excedencia")){
+//            thisContractType = 17;
+//        }
+//
+//        return thisContractType;
+//    }
 }

@@ -19,7 +19,13 @@ import java.sql.Date;
                 name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_PERIOD,
                 query = "select p from InitialContractVO  p where startDate <= :codeFinalDate and (endingDate is null or endingDate >= :codeInitialDate) " +
                         "and (expectedEndDate is null or expectedEndDate >= :codeInitialDate) " +
+                        "and (modificationDate is null or modificationDate >= :codeInitialDate) " +
                         "and variationType < 800 order by contractNumber, startDate"
+        ),
+        @NamedQuery(
+        name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD,
+        query = "select p from InitialContractVO  p where startDate <= :codeFinalDate and (endingDate is null or endingDate >= :codeInitialDate) " +
+                "order by contractNumber, startDate, modificationDate"
         ),
         @NamedQuery(
                 name = InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE,
@@ -28,6 +34,14 @@ import java.sql.Date;
         @NamedQuery(
                 name = InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER,
                 query = "select p from InitialContractVO p where contractNumber = :code"
+        ),
+        @NamedQuery(
+                name = InitialContractVO.FIND_ALL_DATA_FOR_INITIAL_CONTRACT_IN_FORCE_AT_DATE,
+                query = "select p from InitialContractVO p where p.startDate <= :date and p.endingDate is null and p.modificationDate is null"
+        ),
+        @NamedQuery(
+                name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID,
+                query = "select p from InitialContractVO p where p.startDate <= :date and p.endingDate is null and p.modificationDate is null"
         )
 })
 
@@ -45,8 +59,12 @@ import java.sql.Date;
 public class InitialContractVO implements Serializable {
 
     public static final String FIND_ALL_INITIAL_CONTRACT_IN_PERIOD = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_PERIOD";
+    public static final String FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD";
     public static final String FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE = "InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE";
     public static final String FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER = "InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER";
+    public static final String FIND_ALL_DATA_FOR_INITIAL_CONTRACT_IN_FORCE_AT_DATE = "InitialContractVO.FIND_ALL_DATA_FOR_INITIAL_CONTRACT_IN_FORCE_AT_DATE";
+    public static final String FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID";
+
 
     @Id
     @SequenceGenerator(name = "initialcontract_id_seq", sequenceName = "initialcontract_id_seq", allocationSize = 1)
@@ -57,6 +75,7 @@ public class InitialContractVO implements Serializable {
     private Integer variationType;
     private Date startDate;
     private Date expectedEndDate;
+    private Date modificationDate;
     private Date endingDate;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
@@ -100,6 +119,14 @@ public class InitialContractVO implements Serializable {
 
     public void setExpectedEndDate(Date expectedEndDate) {
         this.expectedEndDate = expectedEndDate;
+    }
+
+    public Date getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Date modificationDate) {
+        this.modificationDate = modificationDate;
     }
 
     public Date getEndingDate() {

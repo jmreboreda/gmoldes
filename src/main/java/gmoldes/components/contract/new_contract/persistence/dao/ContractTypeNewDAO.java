@@ -35,7 +35,7 @@ public class ContractTypeNewDAO {
 
     public List<ContractTypeVO> findAllContractTypes(){
 
-        Query query = session.createNamedQuery(ContractTypeVO.FIND_ALL_CONTRACT_TYPES, ContractTypeVO.class);
+        Query query = session.createNamedQuery(ContractTypeVO.FIND_ALL_CONTRACT_TYPES_SELECTABLES, ContractTypeVO.class);
 
         return (List<ContractTypeVO>) query.getResultList();
     }

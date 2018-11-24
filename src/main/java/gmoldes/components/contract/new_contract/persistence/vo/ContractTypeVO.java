@@ -7,18 +7,18 @@ import java.io.Serializable;
 @Table(name = "contracttype")
 @NamedQueries(value = {
         @NamedQuery(
-                name = ContractTypeVO.FIND_ALL_CONTRACT_TYPES,
-                query = "select p from ContractTypeVO p where ismenuselectable = true and isinitialcontract = true order by contractdescription"
+                name = ContractTypeVO.FIND_ALL_CONTRACT_TYPES_SELECTABLES,
+                query = "select p from ContractTypeVO p where isMenuSelectable = true and isInitialContract = true order by contractDescription"
         ),
         @NamedQuery(
                 name = ContractTypeVO.FIND_CONTRACT_TYPE_BY_ID,
-                query = "select p from ContractTypeVO p where p.contractcode = :contractTypeId"
+                query = "select p from ContractTypeVO p where p.contractCode = :contractTypeId"
         )
 })
 
 public class ContractTypeVO implements Serializable{
 
-    public static final String FIND_ALL_CONTRACT_TYPES = "ContractTypeVO.FIND_ALL_CONTRACT_TYPES";
+    public static final String FIND_ALL_CONTRACT_TYPES_SELECTABLES = "ContractTypeVO.FIND_ALL_CONTRACT_TYPES_SELECTABLES";
     public static final String FIND_CONTRACT_TYPE_BY_ID = "ContractTypeVO.FIND_CONTRACT_TYPE_BY_ID";
 
 
@@ -27,14 +27,15 @@ public class ContractTypeVO implements Serializable{
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contracttype_id_seq")
     @Column(name = "id", updatable = false)
     private Integer id;
-    private Integer contractcode;
-    private String contractdescription;
+    private Integer contractCode;
+    private String contractDescription;
     private String colloquial;
-    private Boolean isinitialcontract;
-    private Boolean istemporal;
-    private Boolean ispartialtime;
-    private Boolean isfulltime;
-    private Boolean ismenuselectable;
+    private Boolean isInitialContract;
+    private Boolean isTemporal;
+    private Boolean isUndefined;
+    private Boolean isPartialTime;
+    private Boolean isFullTime;
+    private Boolean isMenuSelectable;
 
     public ContractTypeVO() {
     }
@@ -47,20 +48,20 @@ public class ContractTypeVO implements Serializable{
         this.id = id;
     }
 
-    public Integer getContractcode() {
-        return contractcode;
+    public Integer getContractCode() {
+        return contractCode;
     }
 
-    public void setContractcode(Integer contractcode) {
-        this.contractcode = contractcode;
+    public void setContractCode(Integer contractCode) {
+        this.contractCode = contractCode;
     }
 
-    public String getContractdescription() {
-        return contractdescription;
+    public String getContractDescription() {
+        return contractDescription;
     }
 
-    public void setContractdescription(String contractdescription) {
-        this.contractdescription = contractdescription;
+    public void setContractDescription(String contractDescription) {
+        this.contractDescription = contractDescription;
     }
 
     public String getColloquial() {
@@ -71,43 +72,51 @@ public class ContractTypeVO implements Serializable{
         this.colloquial = colloquial;
     }
 
-    public Boolean getIsinitialcontract() {
-        return isinitialcontract;
+    public Boolean getIsInitialContract() {
+        return isInitialContract;
     }
 
-    public void setIsinitialcontract(Boolean isinitialcontract) {
-        this.isinitialcontract = isinitialcontract;
+    public void setIsInitialContract(Boolean isInitialContract) {
+        this.isInitialContract = isInitialContract;
     }
 
     public Boolean getIsTemporal() {
-        return istemporal;
+        return isTemporal;
     }
 
     public void setIsTemporal(Boolean isTemporal) {
-        istemporal = isTemporal;
+        this.isTemporal = isTemporal;
     }
 
-    public Boolean getIspartialtime() {
-        return ispartialtime;
+      public Boolean getIsUndefined() {
+        return isUndefined;
     }
 
-    public void setIspartialtime(Boolean ispartialtime) {
-        this.ispartialtime = ispartialtime;
+    public void setIsUndefined(Boolean isundefined) {
+        this.isUndefined = isundefined;
     }
 
-    public Boolean getIsfulltime() {
-        return isfulltime;
+    public Boolean getIsPartialTime() {
+        return isPartialTime;
     }
 
-    public void setIsfulltime(Boolean isfulltime) {
-        this.isfulltime = isfulltime;
+    public void setIsPartialTime(Boolean isPartialTime) {
+        this.isPartialTime = isPartialTime;
+    }
+
+    public Boolean getIsFullTime() {
+        return isFullTime;
+    }
+
+    public void setIsFullTime(Boolean isFullTime) {
+        this.isFullTime = isFullTime;
     }
 
     public Boolean getIsMenuSelectable() {
-        return ismenuselectable;
+        return isMenuSelectable;
     }
 
     public void setIsMenuSelectable(Boolean ismenuselectable) {
-        this.ismenuselectable = ismenuselectable;
+        this.isMenuSelectable = ismenuselectable;
     }
 }

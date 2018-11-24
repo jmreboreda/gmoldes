@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<fx:root prefHeight="600.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="600.0" type="AnchorPane" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
          <children>
@@ -56,6 +56,19 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+            </Button>
+            <Button fx:id="contractVariationButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Variaciones de contratos" textAlignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets left="68.5" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="payrollCheckListButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Relación para control de nómina mensual">
+               <VBox.margin>
+                  <Insets left="68.5" top="10.0" />
+               </VBox.margin>
             </Button>
             <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="100.0" text="Salir" textAlignment="CENTER" textFill="#640000">
                <VBox.margin>

@@ -5,7 +5,7 @@ import gmoldes.domain.client.persistence.vo.ClientVO;
 
 public class MapperClientVODTO {
 
-    public ClientDTO mapClientVODTO(ClientVO clientVO) {
+    public static ClientDTO mapClientVODTO(ClientVO clientVO) {
 
             ClientDTO clientDTO = ClientDTO.create()
                     .withId(clientVO.getId())

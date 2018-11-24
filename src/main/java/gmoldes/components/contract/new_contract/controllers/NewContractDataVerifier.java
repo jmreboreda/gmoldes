@@ -52,13 +52,13 @@ public class NewContractDataVerifier {
             return false;
         }
 
-        if(contractData.getContractType().getIstemporal() != contractData.getContractDurationInput().radioButtonTemporalIsSelected()){
+        if(contractData.getContractType().getIsTemporal() != contractData.getContractDurationInput().radioButtonTemporalIsSelected()){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractVerifierConstants.DURATION_CONTRACT_SELECTED_DOES_NOT_MATCH);
             return false;
         }
 
-        if(contractData.getContractType().getIsFullWorkDay() != contractData.getWorkDayType().radioButtonFullWorkDayIsSelected()){
+        if(contractData.getContractType().getIsFullTime() != contractData.getWorkDayType().radioButtonFullWorkDayIsSelected()){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractVerifierConstants.WORKDAY_TYPE_SELECTED_DOES_NOT_MATCH);
             return false;
@@ -71,6 +71,12 @@ public class NewContractDataVerifier {
                         ContractVerifierConstants.INVALID_CONTRACT_DURATION);
                 return false;
             }
+        }
+
+        if(contractData.getWorkDayType().radioButtonPartialWorkDayIsSelected() && contractData.getWorkDayType().getHoursWorkWeek().equals("00:00")){
+            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
+                    ContractVerifierConstants.PARTIAL_WORK_DAY_WITHOUT_HOURS_WORK_WEEK);
+            return false;
         }
 
         if(!contractData.getHoursWorkWeek().equals(contractSchedule.getHoursWorkWeek())){

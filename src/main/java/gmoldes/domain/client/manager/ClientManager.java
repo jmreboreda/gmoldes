@@ -4,11 +4,10 @@ package gmoldes.domain.client.manager;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.timerecord.dto.TimeRecordClientDTO;
 import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
-import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class ClientManager {
             if(!contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours().equals("40:00")) {
                 Integer clientId = contractNewVersionDTO.getContractJsonData().getClientGMId();
                 clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-                ClientVO clientVO = clientDAO.findClientByClientId(clientId);
+                ClientVO clientVO = clientDAO.findClientById(clientId);
                 ClientDTO clientDTO = ClientDTO.create()
                         .withClientId(contractNewVersionDTO.getContractJsonData().getClientGMId())
                         .withPersonOrCompanyName(clientVO.getNom_rzsoc())
@@ -65,5 +64,13 @@ public class ClientManager {
             }
         }
         return clientDTOList;
+    }
+
+    public ClientVO findClientById(Integer id){
+        ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
+        ClientVO clientVO = clientDAO.findClientById(id);
+
+        return clientVO;
+
     }
 }

@@ -5,15 +5,15 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
+import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.ContractTypeNewDTO;
+import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.timerecord.dto.TimeRecordCandidateDataDTO;
 import gmoldes.domain.timerecord.dto.TimeRecordClientDTO;
-import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
@@ -39,7 +39,7 @@ import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TimeRecordDataNewContractVersion extends VBox {
+public class TimeRecordData extends VBox {
 
     private static final String TIME_RECORD_FXML = "/fxml/time_record/timerecord_data.fxml";
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
@@ -75,7 +75,7 @@ public class TimeRecordDataNewContractVersion extends VBox {
     @FXML
     private Button exitButton;
 
-    public TimeRecordDataNewContractVersion() {
+    public TimeRecordData() {
         this.parent = ViewLoader.load(this, TIME_RECORD_FXML);
     }
 
@@ -214,11 +214,20 @@ public class TimeRecordDataNewContractVersion extends VBox {
                     PersonDTO employee = retrievePersonByPersonId(employeeId);
                     String employeeNIF = Utilities.formatAsNIF(employee.getNifcif());
                     String employeeName = employee.getApellidos() + ", " + employee.getNom_rzsoc();
-                    String dateTo = contractNewVersionDTO.getExpectedEndDate() != null ? dateFormatter.format(contractNewVersionDTO.getExpectedEndDate()) : "";
+
+                    String dateTo;
+                    if(contractNewVersionDTO.getModificationDate() == null &&
+                            contractNewVersionDTO.getExpectedEndDate() == null){
+                        dateTo = null;
+
+                    }else{
+                        dateTo = contractNewVersionDTO.getModificationDate() == null ? dateFormatter.format(contractNewVersionDTO.getExpectedEndDate()) : dateFormatter.format(contractNewVersionDTO.getModificationDate());
+                    }
+
                     String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
 
                     ContractTypeController contractTypeController = new ContractTypeController();
-                    ContractTypeNewDTO contractTypeNewDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
+                    ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
 
                     TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
                             employeeName,
@@ -226,10 +235,11 @@ public class TimeRecordDataNewContractVersion extends VBox {
                             contractNewVersionDTO.getContractJsonData().getQuoteAccountCode(),
                             contractNewVersionDTO.getContractJsonData().getFullPartialWorkDay(),
                             contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours(),
-                            contractTypeNewDTO.getColloquial(),
+                            contractTypeDTO.getColloquial(),
                             dateFrom,
                             dateTo
                     );
+
                     candidates.add(dataCandidates);
                 }
             }
@@ -302,15 +312,16 @@ public class TimeRecordDataNewContractVersion extends VBox {
         Integer numberOfMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
         Integer numberOfYear = null;
 
-        try {
+        try{
 
             numberOfYear = Integer.parseInt(yearNumber.getText());
 
-        } catch (NumberFormatException excepcion) {
+        }catch (NumberFormatException e){
 
             yearNumber.setText(String.valueOf(LocalDate.now().getYear()));
             clientForTimeRecord.getSelectionModel().clearSelection();
-            return LocalDate.now();
+            return LocalDate.of(LocalDate.now().getYear(), numberOfMonth, 15);
+
         }
 
         return  LocalDate.of(numberOfYear, numberOfMonth, 15);

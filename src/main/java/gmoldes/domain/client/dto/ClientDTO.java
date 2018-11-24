@@ -139,7 +139,6 @@ public class ClientDTO {
         this.clientType = clientType;
     }
 
-    @Override
     public String toString() {
         return getPersonOrCompanyName();
     }

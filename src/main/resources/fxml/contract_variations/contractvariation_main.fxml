@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import gmoldes.components.contract.contract_variation.components.ContractVariationActionComponents?>
+<?import gmoldes.components.contract.contract_variation.components.ContractVariationHeader?>
+<?import gmoldes.components.contract.contract_variation.components.ContractVariationParts?>
+<?import javafx.scene.layout.VBox?>
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+      <ContractVariationHeader fx:id="contractVariationHeader"/>
+      <ContractVariationParts fx:id="contractVariationParts"/>
+      <ContractVariationActionComponents fx:id="contractVariationActionComponents"/>
+</fx:root>

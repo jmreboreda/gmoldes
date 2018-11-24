@@ -8,8 +8,11 @@ import java.util.Set;
 public class Client {
 
     Integer id;
+    Integer clientId;
+    Boolean isNaturalPerson;
+    Boolean isLegalPerson;
     String typeClient;
-    String taxIdentificationNumber;
+    String nifCif;
     Set<String> bussinessNames;
     String lastName1;
     String lastName2;
@@ -19,6 +22,5 @@ public class Client {
     Date dateFrom;
     Date dateTo;
     Date withoutActivity;
-
 
 }

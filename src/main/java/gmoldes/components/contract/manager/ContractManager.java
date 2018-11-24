@@ -1,8 +1,8 @@
 package gmoldes.components.contract.manager;
 
 
-import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
+import gmoldes.components.contract.initial_contract.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDTOVO;
@@ -18,8 +18,10 @@ import gmoldes.domain.contract.mapper.MapperInitialContractDTOVO;
 import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
 
 public class ContractManager {
 
@@ -126,6 +128,7 @@ public class ContractManager {
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInPeriod(initialDate, finalDate);
         for (InitialContractVO initialContractVO : initialContractVOList) {
             LocalDate notNullExpectedEndDate = initialContractVO.getExpectedEndDate() != null ? initialContractVO.getExpectedEndDate().toLocalDate() : null;
+            LocalDate notNullModificationDate = initialContractVO.getModificationDate() != null ? initialContractVO.getModificationDate().toLocalDate() : null;
             LocalDate notNUllEndingDate = (initialContractVO.getEndingDate() != null) ? initialContractVO.getEndingDate().toLocalDate() : null;
             if(initialContractVO.getContractJsonData().getClientGMId().equals(clientId)) {
                 ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
@@ -133,6 +136,7 @@ public class ContractManager {
                         .withContractNumber(initialContractVO.getContractNumber())
                         .withStartDate(initialContractVO.getStartDate().toLocalDate())
                         .withExpectedEndDate(notNullExpectedEndDate)
+                        .withModificationDate(notNullModificationDate)
                         .withEndingDate(notNUllEndingDate)
                         .withContractJsonData(initialContractVO.getContractJsonData())
                         .build();
@@ -145,6 +149,7 @@ public class ContractManager {
         List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationInPeriod(initialDate, finalDate);
         for (ContractVariationVO contractVariationVO : contractVariationVOList) {
             LocalDate notNullExpectedEndDate = contractVariationVO.getExpectedEndDate() != null ? contractVariationVO.getExpectedEndDate().toLocalDate(): null;
+            LocalDate notNullModificationDate = contractVariationVO.getModificationDate() != null ? contractVariationVO.getModificationDate().toLocalDate() : null;
             LocalDate notNullEndingDate = (contractVariationVO.getEndingDate() != null) ? contractVariationVO.getEndingDate().toLocalDate() : null;
             if(contractVariationVO.getContractJsonData().getClientGMId().equals(clientId)) {
                 ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
@@ -152,6 +157,7 @@ public class ContractManager {
                         .withContractNumber(contractVariationVO.getContractNumber())
                         .withStartDate(contractVariationVO.getStartDate().toLocalDate())
                         .withExpectedEndDate(notNullExpectedEndDate)
+                        .withModificationDate(notNullModificationDate)
                         .withEndingDate(notNullEndingDate)
                         .withContractJsonData(contractVariationVO.getContractJsonData())
                         .build();
@@ -182,13 +188,15 @@ public class ContractManager {
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInPeriod(initialDate, finalDate);
         for (InitialContractVO initialContractVO : initialContractVOList) {
             LocalDate notNullExpectedEndDate = initialContractVO.getExpectedEndDate() != null ? initialContractVO.getExpectedEndDate().toLocalDate() : null;
-            LocalDate notNUllEndingDate = (initialContractVO.getEndingDate() != null) ? initialContractVO.getEndingDate().toLocalDate() : null;
+            LocalDate notNullModificationDate = initialContractVO.getModificationDate() != null ? initialContractVO.getModificationDate().toLocalDate() : null;
+            LocalDate notNullEndingDate = (initialContractVO.getEndingDate() != null) ? initialContractVO.getEndingDate().toLocalDate() : null;
                 ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                         .withId(initialContractVO.getId())
                         .withContractNumber(initialContractVO.getContractNumber())
                         .withStartDate(initialContractVO.getStartDate().toLocalDate())
                         .withExpectedEndDate(notNullExpectedEndDate)
-                        .withEndingDate(notNUllEndingDate)
+                        .withModificationDate(notNullModificationDate)
+                        .withEndingDate(notNullEndingDate)
                         .withContractJsonData(initialContractVO.getContractJsonData())
                         .build();
 
@@ -199,12 +207,14 @@ public class ContractManager {
         List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationInPeriod(initialDate, finalDate);
         for (ContractVariationVO contractVariationVO : contractVariationVOList) {
             LocalDate notNullExpectedEndDate = contractVariationVO.getExpectedEndDate() != null ? contractVariationVO.getExpectedEndDate().toLocalDate(): null;
+            LocalDate notNullModificationDate = contractVariationVO.getModificationDate() != null ? contractVariationVO.getModificationDate().toLocalDate(): null;
             LocalDate notNullEndingDate = (contractVariationVO.getEndingDate() != null) ? contractVariationVO.getEndingDate().toLocalDate() : null;
                 ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                         .withId(contractVariationVO.getId())
                         .withContractNumber(contractVariationVO.getContractNumber())
                         .withStartDate(contractVariationVO.getStartDate().toLocalDate())
                         .withExpectedEndDate(notNullExpectedEndDate)
+                        .withModificationDate(notNullModificationDate)
                         .withEndingDate(notNullEndingDate)
                         .withContractJsonData(contractVariationVO.getContractJsonData())
                         .build();
@@ -261,12 +271,17 @@ public class ContractManager {
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractSorted();
         for (InitialContractVO initialContractVO : initialContractVOList) {
+            LocalDate expectedEndDate = initialContractVO.getExpectedEndDate() != null ? initialContractVO.getExpectedEndDate().toLocalDate() : null;
+            LocalDate modificationEndDate = initialContractVO.getModificationDate() != null ? initialContractVO.getModificationDate().toLocalDate() : null;
+            LocalDate endingDate = initialContractVO.getEndingDate() != null ? initialContractVO.getEndingDate().toLocalDate() : null;
+
             ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                     .withContractNumber(initialContractVO.getContractNumber())
                     .withVariationType(initialContractVO.getVariationType())
                     .withStartDate(initialContractVO.getStartDate().toLocalDate())
-                    .withExpectedEndDate(initialContractVO.getExpectedEndDate().toLocalDate())
-                    .withEndingDate(initialContractVO.getEndingDate().toLocalDate())
+                    .withExpectedEndDate(expectedEndDate)
+                    .withModificationDate(modificationEndDate)
+                    .withEndingDate(endingDate)
                     .build();
 
             initialContractDTOList.add(contractNewVersionDTO);
@@ -286,6 +301,7 @@ public class ContractManager {
                 .withVariationType(initialContractVO.getVariationType())
                 .withStartDate(initialContractVO.getStartDate().toLocalDate())
                 .withExpectedEndDate(initialContractVO.getExpectedEndDate().toLocalDate())
+                .withModificationDate(initialContractVO.getModificationDate().toLocalDate())
                 .withEndingDate(initialContractVO.getEndingDate().toLocalDate())
                 .withContractJsonData(initialContractVO.getContractJsonData())
                 .build();
@@ -296,7 +312,7 @@ public class ContractManager {
     public List<ContractVariationDTO> findAllContractVariationByContractNumber(Integer contractNumber){
         List<ContractVariationDTO> contractVariationDTOList = new ArrayList<>();
         ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
-        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationByContractNumber(contractNumber);
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationsByContractNumber(contractNumber);
         MapperContractVariationVODTO mapper = new MapperContractVariationVODTO();
 
         for(ContractVariationVO contractVariationVO : contractVariationVOList) {
@@ -306,6 +322,7 @@ public class ContractManager {
                     .withVariationType(contractVariationVO.getVariationType())
                     .withStartDate(contractVariationVO.getStartDate().toLocalDate())
                     .withExpectedEndDate(contractVariationVO.getExpectedEndDate().toLocalDate())
+                    .withModificationDate(contractVariationVO.getModificationDate().toLocalDate())
                     .withEndingDate(contractVariationVO.getEndingDate().toLocalDate())
                     .withContractJsonData(contractVariationVO.getContractJsonData())
 
@@ -315,5 +332,41 @@ public class ContractManager {
         }
 
         return contractVariationDTOList;
+    }
+
+    public List<ContractNewVersionDTO> findAllContractsInForceNow(){
+
+        // Initial contract
+        List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
+        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInForceAtDate(LocalDate.now());
+        for(InitialContractVO initialContractVO : initialContractVOList){
+            ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
+                    .withStartDate(initialContractVO.getStartDate().toLocalDate())
+                    .withExpectedEndDate(initialContractVO.getExpectedEndDate().toLocalDate())
+                    .withModificationDate(initialContractVO.getModificationDate().toLocalDate())
+                    .withEndingDate(initialContractVO.getEndingDate().toLocalDate())
+                    .withContractJsonData(initialContractVO.getContractJsonData())
+                    .build();
+
+            contractNewVersionDTOList.add(contractNewVersionDTO);
+        }
+
+        //Contract variation
+        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllDataForContractVariationsInForceAtDate(LocalDate.now());
+        for(ContractVariationVO contractVariationVO : contractVariationVOList){
+            ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
+                    .withStartDate(contractVariationVO.getStartDate().toLocalDate())
+                    .withExpectedEndDate(contractVariationVO.getExpectedEndDate().toLocalDate())
+                    .withModificationDate(contractVariationVO.getModificationDate().toLocalDate())
+                    .withEndingDate(contractVariationVO.getEndingDate().toLocalDate())
+                    .withContractJsonData(contractVariationVO.getContractJsonData())
+                    .build();
+
+            contractNewVersionDTOList.add(contractNewVersionDTO);
+        }
+
+        return contractNewVersionDTOList;
     }
 }

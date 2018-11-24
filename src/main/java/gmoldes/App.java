@@ -7,15 +7,19 @@ import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.payroll_checklist.PayrollCheckList;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.OldContractsToJSONUtility;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
-
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -56,18 +60,9 @@ public class App extends Application {
 //            }
 //        }
 
-//        Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
-//        String clipboardData = "";
+//        PayrollCheckList payrollCheckList = new PayrollCheckList();
+//        payrollCheckList.loadClipboard(Month.NOVEMBER, 2018);
 
-//        ContractManager manager = new ContractManager();
-//        List<InitialContractDTO> contractList = manager.findAllInitialContractSorted();
-//        for(InitialContractDTO contract : contractList){
-//            System.out.println(contract.toMyString());
-//            clipboardData = clipboardData + contract.toMyString();
-//        }
-
-//        StringSelection ss = new StringSelection(clipboardData);
-//        cb.setContents(ss, ss);
 
         initialControlProcesses(primaryStage);
 

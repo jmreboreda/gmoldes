@@ -1,8 +1,9 @@
 package gmoldes.components.contract.manager;
 
-import gmoldes.components.contract.new_contract.persistence.dao.ContractTypeNewDAO;
+import gmoldes.components.contract.new_contract.persistence.dao.ContractTypeDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO;
-import gmoldes.domain.contract.dto.ContractTypeNewDTO;
+import gmoldes.domain.contract.dto.ContractTypeDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,42 +12,46 @@ public class ContractTypeManager {
     public ContractTypeManager() {
     }
 
-    public List<ContractTypeNewDTO> findAllContractTypes(){
-        ContractTypeNewDAO contractTypeNewDAO = ContractTypeNewDAO.ContractTypeNewDAOFactory.getInstance();
-        List<ContractTypeVO> contractTypeVOList = contractTypeNewDAO.findAllContractTypes();
+    public List<ContractTypeDTO> findAllSelectableContractTypes(){
+        ContractTypeDAO contractTypeDAO = ContractTypeDAO.ContractTypeDAOFactory.getInstance();
+        List<ContractTypeVO> contractTypeVOList = contractTypeDAO.findAllContractTypes();
 
-        List<ContractTypeNewDTO> contractTypeNewDTOList = new ArrayList<>();
+        List<ContractTypeDTO> contractTypeDTOList = new ArrayList<>();
         for(ContractTypeVO contractTypeVO : contractTypeVOList){
-            ContractTypeNewDTO contractTypeNewDTO = new ContractTypeNewDTO(
-                    contractTypeVO.getId(),
-                    contractTypeVO.getContractcode(),
-                    contractTypeVO.getContractdescription(),
-                    contractTypeVO.getColloquial(),
-                    contractTypeVO.getIsinitialcontract(),
-                    contractTypeVO.getIsTemporal(),
-                    contractTypeVO.getIspartialtime(),
-                    contractTypeVO.getIsfulltime(),
-                    contractTypeVO.getIsMenuSelectable()
-            );
+            ContractTypeDTO contractTypeDTO = ContractTypeDTO.create()
+                    .withId(contractTypeVO.getId())
+                    .withContractCode(contractTypeVO.getContractCode())
+                    .withContractDescription(contractTypeVO.getContractDescription())
+                    .withColloquial(contractTypeVO.getColloquial())
+                    .withIsInitialContract(contractTypeVO.getIsInitialContract())
+                    .withIsTemporal(contractTypeVO.getIsTemporal())
+                    .withIsUndefined(contractTypeVO.getIsUndefined())
+                    .withIsPartialTime(contractTypeVO.getIsPartialTime())
+                    .withIsFullTime(contractTypeVO.getIsFullTime())
+                    .withIsMenuSelectable(contractTypeVO.getIsMenuSelectable())
+                    .build();
 
-            contractTypeNewDTOList.add(contractTypeNewDTO);
+            contractTypeDTOList.add(contractTypeDTO);
         }
 
-        return contractTypeNewDTOList;
+        return contractTypeDTOList;
     }
 
-    public ContractTypeNewDTO findContractTypeById(Integer contractTypeId){
-        ContractTypeNewDAO contractTypeNewDAO = ContractTypeNewDAO.ContractTypeNewDAOFactory.getInstance();
-        ContractTypeVO contractTypeVO = contractTypeNewDAO.findContractTypeById(contractTypeId);
+    public ContractTypeDTO findContractTypeById(Integer contractTypeId){
+        ContractTypeDAO contractTypeDAO = ContractTypeDAO.ContractTypeDAOFactory.getInstance();
+        ContractTypeVO contractTypeVO = contractTypeDAO.findContractTypeById(contractTypeId);
 
-        return new ContractTypeNewDTO(contractTypeVO.getId(),
-                contractTypeVO.getContractcode(),
-                contractTypeVO.getContractdescription(),
-                contractTypeVO.getColloquial(),
-                contractTypeVO.getIsinitialcontract(),
-                contractTypeVO.getIsTemporal(),
-                contractTypeVO.getIspartialtime(),
-                contractTypeVO.getIsfulltime(),
-                contractTypeVO.getIsMenuSelectable());
+        return ContractTypeDTO.create()
+                .withId(contractTypeVO.getId())
+                .withContractCode(contractTypeVO.getContractCode())
+                .withContractDescription(contractTypeVO.getContractDescription())
+                .withColloquial(contractTypeVO.getColloquial())
+                .withIsInitialContract(contractTypeVO.getIsInitialContract())
+                .withIsTemporal(contractTypeVO.getIsTemporal())
+                .withIsUndefined(contractTypeVO.getIsUndefined())
+                .withIsPartialTime(contractTypeVO.getIsPartialTime())
+                .withIsFullTime(contractTypeVO.getIsFullTime())
+                .withIsMenuSelectable(contractTypeVO.getIsMenuSelectable())
+                .build();
     }
 }

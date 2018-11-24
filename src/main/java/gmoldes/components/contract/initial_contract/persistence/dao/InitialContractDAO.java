@@ -4,6 +4,7 @@ import gmoldes.components.contract.initial_contract.persistence.vo.InitialContra
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.sql.Date;
@@ -78,6 +79,35 @@ public class InitialContractDAO {
 
         query.setParameter("codeInitialDate", initialUtilDate);
         query.setParameter("codeFinalDate", finallUtilDate);
+
+        return  query.getResultList();
+    }
+
+    public List<InitialContractVO> findAllInitialContractInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD, InitialContractVO.class);
+
+        java.util.Date initialUtilDate = Date.from(initialDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.util.Date finallUtilDate = Date.from(finalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        query.setParameter("codeInitialDate", initialUtilDate);
+        query.setParameter("codeFinalDate", finallUtilDate);
+
+        return  query.getResultList();
+    }
+
+    public List<InitialContractVO> findAllInitialContractInForceAtDate(LocalDate date){
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_DATA_FOR_INITIAL_CONTRACT_IN_FORCE_AT_DATE, InitialContractVO.class);
+
+        java.util.Date atDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        query.setParameter("date", atDate);
+
+        return  query.getResultList();
+
+    }
+
+    public List<InitialContractVO> findAllInitialContractsInForceNowByClient(Integer clientId){
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID, InitialContractVO.class);
+        query.setParameter("clientId", clientId);
 
         return  query.getResultList();
 

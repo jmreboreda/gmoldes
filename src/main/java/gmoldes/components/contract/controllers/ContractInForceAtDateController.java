@@ -23,6 +23,7 @@ public class ContractInForceAtDateController {
                 .withVariationType(contractNewVersionDTO.getVariationType())
                 .withStartDate(contractNewVersionDTO.getStartDate())
                 .withExpectedEndDate((contractNewVersionDTO.getExpectedEndDate()))
+                .withModificationDate(contractNewVersionDTO.getModificationDate())
                 .withEndingDate(contractNewVersionDTO.getEndingDate())
                 .withContractJsonData(contractNewVersionDTO.getContractJsonData())
                 .build();
@@ -36,6 +37,7 @@ public class ContractInForceAtDateController {
                     .withVariationType(contractVariationDTO.getVariationType())
                     .withStartDate(contractVariationDTO.getStartDate())
                     .withExpectedEndDate((contractVariationDTO.getExpectedEndDate()))
+                    .withModificationDate(contractVariationDTO.getModificationDate())
                     .withEndingDate(contractVariationDTO.getEndingDate())
                     .withContractJsonData(contractVariationDTO.getContractJsonData())
                     .build();

@@ -1,7 +1,7 @@
 package gmoldes.utilities;
 
-import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
+import gmoldes.components.contract.initial_contract.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.manager.ContractManager;
@@ -93,7 +93,7 @@ public class OldContractsToJSONUtility {
                         .withPrivateNotes(contractDTO.getPrivateNotes())
                         .build();
 
-                ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+                gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO contractVariationDAO = gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO.ContractVariationDAOFactory.getInstance();
                 ContractVariationVO contractVariationVO = new ContractVariationVO();
 
                 contractVariationVO.setContractNumber(contractDTO.getContractNumber());

@@ -2,7 +2,6 @@ package gmoldes.components.contract.contract_variation.persistence.dao;
 
 
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
-import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -67,6 +66,16 @@ public class ContractVariationDAO {
 
         query.setParameter("codeInitialDate", initialUtilDate);
         query.setParameter("codeFinalDate", finallUtilDate);
+
+        return  query.getResultList();
+
+    }
+
+    public List<ContractVariationVO> findAllContractVariationsInForceAtDate(LocalDate date){
+        TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_DATA_FOR_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE, ContractVariationVO.class);
+
+        java.util.Date atDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        query.setParameter("date", atDate);
 
         return  query.getResultList();
 
