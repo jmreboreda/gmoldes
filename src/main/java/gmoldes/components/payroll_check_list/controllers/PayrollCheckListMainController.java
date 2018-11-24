@@ -47,22 +47,6 @@ public class PayrollCheckListMainController extends VBox {
         payrollCheckListAction.setOnExitButton(this::onExit);
         payrollCheckListAction.setOnClipboardButton(this::onCopyToClipboard);
 
-        this.payrollCheckListData.getMonth().setItems(FXCollections.observableArrayList(
-                Month.JANUARY,
-                Month.FEBRUARY,
-                Month.MARCH,
-                Month.APRIL,
-                Month.MAY,
-                Month.JUNE,
-                Month.JULY,
-                Month.AUGUST,
-                Month.SEPTEMBER,
-                Month.OCTOBER,
-                Month.NOVEMBER,
-                Month.DECEMBER
-                )
-        );
-
         this.payrollCheckListData.getYear().setText(Integer.toString(LocalDate.now().getYear()));
     }
 
@@ -82,7 +66,7 @@ public class PayrollCheckListMainController extends VBox {
 
     private void onMonthChanged(ActionEvent event){
 
-        Month month = payrollCheckListData.getMonth().getSelectionModel().getSelectedItem();
+        Month month = payrollCheckListData.getMonth().getSelectionModel().getSelectedItem().getMonth();
         Integer year = Integer.parseInt(payrollCheckListData.getYear().getText());
 
         PayrollCheckList payrollCheckList = new PayrollCheckList();
@@ -90,6 +74,9 @@ public class PayrollCheckListMainController extends VBox {
 
         ObservableList<PayrollCheckListDTO> payrollCheckListDTOS = FXCollections.observableArrayList(payrollCheckListDTOList);
         payrollCheckListData.getPayrollTable().setItems(payrollCheckListDTOS);
+
+        payrollCheckListAction.getClipboardCopyButton().setDisable(false);
+
     }
 
     private void onExit(MouseEvent event){
@@ -100,7 +87,9 @@ public class PayrollCheckListMainController extends VBox {
     private void onCopyToClipboard(MouseEvent event){
 
         PayrollCheckList payrollCheckList = new PayrollCheckList();
-        payrollCheckList.loadClipboard(payrollCheckListData.getMonth().getSelectionModel().getSelectedItem(), Integer.parseInt(payrollCheckListData.getYear().getText()));
+        payrollCheckList.loadClipboard(payrollCheckListData.getMonth().getSelectionModel().getSelectedItem().getMonth(), Integer.parseInt(payrollCheckListData.getYear().getText()));
+
+        payrollCheckListAction.getClipboardCopyButton().setDisable(true);
     }
 
 
