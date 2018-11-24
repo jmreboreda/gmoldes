@@ -60,8 +60,8 @@ public class App extends Application {
 //            }
 //        }
 
-        PayrollCheckList payrollCheckList = new PayrollCheckList();
-        payrollCheckList.loadClipboard(Month.NOVEMBER, 2018);
+//        PayrollCheckList payrollCheckList = new PayrollCheckList();
+//        payrollCheckList.loadClipboard(Month.NOVEMBER, 2018);
 
 
         initialControlProcesses(primaryStage);

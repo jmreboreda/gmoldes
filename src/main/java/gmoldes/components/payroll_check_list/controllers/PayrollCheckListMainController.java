@@ -5,7 +5,9 @@ import gmoldes.components.payroll_check_list.components.PayrollCheckListAction;
 import gmoldes.components.payroll_check_list.components.PayrollCheckListData;
 import gmoldes.components.payroll_check_list.components.PayrollCheckListHeader;
 import gmoldes.domain.payroll_checklist.PayrollCheckList;
+import gmoldes.domain.payroll_checklist.dto.PayrollCheckListDTO;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -14,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class PayrollCheckListMainController extends VBox {
@@ -63,13 +66,14 @@ public class PayrollCheckListMainController extends VBox {
 
     private void onMonthChanged(ActionEvent event){
 
+        Month month = payrollCheckListData.getMonth().getSelectionModel().getSelectedItem();
+        Integer year = Integer.parseInt(payrollCheckListData.getYear().getText());
+
         PayrollCheckList payrollCheckList = new PayrollCheckList();
+        List<PayrollCheckListDTO> payrollCheckListDTOList = payrollCheckList.retrieveAllContractInForceInPeriod(month, year);
 
-
-
-
-
-
+        ObservableList<PayrollCheckListDTO> payrollCheckListDTOS = FXCollections.observableArrayList(payrollCheckListDTOList);
+        payrollCheckListData.getPayrollTable().setItems(payrollCheckListDTOS);
     }
 
     private void onExit(MouseEvent event){

@@ -40,8 +40,8 @@
       </HBox>
       <TableView fx:id="payrollTable">
         <columns>
-          <TableColumn fx:id="columnEmployer" maxWidth="-1.0" minWidth="300.0" prefWidth="-1.0" resizable="false" text="Cliente GM - Empleador" />
-          <TableColumn fx:id="columnWorker" maxWidth="-1.0" minWidth="300.0" prefWidth="-1.0" resizable="false" text="Empleado" />
+          <TableColumn fx:id="columnEmployer" maxWidth="-1.0" minWidth="345.0" prefWidth="-1.0" resizable="false" text="Cliente GM - Empleador" />
+          <TableColumn fx:id="columnWorker" maxWidth="-1.0" minWidth="345.0" prefWidth="-1.0" resizable="false" text="Empleado" />
         </columns>
          <VBox.margin>
             <Insets left="10.0" right="10.0" top="10.0" />

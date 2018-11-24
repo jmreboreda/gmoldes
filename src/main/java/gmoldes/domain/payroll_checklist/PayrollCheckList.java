@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 
 public class PayrollCheckList {
 
-    private List<String> employerFullNameList;
-    private List<String>  workerFullNameList;
+    private String employerFullName;
+    private String  workerFullName;
     private Month month;
     private Integer year;
     private Clipboard clipboard;
@@ -29,25 +29,25 @@ public class PayrollCheckList {
         clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     }
 
-    public PayrollCheckList(List<String> employerFullNameList, List<String> workerFullNameList) {
-        this.employerFullNameList = employerFullNameList;
-        this.workerFullNameList = workerFullNameList;
+    public PayrollCheckList(String employerFullNameList, String workerFullNameList) {
+        this.employerFullName = employerFullNameList;
+        this.workerFullName = workerFullNameList;
     }
 
-    public List<String> getEmployerFullNameList() {
-        return employerFullNameList;
+    public String getEmployerFullNameList() {
+        return employerFullName;
     }
 
-    public void setEmployerFullNameList(List<String> employerFullNameList) {
-        this.employerFullNameList = employerFullNameList;
+    public void setEmployerFullNameList(String employerFullNameList) {
+        this.employerFullName = employerFullNameList;
     }
 
-    public List<String> getWorkerFullNameList() {
-        return workerFullNameList;
+    public String getWorkerFullNameList() {
+        return workerFullName;
     }
 
-    public void setWorkerFullNameList(List<String> workerFullNameList) {
-        this.workerFullNameList = workerFullNameList;
+    public void setWorkerFullNameList(String workerFullNameList) {
+        this.workerFullName = workerFullNameList;
     }
 
     public Month getMonth() {
@@ -67,7 +67,21 @@ public class PayrollCheckList {
     }
 
     public void loadClipboard(Month month, Integer year){
+
         String clipboardData = "";
+
+        List<PayrollCheckListDTO> payrollCheckListDTOList = retrieveAllContractInForceInPeriod(month, year);
+        for(PayrollCheckListDTO payrollCheckListDTO : payrollCheckListDTOList){
+
+            clipboardData = clipboardData + payrollCheckListDTO.getEmployerFullName() + ";" + payrollCheckListDTO.getWorkerFullName() + "\n";
+        }
+
+        StringSelection ss = new StringSelection(clipboardData);
+        clipboard.setContents(ss, ss);
+    }
+
+    public List<PayrollCheckListDTO> retrieveAllContractInForceInPeriod(Month month, Integer year){
+
         List<PayrollCheckListDTO> payrollCheckListDTOList = new ArrayList<>();
         ApplicationMainController applicationMainController = new ApplicationMainController();
         List<ContractNewVersionDTO> contractNewVersionDTOList = findAllContractInForceInPeriod(month, year);
@@ -79,21 +93,11 @@ public class PayrollCheckList {
 
             PayrollCheckListDTO payrollCheckListDTO = new PayrollCheckListDTO(employerName, workerName);
             payrollCheckListDTOList.add(payrollCheckListDTO);
-
         }
 
-        List<PayrollCheckListDTO> payrollCheckListDTOList1Sorted = payrollCheckListDTOList
+        return payrollCheckListDTOList
                 .stream()
                 .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName)).collect(Collectors.toList());
-
-        for(PayrollCheckListDTO payrollCheckListDTO : payrollCheckListDTOList1Sorted){
-
-            clipboardData = clipboardData + payrollCheckListDTO.getEmployerFullName() + ";" + payrollCheckListDTO.getWorkerFullName() + "\n";
-
-        }
-
-        StringSelection ss = new StringSelection(clipboardData);
-        clipboard.setContents(ss, ss);
     }
 
     private List<ContractNewVersionDTO> findAllContractInForceInPeriod(Month month, Integer year){

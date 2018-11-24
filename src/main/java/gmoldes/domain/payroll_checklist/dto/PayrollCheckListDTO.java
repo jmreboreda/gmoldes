@@ -2,8 +2,11 @@ package gmoldes.domain.payroll_checklist.dto;
 
 public class PayrollCheckListDTO {
 
-    String employerFullName;
-    String workerFullName;
+    private String employerFullName;
+    private String workerFullName;
+
+    public PayrollCheckListDTO() {
+    }
 
     public PayrollCheckListDTO(String employerFullName, String workerFullName) {
         this.employerFullName = employerFullName;
