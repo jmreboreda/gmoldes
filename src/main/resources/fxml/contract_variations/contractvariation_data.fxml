@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox minHeight="300.0">
@@ -61,28 +60,28 @@
             </HBox>
             <HBox>
                <children>
-                  <TextField fx:id="contractNumber" alignment="CENTER" editable="false" prefWidth="90.0">
+                  <TextField fx:id="contractNumber" alignment="CENTER" editable="false" prefWidth="90.0" style="-fx-text-fill: #971e11;">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <TextField fx:id="dateFrom" alignment="CENTER" editable="false" prefWidth="120.0">
+                  <TextField fx:id="dateFrom" alignment="CENTER" editable="false" prefWidth="120.0" style="-fx-text-fill: #971e11;">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <TextField fx:id="dateTo" alignment="CENTER" editable="false" prefWidth="120.0">
+                  <TextField fx:id="dateTo" alignment="CENTER" editable="false" prefWidth="120.0" style="-fx-text-fill: #971e11;">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <TextField fx:id="contractType" editable="false" minWidth="350.0" />
-                  <TextField fx:id="contractDuration" prefWidth="125.0">
+                  <TextField fx:id="contractType" editable="false" minWidth="350.0" style="-fx-text-fill: #971e11;" />
+                  <TextField fx:id="contractDuration" prefWidth="125.0" style="-fx-text-fill: #971e11;">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <TextField fx:id="contractPartialFullTime" prefWidth="200.0">
+                  <TextField fx:id="contractPartialFullTime" prefWidth="200.0" style="-fx-text-fill: #971e11;">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
@@ -94,23 +93,28 @@
             </HBox>
             <HBox>
                <children>
-                  <Label prefHeight="26.0" text="Última variación registrada para este contrato">
+                  <Label prefHeight="26.0" text="Última variación en este contrato">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="lastVariationDescription" minWidth="550.0" />
+                  <TextField fx:id="lastVariationDescription" minWidth="652.0" style="-fx-text-fill: #971e11;" />
                   <Label prefHeight="26.0" text="Fecha">
                      <HBox.margin>
                         <Insets left="15.0" right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="lastVariationDate" maxWidth="100.0" />
+                  <TextField fx:id="lastVariationDate" alignment="CENTER" maxWidth="100.0" style="-fx-text-fill: #971e11;" />
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
             </HBox>
+            <Separator>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Separator>
          </children>
       </VBox>
    </children>

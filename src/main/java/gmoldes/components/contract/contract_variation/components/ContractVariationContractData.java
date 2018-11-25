@@ -111,6 +111,8 @@ public class ContractVariationContractData extends VBox {
         getContractType().setText("");
         getContractDuration().setText("");
         getContractPartialFullTime().setText("");
+        getLastVariationDescription().setText("");
+        getLastVariationDate().setText("");
     }
 
     public void setAllContractData(ContractFullDataDTO contractFullDataDTO){
@@ -132,5 +134,8 @@ public class ContractVariationContractData extends VBox {
                 contractFullDataDTO.getContractNewVersion().getContractJsonData().getWeeklyWorkHours() + "]";
         this.getContractPartialFullTime().setText(partialFull);
 
+        this.getLastVariationDescription().setText(contractFullDataDTO.getTypesContractVariationsDTO().getVariation_description());
+
+        this.getLastVariationDate().setText(contractFullDataDTO.getContractNewVersion().getStartDate().format(formatter));
     }
 }

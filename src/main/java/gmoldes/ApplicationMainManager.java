@@ -6,18 +6,18 @@ import gmoldes.components.contract.initial_contract.persistence.dao.InitialContr
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.new_contract.mapper.MapperContractTypeVODTO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractTypeDAO;
+import gmoldes.components.contract.new_contract.persistence.dao.TypesContractVariationsDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO;
+import gmoldes.components.contract.new_contract.persistence.vo.TypesContractVariationsVO;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.manager.ClientManager;
 import gmoldes.domain.client.mapper.MapperClientVODTO;
 import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
-import gmoldes.domain.contract.dto.ContractFullDataDTO;
-import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.ContractTypeDTO;
-import gmoldes.domain.contract.dto.InitialContractDTO;
+import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.MapperInitialContractDTOToContractNewVersionDTO;
 import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
+import gmoldes.domain.contract.mapper.MapperTypesContractVariationsVODTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.mapper.MapperPersonVODTO;
 import gmoldes.domain.person.persistence.dao.PersonDAO;
@@ -104,12 +104,15 @@ public class ApplicationMainManager {
 
                 ContractTypeDTO contractTypeDTO = retrieveContractTypeById(initialContractVO.getContractJsonData().getContractType());
 
+                TypesContractVariationsDTO typesContractVariationsDTO = retrieveTypesContractVariations(initialContractVO.getVariationType());
+
                 ContractFullDataDTO initialContractFullDataDTO = ContractFullDataDTO.create()
                         .withEmployer(clientDTO)
                         .withEmployee(employeeDTO)
                         .withInitialContractDate(initialContractDate)
                         .withContractNewVersionDTO(contractNewVersionDTO)
                         .withContractType(contractTypeDTO)
+                        .withTypesContractVariationsDTO(typesContractVariationsDTO)
                         .build();
 
                 contractFullDataDTOList.add(initialContractFullDataDTO);
@@ -142,12 +145,15 @@ public class ApplicationMainManager {
 
                 ContractTypeDTO contractTypeDTO = retrieveContractTypeById(contractVariationVO.getContractJsonData().getContractType());
 
+                TypesContractVariationsDTO typesContractVariationsDTO = retrieveTypesContractVariations(contractVariationVO.getVariationType());
+
                 ContractFullDataDTO contractVariationFullDataDTO = ContractFullDataDTO.create()
                         .withEmployer(clientDTO)
                         .withEmployee(employeeDTO)
                         .withInitialContractDate(initialContractDate)
                         .withContractNewVersionDTO(contractNewVersionDTO)
                         .withContractType(contractTypeDTO)
+                        .withTypesContractVariationsDTO(typesContractVariationsDTO)
                         .build();
 
                 contractFullDataDTOList.add(contractVariationFullDataDTO);
@@ -188,5 +194,12 @@ public class ApplicationMainManager {
         ContractTypeVO contractTypeVO = contractTypeDAO.findContractTypeById(contractTypeId);
 
         return MapperContractTypeVODTO.mapContractTypeVODTO(contractTypeVO);
+    }
+
+    private TypesContractVariationsDTO retrieveTypesContractVariations(Integer variationType){
+        TypesContractVariationsDAO typesContractVariationsDAO = TypesContractVariationsDAO.TypesContractVariationsDAOFactory.getInstance();
+        TypesContractVariationsVO typesContractVariationsDTO = typesContractVariationsDAO.findTypesContractVariationsById(variationType);
+
+        return MapperTypesContractVariationsVODTO.mapTypesContractVariationsVODTO(typesContractVariationsDTO);
     }
 }

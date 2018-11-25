@@ -12,18 +12,22 @@ public class ContractFullDataDTO {
     private LocalDate initialContractDate;
     private ContractNewVersionDTO contractNewVersion;
     private ContractTypeDTO contractType;
+    private TypesContractVariationsDTO typesContractVariationsDTO;
 
     public ContractFullDataDTO(ClientDTO employer,
                                PersonDTO employee,
                                LocalDate initialContractDate,
                                ContractNewVersionDTO contractNewVersion,
-                               ContractTypeDTO contractType) {
+                               ContractTypeDTO contractType,
+                               TypesContractVariationsDTO typesContractVariationsDTO) {
 
         this.employer = employer;
         this.employee = employee;
         this.initialContractDate = initialContractDate;
         this.contractNewVersion = contractNewVersion;
         this.contractType = contractType;
+        this.typesContractVariationsDTO = typesContractVariationsDTO;
+
     }
 
     public ClientDTO getEmployer() {
@@ -66,6 +70,14 @@ public class ContractFullDataDTO {
         this.contractType = contractType;
     }
 
+    public TypesContractVariationsDTO getTypesContractVariationsDTO() {
+        return typesContractVariationsDTO;
+    }
+
+    public void setTypesContractVariationsDTO(TypesContractVariationsDTO typesContractVariationsDTO) {
+        this.typesContractVariationsDTO = typesContractVariationsDTO;
+    }
+
     public String toString(){
 //        DecimalFormat formatter = new DecimalFormat("0000");
 //        "[Contrato GM: " + formatter.format(getContractNewVersion().getContractNumber()) + "] " +
@@ -85,6 +97,7 @@ public class ContractFullDataDTO {
         private LocalDate initialContractDate;
         private ContractNewVersionDTO contractNewVersion;
         private ContractTypeDTO contractType;
+        private TypesContractVariationsDTO typesContractVariationsDTO;
 
         public ContractFullDataDTOBuilder withEmployer(ClientDTO employer) {
             this.employer = employer;
@@ -111,8 +124,13 @@ public class ContractFullDataDTO {
             return this;
         }
 
+        public ContractFullDataDTOBuilder withTypesContractVariationsDTO(TypesContractVariationsDTO typesContractVariationsDTO){
+            this.typesContractVariationsDTO = typesContractVariationsDTO;
+            return this;
+        }
+
         public ContractFullDataDTO build() {
-            return new ContractFullDataDTO(this.employer, this.employee, this.initialContractDate, this.contractNewVersion, this.contractType);
+            return new ContractFullDataDTO(this.employer, this.employee, this.initialContractDate, this.contractNewVersion, this.contractType, this.typesContractVariationsDTO);
         }
     }
 }

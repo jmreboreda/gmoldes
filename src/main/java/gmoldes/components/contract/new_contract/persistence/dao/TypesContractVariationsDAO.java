@@ -41,4 +41,12 @@ public class TypesContractVariationsDAO {
 
         return (TypesContractVariationsVO) query.getSingleResult();
     }
+
+    public TypesContractVariationsVO findTypesContractVariationsById(Integer id){
+
+        Query query = session.createNamedQuery(TypesContractVariationsVO.FIND_TYPES_CONTRACT_VARIATIONS_BY_ID, TypesContractVariationsVO.class);
+        query.setParameter("code", id);
+
+        return (TypesContractVariationsVO) query.getSingleResult();
+    }
 }
