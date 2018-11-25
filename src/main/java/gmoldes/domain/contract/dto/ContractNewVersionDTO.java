@@ -9,6 +9,7 @@ public class ContractNewVersionDTO {
     private Integer id;
     private Integer contractNumber;
     private Integer variationType;
+    private LocalDate initialContractDate;
     private LocalDate startDate;
     private LocalDate expectedEndDate;
     private LocalDate modificationDate;
@@ -21,6 +22,7 @@ public class ContractNewVersionDTO {
     public ContractNewVersionDTO(Integer id,
                                  Integer contractNumber,
                                  Integer variationType,
+                                 LocalDate initialContractDate,
                                  LocalDate startDate,
                                  LocalDate expectedEndDate,
                                  LocalDate modificationDate,
@@ -29,6 +31,7 @@ public class ContractNewVersionDTO {
         this.id = id;
         this.contractNumber = contractNumber;
         this.variationType = variationType;
+        this.initialContractDate = initialContractDate;
         this.startDate = startDate;
         this.expectedEndDate = expectedEndDate;
         this.modificationDate = modificationDate;
@@ -58,6 +61,14 @@ public class ContractNewVersionDTO {
 
     public void setVariationType(Integer variationType) {
         this.variationType = variationType;
+    }
+
+    public LocalDate getInitialContractDate() {
+        return initialContractDate;
+    }
+
+    public void setInitialContractDate(LocalDate initialContractDate) {
+        this.initialContractDate = initialContractDate;
     }
 
     public LocalDate getStartDate() {
@@ -100,16 +111,16 @@ public class ContractNewVersionDTO {
         this.contractJsonData = contractJsonData;
     }
 
-    public String toMyString(){
-
-        return "------------------------------------" + "\n" +
-                "Contrato: "+ getContractNumber() + " - VariationType: " + getVariationType() + "\n" +
-                "Fecha inicio: " + getStartDate();
-    }
-
-    public String toClipboardString(){
-        return getContractNumber() + ";" + getStartDate() + ";" + getExpectedEndDate() + ";" + getModificationDate() + ";" + getEndingDate() + "\n";
-    }
+//    public String toMyString(){
+//
+//        return "------------------------------------" + "\n" +
+//                "Contrato: "+ getContractNumber() + " - VariationType: " + getVariationType() + "\n" +
+//                "Fecha inicio: " + getStartDate();
+//    }
+//
+//    public String toClipboardString(){
+//        return getContractNumber() + ";" + getStartDate() + ";" + getExpectedEndDate() + ";" + getModificationDate() + ";" + getEndingDate() + "\n";
+//    }
 
     public static ContractNewVersionDTOBuilder create() {
         return new ContractNewVersionDTOBuilder();
@@ -120,6 +131,7 @@ public class ContractNewVersionDTO {
         private Integer id;
         private Integer contractNumber;
         private Integer variationType;
+        private LocalDate initialContractDate;
         private LocalDate startDate;
         private LocalDate expectedEndDate;
         private LocalDate modificationDate;
@@ -140,6 +152,12 @@ public class ContractNewVersionDTO {
             this.variationType = variationType;
             return this;
         }
+
+        public ContractNewVersionDTOBuilder withInitialContractDate(LocalDate initialContractDate) {
+            this.initialContractDate = initialContractDate;
+            return this;
+        }
+
 
         public ContractNewVersionDTOBuilder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
@@ -167,7 +185,7 @@ public class ContractNewVersionDTO {
         }
 
         public ContractNewVersionDTO build() {
-            return new ContractNewVersionDTO(this.id, this.contractNumber, this.variationType, this.startDate, this.expectedEndDate, this.modificationDate, this.endingDate, this.contractJsonData);
+            return new ContractNewVersionDTO(this.id, this.contractNumber, this.variationType, this.initialContractDate, this.startDate, this.expectedEndDate, this.modificationDate, this.endingDate, this.contractJsonData);
         }
     }
 

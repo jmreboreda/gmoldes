@@ -2,22 +2,18 @@ package gmoldes.components.contract.controllers;
 
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.contract_variation.components.ContractVariationActionComponents;
-import gmoldes.components.contract.contract_variation.components.ContractVariationHeader;
-import gmoldes.components.contract.contract_variation.components.ContractVariationParts;
+import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.awt.event.MouseAdapter;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -37,6 +33,10 @@ public class ContractVariationMainController extends VBox {
     private ContractVariationHeader contractVariationHeader;
     @FXML
     private ContractVariationParts contractVariationParts;
+    @FXML
+    private ContractVariationContractData contractVariationContractData;
+    @FXML
+    private ContractVariationContractExtinction contractVariationContractExtinction;
     @FXML
     private ContractVariationActionComponents contractVariationActionComponents;
 
@@ -70,7 +70,9 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onChangeEmployer(ActionEvent event){
+
         contractVariationParts.getContractSelector().getItems().clear();
+        contractVariationContractData.clearAllContractData();
         if(contractVariationParts.getClientSelector().getSelectionModel().getSelectedItem() == null){
             return;
         }
@@ -83,6 +85,13 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onContractSelectorAction(ActionEvent event){
+
+        if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem() == null){
+            return;
+        }
+
+        ContractFullDataDTO selectedContract = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem();
+        contractVariationContractData.setAllContractData(selectedContract);
 
     }
 

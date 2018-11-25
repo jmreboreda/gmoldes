@@ -1,25 +1,18 @@
 package gmoldes;
 
 
-import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.payroll_checklist.PayrollCheckList;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.OldContractsToJSONUtility;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -40,28 +33,6 @@ public class App extends Application {
             OldContractsToJSONUtility ctJson = new OldContractsToJSONUtility();
             ctJson.oldContractToJsonGenerator();
         }
-
-//        ContractInForceAtDateController contractInForceAtDateController = new ContractInForceAtDateController();
-//        Integer contractNumber = 30;
-//        LocalDate date = LocalDate.now();
-//        List<ContractNewVersionDTO> contractInForce = contractInForceAtDateController.findAllContractNewVersionByContractNumber(contractNumber);
-//        for(ContractNewVersionDTO contractNewVersionDTO : contractInForce){
-//            System.out.println(contractNewVersionDTO.toMyString());
-//        }
-
-//        ContractManager manager = new ContractManager();
-//        List<ContractNewVersionDTO> contractNewVersionList = manager.findAllContractNewVersionByClientIdInMonthOfDate(17, LocalDate.of(2016,7,1));
-//
-//        for(ContractNewVersionDTO dto : contractNewVersionList){
-//            if(!dto.getContractJsonData().getWeeklyWorkHours().contains("40:00")
-//            ||
-//            dto.getContractJsonData().getContractType().equals(421)){
-//                System.out.println("ContractNewVersionNumber: " + dto.getContractNumber() + " -> weeklyWorkHours: " + dto.getContractJsonData().getWeeklyWorkHours() + " -> ContractType: " + dto.getContractJsonData().getContractType());
-//            }
-//        }
-
-//        PayrollCheckList payrollCheckList = new PayrollCheckList();
-//        payrollCheckList.loadClipboard(Month.NOVEMBER, 2018);
 
 
         initialControlProcesses(primaryStage);

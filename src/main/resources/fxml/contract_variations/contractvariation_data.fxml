@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox minHeight="300.0">
+         <children>
+            <HBox>
+               <children>
+                  <Label text="Datos del contrato">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="5.0" />
+               </VBox.margin>
+            </HBox>
+            <Separator>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Separator>
+            <HBox>
+               <children>
+                  <Label alignment="CENTER" prefHeight="16.0" prefWidth="89.0" text="Número" textAlignment="CENTER" />
+                  <Label alignment="CENTER" prefHeight="16.0" prefWidth="125.0" text="Fecha inicio" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label alignment="CENTER" prefWidth="120.0" text="Fecha finalización" textAlignment="CENTER" />
+                  <Label minWidth="355.0" text="Tipo de contrato">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label prefWidth="125.0" text="Duración">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label text="Jornada">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox>
+               <children>
+                  <TextField fx:id="contractNumber" alignment="CENTER" editable="false" prefWidth="90.0">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <TextField fx:id="dateFrom" alignment="CENTER" editable="false" prefWidth="120.0">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <TextField fx:id="dateTo" alignment="CENTER" editable="false" prefWidth="120.0">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <TextField fx:id="contractType" editable="false" minWidth="350.0" />
+                  <TextField fx:id="contractDuration" prefWidth="125.0">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <TextField fx:id="contractPartialFullTime" prefWidth="200.0">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label prefHeight="26.0" text="Última variación registrada para este contrato">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="lastVariationDescription" minWidth="550.0" />
+                  <Label prefHeight="26.0" text="Fecha">
+                     <HBox.margin>
+                        <Insets left="15.0" right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="lastVariationDate" maxWidth="100.0" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</fx:root>
