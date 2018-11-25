@@ -59,7 +59,7 @@ public class ContractVariationDAO {
     }
 
     public List<ContractVariationVO> findAllContractVariationInPeriod(LocalDate initialDate, LocalDate finalDate){
-        TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_IN_PERIOD, ContractVariationVO.class);
+        TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_ACTIVE_CONTRACT_VARIATION_IN_PERIOD, ContractVariationVO.class);
 
         java.util.Date initialUtilDate = Date.from(initialDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         java.util.Date finallUtilDate = Date.from(finalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -72,7 +72,7 @@ public class ContractVariationDAO {
     }
 
     public List<ContractVariationVO> findAllContractVariationsInForceAtDate(LocalDate date){
-        TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_DATA_FOR_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE, ContractVariationVO.class);
+        TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE, ContractVariationVO.class);
 
         java.util.Date atDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
         query.setParameter("date", atDate);

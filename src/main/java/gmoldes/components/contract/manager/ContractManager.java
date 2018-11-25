@@ -125,7 +125,9 @@ public class ContractManager {
         LocalDate finalDate =  LocalDate.of(yearReceived, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
-        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInPeriod(initialDate, finalDate);
+//        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractForTimeRecordInPeriod(initialDate, finalDate);
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllActiveInitialContractInForceInPeriod(initialDate, finalDate);
+
         for (InitialContractVO initialContractVO : initialContractVOList) {
             LocalDate notNullExpectedEndDate = initialContractVO.getExpectedEndDate() != null ? initialContractVO.getExpectedEndDate().toLocalDate() : null;
             LocalDate notNullModificationDate = initialContractVO.getModificationDate() != null ? initialContractVO.getModificationDate().toLocalDate() : null;
@@ -185,7 +187,7 @@ public class ContractManager {
         LocalDate finalDate =  LocalDate.of(yearReceived, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
-        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInPeriod(initialDate, finalDate);
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractForTimeRecordInPeriod(initialDate, finalDate);
         for (InitialContractVO initialContractVO : initialContractVOList) {
             LocalDate notNullExpectedEndDate = initialContractVO.getExpectedEndDate() != null ? initialContractVO.getExpectedEndDate().toLocalDate() : null;
             LocalDate notNullModificationDate = initialContractVO.getModificationDate() != null ? initialContractVO.getModificationDate().toLocalDate() : null;
@@ -354,7 +356,7 @@ public class ContractManager {
 
         //Contract variation
         ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
-        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllDataForContractVariationsInForceAtDate(LocalDate.now());
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationsInForceAtDate(LocalDate.now());
         for(ContractVariationVO contractVariationVO : contractVariationVOList){
             ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                     .withStartDate(contractVariationVO.getStartDate().toLocalDate())

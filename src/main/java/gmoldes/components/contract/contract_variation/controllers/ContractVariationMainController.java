@@ -1,4 +1,4 @@
-package gmoldes.components.contract.controllers;
+package gmoldes.components.contract.contract_variation.controllers;
 
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;

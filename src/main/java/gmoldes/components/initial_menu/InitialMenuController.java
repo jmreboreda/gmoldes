@@ -2,7 +2,7 @@ package gmoldes.components.initial_menu;
 
 import gmoldes.App;
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.controllers.ContractVariationMainController;
+import gmoldes.components.contract.contract_variation.controllers.ContractVariationMainController;
 import gmoldes.components.contract.new_contract.controllers.NewContractMainController;
 import gmoldes.components.payroll_check_list.controllers.PayrollCheckListMainController;
 import gmoldes.components.timerecord.controllers.TimeRecordController;

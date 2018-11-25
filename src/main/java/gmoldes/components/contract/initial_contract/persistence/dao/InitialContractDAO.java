@@ -80,8 +80,20 @@ public class InitialContractDAO {
         return  query.getSingleResult();
     }
 
-    public List<InitialContractVO> findAllInitialContractInPeriod(LocalDate initialDate, LocalDate finalDate){
-        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_PERIOD, InitialContractVO.class);
+    public List<InitialContractVO> findAllInitialContractForTimeRecordInPeriod(LocalDate initialDate, LocalDate finalDate){
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_ACTIVE_INITIAL_CONTRACT_IN_PERIOD, InitialContractVO.class);
+
+        java.util.Date initialUtilDate = Date.from(initialDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.util.Date finallUtilDate = Date.from(finalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        query.setParameter("codeInitialDate", initialUtilDate);
+        query.setParameter("codeFinalDate", finallUtilDate);
+
+        return  query.getResultList();
+    }
+
+    public List<InitialContractVO> findAllActiveInitialContractInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_ACTIVE_INITIAL_CONTRACT_IN_PERIOD, InitialContractVO.class);
 
         java.util.Date initialUtilDate = Date.from(initialDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         java.util.Date finallUtilDate = Date.from(finalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -105,7 +117,7 @@ public class InitialContractDAO {
     }
 
     public List<InitialContractVO> findAllInitialContractInForceAtDate(LocalDate date){
-        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_DATA_FOR_INITIAL_CONTRACT_IN_FORCE_AT_DATE, InitialContractVO.class);
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_AT_DATE, InitialContractVO.class);
 
         java.util.Date atDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
         query.setParameter("date", atDate);
