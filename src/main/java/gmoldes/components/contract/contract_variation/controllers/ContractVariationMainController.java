@@ -3,6 +3,7 @@ package gmoldes.components.contract.contract_variation.controllers;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
+import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
@@ -74,24 +75,20 @@ public class ContractVariationMainController extends VBox {
     private void onInForceDateChanged(DateChangeEvent event){
 
         LocalDate selectedDate = event.getDate();
-        onChangeEmployer(new ActionEvent());
+        ClientDTO selectedClient = event.getClient();
+        refreshContractSelectorData(selectedClient, selectedDate);
 
     }
 
-    private void onChangeEmployer(ActionEvent event){
+    private void onChangeEmployer(ClientChangeEvent event){
 
-        contractVariationParts.getContractSelector().getItems().clear();
-        contractVariationContractData.clearAllContractData();
         if(contractVariationParts.getClientSelector().getSelectionModel().getSelectedItem() == null){
             return;
         }
 
-        LocalDate selectedDate = contractVariationParts.getInForceDate().getValue();
-        ClientDTO selectedClient = contractVariationParts.getClientSelector().getSelectionModel().getSelectedItem();
-        List<ContractFullDataDTO> contractFullDataDTOList = applicationMainController.findAllDataForContractInForceByClientId(selectedClient.getClientId(), selectedDate);
-
-        ObservableList<ContractFullDataDTO> contractFullDataDTOS = FXCollections.observableArrayList(contractFullDataDTOList);
-        contractVariationParts.getContractSelector().setItems(contractFullDataDTOS);
+        LocalDate selectedDate = event.getDate();
+        ClientDTO selectedClient = event.getClient();
+        refreshContractSelectorData(selectedClient, selectedDate);
     }
 
     private void onContractSelectorAction(ActionEvent event){
@@ -109,5 +106,20 @@ public class ContractVariationMainController extends VBox {
 
         Stage stage = (Stage) contractVariationParts.getScene().getWindow();
         stage.close();
+    }
+
+    private void refreshContractSelectorData(ClientDTO client, LocalDate selectedDate){
+
+        contractVariationParts.getContractSelector().getItems().clear();
+        contractVariationContractData.clearAllContractData();
+
+        List<ContractFullDataDTO> contractFullDataDTOList = applicationMainController.findAllDataForContractInForceByClientId(client.getClientId(), selectedDate);
+
+        ObservableList<ContractFullDataDTO> contractFullDataDTOS = FXCollections.observableArrayList(contractFullDataDTOList);
+        contractVariationParts.getContractSelector().setItems(contractFullDataDTOS);
+
+        if(contractFullDataDTOS.size() == 1){
+            contractVariationParts.getContractSelector().getSelectionModel().select(0);
+        }
     }
 }

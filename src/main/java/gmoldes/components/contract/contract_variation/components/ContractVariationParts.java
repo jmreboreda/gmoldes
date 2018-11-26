@@ -2,6 +2,7 @@ package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
@@ -25,7 +26,7 @@ public class ContractVariationParts extends VBox {
 
     private EventHandler<DateChangeEvent> actionEventEventHandlerInForceDateChanged;
     private EventHandler<ActionEvent> actionEventEventHandlerLoadDataInClientSelector;
-    private EventHandler<ActionEvent> actionEventEventHandlerClientSelectorAction;
+    private EventHandler<ClientChangeEvent> actionEventEventHandlerClientSelectorAction;
     private EventHandler<ActionEvent> actionEventEventHandlerContractSelectorAction;
 
 
@@ -77,12 +78,12 @@ public class ContractVariationParts extends VBox {
     }
 
     private void onDateChanged(ActionEvent event){
-        this.actionEventEventHandlerInForceDateChanged.handle(new DateChangeEvent(inForceDate.getValue()));
+        this.actionEventEventHandlerInForceDateChanged.handle(new DateChangeEvent(client.getSelectionModel().getSelectedItem(), inForceDate.getValue()));
     }
 
     private void onChangeEmployer(ActionEvent event){
 
-        actionEventEventHandlerClientSelectorAction.handle(event);
+        actionEventEventHandlerClientSelectorAction.handle(new ClientChangeEvent(getClientSelector().getSelectionModel().getSelectedItem(), getInForceDate().getValue()));
     }
 
     private void onChangeEmployee(ActionEvent event){
@@ -101,7 +102,7 @@ public class ContractVariationParts extends VBox {
         this.actionEventEventHandlerLoadDataInClientSelector = actionEventEventHandlerLoadDataInClientSelector;
     }
 
-    public void setOnClientSelectorAction(EventHandler<ActionEvent> actionEventHandlerClientSelectorAction){
+    public void setOnClientSelectorAction(EventHandler<ClientChangeEvent> actionEventHandlerClientSelectorAction){
         this.actionEventEventHandlerClientSelectorAction = actionEventHandlerClientSelectorAction;
     }
 
