@@ -96,6 +96,13 @@ public class ContractVariationDAO {
 
     }
 
+    public List<ContractVariationVO> findAllContractVariationTemporalInForceNow(){
+        TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_TEMPORAL_IN_FORCE_NOW, ContractVariationVO.class);
+
+        return  query.getResultList();
+
+    }
+
     public List<ContractVariationVO> findAllContractVariationsInForceNowByClient(Integer clientId){
         TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_NOW_BY_CLIENT_ID, ContractVariationVO.class);
         query.setParameter("clientId", clientId);

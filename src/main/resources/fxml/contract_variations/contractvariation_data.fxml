@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
@@ -14,7 +15,7 @@
          <children>
             <HBox>
                <children>
-                  <Label text="Datos del contrato">
+                  <Label text="Datos actuales del contrato">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
@@ -23,6 +24,9 @@
                <VBox.margin>
                   <Insets left="5.0" />
                </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </HBox>
             <Separator>
                <VBox.margin>
@@ -57,58 +61,91 @@
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" top="5.0" />
                </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </HBox>
-            <HBox>
+            <HBox fx:id="dataHbox">
                <children>
-                  <TextField fx:id="contractNumber" alignment="CENTER" editable="false" prefWidth="90.0" style="-fx-text-fill: #971e11;">
+                  <TextField fx:id="contractNumber" alignment="CENTER" editable="false" mouseTransparent="true" prefWidth="90.0" style="-fx-text-fill: #971e11;">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </TextField>
-                  <TextField fx:id="dateFrom" alignment="CENTER" editable="false" prefWidth="120.0" style="-fx-text-fill: #971e11;">
+                  <TextField fx:id="dateFrom" alignment="CENTER" editable="false" mouseTransparent="true" prefWidth="120.0" style="-fx-text-fill: #971e11;">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </TextField>
-                  <TextField fx:id="dateTo" alignment="CENTER" editable="false" prefWidth="120.0" style="-fx-text-fill: #971e11;">
+                  <TextField fx:id="dateTo" alignment="CENTER" editable="false" mouseTransparent="true" prefWidth="120.0" style="-fx-text-fill: #971e11;">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </TextField>
-                  <TextField fx:id="contractType" editable="false" minWidth="350.0" style="-fx-text-fill: #971e11;" />
-                  <TextField fx:id="contractDuration" prefWidth="125.0" style="-fx-text-fill: #971e11;">
+                  <TextField fx:id="contractType" editable="false" minWidth="350.0" mouseTransparent="true" style="-fx-text-fill: #971e11;">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></TextField>
+                  <TextField fx:id="contractDuration" editable="false" mouseTransparent="true" prefWidth="125.0" style="-fx-text-fill: #971e11;">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </TextField>
-                  <TextField fx:id="contractPartialFullTime" prefWidth="200.0" style="-fx-text-fill: #971e11;">
+                  <TextField fx:id="contractPartialFullTime" editable="false" mouseTransparent="true" prefWidth="200.0" style="-fx-text-fill: #971e11;">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </TextField>
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </HBox>
-            <HBox>
+            <HBox fx:id="lastVariationHbox">
                <children>
                   <Label prefHeight="26.0" text="Última variación en este contrato">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="lastVariationDescription" minWidth="652.0" style="-fx-text-fill: #971e11;" />
+                  <TextField fx:id="lastVariationDescription" editable="false" minWidth="652.0" mouseTransparent="true" style="-fx-text-fill: #971e11;">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></TextField>
                   <Label prefHeight="26.0" text="Fecha">
                      <HBox.margin>
                         <Insets left="15.0" right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="lastVariationDate" alignment="CENTER" maxWidth="100.0" style="-fx-text-fill: #971e11;" />
+                  <TextField fx:id="lastVariationDate" alignment="CENTER" editable="false" maxWidth="100.0" mouseTransparent="true" style="-fx-text-fill: #971e11;">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></TextField>
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </HBox>
             <Separator>
                <VBox.margin>

@@ -126,6 +126,13 @@ public class InitialContractDAO {
 
     }
 
+    public List<InitialContractVO> findAllInitialContractTemporalInForceNow(){
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_INITIAL_CONTRACT_TEMPORAL_IN_FORCE_NOW, InitialContractVO.class);
+
+        return  query.getResultList();
+
+    }
+
     public List<InitialContractVO> findAllInitialContractsInForceNowByClient(Integer clientId){
         TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID, InitialContractVO.class);
         query.setParameter("clientId", clientId);

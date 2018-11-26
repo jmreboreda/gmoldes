@@ -23,6 +23,10 @@ import java.sql.Date;
                         "and variationType < 800 order by contractNumber, startDate"
         ),
         @NamedQuery(
+                name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_TEMPORAL_IN_FORCE_NOW,
+                query = "select p from InitialContractVO p where startDate <= now() and endingDate is null and modificationDate is null and expectedEndDate is not null"
+        ),
+        @NamedQuery(
                 name = InitialContractVO.FIND_ALL_CONTRACT_IN_FORCE_AT_DATE,
                 query = "select p from InitialContractVO p where p.startDate <= :date and p.endingDate is null order by contractNumber"
         ),
@@ -41,7 +45,8 @@ import java.sql.Date;
         ),
         @NamedQuery(
                 name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_AT_DATE,
-                query = "select p from InitialContractVO p where p.startDate <= :date and p.endingDate is null and p.modificationDate is null"
+                query = "select p from InitialContractVO p where p.startDate <= :date and p.endingDate is null " +
+                        "and (p.modificationDate is null or p.modificationDate >= :date) and (p.expectedEndDate is null or p.expectedEndDate >=:date)"
         ),
         @NamedQuery(
                 name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID,
@@ -69,6 +74,7 @@ public class InitialContractVO implements Serializable {
     public static final String FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER = "InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER";
     public static final String FIND_ALL_INITIAL_CONTRACT_IN_FORCE_AT_DATE = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_AT_DATE";
     public static final String FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID";
+    public static final String FIND_ALL_INITIAL_CONTRACT_TEMPORAL_IN_FORCE_NOW = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_TEMPORAL_IN_FORCE_NOW";
 
 
     @Id

@@ -3,6 +3,7 @@ package gmoldes.components.contract.contract_variation.controllers;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
+import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import javafx.collections.FXCollections;
@@ -43,6 +44,7 @@ public class ContractVariationMainController extends VBox {
     @FXML
     public void initialize() {
 
+        contractVariationParts.setOnInForceDateChanged(this::onInForceDateChanged);
         contractVariationParts.setOnLoadDataInClientSelector(this::clientSelectorLoadData);
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
@@ -69,6 +71,13 @@ public class ContractVariationMainController extends VBox {
         contractVariationParts.getClientSelector().setItems(clientDTOS);
     }
 
+    private void onInForceDateChanged(DateChangeEvent event){
+
+        LocalDate selectedDate = event.getDate();
+        onChangeEmployer(new ActionEvent());
+
+    }
+
     private void onChangeEmployer(ActionEvent event){
 
         contractVariationParts.getContractSelector().getItems().clear();
@@ -77,8 +86,9 @@ public class ContractVariationMainController extends VBox {
             return;
         }
 
+        LocalDate selectedDate = contractVariationParts.getInForceDate().getValue();
         ClientDTO selectedClient = contractVariationParts.getClientSelector().getSelectionModel().getSelectedItem();
-        List<ContractFullDataDTO> contractFullDataDTOList = applicationMainController.findAllDataForContractInForceByClientId(selectedClient.getClientId());
+        List<ContractFullDataDTO> contractFullDataDTOList = applicationMainController.findAllDataForContractInForceByClientId(selectedClient.getClientId(), selectedDate);
 
         ObservableList<ContractFullDataDTO> contractFullDataDTOS = FXCollections.observableArrayList(contractFullDataDTOList);
         contractVariationParts.getContractSelector().setItems(contractFullDataDTOS);

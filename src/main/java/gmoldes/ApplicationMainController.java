@@ -3,7 +3,6 @@ package gmoldes;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 
 import java.time.LocalDate;
@@ -19,9 +18,9 @@ public class ApplicationMainController {
         return applicationMainManager.findAllClientWithContractInForceAtDate(date);
     }
 
-    public List<ContractFullDataDTO> findAllDataForContractInForceByClientId(Integer clientId){
+    public List<ContractFullDataDTO> findAllDataForContractInForceByClientId(Integer clientId, LocalDate date){
 
-        return applicationMainManager.findAllDataForContractInForceByClientId(clientId);
+        return applicationMainManager.findAllContractForContractInForceByClientId(clientId, date);
     }
 
     public List<ContractNewVersionDTO> findAllContractInForcerInPeriod(LocalDate initialDate, LocalDate finalDate){
@@ -39,5 +38,10 @@ public class ApplicationMainController {
 
         return applicationMainManager.retrievePersonByPersonID(personId);
 
+    }
+
+    public List<ContractNewVersionDTO> findAllTemporalContractInForceNow() {
+
+        return applicationMainManager.findAllTemporalContractInForceNow();
     }
 }
