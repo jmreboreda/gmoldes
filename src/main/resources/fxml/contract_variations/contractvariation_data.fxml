@@ -11,11 +11,11 @@
 
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox minHeight="300.0">
+      <VBox>
          <children>
             <HBox>
                <children>
-                  <Label text="Datos del contrato al día de la fecha">
+                  <Label text="Situación del contrato al día de la fecha">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>

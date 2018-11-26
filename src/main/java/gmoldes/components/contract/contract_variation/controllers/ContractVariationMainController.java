@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -31,6 +32,9 @@ public class ContractVariationMainController extends VBox {
 
     private ApplicationMainController applicationMainController = new ApplicationMainController();
 
+
+    @FXML
+    private ToggleGroup contractVariation;
     @FXML
     private ContractVariationHeader contractVariationHeader;
     @FXML
@@ -39,6 +43,8 @@ public class ContractVariationMainController extends VBox {
     private ContractVariationContractData contractVariationContractData;
     @FXML
     private ContractVariationContractExtinction contractVariationContractExtinction;
+    @FXML
+    private ContractVariationContractExtension contractVariationContractExtension;
     @FXML
     private ContractVariationActionComponents contractVariationActionComponents;
 
@@ -50,6 +56,11 @@ public class ContractVariationMainController extends VBox {
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
         contractVariationParts.loadDataInClientSelector();
+
+        /**
+        contractVariationContractExtinction.getRbContractExtinction().setToggleGroup(this.contractVariation);
+        contractVariationContractExtension.getRbContractExtension().setToggleGroup(this.contractVariation);
+        **/
 
         contractVariationActionComponents.setOnExitButton(this::onExitButton);
 

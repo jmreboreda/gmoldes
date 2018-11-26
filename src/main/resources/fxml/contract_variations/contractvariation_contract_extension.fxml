@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
@@ -15,25 +14,18 @@
    <children>
       <VBox>
          <children>
-            <RadioButton fx:id="rbContractExtinction" mnemonicParsing="false" text="Extinción de contrato" textFill="#000fff">
+            <RadioButton fx:id="rbContractExtension" mnemonicParsing="false" text="Prórroga de contrato" textFill="#000fff">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
+               <toggleGroup>
+                  <ToggleGroup fx:id="contractVariation" />
+               </toggleGroup>
             </RadioButton>
             <Group id="extinctionGroup">
                <children>
                   <HBox>
                      <children>
-                        <Label prefHeight="30.0" text="Motivo">
-                           <HBox.margin>
-                              <Insets left="5.0" right="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <ChoiceBox fx:id="extinctionCauseSelector" minWidth="550.0" prefHeight="30.0">
-                           <HBox.margin>
-                              <Insets left="5.0" right="5.0" />
-                           </HBox.margin>
-                        </ChoiceBox>
                         <Label prefHeight="30.0" text="Fecha desde">
                            <HBox.margin>
                               <Insets left="5.0" right="5.0" />
@@ -47,33 +39,24 @@
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>
                         </DatePicker>
-                     </children>
-                  </HBox>
-                  <HBox layoutY="41.0">
-                     <children>
-                        <Label text="Vacaciones disfrutadas">
+                        <Label prefHeight="30.0" text="Fecha hasta">
                            <HBox.margin>
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>
                         </Label>
-                        <RadioButton fx:id="rbHolidaysYes" mnemonicParsing="false" text="Si">
+                        <DatePicker fx:id="dateTo" prefHeight="30.0" prefWidth="140.0">
                            <HBox.margin>
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>
-                           <toggleGroup>
-                              <ToggleGroup fx:id="hollyDays" />
-                           </toggleGroup>
-                        </RadioButton>
-                        <RadioButton fx:id="rbHolidaysNo" mnemonicParsing="false" text="No" toggleGroup="$hollyDays">
-                           <HBox.margin>
-                              <Insets left="5.0" right="5.0" />
-                           </HBox.margin>
-                        </RadioButton>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </DatePicker>
                      </children>
                   </HBox>
                </children>
             </Group>
-            <Separator prefWidth="200.0">
+            <Separator>
                <VBox.margin>
                   <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                </VBox.margin>
