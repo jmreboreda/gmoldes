@@ -32,9 +32,6 @@ public class ContractVariationMainController extends VBox {
 
     private ApplicationMainController applicationMainController = new ApplicationMainController();
 
-
-    @FXML
-    private ToggleGroup contractVariation;
     @FXML
     private ContractVariationHeader contractVariationHeader;
     @FXML
@@ -48,6 +45,9 @@ public class ContractVariationMainController extends VBox {
     @FXML
     private ContractVariationActionComponents contractVariationActionComponents;
 
+    private ToggleGroup contractVariationToggleGroup;
+
+
     @FXML
     public void initialize() {
 
@@ -57,10 +57,8 @@ public class ContractVariationMainController extends VBox {
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
         contractVariationParts.loadDataInClientSelector();
 
-        /**
-        contractVariationContractExtinction.getRbContractExtinction().setToggleGroup(this.contractVariation);
-        contractVariationContractExtension.getRbContractExtension().setToggleGroup(this.contractVariation);
-        **/
+        contractVariationContractExtinction.getRbContractExtinction().setToggleGroup(contractVariationToggleGroup);
+        contractVariationContractExtension.getRbContractExtension().setToggleGroup(contractVariationToggleGroup);
 
         contractVariationActionComponents.setOnExitButton(this::onExitButton);
 

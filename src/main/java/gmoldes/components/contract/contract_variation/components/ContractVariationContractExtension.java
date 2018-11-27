@@ -16,8 +16,6 @@ public class ContractVariationContractExtension extends VBox {
     private Parent parent;
 
     @FXML
-    private ToggleGroup contractVariation;
-    @FXML
     private RadioButton rbContractExtension;
     @FXML
     private DatePicker dateFrom;
@@ -33,14 +31,6 @@ public class ContractVariationContractExtension extends VBox {
 
         dateFrom.setConverter(Utilities.converter);
         dateTo.setConverter(Utilities.converter);
-    }
-
-    public ToggleGroup getContractVariation() {
-        return contractVariation;
-    }
-
-    public void setContractVariation(ToggleGroup contractVariation) {
-        this.contractVariation = contractVariation;
     }
 
     public RadioButton getRbContractExtension() {

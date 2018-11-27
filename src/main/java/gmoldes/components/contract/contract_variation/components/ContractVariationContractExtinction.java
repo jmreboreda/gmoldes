@@ -18,8 +18,6 @@ public class ContractVariationContractExtinction extends VBox {
     private Parent parent;
 
     @FXML
-    private ToggleGroup contractVariation;
-    @FXML
     private RadioButton rbContractExtinction;
     @FXML
     private ChoiceBox<TypesContractVariationsDTO> extintionCauseSelector;
@@ -39,14 +37,6 @@ public class ContractVariationContractExtinction extends VBox {
 
         dateFrom.setConverter(Utilities.converter);
 
-    }
-
-    public ToggleGroup getContractVariation() {
-        return contractVariation;
-    }
-
-    public void setContractVariation(ToggleGroup contractVariation) {
-        this.contractVariation = contractVariation;
     }
 
     public RadioButton getRbContractExtinction() {
