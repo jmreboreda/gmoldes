@@ -119,7 +119,7 @@ public class PayrollCheckList {
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
-        return applicationMainController.findAllContractInForcerInPeriod(initialDate, finalDate);
+        return applicationMainController.findAllContractInForceInPeriod(initialDate, finalDate);
 
     }
 }

@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import gmoldes.components.contract.contract_variation.components.ContractVariationActionComponents?>
 <?import gmoldes.components.contract.contract_variation.components.ContractVariationContractExtension?>
 <?import gmoldes.components.contract.contract_variation.components.ContractVariationContractExtinction?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
-    <RadioButton fx:id="phantomRadioButton" visible="false">
-        <toggleGroup>
-            <ToggleGroup fx:id="contractVariationToggleGroup" />
-        </toggleGroup>
-    </RadioButton>
+    <HBox>
+        <children>
+            <Label text="Variaciones del contrato">
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
+            </Label>
+          <RadioButton fx:id="phantomRadioButton" visible="false">
+              <toggleGroup>
+                  <ToggleGroup fx:id="contractVariationToggleGroup" />
+              </toggleGroup>
+          </RadioButton>
+        </children>
+        <VBox.margin>
+            <Insets left="5.0" top="5.0" />
+        </VBox.margin>
+        <cursor>
+            <Cursor fx:constant="HAND" />
+        </cursor>
+    </HBox>
+   <Separator prefWidth="200.0" />
     <ContractVariationContractExtinction fx:id="contractVariationContractExtinction" />
     <ContractVariationContractExtension fx:id="contractVariationContractExtension" />
-    <ContractVariationActionComponents fx:id="contractVariationActionComponents" />
 </fx:root>

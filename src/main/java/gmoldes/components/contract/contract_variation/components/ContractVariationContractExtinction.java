@@ -41,6 +41,7 @@ public class ContractVariationContractExtinction extends VBox {
 
         dateFrom.setConverter(Utilities.converter);
 
+        contractExtinctionGroup.disableProperty().bind(this.rbContractExtinction.selectedProperty().not());
     }
 
     public RadioButton getRbContractExtinction() {

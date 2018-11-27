@@ -7,6 +7,7 @@ import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
+import javafx.beans.binding.BooleanExpression;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 public class ContractVariationMainController extends VBox {
 
     private static final Logger logger = Logger.getLogger(ContractVariationMainController.class.getSimpleName());
-    private static final String CONTRACTVARIATION_MAIN_FXML = "/fxml/contract_variations/contractvariation_main.fxml";
+    private static final String CONTRACT_VARIATION_MAIN_FXML = "/fxml/contract_variations/contractvariation_main.fxml";
 
     private Parent parent;
 
@@ -44,13 +45,9 @@ public class ContractVariationMainController extends VBox {
     @FXML
     private ContractVariationContractData contractVariationContractData;
     @FXML
-    private ContractVariationContractExtinction contractVariationContractExtinction;
-    @FXML
-    private ContractVariationContractExtension contractVariationContractExtension;
+    private ContractVariationContractVariations contractVariationContractVariations;
     @FXML
     private ContractVariationActionComponents contractVariationActionComponents;
-
-
 
 
     @FXML
@@ -65,19 +62,15 @@ public class ContractVariationMainController extends VBox {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle old_toggle, Toggle new_toggle) {
                 if (contractVariationToggleGroup.getSelectedToggle() != null) {
-                    if(contractVariationContractExtinction.getRbContractExtinction().isSelected()){
-                        contractVariationContractExtinction.getContractExtinctionGroup().setDisable(false);
-                    }else{
-                        contractVariationContractExtinction.getContractExtinctionGroup().setDisable(true);
-                    }
 
                 }
             }
         });
         contractVariationParts.loadDataInClientSelector();
 
-        contractVariationContractExtinction.getRbContractExtinction().setToggleGroup(contractVariationToggleGroup);
-        contractVariationContractExtension.getRbContractExtension().setToggleGroup(contractVariationToggleGroup);
+        contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setToggleGroup(contractVariationToggleGroup);
+        contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().setToggleGroup(contractVariationToggleGroup);
+        contractVariationContractVariations.setDisable(true);
 
         contractVariationActionComponents.setOnExitButton(this::onExitButton);
 
@@ -85,7 +78,7 @@ public class ContractVariationMainController extends VBox {
 
     public ContractVariationMainController() {
         logger.info("Initializing ContractVariation Main fxml");
-        this.parent = ViewLoader.load(this, CONTRACTVARIATION_MAIN_FXML);
+        this.parent = ViewLoader.load(this, CONTRACT_VARIATION_MAIN_FXML);
     }
 
     private void clientSelectorLoadDataAtDate(DateChangeEvent event) {
@@ -124,12 +117,14 @@ public class ContractVariationMainController extends VBox {
     private void onContractSelectorAction(ActionEvent event){
 
         if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem() == null){
+            contractVariationContractVariations.setDisable(true);
             return;
         }
 
         ContractFullDataDTO selectedContract = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem();
         contractVariationContractData.setAllContractData(selectedContract);
 
+        contractVariationContractVariations.setDisable(false);
     }
 
     private void onExitButton(MouseEvent event){
@@ -141,6 +136,7 @@ public class ContractVariationMainController extends VBox {
     private void refreshContractSelectorData(ClientDTO client, LocalDate selectedDate){
 
         if(client == null){
+            contractVariationContractVariations.setDisable(true);
 
             return;
         }

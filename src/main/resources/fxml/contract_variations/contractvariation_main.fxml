@@ -13,7 +13,8 @@
       <ContractVariationHeader fx:id="contractVariationHeader"/>
       <ContractVariationParts fx:id="contractVariationParts"/>
       <ContractVariationContractData fx:id="contractVariationContractData"/>
-      <ContractVariationContractExtinction fx:id="contractVariationContractExtinction"/>
-      <ContractVariationContractExtension fx:id="contractVariationContractExtension"/>
+      <ContractVariationContractVariations fx:id="contractVariationContractVariations"/>
+      <!--<ContractVariationContractExtinction fx:id="contractVariationContractExtinction"/>-->
+      <!--<ContractVariationContractExtension fx:id="contractVariationContractExtension"/>-->
       <ContractVariationActionComponents fx:id="contractVariationActionComponents"/>
 </fx:root>

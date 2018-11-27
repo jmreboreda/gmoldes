@@ -23,7 +23,7 @@ public class ApplicationMainController {
         return applicationMainManager.findAllDataForContractInForceAtDateByClientId(clientId, date);
     }
 
-    public List<ContractNewVersionDTO> findAllContractInForcerInPeriod(LocalDate initialDate, LocalDate finalDate){
+    public List<ContractNewVersionDTO> findAllContractInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
 
         return applicationMainManager.findAllContractInForceInPeriod(initialDate, finalDate);
 

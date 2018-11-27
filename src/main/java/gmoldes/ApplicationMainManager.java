@@ -77,7 +77,6 @@ public class ApplicationMainManager {
         Map<Integer, LocalDate> initialContractStartDateMap = new HashMap();
         for(InitialContractVO initialContractVO : initialContractInForceAtDate){
             initialContractStartDateMap.put(initialContractVO.getContractNumber(), initialContractVO.getStartDate().toLocalDate());
-            //System.out.println("Map :: contractNumber: " + initialContractVO.getContractNumber() + " :: initialContractDate: " +  initialContractVO.getStartDate().toLocalDate());
         }
 
         List<ContractVariationVO> contractVariationInForceAtDate = contractVariationDAO.findAllContractVariationsInForceAtDate(date);
@@ -94,7 +93,6 @@ public class ApplicationMainManager {
         for(InitialContractVO initialContractVO : initialContractVOList){
             if(initialContractVO.getContractJsonData().getClientGMId().equals(clientDTO.getClientId())){
                 LocalDate initialContractDate = initialContractVO.getStartDate().toLocalDate();
-                System.out.println("InitialContractVO:: contractNumber:" + initialContractVO.getContractNumber() +  ":: initialContractDate: " + initialContractDate);
                 LocalDate expectedEndDate = initialContractVO.getExpectedEndDate() != null ? initialContractVO.getExpectedEndDate().toLocalDate() : null;
                 LocalDate modificationDate = initialContractVO.getModificationDate() != null ? initialContractVO.getModificationDate().toLocalDate() : null;
                 LocalDate endingDate = initialContractVO.getEndingDate() != null ? initialContractVO.getEndingDate().toLocalDate() : null;
