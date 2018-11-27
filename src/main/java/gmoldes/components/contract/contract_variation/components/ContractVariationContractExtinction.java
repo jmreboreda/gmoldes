@@ -3,18 +3,21 @@ package gmoldes.components.contract.contract_variation.components;
 import gmoldes.components.ViewLoader;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.utilities.Utilities;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;;
 
 public class ContractVariationContractExtinction extends VBox {
 
     private static final String CONTRACT_VARIATION_CONTRACT_EXTINCTION_FXML = "/fxml/contract_variations/contractvariation_contract_extinction.fxml";
+
+    private EventHandler<MouseEvent> eventEventHandlerContractExtinction;
 
     private Parent parent;
 
@@ -38,6 +41,8 @@ public class ContractVariationContractExtinction extends VBox {
 
     @FXML
     private void initialize(){
+
+        rbContractExtinction.setOnMouseClicked(this::onContractExtinction);
 
         dateFrom.setConverter(Utilities.converter);
 
@@ -90,5 +95,15 @@ public class ContractVariationContractExtinction extends VBox {
 
     public void setRbHolidaysNo(RadioButton rbHolidaysNo) {
         this.rbHolidaysNo = rbHolidaysNo;
+    }
+
+    private void onContractExtinction(MouseEvent event){
+        this.eventEventHandlerContractExtinction.handle(event);
+
+    }
+
+    public void setOnExtinctionButton(EventHandler<MouseEvent> eventEventHandlerContractExtinction){
+        this.eventEventHandlerContractExtinction = eventEventHandlerContractExtinction;
+
     }
 }

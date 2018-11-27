@@ -5,9 +5,10 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
+import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
-import javafx.beans.binding.BooleanExpression;
+import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -22,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -57,6 +59,8 @@ public class ContractVariationMainController extends VBox {
         contractVariationParts.setOnLoadDataInClientSelector(this::clientSelectorLoadDataAtDate);
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
+
+        contractVariationContractVariations.setOnContractExtinction(this::onContractExtinction);
 
         contractVariationToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
             public void changed(ObservableValue<? extends Toggle> ov,
@@ -126,6 +130,21 @@ public class ContractVariationMainController extends VBox {
         contractVariationContractVariations.setDisable(false);
     }
 
+    private void onContractExtinction(MouseEvent event){
+
+        contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().setValue(null);
+        contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().setSelected(false);
+        contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().setSelected(false);
+
+        TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
+
+        List<TypesContractVariationsDTO> typesContractVariationsDTOList = typesContractVariationsController.findAllTypesContractVariations();
+        List<TypesContractVariationsDTO> selectedTypesContractVariationsList = retrieveVariationContractTypeExtinction(typesContractVariationsDTOList);
+
+        ObservableList<TypesContractVariationsDTO> typesContractVariationsDTOS = FXCollections.observableArrayList(selectedTypesContractVariationsList);
+        contractVariationContractVariations.getContractVariationContractExtinction().getExtinctionCauseSelector().setItems(typesContractVariationsDTOS);
+    }
+
     private void onExitButton(MouseEvent event){
 
         Stage stage = (Stage) contractVariationParts.getScene().getWindow();
@@ -151,5 +170,16 @@ public class ContractVariationMainController extends VBox {
         if(contractFullDataDTOS.size() == 1){
             contractVariationParts.getContractSelector().getSelectionModel().select(0);
         }
+    }
+
+    private List<TypesContractVariationsDTO> retrieveVariationContractTypeExtinction(List<TypesContractVariationsDTO> typesContractVariationsDTOList){
+        List<TypesContractVariationsDTO> variationContractTypeExtinction = new ArrayList<>();
+        for(TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList){
+            if(typesContractVariationsDTO.getExtinction()){
+                variationContractTypeExtinction.add(typesContractVariationsDTO);
+            }
+        }
+
+        return variationContractTypeExtinction;
     }
 }
