@@ -57,7 +57,7 @@ public class ContractVariationMainController extends VBox {
     public void initialize() {
 
         contractVariationParts.setOnInForceDateChanged(this::onInForceDateChanged);
-        contractVariationParts.setOnLoadDataInClientSelector(this::clientSelectorLoadData);
+        contractVariationParts.setOnLoadDataInClientSelector(this::clientSelectorLoadDataAtDate);
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
 
@@ -88,7 +88,7 @@ public class ContractVariationMainController extends VBox {
         this.parent = ViewLoader.load(this, CONTRACTVARIATION_MAIN_FXML);
     }
 
-    private void clientSelectorLoadData(DateChangeEvent event) {
+    private void clientSelectorLoadDataAtDate(DateChangeEvent event) {
         contractVariationParts.getClientSelector().getItems().clear();
         contractVariationParts.getContractSelector().getItems().clear();
         contractVariationContractData.clearAllContractData();
@@ -111,7 +111,7 @@ public class ContractVariationMainController extends VBox {
 
     private void onInForceDateChanged(DateChangeEvent event){
 
-        clientSelectorLoadData(event);
+        clientSelectorLoadDataAtDate(event);
     }
 
     private void onChangeEmployer(ClientChangeEvent event){
