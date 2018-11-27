@@ -22,6 +22,10 @@ public class ContractVariationContractVariations extends VBox {
     private ContractVariationContractExtinction contractVariationContractExtinction;
     @FXML
     private ContractVariationContractExtension contractVariationContractExtension;
+    @FXML
+    private ContractVariationContractConversion contractVariationContractConversion;
+
+
 
     public ContractVariationContractVariations() {
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_CONTRACT_DATA_FXML);
@@ -41,5 +45,13 @@ public class ContractVariationContractVariations extends VBox {
 
     public void setContractVariationContractExtension(ContractVariationContractExtension contractVariationContractExtension) {
         this.contractVariationContractExtension = contractVariationContractExtension;
+    }
+
+    public ContractVariationContractConversion getContractVariationContractConversion() {
+        return contractVariationContractConversion;
+    }
+
+    public void setContractVariationContractConversion(ContractVariationContractConversion contractVariationContractConversion) {
+        this.contractVariationContractConversion = contractVariationContractConversion;
     }
 }

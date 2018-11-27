@@ -29,7 +29,7 @@
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="extinctionCauseSelector" minWidth="550.0" prefHeight="30.0">
+                        <ChoiceBox fx:id="extinctionCauseSelector" minWidth="550.0">
                            <HBox.margin>
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>
@@ -39,10 +39,7 @@
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>
                         </Label>
-                        <DatePicker fx:id="dateFrom" prefHeight="30.0" prefWidth="140.0">
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
+                        <DatePicker fx:id="dateFrom" prefWidth="140.0">
                            <HBox.margin>
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>
@@ -75,7 +72,7 @@
             </Group>
             <Separator prefWidth="200.0">
                <VBox.margin>
-                  <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                </VBox.margin>
             </Separator>
          </children>

@@ -61,15 +61,14 @@ public class ContractVariationMainController extends VBox {
         contractVariationToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle old_toggle, Toggle new_toggle) {
-                if (contractVariationToggleGroup.getSelectedToggle() != null) {
-
-                }
             }
         });
         contractVariationParts.loadDataInClientSelector();
 
         contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setToggleGroup(contractVariationToggleGroup);
         contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().setToggleGroup(contractVariationToggleGroup);
+        contractVariationContractVariations.getContractVariationContractConversion().getRbContractConversion().setToggleGroup(contractVariationToggleGroup);
+
         contractVariationContractVariations.setDisable(true);
 
         contractVariationActionComponents.setOnExitButton(this::onExitButton);
