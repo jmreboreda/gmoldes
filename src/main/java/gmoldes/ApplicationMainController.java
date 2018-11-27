@@ -18,9 +18,9 @@ public class ApplicationMainController {
         return applicationMainManager.findAllClientWithContractInForceAtDate(date);
     }
 
-    public List<ContractFullDataDTO> findAllDataForContractInForceByClientId(Integer clientId, LocalDate date){
+    public List<ContractFullDataDTO> findAllDataForContractInForceAtDateByClientId(Integer clientId, LocalDate date){
 
-        return applicationMainManager.findAllContractForContractInForceByClientId(clientId, date);
+        return applicationMainManager.findAllDataForContractInForceAtDateByClientId(clientId, date);
     }
 
     public List<ContractNewVersionDTO> findAllContractInForcerInPeriod(LocalDate initialDate, LocalDate finalDate){

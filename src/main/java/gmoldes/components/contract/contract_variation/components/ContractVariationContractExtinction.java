@@ -4,6 +4,7 @@ import gmoldes.components.ViewLoader;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.utilities.Utilities;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -17,10 +18,13 @@ public class ContractVariationContractExtinction extends VBox {
 
     private Parent parent;
 
+
     @FXML
     private RadioButton rbContractExtinction;
     @FXML
-    private ChoiceBox<TypesContractVariationsDTO> extintionCauseSelector;
+    private Group contractExtinctionGroup;
+    @FXML
+    private ChoiceBox<TypesContractVariationsDTO> extinctionCauseSelector;
     @FXML
     private DatePicker dateFrom;
     @FXML
@@ -47,12 +51,20 @@ public class ContractVariationContractExtinction extends VBox {
         this.rbContractExtinction = rbContractExtinction;
     }
 
-    public ChoiceBox<TypesContractVariationsDTO> getExtintionCauseSelector() {
-        return extintionCauseSelector;
+    public Group getContractExtinctionGroup() {
+        return contractExtinctionGroup;
     }
 
-    public void setExtintionCauseSelector(ChoiceBox<TypesContractVariationsDTO> extintionCauseSelector) {
-        this.extintionCauseSelector = extintionCauseSelector;
+    public void setContractExtinctionGroup(Group contractExtintionGroup) {
+        this.contractExtinctionGroup = contractExtintionGroup;
+    }
+
+    public ChoiceBox<TypesContractVariationsDTO> getExtinctionCauseSelector() {
+        return extinctionCauseSelector;
+    }
+
+    public void setExtinctionCauseSelector(ChoiceBox<TypesContractVariationsDTO> extinctionCauseSelector) {
+        this.extinctionCauseSelector = extinctionCauseSelector;
     }
 
     public DatePicker getDateFrom() {

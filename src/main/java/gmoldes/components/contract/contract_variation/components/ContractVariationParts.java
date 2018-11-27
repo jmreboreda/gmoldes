@@ -1,6 +1,5 @@
 package gmoldes.components.contract.contract_variation.components;
 
-import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
@@ -14,9 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
-
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class ContractVariationParts extends VBox {
 
@@ -25,7 +22,7 @@ public class ContractVariationParts extends VBox {
     private Parent parent;
 
     private EventHandler<DateChangeEvent> actionEventEventHandlerInForceDateChanged;
-    private EventHandler<ActionEvent> actionEventEventHandlerLoadDataInClientSelector;
+    private EventHandler<DateChangeEvent> actionEventEventHandlerLoadDataInClientSelector;
     private EventHandler<ClientChangeEvent> actionEventEventHandlerClientSelectorAction;
     private EventHandler<ActionEvent> actionEventEventHandlerContractSelectorAction;
 
@@ -90,7 +87,9 @@ public class ContractVariationParts extends VBox {
         this.actionEventEventHandlerContractSelectorAction.handle(event);
     }
 
-    public void loadDataInClientSelector() { actionEventEventHandlerLoadDataInClientSelector.handle(new ActionEvent());
+    public void loadDataInClientSelector() {
+
+        actionEventEventHandlerLoadDataInClientSelector.handle(new DateChangeEvent(null, getInForceDate().getValue()));
 
     }
 
@@ -98,7 +97,7 @@ public class ContractVariationParts extends VBox {
         this.actionEventEventHandlerInForceDateChanged = actionEventEventHandlerInForceDateChanged;
     }
 
-    public void setOnLoadDataInClientSelector(EventHandler<ActionEvent> actionEventEventHandlerLoadDataInClientSelector){
+    public void setOnLoadDataInClientSelector(EventHandler<DateChangeEvent> actionEventEventHandlerLoadDataInClientSelector){
         this.actionEventEventHandlerLoadDataInClientSelector = actionEventEventHandlerLoadDataInClientSelector;
     }
 

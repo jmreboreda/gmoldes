@@ -39,18 +39,18 @@ public class ApplicationMainManager {
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllContractInForceAtDate(date);
 
-        // Contract variation
-        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
-        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationsInForceAtDate(date);
+//        // Contract variation
+//        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+//        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationsInForceAtDate(date);
 
         Map<Integer, String> clientIdMap = new HashMap();
         for (InitialContractVO initialContractVO : initialContractVOList){
             clientIdMap.put(initialContractVO.getContractJsonData().getClientGMId(), "");
         }
 
-        for(ContractVariationVO contractVariationVO : contractVariationVOList){
-            clientIdMap.put(contractVariationVO.getContractJsonData().getClientGMId(), "");
-        }
+//        for(ContractVariationVO contractVariationVO : contractVariationVOList){
+//            clientIdMap.put(contractVariationVO.getContractJsonData().getClientGMId(), "");
+//        }
 
         ClientManager clientManager = new ClientManager();
         for (Map.Entry<Integer, String> entry : clientIdMap.entrySet()) {
@@ -66,7 +66,7 @@ public class ApplicationMainManager {
 
     }
 
-    public List<ContractFullDataDTO> findAllContractForContractInForceByClientId(Integer clientId, LocalDate date){
+    public List<ContractFullDataDTO> findAllDataForContractInForceAtDateByClientId(Integer clientId, LocalDate date){
 
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
 
