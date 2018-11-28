@@ -6,9 +6,12 @@ import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
+import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.utilities.Message;
+import gmoldes.utilities.Parameters;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,6 +26,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -108,6 +112,10 @@ public class ContractVariationMainController extends VBox {
     private void onInForceDateChanged(DateChangeEvent event){
 
         clientSelectorLoadDataAtDate(event);
+        contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
+        contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().setSelected(false);
+        contractVariationContractVariations.getContractVariationContractConversion().getRbContractConversion().setSelected(false);
+
     }
 
     private void onChangeEmployer(ClientChangeEvent event){
@@ -135,6 +143,13 @@ public class ContractVariationMainController extends VBox {
         contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().setValue(null);
         contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().setSelected(false);
         contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().setSelected(false);
+
+        if(!isCorrectDateToContractVariation()){
+            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
+            return;
+        }
+
+
 
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
 
@@ -181,5 +196,15 @@ public class ContractVariationMainController extends VBox {
         }
 
         return variationContractTypeExtinction;
+    }
+
+    private Boolean isCorrectDateToContractVariation(){
+
+        if(Period.between(contractVariationParts.getInForceDate().getValue(), LocalDate.now().minusDays(3L)).getDays() <= 0){
+            return true;
+        }
+
+        Message.warningMessage(contractVariationParts.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.IS_NOT_VALID_DATE_FOR_CONTRACT_VARIATION);
+        return false;
     }
 }

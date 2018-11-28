@@ -69,18 +69,12 @@ public class ApplicationMainManager {
 
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
-
+        Map<Integer, LocalDate> initialContractStartDateMap = new HashMap();
 
         // Get all initial contract date of contract in force at date
-        List<InitialContractVO> initialContractInForceAtDate = initialContractDAO.findAllInitialContractInForceAtDate(date);
-        Map<Integer, LocalDate> initialContractStartDateMap = new HashMap();
+        List<InitialContractVO> initialContractInForceAtDate = initialContractDAO.findAllContractInForceAtDate(date);
         for(InitialContractVO initialContractVO : initialContractInForceAtDate){
             initialContractStartDateMap.put(initialContractVO.getContractNumber(), initialContractVO.getStartDate().toLocalDate());
-        }
-
-        List<ContractVariationVO> contractVariationInForceAtDate = contractVariationDAO.findAllContractVariationsInForceAtDate(date);
-        for(ContractVariationVO contractVariationVO : contractVariationInForceAtDate) {
-            initialContractStartDateMap.put(contractVariationVO.getContractNumber(), contractVariationVO.getStartDate().toLocalDate());
         }
 
         List<ContractFullDataDTO> contractFullDataDTOList = new ArrayList<>();

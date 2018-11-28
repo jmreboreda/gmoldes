@@ -30,4 +30,7 @@ public class ContractConstants {
     /** Contract forms*/
     public static final String CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT = "Expediente_contrato_trabajo_";
 
+    /** Contract variation **/
+    public static final String IS_NOT_VALID_DATE_FOR_CONTRACT_VARIATION = "Fecha no válida para efectuar variaciones en el contrato.";
+
 }
