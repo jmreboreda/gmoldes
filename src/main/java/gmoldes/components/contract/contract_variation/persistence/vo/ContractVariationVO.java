@@ -28,10 +28,11 @@ import java.sql.Date;
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_IN_FORCE_IN_PERIOD,
-                query = "select p from ContractVariationVO  p where startDate <= :codeFinalDate and (endingDate is null or endingDate >= :codeInitialDate) " +
-                "and (expectedEndDate is null or expectedEndDate >= :codeInitialDate) " +
-                "and (modificationDate is null or modificationDate >= :codeInitialDate) " +
-                "order by contractNumber, startDate, modificationDate"
+                query = "select p from ContractVariationVO  p where startDate <= :codeFinalDate " +
+                        "and (endingDate is null or endingDate >= :codeInitialDate) " +
+                        "and (expectedEndDate is null or expectedEndDate >= :codeInitialDate) " +
+                        "and (modificationDate is null or modificationDate >= :codeInitialDate) " +
+                        "order by contractNumber, startDate, modificationDate"
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER,

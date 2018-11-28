@@ -16,8 +16,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class PayrollCheckListMainController extends VBox {
 
@@ -66,13 +67,27 @@ public class PayrollCheckListMainController extends VBox {
 
     private void onMonthChanged(ActionEvent event){
 
+        Map<String, PayrollCheckListDTO> withoutPersonDuplicates = new HashMap<>();
+
         Month month = payrollCheckListData.getMonth().getSelectionModel().getSelectedItem().getMonth();
         Integer year = Integer.parseInt(payrollCheckListData.getYear().getText());
 
         PayrollCheckList payrollCheckList = new PayrollCheckList();
         List<PayrollCheckListDTO> payrollCheckListDTOList = payrollCheckList.retrieveAllContractInForceInPeriod(month, year);
+        for(PayrollCheckListDTO payrollCheckListDTO : payrollCheckListDTOList){
+            withoutPersonDuplicates.put(payrollCheckListDTO.getWorkerFullName(), payrollCheckListDTO);
+        }
 
-        ObservableList<PayrollCheckListDTO> payrollCheckListDTOS = FXCollections.observableArrayList(payrollCheckListDTOList);
+        List<PayrollCheckListDTO> withoutDuplicatesPayrollCheckListDTO = new ArrayList<>();
+        for (Map.Entry<String, PayrollCheckListDTO> itemMap : withoutPersonDuplicates.entrySet()) {
+            withoutDuplicatesPayrollCheckListDTO.add(itemMap.getValue());
+        }
+
+        List<PayrollCheckListDTO> orderedPayrollCheckListDTO = withoutDuplicatesPayrollCheckListDTO
+                .stream()
+                .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName)).collect(Collectors.toList());
+
+        ObservableList<PayrollCheckListDTO> payrollCheckListDTOS = FXCollections.observableArrayList(orderedPayrollCheckListDTO);
         payrollCheckListData.getPayrollTable().setItems(payrollCheckListDTOS);
 
         payrollCheckListAction.getClipboardCopyButton().setDisable(false);

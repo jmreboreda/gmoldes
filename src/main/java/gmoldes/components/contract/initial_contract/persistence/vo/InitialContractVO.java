@@ -32,7 +32,10 @@ import java.sql.Date;
         ),
         @NamedQuery(
                 name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD,
-                query = "select p from InitialContractVO  p where startDate <= :codeFinalDate and (endingDate is null or endingDate >= :codeInitialDate) " +
+                query = "select p from InitialContractVO  p where startDate <= :codeFinalDate " +
+                        "and (endingDate is null or endingDate >= :codeInitialDate) " +
+                        "and (expectedEndDate is null or expectedEndDate >= :codeInitialDate) " +
+                        "and (modificationDate is null or modificationDate >= :codeInitialDate) " +
                         "order by contractNumber, startDate, modificationDate"
         ),
         @NamedQuery(

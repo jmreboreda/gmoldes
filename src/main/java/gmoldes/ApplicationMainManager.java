@@ -172,10 +172,29 @@ public class ApplicationMainManager {
 
         List<InitialContractDTO> initialContractDTOList = MapperInitialContractVODTO.mapInitialContractVODTO(initialContractVOList);
 
+        // Contract variation
+        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationInForceInPeriod(initialDate, finalDate);
+
+        for(ContractVariationVO contractVariationVO : contractVariationVOList){
+            LocalDate expectedEndDate = contractVariationVO.getExpectedEndDate() != null ? contractVariationVO.getExpectedEndDate().toLocalDate() : null;
+            LocalDate modificationDate = contractVariationVO.getModificationDate() != null ? contractVariationVO.getModificationDate().toLocalDate() : null;
+            LocalDate endingDate = contractVariationVO.getEndingDate() != null ? contractVariationVO.getEndingDate().toLocalDate() : null;
+            InitialContractDTO initialContractDTO = InitialContractDTO.create()
+                    .withId(contractVariationVO.getId())
+                    .withContractNumber(contractVariationVO.getContractNumber())
+                    .withVariationType(contractVariationVO.getVariationType())
+                    .withStartDate(contractVariationVO.getStartDate().toLocalDate())
+                    .withExpectedEndDate(expectedEndDate)
+                    .withModificationDate(modificationDate)
+                    .withEndingDate(endingDate)
+                    .withContractJsonData(contractVariationVO.getContractJsonData())
+                    .build();
+            initialContractDTOList.add(initialContractDTO);
+        }
+
         return MapperInitialContractDTOToContractNewVersionDTO.mapInitialContractDTOToContractNewVersionDTO(initialContractDTOList);
-
     }
-
 
     public List<ContractNewVersionDTO> findAllTemporalContractInForceNow() {
 
