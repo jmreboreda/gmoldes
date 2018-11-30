@@ -1,7 +1,6 @@
 package gmoldes.domain.contract.mapper;
 
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
-import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 
 import java.time.DayOfWeek;
 import java.util.HashSet;

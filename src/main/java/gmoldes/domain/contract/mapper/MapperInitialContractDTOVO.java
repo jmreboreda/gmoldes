@@ -4,7 +4,6 @@ import gmoldes.components.contract.initial_contract.persistence.vo.InitialContra
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 
 public class MapperInitialContractDTOVO {

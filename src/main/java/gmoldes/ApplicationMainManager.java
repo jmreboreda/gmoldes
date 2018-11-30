@@ -1,7 +1,7 @@
 package gmoldes;
 
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
-import gmoldes.components.contract.initial_contract.persistence.dao.ContractVariationDAO;
+import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.new_contract.mapper.MapperContractTypeVODTO;
@@ -121,7 +121,6 @@ public class ApplicationMainManager {
         }
 
         // Contract variation
-//        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
         List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationsInForceAtDate(date);
         for(ContractVariationVO contractVariationVO : contractVariationVOList){
             if(contractVariationVO.getContractJsonData().getClientGMId().equals(clientDTO.getClientId())){

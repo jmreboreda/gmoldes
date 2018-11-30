@@ -2,14 +2,10 @@ package gmoldes.domain.contract.mapper;
 
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
-import gmoldes.domain.contractjsondata.ContractJsonData;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class MapperInitialContractVODTO {
 

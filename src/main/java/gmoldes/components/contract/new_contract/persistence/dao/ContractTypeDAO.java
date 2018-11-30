@@ -1,7 +1,6 @@
 package gmoldes.components.contract.new_contract.persistence.dao;
 
 
-import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;

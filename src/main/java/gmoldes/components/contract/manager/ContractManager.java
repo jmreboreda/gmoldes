@@ -1,8 +1,8 @@
 package gmoldes.components.contract.manager;
 
 
+import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
-import gmoldes.components.contract.initial_contract.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDTOVO;
@@ -314,7 +314,7 @@ public class ContractManager {
     public List<ContractVariationDTO> findAllContractVariationByContractNumber(Integer contractNumber){
         List<ContractVariationDTO> contractVariationDTOList = new ArrayList<>();
         ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
-        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationsByContractNumber(contractNumber);
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationByContractNumber(contractNumber);
         MapperContractVariationVODTO mapper = new MapperContractVariationVODTO();
 
         for(ContractVariationVO contractVariationVO : contractVariationVOList) {
