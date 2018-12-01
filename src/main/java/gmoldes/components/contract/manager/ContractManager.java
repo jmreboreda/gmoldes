@@ -8,14 +8,13 @@ import gmoldes.components.contract.initial_contract.persistence.vo.InitialContra
 import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDTOVO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
+import gmoldes.domain.contract.Contract;
 import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.ContractVariationDTO;
 import gmoldes.domain.contract.dto.OldContractToSaveDTO;
-import gmoldes.domain.contract.mapper.MapperContractVODTO;
-import gmoldes.domain.contract.mapper.MapperContractVariationVODTO;
-import gmoldes.domain.contract.mapper.MapperInitialContractDTOVO;
-import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
+import gmoldes.domain.contract.mapper.*;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,6 +45,13 @@ public class ContractManager {
         InitialContractVO initialContractVO = mapperInitialContractDTOVO.mapContractDTOVO(initialContractDTO);
 
         return initialContractDAO.create(initialContractVO);
+    }
+
+    public Integer updateContractVariation(ContractNewVersionDTO contractNewVersionDTO){
+        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+        ContractVariationVO contractVariationVO = MapperContractNewVersionDTOtoContractVariationVO.map(contractNewVersionDTO);
+
+        return contractVariationDAO.update(contractVariationVO);
     }
 
     public List<ContractDTO> findAllContractsOrderedByContractNumberAndVariation(){
@@ -92,26 +98,6 @@ public class ContractManager {
     public List<ContractNewVersionDTO> findAllContractNewVersionByClientIdInMonthOfDate(Integer clientId, LocalDate dateReceived){
 
         List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
-
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTime(Date.from(dateReceived.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-//
-//        Integer firstDayOfMonth = calendar.getMinimum(Calendar.DAY_OF_MONTH);
-//        Integer lastDayOfMonth = calendar.getMaximum(Calendar.DAY_OF_MONTH);
-//
-//
-//        System.out.println("Desde ByClient: \n" +
-//                "---------------------------------------------------\n" +
-//                "calendar.getTime(): " + calendar.getTime() + "\n" +
-//                "dateReceived: " + dateReceived + "\n" +
-//                "firstDayOfMonth: " + firstDayOfMonth + " :: lastDayOfMonth: " + lastDayOfMonth + "\n");
-//
-//
-//        Integer monthReceived = dateReceived.getMonthValue();
-//        Integer yearReceived = dateReceived.getYear();
-//
-//        LocalDate initialDate = LocalDate.of(yearReceived, monthReceived, firstDayOfMonth);
-//        LocalDate finalDate = LocalDate.of(yearReceived, monthReceived, lastDayOfMonth);
 
         Integer yearReceived = dateReceived.getYear();
         Integer monthReceived = dateReceived.getMonth().getValue();

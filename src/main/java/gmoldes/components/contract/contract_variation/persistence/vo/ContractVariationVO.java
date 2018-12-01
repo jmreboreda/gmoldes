@@ -150,7 +150,7 @@ public class ContractVariationVO implements Serializable {
         return contractJsonData;
     }
 
-    public void setContractVariationJSONData(ContractJsonData contractJsonData) {
+    public void setContractJsonData(ContractJsonData contractJsonData) {
         this.contractJsonData = contractJsonData;
     }
 }

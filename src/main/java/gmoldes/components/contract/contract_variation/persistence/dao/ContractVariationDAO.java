@@ -50,6 +50,29 @@ public class ContractVariationDAO {
         return contractVariationVO.getId();
     }
 
+    public Integer update(ContractVariationVO contractVariationVO){
+        ContractVariationVO contractVariationReadVO = null;
+        try {
+            session.beginTransaction();
+            contractVariationReadVO = session.get(ContractVariationVO.class, contractVariationVO.getId());
+            contractVariationReadVO.setId(contractVariationVO.getId());
+            contractVariationReadVO.setContractNumber(contractVariationVO.getContractNumber());
+            contractVariationReadVO.setVariationType(contractVariationVO.getVariationType());
+            contractVariationReadVO.setStartDate(contractVariationVO.getStartDate());
+            contractVariationReadVO.setExpectedEndDate(contractVariationVO.getExpectedEndDate());
+            contractVariationReadVO.setModificationDate(contractVariationVO.getModificationDate());
+            contractVariationReadVO.setEndingDate(contractVariationVO.getEndingDate());
+            contractVariationReadVO.setContractJsonData(contractVariationVO.getContractJsonData());
+            session.update(contractVariationReadVO);
+            session.getTransaction().commit();
+        }
+        catch (Exception e){
+            System.err.println("No se ha podido actualizar la variación del contrato: " + e.getMessage());
+        }
+
+        return contractVariationVO.getId();
+    }
+
     public List<ContractVariationVO> findAllContractVariationByContractNumber(Integer contractNumber){
         TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER, ContractVariationVO.class);
         query.setParameter("code", contractNumber);

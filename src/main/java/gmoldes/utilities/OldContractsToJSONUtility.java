@@ -100,7 +100,7 @@ public class OldContractsToJSONUtility {
                 contractVariationVO.setStartDate(Date.valueOf(contractDTO.getDateFrom()));
                 contractVariationVO.setExpectedEndDate(expectedEndDate);
                 contractVariationVO.setEndingDate(endingDate);
-                contractVariationVO.setContractVariationJSONData(contractJsonData);
+                contractVariationVO.setContractJsonData(contractJsonData);
 
                 Integer id = contractVariationDAO.create(contractVariationVO);
 
