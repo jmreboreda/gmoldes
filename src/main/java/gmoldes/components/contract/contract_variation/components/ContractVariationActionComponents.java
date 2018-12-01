@@ -38,6 +38,38 @@ public class ContractVariationActionComponents extends AnchorPane {
         exitButton.setOnMouseClicked(this::onExitButton);
     }
 
+    public Button getSendMailButton() {
+        return sendMailButton;
+    }
+
+    public void setSendMailButton(Button sendMailButton) {
+        this.sendMailButton = sendMailButton;
+    }
+
+    public Button getOkButton() {
+        return OkButton;
+    }
+
+    public void setOkButton(Button okButton) {
+        OkButton = okButton;
+    }
+
+    public Button getViewPDFButton() {
+        return viewPDFButton;
+    }
+
+    public void setViewPDFButton(Button viewPDFButton) {
+        this.viewPDFButton = viewPDFButton;
+    }
+
+    public Button getExitButton() {
+        return exitButton;
+    }
+
+    public void setExitButton(Button exitButton) {
+        this.exitButton = exitButton;
+    }
+
     private void onSendMailButton(MouseEvent event){
         this.SendMailButtonEventHandler.handle(event);
     }

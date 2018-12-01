@@ -8,13 +8,11 @@ import gmoldes.components.contract.initial_contract.persistence.vo.InitialContra
 import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDTOVO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
-import gmoldes.domain.contract.Contract;
 import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.ContractVariationDTO;
 import gmoldes.domain.contract.dto.OldContractToSaveDTO;
 import gmoldes.domain.contract.mapper.*;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,14 +35,21 @@ public class ContractManager {
         return contractDAO.create(contractVO);
     }
 
-    public Integer saveInitialContract(ContractNewVersionDTO initialContractDTO){
+    public Integer saveInitialContract(ContractNewVersionDTO contractNewVersionDTO){
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         MapperInitialContractDTOVO mapperInitialContractDTOVO = new MapperInitialContractDTOVO();
         Integer newContractNumber = initialContractDAO.findHighestContractNumber() + 1;
-        initialContractDTO.setContractNumber(newContractNumber);
-        InitialContractVO initialContractVO = mapperInitialContractDTOVO.mapContractDTOVO(initialContractDTO);
+        contractNewVersionDTO.setContractNumber(newContractNumber);
+        InitialContractVO initialContractVO = mapperInitialContractDTOVO.mapContractDTOVO(contractNewVersionDTO);
 
         return initialContractDAO.create(initialContractVO);
+    }
+
+    public Integer saveContractVariation(ContractNewVersionDTO contractNewVersionDTO){
+        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+        ContractVariationVO contractVariationVO = MapperContractNewVersionDTOtoContractVariationVO.map(contractNewVersionDTO);
+
+        return contractVariationDAO.create(contractVariationVO);
     }
 
     public Integer updateContractVariation(ContractNewVersionDTO contractNewVersionDTO){
