@@ -4,7 +4,6 @@ import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
-import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.domain.client.dto.ClientDTO;
@@ -25,7 +24,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Comparator;
@@ -60,8 +58,6 @@ public class ContractVariationMainController extends VBox {
     @FXML
     public void initialize() {
 
-        contractVariationParts.setOnInForceDateChanged(this::onInForceDateChanged);
-        contractVariationParts.setOnLoadDataInClientSelector(this::clientSelectorLoadDataAtDate);
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
 
@@ -72,7 +68,6 @@ public class ContractVariationMainController extends VBox {
                                 Toggle old_toggle, Toggle new_toggle) {
             }
         });
-        contractVariationParts.loadDataInClientSelector();
 
         contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setToggleGroup(contractVariationToggleGroup);
         contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().setToggleGroup(contractVariationToggleGroup);
@@ -83,6 +78,7 @@ public class ContractVariationMainController extends VBox {
         contractVariationActionComponents.setOnOkButton(this::onOkButton);
         contractVariationActionComponents.setOnExitButton(this::onExitButton);
 
+        clientSelectorLoadData();
     }
 
     public ContractVariationMainController() {
@@ -90,34 +86,20 @@ public class ContractVariationMainController extends VBox {
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_MAIN_FXML);
     }
 
-    private void clientSelectorLoadDataAtDate(DateChangeEvent event) {
+    private void clientSelectorLoadData() {
         contractVariationParts.getClientSelector().getItems().clear();
         contractVariationParts.getContractSelector().getItems().clear();
+        LocalDate workDate = contractVariationParts.getInForceDate().getValue();
         contractVariationContractData.clearAllContractData();
-        List<ClientDTO> clientDTOList = applicationMainController.findAllClientWithContractInForceAtDate(event.getDate());
+        List<ClientDTO> clientDTOList = applicationMainController.findAllClientWithContractInForceAtDate(workDate);
 
         List<ClientDTO> clientDTOListSorted = clientDTOList
                 .stream()
                 .sorted(Comparator.comparing(ClientDTO::getPersonOrCompanyName)).collect(Collectors.toList());
 
         ObservableList<ClientDTO> clientDTOS = FXCollections.observableArrayList(clientDTOListSorted);
+        contractVariationParts.loadDataInClientSelector(clientDTOS);
         contractVariationParts.getClientSelector().setItems(clientDTOS);
-
-        for(ClientDTO clientDTO : clientDTOS){
-            if(event.getClient() != null &&
-                    clientDTO.getClientId().equals(event.getClient().getClientId())){
-                contractVariationParts.getClientSelector().getSelectionModel().select(clientDTO);
-            }
-        }
-    }
-
-    private void onInForceDateChanged(DateChangeEvent event){
-
-        clientSelectorLoadDataAtDate(event);
-        contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
-        contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().setSelected(false);
-        contractVariationContractVariations.getContractVariationContractConversion().getRbContractConversion().setSelected(false);
-
     }
 
     private void onChangeEmployer(ClientChangeEvent event){
@@ -173,7 +155,6 @@ public class ContractVariationMainController extends VBox {
                 System.out.println("Actualizado initialContractId: " + initialContractUpdatedId + "\n");
             }
         }
-
     }
 
     private void onExitButton(MouseEvent event){
