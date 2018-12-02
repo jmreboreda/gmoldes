@@ -4,14 +4,14 @@ import gmoldes.components.contract.initial_contract.persistence.vo.InitialContra
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 
 public class MapperInitialContractDTOVO {
 
-    public InitialContractVO mapContractDTOVO(ContractNewVersionDTO contractNewVersionDTO) {
+    public static InitialContractVO map(ContractNewVersionDTO contractNewVersionDTO) {
 
         InitialContractVO initialContractVO = new InitialContractVO();
+        initialContractVO.setId(contractNewVersionDTO.getId());
         initialContractVO.setContractNumber(contractNewVersionDTO.getContractNumber());
         initialContractVO.setVariationType(contractNewVersionDTO.getVariationType());
         initialContractVO.setStartDate(java.sql.Date.valueOf(contractNewVersionDTO.getStartDate()));

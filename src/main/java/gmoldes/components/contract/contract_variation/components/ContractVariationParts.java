@@ -1,15 +1,20 @@
 package gmoldes.components.contract.contract_variation.components;
 
-import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
+import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
+import gmoldes.utilities.Utilities;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
+import java.time.LocalDate;
 
 public class ContractVariationParts extends VBox {
 
@@ -17,11 +22,12 @@ public class ContractVariationParts extends VBox {
 
     private Parent parent;
 
-    private EventHandler<ActionEvent> actionEventEventHandlerLoadDataInClientSelector;
-    private EventHandler<ActionEvent> actionEventEventHandlerClientSelectorAction;
+    private EventHandler<ClientChangeEvent> actionEventEventHandlerClientSelectorAction;
     private EventHandler<ActionEvent> actionEventEventHandlerContractSelectorAction;
 
 
+    @FXML
+    private DatePicker inForceDate;
     @FXML
     private ChoiceBox<ClientDTO> client;
     @FXML
@@ -30,13 +36,24 @@ public class ContractVariationParts extends VBox {
     public ContractVariationParts() {
 
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_PARTS_FXML);
-
     }
 
     @FXML
     public void initialize() {
+
+        inForceDate.setConverter(Utilities.converter);
+        inForceDate.setValue(LocalDate.now());
+        inForceDate.setMouseTransparent(true);
         client.setOnAction(this::onChangeEmployer);
         contract.setOnAction(this::onChangeEmployee);
+    }
+
+    public DatePicker getInForceDate() {
+        return inForceDate;
+    }
+
+    public void setInForceDate(DatePicker inForceDate) {
+        this.inForceDate = inForceDate;
     }
 
     public ChoiceBox<ClientDTO> getClientSelector() {
@@ -56,22 +73,20 @@ public class ContractVariationParts extends VBox {
     }
 
     private void onChangeEmployer(ActionEvent event){
-        actionEventEventHandlerClientSelectorAction.handle(event);
+
+        actionEventEventHandlerClientSelectorAction.handle(new ClientChangeEvent(getClientSelector().getSelectionModel().getSelectedItem(), getInForceDate().getValue()));
     }
 
     private void onChangeEmployee(ActionEvent event){
         this.actionEventEventHandlerContractSelectorAction.handle(event);
     }
 
-    public void loadDataInClientSelector() { actionEventEventHandlerLoadDataInClientSelector.handle(new ActionEvent());
+    public void loadDataInClientSelector(ObservableList clientOS) {
 
+        this.client.setItems(clientOS);
     }
 
-    public void setOnLoadDataInClientSelector(EventHandler<ActionEvent> actionEventEventHandlerLoadDataInClientSelector){
-        this.actionEventEventHandlerLoadDataInClientSelector = actionEventEventHandlerLoadDataInClientSelector;
-    }
-
-    public void setOnClientSelectorAction(EventHandler<ActionEvent> actionEventHandlerClientSelectorAction){
+    public void setOnClientSelectorAction(EventHandler<ClientChangeEvent> actionEventHandlerClientSelectorAction){
         this.actionEventEventHandlerClientSelectorAction = actionEventHandlerClientSelectorAction;
     }
 

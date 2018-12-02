@@ -622,13 +622,6 @@ public class NewContractMainController extends VBox {
 
     private void verifyPrintTimeRecord(){
         if(this.contractData.getFullPartialWorkDay().equals(ContractConstants.PARTIAL_WORKDAY)){
-//            String quoteAccountCode = null;
-//
-//            if(contractParts.getSelectedCCC() == null){
-//                quoteAccountCode = "";
-//            }else{
-//                quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
-//            }
 
             String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 

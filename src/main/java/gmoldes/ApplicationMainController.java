@@ -18,12 +18,12 @@ public class ApplicationMainController {
         return applicationMainManager.findAllClientWithContractInForceAtDate(date);
     }
 
-    public List<ContractFullDataDTO> findAllDataForContractInForceByClientId(Integer clientId){
+    public List<ContractFullDataDTO> findAllDataForContractInForceAtDateByClientId(Integer clientId, LocalDate date){
 
-        return applicationMainManager.findAllContractInForceByClientId(clientId);
+        return applicationMainManager.findAllDataForContractInForceAtDateByClientId(clientId, date);
     }
 
-    public List<ContractNewVersionDTO> findAllContractInForcerInPeriod(LocalDate initialDate, LocalDate finalDate){
+    public List<ContractNewVersionDTO> findAllContractInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
 
         return applicationMainManager.findAllContractInForceInPeriod(initialDate, finalDate);
 
@@ -38,5 +38,10 @@ public class ApplicationMainController {
 
         return applicationMainManager.retrievePersonByPersonID(personId);
 
+    }
+
+    public List<ContractNewVersionDTO> findAllTemporalContractInForceNow() {
+
+        return applicationMainManager.findAllTemporalContractInForceNow();
     }
 }

@@ -21,7 +21,7 @@
          <rowConstraints>
             <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Label text="Gestoría MOLDES" textFill="#640000" GridPane.columnIndex="1" GridPane.columnSpan="2">
@@ -34,7 +34,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <ImageView pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+            <ImageView fitWidth="55.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                <image>
                   <Image url="@../../pics/GMapp_PNG_64x64.png" />
                </image>
@@ -44,7 +44,7 @@
             </ImageView>
          </children>
          <HBox.margin>
-            <Insets top="10.0" />
+            <Insets />
          </HBox.margin>
       </GridPane>
       <GridPane>

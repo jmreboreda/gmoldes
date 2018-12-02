@@ -1,7 +1,6 @@
 package gmoldes.utilities;
 
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
-import gmoldes.components.contract.initial_contract.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.manager.ContractManager;
@@ -101,7 +100,7 @@ public class OldContractsToJSONUtility {
                 contractVariationVO.setStartDate(Date.valueOf(contractDTO.getDateFrom()));
                 contractVariationVO.setExpectedEndDate(expectedEndDate);
                 contractVariationVO.setEndingDate(endingDate);
-                contractVariationVO.setContractVariationJSONData(contractJsonData);
+                contractVariationVO.setContractJsonData(contractJsonData);
 
                 Integer id = contractVariationDAO.create(contractVariationVO);
 

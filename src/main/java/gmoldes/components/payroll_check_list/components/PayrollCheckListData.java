@@ -2,6 +2,8 @@ package gmoldes.components.payroll_check_list.components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.domain.payroll_checklist.dto.PayrollCheckListDTO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,6 +18,8 @@ import javafx.scene.layout.VBox;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class PayrollCheckListData extends VBox {
@@ -28,7 +32,7 @@ public class PayrollCheckListData extends VBox {
     private EventHandler<ActionEvent> actionEventEventHandlerYearChanged;
 
     @FXML
-    private ChoiceBox<Month> month;
+    private ChoiceBox<PayrollCheckListDTO> month;
     @FXML
     private TextField year;
     @FXML
@@ -52,13 +56,14 @@ public class PayrollCheckListData extends VBox {
         this.month.setOnAction(this::onMonthChanged);
         this.year.setOnAction(this::onYearChanged);
 
+        loadMonth();
     }
 
-    public ChoiceBox<Month> getMonth() {
+    public ChoiceBox<PayrollCheckListDTO> getMonth() {
         return month;
     }
 
-    public void setMonth(ChoiceBox<Month> month) {
+    public void setMonth(ChoiceBox<PayrollCheckListDTO> month) {
         this.month = month;
     }
 
@@ -78,10 +83,18 @@ public class PayrollCheckListData extends VBox {
         this.payrollTable = payrollTable;
     }
 
-    @Override
-    public String toString(){
+    private void loadMonth(){
 
-        return getMonth().getSelectionModel().getSelectedItem().getDisplayName(TextStyle.FULL, Locale.getDefault());
+        List<PayrollCheckListDTO> payrollCheckListDTOList = new ArrayList<>();
+        for(Month month : Month.values()){
+            PayrollCheckListDTO payrollCheckListDTO = new PayrollCheckListDTO();
+            payrollCheckListDTO.setMonth(month);
+            payrollCheckListDTOList.add(payrollCheckListDTO);
+        }
+
+        ObservableList monthNamesOS = FXCollections.observableArrayList(payrollCheckListDTOList);
+        month.setItems(monthNamesOS);
+
     }
 
     private void onMonthChanged(ActionEvent event){
@@ -104,17 +117,4 @@ public class PayrollCheckListData extends VBox {
     public void setOnYearChanged(EventHandler<ActionEvent> actionEventEventHandlerYearChanged){
         this.actionEventEventHandlerYearChanged = actionEventEventHandlerYearChanged;
     }
-
-//
-//    public void setOnLoadDataInClientSelector(EventHandler<ActionEvent> actionEventEventHandlerLoadDataInClientSelector){
-//        this.actionEventEventHandlerLoadDataInClientSelector = actionEventEventHandlerLoadDataInClientSelector;
-//    }
-//
-//    public void setOnClientSelectorAction(EventHandler<ActionEvent> actionEventHandlerClientSelectorAction){
-//        this.actionEventEventHandlerClientSelectorAction = actionEventHandlerClientSelectorAction;
-//    }
-//
-//    public void setOnContractSelectorAction(EventHandler<ActionEvent> actionEventEventHandlerContractSelectorAction){
-//        this.actionEventEventHandlerContractSelectorAction = actionEventEventHandlerContractSelectorAction;
-//    }
 }

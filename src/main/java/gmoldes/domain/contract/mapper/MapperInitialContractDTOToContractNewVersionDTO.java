@@ -1,6 +1,5 @@
 package gmoldes.domain.contract.mapper;
 
-import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 

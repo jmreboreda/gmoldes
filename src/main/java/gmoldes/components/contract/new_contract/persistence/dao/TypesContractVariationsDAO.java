@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import javax.persistence.Query;
+import java.util.List;
 
 public class TypesContractVariationsDAO {
 
@@ -34,7 +35,21 @@ public class TypesContractVariationsDAO {
         this.session = session;
     }
 
+    public List<TypesContractVariationsVO> findAllTypesContractVariations(){
+        Query query = session.createNamedQuery(TypesContractVariationsVO.FIND_ALL_TYPES_CONTRACT_VARIATIONS, TypesContractVariationsVO.class);
+
+        return query.getResultList();
+    }
+
     public TypesContractVariationsVO findVariationDescriptionById(Integer id){
+
+        Query query = session.createNamedQuery(TypesContractVariationsVO.FIND_TYPES_CONTRACT_VARIATIONS_BY_ID, TypesContractVariationsVO.class);
+        query.setParameter("code", id);
+
+        return (TypesContractVariationsVO) query.getSingleResult();
+    }
+
+    public TypesContractVariationsVO findTypesContractVariationsById(Integer id){
 
         Query query = session.createNamedQuery(TypesContractVariationsVO.FIND_TYPES_CONTRACT_VARIATIONS_BY_ID, TypesContractVariationsVO.class);
         query.setParameter("code", id);

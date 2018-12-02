@@ -16,16 +16,27 @@ import java.sql.Date;
 
 @NamedQueries(value = {
         @NamedQuery(
-                name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_PERIOD,
+                name = InitialContractVO.FIND_ALL_ACTIVE_INITIAL_CONTRACT_IN_PERIOD,
                 query = "select p from InitialContractVO  p where startDate <= :codeFinalDate and (endingDate is null or endingDate >= :codeInitialDate) " +
                         "and (expectedEndDate is null or expectedEndDate >= :codeInitialDate) " +
                         "and (modificationDate is null or modificationDate >= :codeInitialDate) " +
                         "and variationType < 800 order by contractNumber, startDate"
         ),
         @NamedQuery(
-        name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD,
-        query = "select p from InitialContractVO  p where startDate <= :codeFinalDate and (endingDate is null or endingDate >= :codeInitialDate) " +
-                "order by contractNumber, startDate, modificationDate"
+                name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_TEMPORAL_IN_FORCE_NOW,
+                query = "select p from InitialContractVO p where startDate <= now() and endingDate is null and modificationDate is null and expectedEndDate is not null"
+        ),
+        @NamedQuery(
+                name = InitialContractVO.FIND_ALL_CONTRACT_IN_FORCE_AT_DATE,
+                query = "select p from InitialContractVO p where p.startDate <= :date and (p.endingDate is null or p.endingDate >= :date)"
+        ),
+        @NamedQuery(
+                name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD,
+                query = "select p from InitialContractVO  p where startDate <= :codeFinalDate " +
+                        "and (endingDate is null or endingDate >= :codeInitialDate) " +
+                        "and (expectedEndDate is null or expectedEndDate >= :codeInitialDate) " +
+                        "and (modificationDate is null or modificationDate >= :codeInitialDate) " +
+                        "order by contractNumber, startDate, modificationDate"
         ),
         @NamedQuery(
                 name = InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE,
@@ -36,8 +47,13 @@ import java.sql.Date;
                 query = "select p from InitialContractVO p where contractNumber = :code"
         ),
         @NamedQuery(
-                name = InitialContractVO.FIND_ALL_DATA_FOR_INITIAL_CONTRACT_IN_FORCE_AT_DATE,
-                query = "select p from InitialContractVO p where p.startDate <= :date and p.endingDate is null and p.modificationDate is null"
+                name = InitialContractVO.FIND_LAST_TUPLA_INITIAL_CONTRACT_BY_CONTRACT_NUMBER,
+                query = "select p from InitialContractVO p where contractNumber = :contractNumber order by startDate desc"
+        ),
+        @NamedQuery(
+                name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_AT_DATE,
+                query = "select p from InitialContractVO p where p.startDate <= :date and p.endingDate is null " +
+                        "and (p.modificationDate is null or p.modificationDate >= :date) and (p.expectedEndDate is null or p.expectedEndDate >= :date)"
         ),
         @NamedQuery(
                 name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID,
@@ -58,12 +74,15 @@ import java.sql.Date;
 
 public class InitialContractVO implements Serializable {
 
-    public static final String FIND_ALL_INITIAL_CONTRACT_IN_PERIOD = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_PERIOD";
+    public static final String FIND_ALL_ACTIVE_INITIAL_CONTRACT_IN_PERIOD = "InitialContractVO.FIND_ALL_ACTIVE_INITIAL_CONTRACT_IN_PERIOD";
+    public static final String FIND_ALL_CONTRACT_IN_FORCE_AT_DATE = "InitialContractVO.FIND_ALL_CONTRACT_IN_FORCE_AT_DATE";
     public static final String FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD";
     public static final String FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE = "InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE";
     public static final String FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER = "InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER";
-    public static final String FIND_ALL_DATA_FOR_INITIAL_CONTRACT_IN_FORCE_AT_DATE = "InitialContractVO.FIND_ALL_DATA_FOR_INITIAL_CONTRACT_IN_FORCE_AT_DATE";
+    public static final String FIND_ALL_INITIAL_CONTRACT_IN_FORCE_AT_DATE = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_AT_DATE";
     public static final String FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID";
+    public static final String FIND_ALL_INITIAL_CONTRACT_TEMPORAL_IN_FORCE_NOW = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_TEMPORAL_IN_FORCE_NOW";
+    public static final String FIND_LAST_TUPLA_INITIAL_CONTRACT_BY_CONTRACT_NUMBER = "InitialContractVO.FIND_LAST_TUPLA_INITIAL_CONTRACT_BY_CONTRACT_NUMBER";
 
 
     @Id

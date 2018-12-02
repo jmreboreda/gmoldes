@@ -10,9 +10,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
+import java.time.format.TextStyle;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,6 +65,12 @@ public class PayrollCheckList {
         this.year = year;
     }
 
+    @Override
+    public String toString(){
+
+        return getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
+    }
+
     public void loadClipboard(Month month, Integer year){
 
         String clipboardData = "";
@@ -114,7 +119,7 @@ public class PayrollCheckList {
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
-        return applicationMainController.findAllContractInForcerInPeriod(initialDate, finalDate);
+        return applicationMainController.findAllContractInForceInPeriod(initialDate, finalDate);
 
     }
 }
