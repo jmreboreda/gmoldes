@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 public class ContractVariationContractVariations extends VBox {
 
-    private static final String CONTRACT_VARIATION_CONTRACT_DATA_FXML = "/fxml/contract_variations/contractvariation_contractvariations.fxml";
+    private static final String CONTRACT_VARIATION_CONTRACT_VARIATIONS_FXML = "/fxml/contract_variations/contractvariation_contractvariations.fxml";
 
     private Parent parent;
 
@@ -32,7 +32,7 @@ public class ContractVariationContractVariations extends VBox {
 
 
     public ContractVariationContractVariations() {
-        this.parent = ViewLoader.load(this, CONTRACT_VARIATION_CONTRACT_DATA_FXML);
+        this.parent = ViewLoader.load(this, CONTRACT_VARIATION_CONTRACT_VARIATIONS_FXML);
     }
 
     @FXML
