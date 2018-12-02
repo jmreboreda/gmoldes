@@ -11,6 +11,7 @@ public class MapperInitialContractDTOVO {
     public static InitialContractVO map(ContractNewVersionDTO contractNewVersionDTO) {
 
         InitialContractVO initialContractVO = new InitialContractVO();
+        initialContractVO.setId(contractNewVersionDTO.getId());
         initialContractVO.setContractNumber(contractNewVersionDTO.getContractNumber());
         initialContractVO.setVariationType(contractNewVersionDTO.getVariationType());
         initialContractVO.setStartDate(java.sql.Date.valueOf(contractNewVersionDTO.getStartDate()));

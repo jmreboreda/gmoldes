@@ -159,11 +159,11 @@ public class ContractVariationMainController extends VBox {
                 ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
                         .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
 
-                Integer contractVariationUpdatedId = updateLastContractVariation(contractNewVersionExtinctedDTO);
-                System.out.println("Actualizado contractVariationId: " + contractVariationUpdatedId);
+                //Integer contractVariationUpdatedId = updateLastContractVariation(contractNewVersionExtinctedDTO);
+                //System.out.println("Actualizado contractVariationId: " + contractVariationUpdatedId);
 
-                Integer newContractVariationId = persistNewContractVariation(contractNewVersionExtinctedDTO);
-                System.out.println("Nuevo contractVariationId: " + newContractVariationId);
+                //Integer newContractVariationId = persistNewContractVariation(contractNewVersionExtinctedDTO);
+                //System.out.println("Nuevo contractVariationId: " + newContractVariationId);
 
                 Integer initialContractUpdatedId = updateInitialContractOfContractExtinction(contractNewVersionExtinctedDTO);
                 System.out.println("Initial contract updated id: " + initialContractUpdatedId);
@@ -267,7 +267,7 @@ public class ContractVariationMainController extends VBox {
                 .getDateFrom().getValue();
 
         InitialContractDTO initialContractToUpdateDTO = contractManager.findLastTuplaOfInitialContractByContractNumber(contractNewVersionExtinctedDTO.getContractNumber());
-        initialContractToUpdateDTO.setModificationDate(dateOfExtinction);
+        System.out.println("initialContractToUpdateDTOId: " + initialContractToUpdateDTO.getId());
         initialContractToUpdateDTO.setEndingDate(dateOfExtinction);
 
         ContractNewVersionDTO contractNewVersionToUpdateDTO = ContractNewVersionDTO.create()
