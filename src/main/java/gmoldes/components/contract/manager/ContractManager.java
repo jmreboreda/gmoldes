@@ -8,11 +8,9 @@ import gmoldes.components.contract.initial_contract.persistence.vo.InitialContra
 import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDTOVO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
-import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.ContractVariationDTO;
-import gmoldes.domain.contract.dto.OldContractToSaveDTO;
+import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.*;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,12 +35,18 @@ public class ContractManager {
 
     public Integer saveInitialContract(ContractNewVersionDTO contractNewVersionDTO){
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
-        MapperInitialContractDTOVO mapperInitialContractDTOVO = new MapperInitialContractDTOVO();
         Integer newContractNumber = initialContractDAO.findHighestContractNumber() + 1;
         contractNewVersionDTO.setContractNumber(newContractNumber);
-        InitialContractVO initialContractVO = mapperInitialContractDTOVO.mapContractDTOVO(contractNewVersionDTO);
+        InitialContractVO initialContractVO = MapperInitialContractDTOVO.map(contractNewVersionDTO);
 
         return initialContractDAO.create(initialContractVO);
+    }
+
+    public Integer updateInitialContract(ContractNewVersionDTO contractNewVersionDTO ){
+        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
+        InitialContractVO initialContractVO = MapperInitialContractDTOVO.map(contractNewVersionDTO);
+
+        return initialContractDAO.update(initialContractVO);
     }
 
     public Integer saveContractVariation(ContractNewVersionDTO contractNewVersionDTO){
@@ -216,6 +220,14 @@ public class ContractManager {
         }
 
         return contractNewVersionDTOList;
+    }
+
+    public InitialContractDTO findLastTuplaOfInitialContractByContractNumber(Integer contractNumber){
+
+        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
+        InitialContractVO initialContractVO = initialContractDAO.findLastTuplaOfInitialContractByContractNumber(contractNumber);
+
+        return MapperInitialContractVODTO.map(initialContractVO);
     }
 
     public int establishContractInForce(){

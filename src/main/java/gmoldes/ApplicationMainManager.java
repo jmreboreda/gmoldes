@@ -169,7 +169,11 @@ public class ApplicationMainManager {
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInForceInPeriod(initialDate, finalDate);
 
-        List<InitialContractDTO> initialContractDTOList = MapperInitialContractVODTO.mapInitialContractVODTO(initialContractVOList);
+        List<InitialContractDTO> initialContractDTOList = new ArrayList<>();
+        for(InitialContractVO initialContractVO : initialContractVOList){
+            InitialContractDTO initialContractDTO = MapperInitialContractVODTO.map(initialContractVO);
+            initialContractDTOList.add(initialContractDTO);
+        }
 
         // Contract variation
         ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();

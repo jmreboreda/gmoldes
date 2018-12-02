@@ -5,14 +5,12 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
-import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.ContractVariationDTO;
-import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import javafx.beans.value.ChangeListener;
@@ -30,7 +28,6 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -159,31 +156,17 @@ public class ContractVariationMainController extends VBox {
 
                 contractVariationActionComponents.getOkButton().setDisable(true);
 
-                Integer contractVariationUpdatedId = updateLastContractVariation();
+                ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
+                        .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
+
+                Integer contractVariationUpdatedId = updateLastContractVariation(contractNewVersionExtinctedDTO);
                 System.out.println("Actualizado contractVariationId: " + contractVariationUpdatedId);
 
-                Integer newContractVariationId = persistNewContractVariation();
+                Integer newContractVariationId = persistNewContractVariation(contractNewVersionExtinctedDTO);
                 System.out.println("Nuevo contractVariationId: " + newContractVariationId);
 
-
-                // Persist new contract variation (extinction)
-                //ContractNewVersionDTO newContractVariationToPersistDTO = contractNewVersionExtinctedDTO;
-
-                //TypesContractVariationsDTO typesContractVariationsExtinctionSelectedDTO = contractVariationContractVariations
-                //        .getContractVariationContractExtinction().getExtinctionCauseSelector().getValue();
-
-                //newContractVariationToPersistDTO.setId(null);
-                //newContractVariationToPersistDTO.setVariationType(typesContractVariationsExtinctionSelectedDTO.getId_variation());
-                //newContractVariationToPersistDTO.setModificationDate(dateOfExtinction);
-                //newContractVariationToPersistDTO.setEndingDate(dateOfExtinction);
-                //persistNewContractVariation(newContractVariationToPersistDTO);
-
-                // Update initial contract to extinction
-                //ContractNewVersionDTO initialContractToUpdateDTO = contractNewVersionExtinctedDTO;
-
-
-
-                //updateInitialContract();
+                Integer initialContractUpdatedId = updateInitialContractOfContractExtinction(contractNewVersionExtinctedDTO);
+                System.out.println("Initial contract updated id: " + initialContractUpdatedId);
             }
         }
 
@@ -250,23 +233,18 @@ public class ContractVariationMainController extends VBox {
         return true;
     }
 
-    private Integer updateLastContractVariation(){
-        ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
-                .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
+    private Integer updateLastContractVariation(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
         LocalDate dateOfExtinction = contractVariationContractVariations.getContractVariationContractExtinction()
                 .getDateFrom().getValue();
 
-        ContractNewVersionDTO contractVariationToUpdateDTO = contractNewVersionExtinctedDTO;
-        contractVariationToUpdateDTO.setModificationDate(dateOfExtinction);
-        contractVariationToUpdateDTO.setEndingDate(dateOfExtinction);
+        contractNewVersionExtinctedDTO.setModificationDate(dateOfExtinction);
+        contractNewVersionExtinctedDTO.setEndingDate(dateOfExtinction);
 
-        return contractManager.updateContractVariation(contractVariationToUpdateDTO);
+        return contractManager.updateContractVariation(contractNewVersionExtinctedDTO);
     }
 
-    private Integer persistNewContractVariation(){
-        ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
-                .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
+    private Integer persistNewContractVariation(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
         Integer contractVariationExtinctionCause = contractVariationContractVariations.getContractVariationContractExtinction()
                 .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getId_variation();
@@ -274,13 +252,35 @@ public class ContractVariationMainController extends VBox {
         LocalDate dateOfExtinction = contractVariationContractVariations.getContractVariationContractExtinction()
                 .getDateFrom().getValue();
 
-        ContractNewVersionDTO newContractVariationDTO = contractNewVersionExtinctedDTO;
-        newContractVariationDTO.setId(null);
-        newContractVariationDTO.setVariationType(contractVariationExtinctionCause);
-        newContractVariationDTO.setStartDate(dateOfExtinction);
-        newContractVariationDTO.setModificationDate(dateOfExtinction);
-        newContractVariationDTO.setEndingDate(dateOfExtinction);
+        contractNewVersionExtinctedDTO.setId(null);
+        contractNewVersionExtinctedDTO.setVariationType(contractVariationExtinctionCause);
+        contractNewVersionExtinctedDTO.setStartDate(dateOfExtinction);
+        contractNewVersionExtinctedDTO.setModificationDate(dateOfExtinction);
+        contractNewVersionExtinctedDTO.setEndingDate(dateOfExtinction);
 
-        return contractManager.saveContractVariation(newContractVariationDTO);
+        return contractManager.saveContractVariation(contractNewVersionExtinctedDTO);
+    }
+
+    private Integer updateInitialContractOfContractExtinction(ContractNewVersionDTO contractNewVersionExtinctedDTO){
+
+        LocalDate dateOfExtinction = contractVariationContractVariations.getContractVariationContractExtinction()
+                .getDateFrom().getValue();
+
+        InitialContractDTO initialContractToUpdateDTO = contractManager.findLastTuplaOfInitialContractByContractNumber(contractNewVersionExtinctedDTO.getContractNumber());
+        initialContractToUpdateDTO.setModificationDate(dateOfExtinction);
+        initialContractToUpdateDTO.setEndingDate(dateOfExtinction);
+
+        ContractNewVersionDTO contractNewVersionToUpdateDTO = ContractNewVersionDTO.create()
+                .withId(initialContractToUpdateDTO.getId())
+                .withContractNumber(initialContractToUpdateDTO.getContractNumber())
+                .withVariationType(initialContractToUpdateDTO.getVariationType())
+                .withStartDate(initialContractToUpdateDTO.getStartDate())
+                .withExpectedEndDate(initialContractToUpdateDTO.getExpectedEndDate())
+                .withModificationDate(initialContractToUpdateDTO.getModificationDate())
+                .withEndingDate(initialContractToUpdateDTO.getEndingDate())
+                .withContractJsonData(initialContractToUpdateDTO.getContractJsonData())
+                .build();
+
+        return contractManager.updateInitialContract(contractNewVersionToUpdateDTO);
     }
 }

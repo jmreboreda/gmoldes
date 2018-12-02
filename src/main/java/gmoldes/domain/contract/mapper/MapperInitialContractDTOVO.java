@@ -8,7 +8,7 @@ import java.sql.Date;
 
 public class MapperInitialContractDTOVO {
 
-    public InitialContractVO mapContractDTOVO(ContractNewVersionDTO contractNewVersionDTO) {
+    public static InitialContractVO map(ContractNewVersionDTO contractNewVersionDTO) {
 
         InitialContractVO initialContractVO = new InitialContractVO();
         initialContractVO.setContractNumber(contractNewVersionDTO.getContractNumber());

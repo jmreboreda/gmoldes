@@ -52,6 +52,39 @@ public class InitialContractDAO {
         return initialContractVO.getContractNumber();
     }
 
+    public Integer update(InitialContractVO initialContractVO){
+        InitialContractVO initialContractReadVO = null;
+        try {
+            session.beginTransaction();
+            initialContractReadVO = session.get(InitialContractVO.class, initialContractVO.getId());
+            initialContractReadVO.setId(initialContractVO.getId());
+            initialContractReadVO.setContractNumber(initialContractVO.getContractNumber());
+            initialContractReadVO.setVariationType(initialContractVO.getVariationType());
+            initialContractReadVO.setStartDate(initialContractVO.getStartDate());
+            initialContractReadVO.setExpectedEndDate(initialContractVO.getExpectedEndDate());
+            initialContractReadVO.setModificationDate(initialContractVO.getModificationDate());
+            initialContractReadVO.setEndingDate(initialContractVO.getEndingDate());
+            initialContractReadVO.setContractJsonData(initialContractVO.getContractJsonData());
+            session.update(initialContractReadVO);
+            session.getTransaction().commit();
+        }
+        catch (Exception e){
+            System.err.println("No se ha podido actualizar el contrato inicial: " + e.getMessage());
+        }
+
+        return initialContractVO.getId();
+    }
+
+    public InitialContractVO findLastTuplaOfInitialContractByContractNumber(Integer contractNumber){
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_LAST_TUPLA_INITIAL_CONTRACT_BY_CONTRACT_NUMBER, InitialContractVO.class);
+        query.setParameter("contractNumber", contractNumber);
+        query.setMaxResults(1);
+
+        return  query.getSingleResult();
+
+
+    }
+
     public List<InitialContractVO> findAllContractInForceAtDate(LocalDate date){
         TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_CONTRACT_IN_FORCE_AT_DATE, InitialContractVO.class);
 

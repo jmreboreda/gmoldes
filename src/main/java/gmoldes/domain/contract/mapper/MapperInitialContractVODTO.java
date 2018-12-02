@@ -9,15 +9,12 @@ import java.util.List;
 
 public class MapperInitialContractVODTO {
 
-    public static List<InitialContractDTO> mapInitialContractVODTO(List<InitialContractVO> initialContractVOList){
+    public static InitialContractDTO map(InitialContractVO initialContractVO){
 
-        List<InitialContractDTO> initialContractDTOList = new ArrayList<>();
-
-        for(InitialContractVO initialContractVO : initialContractVOList){
-            LocalDate expectedEndDate = initialContractVO.getExpectedEndDate() != null ? initialContractVO.getExpectedEndDate().toLocalDate() : null;
-            LocalDate modificationDate = initialContractVO.getModificationDate() != null ? initialContractVO.getModificationDate().toLocalDate() : null;
-            LocalDate endingDate = initialContractVO.getEndingDate() != null ? initialContractVO.getEndingDate().toLocalDate() : null;
-            InitialContractDTO initialContractDTO = InitialContractDTO.create()
+        LocalDate expectedEndDate = initialContractVO.getExpectedEndDate() != null ? initialContractVO.getExpectedEndDate().toLocalDate() : null;
+        LocalDate modificationDate = initialContractVO.getModificationDate() != null ? initialContractVO.getModificationDate().toLocalDate() : null;
+        LocalDate endingDate = initialContractVO.getEndingDate() != null ? initialContractVO.getEndingDate().toLocalDate() : null;
+        return  InitialContractDTO.create()
                     .withId(initialContractVO.getId())
                     .withContractNumber(initialContractVO.getContractNumber())
                     .withVariationType(initialContractVO.getVariationType())
@@ -27,11 +24,6 @@ public class MapperInitialContractVODTO {
                     .withEndingDate(endingDate)
                     .withContractJsonData(initialContractVO.getContractJsonData())
                     .build();
-
-            initialContractDTOList.add(initialContractDTO);
-        }
-
-        return initialContractDTOList;
     }
 
 }
