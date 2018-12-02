@@ -122,7 +122,12 @@ public class ContractVariationContractData extends VBox {
 
         this.getDateFrom().setText(contractFullDataDTO.getInitialContractDate().format(formatter));
 
-        String dateTo = contractFullDataDTO.getContractNewVersion().getExpectedEndDate() != null ? contractFullDataDTO.getContractNewVersion().getExpectedEndDate().format(formatter) : null;
+        String dateTo = null;
+        if(contractFullDataDTO.getContractNewVersion().getEndingDate() != null){
+            dateTo = contractFullDataDTO.getContractNewVersion().getEndingDate().format(formatter);
+        }else {
+            dateTo = contractFullDataDTO.getContractNewVersion().getExpectedEndDate() != null ? contractFullDataDTO.getContractNewVersion().getExpectedEndDate().format(formatter) : null;
+        }
         this.getDateTo().setText(dateTo);
 
         this.getContractType().setText(contractFullDataDTO.getContractType().getColloquial());

@@ -143,9 +143,13 @@ public class ContractVariationMainController extends VBox {
     private void onContractExtinction(MouseEvent event){
 
         contractVariationContractVariations.getContractVariationContractExtinction().componentsClear();
-
         if(!isCorrectDateToContractVariation()){
             contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
+            return;
+        }
+
+        if(contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().isSelected()) {
+            contractVariationActionComponents.getOkButton().setDisable(false);
         }
     }
 
@@ -159,14 +163,14 @@ public class ContractVariationMainController extends VBox {
                 ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
                         .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
 
-                //Integer contractVariationUpdatedId = updateLastContractVariation(contractNewVersionExtinctedDTO);
-                //System.out.println("Actualizado contractVariationId: " + contractVariationUpdatedId);
+                Integer contractVariationUpdatedId = updateLastContractVariation(contractNewVersionExtinctedDTO);
+                System.out.println("Actualizado contractVariationId: " + contractVariationUpdatedId + "\n");
 
-                //Integer newContractVariationId = persistNewContractVariation(contractNewVersionExtinctedDTO);
-                //System.out.println("Nuevo contractVariationId: " + newContractVariationId);
+                Integer newContractVariationId = persistNewContractVariation(contractNewVersionExtinctedDTO);
+                System.out.println("Nuevo contractVariationId: " + newContractVariationId + "\n");
 
                 Integer initialContractUpdatedId = updateInitialContractOfContractExtinction(contractNewVersionExtinctedDTO);
-                System.out.println("Initial contract updated id: " + initialContractUpdatedId);
+                System.out.println("Actualizado initialContractId: " + initialContractUpdatedId + "\n");
             }
         }
 
@@ -229,7 +233,7 @@ public class ContractVariationMainController extends VBox {
             System.out.println("No se ha seleccionado la situacion de las vacaciones.");
             return false;
         }
-        System.out.println("Aparentemente esta todo correcto.");
+        System.out.println("Aparentemente esta todo correcto.\n");
         return true;
     }
 

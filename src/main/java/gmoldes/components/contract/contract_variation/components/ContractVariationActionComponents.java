@@ -38,6 +38,14 @@ public class ContractVariationActionComponents extends AnchorPane {
         exitButton.setOnMouseClicked(this::onExitButton);
     }
 
+    @FXML
+    private void initialize(){
+
+        sendMailButton.setDisable(true);
+        OkButton.setDisable(true);
+        viewPDFButton.setDisable(true);
+    }
+
     public Button getSendMailButton() {
         return sendMailButton;
     }
