@@ -1,18 +1,14 @@
 package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.domain.contract.dto.ContractFullDataDTO;
-import gmoldes.utilities.Utilities;
+import gmoldes.components.generic_components.DateInput;
+import gmoldes.components.generic_components.TimeInput24HoursClock;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-
-import java.time.format.DateTimeFormatter;
 
 public class ContractVariationContractVariations extends VBox {
 
@@ -25,9 +21,9 @@ public class ContractVariationContractVariations extends VBox {
     @FXML
     private ToggleGroup contractVariationToggleGroup;
     @FXML
-    private DatePicker notificationDate;
+    private DateInput dateNotification;
     @FXML
-    private TextField notificationHour;
+    private TimeInput24HoursClock hourNotification;
     @FXML
     private ContractVariationContractExtinction contractVariationContractExtinction;
     @FXML
@@ -44,9 +40,26 @@ public class ContractVariationContractVariations extends VBox {
     @FXML
     private void initialize(){
 
-        notificationDate.setConverter(Utilities.converter);
+        dateNotification.setLabelText("Fecha");
+        hourNotification.setTextLabel("Hora");
 
         contractVariationContractExtinction.setOnExtinctionButton(this::onExtinctionButton);
+    }
+
+    public DateInput getDateNotification() {
+        return dateNotification;
+    }
+
+    public void setDateNotification(DateInput dateNotification) {
+        this.dateNotification = dateNotification;
+    }
+
+    public TimeInput24HoursClock getHourNotification() {
+        return hourNotification;
+    }
+
+    public void setHourNotification(TimeInput24HoursClock hourNotification) {
+        this.hourNotification = hourNotification;
     }
 
     public ContractVariationContractExtinction getContractVariationContractExtinction() {

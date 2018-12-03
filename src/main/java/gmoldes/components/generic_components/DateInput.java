@@ -36,7 +36,7 @@ public class DateInput extends HBox {
         this.dateInput.setMaxWidth(130);
         setMargin(dateInput, new Insets(0, 0, 0, 5));
 
-        dateInput.setConverter(Utilities.converter);
+        dateInput.setConverter(Utilities.dateConverter);
         dateInput.showWeekNumbersProperty().set(false);
         dateInput.setEditable(false);
         dateInput.setValue(LocalDate.now());

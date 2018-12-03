@@ -39,8 +39,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
+import java.time.*;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -139,6 +138,7 @@ public class ContractVariationMainController extends VBox {
     private void onContractExtinction(MouseEvent event){
 
         contractVariationContractVariations.getContractVariationContractExtinction().componentsClear();
+
         if(!isCorrectDateToContractVariation()){
             contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
             return;
@@ -153,7 +153,7 @@ public class ContractVariationMainController extends VBox {
 
         if(contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().isSelected()){
             if(isCorrectContractExtinctionData()) {
-                persistContractExtinction();
+                //persistContractExtinction();
 
                 String extinctionContractCause = contractVariationContractVariations.getContractVariationContractExtinction()
                         .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
@@ -167,7 +167,7 @@ public class ContractVariationMainController extends VBox {
                 sb.append(holidaysText);
 
                 ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString());
-                printContracDataSubfolder(contractDataSubfolder);
+                printContractDataSubfolder(contractDataSubfolder);
             }
         }
     }
@@ -242,6 +242,19 @@ public class ContractVariationMainController extends VBox {
 
     private Boolean isCorrectContractExtinctionData(){
 
+        if(contractVariationContractVariations.getDateNotification().getDate() == null){
+            System.out.println("Falta la fecha de notificación del cliente.");
+
+            return false;
+        }
+
+        if(contractVariationContractVariations.getHourNotification().getText() == null){
+            System.out.println("Falta la hora de notificación del cliente.");
+
+            return false;
+
+        }
+
         if(contractVariationContractVariations.getContractVariationContractExtinction().getExtinctionCauseSelector().getSelectionModel().getSelectedItem() == null){
             System.out.println("Falta causa de la extincion.");
             return false;
@@ -255,11 +268,11 @@ public class ContractVariationMainController extends VBox {
         }
 
         if(!contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().isSelected() &&
-                !contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().isSelected()
-        ){
+                !contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().isSelected()){
             System.out.println("No se ha seleccionado la situacion de las vacaciones.");
             return false;
         }
+
         System.out.println("Aparentemente esta todo correcto.\n");
         return true;
     }
@@ -320,26 +333,46 @@ public class ContractVariationMainController extends VBox {
 
         ContractFullDataDTO allContractData = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem();
 
+        LocalDate clientNotificationDate = contractVariationContractVariations.getDateNotification().getDate();
+        LocalTime clientNotificationHour = LocalTime.parse(contractVariationContractVariations.getHourNotification().getText());
 
+        String birthDate = allContractData.getEmployee().getFechanacim() != null ? dateFormatter.format(allContractData.getEmployee().getFechanacim()) : null;
+
+        LocalDate startDate = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+
+        String daysOfWeek = allContractData.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork();
+        Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(daysOfWeek);
+
+        String address = allContractData.getEmployee().getDireccion() != null ?  allContractData.getEmployee().getDireccion() : "";
+        String codPostal = allContractData.getEmployee().getCodpostal() != null ? allContractData.getEmployee().getCodpostal().toString() : "";
+        String location = allContractData.getEmployee().getLocalidad() != null ? allContractData.getEmployee().getLocalidad() : "";
+        String fullAddress = address + "   " + codPostal + "   " + location;
 
         StudyManager studyManager = new StudyManager();
         StudyDTO study = studyManager.findStudyById(allContractData.getEmployee().getNivestud());
 
         return ContractDataSubfolder.create()
+                .withNotificationType(Parameters.CONTRACT_EXTINCTION_TEXT)
+                .withOfficialContractNumber(allContractData.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
                 .withEmployerFullName(allContractData.getEmployer().getPersonOrCompanyName())
                 .withEmployerQuoteAccountCode(allContractData.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
-
+                .withNotificationDate(clientNotificationDate)
+                .withNotificationHour(clientNotificationHour)
                 .withEmployeeFullName(allContractData.getEmployee().getApellidos() + ", " + allContractData.getEmployee().getNom_rzsoc())
                 .withEmployeeNif(Utilities.formatAsNIF(allContractData.getEmployee().getNifcif()))
                 .withEmployeeNASS(allContractData.getEmployee().getNumafss())
-                .withEmployeeBirthDate(dateFormatter.format(allContractData.getEmployee().getFechanacim()))
+                .withEmployeeBirthDate(birthDate)
                 .withEmployeeCivilState(allContractData.getEmployee().getEstciv())
                 .withEmployeeNationality(allContractData.getEmployee().getNacionalidad())
-                .withEmployeeFullAddress(allContractData.getEmployee().getDireccion() + "\t" + allContractData.getEmployee().getCodpostal() +
-                "\t" + allContractData.getEmployee().getLocalidad())
+                .withEmployeeFullAddress(fullAddress)
                 .withEmployeeMaxStudyLevel(study.getStudyDescription())
+                .withStartDate(null)
+                .withEndDate(startDate)
+                .withDayOfWeekSet(dayOfWeekSet)
 
 
+                .withDurationDays(Duration.ZERO)
+                .withSchedule(new HashSet<>())
                 .withAdditionalData(additionalData)
 
 
@@ -348,7 +381,7 @@ public class ContractVariationMainController extends VBox {
                 .build();
     }
 
-    private void printContracDataSubfolder(ContractDataSubfolder contractDataSubfolder){
+    private void printContractDataSubfolder(ContractDataSubfolder contractDataSubfolder){
         Path pathToContractDataSubfolder = retrievePathToContractDataSubfolderPDF(contractDataSubfolder);
 
         Map<String, String> attributes = new HashMap<>();
@@ -383,5 +416,42 @@ public class ContractVariationMainController extends VBox {
         }
 
         return pathOut;
+    }
+
+    private Set<DayOfWeek> retrieveDayOfWeekSet(String daysOfWeek){
+
+        Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
+
+        if(daysOfWeek.contains("MONDAY")){
+            dayOfWeekSet.add(DayOfWeek.MONDAY);
+        }
+
+        if(daysOfWeek.contains("TUESDAY")){
+            dayOfWeekSet.add(DayOfWeek.TUESDAY);
+        }
+
+        if(daysOfWeek.contains("WEDNESDAY")){
+            dayOfWeekSet.add(DayOfWeek.WEDNESDAY);
+        }
+
+
+        if(daysOfWeek.contains("THURSDAY")){
+            dayOfWeekSet.add(DayOfWeek.THURSDAY);
+        }
+
+
+        if(daysOfWeek.contains("FRIDAY")){
+            dayOfWeekSet.add(DayOfWeek.FRIDAY);
+        }
+
+        if(daysOfWeek.contains("SATURDAY")){
+            dayOfWeekSet.add(DayOfWeek.SATURDAY);
+        }
+
+        if(daysOfWeek.contains("SUNDAY")){
+            dayOfWeekSet.add(DayOfWeek.SUNDAY);
+        }
+
+        return dayOfWeekSet;
     }
 }

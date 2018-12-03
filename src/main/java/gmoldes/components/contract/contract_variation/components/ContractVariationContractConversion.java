@@ -31,8 +31,8 @@ public class ContractVariationContractConversion extends VBox {
     @FXML
     private void initialize(){
 
-        dateFrom.setConverter(Utilities.converter);
-        dateTo.setConverter(Utilities.converter);
+        dateFrom.setConverter(Utilities.dateConverter);
+        dateTo.setConverter(Utilities.dateConverter);
 
         contractConversionGroup.disableProperty().bind(this.rbContractConversion.selectedProperty().not());
     }

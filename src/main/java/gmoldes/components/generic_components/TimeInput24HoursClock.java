@@ -35,10 +35,11 @@ public class TimeInput24HoursClock extends HBox {
     @FXML
     private void initialize(){
 
-        this.textLabel.setPrefWidth(50);
-        this.textField.setMaxWidth(50);
+        this.textLabel.setMaxWidth(60);
+        this.textField.setPrefWidth(75);
         textField.setAlignment(Pos.CENTER);
-        setMargin(textField, new Insets(0, 0, 0, 0));
+        setMargin(textLabel, new Insets(0, 5, 0, 0));
+        setMargin(textField, new Insets(0, 5, 0, 0));
         textField.promptTextProperty().setValue("hh:mm");
         textField.setText(null);
 

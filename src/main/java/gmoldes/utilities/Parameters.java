@@ -28,6 +28,7 @@ public class Parameters {
     public static final String DEFAULT_DATE_FORMAT = "dd-MM-yyyy";
     public static final String DEFAULT_TIME_FORMAT = "HH:mm";
     public static final String NEW_CONTRACT_TEXT = "Nuevo contrato";
+    public static final String CONTRACT_EXTINCTION_TEXT = "Finalización contrato";
 
     /** Various */
     public static final String PDF_EXTENSION = ".pdf";

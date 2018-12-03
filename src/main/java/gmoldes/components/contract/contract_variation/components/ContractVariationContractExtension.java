@@ -1,25 +1,13 @@
 package gmoldes.components.contract.contract_variation.components;
 
-import com.sun.javafx.scene.paint.GradientUtils;
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.controllers.TypesContractVariationsController;
-import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.utilities.Utilities;
-import javafx.beans.Observable;
-import javafx.beans.binding.BooleanExpression;
-import javafx.beans.value.ObservableBooleanValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ContractVariationContractExtension extends VBox {
 
@@ -43,8 +31,8 @@ public class ContractVariationContractExtension extends VBox {
     @FXML
     private void initialize(){
 
-        dateFrom.setConverter(Utilities.converter);
-        dateTo.setConverter(Utilities.converter);
+        dateFrom.setConverter(Utilities.dateConverter);
+        dateTo.setConverter(Utilities.dateConverter);
 
         contractExtensionGroup.disableProperty().bind(this.rbContractExtension.selectedProperty().not());
     }

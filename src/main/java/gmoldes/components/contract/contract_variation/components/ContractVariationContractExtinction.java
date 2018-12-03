@@ -48,7 +48,7 @@ public class ContractVariationContractExtinction extends VBox {
 
         rbContractExtinction.setOnMouseClicked(this::onContractExtinction);
 
-        dateFrom.setConverter(Utilities.converter);
+        dateFrom.setConverter(Utilities.dateConverter);
 
         contractExtinctionGroup.disableProperty().bind(this.rbContractExtinction.selectedProperty().not());
 

@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 public class Utilities {
 
-    public static StringConverter converter = new StringConverter<LocalDate>() {
+    public static StringConverter dateConverter = new StringConverter<LocalDate>() {
         DateTimeFormatter dateFormatter =
                 DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         @Override
