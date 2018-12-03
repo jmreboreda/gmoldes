@@ -32,5 +32,5 @@ public class ContractConstants {
 
     /** Contract variation **/
     public static final String IS_NOT_VALID_DATE_FOR_CONTRACT_VARIATION = "Fecha no válida para efectuar variaciones en el contrato.";
-
+    public static final String CONTRACT_EXTINCTION_OK = "Extincion del contrato registrada correctamente.";
 }

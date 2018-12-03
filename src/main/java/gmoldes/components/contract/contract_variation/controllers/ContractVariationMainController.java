@@ -1,17 +1,25 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
+import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
+import gmoldes.components.contract.new_contract.services.NewContractDataSubfolderPDFCreator;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
+import gmoldes.domain.person.dto.StudyDTO;
+import gmoldes.domain.person.manager.StudyManager;
+import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
+import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
+import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -24,10 +32,16 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.awt.print.PrinterException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -138,21 +152,22 @@ public class ContractVariationMainController extends VBox {
     private void onOkButton(MouseEvent evet){
 
         if(contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().isSelected()){
-            if(isCorrectContractExtinctionData()){
+            if(isCorrectContractExtinctionData()) {
+                persistContractExtinction();
 
-                contractVariationActionComponents.getOkButton().setDisable(true);
+                String extinctionContractCause = contractVariationContractVariations.getContractVariationContractExtinction()
+                        .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
 
-                ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
-                        .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
+                String holidaysText =  contractVariationContractVariations.getContractVariationContractExtinction()
+                        .getRbHolidaysYes().isSelected() ? "disfrutadas." : "no disfrutadas.";
 
-                Integer contractVariationUpdatedId = updateLastContractVariation(contractNewVersionExtinctedDTO);
-                System.out.println("Actualizado contractVariationId: " + contractVariationUpdatedId + "\n");
+                StringBuilder sb = new StringBuilder();
+                sb.append(extinctionContractCause);
+                sb.append(". Vacaciones ");
+                sb.append(holidaysText);
 
-                Integer newContractVariationId = persistNewContractVariation(contractNewVersionExtinctedDTO);
-                System.out.println("Nuevo contractVariationId: " + newContractVariationId + "\n");
-
-                Integer initialContractUpdatedId = updateInitialContractOfContractExtinction(contractNewVersionExtinctedDTO);
-                System.out.println("Actualizado initialContractId: " + initialContractUpdatedId + "\n");
+                ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString());
+                printContracDataSubfolder(contractDataSubfolder);
             }
         }
     }
@@ -182,6 +197,37 @@ public class ContractVariationMainController extends VBox {
         if(contractFullDataDTOS.size() == 1){
             contractVariationParts.getContractSelector().getSelectionModel().select(0);
         }
+    }
+
+    private void persistContractExtinction(){
+
+        contractVariationActionComponents.getOkButton().setDisable(true);
+
+        Boolean errorWhenPersistingData = false;
+
+        ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
+                .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
+
+        if(updateLastContractVariation(contractNewVersionExtinctedDTO) == null) {
+            System.out.println("Error actualizando el ultimo registro de contractvariation.");
+            errorWhenPersistingData = true;
+            return;
+        }
+
+        if(persistNewContractVariation(contractNewVersionExtinctedDTO) == null) {
+            System.out.println("Error creando nuevo registro de extincion en contractvariation.");
+            errorWhenPersistingData = true;
+            return;
+        }
+
+        if(updateInitialContractOfContractExtinction(contractNewVersionExtinctedDTO) == null) {
+            System.out.println("Error actualizando la fecha de extincion en initialcontract.");
+            errorWhenPersistingData = true;
+            return;
+        }
+
+        Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_OK);
+
     }
 
     private Boolean isCorrectDateToContractVariation(){
@@ -252,7 +298,6 @@ public class ContractVariationMainController extends VBox {
                 .getDateFrom().getValue();
 
         InitialContractDTO initialContractToUpdateDTO = contractManager.findLastTuplaOfInitialContractByContractNumber(contractNewVersionExtinctedDTO.getContractNumber());
-        System.out.println("initialContractToUpdateDTOId: " + initialContractToUpdateDTO.getId());
         initialContractToUpdateDTO.setEndingDate(dateOfExtinction);
 
         ContractNewVersionDTO contractNewVersionToUpdateDTO = ContractNewVersionDTO.create()
@@ -267,5 +312,76 @@ public class ContractVariationMainController extends VBox {
                 .build();
 
         return contractManager.updateInitialContract(contractNewVersionToUpdateDTO);
+    }
+
+    private ContractDataSubfolder createContractDataSubfolder(String additionalData){
+
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
+
+        ContractFullDataDTO allContractData = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem();
+
+
+
+        StudyManager studyManager = new StudyManager();
+        StudyDTO study = studyManager.findStudyById(allContractData.getEmployee().getNivestud());
+
+        return ContractDataSubfolder.create()
+                .withEmployerFullName(allContractData.getEmployer().getPersonOrCompanyName())
+                .withEmployerQuoteAccountCode(allContractData.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
+
+                .withEmployeeFullName(allContractData.getEmployee().getApellidos() + ", " + allContractData.getEmployee().getNom_rzsoc())
+                .withEmployeeNif(Utilities.formatAsNIF(allContractData.getEmployee().getNifcif()))
+                .withEmployeeNASS(allContractData.getEmployee().getNumafss())
+                .withEmployeeBirthDate(dateFormatter.format(allContractData.getEmployee().getFechanacim()))
+                .withEmployeeCivilState(allContractData.getEmployee().getEstciv())
+                .withEmployeeNationality(allContractData.getEmployee().getNacionalidad())
+                .withEmployeeFullAddress(allContractData.getEmployee().getDireccion() + "\t" + allContractData.getEmployee().getCodpostal() +
+                "\t" + allContractData.getEmployee().getLocalidad())
+                .withEmployeeMaxStudyLevel(study.getStudyDescription())
+
+
+                .withAdditionalData(additionalData)
+
+
+
+
+                .build();
+    }
+
+    private void printContracDataSubfolder(ContractDataSubfolder contractDataSubfolder){
+        Path pathToContractDataSubfolder = retrievePathToContractDataSubfolderPDF(contractDataSubfolder);
+
+        Map<String, String> attributes = new HashMap<>();
+        attributes.put("papersize","A3");
+        attributes.put("sides", "ONE_SIDED");
+        attributes.put("chromacity","MONOCHROME");
+        attributes.put("orientation","LANDSCAPE");
+
+        try {
+            String printOk = Printer.printPDF(pathToContractDataSubfolder.toString(), attributes);
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
+            if(!printOk.equals("ok")){
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
+            }
+        } catch (IOException | PrinterException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Path retrievePathToContractDataSubfolderPDF(ContractDataSubfolder contractDataSubfolder){
+        Path pathOut = null;
+
+        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
+        String temporalDir = maybePath.get().toString();
+
+        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
+        try {
+            Files.createDirectories(pathToContractDataSubfolder.getParent());
+            pathOut = NewContractDataSubfolderPDFCreator.createContractDataSubfolderPDF(contractDataSubfolder, pathToContractDataSubfolder);
+        } catch (IOException | DocumentException e) {
+            e.printStackTrace();
+        }
+
+        return pathOut;
     }
 }

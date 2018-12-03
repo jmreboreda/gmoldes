@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import gmoldes.components.contract.contract_variation.components.ContractVariationContractConversion?>
 <?import gmoldes.components.contract.contract_variation.components.ContractVariationContractExtension?>
 <?import gmoldes.components.contract.contract_variation.components.ContractVariationContractExtinction?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import gmoldes.components.contract.contract_variation.components.ContractVariationContractConversion?>
 
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
     <HBox>
@@ -26,6 +28,27 @@
                   <ToggleGroup fx:id="contractVariationToggleGroup" />
               </toggleGroup>
           </RadioButton>
+         <Label text="Notificacion del cliente">
+            <HBox.margin>
+               <Insets right="10.0" />
+            </HBox.margin>
+         </Label>
+         <Label text="Fecha">
+            <HBox.margin>
+               <Insets right="5.0" />
+            </HBox.margin>
+         </Label>
+         <DatePicker fx:id="notificationDate" maxWidth="140.0">
+            <HBox.margin>
+               <Insets right="10.0" />
+            </HBox.margin>
+         </DatePicker>
+         <Label text="Hora">
+            <HBox.margin>
+               <Insets right="5.0" />
+            </HBox.margin>
+         </Label>
+         <TextField fx:id="notificationHour" maxWidth="80.0" />
         </children>
         <VBox.margin>
             <Insets left="5.0" top="5.0" />
@@ -37,5 +60,5 @@
    <Separator prefWidth="200.0" />
     <ContractVariationContractExtinction fx:id="contractVariationContractExtinction" />
     <ContractVariationContractExtension fx:id="contractVariationContractExtension" />
-    <ContractVariationContractConversion fx:id="contractVariationContractConversion"/>
+    <ContractVariationContractConversion fx:id="contractVariationContractConversion" />
 </fx:root>

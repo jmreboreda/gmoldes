@@ -2,9 +2,11 @@ package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
+import gmoldes.utilities.Utilities;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +25,10 @@ public class ContractVariationContractVariations extends VBox {
     @FXML
     private ToggleGroup contractVariationToggleGroup;
     @FXML
+    private DatePicker notificationDate;
+    @FXML
+    private TextField notificationHour;
+    @FXML
     private ContractVariationContractExtinction contractVariationContractExtinction;
     @FXML
     private ContractVariationContractExtension contractVariationContractExtension;
@@ -37,6 +43,8 @@ public class ContractVariationContractVariations extends VBox {
 
     @FXML
     private void initialize(){
+
+        notificationDate.setConverter(Utilities.converter);
 
         contractVariationContractExtinction.setOnExtinctionButton(this::onExtinctionButton);
     }
