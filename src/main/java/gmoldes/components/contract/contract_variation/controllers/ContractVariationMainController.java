@@ -5,6 +5,7 @@ import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
+import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
@@ -12,6 +13,7 @@ import gmoldes.components.contract.new_contract.services.NewContractDataSubfolde
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
@@ -167,6 +169,7 @@ public class ContractVariationMainController extends VBox {
                 sb.append(holidaysText);
 
                 ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString());
+
                 printContractDataSubfolder(contractDataSubfolder);
             }
         }
@@ -333,6 +336,17 @@ public class ContractVariationMainController extends VBox {
 
         ContractFullDataDTO allContractData = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem();
 
+        String notificationType = "";
+        if(contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().isSelected()){
+            notificationType = Parameters.CONTRACT_EXTINCTION_TEXT;
+        }
+        if(contractVariationContractVariations.getContractVariationContractConversion().getRbContractConversion().isSelected()){
+            notificationType = Parameters.CONTRACT_CONVERSION_TEXT;
+        }
+        if(contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().isSelected()){
+            notificationType = Parameters.CONTRACT_EXTENSION_TEXT;
+        }
+
         LocalDate clientNotificationDate = contractVariationContractVariations.getDateNotification().getDate();
         LocalTime clientNotificationHour = LocalTime.parse(contractVariationContractVariations.getHourNotification().getText());
 
@@ -351,8 +365,14 @@ public class ContractVariationMainController extends VBox {
         StudyManager studyManager = new StudyManager();
         StudyDTO study = studyManager.findStudyById(allContractData.getEmployee().getNivestud());
 
+        ContractTypeController contractTypeController = new ContractTypeController();
+        Integer contractTypeId = allContractData.getContractNewVersion().getContractJsonData().getContractType();
+        ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractTypeId);
+
+        String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription();
+
         return ContractDataSubfolder.create()
-                .withNotificationType(Parameters.CONTRACT_EXTINCTION_TEXT)
+                .withNotificationType(notificationType)
                 .withOfficialContractNumber(allContractData.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
                 .withEmployerFullName(allContractData.getEmployer().getPersonOrCompanyName())
                 .withEmployerQuoteAccountCode(allContractData.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
@@ -365,6 +385,7 @@ public class ContractVariationMainController extends VBox {
                 .withEmployeeCivilState(allContractData.getEmployee().getEstciv())
                 .withEmployeeNationality(allContractData.getEmployee().getNacionalidad())
                 .withEmployeeFullAddress(fullAddress)
+                .withContractTypeDescription(contractDescription)
                 .withEmployeeMaxStudyLevel(study.getStudyDescription())
                 .withStartDate(null)
                 .withEndDate(startDate)
@@ -374,10 +395,7 @@ public class ContractVariationMainController extends VBox {
                 .withDurationDays(Duration.ZERO)
                 .withSchedule(new HashSet<>())
                 .withAdditionalData(additionalData)
-
-
-
-
+                .withLaborCategory(allContractData.getContractNewVersion().getContractJsonData().getLaborCategory())
                 .build();
     }
 
