@@ -31,6 +31,7 @@ public class Parameters {
     public static final String CONTRACT_EXTINCTION_TEXT = "Finalización de contrato";
     public static final String CONTRACT_CONVERSION_TEXT = "Conversión de contrato";
     public static final String CONTRACT_EXTENSION_TEXT = "Prórroga de contrato";
+    public static final String DATE_NOTIFICATION_NOT_ESTABLISHED = "Prórroga de contrato";
 
 
     /** Various */

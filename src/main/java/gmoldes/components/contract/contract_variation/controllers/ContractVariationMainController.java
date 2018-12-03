@@ -34,7 +34,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -155,7 +154,12 @@ public class ContractVariationMainController extends VBox {
 
         if(contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().isSelected()){
             if(isCorrectContractExtinctionData()) {
-                //persistContractExtinction();
+                Boolean persistenceContractExtinctionIsCorrect = persistContractExtinction();
+                if(!persistenceContractExtinctionIsCorrect){
+                    Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_NOT_OK);
+
+                    return;
+                }
 
                 String extinctionContractCause = contractVariationContractVariations.getContractVariationContractExtinction()
                         .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
@@ -202,7 +206,7 @@ public class ContractVariationMainController extends VBox {
         }
     }
 
-    private void persistContractExtinction(){
+    private Boolean persistContractExtinction(){
 
         contractVariationActionComponents.getOkButton().setDisable(true);
 
@@ -212,25 +216,26 @@ public class ContractVariationMainController extends VBox {
                 .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
 
         if(updateLastContractVariation(contractNewVersionExtinctedDTO) == null) {
-            System.out.println("Error actualizando el ultimo registro de contractvariation.");
-            errorWhenPersistingData = true;
-            return;
+            System.out.println("Error actualizando el último registro de contractvariation.");
+
+            return false;
         }
 
         if(persistNewContractVariation(contractNewVersionExtinctedDTO) == null) {
-            System.out.println("Error creando nuevo registro de extincion en contractvariation.");
-            errorWhenPersistingData = true;
-            return;
+            System.out.println("Error creando nuevo registro de extinción en contractvariation.");
+
+            return false;
         }
 
         if(updateInitialContractOfContractExtinction(contractNewVersionExtinctedDTO) == null) {
-            System.out.println("Error actualizando la fecha de extincion en initialcontract.");
-            errorWhenPersistingData = true;
-            return;
+            System.out.println("Error actualizando la fecha de extinción en initialcontract.");
+
+            return false;
         }
 
-        Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_OK);
+        Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
 
+        return true;
     }
 
     private Boolean isCorrectDateToContractVariation(){
@@ -246,37 +251,49 @@ public class ContractVariationMainController extends VBox {
     private Boolean isCorrectContractExtinctionData(){
 
         if(contractVariationContractVariations.getDateNotification().getDate() == null){
-            System.out.println("Falta la fecha de notificación del cliente.");
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED);
 
             return false;
         }
 
         if(contractVariationContractVariations.getHourNotification().getText() == null){
-            System.out.println("Falta la hora de notificación del cliente.");
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED);
 
             return false;
 
         }
 
         if(contractVariationContractVariations.getContractVariationContractExtinction().getExtinctionCauseSelector().getSelectionModel().getSelectedItem() == null){
-            System.out.println("Falta causa de la extincion.");
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.EXTINCTION_CAUSE_NOT_ESTABLISHED);
+
             return false;
         }
 
         if( contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue() == null
                 || Period.between(contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue(),
                 LocalDate.now()).getDays() > 3){
-            System.out.println("Fecha de la extincion es erronea.");
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.ERROR_IN_EXTINCTION_DATA);
+
             return false;
         }
 
         if(!contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().isSelected() &&
                 !contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().isSelected()){
-            System.out.println("No se ha seleccionado la situacion de las vacaciones.");
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.HOLIDAYS_SITUATION_NOT_ESTABLISHED);
+
             return false;
         }
 
-        System.out.println("Aparentemente esta todo correcto.\n");
+        LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
+        LocalDate extinctionDate = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+
+        if(expectedEndDate != null && Period.between(expectedEndDate, extinctionDate).getDays() > 0){
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.EXTINCTION_DATE_EXCEEDED );
+
+            return false;
+        }
+
+        System.out.println("Aparentemente está todo correcto.\n");
         return true;
     }
 

@@ -32,5 +32,15 @@ public class ContractConstants {
 
     /** Contract variation **/
     public static final String IS_NOT_VALID_DATE_FOR_CONTRACT_VARIATION = "Fecha no válida para efectuar variaciones en el contrato.";
-    public static final String CONTRACT_EXTINCTION_OK = "Extincion del contrato registrada correctamente.";
+    public static final String CONTRACT_EXTINCTION_PERSISTENCE_OK = "Extincion del contrato registrada correctamente.";
+    public static final String CONTRACT_EXTINCTION_PERSISTENCE_NOT_OK = "No se ha registrado correctamente la extincion del contrato.\n" +
+            "Debe revisarse la base de datos para garantizar la consistencia de los datos.";
+    public static final String DATE_NOTIFICATION_NOT_ESTABLISHED = "Falta la fecha de notificación del cliente.";
+    public static final String HOUR_NOTIFICATION_NOT_ESTABLISHED = "Falta la hora de notificación del cliente.";
+    public static final String EXTINCTION_CAUSE_NOT_ESTABLISHED = "No se ha establecido la causa de extinción del contrato.";
+    public static final String ERROR_IN_EXTINCTION_DATA = "La fecha de extinción del contrato es errónea.";
+    public static final String HOLIDAYS_SITUATION_NOT_ESTABLISHED = "No se ha establecido la situación de disfrute de las vacaciones.";
+    public static final String EXTINCTION_DATE_EXCEEDED = "No se puede extinguir un contrato en una fecha posterior a su fecha de extinción prevista anteriormente.";
+
+
 }
