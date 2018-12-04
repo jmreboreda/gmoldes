@@ -230,6 +230,19 @@ public class ContractManager {
         return MapperInitialContractVODTO.map(initialContractVO);
     }
 
+    public List<ContractVariationDTO> findAllContractVariationsAfterDateByContractNumber(Integer contractNumber, LocalDate dateFromSearch){
+        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationsAfterDateByContractNumber(contractNumber, dateFromSearch);
+
+        List<ContractVariationDTO> contractVariationDTOList = new ArrayList<>();
+        for(ContractVariationVO contractVariationVO : contractVariationVOList){
+            ContractVariationDTO contractVariationDTO = MapperContractVariationVODTO.map(contractVariationVO);
+            contractVariationDTOList.add(contractVariationDTO);
+        }
+
+        return contractVariationDTOList;
+    }
+
     public int establishContractInForce(){
 
         ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
@@ -322,16 +335,18 @@ public class ContractManager {
 
         for(ContractVariationVO contractVariationVO : contractVariationVOList) {
 
-            ContractVariationDTO contractVariationDTO = ContractVariationDTO.create()
-                    .withContractNumber(contractVariationVO.getContractNumber())
-                    .withVariationType(contractVariationVO.getVariationType())
-                    .withStartDate(contractVariationVO.getStartDate().toLocalDate())
-                    .withExpectedEndDate(contractVariationVO.getExpectedEndDate().toLocalDate())
-                    .withModificationDate(contractVariationVO.getModificationDate().toLocalDate())
-                    .withEndingDate(contractVariationVO.getEndingDate().toLocalDate())
-                    .withContractJsonData(contractVariationVO.getContractJsonData())
+            ContractVariationDTO contractVariationDTO = MapperContractVariationVODTO.map(contractVariationVO);
 
-                    .build();
+//            ContractVariationDTO contractVariationDTO = ContractVariationDTO.create()
+//                    .withContractNumber(contractVariationVO.getContractNumber())
+//                    .withVariationType(contractVariationVO.getVariationType())
+//                    .withStartDate(contractVariationVO.getStartDate().toLocalDate())
+//                    .withExpectedEndDate(contractVariationVO.getExpectedEndDate().toLocalDate())
+//                    .withModificationDate(contractVariationVO.getModificationDate().toLocalDate())
+//                    .withEndingDate(contractVariationVO.getEndingDate().toLocalDate())
+//                    .withContractJsonData(contractVariationVO.getContractJsonData())
+//
+//                    .build();
 
             contractVariationDTOList.add(contractVariationDTO);
         }

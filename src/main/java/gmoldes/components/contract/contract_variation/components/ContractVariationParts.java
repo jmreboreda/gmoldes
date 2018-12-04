@@ -2,7 +2,6 @@ package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
-import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.utilities.Utilities;
@@ -41,7 +40,7 @@ public class ContractVariationParts extends VBox {
     @FXML
     public void initialize() {
 
-        inForceDate.setConverter(Utilities.converter);
+        inForceDate.setConverter(Utilities.dateConverter);
         inForceDate.setValue(LocalDate.now());
         inForceDate.setMouseTransparent(true);
         client.setOnAction(this::onChangeEmployer);

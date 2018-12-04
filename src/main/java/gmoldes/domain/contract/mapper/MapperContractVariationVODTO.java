@@ -1,85 +1,33 @@
 package gmoldes.domain.contract.mapper;
 
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
+import gmoldes.domain.contract.dto.ContractVariationDTO;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 public class MapperContractVariationVODTO {
 
-    public Set<DayOfWeek> mapDaysOfWeekToWorkVODTO(ContractVariationVO contractVariationVO) {
-        String daysOfWork = contractVariationVO.getContractJsonData().getDaysOfWeekToWork();
+    public MapperContractVariationVODTO() {
+    }
 
-        Set<DayOfWeek> daysOfWeekSet = new HashSet<>();
+    public static ContractVariationDTO map (ContractVariationVO contractVariationVO){
 
-        if (daysOfWork.contains(DayOfWeek.MONDAY.toString())) {
-            daysOfWeekSet.add(DayOfWeek.MONDAY);
-        }
+        LocalDate expectedEndDate = contractVariationVO.getExpectedEndDate() != null ? contractVariationVO.getExpectedEndDate().toLocalDate() : null;
+        LocalDate modificationDate = contractVariationVO.getModificationDate() != null ? contractVariationVO.getModificationDate().toLocalDate() : null;
+        LocalDate endingDate = contractVariationVO.getEndingDate() != null ? contractVariationVO.getEndingDate().toLocalDate() : null;
 
-        if (daysOfWork.contains(DayOfWeek.TUESDAY.toString())) {
-            daysOfWeekSet.add(DayOfWeek.TUESDAY);
-        }
-
-        if (daysOfWork.contains(DayOfWeek.WEDNESDAY.toString())) {
-            daysOfWeekSet.add(DayOfWeek.WEDNESDAY);
-        }
-
-        if (daysOfWork.contains(DayOfWeek.THURSDAY.toString())) {
-            daysOfWeekSet.add(DayOfWeek.THURSDAY);
-        }
-
-        if (daysOfWork.contains(DayOfWeek.FRIDAY.toString())) {
-            daysOfWeekSet.add(DayOfWeek.FRIDAY);
-        }
-
-        if (daysOfWork.contains(DayOfWeek.SATURDAY.toString())) {
-            daysOfWeekSet.add(DayOfWeek.SATURDAY);
-        }
-
-        if (daysOfWork.contains(DayOfWeek.SUNDAY.toString())) {
-            daysOfWeekSet.add(DayOfWeek.SUNDAY);
-        }
-
-
-        /** Ordenar y obtener el nombre local de los días de la semana
-        Set<DayOfWeek> sortedDaysOfWeekSet = new TreeSet<DayOfWeek>(daysOfWeekSet);
-        Locale locale = Locale.getDefault();
-        for(DayOfWeek dayOfWeek : sortedDaysOfWeekSet) {
-             System.out.println(dayOfWeek.getDisplayName(TextStyle.FULL, locale));
-        }
-         */
-
-        /**
-         // Get DayOfWeek from int value
-         DayOfWeek dayOfWeek = DayOfWeek.of(1);
-         System.out.println("dayOfWeek = " + dayOfWeek);
-
-         // Get DayOfWeek from string value
-         dayOfWeek = DayOfWeek.valueOf("SATURDAY");
-         System.out.println("dayOfWeek = " + dayOfWeek);
-
-         // Get DayOfWeek of a date object
-         LocalDate date = LocalDate.now();
-         DayOfWeek dow = date.getDayOfWeek();
-
-         System.out.println("Date  = " + date);
-         System.out.println("Dow   = " + dow + "; value = " + dow.getValue());
-
-         // Get DayOfWeek display name in different locale.
-         Locale locale = new Locale("id", "ID");
-         String indonesian = dow.getDisplayName(TextStyle.SHORT, locale);
-         System.out.println("ID = " + indonesian);
-
-         String germany = dow.getDisplayName(TextStyle.FULL, Locale.GERMANY);
-         System.out.println("DE = " + germany);
-
-         // Adding number of days to DayOfWeek enum.
-         System.out.println("DayOfWeek.MONDAY.plus(4) = " + DayOfWee
-
-        */
-
-        return daysOfWeekSet;
-
-        }
+        return ContractVariationDTO.create()
+                .withId(contractVariationVO.getId())
+                .withContractNumber(contractVariationVO.getContractNumber())
+                .withVariationType(contractVariationVO.getVariationType())
+                .withStartDate(contractVariationVO.getStartDate().toLocalDate())
+                .withExpectedEndDate(expectedEndDate)
+                .withModificationDate(modificationDate)
+                .withEndingDate(endingDate)
+                .withContractJsonData(contractVariationVO.getContractJsonData())
+                .build();
+    }
 }

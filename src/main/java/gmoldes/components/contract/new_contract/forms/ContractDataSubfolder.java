@@ -13,6 +13,10 @@ import java.util.Set;
 
 public class ContractDataSubfolder {
 
+    private static final String NEW_CONTRACT_TEXT = "Nuevo contrato";
+    private static final String CONTRACT_EXTINCTION = "Finalización contrato";
+
+
     private String notificationType;
     private String officialContractNumber;
     private String employerFullName;
@@ -171,12 +175,14 @@ public class ContractDataSubfolder {
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd_MM_yyyy");
 
+        LocalDate fileNameDate = startDate != null ? startDate : endDate;
 
         return Utilities.replaceWithUnderscore(employerFullName)
                 + "_" +
-                Utilities.replaceWithUnderscore(Parameters.NEW_CONTRACT_TEXT.toLowerCase())
+//                Utilities.replaceWithUnderscore(Parameters.NEW_CONTRACT_TEXT.toLowerCase())
+                Utilities.replaceWithUnderscore(getNotificationType().toLowerCase())
                 + "_" +
-                startDate.format(dateFormatter)
+                fileNameDate.format(dateFormatter)
                 + "_" +
                 Utilities.replaceWithUnderscore(employeeFullName);
     }

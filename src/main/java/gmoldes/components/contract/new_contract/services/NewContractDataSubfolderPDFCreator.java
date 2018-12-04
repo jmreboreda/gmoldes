@@ -31,9 +31,14 @@ public class NewContractDataSubfolderPDFCreator {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
+        String startDate = contractDataSubfolder.getStartDate() != null ? contractDataSubfolder.getStartDate().format(dateFormatter) : "";
+        String endDate = contractDataSubfolder.getEndDate() != null ? contractDataSubfolder.getEndDate().format(dateFormatter) : "";
+        Long durationDays = contractDataSubfolder.getDurationDays().toDays() > 0 ? contractDataSubfolder.getDurationDays().toDays() : null;
+
+
         AcroFields contractDataSubfolderPDFFields = stamp.getAcroFields();
         contractDataSubfolderPDFFields.setField("notificationType",contractDataSubfolder.getNotificationType());
-        contractDataSubfolderPDFFields.setField("officialContractNumber",null);
+        contractDataSubfolderPDFFields.setField("officialContractNumber",contractDataSubfolder.getOfficialContractNumber());
         contractDataSubfolderPDFFields.setField("employerFullName",contractDataSubfolder.getEmployerFullName());
         contractDataSubfolderPDFFields.setField("employerCCC",contractDataSubfolder.getEmployerQuoteAccountCode());
         contractDataSubfolderPDFFields.setField("notificationDate",contractDataSubfolder.getNotificationDate().format(dateFormatter));
@@ -68,14 +73,11 @@ public class NewContractDataSubfolderPDFCreator {
             contractDataSubfolderPDFFields.setField("sunday", "Yes");
         }
         contractDataSubfolderPDFFields.setField("contractType",contractDataSubfolder.getContractTypeDescription());
-        contractDataSubfolderPDFFields.setField("startDate", contractDataSubfolder.getStartDate().format(dateFormatter));
-        if(contractDataSubfolder.getEndDate() != null) {
-            contractDataSubfolderPDFFields.setField("endDate", contractDataSubfolder.getEndDate().format(dateFormatter));
-        }else{
-            contractDataSubfolderPDFFields.setField("endDate", null);
-        }
-        if(contractDataSubfolder.getDurationDays().toDays() > 0) {
-            contractDataSubfolderPDFFields.setField("durationDays", contractDataSubfolder.getDurationDays().toDays() + " días");
+        contractDataSubfolderPDFFields.setField("startDate", startDate);
+        contractDataSubfolderPDFFields.setField("endDate", endDate);
+
+        if(durationDays != null) {
+            contractDataSubfolderPDFFields.setField("durationDays", durationDays + " días");
         }else{
             contractDataSubfolderPDFFields.setField("durationDays", ContractConstants.UNDEFINED_DURATION_TEXT);
         }

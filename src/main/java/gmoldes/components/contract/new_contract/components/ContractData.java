@@ -71,6 +71,22 @@ public class ContractData extends AnchorPane {
         loadContractType();
     }
 
+    public DateInput getDateNotification() {
+        return dateNotification;
+    }
+
+    public void setDateNotification(DateInput dateNotification) {
+        this.dateNotification = dateNotification;
+    }
+
+    public TimeInput24HoursClock getHourNotification() {
+        return hourNotification;
+    }
+
+    public void setHourNotification(TimeInput24HoursClock hourNotification) {
+        this.hourNotification = hourNotification;
+    }
+
     private void onDateNotification(ActionEvent actionEvent){
         this.hourNotification.requestFocus();
     }
@@ -148,14 +164,6 @@ public class ContractData extends AnchorPane {
 
         ObservableList<ContractTypeDTO> contractTypeDTOS = FXCollections.observableArrayList(contractTypeListWithoutDuplicates);
         contractType.setItems(contractTypeDTOS);
-    }
-
-    public LocalDate getDateNotification(){
-        return this.dateNotification.getDate();
-    }
-
-    public String getHourNotification(){
-        return this.hourNotification.getText();
     }
 
     public ContractTypeDTO getContractType(){

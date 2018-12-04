@@ -78,7 +78,6 @@ public class ContractVariationDAO {
         query.setParameter("code", contractNumber);
 
         return  query.getResultList();
-
     }
 
     public List<ContractVariationVO> findAllContractVariationInPeriod(LocalDate initialDate, LocalDate finalDate){
@@ -91,7 +90,6 @@ public class ContractVariationDAO {
         query.setParameter("codeFinalDate", finallUtilDate);
 
         return  query.getResultList();
-
     }
 
     public List<ContractVariationVO> findAllContractVariationInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
@@ -110,7 +108,6 @@ public class ContractVariationDAO {
         TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_TEMPORAL_IN_FORCE_NOW, ContractVariationVO.class);
 
         return  query.getResultList();
-
     }
 
     public List<ContractVariationVO> findAllContractVariationsInForceAtDate(LocalDate date){
@@ -120,7 +117,15 @@ public class ContractVariationDAO {
         query.setParameter("date", atDate);
 
         return  query.getResultList();
-
     }
 
+    public List<ContractVariationVO> findAllContractVariationsAfterDateByContractNumber(Integer contractNumber, LocalDate dateFromSearch){
+        TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_AFTER_DATE_BY_CONTRACT_NUMBER, ContractVariationVO.class);
+
+        java.util.Date afterDate = Date.from(dateFromSearch.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        query.setParameter("dateFromSearch", afterDate);
+        query.setParameter("contractNumber", contractNumber);
+
+        return  query.getResultList();
+    }
 }
