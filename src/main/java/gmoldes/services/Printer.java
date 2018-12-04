@@ -61,6 +61,8 @@ public class Printer {
 
         PrintService printServiceForAttributes = getPrintServiceForAttributes(datts);
         if(printServiceForAttributes == null){
+            PDFDocumentLoaded.close();
+
             return "fail";
         }
         else {
@@ -69,8 +71,9 @@ public class Printer {
             printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.SHRINK_TO_FIT));
             printerJob.setPrintService(printServiceForAttributes);
             printerJob.print(datts);
+
+            PDFDocumentLoaded.close();
         }
-        PDFDocumentLoaded.close();
 
         return "ok";
     }
