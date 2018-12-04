@@ -10,15 +10,17 @@ public class MapperInitialContractDTOVO {
 
     public static InitialContractVO map(ContractNewVersionDTO contractNewVersionDTO) {
 
+        Date expectedEndDate = contractNewVersionDTO.getExpectedEndDate() != null ? Date.valueOf(contractNewVersionDTO.getStartDate()) : null;
+        Date modificationDate = contractNewVersionDTO.getModificationDate() != null ? Date.valueOf(contractNewVersionDTO.getModificationDate()) : null;
+        Date endingDate = contractNewVersionDTO.getEndingDate() != null ? Date.valueOf(contractNewVersionDTO.getEndingDate()) : null;
+
         InitialContractVO initialContractVO = new InitialContractVO();
         initialContractVO.setId(contractNewVersionDTO.getId());
         initialContractVO.setContractNumber(contractNewVersionDTO.getContractNumber());
         initialContractVO.setVariationType(contractNewVersionDTO.getVariationType());
         initialContractVO.setStartDate(java.sql.Date.valueOf(contractNewVersionDTO.getStartDate()));
-        initialContractVO.setExpectedEndDate(java.sql.Date.valueOf(contractNewVersionDTO.getExpectedEndDate()));
-        Date modificationDate = contractNewVersionDTO.getModificationDate() != null ? Date.valueOf(contractNewVersionDTO.getModificationDate()) : null;
+        initialContractVO.setExpectedEndDate(expectedEndDate);
         initialContractVO.setModificationDate(modificationDate);
-        Date endingDate = contractNewVersionDTO.getEndingDate() != null ? Date.valueOf(contractNewVersionDTO.getEndingDate()) : null;
         initialContractVO.setEndingDate(endingDate);
         initialContractVO.setContractJsonData(contractNewVersionDTO.getContractJsonData());
 
