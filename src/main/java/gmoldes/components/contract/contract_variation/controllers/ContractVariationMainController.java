@@ -11,10 +11,7 @@ import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
 import gmoldes.components.contract.new_contract.services.NewContractDataSubfolderPDFCreator;
 import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.contract.dto.ContractFullDataDTO;
-import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.ContractTypeDTO;
-import gmoldes.domain.contract.dto.InitialContractDTO;
+import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.services.Printer;
@@ -121,9 +118,13 @@ public class ContractVariationMainController extends VBox {
         LocalDate selectedDate = event.getDate();
         ClientDTO selectedClient = event.getClient();
         refreshContractSelectorData(selectedClient, selectedDate);
+
+        cleanDataForAllSelectableComponents();
     }
 
     private void onContractSelectorAction(ActionEvent event){
+
+        cleanDataForAllSelectableComponents();
 
         if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem() == null){
             contractVariationContractVariations.setDisable(true);
@@ -293,8 +294,28 @@ public class ContractVariationMainController extends VBox {
             return false;
         }
 
+        Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
+        if(existFutureVariations) {
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT);
+
+            return false;
+        }
+
         System.out.println("Aparentemente está todo correcto.\n");
         return true;
+    }
+
+    private Boolean verifyExistenceFutureVariationsOfSelectedContract(){
+
+        Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
+        LocalDate dateFromSearch = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+
+        List<ContractVariationDTO> contractVariationDTOList = contractManager.findAllContractVariationsAfterDateByContractNumber(contractNumber, dateFromSearch);
+        if(contractVariationDTOList.size() > 0){
+            return true;
+        }
+
+        return false;
     }
 
     private Integer updateLastContractVariation(ContractNewVersionDTO contractNewVersionExtinctedDTO){
@@ -488,5 +509,26 @@ public class ContractVariationMainController extends VBox {
         }
 
         return dayOfWeekSet;
+    }
+
+    private void cleanDataForAllSelectableComponents(){
+
+        contractVariationContractVariations.getDateNotification().setDate(LocalDate.now());
+        contractVariationContractVariations.getHourNotification().setText(null);
+
+        contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
+        contractVariationContractVariations.getContractVariationContractExtinction().getExtinctionCauseSelector().getSelectionModel().select(null);
+        contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().setValue(null);
+        contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().setSelected(false);
+        contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().setSelected(false);
+
+        contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().setSelected(false);
+        contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().setValue(null);
+        contractVariationContractVariations.getContractVariationContractExtension().getDateTo().setValue(null);
+
+        contractVariationContractVariations.getContractVariationContractConversion().getRbContractConversion().setSelected(false);
+        contractVariationContractVariations.getContractVariationContractConversion().getContractConversionSelector().getSelectionModel().select(null);
+        contractVariationContractVariations.getContractVariationContractConversion().getDateFrom().setValue(null);
+        contractVariationContractVariations.getContractVariationContractConversion().getDateTo().setValue(null);
     }
 }

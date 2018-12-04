@@ -1,10 +1,12 @@
 package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.utilities.Utilities;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
@@ -19,6 +21,8 @@ public class ContractVariationContractConversion extends VBox {
     private Group contractConversionGroup;
     @FXML
     private RadioButton rbContractConversion;
+    @FXML
+    private ChoiceBox<TypesContractVariationsDTO> contractConversionSelector;
     @FXML
     private DatePicker dateFrom;
     @FXML
@@ -51,6 +55,14 @@ public class ContractVariationContractConversion extends VBox {
 
     public void setRbContractConversion(RadioButton rbContractConversion) {
         this.rbContractConversion = rbContractConversion;
+    }
+
+    public ChoiceBox<TypesContractVariationsDTO> getContractConversionSelector() {
+        return contractConversionSelector;
+    }
+
+    public void setContractConversionSelector(ChoiceBox<TypesContractVariationsDTO> contractConversionSelector) {
+        this.contractConversionSelector = contractConversionSelector;
     }
 
     public DatePicker getDateFrom() {

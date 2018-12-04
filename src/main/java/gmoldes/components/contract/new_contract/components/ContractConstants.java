@@ -41,6 +41,8 @@ public class ContractConstants {
     public static final String ERROR_IN_EXTINCTION_DATA = "La fecha de extinción del contrato es errónea.";
     public static final String HOLIDAYS_SITUATION_NOT_ESTABLISHED = "No se ha establecido la situación de disfrute de las vacaciones.";
     public static final String EXTINCTION_DATE_EXCEEDED = "No se puede extinguir un contrato en una fecha posterior a su fecha de extinción prevista anteriormente.";
+    public static final String  EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT  = "Existen variaciones registradas en el futuro para el contrato seleccionado " +
+            "con fecha posterior a la seleccionada.\nNo es posible registrar nuevas variaciones en la fecha seleccionada.";
 
 
 }

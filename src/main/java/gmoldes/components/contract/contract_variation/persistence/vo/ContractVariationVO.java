@@ -44,12 +44,16 @@ import java.sql.Date;
                         " and (p.modificationDate is null or p.modificationDate >= :date) and (p.expectedEndDate is null or p.expectedEndDate >= :date)"
         ),
         @NamedQuery(
-                name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE,
+                name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_ORDERED_BY_CONTRACT_NUMBER_AND_START_DATE,
                 query = "select p from ContractVariationVO p order by p.contractNumber, p.startDate"
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_NOW_BY_CLIENT_ID,
                 query = "select p from InitialContractVO p where p.startDate <= :date and p.endingDate is null and p.modificationDate is null"
+        ),
+        @NamedQuery(
+                name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_AFTER_DATE_BY_CONTRACT_NUMBER,
+                query = "select p from ContractVariationVO p where contractNumber = :contractNumber and startDate > :dateFromSearch order by startDate"
         )
 })
 
@@ -71,9 +75,9 @@ public class ContractVariationVO implements Serializable {
     public static final String FIND_ALL_CONTRACT_VARIATION_TEMPORAL_IN_FORCE_NOW = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_TEMPORAL_IN_FORCE_NOW";
     public static final String FIND_ALL_CONTRACT_VARIATION_IN_FORCE_IN_PERIOD = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_IN_FORCE_IN_PERIOD";
     public static final String FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE";
-    public static final String FIND_ALL_CONTRACT_VARIATIONS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE";
+    public static final String FIND_ALL_CONTRACT_VARIATIONS_ORDERED_BY_CONTRACT_NUMBER_AND_START_DATE = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_ORDERED_BY_CONTRACT_NUMBER_AND_START_DATE";
     public static final String FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_NOW_BY_CLIENT_ID = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_NOW_BY_CLIENT_ID";
-
+    public static final String FIND_ALL_CONTRACT_VARIATIONS_AFTER_DATE_BY_CONTRACT_NUMBER = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_AFTER_DATE_BY_CONTRACT_NUMBER";
 
     @Id
     @SequenceGenerator(name = "contractvariation_id_seq", sequenceName = "contractvariation_id_seq", allocationSize = 1)
