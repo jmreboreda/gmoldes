@@ -36,6 +36,10 @@ public class ContractVariationMainController extends VBox {
     private static final Logger logger = Logger.getLogger(ContractVariationMainController.class.getSimpleName());
     private static final String CONTRACT_VARIATION_MAIN_FXML = "/fxml/contract_variations/contractvariation_main.fxml";
 
+    private static final String myColourRED = "-fx-text-fill: #971E11";
+    private static final String myColourBLACK = "-fx-text-fill: #000000";
+
+
     private Parent parent;
 
     private ApplicationMainController applicationMainController = new ApplicationMainController();
@@ -227,6 +231,12 @@ public class ContractVariationMainController extends VBox {
             Long contractExtensionDuration = DAYS.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(), newValueDateTo) + 1L;
 
             contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setText(contractExtensionDuration + " días");
+            if(contractExtensionDuration <= 0){
+                contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(myColourRED);
+            }else{
+                contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(myColourBLACK);
+
+            }
         }
     }
 
