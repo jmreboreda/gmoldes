@@ -138,7 +138,7 @@ public class ContractExtensionController {
         LocalDate dateFromSearch = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
 
         List<ContractVariationDTO> contractVariationDTOList = contractManager.findAllContractVariationsAfterDateByContractNumber(contractNumber, dateFromSearch);
-        if(contractVariationDTOList.size() > 0){
+        if(!contractVariationDTOList.isEmpty()){
             return true;
         }
 
