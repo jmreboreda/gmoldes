@@ -105,4 +105,5 @@ public class ContractVariationContractVariations extends VBox {
     public void setOnContractExtension(EventHandler<MouseEvent> actionEventEventHandlerContractExtension){
         this.actionEventEventHandlerContractExtension = actionEventEventHandlerContractExtension;
     }
+
 }

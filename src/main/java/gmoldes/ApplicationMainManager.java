@@ -15,6 +15,7 @@ import gmoldes.domain.client.mapper.MapperClientVODTO;
 import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.domain.contract.dto.*;
+import gmoldes.domain.contract.mapper.MapperContractVariationVODTO;
 import gmoldes.domain.contract.mapper.MapperInitialContractDTOToContractNewVersionDTO;
 import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
 import gmoldes.domain.contract.mapper.MapperTypesContractVariationsVODTO;
@@ -242,6 +243,18 @@ public class ApplicationMainManager {
         }
 
         return contractNewVersionDTOList;
+    }
+
+    public List<ContractVariationDTO> findAllContractVariationAtDateByContractNumber(LocalDate dateFrom, Integer contractNumber){
+        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationAtDateByContractNumber(dateFrom, contractNumber);
+        List<ContractVariationDTO> contractVariationDTOList = new ArrayList<>();
+        for(ContractVariationVO contractVariationVO : contractVariationVOList){
+            ContractVariationDTO contractVariationDTO = MapperContractVariationVODTO.map(contractVariationVO);
+            contractVariationDTOList.add(contractVariationDTO);
+        }
+
+        return contractVariationDTOList;
     }
 
     public ClientDTO retrieveClientByClientId(Integer clientId){
