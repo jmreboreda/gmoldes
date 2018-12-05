@@ -17,6 +17,7 @@ import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,111 +27,115 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.*;
 
-public class ContractExtinctionController{
+public class ContractExtensionController {
 
     private ContractVariationParts contractVariationParts;
     private ContractVariationContractVariations contractVariationContractVariations;
     private ContractManager contractManager = new ContractManager();
     private Scene scene;
 
-    public ContractExtinctionController(Scene scene, ContractVariationParts contractVariationParts, ContractVariationContractVariations contractVariationContractVariations) {
+    public ContractExtensionController(Scene scene, ContractVariationParts contractVariationParts, ContractVariationContractVariations contractVariationContractVariations) {
         this.scene = scene;
         this.contractVariationParts = contractVariationParts;
         this.contractVariationContractVariations = contractVariationContractVariations;
     }
 
-    public Boolean manageContractExtinction() {
+     public Boolean manageContractExtension() {
 
-        String errorIsCorrectContractExtinctionData = isCorrectContractExtinctionData();
+        String errorIsCorrectContractExtensionData = isCorrectContractExtensionData();
 
-        if (errorIsCorrectContractExtinctionData != null) {
-
-            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, errorIsCorrectContractExtinctionData);
-
-            return false;
-        }
-
-        String errorPersistingContractExtinction = persistContractExtinction();
-        if (errorPersistingContractExtinction != null) {
-
-            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, errorPersistingContractExtinction);
-            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_NOT_OK);
+        if (errorIsCorrectContractExtensionData != null) {
+            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, errorIsCorrectContractExtensionData);
 
             return false;
         }
 
-        String extinctionContractCause = contractVariationContractVariations.getContractVariationContractExtinction()
-                .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
-
-        String holidaysText = contractVariationContractVariations.getContractVariationContractExtinction()
-                .getRbHolidaysYes().isSelected() ? "disfrutadas." : "no disfrutadas.";
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(extinctionContractCause);
-        sb.append(". Vacaciones ");
-        sb.append(holidaysText);
-
-        ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString());
-
-        printContractDataSubfolder(contractDataSubfolder);
+//        String errorPersistingContractExtension = persistContractExtension();
+//
+//        if (errorPersistingContractExtension != null) {
+//
+//            System.out.println(errorPersistingContractExtension);
+//            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, errorPersistingContractExtension);
+//            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_NOT_OK);
+//
+//            return false;
+//        }
+//
+//        String extinctionContractCause = contractVariationContractVariations.getContractVariationContractExtinction()
+//                .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
+//
+//        String holidaysText = contractVariationContractVariations.getContractVariationContractExtinction()
+//                .getRbHolidaysYes().isSelected() ? "disfrutadas." : "no disfrutadas.";
+//
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(extinctionContractCause);
+//        sb.append(". Vacaciones ");
+//        sb.append(holidaysText);
+//
+//        ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString());
+//
+//        printContractDataSubfolder(contractDataSubfolder);
 
         return true;
     }
 
-    public String isCorrectContractExtinctionData(){
+    public String isCorrectContractExtensionData(){
 
-            if(contractVariationContractVariations.getDateNotification().getDate() == null){
+        if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate() == null){
 
-                return ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED;
-            }
+            return ContractConstants.SELECTED_CONTRACT_IS_NOT_EXTENDABLE;
+        }
 
-            if(contractVariationContractVariations.getHourNotification().getText() == null){
+        if(Period.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(),
+        contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate().plusDays(1)).getDays() > 0){
 
-                return ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED;
+            return ContractConstants.INCORRECT_CONTRACT_EXTENSION_DATE_FROM;
+        }
 
-            }
+        if(contractVariationContractVariations.getDateNotification().getDate() == null){
 
-            if(contractVariationContractVariations.getContractVariationContractExtinction().getExtinctionCauseSelector().getSelectionModel().getSelectedItem() == null){
+            return ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED;
+        }
 
-                return ContractConstants.EXTINCTION_CAUSE_NOT_ESTABLISHED;
-            }
+        if(contractVariationContractVariations.getHourNotification().getText() == null){
 
-            if( contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue() == null
-                    || Period.between(contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue(),
-                    LocalDate.now()).getDays() > 3){
+            return ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED;
+        }
 
-                return ContractConstants.ERROR_IN_EXTINCTION_DATA;
-            }
+        if(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue() == null
+                || Period.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(),
+                LocalDate.now()).getDays() > 3){
 
-            if(!contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().isSelected() &&
-                    !contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().isSelected()){
+            return ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_FROM;
+        }
 
-                return ContractConstants.HOLIDAYS_SITUATION_NOT_ESTABLISHED;
-            }
+        if(contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue() == null){
 
-            LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
-            LocalDate extinctionDate = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+            return ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_TO;
+        }
 
-            if(expectedEndDate != null && Period.between(expectedEndDate, extinctionDate).getDays() > 0){
+        if(Period.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(),
+                contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue()).getDays() < 0){
 
-                return ContractConstants.EXTINCTION_DATE_EXCEEDED;
-            }
+            return ContractConstants.ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES;
 
-            Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
-            if(existFutureVariations) {
+        }
 
-                return ContractConstants.EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT;
-            }
+        Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
+        if(existFutureVariations) {
 
-            System.out.println("Aparentemente está todo correcto.\n");
+            return ContractConstants.EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT;
+        }
 
-            return null;
+        System.out.println("Aparentemente está todo correcto.\n");
+
+        return null;
         }
 
     private Boolean verifyExistenceFutureVariationsOfSelectedContract(){
 
         Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
-        LocalDate dateFromSearch = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+        LocalDate dateFromSearch = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
 
         List<ContractVariationDTO> contractVariationDTOList = contractManager.findAllContractVariationsAfterDateByContractNumber(contractNumber, dateFromSearch);
         if(contractVariationDTOList.size() > 0){
@@ -140,7 +145,7 @@ public class ContractExtinctionController{
         return false;
     }
 
-    public String persistContractExtinction(){
+    public String persistContractExtension(){
 
         ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
                 .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();

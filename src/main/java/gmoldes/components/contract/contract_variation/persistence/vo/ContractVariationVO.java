@@ -53,7 +53,7 @@ import java.sql.Date;
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_AFTER_DATE_BY_CONTRACT_NUMBER,
-                query = "select p from ContractVariationVO p where contractNumber = :contractNumber and startDate > :dateFromSearch order by startDate"
+                query = "select p from ContractVariationVO p where contractNumber = :contractNumber and startDate > :dateFromSearch or expectedEndDate > :dateFromSearch order by startDate"
         )
 })
 

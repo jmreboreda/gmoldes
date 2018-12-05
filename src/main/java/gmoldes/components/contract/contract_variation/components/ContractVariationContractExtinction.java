@@ -128,11 +128,11 @@ public class ContractVariationContractExtinction extends VBox {
         extinctionCauseSelector.setItems(typesContractVariationsDTOS);
     }
 
-    public void componentsClear(){
+    public void cleanComponents(){
 
-        this.extinctionCauseSelector.getSelectionModel().select(null);
-        this.dateFrom.setValue(null);
-        this.rbHolidaysYes.setSelected(false);
-        this.rbHolidaysNo.setSelected(false);
+        getExtinctionCauseSelector().getSelectionModel().select(null);
+        getDateFrom().setValue(null);
+        getRbHolidaysYes().setSelected(false);
+        getRbHolidaysNo().setSelected(false);
     }
 }

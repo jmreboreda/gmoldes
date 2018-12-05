@@ -48,5 +48,14 @@ public class ContractConstants {
     public static final String ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT = "Error actualizando la fecha de extinción del contrato en \"initialcontract\" en la base de datos.";
     public static final String CONTRACT_EXTINCTION_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT = "Se ha registrado la variación del contrato pero no enviado al gestor.\n ¿Es correcto?";
 
+    public static final String SELECTED_CONTRACT_IS_NOT_EXTENDABLE = "El contrato seleccionado no admite prórrogas.";
+    public static final String ERROR_EXTENSION_CONTRACT_DATE_FROM = "La fecha de inicio de la prórroga es errónea.";
+    public static final String ERROR_EXTENSION_CONTRACT_DATE_TO = "La fecha de finalización de la prórroga es errónea.";
+    public static final String EXTENSION_DATE_EXCEEDED = "No se puede prorrogar un contrato desde una fecha posterior a su fecha de extinción prevista anteriormente.";
+    public static final String INCORRECT_CONTRACT_EXTENSION_DATE_FROM = "La fecha de inicio de la prórroga es errónea.";
+    public static final String CONTRACT_EXTENSION_PERSISTENCE_NOT_OK = "No se ha registrado correctamente la prórroga del contrato.\n" +
+            "Debe revisarse la base de datos para garantizar la consistencia de los datos.";
+    public static final String ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES = "Las fechas de inicio y finalización de la prórroga no son coherentes.";
+
 
 }
