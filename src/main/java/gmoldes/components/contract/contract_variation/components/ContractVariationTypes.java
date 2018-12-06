@@ -19,6 +19,7 @@ public class ContractVariationTypes extends VBox {
 
     private EventHandler<MouseEvent> actionEventEventHandlerContractExtinction;
     private EventHandler<MouseEvent> actionEventEventHandlerContractExtension;
+    private EventHandler<MouseEvent> actionEventEventHandlerContractConversion;
 
 
     @FXML
@@ -52,6 +53,7 @@ public class ContractVariationTypes extends VBox {
 
         rbContractExtinction.setOnMouseClicked(this::onContractExtinction);
         rbContractExtension.setOnMouseClicked(this::onContractExtension);
+        rbContractConversion.setOnMouseClicked(this::onContractConversion);
 
     }
 
@@ -119,12 +121,21 @@ public class ContractVariationTypes extends VBox {
         this.actionEventEventHandlerContractExtension.handle(event);
     }
 
+    private void onContractConversion(MouseEvent event){
+        this.actionEventEventHandlerContractConversion.handle(event);
+    }
+
+
     public void setOnContractExtinction(EventHandler<MouseEvent> actionEventEventHandlerContractExtinction){
         this.actionEventEventHandlerContractExtinction = actionEventEventHandlerContractExtinction;
     }
 
     public void setOnContractExtension(EventHandler<MouseEvent> actionEventEventHandlerContractExtension){
         this.actionEventEventHandlerContractExtension = actionEventEventHandlerContractExtension;
+    }
+
+    public void setOnContractConversion(EventHandler<MouseEvent> actionEventEventHandlerContractConversion){
+        this.actionEventEventHandlerContractConversion = actionEventEventHandlerContractConversion;
     }
 
 }

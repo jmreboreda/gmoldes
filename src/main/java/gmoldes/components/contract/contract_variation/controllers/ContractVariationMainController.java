@@ -74,6 +74,8 @@ public class ContractVariationMainController extends VBox {
 
         contractVariationTypes.setOnContractExtinction(this::onContractExtinctionSelected);
         contractVariationTypes.setOnContractExtension(this::onContractExtensionSelected);
+        contractVariationTypes.setOnContractConversion(this::onContractConversionSelected);
+
 
 
         contractVariationToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
@@ -89,8 +91,16 @@ public class ContractVariationMainController extends VBox {
         contractVariationTypes.getRbOtherVariations().setToggleGroup(contractVariationToggleGroup);
 
         contractVariationTypes.disableProperty().bind(this.contractVariationParts.getContractSelector().valueProperty().isNull());
+
         contractVariationContractVariations.getContractVariationContractExtinction().getContractExtinctionGroup().disableProperty().bind(this.contractVariationTypes.getRbContractExtinction().selectedProperty().not());
-        contractVariationContractVariations.getContractVariationsGroup().disableProperty().bind(this.contractVariationTypes.getRbContractExtinction().selectedProperty().not());
+        contractVariationContractVariations.getContractVariationContractExtinction().getContractExtinctionGroup().visibleProperty().bind(this.contractVariationTypes.getRbContractExtinction().selectedProperty());
+
+        contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionGroup().disableProperty().bind(this.contractVariationTypes.getRbContractExtension().selectedProperty().not());
+        contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionGroup().visibleProperty().bind(this.contractVariationTypes.getRbContractExtension().selectedProperty());
+
+        contractVariationContractVariations.getContractVariationContractConversion().getContractConversionGroup().disableProperty().bind(this.contractVariationTypes.getRbContractConversion().selectedProperty().not());
+        contractVariationContractVariations.getContractVariationContractConversion().getContractConversionGroup().visibleProperty().bind(this.contractVariationTypes.getRbContractConversion().selectedProperty());
+
 
         contractVariationContractVariations.getContractVariationContractExtension().getDateTo().valueProperty().addListener((ov, oldValue, newValue) -> setContractExtensionDuration(newValue));
 
@@ -129,17 +139,15 @@ public class ContractVariationMainController extends VBox {
 
         cleanDataForAllSelectableComponents();
 
-//        contractVariationContractVariations.getContractVariationsGroup().setVisible(false);
     }
 
     private void onContractSelectorAction(ActionEvent event){
 
-        cleanDataForAllSelectableComponents();
-
-        if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem() == null){
-            contractVariationContractVariations.setDisable(true);
+        if(contractVariationParts.getContractSelector().getItems().isEmpty()){
             return;
         }
+
+        cleanDataForAllSelectableComponents();
 
         ContractFullDataDTO selectedContract = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem();
         contractVariationContractData.setAllContractData(selectedContract);
@@ -148,8 +156,6 @@ public class ContractVariationMainController extends VBox {
     private void onContractExtinctionSelected(MouseEvent event){
 
         contractVariationContractVariations.getContractVariationContractExtinction().cleanComponents();
-        contractVariationContractVariations.getContractVariationStackPane().setDisable(false);
-        contractVariationContractVariations.getContractVariationContractExtinction().setVisible(true);
         contractVariationActionComponents.getOkButton().setDisable(false);
 
 //        if(!dateToNotifyContractVariationToAdministrationIsCorrect()){
@@ -176,6 +182,19 @@ public class ContractVariationMainController extends VBox {
 //        }
     }
 
+    private void onContractConversionSelected(MouseEvent event){
+
+        contractVariationContractVariations.getContractVariationContractExtension().cleanComponents();
+        contractVariationActionComponents.getOkButton().setDisable(false);
+//        if(!dateToNotifyContractVariationToAdministrationIsCorrect()){
+//            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
+//            return;
+//        }
+//
+//        if(contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().isSelected()) {
+//
+//        }
+    }
     private void onOkButton(MouseEvent evet){
 
         // Contract extinction is selected -----------------------------------------------
@@ -367,12 +386,12 @@ public class ContractVariationMainController extends VBox {
     private void refreshContractSelectorData(ClientDTO client, LocalDate selectedDate){
 
         if(client == null){
-            contractVariationContractVariations.setDisable(true);
-
             return;
         }
 
-        contractVariationParts.getContractSelector().getItems().clear();
+        if(contractVariationParts.getContractSelector().getItems().size() > 0) {
+            contractVariationParts.getContractSelector().getItems().clear();
+        }
         contractVariationContractData.clearAllContractData();
 
         List<ContractFullDataDTO> contractFullDataDTOList = applicationMainController.findAllDataForContractInForceAtDateByClientId(client.getClientId(), selectedDate);
