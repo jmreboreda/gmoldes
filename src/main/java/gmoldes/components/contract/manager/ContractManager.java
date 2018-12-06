@@ -359,7 +359,7 @@ public class ContractManager {
         // Initial contract
         List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
-        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInForceAtDate(LocalDate.now());
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractsInForceAtDate(LocalDate.now());
         for(InitialContractVO initialContractVO : initialContractVOList){
             ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                     .withStartDate(initialContractVO.getStartDate().toLocalDate())

@@ -54,10 +54,6 @@ import java.sql.Date;
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_AFTER_DATE_BY_CONTRACT_NUMBER,
                 query = "select p from ContractVariationVO p where contractNumber = :contractNumber and (startDate >= :dateFromSearch or expectedEndDate >= :dateFromSearch) order by startDate"
-        ),
-        @NamedQuery(
-                name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_AT_DATE_BY_CONTRACT_NUMBER,
-                query = "select p from ContractVariationVO p where contractNumber = :contractNumber and (startDate >= :dateFrom or expectedEndDate >= :dateFrom) order by startDate"
         )
 })
 
@@ -82,7 +78,6 @@ public class ContractVariationVO implements Serializable {
     public static final String FIND_ALL_CONTRACT_VARIATIONS_ORDERED_BY_CONTRACT_NUMBER_AND_START_DATE = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_ORDERED_BY_CONTRACT_NUMBER_AND_START_DATE";
     public static final String FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_NOW_BY_CLIENT_ID = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_NOW_BY_CLIENT_ID";
     public static final String FIND_ALL_CONTRACT_VARIATIONS_AFTER_DATE_BY_CONTRACT_NUMBER = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_AFTER_DATE_BY_CONTRACT_NUMBER";
-    public static final String  FIND_ALL_CONTRACT_VARIATION_AT_DATE_BY_CONTRACT_NUMBER = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_AT_DATE_BY_CONTRACT_NUMBER";
 
     @Id
     @SequenceGenerator(name = "contractvariation_id_seq", sequenceName = "contractvariation_id_seq", allocationSize = 1)

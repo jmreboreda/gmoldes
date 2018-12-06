@@ -3,6 +3,7 @@ package gmoldes.components.contract.contract_variation.controllers;
 import com.lowagie.text.DocumentException;
 import gmoldes.components.contract.contract_variation.components.ContractVariationContractVariations;
 import gmoldes.components.contract.contract_variation.components.ContractVariationParts;
+import gmoldes.components.contract.contract_variation.components.ContractVariationTypes;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
@@ -30,13 +31,19 @@ import java.util.*;
 public class ContractExtensionController {
 
     private ContractVariationParts contractVariationParts;
+    private ContractVariationTypes contractVariationTypes;
     private ContractVariationContractVariations contractVariationContractVariations;
     private ContractManager contractManager = new ContractManager();
     private Scene scene;
 
-    public ContractExtensionController(Scene scene, ContractVariationParts contractVariationParts, ContractVariationContractVariations contractVariationContractVariations) {
+    public ContractExtensionController(
+            Scene scene,
+            ContractVariationParts contractVariationParts,
+            ContractVariationTypes contractVariationTypes,
+            ContractVariationContractVariations contractVariationContractVariations) {
         this.scene = scene;
         this.contractVariationParts = contractVariationParts;
+        this.contractVariationTypes = contractVariationTypes;
         this.contractVariationContractVariations = contractVariationContractVariations;
     }
 
@@ -92,12 +99,12 @@ public class ContractExtensionController {
             return ContractConstants.INCORRECT_CONTRACT_EXTENSION_DATE_FROM;
         }
 
-        if(contractVariationContractVariations.getDateNotification().getDate() == null){
+        if(contractVariationTypes.getDateNotification().getDate() == null){
 
             return ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED;
         }
 
-        if(contractVariationContractVariations.getHourNotification().getText() == null){
+        if(contractVariationTypes.getHourNotification().getText() == null){
 
             return ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED;
         }
@@ -227,18 +234,18 @@ public class ContractExtensionController {
         ContractFullDataDTO allContractData = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem();
 
         String notificationType = "";
-        if(contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().isSelected()){
+        if(contractVariationTypes.getRbContractExtinction().isSelected()){
             notificationType = Parameters.CONTRACT_EXTINCTION_TEXT;
         }
-        if(contractVariationContractVariations.getContractVariationContractConversion().getRbContractConversion().isSelected()){
+        if(contractVariationTypes.getRbContractConversion().isSelected()){
             notificationType = Parameters.CONTRACT_CONVERSION_TEXT;
         }
-        if(contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().isSelected()){
+        if(contractVariationTypes.getRbContractExtension().isSelected()){
             notificationType = Parameters.CONTRACT_EXTENSION_TEXT;
         }
 
-        LocalDate clientNotificationDate = contractVariationContractVariations.getDateNotification().getDate();
-        LocalTime clientNotificationHour = LocalTime.parse(contractVariationContractVariations.getHourNotification().getText());
+        LocalDate clientNotificationDate = contractVariationTypes.getDateNotification().getDate();
+        LocalTime clientNotificationHour = LocalTime.parse(contractVariationTypes.getHourNotification().getText());
 
         String birthDate = allContractData.getEmployee().getFechanacim() != null ? dateFormatter.format(allContractData.getEmployee().getFechanacim()) : null;
 

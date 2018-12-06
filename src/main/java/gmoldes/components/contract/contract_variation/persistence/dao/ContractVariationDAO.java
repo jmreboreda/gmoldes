@@ -104,16 +104,6 @@ public class ContractVariationDAO {
         return  query.getResultList();
     }
 
-    public List<ContractVariationVO> findAllContractVariationAtDateByContractNumber(LocalDate dateFrom, Integer contractNumber){
-        TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_AT_DATE_BY_CONTRACT_NUMBER, ContractVariationVO.class);
-
-        java.util.Date dateFromUtilDate = Date.from(dateFrom.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        query.setParameter(":dateFrom", dateFromUtilDate);
-        query.setParameter("contractNumber", contractNumber);
-
-        return query.getResultList();
-    }
-
     public List<ContractVariationVO> findAllContractVariationTemporalInForceNow(){
         TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_TEMPORAL_IN_FORCE_NOW, ContractVariationVO.class);
 

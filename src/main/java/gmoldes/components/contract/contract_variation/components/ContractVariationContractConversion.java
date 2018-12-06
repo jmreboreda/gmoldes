@@ -19,8 +19,8 @@ public class ContractVariationContractConversion extends VBox {
 
     @FXML
     private Group contractConversionGroup;
-    @FXML
-    private RadioButton rbContractConversion;
+//    @FXML
+//    private RadioButton rbContractConversion;
     @FXML
     private ChoiceBox<TypesContractVariationsDTO> contractConversionSelector;
     @FXML
@@ -38,7 +38,7 @@ public class ContractVariationContractConversion extends VBox {
         dateFrom.setConverter(Utilities.dateConverter);
         dateTo.setConverter(Utilities.dateConverter);
 
-        contractConversionGroup.disableProperty().bind(this.rbContractConversion.selectedProperty().not());
+        //contractConversionGroup.disableProperty().bind(this.rbContractConversion.selectedProperty().not());
     }
 
     public Group getContractConversionGroup() {
@@ -49,13 +49,13 @@ public class ContractVariationContractConversion extends VBox {
         this.contractConversionGroup = contractConversionGroup;
     }
 
-    public RadioButton getRbContractConversion() {
-        return rbContractConversion;
-    }
-
-    public void setRbContractConversion(RadioButton rbContractConversion) {
-        this.rbContractConversion = rbContractConversion;
-    }
+//    public RadioButton getRbContractConversion() {
+//        return rbContractConversion;
+//    }
+//
+//    public void setRbContractConversion(RadioButton rbContractConversion) {
+//        this.rbContractConversion = rbContractConversion;
+//    }
 
     public ChoiceBox<TypesContractVariationsDTO> getContractConversionSelector() {
         return contractConversionSelector;

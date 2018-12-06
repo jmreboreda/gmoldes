@@ -26,8 +26,8 @@ public class ContractVariationContractExtinction extends VBox {
     private Parent parent;
 
 
-    @FXML
-    private RadioButton rbContractExtinction;
+//    @FXML
+//    private RadioButton rbContractExtinction;
     @FXML
     private Group contractExtinctionGroup;
     @FXML
@@ -46,23 +46,23 @@ public class ContractVariationContractExtinction extends VBox {
     @FXML
     private void initialize(){
 
-        rbContractExtinction.setOnMouseClicked(this::onContractExtinction);
+        //rbContractExtinction.setOnMouseClicked(this::onContractExtinction);
 
         dateFrom.setConverter(Utilities.dateConverter);
 
-        contractExtinctionGroup.disableProperty().bind(this.rbContractExtinction.selectedProperty().not());
+        //contractExtinctionGroup.disableProperty().bind(this.rbContractExtinction.selectedProperty().not());
 
         loadContractExtinctionCausesSelector();
     }
 
 
-    public RadioButton getRbContractExtinction() {
-        return rbContractExtinction;
-    }
-
-    public void setRbContractExtinction(RadioButton rbContractExtinction) {
-        this.rbContractExtinction = rbContractExtinction;
-    }
+//    public RadioButton getRbContractExtinction() {
+//        return rbContractExtinction;
+//    }
+//
+//    public void setRbContractExtinction(RadioButton rbContractExtinction) {
+//        this.rbContractExtinction = rbContractExtinction;
+//    }
 
     public Group getContractExtinctionGroup() {
         return contractExtinctionGroup;

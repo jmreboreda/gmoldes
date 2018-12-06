@@ -31,7 +31,8 @@ public class ContractConstants {
     public static final String CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT = "Expediente_contrato_trabajo_";
 
     /** Contract variation **/
-    public static final String IS_NOT_VALID_DATE_FOR_CONTRACT_VARIATION = "Fecha no válida para efectuar variaciones en el contrato.";
+    public static final String VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION = "La fecha establecida de variación del contrato aparentemente excede el plazo máximo" +
+            " de  tres días para su notificación a la Administración laboral.\n ¿Es correcta la fecha establecida?.";
     public static final String CONTRACT_EXTINCTION_PERSISTENCE_OK = "Extincion del contrato registrada correctamente.";
     public static final String CONTRACT_EXTINCTION_PERSISTENCE_NOT_OK = "No se ha registrado correctamente la extincion del contrato.\n" +
             "Debe revisarse la base de datos para garantizar la consistencia de los datos.";
@@ -56,6 +57,6 @@ public class ContractConstants {
     public static final String CONTRACT_EXTENSION_PERSISTENCE_NOT_OK = "No se ha registrado correctamente la prórroga del contrato.\n" +
             "Debe revisarse la base de datos para garantizar la consistencia de los datos.";
     public static final String ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES = "Las fechas de inicio y finalización de la prórroga no son coherentes.";
-
+    public static final String NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED = "Se han introducido los datos de necesarios para la variación del contrato.";
 
 }

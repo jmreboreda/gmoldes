@@ -22,10 +22,10 @@ public class ContractVariationContractVariations extends VBox {
 
     @FXML
     private ToggleGroup contractVariationToggleGroup;
-    @FXML
-    private DateInput dateNotification;
-    @FXML
-    private TimeInput24HoursClock hourNotification;
+//    @FXML
+//    private DateInput dateNotification;
+//    @FXML
+//    private TimeInput24HoursClock hourNotification;
     @FXML
     private ContractVariationContractExtinction contractVariationContractExtinction;
     @FXML
@@ -42,29 +42,29 @@ public class ContractVariationContractVariations extends VBox {
     @FXML
     private void initialize(){
 
-        dateNotification.setLabelText("Fecha");
-        hourNotification.setTextLabel("Hora");
+//        dateNotification.setLabelText("Fecha");
+//        hourNotification.setTextLabel("Hora");
 
         contractVariationContractExtinction.setOnExtinctionButton(this::onExtinctionButton);
         contractVariationContractExtension.setOnExtensionButton(this::onExtensionButton);
 
     }
 
-    public DateInput getDateNotification() {
-        return dateNotification;
-    }
-
-    public void setDateNotification(DateInput dateNotification) {
-        this.dateNotification = dateNotification;
-    }
-
-    public TimeInput24HoursClock getHourNotification() {
-        return hourNotification;
-    }
-
-    public void setHourNotification(TimeInput24HoursClock hourNotification) {
-        this.hourNotification = hourNotification;
-    }
+//    public DateInput getDateNotification() {
+//        return dateNotification;
+//    }
+//
+//    public void setDateNotification(DateInput dateNotification) {
+//        this.dateNotification = dateNotification;
+//    }
+//
+//    public TimeInput24HoursClock getHourNotification() {
+//        return hourNotification;
+//    }
+//
+//    public void setHourNotification(TimeInput24HoursClock hourNotification) {
+//        this.hourNotification = hourNotification;
+//    }
 
     public ContractVariationContractExtinction getContractVariationContractExtinction() {
         return contractVariationContractExtinction;

@@ -1,17 +1,15 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
 import gmoldes.ApplicationMainController;
-import gmoldes.ApplicationMainManager;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract.controllers.ContractController;
+import gmoldes.components.contract.contract_variation.events.MessageEvent;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
-import gmoldes.domain.contract.dto.ContractVariationDTO;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import javafx.beans.value.ChangeListener;
@@ -21,6 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
@@ -58,19 +57,27 @@ public class ContractVariationMainController extends VBox {
     @FXML
     private ContractVariationContractData contractVariationContractData;
     @FXML
+    private ContractVariationTypes contractVariationTypes;
+    @FXML
     private ContractVariationContractVariations contractVariationContractVariations;
     @FXML
     private ContractVariationActionComponents contractVariationActionComponents;
 
 
+
+
+
+
     @FXML
     public void initialize() {
+
+        contractVariationTypes.setDisable(true);
 
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
 
-        contractVariationContractVariations.setOnContractExtinction(this::onContractExtinction);
-        contractVariationContractVariations.setOnContractExtension(this::onContractExtension);
+        contractVariationContractVariations.setOnContractExtinction(this::onContractExtinctionSelected);
+        contractVariationContractVariations.setOnContractExtension(this::onContractExtensionSelected);
 
 
         contractVariationToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
@@ -79,11 +86,20 @@ public class ContractVariationMainController extends VBox {
             }
         });
 
-        contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setToggleGroup(contractVariationToggleGroup);
-        contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().setToggleGroup(contractVariationToggleGroup);
-        contractVariationContractVariations.getContractVariationContractConversion().getRbContractConversion().setToggleGroup(contractVariationToggleGroup);
+        contractVariationTypes.getRbContractExtinction().setToggleGroup(contractVariationToggleGroup);
+        contractVariationTypes.getRbContractExtension().setToggleGroup(contractVariationToggleGroup);
+        contractVariationTypes.getRbWeeklyWorkHoursVariation().setToggleGroup(contractVariationToggleGroup);
+        contractVariationTypes.getRbContractConversion().setToggleGroup(contractVariationToggleGroup);
+        contractVariationTypes.getRbOtherVariations().setToggleGroup(contractVariationToggleGroup);
+
+
+//        contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setToggleGroup(contractVariationToggleGroup);
+//        contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().setToggleGroup(contractVariationToggleGroup);
+//        contractVariationContractVariations.getContractVariationContractConversion().getRbContractConversion().setToggleGroup(contractVariationToggleGroup);
 
         contractVariationContractVariations.setDisable(true);
+
+        contractVariationTypes.disableProperty().bind(this.contractVariationParts.getContractSelector().valueProperty().isNull());
 
         contractVariationContractVariations.getContractVariationContractExtension().getDateTo().valueProperty().addListener((ov, oldValue, newValue) -> setContractExtensionDuration(newValue));
 
@@ -135,97 +151,111 @@ public class ContractVariationMainController extends VBox {
 
         ContractFullDataDTO selectedContract = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem();
         contractVariationContractData.setAllContractData(selectedContract);
-
-        contractVariationContractVariations.setDisable(false);
     }
 
-    private void onContractExtinction(MouseEvent event){
+    private void onContractExtinctionSelected(MouseEvent event){
 
         contractVariationContractVariations.getContractVariationContractExtinction().cleanComponents();
-
-        if(!isCorrectDateToContractVariation()){
-            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
-            return;
-        }
-
-        if(contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().isSelected()) {
-            contractVariationActionComponents.getOkButton().setDisable(false);
-        }
+        contractVariationActionComponents.getOkButton().setDisable(false);
+//        if(!dateToNotifyContractVariationToAdministrationIsCorrect()){
+//            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
+//            return;
+//        }
+//
+//        if(contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().isSelected()) {
+//
+//        }
     }
 
-    private void onContractExtension(MouseEvent event){
+    private void onContractExtensionSelected(MouseEvent event){
 
         contractVariationContractVariations.getContractVariationContractExtension().cleanComponents();
-
-        if(!isCorrectDateToContractVariation()){
-            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
-            return;
-        }
-
-        if(contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().isSelected()) {
-            contractVariationActionComponents.getOkButton().setDisable(false);
-        }
+        contractVariationActionComponents.getOkButton().setDisable(false);
+//        if(!dateToNotifyContractVariationToAdministrationIsCorrect()){
+//            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
+//            return;
+//        }
+//
+//        if(contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().isSelected()) {
+//
+//        }
     }
 
     private void onOkButton(MouseEvent evet){
 
-//        CompatibleVariationEvent compatibleVariationEvent = new CompatibleVariationEvent(
-//                null,
-//                null,
-//                null,
-//                null);
+        // Contract extinction is selected -----------------------------------------------
+        RadioButton rbContractExtinction = contractVariationTypes.getRbContractExtinction();
 
-//        // Contract variation compatibility check
-//        CompatibleVariationEvent compatibleVariationEvent = checkExistenceIncompatibleVariations();
-//        String errorMessage = compatibleVariationEvent.getErrorContractVariationMessage();
+        if(rbContractExtinction.isSelected()) {
+
+            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
+                    this.getScene(), contractVariationParts, contractVariationTypes, contractVariationContractVariations);
+
+            MessageEvent messageEvent = contractExtinctionController.verifyIsCorrectContractExtinctionData();
+            String messageText = messageEvent.getMessageText();
+            if (!messageText.equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)) {
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageText);
+
+                return;
+            }
+
+            System.out.println(messageText);    // <- NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED
+
+            CompatibleVariationEvent event = contractExtinctionController.checkExistenceIncompatibleVariations();
+            if(!event.getErrorContractVariationMessage().isEmpty()){
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, event.getErrorContractVariationMessage());
+
+                return;
+            }
+
+
+
+        }
+
+
+//            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
+//                    this.getScene(),
+//                    contractVariationParts,
+//                    contractVariationContractVariations);
 //
-//        if(!compatibleVariationEvent.getErrorContractVariationMessage().isEmpty()){
-//            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, errorMessage);
+//            CompatibleVariationEvent event = contractExtinctionController.verifyIsCorrectContractExtinctionData();
+//            String errorMessage = event.getErrorContractVariationMessage();
+//            if(!errorMessage.isEmpty()) {
+//                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, errorMessage);
+//
+//                return;
+//            }
+//
+//            contractExtinctionController.checkExistenceIncompatibleVariations();
+//
+//
+//
+//
+//                Integer contractNumber = contractVariationParts.getContractSelector()
+//                        .getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
+//                LocalDate dateFrom = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+//
+//                ApplicationMainManager applicationMainManager = new ApplicationMainManager();
+//                List <ContractNewVersionDTO> contractNewVersionDTOList = applicationMainManager.findAllContractsInForceAtDate(dateFrom);
+//
+////               patata compatibleVariationEvent = checkExistenceIncompatibleVariations();
+//
+//
+//
+//                Boolean bol = contractExtinctionController.manageContractExtinction();
+//
 //
 //            return;
 //        }
 
-        // Contract extinction is selected -----------------------------------------------
-        if(contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().isSelected()){
-
-            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
-                    this.getScene(),
-                    contractVariationParts,
-                    contractVariationContractVariations);
-
-            CompatibleVariationEvent compatibleVariationEvent = contractExtinctionVerifyCorrectData();
-            String errorMessage = compatibleVariationEvent.getErrorContractVariationMessage();
-            if(!errorMessage.isEmpty()) {
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, errorMessage);
-
-                return;
-            }
-            else {
-                Integer contractNumber = contractVariationParts.getContractSelector()
-                        .getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
-                LocalDate dateFrom = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
-
-                ApplicationMainManager applicationMainManager = new ApplicationMainManager();
-                List <ContractVariationDTO> contractVariationDTOList = applicationMainManager.findAllContractVariationAtDateByContractNumber(dateFrom, contractNumber);
-
-//               patata compatibleVariationEvent = checkExistenceIncompatibleVariations();
-
-
-
-                Boolean bol = contractExtinctionController.manageContractExtinction();
-            }
-
-            return;
-        }
-
         // Contract extension is selected -----------------------------------------------
-        if(contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().isSelected()) {
+        if(contractVariationTypes.getRbContractExtension().isSelected()) {
             contractVariationContractExtensionSelected();
         }
 
 
         // Contract conversion is selected -----------------------------------------------
-        if(contractVariationContractVariations.getContractVariationContractConversion().getRbContractConversion().isSelected()){
+        if(contractVariationTypes.getRbContractConversion().isSelected()){
             contractVariationContractConversionSelected();
         }
 
@@ -244,7 +274,7 @@ public class ContractVariationMainController extends VBox {
         stage.close();
     }
 
-    private CompatibleVariationEvent checkExistenceIncompatibleVariations(){
+/**    private CompatibleVariationEvent checkExistenceIncompatibleVariations(){
 
         CompatibleVariationEvent compatibleVariationEvent = new CompatibleVariationEvent(
                 null,
@@ -254,7 +284,7 @@ public class ContractVariationMainController extends VBox {
 
         ContractController contractController = new ContractController();
 
-        contractController.find
+        //contractController.find
 
         // Contract extension
         if(contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().isSelected()) {
@@ -268,38 +298,40 @@ public class ContractVariationMainController extends VBox {
 
         return compatibleVariationEvent;
     }
+**/
 
-    private CompatibleVariationEvent contractExtinctionVerifyCorrectData(){
-
-        ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
-                this.getScene(),
-                contractVariationParts,
-                contractVariationContractVariations);
-
-        CompatibleVariationEvent compatibleVariationEvent = contractExtinctionController.isCorrectContractExtinctionData();
-        if(!compatibleVariationEvent.getErrorContractVariationMessage().isEmpty()) {
-
-            return compatibleVariationEvent;
-            }
-
-            contractVariationActionComponents.getOkButton().setDisable(true);
-            contractVariationActionComponents.getSendMailButton().setDisable(false);
-            contractVariationParts.setMouseTransparent(true);
-            contractVariationContractData.setMouseTransparent(true);
-            contractVariationContractVariations.setMouseTransparent(true);
-
-            return new CompatibleVariationEvent(
-                    true,
-                    null,
-                    null,
-                    null);
-    }
+//    private CompatibleVariationEvent contractExtinctionVerifyCorrectData(){
+//
+//        ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
+//                this.getScene(),
+//                contractVariationParts,
+//                contractVariationContractVariations);
+//
+//        CompatibleVariationEvent compatibleVariationEvent = contractExtinctionController.verifyIsCorrectContractExtinctionData();
+//        if(!compatibleVariationEvent.getErrorContractVariationMessage().isEmpty()) {
+//
+//            return compatibleVariationEvent;
+//            }
+//
+//            contractVariationActionComponents.getOkButton().setDisable(true);
+//            contractVariationActionComponents.getSendMailButton().setDisable(false);
+//            contractVariationParts.setMouseTransparent(true);
+//            contractVariationContractData.setMouseTransparent(true);
+//            contractVariationContractVariations.setMouseTransparent(true);
+//
+//            return new CompatibleVariationEvent(
+//                    true,
+//                    null,
+//                    null,
+//                    null);
+//    }
 
     private void contractVariationContractExtensionSelected(){
 
         ContractExtensionController contractExtensionController = new ContractExtensionController(
                 this.getScene(),
                 contractVariationParts,
+                contractVariationTypes,
                 contractVariationContractVariations);
 
         Boolean isOkManagementContractExtension = contractExtensionController.manageContractExtension();
@@ -358,32 +390,39 @@ public class ContractVariationMainController extends VBox {
         }
     }
 
-    private Boolean isCorrectDateToContractVariation(){
+    private Boolean dateToNotifyContractVariationToAdministrationIsCorrect(){
+
+        LocalDate limitDatePreviuosOfNotifyToAdministration = contractVariationParts.getInForceDate().getValue().minusDays(3L);
 
         if(Period.between(contractVariationParts.getInForceDate().getValue(), LocalDate.now().minusDays(3L)).getDays() <= 0){
             return true;
         }
 
-        Message.warningMessage(contractVariationParts.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.IS_NOT_VALID_DATE_FOR_CONTRACT_VARIATION);
+        Boolean isCorrectDate = Message.confirmationMessage(contractVariationParts.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+                ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION);
+        if(isCorrectDate){
+            return true;
+        }
+
         return false;
     }
 
     private void cleanDataForAllSelectableComponents(){
 
-        contractVariationContractVariations.getDateNotification().setDate(LocalDate.now());
-        contractVariationContractVariations.getHourNotification().setText(null);
+        contractVariationTypes.getDateNotification().setDate(LocalDate.now());
+        contractVariationTypes.getHourNotification().setText(null);
 
-        contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
+        contractVariationTypes.getRbContractExtinction().setSelected(false);
         contractVariationContractVariations.getContractVariationContractExtinction().getExtinctionCauseSelector().getSelectionModel().select(null);
         contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().setValue(null);
         contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().setSelected(false);
         contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().setSelected(false);
 
-        contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().setSelected(false);
+        contractVariationTypes.getRbContractExtension().setSelected(false);
         contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().setValue(null);
         contractVariationContractVariations.getContractVariationContractExtension().getDateTo().setValue(null);
 
-        contractVariationContractVariations.getContractVariationContractConversion().getRbContractConversion().setSelected(false);
+        contractVariationTypes.getRbContractConversion().setSelected(false);
         contractVariationContractVariations.getContractVariationContractConversion().getContractConversionSelector().getSelectionModel().select(null);
         contractVariationContractVariations.getContractVariationContractConversion().getDateFrom().setValue(null);
         contractVariationContractVariations.getContractVariationContractConversion().getDateTo().setValue(null);

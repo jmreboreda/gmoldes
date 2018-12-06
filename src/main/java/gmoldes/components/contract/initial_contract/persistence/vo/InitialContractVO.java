@@ -51,8 +51,8 @@ import java.sql.Date;
                 query = "select p from InitialContractVO p where contractNumber = :contractNumber order by startDate desc"
         ),
         @NamedQuery(
-                name = InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_AT_DATE,
-                query = "select p from InitialContractVO p where p.startDate <= :date and p.endingDate is null " +
+                name = InitialContractVO.FIND_ALL_INITIAL_CONTRACTS_IN_FORCE_AT_DATE,
+                query = "select p from InitialContractVO p where p.startDate <= :date and (p.endingDate is null or p.endingDate >= :date) " +
                         "and (p.modificationDate is null or p.modificationDate >= :date) and (p.expectedEndDate is null or p.expectedEndDate >= :date)"
         ),
         @NamedQuery(
@@ -79,7 +79,7 @@ public class InitialContractVO implements Serializable {
     public static final String FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD";
     public static final String FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE = "InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE";
     public static final String FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER = "InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER";
-    public static final String FIND_ALL_INITIAL_CONTRACT_IN_FORCE_AT_DATE = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_AT_DATE";
+    public static final String FIND_ALL_INITIAL_CONTRACTS_IN_FORCE_AT_DATE = "InitialContractVO.FIND_ALL_INITIAL_CONTRACTS_IN_FORCE_AT_DATE";
     public static final String FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_NOW_BY_CLIENT_ID";
     public static final String FIND_ALL_INITIAL_CONTRACT_TEMPORAL_IN_FORCE_NOW = "InitialContractVO.FIND_ALL_INITIAL_CONTRACT_TEMPORAL_IN_FORCE_NOW";
     public static final String FIND_LAST_TUPLA_INITIAL_CONTRACT_BY_CONTRACT_NUMBER = "InitialContractVO.FIND_LAST_TUPLA_INITIAL_CONTRACT_BY_CONTRACT_NUMBER";
