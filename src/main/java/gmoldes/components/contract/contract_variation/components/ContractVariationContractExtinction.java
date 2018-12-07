@@ -17,7 +17,6 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ContractVariationContractExtinction extends VBox {
 
     private static final String CONTRACT_VARIATION_CONTRACT_EXTINCTION_FXML = "/fxml/contract_variations/contractvariation_contract_extinction.fxml";
@@ -25,13 +24,13 @@ public class ContractVariationContractExtinction extends VBox {
     private Parent parent;
 
     @FXML
-    private ToggleGroup holidaysToggleGroup;
-    @FXML
     private Group contractExtinctionGroup;
     @FXML
     private ChoiceBox<TypesContractVariationsDTO> extinctionCauseSelector;
     @FXML
     private DatePicker dateFrom;
+    @FXML
+    private ToggleGroup holidaysToggleGroup;
     @FXML
     private RadioButton rbHolidaysYes;
     @FXML
@@ -39,6 +38,8 @@ public class ContractVariationContractExtinction extends VBox {
 
     public ContractVariationContractExtinction() {
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_CONTRACT_EXTINCTION_FXML);
+
+        loadContractExtinctionCausesSelector();
     }
 
     @FXML
@@ -46,7 +47,6 @@ public class ContractVariationContractExtinction extends VBox {
 
         dateFrom.setConverter(Utilities.dateConverter);
 
-        loadContractExtinctionCausesSelector();
     }
 
     public ToggleGroup getHolidaysToggleGroup() {

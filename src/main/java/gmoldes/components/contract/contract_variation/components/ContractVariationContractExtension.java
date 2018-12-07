@@ -22,8 +22,6 @@ public class ContractVariationContractExtension extends VBox {
 
     @FXML
     private Group contractExtensionGroup;
-//    @FXML
-//    private RadioButton rbContractExtension;
     @FXML
     private DatePicker dateFrom;
     @FXML
@@ -38,13 +36,9 @@ public class ContractVariationContractExtension extends VBox {
     @FXML
     private void initialize(){
 
-        //rbContractExtension.setOnMouseClicked(this::onContractExtension);
-
-
         dateFrom.setConverter(Utilities.dateConverter);
         dateTo.setConverter(Utilities.dateConverter);
 
-        //contractExtensionGroup.disableProperty().bind(this.rbContractExtension.selectedProperty().not());
     }
 
     public Group getContractExtensionGroup() {
@@ -54,14 +48,6 @@ public class ContractVariationContractExtension extends VBox {
     public void setContractExtensionGroup(Group contractExtensionGoup) {
         this.contractExtensionGroup = contractExtensionGoup;
     }
-
-//    public RadioButton getRbContractExtension() {
-//        return rbContractExtension;
-//    }
-//
-//    public void setRbContractExtension(RadioButton rbContractExtension) {
-//        this.rbContractExtension = rbContractExtension;
-//    }
 
     public DatePicker getDateFrom() {
         return dateFrom;
@@ -93,13 +79,4 @@ public class ContractVariationContractExtension extends VBox {
         getDateTo().setValue(null);
         getContractExtensionDuration().setText(null);
     }
-
-    private void onContractExtension(MouseEvent event){
-        this.eventEventHandlerContractExtension.handle(event);
-    }
-
-    public void setOnExtensionButton(EventHandler<MouseEvent> eventEventHandlerContractExtension){
-        this.eventEventHandlerContractExtension = eventEventHandlerContractExtension;
-    }
-
 }

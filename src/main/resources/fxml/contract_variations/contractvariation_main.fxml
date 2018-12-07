@@ -21,7 +21,5 @@
       <ContractVariationContractData fx:id="contractVariationContractData"/>
       <ContractVariationTypes fx:id="contractVariationTypes"/>
       <ContractVariationContractVariations fx:id="contractVariationContractVariations"/>
-      <!--<ContractVariationContractExtinction fx:id="contractVariationContractExtinction"/>-->
-      <!--<ContractVariationContractExtension fx:id="contractVariationContractExtension"/>-->
       <ContractVariationActionComponents fx:id="contractVariationActionComponents"/>
 </fx:root>

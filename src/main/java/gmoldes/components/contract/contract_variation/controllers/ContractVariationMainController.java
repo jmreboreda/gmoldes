@@ -23,6 +23,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.time.LocalDate;
@@ -49,6 +50,8 @@ public class ContractVariationMainController extends VBox {
     private ContractManager contractManager = new ContractManager();
 
     @FXML
+    private StackPane contractVariationStackPane;
+    @FXML
     private ToggleGroup contractVariationToggleGroup;
     @FXML
     private ToggleGroup holidaysToggleGroup;
@@ -69,24 +72,12 @@ public class ContractVariationMainController extends VBox {
     @FXML
     public void initialize() {
 
-        //contractVariationTypes.setDisable(true);
-
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
 
         contractVariationTypes.setOnContractExtinction(this::onContractExtinctionSelected);
         contractVariationTypes.setOnContractExtension(this::onContractExtensionSelected);
         contractVariationTypes.setOnContractConversion(this::onContractConversionSelected);
-
-        holidaysToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-            public void changed(ObservableValue<? extends Toggle> ov,
-                                Toggle old_toggle, Toggle new_toggle) {
-            }
-        });
-
-        contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().setToggleGroup(holidaysToggleGroup);
-        contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().setToggleGroup(holidaysToggleGroup);
-
 
         contractVariationToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
             public void changed(ObservableValue<? extends Toggle> ov,
@@ -100,7 +91,17 @@ public class ContractVariationMainController extends VBox {
         contractVariationTypes.getRbContractConversion().setToggleGroup(contractVariationToggleGroup);
         contractVariationTypes.getRbOtherVariations().setToggleGroup(contractVariationToggleGroup);
 
+        holidaysToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            public void changed(ObservableValue<? extends Toggle> ov,
+                                Toggle old_toggle, Toggle new_toggle) {
+            }
+        });
+
+//        contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().setToggleGroup(holidaysToggleGroup);
+//        contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().setToggleGroup(holidaysToggleGroup);
+
         contractVariationTypes.disableProperty().bind(this.contractVariationParts.getContractSelector().valueProperty().isNull());
+
         contractVariationContractVariations.getContractVariationStackPane().disableProperty().bind(this.contractVariationParts.getContractSelector().valueProperty().isNull());
         contractVariationContractVariations.getContractVariationStackPane().visibleProperty().bind(this.contractVariationParts.getContractSelector().valueProperty().isNotNull());
 
@@ -113,7 +114,6 @@ public class ContractVariationMainController extends VBox {
 
         contractVariationContractVariations.getContractVariationContractConversion().getContractConversionGroup().disableProperty().bind(this.contractVariationTypes.getRbContractConversion().selectedProperty().not());
         contractVariationContractVariations.getContractVariationContractConversion().getContractConversionGroup().visibleProperty().bind(this.contractVariationTypes.getRbContractConversion().selectedProperty());
-
 
         contractVariationContractVariations.getContractVariationContractExtension().getDateTo().valueProperty().addListener((ov, oldValue, newValue) -> setContractExtensionDuration(newValue));
 
@@ -169,7 +169,6 @@ public class ContractVariationMainController extends VBox {
     private void onContractExtinctionSelected(MouseEvent event){
 
         contractVariationContractVariations.getContractVariationContractExtinction().cleanComponents();
-
         contractVariationActionComponents.getOkButton().setDisable(false);
 
 
