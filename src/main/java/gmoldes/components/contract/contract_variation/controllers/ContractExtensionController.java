@@ -1,12 +1,9 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
 import com.lowagie.text.DocumentException;
-import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.contract_variation.components.ContractVariationContractVariations;
 import gmoldes.components.contract.contract_variation.components.ContractVariationParts;
 import gmoldes.components.contract.contract_variation.components.ContractVariationTypes;
-import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract.contract_variation.events.MessageEvent;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
@@ -21,7 +18,7 @@ import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.scene.Scene;
-
+import javafx.scene.input.MouseEvent;
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.*;
 
-public class ContractExtinctionController{
+public class ContractExtensionController {
 
     private ContractVariationParts contractVariationParts;
     private ContractVariationTypes contractVariationTypes;
@@ -39,7 +36,7 @@ public class ContractExtinctionController{
     private ContractManager contractManager = new ContractManager();
     private Scene scene;
 
-    public ContractExtinctionController(
+    public ContractExtensionController(
             Scene scene,
             ContractVariationParts contractVariationParts,
             ContractVariationTypes contractVariationTypes,
@@ -50,126 +47,112 @@ public class ContractExtinctionController{
         this.contractVariationContractVariations = contractVariationContractVariations;
     }
 
-    public Boolean manageContractExtinction() {
+     public Boolean manageContractExtension() {
 
-        String errorPersistingContractExtinction = persistContractExtinction();
-        if (errorPersistingContractExtinction != null) {
+        String errorIsCorrectContractExtensionData = isCorrectContractExtensionData();
 
-            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, errorPersistingContractExtinction);
-            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_NOT_OK);
+        if (errorIsCorrectContractExtensionData != null) {
+            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, errorIsCorrectContractExtensionData);
 
             return false;
         }
 
-        String extinctionContractCause = contractVariationContractVariations.getContractVariationContractExtinction()
-                .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
-
-        String holidaysUsedText = contractVariationContractVariations.getContractVariationContractExtinction()
-                .getRbHolidaysYes().isSelected() ? "disfrutadas." : "no disfrutadas.";
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(extinctionContractCause);
-        sb.append(". Vacaciones ");
-        sb.append(holidaysUsedText);
-
-        ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString());
-
-        printContractDataSubfolder(contractDataSubfolder);
+//        String errorPersistingContractExtension = persistContractExtension();
+//
+//        if (errorPersistingContractExtension != null) {
+//
+//            System.out.println(errorPersistingContractExtension);
+//            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, errorPersistingContractExtension);
+//            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_NOT_OK);
+//
+//            return false;
+//        }
+//
+//        String extinctionContractCause = contractVariationContractVariations.getContractVariationContractExtinction()
+//                .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
+//
+//        String holidaysText = contractVariationContractVariations.getContractVariationContractExtinction()
+//                .getRbHolidaysYes().isSelected() ? "disfrutadas." : "no disfrutadas.";
+//
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(extinctionContractCause);
+//        sb.append(". Vacaciones ");
+//        sb.append(holidaysText);
+//
+//        ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString());
+//
+//        printContractDataSubfolder(contractDataSubfolder);
 
         return true;
     }
 
-    public MessageEvent verifyIsCorrectContractExtinctionData(){
+    public String isCorrectContractExtensionData(){
 
-            if(contractVariationTypes.getDateNotification().getDate() == null){
+        if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate() == null){
 
-                return new MessageEvent(ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED);
-            }
-
-            if(contractVariationTypes.getHourNotification().getText() == null){
-
-                return new MessageEvent(ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED);
-            }
-
-            if(contractVariationContractVariations.getContractVariationContractExtinction().getExtinctionCauseSelector().getSelectionModel().getSelectedItem() == null){
-
-                return new MessageEvent(ContractConstants.EXTINCTION_CAUSE_NOT_ESTABLISHED);
-            }
-
-//            if( contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue() == null
-//                    || Period.between(contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue(),
-//                    LocalDate.now()).getDays() > 3){
-//
-//                return new MessageEvent(ContractConstants.ERROR_IN_EXTINCTION_DATA);
-//            }
-
-            if(!contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().isSelected() &&
-                    !contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().isSelected()){
-
-                return new MessageEvent(ContractConstants.HOLIDAYS_SITUATION_NOT_ESTABLISHED);
-            }
-
-
-        return new MessageEvent(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED);
-
-
-        /**
-
-         }**/
-
-
-    }
-
-    public CompatibleVariationEvent checkExistenceIncompatibleVariations() {
-
-        // 1. Extinction date exceeded
-
-        LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
-        LocalDate extinctionDate = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
-
-        if(expectedEndDate != null && Period.between(expectedEndDate, extinctionDate).getDays() > 0) {
-            return new CompatibleVariationEvent(
-                    true,
-                    null,
-                    null,
-                    ContractConstants.EXTINCTION_DATE_EXCEEDED);
+            return ContractConstants.SELECTED_CONTRACT_IS_NOT_EXTENDABLE;
         }
 
-        // 2. Extinction of contract already exists -------------------------------------
+        if(Period.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(),
+        contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate().plusDays(1)).getDays() > 0){
 
-        Integer selectedContractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
+            return ContractConstants.INCORRECT_CONTRACT_EXTENSION_DATE_FROM;
+        }
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-        List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
+        if(contractVariationTypes.getDateNotification().getDate() == null){
 
+            return ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED;
+        }
 
+        if(contractVariationTypes.getHourNotification().getText() == null){
 
+            return ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED;
+        }
 
-        String message = "Prueba de mensaje de error.";
+        if(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue() == null
+                || Period.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(),
+                LocalDate.now()).getDays() > 3){
 
-        return new CompatibleVariationEvent(true, false, false, message);
+            return ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_FROM;
+        }
 
-    }
-//            Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
-//            if(existFutureVariations) {
-//
-//                return ContractConstants.EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT;
-//            }
+        if(contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue() == null){
+
+            return ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_TO;
+        }
+
+        if(Period.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(),
+                contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue()).getDays() < 0){
+
+            return ContractConstants.ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES;
+
+        }
+
+        Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
+        if(existFutureVariations) {
+
+            return ContractConstants.EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT;
+        }
+
+        System.out.println("Aparentemente está todo correcto.\n");
+
+        return null;
+        }
 
     private Boolean verifyExistenceFutureVariationsOfSelectedContract(){
 
         Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
-        LocalDate dateFromSearch = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+        LocalDate dateFromSearch = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
 
         List<ContractVariationDTO> contractVariationDTOList = contractManager.findAllContractVariationsAfterDateByContractNumber(contractNumber, dateFromSearch);
-        if(contractVariationDTOList.size() > 0){
+        if(!contractVariationDTOList.isEmpty()){
             return true;
         }
 
         return false;
     }
 
-    public String persistContractExtinction(){
+    public String persistContractExtension(){
 
         ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
                 .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();

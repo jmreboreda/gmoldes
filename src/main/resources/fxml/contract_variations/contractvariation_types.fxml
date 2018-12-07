@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import gmoldes.components.generic_components.DateInput?>
+<?import gmoldes.components.generic_components.TimeInput24HoursClock?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox>
+         <children>
+            <HBox>
+                  <Label prefHeight="31.0" text="Variaciones de contrato">
+                     <HBox.margin>
+                        <Insets bottom="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+               <Label prefHeight="31.0" text="Notificacion del cliente">
+                  <HBox.margin>
+                     <Insets bottom="5.0" left="10.0" right="10.0" />
+                  </HBox.margin>
+               </Label>
+               <DateInput fx:id="dateNotification" alignment="CENTER_LEFT">
+                  <HBox.margin>
+                     <Insets bottom="5.0" right="10.0" />
+                  </HBox.margin>
+               </DateInput>
+               <TimeInput24HoursClock fx:id="hourNotification" alignment="CENTER_LEFT">
+                  <HBox.margin>
+                     <Insets bottom="5.0" />
+                  </HBox.margin></TimeInput24HoursClock>
+            </HBox>
+            <Separator prefWidth="200.0" />
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <HBox>
+               <children>
+                  <RadioButton fx:id="rbContractExtinction" mnemonicParsing="false" style="-fx-text-fill: #000FFF;" text="Extinción del contrato" />
+                  <RadioButton fx:id="rbContractExtension" mnemonicParsing="false" style="-fx-text-fill: #000FFF;" text="Prórroga del contrato">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="rbWeeklyWorkHoursVariation" mnemonicParsing="false" style="-fx-text-fill: #000FFF;" text="Variación de jornada de trabajo">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="rbContractConversion" mnemonicParsing="false" style="-fx-text-fill: #000FFF;" text="Conversión del contrato">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="rbOtherVariations" mnemonicParsing="false" style="-fx-text-fill: #000FFF;" text="Otras variaciones del contrato">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin></RadioButton>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </VBox.margin>
+      </VBox>
+      <Separator prefWidth="200.0">
+         <VBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </VBox.margin>
+      </Separator>
+   </children>
+   <padding>
+      <Insets left="5.0" right="5.0" />
+   </padding>
+</fx:root>

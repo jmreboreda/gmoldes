@@ -5,10 +5,14 @@ import gmoldes.components.generic_components.DateInput;
 import gmoldes.components.generic_components.TimeInput24HoursClock;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+import java.util.Stack;
 
 public class ContractVariationContractVariations extends VBox {
 
@@ -16,14 +20,12 @@ public class ContractVariationContractVariations extends VBox {
 
     private Parent parent;
 
-    private EventHandler<MouseEvent> actionEventEventHandlerContractExtinction;
-
     @FXML
     private ToggleGroup contractVariationToggleGroup;
     @FXML
-    private DateInput dateNotification;
+    private StackPane contractVariationStackPane;
     @FXML
-    private TimeInput24HoursClock hourNotification;
+    private Group contractVariationsGroup;
     @FXML
     private ContractVariationContractExtinction contractVariationContractExtinction;
     @FXML
@@ -40,30 +42,26 @@ public class ContractVariationContractVariations extends VBox {
     @FXML
     private void initialize(){
 
-        dateNotification.setLabelText("Fecha");
-        hourNotification.setTextLabel("Hora");
-
-        contractVariationContractExtinction.setOnExtinctionButton(this::onExtinctionButton);
     }
 
-    public DateInput getDateNotification() {
-        return dateNotification;
+    public StackPane getContractVariationStackPane() {
+        return contractVariationStackPane;
     }
 
-    public void setDateNotification(DateInput dateNotification) {
-        this.dateNotification = dateNotification;
-    }
-
-    public TimeInput24HoursClock getHourNotification() {
-        return hourNotification;
-    }
-
-    public void setHourNotification(TimeInput24HoursClock hourNotification) {
-        this.hourNotification = hourNotification;
+    public void setContractVariationStackPane(StackPane contractVariationStackPane) {
+        this.contractVariationStackPane = contractVariationStackPane;
     }
 
     public ContractVariationContractExtinction getContractVariationContractExtinction() {
         return contractVariationContractExtinction;
+    }
+
+    public Group getContractVariationsGroup() {
+        return contractVariationsGroup;
+    }
+
+    public void setContractVariationsGroup(Group contractVariationsGroup) {
+        this.contractVariationsGroup = contractVariationsGroup;
     }
 
     public void setContractVariationContractExtinction(ContractVariationContractExtinction contractVariationContractExtinction) {
@@ -84,13 +82,5 @@ public class ContractVariationContractVariations extends VBox {
 
     public void setContractVariationContractConversion(ContractVariationContractConversion contractVariationContractConversion) {
         this.contractVariationContractConversion = contractVariationContractConversion;
-    }
-
-    private void onExtinctionButton(MouseEvent event){
-        this.actionEventEventHandlerContractExtinction.handle(event);
-    }
-
-    public void setOnContractExtinction(EventHandler<MouseEvent> actionEventEventHandlerContractExtinction){
-        this.actionEventEventHandlerContractExtinction = actionEventEventHandlerContractExtinction;
     }
 }

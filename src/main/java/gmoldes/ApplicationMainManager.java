@@ -15,9 +15,7 @@ import gmoldes.domain.client.mapper.MapperClientVODTO;
 import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.domain.contract.dto.*;
-import gmoldes.domain.contract.mapper.MapperInitialContractDTOToContractNewVersionDTO;
-import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
-import gmoldes.domain.contract.mapper.MapperTypesContractVariationsVODTO;
+import gmoldes.domain.contract.mapper.*;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.mapper.MapperPersonVODTO;
 import gmoldes.domain.person.persistence.dao.PersonDAO;
@@ -36,7 +34,7 @@ public class ApplicationMainManager {
 
         // Initial contract
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
-        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInForceAtDate(date);
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractsInForceAtDate(date);
 
         // Contract variation
         ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
@@ -82,7 +80,7 @@ public class ApplicationMainManager {
         ClientDTO clientDTO = retrieveClientByClientId(clientId);
 
         // Initial contract
-        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInForceAtDate(date);
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractsInForceAtDate(date);
         for(InitialContractVO initialContractVO : initialContractVOList){
             if(initialContractVO.getContractJsonData().getClientGMId().equals(clientDTO.getClientId())){
                 LocalDate initialContractDate = initialContractVO.getStartDate().toLocalDate();
@@ -242,6 +240,42 @@ public class ApplicationMainManager {
         }
 
         return contractNewVersionDTOList;
+    }
+
+    public List<ContractNewVersionDTO> findAllContractsInForceAtDate(LocalDate date){
+
+        List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
+
+        // Initial contract
+        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractsInForceAtDate(date);
+        for(InitialContractVO initialContractVO : initialContractVOList){
+            ContractNewVersionDTO contractNewVersionDTO = MapperInitialContractVOtoContractNewVersionDTO.map(initialContractVO);
+            contractNewVersionDTOList.add(contractNewVersionDTO);
+        }
+
+        // Contract variation
+        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationsInForceAtDate(date);
+        for(ContractVariationVO contractVariationVO : contractVariationVOList){
+            ContractNewVersionDTO contractNewVersionDTO = MapperContractVariationVOtoContractNewVersionDTO.map(contractVariationVO);
+            contractNewVersionDTOList.add(contractNewVersionDTO);
+        }
+
+        return contractNewVersionDTOList;
+    }
+
+    public List<ContractVariationDTO> findAllContractVariationAtDateByContractNumber(LocalDate dateFrom, Integer contractNumber){
+        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationsInForceAtDate(dateFrom);
+        List<ContractVariationDTO> contractVariationDTOList = new ArrayList<>();
+        for(ContractVariationVO contractVariationVO : contractVariationVOList){
+            ContractVariationDTO contractVariationDTO = MapperContractVariationVODTO.map(contractVariationVO);
+            contractVariationDTOList.add(contractVariationDTO);
+        }
+
+        return contractVariationDTOList;
     }
 
     public ClientDTO retrieveClientByClientId(Integer clientId){
