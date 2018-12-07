@@ -39,7 +39,6 @@ public class ContractVariationContractExtinction extends VBox {
     public ContractVariationContractExtinction() {
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_CONTRACT_EXTINCTION_FXML);
 
-        loadContractExtinctionCausesSelector();
     }
 
     @FXML
@@ -95,21 +94,6 @@ public class ContractVariationContractExtinction extends VBox {
 
     public void setRbHolidaysNo(RadioButton rbHolidaysNo) {
         this.rbHolidaysNo = rbHolidaysNo;
-    }
-
-    private void loadContractExtinctionCausesSelector(){
-        TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
-        List<TypesContractVariationsDTO> typesContractVariationsDTOList = typesContractVariationsController.findAllTypesContractVariations();
-
-        List<TypesContractVariationsDTO> typesContractVariationsExtinctionDTOList = new ArrayList<>();
-        for(TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList){
-            if(typesContractVariationsDTO.getExtinction()){
-                typesContractVariationsExtinctionDTOList.add(typesContractVariationsDTO);
-            }
-        }
-
-        ObservableList<TypesContractVariationsDTO> typesContractVariationsDTOS = FXCollections.observableArrayList(typesContractVariationsExtinctionDTOList);
-        extinctionCauseSelector.setItems(typesContractVariationsDTOS);
     }
 
     public void cleanComponents(){

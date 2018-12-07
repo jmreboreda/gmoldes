@@ -64,13 +64,13 @@ public class ContractExtinctionController{
         String extinctionContractCause = contractVariationContractVariations.getContractVariationContractExtinction()
                 .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
 
-        String holidaysText = contractVariationContractVariations.getContractVariationContractExtinction()
+        String holidaysUsedText = contractVariationContractVariations.getContractVariationContractExtinction()
                 .getRbHolidaysYes().isSelected() ? "disfrutadas." : "no disfrutadas.";
 
         StringBuilder sb = new StringBuilder();
         sb.append(extinctionContractCause);
         sb.append(". Vacaciones ");
-        sb.append(holidaysText);
+        sb.append(holidaysUsedText);
 
         ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString());
 
