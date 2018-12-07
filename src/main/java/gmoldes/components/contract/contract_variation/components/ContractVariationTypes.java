@@ -54,6 +54,8 @@ public class ContractVariationTypes extends VBox {
     @FXML
     private void initialize(){
 
+
+
         rbContractExtinction.setOnMouseClicked(this::onContractExtinction);
         rbContractExtension.setOnMouseClicked(this::onContractExtension);
         rbContractConversion.setOnMouseClicked(this::onContractConversion);
