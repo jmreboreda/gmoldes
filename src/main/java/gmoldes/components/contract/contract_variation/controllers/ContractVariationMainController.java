@@ -21,6 +21,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
@@ -171,6 +172,7 @@ public class ContractVariationMainController extends VBox {
 
         contractVariationContractVariations.getContractVariationContractExtinction().cleanComponents();
         loadContractExtinctionCauseSelector();
+        contractVariationContractVariations.getContractVariationContractExtinction().toFront();
         contractVariationActionComponents.getOkButton().setDisable(false);
 
 
@@ -187,9 +189,7 @@ public class ContractVariationMainController extends VBox {
     private void onContractExtensionSelected(MouseEvent event){
 
         contractVariationContractVariations.getContractVariationContractExtension().cleanComponents();
-        contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().setValue(LocalDate.of(2018,12,3));
-        contractVariationContractVariations.getContractVariationContractExtension().getDateTo().setValue(LocalDate.of(2019,05,31));
-
+        contractVariationContractVariations.getContractVariationContractExtension().toFront();
         contractVariationActionComponents.getOkButton().setDisable(false);
 //        if(!dateToNotifyContractVariationToAdministrationIsCorrect()){
 //            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
