@@ -39,8 +39,8 @@ public class ContractVariationMainController extends VBox {
     private static final Logger logger = Logger.getLogger(ContractVariationMainController.class.getSimpleName());
     private static final String CONTRACT_VARIATION_MAIN_FXML = "/fxml/contract_variations/contractvariation_main.fxml";
 
-    private static final String myColourRED = "-fx-text-fill: #971E11";
-    private static final String myColourBLACK = "-fx-text-fill: #000000";
+    private static final String myColorRED = "-fx-text-fill: #971E11";
+    private static final String myColorBLACK = "-fx-text-fill: #000000";
 
 
     private Parent parent;
@@ -50,6 +50,8 @@ public class ContractVariationMainController extends VBox {
 
     @FXML
     private ToggleGroup contractVariationToggleGroup;
+    @FXML
+    private ToggleGroup holidaysToggleGroup;
     @FXML
     private ContractVariationHeader contractVariationHeader;
     @FXML
@@ -67,7 +69,7 @@ public class ContractVariationMainController extends VBox {
     @FXML
     public void initialize() {
 
-        contractVariationTypes.setDisable(true);
+        //contractVariationTypes.setDisable(true);
 
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
@@ -76,6 +78,14 @@ public class ContractVariationMainController extends VBox {
         contractVariationTypes.setOnContractExtension(this::onContractExtensionSelected);
         contractVariationTypes.setOnContractConversion(this::onContractConversionSelected);
 
+        holidaysToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            public void changed(ObservableValue<? extends Toggle> ov,
+                                Toggle old_toggle, Toggle new_toggle) {
+            }
+        });
+
+        contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().setToggleGroup(holidaysToggleGroup);
+        contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().setToggleGroup(holidaysToggleGroup);
 
 
         contractVariationToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
@@ -91,6 +101,9 @@ public class ContractVariationMainController extends VBox {
         contractVariationTypes.getRbOtherVariations().setToggleGroup(contractVariationToggleGroup);
 
         contractVariationTypes.disableProperty().bind(this.contractVariationParts.getContractSelector().valueProperty().isNull());
+        contractVariationContractVariations.getContractVariationStackPane().disableProperty().bind(this.contractVariationParts.getContractSelector().valueProperty().isNull());
+        contractVariationContractVariations.getContractVariationStackPane().visibleProperty().bind(this.contractVariationParts.getContractSelector().valueProperty().isNotNull());
+
 
         contractVariationContractVariations.getContractVariationContractExtinction().getContractExtinctionGroup().disableProperty().bind(this.contractVariationTypes.getRbContractExtinction().selectedProperty().not());
         contractVariationContractVariations.getContractVariationContractExtinction().getContractExtinctionGroup().visibleProperty().bind(this.contractVariationTypes.getRbContractExtinction().selectedProperty());
@@ -156,7 +169,9 @@ public class ContractVariationMainController extends VBox {
     private void onContractExtinctionSelected(MouseEvent event){
 
         contractVariationContractVariations.getContractVariationContractExtinction().cleanComponents();
+
         contractVariationActionComponents.getOkButton().setDisable(false);
+
 
 //        if(!dateToNotifyContractVariationToAdministrationIsCorrect()){
 //            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
@@ -184,7 +199,7 @@ public class ContractVariationMainController extends VBox {
 
     private void onContractConversionSelected(MouseEvent event){
 
-        contractVariationContractVariations.getContractVariationContractExtension().cleanComponents();
+        contractVariationContractVariations.getContractVariationContractConversion().cleanComponents();
         contractVariationActionComponents.getOkButton().setDisable(false);
 //        if(!dateToNotifyContractVariationToAdministrationIsCorrect()){
 //            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
@@ -375,10 +390,9 @@ public class ContractVariationMainController extends VBox {
 
             contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setText(contractExtensionDuration + " días");
             if(contractExtensionDuration <= 0){
-                contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(myColourRED);
+                contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(myColorRED);
             }else{
-                contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(myColourBLACK);
-
+                contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(myColorBLACK);
             }
         }
     }

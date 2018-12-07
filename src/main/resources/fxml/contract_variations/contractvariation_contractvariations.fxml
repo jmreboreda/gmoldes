@@ -13,9 +13,9 @@
       <children>
          <Group fx:id="contractVariationsGroup">
             <children>
-                <ContractVariationContractExtinction fx:id="contractVariationContractExtinction" visible="false" />
-                <ContractVariationContractExtension fx:id="contractVariationContractExtension" visible="false" />
-                <ContractVariationContractConversion fx:id="contractVariationContractConversion" visible="false" />
+                <ContractVariationContractExtinction fx:id="contractVariationContractExtinction" />
+                <ContractVariationContractExtension fx:id="contractVariationContractExtension" />
+                <ContractVariationContractConversion fx:id="contractVariationContractConversion" />
             </children>
          </Group>
       </children>

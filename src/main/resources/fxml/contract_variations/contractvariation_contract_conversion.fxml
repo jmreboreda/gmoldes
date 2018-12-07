@@ -24,7 +24,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="contractConversionSelector" prefHeight="26.0" prefWidth="430.0" />
+                        <ChoiceBox fx:id="contractConversionSelector" minWidth="650.0" prefHeight="26.0" prefWidth="650.0" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" />
@@ -34,13 +34,13 @@
                      <children>
                         <Label prefHeight="26.0" text="Fecha de inicio">
                            <HBox.margin>
-                              <Insets right="10.0" />
+                              <Insets left="130.0" right="10.0" />
                            </HBox.margin>
                         </Label>
                         <DatePicker fx:id="dateFrom" prefHeight="26.0" prefWidth="125.0" />
                         <Label prefHeight="26.0" text="Fecha de finalización">
                            <HBox.margin>
-                              <Insets left="10.0" right="10.0" />
+                              <Insets left="20.0" right="10.0" />
                            </HBox.margin>
                         </Label>
                         <DatePicker fx:id="dateTo" prefHeight="26.0" prefWidth="125.0" />

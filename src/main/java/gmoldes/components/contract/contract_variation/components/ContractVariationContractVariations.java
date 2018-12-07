@@ -20,10 +20,6 @@ public class ContractVariationContractVariations extends VBox {
 
     private Parent parent;
 
-    private EventHandler<MouseEvent> actionEventEventHandlerContractExtinction;
-    private EventHandler<MouseEvent> actionEventEventHandlerContractExtension;
-
-
     @FXML
     private ToggleGroup contractVariationToggleGroup;
     @FXML
@@ -45,12 +41,6 @@ public class ContractVariationContractVariations extends VBox {
 
     @FXML
     private void initialize(){
-
-//        dateNotification.setLabelText("Fecha");
-//        hourNotification.setTextLabel("Hora");
-
-        contractVariationContractExtinction.setOnExtinctionButton(this::onExtinctionButton);
-        contractVariationContractExtension.setOnExtensionButton(this::onExtensionButton);
 
     }
 
@@ -93,21 +83,4 @@ public class ContractVariationContractVariations extends VBox {
     public void setContractVariationContractConversion(ContractVariationContractConversion contractVariationContractConversion) {
         this.contractVariationContractConversion = contractVariationContractConversion;
     }
-
-    private void onExtinctionButton(MouseEvent event){
-        this.actionEventEventHandlerContractExtinction.handle(event);
-    }
-
-    private void onExtensionButton(MouseEvent event){
-        this.actionEventEventHandlerContractExtension.handle(event);
-    }
-
-    public void setOnContractExtinction(EventHandler<MouseEvent> actionEventEventHandlerContractExtinction){
-        this.actionEventEventHandlerContractExtinction = actionEventEventHandlerContractExtinction;
-    }
-
-    public void setOnContractExtension(EventHandler<MouseEvent> actionEventEventHandlerContractExtension){
-        this.actionEventEventHandlerContractExtension = actionEventEventHandlerContractExtension;
-    }
-
 }

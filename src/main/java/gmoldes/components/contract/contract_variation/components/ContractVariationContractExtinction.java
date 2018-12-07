@@ -6,28 +6,26 @@ import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.utilities.Utilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;;import java.util.ArrayList;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.VBox;
+import java.util.ArrayList;
 import java.util.List;
+
 
 public class ContractVariationContractExtinction extends VBox {
 
     private static final String CONTRACT_VARIATION_CONTRACT_EXTINCTION_FXML = "/fxml/contract_variations/contractvariation_contract_extinction.fxml";
 
-    private EventHandler<MouseEvent> eventEventHandlerContractExtinction;
-
     private Parent parent;
 
-
-//    @FXML
-//    private RadioButton rbContractExtinction;
+    @FXML
+    private ToggleGroup holidaysToggleGroup;
     @FXML
     private Group contractExtinctionGroup;
     @FXML
@@ -48,18 +46,23 @@ public class ContractVariationContractExtinction extends VBox {
 
         dateFrom.setConverter(Utilities.dateConverter);
 
-        //contractExtinctionGroup.disableProperty().bind(this.rbContractExtinction.selectedProperty().not());
-
         loadContractExtinctionCausesSelector();
     }
 
+    public ToggleGroup getHolidaysToggleGroup() {
+        return holidaysToggleGroup;
+    }
+
+    public void setHolidaysToggleGroup(ToggleGroup holidaysToggleGroup) {
+        this.holidaysToggleGroup = holidaysToggleGroup;
+    }
 
     public Group getContractExtinctionGroup() {
         return contractExtinctionGroup;
     }
 
-    public void setContractExtinctionGroup(Group contractExtintionGroup) {
-        this.contractExtinctionGroup = contractExtintionGroup;
+    public void setContractExtinctionGroup(Group contractExtinctionGroup) {
+        this.contractExtinctionGroup = contractExtinctionGroup;
     }
 
     public ChoiceBox<TypesContractVariationsDTO> getExtinctionCauseSelector() {
@@ -94,16 +97,7 @@ public class ContractVariationContractExtinction extends VBox {
         this.rbHolidaysNo = rbHolidaysNo;
     }
 
-    private void onContractExtinction(MouseEvent event){
-        this.eventEventHandlerContractExtinction.handle(event);
-    }
-
-    public void setOnExtinctionButton(EventHandler<MouseEvent> eventEventHandlerContractExtinction){
-        this.eventEventHandlerContractExtinction = eventEventHandlerContractExtinction;
-    }
-
     private void loadContractExtinctionCausesSelector(){
-
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
         List<TypesContractVariationsDTO> typesContractVariationsDTOList = typesContractVariationsController.findAllTypesContractVariations();
 

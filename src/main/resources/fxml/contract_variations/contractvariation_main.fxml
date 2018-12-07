@@ -6,10 +6,15 @@
 <?import javafx.scene.control.ToggleGroup?>
 
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
-      <RadioButton fx:id="phantomRadioButton" visible= "false">
-      <toggleGroup>
-            <ToggleGroup fx:id="contractVariationToggleGroup"/>
-      </toggleGroup>
+      <RadioButton>
+            <toggleGroup>
+                  <ToggleGroup fx:id="contractVariationToggleGroup"/>
+            </toggleGroup>
+      </RadioButton>
+      <RadioButton>
+            <toggleGroup>
+                  <ToggleGroup fx:id="holidaysToggleGroup"/>
+            </toggleGroup>
       </RadioButton>
       <ContractVariationHeader fx:id="contractVariationHeader"/>
       <ContractVariationParts fx:id="contractVariationParts"/>
