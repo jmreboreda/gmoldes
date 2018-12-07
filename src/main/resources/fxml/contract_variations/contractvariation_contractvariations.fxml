@@ -3,6 +3,7 @@
 <?import gmoldes.components.contract.contract_variation.components.ContractVariationContractConversion?>
 <?import gmoldes.components.contract.contract_variation.components.ContractVariationContractExtension?>
 <?import gmoldes.components.contract.contract_variation.components.ContractVariationContractExtinction?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -13,5 +14,8 @@
           <ContractVariationContractConversion fx:id="contractVariationContractConversion" />
           <ContractVariationContractExtinction fx:id="contractVariationContractExtinction" />
       </children>
+      <VBox.margin>
+         <Insets left="10.0" />
+      </VBox.margin>
    </StackPane>
 </fx:root>

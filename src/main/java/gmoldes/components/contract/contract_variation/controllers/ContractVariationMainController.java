@@ -204,6 +204,7 @@ public class ContractVariationMainController extends VBox {
     private void onContractConversionSelected(MouseEvent event){
 
         contractVariationContractVariations.getContractVariationContractConversion().cleanComponents();
+        contractVariationContractVariations.getContractVariationContractConversion().toFront();
         contractVariationActionComponents.getOkButton().setDisable(false);
 //        if(!dateToNotifyContractVariationToAdministrationIsCorrect()){
 //            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
