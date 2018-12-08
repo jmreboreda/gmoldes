@@ -2,6 +2,7 @@ package gmoldes.components.contract.contract_variation.controllers;
 
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
+import gmoldes.ApplicationMainManager;
 import gmoldes.components.contract.contract_variation.components.ContractVariationContractVariations;
 import gmoldes.components.contract.contract_variation.components.ContractVariationParts;
 import gmoldes.components.contract.contract_variation.components.ContractVariationTypes;
@@ -168,7 +169,7 @@ public class ContractExtinctionController{
 
         // 1. Extinction date exceeded
         LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
-        LocalDate extinctionDate = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+        LocalDate extinctionDate = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
 
         if(expectedEndDate != null && Period.between(expectedEndDate, extinctionDate).getDays() > 0) {
             return new CompatibleVariationEvent(
@@ -184,6 +185,7 @@ public class ContractExtinctionController{
         ApplicationMainController applicationMainController = new ApplicationMainController();
         List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
+
             List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
             for(TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList){
                 if(typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
@@ -197,30 +199,7 @@ public class ContractExtinctionController{
             }
         }
 
-        Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
-            if(existFutureVariations) {
-
-                return new CompatibleVariationEvent(
-                        true,
-                        false,
-                        false,
-                        ContractConstants.EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT);
-            }
-
         return new CompatibleVariationEvent(true, false, false, "");
-    }
-
-    private Boolean verifyExistenceFutureVariationsOfSelectedContract(){
-
-        Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
-        LocalDate dateFromSearch = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
-
-        List<ContractVariationDTO> contractVariationDTOList = contractManager.findAllContractVariationsAfterDateByContractNumber(contractNumber, dateFromSearch);
-        if(contractVariationDTOList.size() > 0){
-            return true;
-        }
-
-        return false;
     }
 
     public String persistContractExtinction(){

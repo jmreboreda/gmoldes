@@ -166,46 +166,28 @@ public class ContractExtensionController {
 
     public CompatibleVariationEvent checkExistenceIncompatibleVariationsForContractExtension() {
 
-        // 1. Extinction date exceeded
-        LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
-        LocalDate extinctionDate = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
-
-        if(expectedEndDate != null && Period.between(expectedEndDate, extinctionDate).getDays() > 0) {
-            return new CompatibleVariationEvent(
-                    true,
-                    null,
-                    null,
-                    ContractConstants.EXTINCTION_DATE_EXCEEDED);
-        }
-
-        // 2. Extinction of contract already exists -------------------------------------
-        Integer selectedContractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
-
         ApplicationMainController applicationMainController = new ApplicationMainController();
-        List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
-        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
 
-            List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
-            for(TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList){
-                if(typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
-                        typesContractVariationsDTO.getExtinction()){
+        // 1. An extension of the contract incompatible with the requested one is already registered
+        Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
+        LocalDate contractExtensionDateFrom = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
+        LocalDate contractExtensionDateTo = contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue();
+
+        List<ContractVariationDTO> contractVariationDTOList =  applicationMainController.findAllContractVariationByContractNumber(contractNumber);
+        List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
+        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
+            for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
+                if (typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
+                        typesContractVariationsDTO.getExtension() &&
+                        (contractExtensionDateFrom.isBefore(contractVariationDTO.getExpectedEndDate())) ||
+                        contractExtensionDateFrom.equals(contractVariationDTO.getExpectedEndDate())){
                     return new CompatibleVariationEvent(
                             true,
                             null,
                             null,
-                            ContractConstants.EXIST_PREVIOUS_CONTRACT_VARIATION_EXTINCTION);
+                            ContractConstants.EXIST_PREVIOUS_INCOMPATIBLE_CONTRACT_VARIATION_EXTENSION);
                 }
             }
-        }
-
-        Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
-        if(existFutureVariations) {
-
-            return new CompatibleVariationEvent(
-                    true,
-                    false,
-                    false,
-                    ContractConstants.EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT);
         }
 
         return new CompatibleVariationEvent(true, false, false, "");
