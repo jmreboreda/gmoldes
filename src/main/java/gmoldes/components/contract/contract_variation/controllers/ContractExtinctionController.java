@@ -2,7 +2,6 @@ package gmoldes.components.contract.contract_variation.controllers;
 
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
-import gmoldes.ApplicationMainManager;
 import gmoldes.components.contract.contract_variation.components.ContractVariationContractVariations;
 import gmoldes.components.contract.contract_variation.components.ContractVariationParts;
 import gmoldes.components.contract.contract_variation.components.ContractVariationTypes;
@@ -167,16 +166,16 @@ public class ContractExtinctionController{
 
     public CompatibleVariationEvent checkExistenceIncompatibleVariationsForContractExtinction() {
 
-        // 1. Extinction date exceeded
+        // 1. Expiration date requested for the contract is higher than the expected termination date
         LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
-        LocalDate extinctionDate = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
+        LocalDate extinctionDate = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
 
-        if(expectedEndDate != null && Period.between(expectedEndDate, extinctionDate).getDays() > 0) {
+        if(expectedEndDate != null && extinctionDate.isAfter(expectedEndDate)) {
             return new CompatibleVariationEvent(
                     true,
                     null,
                     null,
-                    ContractConstants.EXTINCTION_DATE_EXCEEDED);
+                    ContractConstants.EXTINCTION_DATE_EXCEEDED_BY_DATE_REQUESTED);
         }
 
         // 2. Extinction of contract already exists -------------------------------------
@@ -184,9 +183,9 @@ public class ContractExtinctionController{
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
         List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
-        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
+        List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
 
-            List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
+        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
             for(TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList){
                 if(typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
                         typesContractVariationsDTO.getExtinction()){
