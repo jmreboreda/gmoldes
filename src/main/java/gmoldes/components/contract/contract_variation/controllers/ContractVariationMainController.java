@@ -21,7 +21,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
@@ -31,8 +30,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -175,38 +172,24 @@ public class ContractVariationMainController extends VBox {
         contractVariationContractVariations.getContractVariationContractExtinction().cleanComponents();
         loadContractExtinctionCauseSelector();
         contractVariationContractVariations.getContractVariationContractExtinction().toFront();
-        contractVariationTypes.getHourNotification().setText(LocalTime.now().toString());
         contractVariationTypes.getHourNotification().requestFocus();
 
-
         contractVariationActionComponents.getOkButton().setDisable(false);
-
-
-//        if(!dateToNotifyContractVariationToAdministrationIsCorrect()){
-//            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
-//            return;
-//        }
-//
-//        if(contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().isSelected()) {
-//
-//        }
     }
 
     private void onContractExtensionSelected(MouseEvent event){
+
+        if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate() == null){
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SELECTED_CONTRACT_IS_NOT_EXTENDABLE);
+
+            return ;
+        }
 
         contractVariationContractVariations.getContractVariationContractExtension().cleanComponents();
         contractVariationContractVariations.getContractVariationContractExtension().toFront();
         contractVariationTypes.getHourNotification().requestFocus();
 
         contractVariationActionComponents.getOkButton().setDisable(false);
-//        if(!dateToNotifyContractVariationToAdministrationIsCorrect()){
-//            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
-//            return;
-//        }
-//
-//        if(contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().isSelected()) {
-//
-//        }
     }
 
     private void onContractConversionSelected(MouseEvent event){
@@ -216,75 +199,103 @@ public class ContractVariationMainController extends VBox {
         contractVariationTypes.getHourNotification().requestFocus();
 
         contractVariationActionComponents.getOkButton().setDisable(false);
-//        if(!dateToNotifyContractVariationToAdministrationIsCorrect()){
-//            contractVariationContractVariations.getContractVariationContractExtinction().getRbContractExtinction().setSelected(false);
-//            return;
-//        }
-//
-//        if(contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().isSelected()) {
-//
-//        }
     }
     private void onOkButton(MouseEvent evet){
 
-        // Contract extinction is selected -----------------------------------------------
+        // Contract extinction
         RadioButton rbContractExtinction = contractVariationTypes.getRbContractExtinction();
-
         if(rbContractExtinction.isSelected()) {
+            Boolean contractExtinctionIsCorrect = contractVariationContractExtinctionIsSelected();
+            if(contractExtinctionIsCorrect) {
 
-            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
-                    this.getScene(), contractVariationParts, contractVariationTypes, contractVariationContractVariations);
-
-            MessageEvent messageEvent = contractExtinctionController.verifyIsCorrectContractExtinctionData();
-            String messageText = messageEvent.getMessageText();
-            if (!messageText.equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)) {
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageText);
-
-                return;
+                persistenceOfContractVariation(new CompatibleVariationEvent(true, false,false, ""));
             }
 
-            System.out.println(messageText);    // <- NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED
-
-            if(!dateToNotifyContractVariationToAdministrationIsCorrect(contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue())){
-
-                return;
-            }
-
-            CompatibleVariationEvent event = contractExtinctionController.checkExistenceIncompatibleVariations();
-            if(!event.getErrorContractVariationMessage().isEmpty()){
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, event.getErrorContractVariationMessage());
-
-                return;
-            }
-
-
+            return;
         }
 
-        // Contract extension is selected -----------------------------------------------
+        // Contract extension
         RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
-
         if(rbContractExtension.isSelected()) {
+            Boolean contractExtensionIsCorrect = contractVariationContractExtensionSelected();
+            if(contractExtensionIsCorrect) {
 
-            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
-                    this.getScene(), contractVariationParts, contractVariationTypes, contractVariationContractVariations);
-
-            MessageEvent messageEvent = contractExtinctionController.verifyIsCorrectContractExtensionData();
-            String messageText = messageEvent.getMessageText();
-            if (!messageText.equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)) {
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageText);
-
-                return;
+                persistenceOfContractVariation(new CompatibleVariationEvent(false, true,false, ""));
             }
 
-            System.out.println(messageText);    // <- NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED
-
-            CompatibleVariationEvent event = contractExtinctionController.checkExistenceIncompatibleVariations();
-            if(!event.getErrorContractVariationMessage().isEmpty()){
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, event.getErrorContractVariationMessage());
-
-                return;
-            }
+            return;
         }
+
+
+
+//        Boolean isCorrectContractExtension = contractVariationContractExtensionSelected();;
+//        if(!isCorrectContractExtension){
+//            return;
+//        }
+
+
+//        // Contract extinction is selected -----------------------------------------------
+//        RadioButton rbContractExtinction = contractVariationTypes.getRbContractExtinction();
+//
+//        if(rbContractExtinction.isSelected()) {
+//
+//            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
+//                    this.getScene(), contractVariationParts, contractVariationTypes, contractVariationContractVariations);
+//
+//            MessageEvent messageEvent = contractExtinctionController.verifyIsCorrectContractExtinctionData();
+//            String messageText = messageEvent.getMessageText();
+//            if (!messageText.equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)) {
+//                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageText);
+//
+//                return;
+//            }
+//
+//            System.out.println(messageText);    // <- NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED
+//
+//            LocalDate effectDateRequestedForContractVariation = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+//            CompatibleVariationEvent isCorrectDataToNotifyAdministration = dateToNotifyContractVariationToAdministrationIsCorrect(effectDateRequestedForContractVariation);
+//            if(!isCorrectDataToNotifyAdministration.getErrorContractVariationMessage().isEmpty()){
+//                Boolean isCorrectDate = Message.confirmationMessage(contractVariationParts.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+//                ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION);
+//                if(!isCorrectDate){
+//                    return;
+//                    }
+//            }
+//
+//            CompatibleVariationEvent event = contractExtinctionController.checkExistenceIncompatibleVariations();
+//            if(!event.getErrorContractVariationMessage().isEmpty()){
+//                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, event.getErrorContractVariationMessage());
+//
+//                return;
+//            }
+//        }
+
+//        // Contract extension is selected -----------------------------------------------
+//        RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
+//
+//        if(rbContractExtension.isSelected()) {
+//
+//            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
+//                    this.getScene(), contractVariationParts, contractVariationTypes, contractVariationContractVariations);
+//
+//            MessageEvent messageEvent = contractExtinctionController.verifyIsCorrectContractExtensionData();
+//            String messageText = messageEvent.getMessageText();
+//            if (!messageText.equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)) {
+//                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageText);
+//
+//                return;
+//            }
+//
+//            System.out.println(messageText);    // <- NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED
+//
+//            CompatibleVariationEvent event = contractExtinctionController.checkExistenceIncompatibleVariations();
+//            if(!event.getErrorContractVariationMessage().isEmpty()){
+//                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, event.getErrorContractVariationMessage());
+//
+//                return;
+//            }
+//        }
+
 
         if(!Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)){
             return;
@@ -322,82 +333,114 @@ public class ContractVariationMainController extends VBox {
         stage.close();
     }
 
-/**    private CompatibleVariationEvent checkExistenceIncompatibleVariations(){
+    private Boolean contractVariationContractExtinctionIsSelected(){
 
-        CompatibleVariationEvent compatibleVariationEvent = new CompatibleVariationEvent(
-                null,
-                null,
-                null,
-                null);
+        ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
+                this.getScene(), contractVariationParts, contractVariationTypes, contractVariationContractVariations);
 
-        ContractController contractController = new ContractController();
+        MessageEvent messageEvent = contractExtinctionController.verifyIsCorrectContractExtinctionData();
+        String messageText = messageEvent.getMessageText();
+        if (!messageText.equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)) {
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageText);
 
-        //contractController.find
-
-        // Contract extension
-        if(contractVariationContractVariations.getContractVariationContractExtension().getRbContractExtension().isSelected()) {
-            ContractExtensionController contractExtensionController = new ContractExtensionController(
-                    this.getScene(),
-                    contractVariationParts,
-                    contractVariationContractVariations);
-
-//            compatibleVariationEvent = contractExtensionController.checkExistenceIncompatibleVariations();
+            return false;
         }
 
-        return compatibleVariationEvent;
+        System.out.println(messageText);    // <- NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED
+
+        LocalDate effectDateRequestedForContractVariation = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+        CompatibleVariationEvent isCorrectDataToNotifyAdministration = dateToNotifyContractVariationToAdministrationIsCorrect(effectDateRequestedForContractVariation);
+        if(!isCorrectDataToNotifyAdministration.getErrorContractVariationMessage().isEmpty()){
+            Boolean isCorrectDate = Message.confirmationMessage(contractVariationParts.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+                    ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION);
+            if(!isCorrectDate){
+                return false;
+            }
+        }
+
+        CompatibleVariationEvent event = contractExtinctionController.checkExistenceIncompatibleVariationsForContractExtinction();
+        if(!event.getErrorContractVariationMessage().isEmpty()){
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, event.getErrorContractVariationMessage());
+
+            return false;
+        }
+
+        return true;
     }
-**/
 
-//    private CompatibleVariationEvent contractExtinctionVerifyCorrectData(){
-//
-//        ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
-//                this.getScene(),
-//                contractVariationParts,
-//                contractVariationContractVariations);
-//
-//        CompatibleVariationEvent compatibleVariationEvent = contractExtinctionController.verifyIsCorrectContractExtinctionData();
-//        if(!compatibleVariationEvent.getErrorContractVariationMessage().isEmpty()) {
-//
-//            return compatibleVariationEvent;
-//            }
-//
-//            contractVariationActionComponents.getOkButton().setDisable(true);
-//            contractVariationActionComponents.getSendMailButton().setDisable(false);
-//            contractVariationParts.setMouseTransparent(true);
-//            contractVariationContractData.setMouseTransparent(true);
-//            contractVariationContractVariations.setMouseTransparent(true);
-//
-//            return new CompatibleVariationEvent(
-//                    true,
-//                    null,
-//                    null,
-//                    null);
-//    }
+    private Boolean contractVariationContractExtensionSelected(){
 
-    private void contractVariationContractExtensionSelected(){
+        RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
 
-        ContractExtensionController contractExtensionController = new ContractExtensionController(
-                this.getScene(),
-                contractVariationParts,
-                contractVariationTypes,
-                contractVariationContractVariations);
+        if(rbContractExtension.isSelected()) {
 
-        Boolean isOkManagementContractExtension = contractExtensionController.manageContractExtension();
+            ContractExtensionController contractExtensionController = new ContractExtensionController(
+                    this.getScene(), contractVariationParts, contractVariationTypes, contractVariationContractVariations);
 
-        if(isOkManagementContractExtension) {
+            MessageEvent messageEvent = contractExtensionController.verifyIsCorrectContractExtensionData();
+            String messageText = messageEvent.getMessageText();
+            if (!messageText.equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)) {
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageText);
 
-            contractVariationActionComponents.getOkButton().setDisable(true);
-            contractVariationActionComponents.getSendMailButton().setDisable(false);
-            contractVariationParts.setMouseTransparent(true);
-            contractVariationContractData.setMouseTransparent(true);
-            contractVariationContractVariations.setMouseTransparent(true);
+                return false;
+            }
+
+            System.out.println(messageText);    // <- NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED
+
+            CompatibleVariationEvent event = contractExtensionController.checkExistenceIncompatibleVariationsForContractExtension();
+            if(!event.getErrorContractVariationMessage().isEmpty()){
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, event.getErrorContractVariationMessage());
+
+                return false;
+            }
         }
+
+        return true;
     }
 
     private void contractVariationContractConversionSelected(){
 
 
 
+    }
+
+    private void persistenceOfContractVariation(CompatibleVariationEvent persistenceEvent){
+
+        if(!Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)){
+            return;
+        }
+
+        Boolean isCorrectManagement = false;
+
+        // Manage contract extinction
+        ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
+                this.getScene(),
+                contractVariationParts,
+                contractVariationTypes,
+                contractVariationContractVariations);
+
+        if(persistenceEvent.getContractExtinctionEvent()) {
+            isCorrectManagement = contractExtinctionController.manageContractExtinction();
+        }
+
+        // Manage contract extension
+        ContractExtensionController contractExtensionController = new ContractExtensionController(
+                this.getScene(),
+                contractVariationParts,
+                contractVariationTypes,
+                contractVariationContractVariations);
+
+        if(persistenceEvent.getContractExtensionEvent()) {
+            isCorrectManagement = contractExtensionController.manageContractExtension();
+        }
+
+        if(isCorrectManagement){
+            contractVariationParts.setMouseTransparent(true);
+            contractVariationTypes.setMouseTransparent(true);
+            contractVariationContractVariations.setMouseTransparent(true);
+            contractVariationActionComponents.getOkButton().setDisable(true);
+            contractVariationActionComponents.getSendMailButton().setDisable(false);
+        }
     }
 
     private void loadContractExtinctionCauseSelector(){
@@ -452,21 +495,23 @@ public class ContractVariationMainController extends VBox {
         }
     }
 
-    private Boolean dateToNotifyContractVariationToAdministrationIsCorrect(LocalDate date){
+    private CompatibleVariationEvent dateToNotifyContractVariationToAdministrationIsCorrect(LocalDate date){
 
         LocalDate limitDatePreviousOfNotifyToAdministration = contractVariationParts.getInForceDate().getValue().minusDays(3L);
 
         if(ChronoUnit.DAYS.between(limitDatePreviousOfNotifyToAdministration, date) >= 0){
-            return true;
+            return new CompatibleVariationEvent(
+                    null,
+                    null,
+                    null,
+                    "");
         }
 
-        Boolean isCorrectDate = Message.confirmationMessage(contractVariationParts.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+        return new CompatibleVariationEvent(
+                null,
+                null,
+                null,
                 ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION);
-        if(isCorrectDate){
-            return true;
-        }
-
-        return false;
     }
 
     private void cleanDataForAllSelectableComponents(){

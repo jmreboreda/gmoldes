@@ -1,9 +1,12 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
 import com.lowagie.text.DocumentException;
+import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.contract_variation.components.ContractVariationContractVariations;
 import gmoldes.components.contract.contract_variation.components.ContractVariationParts;
 import gmoldes.components.contract.contract_variation.components.ContractVariationTypes;
+import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
+import gmoldes.components.contract.contract_variation.events.MessageEvent;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
@@ -18,7 +21,7 @@ import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
+
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -88,15 +91,12 @@ public class ContractExtensionController {
 
     public String isCorrectContractExtensionData(){
 
-        if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate() == null){
+         // Start date of the extension of the contract must be immediately after the expected date of termination of the contract or its extension
+        LocalDate initialContractExtensionDate = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
+        LocalDate expectedContractEndingDateInDB = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
+        if(Period.between(initialContractExtensionDate, expectedContractEndingDateInDB.plusDays(1)).getDays() > 0){
 
-            return ContractConstants.SELECTED_CONTRACT_IS_NOT_EXTENDABLE;
-        }
-
-        if(Period.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(),
-        contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate().plusDays(1)).getDays() > 0){
-
-            return ContractConstants.INCORRECT_CONTRACT_EXTENSION_DATE_FROM;
+            return ContractConstants.START_DATE_EXTENSION_NOT_IMMEDIATELY_AFTER_EXPECTED_END_DATE;
         }
 
         if(contractVariationTypes.getDateNotification().getDate() == null){
@@ -137,7 +137,79 @@ public class ContractExtensionController {
         System.out.println("Aparentemente está todo correcto.\n");
 
         return null;
+    }
+
+    public MessageEvent verifyIsCorrectContractExtensionData(){
+
+        if(contractVariationTypes.getDateNotification().getDate() == null){
+
+            return new MessageEvent(ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED);
         }
+
+        if(contractVariationTypes.getHourNotification().getText() == null){
+
+            return new MessageEvent(ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED);
+        }
+
+        if(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue() == null){
+
+            return new MessageEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_FROM);
+        }
+
+        if(contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue() == null){
+
+            return new MessageEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_TO);
+        }
+
+        return new MessageEvent(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED);
+    }
+
+    public CompatibleVariationEvent checkExistenceIncompatibleVariationsForContractExtension() {
+
+        // 1. Extinction date exceeded
+        LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
+        LocalDate extinctionDate = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
+
+        if(expectedEndDate != null && Period.between(expectedEndDate, extinctionDate).getDays() > 0) {
+            return new CompatibleVariationEvent(
+                    true,
+                    null,
+                    null,
+                    ContractConstants.EXTINCTION_DATE_EXCEEDED);
+        }
+
+        // 2. Extinction of contract already exists -------------------------------------
+        Integer selectedContractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
+
+        ApplicationMainController applicationMainController = new ApplicationMainController();
+        List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
+        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
+
+            List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
+            for(TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList){
+                if(typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
+                        typesContractVariationsDTO.getExtinction()){
+                    return new CompatibleVariationEvent(
+                            true,
+                            null,
+                            null,
+                            ContractConstants.EXIST_PREVIOUS_CONTRACT_VARIATION_EXTINCTION);
+                }
+            }
+        }
+
+        Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
+        if(existFutureVariations) {
+
+            return new CompatibleVariationEvent(
+                    true,
+                    false,
+                    false,
+                    ContractConstants.EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT);
+        }
+
+        return new CompatibleVariationEvent(true, false, false, "");
+    }
 
     private Boolean verifyExistenceFutureVariationsOfSelectedContract(){
 

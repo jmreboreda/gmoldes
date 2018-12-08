@@ -58,6 +58,8 @@ public class ContractConstants {
             "Debe revisarse la base de datos para garantizar la consistencia de los datos.";
     public static final String ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES = "Las fechas de inicio y finalización de la prórroga no son coherentes.";
     public static final String NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED = "Se han introducido los datos de necesarios para la variación del contrato.";
-    public static final String PERSIST_CONTRACT_VARIATION_QUESTION = "La variación de contrato está lista para ser registrada.\n ¿De sea proceder a su registro en la base de datos?";
+    public static final String PERSIST_CONTRACT_VARIATION_QUESTION = "La variación de contrato está lista para ser registrada.\n ¿Desea proceder a su registro en la base de datos?";
     public static final String EXIST_PREVIOUS_CONTRACT_VARIATION_EXTINCTION = "Ya está registrada una extinción de contrato para este contrato.";
+    public static final String START_DATE_EXTENSION_NOT_IMMEDIATELY_AFTER_EXPECTED_END_DATE = "La fecha de inicio de la prórroga del contrato no es inmediatamente posterior" +
+            " a la fecha prevista de extinción del contrato o a la de su prórroga en vigor.";
 }

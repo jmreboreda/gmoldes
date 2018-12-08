@@ -79,6 +79,35 @@ public class ContractExtinctionController{
         return true;
     }
 
+    public Boolean manageContractExtension() {
+
+        String errorPersistingContractExtension = persistContractExtension();
+        if (errorPersistingContractExtension != null) {
+
+            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, errorPersistingContractExtension);
+            Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_NOT_OK);
+
+            return false;
+        }
+
+        String extinctionContractCause = contractVariationContractVariations.getContractVariationContractExtinction()
+                .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
+
+        String holidaysUsedText = contractVariationContractVariations.getContractVariationContractExtinction()
+                .getRbHolidaysYes().isSelected() ? "disfrutadas." : "no disfrutadas.";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(extinctionContractCause);
+        sb.append(". Vacaciones ");
+        sb.append(holidaysUsedText);
+
+        ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString());
+
+        printContractDataSubfolder(contractDataSubfolder);
+
+        return true;
+    }
+
     public MessageEvent verifyIsCorrectContractExtinctionData(){
 
             if(contractVariationTypes.getDateNotification().getDate() == null){
@@ -96,12 +125,10 @@ public class ContractExtinctionController{
                 return new MessageEvent(ContractConstants.EXTINCTION_CAUSE_NOT_ESTABLISHED);
             }
 
-//            if( contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue() == null
-//                    || Period.between(contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue(),
-//                    LocalDate.now()).getDays() > 3){
-//
-//                return new MessageEvent(ContractConstants.ERROR_IN_EXTINCTION_DATA);
-//            }
+            if(contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue() == null){
+
+                return new MessageEvent(ContractConstants.ERROR_IN_EXTINCTION_DATA);
+            }
 
             if(!contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().isSelected() &&
                     !contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().isSelected()){
@@ -137,7 +164,7 @@ public class ContractExtinctionController{
         return new MessageEvent(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED);
     }
 
-    public CompatibleVariationEvent checkExistenceIncompatibleVariations() {
+    public CompatibleVariationEvent checkExistenceIncompatibleVariationsForContractExtinction() {
 
         // 1. Extinction date exceeded
         LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
@@ -157,7 +184,6 @@ public class ContractExtinctionController{
         ApplicationMainController applicationMainController = new ApplicationMainController();
         List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
-
             List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
             for(TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList){
                 if(typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
@@ -202,12 +228,12 @@ public class ContractExtinctionController{
         ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
                 .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
 
-        if(updateLastContractVariation(contractNewVersionExtinctedDTO) == null) {
+        if(updateLastContractVariationToExtinction(contractNewVersionExtinctedDTO) == null) {
 
             return ContractConstants.ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD;
         }
 
-        if(persistNewContractVariation(contractNewVersionExtinctedDTO) == null) {
+        if(persistNewContractExtinctionVariation(contractNewVersionExtinctedDTO) == null) {
 
             return ContractConstants.ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION;
         }
@@ -222,7 +248,32 @@ public class ContractExtinctionController{
         return null;
     }
 
-    private Integer updateLastContractVariation(ContractNewVersionDTO contractNewVersionExtinctedDTO){
+    public String persistContractExtension(){
+
+        ContractNewVersionDTO contractNewVersionExtendedDTO = contractVariationParts
+                .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
+
+        if(updateLastContractVariationToExtinction(contractNewVersionExtendedDTO) == null) {
+
+            return ContractConstants.ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD;
+        }
+
+        if(persistNewContractExtinctionVariation(contractNewVersionExtendedDTO) == null) {
+
+            return ContractConstants.ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION;
+        }
+
+        if(updateInitialContractOfContractExtinction(contractNewVersionExtendedDTO) == null) {
+
+            return ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT;
+        }
+
+        Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
+
+        return null;
+    }
+
+    private Integer updateLastContractVariationToExtinction(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
         LocalDate dateOfExtinction = contractVariationContractVariations.getContractVariationContractExtinction()
                 .getDateFrom().getValue();
@@ -233,7 +284,7 @@ public class ContractExtinctionController{
         return contractManager.updateContractVariation(contractNewVersionExtinctedDTO);
     }
 
-    private Integer persistNewContractVariation(ContractNewVersionDTO contractNewVersionExtinctedDTO){
+    private Integer persistNewContractExtinctionVariation(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
         Integer contractVariationExtinctionCause = contractVariationContractVariations.getContractVariationContractExtinction()
                 .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getId_variation();
