@@ -61,14 +61,16 @@ public class ContractData extends AnchorPane {
     private void initialize(){
         logger.info("Initializing contract data fxml ...");
 
-        init();
+        dateNotification.setOnAction(this::onDateNotification);
+        this.hourNotification.setInputMinWidth(75D);
+        loadContractType();
+
+        //init();
 
     }
 
     private void init(){
-        dateNotification.setOnAction(this::onDateNotification);
-        this.hourNotification.setInputMinWidth(75D);
-        loadContractType();
+
     }
 
     public DateInput getDateNotification() {

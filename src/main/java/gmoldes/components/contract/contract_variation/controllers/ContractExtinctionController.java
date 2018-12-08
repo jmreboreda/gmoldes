@@ -109,15 +109,32 @@ public class ContractExtinctionController{
                 return new MessageEvent(ContractConstants.HOLIDAYS_SITUATION_NOT_ESTABLISHED);
             }
 
+        return new MessageEvent(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED);
+    }
+
+    public MessageEvent verifyIsCorrectContractExtensionData(){
+
+        if(contractVariationTypes.getDateNotification().getDate() == null){
+
+            return new MessageEvent(ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED);
+        }
+
+        if(contractVariationTypes.getHourNotification().getText() == null){
+
+            return new MessageEvent(ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED);
+        }
+
+        if(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue() == null){
+
+            return new MessageEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_FROM);
+        }
+
+        if(contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue() == null){
+
+            return new MessageEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_TO);
+        }
 
         return new MessageEvent(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED);
-
-
-        /**
-
-         }**/
-
-
     }
 
     public CompatibleVariationEvent checkExistenceIncompatibleVariations() {
@@ -154,13 +171,18 @@ public class ContractExtinctionController{
             }
         }
 
+        Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
+            if(existFutureVariations) {
+
+                return new CompatibleVariationEvent(
+                        true,
+                        false,
+                        false,
+                        ContractConstants.EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT);
+            }
+
         return new CompatibleVariationEvent(true, false, false, "");
     }
-//            Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
-//            if(existFutureVariations) {
-//
-//                return ContractConstants.EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT;
-//            }
 
     private Boolean verifyExistenceFutureVariationsOfSelectedContract(){
 
