@@ -58,5 +58,5 @@ public class ContractConstants {
             "Debe revisarse la base de datos para garantizar la consistencia de los datos.";
     public static final String ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES = "Las fechas de inicio y finalización de la prórroga no son coherentes.";
     public static final String NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED = "Se han introducido los datos de necesarios para la variación del contrato.";
-
+    public static final String EXIST_PREVIOUS_CONTRACT_VARIATION_EXTINCTION = "Ya está registrada una extinción de contrato para este contrato.";
 }

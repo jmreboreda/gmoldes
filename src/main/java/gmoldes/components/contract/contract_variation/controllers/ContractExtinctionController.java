@@ -123,7 +123,6 @@ public class ContractExtinctionController{
     public CompatibleVariationEvent checkExistenceIncompatibleVariations() {
 
         // 1. Extinction date exceeded
-
         LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
         LocalDate extinctionDate = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
 
@@ -136,19 +135,26 @@ public class ContractExtinctionController{
         }
 
         // 2. Extinction of contract already exists -------------------------------------
-
         Integer selectedContractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
         List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
+        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
 
+            List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
+            for(TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList){
+                if(typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
+                        typesContractVariationsDTO.getExtinction()){
+                    return new CompatibleVariationEvent(
+                            true,
+                            null,
+                            null,
+                            ContractConstants.EXIST_PREVIOUS_CONTRACT_VARIATION_EXTINCTION);
+                }
+            }
+        }
 
-
-
-        String message = "Prueba de mensaje de error.";
-
-        return new CompatibleVariationEvent(true, false, false, message);
-
+        return new CompatibleVariationEvent(true, false, false, "");
     }
 //            Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
 //            if(existFutureVariations) {
