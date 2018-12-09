@@ -4,15 +4,20 @@
 <?import gmoldes.components.contract.contract_variation.components.ContractVariationContractExtension?>
 <?import gmoldes.components.contract.contract_variation.components.ContractVariationContractExtinction?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <StackPane>
       <children>
-          <ContractVariationContractExtension fx:id="contractVariationContractExtension" />
-          <ContractVariationContractConversion fx:id="contractVariationContractConversion" />
-          <ContractVariationContractExtinction fx:id="contractVariationContractExtinction" />
+         <Group fx:id="contractVariationsGroup">
+            <children>
+                <ContractVariationContractExtension fx:id="contractVariationContractExtension" />
+                <ContractVariationContractConversion fx:id="contractVariationContractConversion" />
+                <ContractVariationContractExtinction fx:id="contractVariationContractExtinction" />
+            </children>
+         </Group>
       </children>
       <VBox.margin>
          <Insets left="10.0" />

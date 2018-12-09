@@ -6,7 +6,10 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class ContractVariationContractData extends VBox {
 
@@ -123,7 +126,9 @@ public class ContractVariationContractData extends VBox {
         this.getDateFrom().setText(contractFullDataDTO.getInitialContractDate().format(formatter));
 
         String dateTo = null;
-        if(contractFullDataDTO.getContractNewVersion().getEndingDate() != null){
+        if(contractFullDataDTO.getContractNewVersion().getEndingDate() != null &&
+                (contractFullDataDTO.getContractNewVersion().getEndingDate().isBefore(LocalDate.now()) ||
+                contractFullDataDTO.getContractNewVersion().getEndingDate().equals(LocalDate.now()))){
             dateTo = contractFullDataDTO.getContractNewVersion().getEndingDate().format(formatter);
         }else {
             dateTo = contractFullDataDTO.getContractNewVersion().getExpectedEndDate() != null ? contractFullDataDTO.getContractNewVersion().getExpectedEndDate().format(formatter) : null;

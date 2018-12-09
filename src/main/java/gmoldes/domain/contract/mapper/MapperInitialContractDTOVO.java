@@ -10,7 +10,7 @@ public class MapperInitialContractDTOVO {
 
     public static InitialContractVO map(ContractNewVersionDTO contractNewVersionDTO) {
 
-        Date expectedEndDate = contractNewVersionDTO.getExpectedEndDate() != null ? Date.valueOf(contractNewVersionDTO.getStartDate()) : null;
+        Date expectedEndDate = contractNewVersionDTO.getExpectedEndDate() != null ? Date.valueOf(contractNewVersionDTO.getExpectedEndDate()) : null;
         Date modificationDate = contractNewVersionDTO.getModificationDate() != null ? Date.valueOf(contractNewVersionDTO.getModificationDate()) : null;
         Date endingDate = contractNewVersionDTO.getEndingDate() != null ? Date.valueOf(contractNewVersionDTO.getEndingDate()) : null;
 
