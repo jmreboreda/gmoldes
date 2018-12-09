@@ -41,7 +41,12 @@
                               <Insets left="10.0" right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="contractExtensionDuration" alignment="CENTER" maxWidth="125.0" prefHeight="30.0" />
+                        <TextField fx:id="contractExtensionDuration" alignment="CENTER" maxWidth="70.0" prefHeight="30.0" />
+                        <Label prefHeight="31.0" text="días">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Label>
                      </children>
                   </HBox>
                </children>

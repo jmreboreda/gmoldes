@@ -21,7 +21,6 @@ public class ContractTypeVO implements Serializable{
     public static final String FIND_ALL_CONTRACT_TYPES_SELECTABLES = "ContractTypeVO.FIND_ALL_CONTRACT_TYPES_SELECTABLES";
     public static final String FIND_CONTRACT_TYPE_BY_ID = "ContractTypeVO.FIND_CONTRACT_TYPE_BY_ID";
 
-
     @Id
     @SequenceGenerator(name = "contracttype_id_seq", sequenceName = "contracttype_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contracttype_id_seq")

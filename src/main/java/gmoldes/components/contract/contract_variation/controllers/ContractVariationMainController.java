@@ -180,7 +180,7 @@ public class ContractVariationMainController extends VBox {
     private void onContractExtensionSelected(MouseEvent event){
 
         if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate() == null){
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SELECTED_CONTRACT_IS_NOT_EXTENDABLE);
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.UNDEFINED_DURATION_CONTRACTS_ARE_NOT_EXTENDABLE);
             cleanDataForAllSelectableComponents();
             contractVariationActionComponents.getOkButton().setDisable(true);
 
@@ -188,7 +188,7 @@ public class ContractVariationMainController extends VBox {
         }
 
         if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractType().getIsDeterminedDuration()){
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SELECTED_CONTRACT_IS_NOT_EXTENDABLE);
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.THIS_TYPE_OF_DETERMINED_DURATION_CONTRACT_IS_NOT_EXTENDABLE);
             cleanDataForAllSelectableComponents();
             contractVariationActionComponents.getOkButton().setDisable(true);
 
@@ -217,7 +217,6 @@ public class ContractVariationMainController extends VBox {
         if(rbContractExtinction.isSelected()) {
             Boolean contractExtinctionIsCorrect = contractVariationContractExtinctionIsSelected();
             if(contractExtinctionIsCorrect) {
-
                 persistenceOfContractVariation(new CompatibleVariationEvent(true, false,false, ""));
             }
 
@@ -229,7 +228,6 @@ public class ContractVariationMainController extends VBox {
         if(rbContractExtension.isSelected()) {
             Boolean contractExtensionIsCorrect = contractVariationContractExtensionSelected();
             if(contractExtensionIsCorrect) {
-
                 persistenceOfContractVariation(new CompatibleVariationEvent(false, true,false, ""));
             }
 
@@ -310,29 +308,24 @@ public class ContractVariationMainController extends VBox {
 
     private Boolean contractVariationContractExtensionSelected(){
 
-        RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
+        ContractExtensionController contractExtensionController = new ContractExtensionController(
+                this.getScene(), contractVariationParts, contractVariationTypes, contractVariationContractVariations);
 
-        if(rbContractExtension.isSelected()) {
+        MessageEvent messageEvent = contractExtensionController.verifyIsCorrectContractExtensionData();
+        String messageText = messageEvent.getMessageText();
+        if (!messageText.equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)) {
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageText);
 
-            ContractExtensionController contractExtensionController = new ContractExtensionController(
-                    this.getScene(), contractVariationParts, contractVariationTypes, contractVariationContractVariations);
+            return false;
+        }
 
-            MessageEvent messageEvent = contractExtensionController.verifyIsCorrectContractExtensionData();
-            String messageText = messageEvent.getMessageText();
-            if (!messageText.equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)) {
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageText);
+        System.out.println(messageText);    // <- NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED
 
-                return false;
-            }
+        CompatibleVariationEvent event = contractExtensionController.checkExistenceIncompatibleVariationsForContractExtension();
+        if(!event.getErrorContractVariationMessage().isEmpty()){
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, event.getErrorContractVariationMessage());
 
-            System.out.println(messageText);    // <- NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED
-
-            CompatibleVariationEvent event = contractExtensionController.checkExistenceIncompatibleVariationsForContractExtension();
-            if(!event.getErrorContractVariationMessage().isEmpty()){
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, event.getErrorContractVariationMessage());
-
-                return false;
-            }
+            return false;
         }
 
         return true;
@@ -408,7 +401,7 @@ public class ContractVariationMainController extends VBox {
 
             Long contractExtensionDuration = DAYS.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(), newValueDateTo) + 1L;
 
-            contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setText(contractExtensionDuration + " días");
+            contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setText(contractExtensionDuration.toString());
             if(contractExtensionDuration <= 0){
                 contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(myColorRED);
             }else{
