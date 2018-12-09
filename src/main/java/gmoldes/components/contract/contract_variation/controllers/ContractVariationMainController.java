@@ -182,6 +182,7 @@ public class ContractVariationMainController extends VBox {
         if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate() == null){
             Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SELECTED_CONTRACT_IS_NOT_EXTENDABLE);
             cleanDataForAllSelectableComponents();
+            contractVariationActionComponents.getOkButton().setDisable(true);
 
             return ;
         }
@@ -189,6 +190,7 @@ public class ContractVariationMainController extends VBox {
         if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractType().getIsDeterminedDuration()){
             Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SELECTED_CONTRACT_IS_NOT_EXTENDABLE);
             cleanDataForAllSelectableComponents();
+            contractVariationActionComponents.getOkButton().setDisable(true);
 
             return ;
         }
@@ -233,6 +235,7 @@ public class ContractVariationMainController extends VBox {
 
             return;
         }
+
 
         if(!Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)){
             return;
