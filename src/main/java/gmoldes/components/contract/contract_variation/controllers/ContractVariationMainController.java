@@ -404,34 +404,37 @@ public class ContractVariationMainController extends VBox {
 
     }
 
-    private void persistenceOfContractVariation(CompatibleVariationEvent persistenceEvent){
+    private void persistenceOfContractVariation(CompatibleVariationEvent persistenceEvent) {
 
-        if(!Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)){
+        if (!Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)) {
             return;
         }
 
         Boolean isCorrectManagement = false;
 
-        // Manage contract extinction
-        ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
-                this.getScene(),
-                contractVariationParts,
-                contractVariationTypes,
-                contractVariationContractVariations);
+        // Contract extinction persistence
+        if (persistenceEvent.getContractExtinctionEvent()) {
 
-        if(persistenceEvent.getContractExtinctionEvent()) {
+            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
+                    this.getScene(),
+                    contractVariationParts,
+                    contractVariationTypes,
+                    contractVariationContractVariations);
+
             isCorrectManagement = contractExtinctionController.manageContractExtinction();
         }
 
-        // Manage contract extension
-        ContractExtensionController contractExtensionController = new ContractExtensionController(
-                this.getScene(),
-                contractVariationParts,
-                contractVariationTypes,
-                contractVariationContractVariations);
+        // Contract extension persistence
+        if (persistenceEvent.getContractExtensionEvent()) {
 
-        if(persistenceEvent.getContractExtensionEvent()) {
+            ContractExtensionController contractExtensionController = new ContractExtensionController(
+                    this.getScene(),
+                    contractVariationParts,
+                    contractVariationTypes,
+                    contractVariationContractVariations);
+
             isCorrectManagement = contractExtensionController.manageContractExtension();
+
         }
 
         if(isCorrectManagement){

@@ -253,6 +253,15 @@ public class ContractExtinctionController{
 
     private Integer updateLastContractVariationToExtinction(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
+        ApplicationMainController applicationMainController = new ApplicationMainController();
+
+        Integer contractNumber = contractNewVersionExtinctedDTO.getContractNumber();
+        List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(contractNumber);
+        if(contractVariationDTOList.isEmpty())
+        {
+            return 0;
+        }
+
         LocalDate dateOfExtinction = contractVariationContractVariations.getContractVariationContractExtinction()
                 .getDateFrom().getValue();
 

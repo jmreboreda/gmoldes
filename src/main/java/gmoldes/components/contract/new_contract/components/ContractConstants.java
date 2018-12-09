@@ -62,5 +62,9 @@ public class ContractConstants {
     public static final String EXIST_PREVIOUS_CONTRACT_VARIATION_EXTINCTION = "Ya está registrada una extinción de contrato para este contrato.";
     public static final String START_DATE_EXTENSION_NOT_IMMEDIATELY_AFTER_EXPECTED_END_DATE = "La fecha de inicio de la prórroga del contrato no es inmediatamente posterior" +
             " a la fecha prevista de extinción del contrato o a la de su prórroga en vigor.";
+    public static final String INITIAL_DATE_EXTENSION_MUST_BE_IMMEDIATELY_AFTER_CONTRACT_EXPECTED_END_DATE = "la fecha inicial de la prórroga de un contrato" +
+            " tiene que  ser la inmediatamente posterior a la de finalización establecida para el contrato.";
     public static final String EXIST_PREVIOUS_INCOMPATIBLE_CONTRACT_VARIATION_EXTENSION = "Está registrada una prórroga del contrato que es incompatible con la solicitada.";
+    public static final String CONTRACT_EXTENSION_PERSISTENCE_OK = "Prórroga del contrato registrada correctamente.";
+
 }
