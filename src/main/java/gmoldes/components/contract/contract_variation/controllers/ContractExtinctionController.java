@@ -166,11 +166,16 @@ public class ContractExtinctionController{
 
     public CompatibleVariationEvent checkExistenceIncompatibleVariationsForContractExtinction() {
 
+        ApplicationMainController applicationMainController = new ApplicationMainController();
+
+        Integer selectedContractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
+
         // 1. Expiration date requested for the contract is higher than the expected termination date
         LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
         LocalDate extinctionDate = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
 
-        if(expectedEndDate != null && extinctionDate.isAfter(expectedEndDate)) {
+        if (expectedEndDate != null && extinctionDate.isAfter(expectedEndDate)) {
+
             return new CompatibleVariationEvent(
                     true,
                     null,
@@ -179,16 +184,13 @@ public class ContractExtinctionController{
         }
 
         // 2. Extinction of contract already exists -------------------------------------
-        Integer selectedContractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
-
-        ApplicationMainController applicationMainController = new ApplicationMainController();
         List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
         List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
+        for (ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
+            for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
+                if (typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
+                        typesContractVariationsDTO.getExtinction()) {
 
-        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
-            for(TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList){
-                if(typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
-                        typesContractVariationsDTO.getExtinction()){
                     return new CompatibleVariationEvent(
                             true,
                             null,
@@ -196,6 +198,22 @@ public class ContractExtinctionController{
                             ContractConstants.EXIST_PREVIOUS_CONTRACT_VARIATION_EXTINCTION);
                 }
             }
+        }
+
+        // 3. Registered transactions with date after the requested start date do not allow the termination of the contract on the requested date
+        List<ContractVariationDTO> contractVariationDTOList1 = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
+
+        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList1) {
+            if(contractVariationDTO.getModificationDate() == null && contractVariationDTO.getExpectedEndDate().isAfter(extinctionDate) ||
+                    contractVariationDTO.getEndingDate().isBefore(extinctionDate)){
+
+                return new CompatibleVariationEvent(
+                    true,
+                    null,
+                    null,
+                    ContractConstants.CONTRACT_VARIATIONS_IN_THE_FUTURE_NOT_ALLOW_EXTINCTION_ON_REQUESTED_DATE);
+            }
+
         }
 
         return new CompatibleVariationEvent(true, false, false, "");
