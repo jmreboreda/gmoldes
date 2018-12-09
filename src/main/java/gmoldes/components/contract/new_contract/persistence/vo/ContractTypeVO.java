@@ -36,6 +36,7 @@ public class ContractTypeVO implements Serializable{
     private Boolean isPartialTime;
     private Boolean isFullTime;
     private Boolean isMenuSelectable;
+    private Boolean isDeterminedDuration;
 
     public ContractTypeVO() {
     }
@@ -116,7 +117,15 @@ public class ContractTypeVO implements Serializable{
         return isMenuSelectable;
     }
 
-    public void setIsMenuSelectable(Boolean ismenuselectable) {
-        this.isMenuSelectable = ismenuselectable;
+    public void setIsMenuSelectable(Boolean isMenuselectable) {
+        this.isMenuSelectable = isMenuselectable;
+    }
+
+    public Boolean getIsDeterminedDuration() {
+        return isDeterminedDuration;
+    }
+
+    public void setIsDeterminedDuration(Boolean isDeterminedDuration) {
+        this.isDeterminedDuration = isDeterminedDuration;
     }
 }

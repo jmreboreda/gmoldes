@@ -75,56 +75,6 @@ public class ContractExtensionController {
         return true;
     }
 
-//    public String isCorrectContractExtensionData(){
-//
-//         // Start date of the extension of the contract must be immediately after the expected date of termination of the contract or its extension
-//        LocalDate initialContractExtensionDate = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
-//        LocalDate expectedContractEndingDateInDB = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
-//        if(Period.between(initialContractExtensionDate, expectedContractEndingDateInDB.plusDays(1)).getDays() > 0){
-//
-//            return ContractConstants.START_DATE_EXTENSION_NOT_IMMEDIATELY_AFTER_EXPECTED_END_DATE;
-//        }
-//
-//        if(contractVariationTypes.getDateNotification().getDate() == null){
-//
-//            return ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED;
-//        }
-//
-//        if(contractVariationTypes.getHourNotification().getText() == null){
-//
-//            return ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED;
-//        }
-//
-//        if(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue() == null
-//                || Period.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(),
-//                LocalDate.now()).getDays() > 3){
-//
-//            return ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_FROM;
-//        }
-//
-//        if(contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue() == null){
-//
-//            return ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_TO;
-//        }
-//
-//        if(Period.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(),
-//                contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue()).getDays() < 0){
-//
-//            return ContractConstants.ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES;
-//
-//        }
-//
-//        Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
-//        if(existFutureVariations) {
-//
-//            return ContractConstants.EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT;
-//        }
-//
-//        System.out.println("Aparentemente están todos los datos correctos.\n");
-//
-//        return null;
-//    }
-
     public MessageEvent verifyIsCorrectContractExtensionData(){
 
         if(contractVariationTypes.getDateNotification().getDate() == null){
@@ -160,7 +110,20 @@ public class ContractExtensionController {
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
-        // 1. The initial date of the extension of a contract can not be earlier than the end date established for it
+        Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
+
+//        // 1. It is not allowed to extend a contract of the type "determined duration"
+//        Boolean isDeterminedDurationContract = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractType().getIsDeterminedDuration();
+//        if(isDeterminedDurationContract){
+//
+//            return new CompatibleVariationEvent(
+//                    true,
+//                    null,
+//                    null,
+//                    ContractConstants.SELECTED_CONTRACT_IS_NOT_EXTENDABLE);
+//        }
+
+        // 2. The initial date of the extension of a contract can not be earlier than the end date established for it
         LocalDate contractExtensionDateFrom = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
         LocalDate contractExtensionDateTo = contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue();
 
@@ -174,9 +137,7 @@ public class ContractExtensionController {
                     ContractConstants.INITIAL_DATE_EXTENSION_MUST_BE_IMMEDIATELY_AFTER_CONTRACT_EXPECTED_END_DATE);
         }
 
-        // 2. An extension of the contract incompatible with the requested one is already registered
-        Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
-        //LocalDate contractExtensionDateFrom = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
+        // 3. An extension of the contract incompatible with the requested one is already registered
 
         List<ContractVariationDTO> contractVariationDTOList =  applicationMainController.findAllContractVariationByContractNumber(contractNumber);
         List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
