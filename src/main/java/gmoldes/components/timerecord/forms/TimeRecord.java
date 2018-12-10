@@ -2,25 +2,31 @@ package gmoldes.components.timerecord.forms;
 
 import gmoldes.utilities.Utilities;
 
+import java.time.Month;
+import java.time.format.TextStyle;
+import java.util.Locale;
+
 public class TimeRecord {
 
     private static final String TIME_RECORD_STRING_WITH_UNDERSCORE = "_Registro_Horario_";
 
-    private String nameOfMonth;
+    private Month nameOfMonth;
     private String yearNumber;
     private String enterpriseName;
     private String quoteAccountCode;
     private String employeeName;
     private String employeeNIF;
     private String numberHoursPerWeek;
+    private String monthYearReceiptCopyText;
 
-    public TimeRecord(String nameOfMonth,
+    public TimeRecord(Month nameOfMonth,
                       String yearNumber,
                       String enterpriseName,
                       String quoteAccountCode,
                       String employeeName,
                       String employeeNIF,
-                      String numberHoursPerWeek) {
+                      String numberHoursPerWeek,
+                      String monthYearReceiptCopyText) {
 
         this.nameOfMonth = nameOfMonth;
         this.yearNumber = yearNumber;
@@ -29,9 +35,10 @@ public class TimeRecord {
         this.employeeName = employeeName;
         this.employeeNIF = employeeNIF;
         this.numberHoursPerWeek = numberHoursPerWeek;
+        this.monthYearReceiptCopyText = monthYearReceiptCopyText;
     }
 
-    public String getNameOfMonth() {
+    public Month getNameOfMonth() {
         return nameOfMonth;
     }
 
@@ -59,11 +66,23 @@ public class TimeRecord {
         return numberHoursPerWeek;
     }
 
+    public String getMonthYearReceiptCopyText() {
+        return monthYearReceiptCopyText;
+    }
+
+    public String toString(){
+        return this.nameOfMonth.getDisplayName(TextStyle.FULL, Locale.getDefault());
+    }
+
+    public void setMonthYearReceiptCopyText(String monthYearReceiptCopyText) {
+        this.monthYearReceiptCopyText = monthYearReceiptCopyText;
+    }
+
     public String toFileName(){
 
         return Utilities.replaceWithUnderscore(this.getEnterpriseName())
                 .concat(TIME_RECORD_STRING_WITH_UNDERSCORE)
-                .concat(this.getNameOfMonth())
+                .concat(this.getNameOfMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()))
                 .concat("_")
                 .concat(this.getYearNumber())
                 .concat("_")
@@ -76,15 +95,17 @@ public class TimeRecord {
 
     public static class TimeRecordBuilder {
 
-        private String nameOfMonth;
+        private Month nameOfMonth;
         private String yearNumber;
         private String enterpriseName;
         private String quoteAccountCode;
         private String employeeName;
         private String employeeNIF;
         private String numberHoursPerWeek;
+        private String monthYearReceiptCopyText;
 
-        public TimeRecord.TimeRecordBuilder withNameOfMonth(String nameOfMonth) {
+
+        public TimeRecord.TimeRecordBuilder withNameOfMonth(Month nameOfMonth) {
             this.nameOfMonth = nameOfMonth;
             return this;
         }
@@ -119,9 +140,14 @@ public class TimeRecord {
             return this;
         }
 
+        public TimeRecord.TimeRecordBuilder withMonthYearReceiptCopyTetx(String monthYearReceiptCopyText) {
+            this.monthYearReceiptCopyText = monthYearReceiptCopyText;
+            return this;
+        }
+
         public TimeRecord build() {
             return new TimeRecord(this.nameOfMonth, this.yearNumber, this.enterpriseName, this.quoteAccountCode, this.employeeName,
-                    this.employeeNIF, this.numberHoursPerWeek);
+                    this.employeeNIF, this.numberHoursPerWeek, this.monthYearReceiptCopyText);
         }
     }
 }

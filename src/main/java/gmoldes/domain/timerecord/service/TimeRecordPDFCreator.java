@@ -16,7 +16,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.format.TextStyle;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -42,7 +44,7 @@ public class TimeRecordPDFCreator {
 
         AcroFields timeRecordPDFFields = stamp.getAcroFields();
         //HashMap map = timeRecordPDF.getFields();
-        timeRecordPDFFields.setField("nameOfMonth",timeRecord.getNameOfMonth());
+        timeRecordPDFFields.setField("nameOfMonth",timeRecord.getNameOfMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()));
         timeRecordPDFFields.setField("yearNumber",timeRecord.getYearNumber());
         timeRecordPDFFields.setField("enterpriseName",timeRecord.getEnterpriseName());
         timeRecordPDFFields.setField("quoteAccountCode",timeRecord.getQuoteAccountCode());
@@ -50,6 +52,7 @@ public class TimeRecordPDFCreator {
         timeRecordPDFFields.setField("employeeNIF",timeRecord.getEmployeeNIF());
         timeRecordPDFFields.setField("numberHoursPerWeek",timeRecord.getNumberHoursPerWeek());
         timeRecordPDFFields.setField("enterpriseSignature","Firmado: ".concat(timeRecord.getEnterpriseName()));
+        timeRecordPDFFields.setField("monthYearReceiptCopy",timeRecord.getMonthYearReceiptCopyText());
         timeRecordPDFFields.setField("employeeSignature","Firmado: ".concat(timeRecord.getEmployeeName()));
 
         stamp.setFormFlattening(true);
