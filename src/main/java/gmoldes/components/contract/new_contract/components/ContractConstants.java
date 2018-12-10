@@ -50,6 +50,7 @@ public class ContractConstants {
     public static final String CONTRACT_EXTINCTION_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT = "Se ha registrado la variación del contrato pero no enviado al gestor.\n ¿Es correcto?";
     // Prórrogas de contratos
     public static final String MAXIMUM_NUMBER_LEGALLY_PERMITTED_EXTENSIONS_IS_ALREADY_REGISTERED = "Ya están registradas el número máximo de prórrogas legalmente permitidas para este contrato.";
+    public static final String MAXIMUM_LEGAL_NUMBER_OF_MONTHS_OF_CONTRACT_IS_EXCEEDED = "Con las fechas seleccionadas se sobrepasa el máximo número legal de meses de duración del contrato.";
     public static final String SELECTED_CONTRACT_IS_NOT_EXTENDABLE = "El contrato seleccionado no admite prórrogas.";
     public static final String UNDEFINED_DURATION_CONTRACTS_ARE_NOT_EXTENDABLE = "Los contratos indefinidos no son prorrogables.";
     public static final String THIS_TYPE_OF_DETERMINED_DURATION_CONTRACT_IS_NOT_EXTENDABLE = "Este tipo de contratos de duración determinada no es prorrogable.";
