@@ -2,7 +2,6 @@ package gmoldes.components.contract.contract_variation.controllers;
 
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
-import gmoldes.ApplicationMainManager;
 import gmoldes.components.contract.contract_variation.components.ContractVariationContractVariations;
 import gmoldes.components.contract.contract_variation.components.ContractVariationParts;
 import gmoldes.components.contract.contract_variation.components.ContractVariationTypes;
@@ -14,7 +13,6 @@ import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
 import gmoldes.components.contract.new_contract.services.NewContractDataSubfolderPDFCreator;
-import gmoldes.domain.contract.Contract;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.person.dto.StudyDTO;
@@ -164,9 +162,9 @@ public class ContractExtensionController {
             }
         }
 
-        if(numberDaysOfContractDuration/30.4375 > ContractParameters.NUMBER_MONTHS_MAXIMUM_DURATION_INITIAL_CONTRACT_PLUS_ITS_EXTENSIONS){
+        if(numberDaysOfContractDuration/ContractParameters.AVERAGE_OF_DAYS_IN_A_MONTH > ContractParameters.NUMBER_MONTHS_MAXIMUM_DURATION_INITIAL_CONTRACT_PLUS_ITS_EXTENSIONS){
 
-            System.out.println("Número meses más prórroga: " + numberDaysOfContractDuration/30.4375);
+            System.out.println("Número meses más prórroga (en meses promedio): " + numberDaysOfContractDuration/ContractParameters.AVERAGE_OF_DAYS_IN_A_MONTH);
 
             return new CompatibleVariationEvent(
                     true,
@@ -175,7 +173,7 @@ public class ContractExtensionController {
                     ContractConstants.MAXIMUM_LEGAL_NUMBER_OF_MONTHS_OF_CONTRACT_IS_EXCEEDED);
         }
 
-        System.out.println("Número meses más prórroga: " + numberDaysOfContractDuration/30.4375);
+        System.out.println("Número meses más prórroga (en meses promedio): " + numberDaysOfContractDuration/ContractParameters.AVERAGE_OF_DAYS_IN_A_MONTH);
 
         // 3. The initial date of the extension of a contract can not be earlier than the end date established for it
         LocalDate contractExpectedEndDate = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate();
