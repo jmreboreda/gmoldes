@@ -71,13 +71,11 @@ public class PayrollCheckList {
         return getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
     }
 
-    public void loadClipboard(Month month, Integer year){
+    public void loadClipboard(List<PayrollCheckListDTO> payrollCheckListDTOList){
 
         String clipboardData = "";
 
-        List<PayrollCheckListDTO> payrollCheckListDTOList = retrieveAllContractInForceInPeriod(month, year);
         for(PayrollCheckListDTO payrollCheckListDTO : payrollCheckListDTOList){
-
             clipboardData = clipboardData + payrollCheckListDTO.getEmployerFullName() + ";" + payrollCheckListDTO.getWorkerFullName() + "\n";
         }
 

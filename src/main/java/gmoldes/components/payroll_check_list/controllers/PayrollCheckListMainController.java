@@ -91,7 +91,6 @@ public class PayrollCheckListMainController extends VBox {
         payrollCheckListData.getPayrollTable().setItems(payrollCheckListDTOS);
 
         payrollCheckListAction.getClipboardCopyButton().setDisable(false);
-
     }
 
     private void onExit(MouseEvent event){
@@ -100,9 +99,9 @@ public class PayrollCheckListMainController extends VBox {
     }
 
     private void onCopyToClipboard(MouseEvent event){
-
         PayrollCheckList payrollCheckList = new PayrollCheckList();
-        payrollCheckList.loadClipboard(payrollCheckListData.getMonth().getSelectionModel().getSelectedItem().getMonth(), Integer.parseInt(payrollCheckListData.getYear().getText()));
+
+        payrollCheckList.loadClipboard(payrollCheckListData.getPayrollTable().getItems());
 
         payrollCheckListAction.getClipboardCopyButton().setDisable(true);
     }

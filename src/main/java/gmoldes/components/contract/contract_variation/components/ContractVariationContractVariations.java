@@ -1,18 +1,12 @@
 package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.components.generic_components.DateInput;
-import gmoldes.components.generic_components.TimeInput24HoursClock;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
-import java.util.Stack;
 
 public class ContractVariationContractVariations extends VBox {
 
