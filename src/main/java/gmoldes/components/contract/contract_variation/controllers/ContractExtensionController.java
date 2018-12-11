@@ -209,10 +209,10 @@ public class ContractExtensionController {
 
     public String persistContractExtension(){
 
-        ContractNewVersionDTO contractNewVersionExtendedDTO = contractVariationParts
-                .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
+        final ContractNewVersionDTO contractNewVersionExtendedDTO = contractVariationParts.getContractSelector()
+                .getSelectionModel().getSelectedItem().getContractNewVersion();
 
-        if(updateLastContractVariation(contractNewVersionExtendedDTO) == null) {
+        if(updateLastContractVariation(contractNewVersionExtendedDTO.getContractNumber()) == null) {
 
             return ContractConstants.ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD;
         }
@@ -222,7 +222,7 @@ public class ContractExtensionController {
             return ContractConstants.ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION;
         }
 
-        if(updateInitialContractOfContractExtension(contractNewVersionExtendedDTO) == null) {
+        if(updateInitialContractOfContractExtension(contractNewVersionExtendedDTO.getContractNumber()) == null) {
 
             return ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT;
         }
@@ -232,11 +232,10 @@ public class ContractExtensionController {
         return null;
     }
 
-    private Integer updateLastContractVariation(ContractNewVersionDTO contractNewVersionExtendedDTO){
+    private Integer updateLastContractVariation(Integer contractNumber){
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
-        Integer contractNumber = contractNewVersionExtendedDTO.getContractNumber();
         List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(contractNumber);
         if(contractVariationDTOList.isEmpty())
         {
@@ -252,6 +251,7 @@ public class ContractExtensionController {
 
                 contractNewVersionDTOtoUpdate = ContractNewVersionDTO.create()
                         .withId(contractVariationDTO.getId())
+                        .withContractNumber(contractVariationDTO.getContractNumber())
                         .withVariationType(contractVariationDTO.getVariationType())
                         .withStartDate(contractVariationDTO.getStartDate())
                         .withExpectedEndDate(contractVariationDTO.getExpectedEndDate())
@@ -274,34 +274,47 @@ public class ContractExtensionController {
                 .getDateTo().getValue();
 
         String identificationContractNumberINEM = contractNewVersionExtendedDTO.getContractJsonData().getIdentificationContractNumberINEM();
-        String newIdentificationContractNumberINEM = identificationContractNumberINEM + "-1";
+        String newIdentificationContractNumberINEM = identificationContractNumberINEM.concat("-1");
 
-        ContractJsonData contractJsonData = contractNewVersionExtendedDTO.getContractJsonData();
-        contractJsonData.setIdentificationContractNumberINEM(newIdentificationContractNumberINEM);
+        ContractJsonData newContractJsonData = ContractJsonData.create()
+                .withClientGMId(contractNewVersionExtendedDTO.getContractJsonData().getClientGMId())
+                .withWorkerId(contractNewVersionExtendedDTO.getContractJsonData().getWorkerId())
+                .withQuoteAccountCode(contractNewVersionExtendedDTO.getContractJsonData().getQuoteAccountCode())
+                .withContractType(contractNewVersionExtendedDTO.getContractJsonData().getContractType())
+                .withLaborCategory(contractNewVersionExtendedDTO.getContractJsonData().getLaborCategory())
+                .withWeeklyWorkHours(contractNewVersionExtendedDTO.getContractJsonData().getWeeklyWorkHours())
+                .withDaysOfWeekToWork(contractNewVersionExtendedDTO.getContractJsonData().getDaysOfWeekToWork())
+                .withFullPartialWorkDay(contractNewVersionExtendedDTO.getContractJsonData().getFullPartialWorkDay())
+                .withIdentificationContractNumberINEM(newIdentificationContractNumberINEM)
+                .withNotesForContractManager(contractNewVersionExtendedDTO.getContractJsonData().getNotesForContractManager())
+                .withPrivateNotes(contractNewVersionExtendedDTO.getContractJsonData().getPrivateNotes())
+                .build();
 
-        contractNewVersionExtendedDTO.setId(null);
-        contractNewVersionExtendedDTO.setVariationType(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION);
-        contractNewVersionExtendedDTO.setStartDate(initialDateOfExtension);
-        contractNewVersionExtendedDTO.setExpectedEndDate(finalDateOfExtension);
-        contractNewVersionExtendedDTO.setModificationDate(null);
-        contractNewVersionExtendedDTO.setEndingDate(null);
-        contractNewVersionExtendedDTO.setContractJsonData(contractJsonData);
+        ContractNewVersionDTO newContractExtensionToPersist = ContractNewVersionDTO.create()
+                .withId(null)
+                .withContractNumber(contractNewVersionExtendedDTO.getContractNumber())
+                .withVariationType(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)
+                .withStartDate(initialDateOfExtension)
+                .withExpectedEndDate(finalDateOfExtension)
+                .withModificationDate(null)
+                .withEndingDate(null)
+                .withContractJsonData(newContractJsonData)
+                .build();
 
-        return contractManager.saveContractVariation(contractNewVersionExtendedDTO);
+        return contractManager.saveContractVariation(newContractExtensionToPersist);
     }
 
-    private Integer updateInitialContractOfContractExtension(ContractNewVersionDTO contractNewVersionExtendedDTO){
+    private Integer updateInitialContractOfContractExtension(Integer contractNumber){
 
         LocalDate initialDateOfExtension = contractVariationContractVariations.getContractVariationContractExtension()
                 .getDateFrom().getValue();
 
-        InitialContractDTO initialContractToUpdateDTO = contractManager.findLastTuplaOfInitialContractByContractNumber(contractNewVersionExtendedDTO.getContractNumber());
+        InitialContractDTO initialContractToUpdateDTO = contractManager.findLastTuplaOfInitialContractByContractNumber(contractNumber);
+
         if(initialContractToUpdateDTO.getModificationDate() != null) {
 
             return 0;
         }
-
-        initialContractToUpdateDTO.setModificationDate(initialDateOfExtension);
 
         ContractNewVersionDTO contractNewVersionToUpdateDTO = ContractNewVersionDTO.create()
                 .withId(initialContractToUpdateDTO.getId())
@@ -309,7 +322,7 @@ public class ContractExtensionController {
                 .withVariationType(initialContractToUpdateDTO.getVariationType())
                 .withStartDate(initialContractToUpdateDTO.getStartDate())
                 .withExpectedEndDate(initialContractToUpdateDTO.getExpectedEndDate())
-                .withModificationDate(initialContractToUpdateDTO.getModificationDate())
+                .withModificationDate(initialDateOfExtension)
                 .withEndingDate(initialContractToUpdateDTO.getEndingDate())
                 .withContractJsonData(initialContractToUpdateDTO.getContractJsonData())
                 .build();
