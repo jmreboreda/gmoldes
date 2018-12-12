@@ -22,13 +22,14 @@ public class ClientDTO {
     private Boolean isActive;
     private Date withoutActivity;
     private String clientType;
+    private Boolean claimInvoices;
 
     public ClientDTO() {
     }
 
     public ClientDTO(Integer id, Integer clientId, String nieNIF, Short nieNIF_dup, String personOrCompanyName,
                      Short numberOfTimes, Character codeInSigaProgram, Date dateFrom, Date dateTo, Boolean isActive,
-                     Date withoutActivity, String clientType) {
+                     Date withoutActivity, String clientType, Boolean claimInvoices) {
         this.id = id;
         this.clientId = clientId;
         this.nieNIF = nieNIF;
@@ -41,6 +42,7 @@ public class ClientDTO {
         this.isActive = isActive;
         this.withoutActivity = withoutActivity;
         this.clientType = clientType;
+        this.claimInvoices = claimInvoices;
     }
 
     public Integer getId() {
@@ -139,6 +141,14 @@ public class ClientDTO {
         this.clientType = clientType;
     }
 
+    public Boolean getClaimInvoices() {
+        return claimInvoices;
+    }
+
+    public void setClaimInvoices(Boolean claimInvoices) {
+        this.claimInvoices = claimInvoices;
+    }
+
     public String toString() {
         return getPersonOrCompanyName();
     }
@@ -161,6 +171,7 @@ public class ClientDTO {
         private Boolean isActive;
         private Date withoutActivity;
         private String clientType;
+        private Boolean claimInvoices;
 
         public ClientDTOBuilder withId(Integer id) {
             this.id = id;
@@ -222,9 +233,14 @@ public class ClientDTO {
             return this;
         }
 
+        public ClientDTOBuilder withClaimInvoices(Boolean claimInvoices) {
+            this.claimInvoices = claimInvoices;
+            return this;
+        }
+
         public ClientDTO build() {
             return new ClientDTO(this.id, this.clientId, this.nieNIF, this.nieNIF_dup, this.personOrCompanyName,
-            this.numberOfTimes, this.codeInSigaProgram, this.dateFrom, this.dateTo, this.isActive, this.withoutActivity, this.clientType);
+            this.numberOfTimes, this.codeInSigaProgram, this.dateFrom, this.dateTo, this.isActive, this.withoutActivity, this.clientType, this.claimInvoices);
         }
     }
 }

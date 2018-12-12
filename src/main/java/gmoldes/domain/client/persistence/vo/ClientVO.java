@@ -25,6 +25,10 @@ import java.util.Set;
         @NamedQuery(
                 name = ClientVO.FIND_CLIENT_BY_CLIENTID,
                 query = "select p from ClientVO as p where p.idcliente = :clientId"
+        ),
+        @NamedQuery(
+                name = ClientVO.FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD,
+                query = "select p from ClientVO as p where (p.fdesde is null or p.fdesde <= :initialDate) and (p.fhasta is null or p.fhasta >= :finalDate) and p.sinactividad is null and claiminvoices = true order by p.nom_rzsoc"
         )
 })
 
@@ -34,7 +38,7 @@ public class ClientVO implements Serializable {
     public static final String FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER = "ClientVO.FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER";
     public static final String FIND_CLIENT_BY_SAME_NAME = "ClientVO.FIND_CLIENT_BY_SAME_NAME";
     public static final String FIND_CLIENT_BY_CLIENTID = "ClientVO.FIND_CLIENT_BY_CLIENTID";
-
+    public static final String FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD = "ClientVO.FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD";
 
     @Id
     @SequenceGenerator(name = "clientes_id_seq", sequenceName = "clientes_id_seq", allocationSize = 1)
@@ -53,6 +57,7 @@ public class ClientVO implements Serializable {
     private Boolean cltactivo;
     private Date sinactividad;
     private String tipoclte;
+    private Boolean claimInvoices;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientVO", cascade = CascadeType.ALL)
     private Set<ServiceGMVO> servicesGM;
 
@@ -158,5 +163,13 @@ public class ClientVO implements Serializable {
 
     public void setServicesGM(Set<ServiceGMVO> servicesGM) {
         this.servicesGM = servicesGM;
+    }
+
+    public Boolean getClaimInvoices() {
+        return claimInvoices;
+    }
+
+    public void setClaimInvoices(Boolean claimInvoices) {
+        this.claimInvoices = claimInvoices;
     }
 }

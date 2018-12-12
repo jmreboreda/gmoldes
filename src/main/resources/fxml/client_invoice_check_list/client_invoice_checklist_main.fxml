@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import gmoldes.components.client_invoice_check_list.components.ClientInvoiceCheckListAction?>
+<?import gmoldes.components.client_invoice_check_list.components.ClientInvoiceCheckListData?>
+<?import gmoldes.components.client_invoice_check_list.components.ClientInvoiceCheckListHeader?>
+<?import javafx.scene.layout.VBox?>
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+      <ClientInvoiceCheckListHeader fx:id="clientInvoiceCheckListHeader"/>
+      <ClientInvoiceCheckListData fx:id="clientInvoiceCheckListData"/>
+      <ClientInvoiceCheckListAction fx:id="clientInvoiceCheckListAction"/>
+</fx:root>
