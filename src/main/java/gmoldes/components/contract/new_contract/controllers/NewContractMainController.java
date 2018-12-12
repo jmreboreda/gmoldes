@@ -626,7 +626,7 @@ public class NewContractMainController extends VBox {
             String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 
             TimeRecord timeRecord = TimeRecord.create()
-                    .withNameOfMonth(this.contractData.getDateFrom().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()))
+                    .withNameOfMonth(this.contractData.getDateFrom().getMonth())
                     .withYearNumber(Integer.toString(contractData.getDateFrom().getYear()))
                     .withEnterpriseName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
                     .withQuoteAccountCode(quoteAccountCode)

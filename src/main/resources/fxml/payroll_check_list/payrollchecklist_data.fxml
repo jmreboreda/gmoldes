@@ -30,7 +30,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="15.0" />
                </font>
             </TextField>
          </children>

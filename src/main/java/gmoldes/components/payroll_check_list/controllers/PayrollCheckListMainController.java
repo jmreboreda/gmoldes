@@ -14,6 +14,8 @@ import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.text.Collator;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
@@ -83,15 +85,17 @@ public class PayrollCheckListMainController extends VBox {
             withoutDuplicatesPayrollCheckListDTO.add(itemMap.getValue());
         }
 
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
         List<PayrollCheckListDTO> orderedPayrollCheckListDTO = withoutDuplicatesPayrollCheckListDTO
                 .stream()
-                .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName, primaryCollator)).collect(Collectors.toList());
 
         ObservableList<PayrollCheckListDTO> payrollCheckListDTOS = FXCollections.observableArrayList(orderedPayrollCheckListDTO);
         payrollCheckListData.getPayrollTable().setItems(payrollCheckListDTOS);
 
         payrollCheckListAction.getClipboardCopyButton().setDisable(false);
-
     }
 
     private void onExit(MouseEvent event){
@@ -100,9 +104,9 @@ public class PayrollCheckListMainController extends VBox {
     }
 
     private void onCopyToClipboard(MouseEvent event){
-
         PayrollCheckList payrollCheckList = new PayrollCheckList();
-        payrollCheckList.loadClipboard(payrollCheckListData.getMonth().getSelectionModel().getSelectedItem().getMonth(), Integer.parseInt(payrollCheckListData.getYear().getText()));
+
+        payrollCheckList.loadClipboard(payrollCheckListData.getPayrollTable().getItems());
 
         payrollCheckListAction.getClipboardCopyButton().setDisable(true);
     }

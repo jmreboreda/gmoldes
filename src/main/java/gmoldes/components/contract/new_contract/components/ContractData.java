@@ -18,6 +18,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
+import java.text.Collator;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -286,8 +287,11 @@ public class ContractData extends AnchorPane {
             contractTypeListWithoutDuplicates.add(itemMap.getValue());
         }
 
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
         return contractTypeListWithoutDuplicates
                 .stream()
-                .sorted(Comparator.comparing(ContractTypeDTO::getColloquial)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(ContractTypeDTO::getColloquial, primaryCollator)).collect(Collectors.toList());
     }
 }

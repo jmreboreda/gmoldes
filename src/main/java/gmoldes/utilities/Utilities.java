@@ -85,6 +85,11 @@ public class Utilities {
         return durationToString;
     }
 
+    public static Duration convertIntegerToDuration(Integer intergerToConvert){
+
+        return Duration.parse("P" + intergerToConvert + "D");
+    }
+
     public static DayOfWeek converterStringToDayOfWeek(String dayOfWeekString){
         DayOfWeek dayOfWeek = null;
         if (dayOfWeekString.equals(DayOfWeek.MONDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))) {

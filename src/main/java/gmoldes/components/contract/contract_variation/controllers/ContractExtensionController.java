@@ -10,9 +10,11 @@ import gmoldes.components.contract.contract_variation.events.MessageEvent;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
 import gmoldes.components.contract.new_contract.services.NewContractDataSubfolderPDFCreator;
 import gmoldes.domain.contract.dto.*;
+import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.services.Printer;
@@ -29,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class ContractExtensionController {
@@ -40,6 +43,7 @@ public class ContractExtensionController {
     private Scene scene;
 
     private static final Integer VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION = 220;
+    private static final String HOURS_WORK_WEEK_TEXT = " horas de trabajo por semana ";
 
     public ContractExtensionController(
             Scene scene,
@@ -65,65 +69,18 @@ public class ContractExtensionController {
             return false;
         }
 
+        String durationContractExtensionText = contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().getText();
+        Duration durationDays = Utilities.convertIntegerToDuration(Integer.parseInt(durationContractExtensionText));
+
         StringBuilder sb = new StringBuilder();
         sb.append(" ");
 
-        ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString());
+        ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString(), durationDays);
 
         printContractDataSubfolder(contractDataSubfolder);
 
         return true;
     }
-
-//    public String isCorrectContractExtensionData(){
-//
-//         // Start date of the extension of the contract must be immediately after the expected date of termination of the contract or its extension
-//        LocalDate initialContractExtensionDate = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
-//        LocalDate expectedContractEndingDateInDB = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
-//        if(Period.between(initialContractExtensionDate, expectedContractEndingDateInDB.plusDays(1)).getDays() > 0){
-//
-//            return ContractConstants.START_DATE_EXTENSION_NOT_IMMEDIATELY_AFTER_EXPECTED_END_DATE;
-//        }
-//
-//        if(contractVariationTypes.getDateNotification().getDate() == null){
-//
-//            return ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED;
-//        }
-//
-//        if(contractVariationTypes.getHourNotification().getText() == null){
-//
-//            return ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED;
-//        }
-//
-//        if(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue() == null
-//                || Period.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(),
-//                LocalDate.now()).getDays() > 3){
-//
-//            return ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_FROM;
-//        }
-//
-//        if(contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue() == null){
-//
-//            return ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_TO;
-//        }
-//
-//        if(Period.between(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue(),
-//                contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue()).getDays() < 0){
-//
-//            return ContractConstants.ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES;
-//
-//        }
-//
-//        Boolean existFutureVariations = verifyExistenceFutureVariationsOfSelectedContract();
-//        if(existFutureVariations) {
-//
-//            return ContractConstants.EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT;
-//        }
-//
-//        System.out.println("Aparentemente están todos los datos correctos.\n");
-//
-//        return null;
-//    }
 
     public MessageEvent verifyIsCorrectContractExtensionData(){
 
@@ -160,10 +117,65 @@ public class ContractExtensionController {
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
-        // 1. The initial date of the extension of a contract can not be earlier than the end date established for it
+        Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
         LocalDate contractExtensionDateFrom = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
         LocalDate contractExtensionDateTo = contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue();
 
+        // 1. The maximum number of legally permitted extensions is already registered
+        Integer counter = 0;
+        List<ContractVariationDTO> contractVariationDTOList =  applicationMainController.findAllContractVariationByContractNumber(contractNumber);
+        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList){
+            if(contractVariationDTO.getVariationType().equals(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)){
+                counter++;
+            }
+
+            if(counter >= ContractParameters.MAXIMUM_NUMBER_OF_EXTENSIONS_OF_A_CONTRACT) {
+
+                return new CompatibleVariationEvent(
+                        true,
+                        null,
+                        null,
+                        ContractConstants.MAXIMUM_NUMBER_LEGALLY_PERMITTED_EXTENSIONS_IS_ALREADY_REGISTERED);
+            }
+        }
+
+        // 2. Exceeded the number of months of maximum duration of the initial contract plus its extensions
+        List<ContractNewVersionDTO> contractNewVersionDTOList = applicationMainController.findHistoryOfContractByContractNumber(contractNumber);
+
+        Long numberDaysOfContractDuration = 0L;
+
+        if(contractNewVersionDTOList.size() == 1){
+            numberDaysOfContractDuration = ChronoUnit.DAYS.between(contractNewVersionDTOList.get(0).getStartDate(), contractNewVersionDTOList.get(0).getExpectedEndDate()) + 1;
+            numberDaysOfContractDuration = numberDaysOfContractDuration + ChronoUnit.DAYS.between(contractExtensionDateFrom, contractExtensionDateTo) + 1;
+        }
+        else {
+
+            Integer whileCounter = 0;
+            while (whileCounter < contractNewVersionDTOList.size()) {
+
+                LocalDate previousDate = contractNewVersionDTOList.get(whileCounter).getStartDate();
+                LocalDate nextDate = contractNewVersionDTOList.get(whileCounter + 1).getStartDate();
+
+                numberDaysOfContractDuration = numberDaysOfContractDuration + ChronoUnit.DAYS.between(previousDate, nextDate) + 1;
+
+                whileCounter++;
+            }
+        }
+
+        if(numberDaysOfContractDuration/ContractParameters.AVERAGE_OF_DAYS_IN_A_MONTH > ContractParameters.NUMBER_MONTHS_MAXIMUM_DURATION_INITIAL_CONTRACT_PLUS_ITS_EXTENSIONS){
+
+            System.out.println("Número meses más prórroga (en meses promedio): " + numberDaysOfContractDuration/ContractParameters.AVERAGE_OF_DAYS_IN_A_MONTH);
+
+            return new CompatibleVariationEvent(
+                    true,
+                    null,
+                    null,
+                    ContractConstants.MAXIMUM_LEGAL_NUMBER_OF_MONTHS_OF_CONTRACT_IS_EXCEEDED);
+        }
+
+        System.out.println("Número meses más prórroga (en meses promedio): " + numberDaysOfContractDuration/ContractParameters.AVERAGE_OF_DAYS_IN_A_MONTH);
+
+        // 3. The initial date of the extension of a contract can not be earlier than the end date established for it
         LocalDate contractExpectedEndDate = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate();
         if(contractExtensionDateFrom.isBefore(contractExpectedEndDate) ||
                 contractExtensionDateFrom.equals(contractExpectedEndDate)){
@@ -174,13 +186,10 @@ public class ContractExtensionController {
                     ContractConstants.INITIAL_DATE_EXTENSION_MUST_BE_IMMEDIATELY_AFTER_CONTRACT_EXPECTED_END_DATE);
         }
 
-        // 2. An extension of the contract incompatible with the requested one is already registered
-        Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
-        //LocalDate contractExtensionDateFrom = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
-
-        List<ContractVariationDTO> contractVariationDTOList =  applicationMainController.findAllContractVariationByContractNumber(contractNumber);
+        // 4. An extension of the contract incompatible with the requested one is already registered
+        List<ContractVariationDTO> contractVariationDTOList_2 =  applicationMainController.findAllContractVariationByContractNumber(contractNumber);
         List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
-        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
+        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList_2) {
             for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
                 if (typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
                         typesContractVariationsDTO.getExtension() &&
@@ -198,35 +207,22 @@ public class ContractExtensionController {
         return new CompatibleVariationEvent(true, false, false, "");
     }
 
-    private Boolean verifyExistenceFutureVariationsOfSelectedContract(){
-
-        Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
-        LocalDate dateFromSearch = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
-
-        List<ContractVariationDTO> contractVariationDTOList = contractManager.findAllContractVariationsAfterDateByContractNumber(contractNumber, dateFromSearch);
-        if(!contractVariationDTOList.isEmpty()){
-            return true;
-        }
-
-        return false;
-    }
-
     public String persistContractExtension(){
 
-        ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
-                .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
+        final ContractNewVersionDTO contractNewVersionExtendedDTO = contractVariationParts.getContractSelector()
+                .getSelectionModel().getSelectedItem().getContractNewVersion();
 
-        if(updateLastContractVariation(contractNewVersionExtinctedDTO) == null) {
+        if(updateLastContractVariation(contractNewVersionExtendedDTO.getContractNumber()) == null) {
 
             return ContractConstants.ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD;
         }
 
-        if(persistNewContractVariation(contractNewVersionExtinctedDTO) == null) {
+        if(persistNewContractVariation(contractNewVersionExtendedDTO) == null) {
 
             return ContractConstants.ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION;
         }
 
-        if(updateInitialContractOfContractExtension(contractNewVersionExtinctedDTO) == null) {
+        if(updateInitialContractOfContractExtension(contractNewVersionExtendedDTO.getContractNumber()) == null) {
 
             return ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT;
         }
@@ -236,11 +232,10 @@ public class ContractExtensionController {
         return null;
     }
 
-    private Integer updateLastContractVariation(ContractNewVersionDTO contractNewVersionExtendedDTO){
+    private Integer updateLastContractVariation(Integer contractNumber){
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
-        Integer contractNumber = contractNewVersionExtendedDTO.getContractNumber();
         List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(contractNumber);
         if(contractVariationDTOList.isEmpty())
         {
@@ -249,16 +244,28 @@ public class ContractExtensionController {
 
         LocalDate initialDateOfExtension = contractVariationContractVariations.getContractVariationContractExtension()
                 .getDateFrom().getValue();
-        LocalDate finalDateOfExtension = contractVariationContractVariations.getContractVariationContractExtension()
-                .getDateTo().getValue();
 
-        contractNewVersionExtendedDTO.setExpectedEndDate(finalDateOfExtension);
-        contractNewVersionExtendedDTO.setModificationDate(initialDateOfExtension);
+        ContractNewVersionDTO contractNewVersionDTOtoUpdate = new ContractNewVersionDTO();
+        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList){
+            if(contractVariationDTO.getModificationDate() == null){
 
-        return contractManager.updateContractVariation(contractNewVersionExtendedDTO);
+                contractNewVersionDTOtoUpdate = ContractNewVersionDTO.create()
+                        .withId(contractVariationDTO.getId())
+                        .withContractNumber(contractVariationDTO.getContractNumber())
+                        .withVariationType(contractVariationDTO.getVariationType())
+                        .withStartDate(contractVariationDTO.getStartDate())
+                        .withExpectedEndDate(contractVariationDTO.getExpectedEndDate())
+                        .withModificationDate(initialDateOfExtension)
+                        .withEndingDate(initialDateOfExtension)
+                        .withContractJsonData(contractVariationDTO.getContractJsonData())
+                        .build();
+            }
+        }
+
+        return contractManager.updateContractVariation(contractNewVersionDTOtoUpdate);
     }
 
-    private Integer persistNewContractVariation(ContractNewVersionDTO contractNewVersionExtinctedDTO){
+    private Integer persistNewContractVariation(ContractNewVersionDTO contractNewVersionExtendedDTO){
 
         LocalDate initialDateOfExtension = contractVariationContractVariations.getContractVariationContractExtension()
                 .getDateFrom().getValue();
@@ -266,23 +273,48 @@ public class ContractExtensionController {
         LocalDate finalDateOfExtension = contractVariationContractVariations.getContractVariationContractExtension()
                 .getDateTo().getValue();
 
-        contractNewVersionExtinctedDTO.setId(null);
-        contractNewVersionExtinctedDTO.setVariationType(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION);
-        contractNewVersionExtinctedDTO.setStartDate(initialDateOfExtension);
-        contractNewVersionExtinctedDTO.setExpectedEndDate(finalDateOfExtension);
-        contractNewVersionExtinctedDTO.setModificationDate(null);
-        contractNewVersionExtinctedDTO.setEndingDate(null);
+        String identificationContractNumberINEM = contractNewVersionExtendedDTO.getContractJsonData().getIdentificationContractNumberINEM();
+        String newIdentificationContractNumberINEM = identificationContractNumberINEM.concat("-1");
 
-        return contractManager.saveContractVariation(contractNewVersionExtinctedDTO);
+        ContractJsonData newContractJsonData = ContractJsonData.create()
+                .withClientGMId(contractNewVersionExtendedDTO.getContractJsonData().getClientGMId())
+                .withWorkerId(contractNewVersionExtendedDTO.getContractJsonData().getWorkerId())
+                .withQuoteAccountCode(contractNewVersionExtendedDTO.getContractJsonData().getQuoteAccountCode())
+                .withContractType(contractNewVersionExtendedDTO.getContractJsonData().getContractType())
+                .withLaborCategory(contractNewVersionExtendedDTO.getContractJsonData().getLaborCategory())
+                .withWeeklyWorkHours(contractNewVersionExtendedDTO.getContractJsonData().getWeeklyWorkHours())
+                .withDaysOfWeekToWork(contractNewVersionExtendedDTO.getContractJsonData().getDaysOfWeekToWork())
+                .withFullPartialWorkDay(contractNewVersionExtendedDTO.getContractJsonData().getFullPartialWorkDay())
+                .withIdentificationContractNumberINEM(newIdentificationContractNumberINEM)
+                .withNotesForContractManager(contractNewVersionExtendedDTO.getContractJsonData().getNotesForContractManager())
+                .withPrivateNotes(contractNewVersionExtendedDTO.getContractJsonData().getPrivateNotes())
+                .build();
+
+        ContractNewVersionDTO newContractExtensionToPersist = ContractNewVersionDTO.create()
+                .withId(null)
+                .withContractNumber(contractNewVersionExtendedDTO.getContractNumber())
+                .withVariationType(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)
+                .withStartDate(initialDateOfExtension)
+                .withExpectedEndDate(finalDateOfExtension)
+                .withModificationDate(null)
+                .withEndingDate(null)
+                .withContractJsonData(newContractJsonData)
+                .build();
+
+        return contractManager.saveContractVariation(newContractExtensionToPersist);
     }
 
-    private Integer updateInitialContractOfContractExtension(ContractNewVersionDTO contractNewVersionExtinctedDTO){
+    private Integer updateInitialContractOfContractExtension(Integer contractNumber){
 
         LocalDate initialDateOfExtension = contractVariationContractVariations.getContractVariationContractExtension()
                 .getDateFrom().getValue();
 
-        InitialContractDTO initialContractToUpdateDTO = contractManager.findLastTuplaOfInitialContractByContractNumber(contractNewVersionExtinctedDTO.getContractNumber());
-        initialContractToUpdateDTO.setModificationDate(initialDateOfExtension);
+        InitialContractDTO initialContractToUpdateDTO = contractManager.findLastTuplaOfInitialContractByContractNumber(contractNumber);
+
+        if(initialContractToUpdateDTO.getModificationDate() != null) {
+
+            return 0;
+        }
 
         ContractNewVersionDTO contractNewVersionToUpdateDTO = ContractNewVersionDTO.create()
                 .withId(initialContractToUpdateDTO.getId())
@@ -290,7 +322,7 @@ public class ContractExtensionController {
                 .withVariationType(initialContractToUpdateDTO.getVariationType())
                 .withStartDate(initialContractToUpdateDTO.getStartDate())
                 .withExpectedEndDate(initialContractToUpdateDTO.getExpectedEndDate())
-                .withModificationDate(initialContractToUpdateDTO.getModificationDate())
+                .withModificationDate(initialDateOfExtension)
                 .withEndingDate(initialContractToUpdateDTO.getEndingDate())
                 .withContractJsonData(initialContractToUpdateDTO.getContractJsonData())
                 .build();
@@ -298,7 +330,7 @@ public class ContractExtensionController {
         return contractManager.updateInitialContract(contractNewVersionToUpdateDTO);
     }
 
-    private ContractDataSubfolder createContractDataSubfolder(String additionalData){
+    private ContractDataSubfolder createContractDataSubfolder(String additionalData, Duration duration){
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
 
@@ -329,7 +361,8 @@ public class ContractExtensionController {
         Integer contractTypeId = allContractData.getContractNewVersion().getContractJsonData().getContractType();
         ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractTypeId);
 
-        String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription();
+        String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription() +
+                " [" + allContractData.getContractNewVersion().getContractJsonData().getWeeklyWorkHours() + HOURS_WORK_WEEK_TEXT + "]";
 
         return ContractDataSubfolder.create()
                 .withNotificationType(notificationType)
@@ -349,8 +382,12 @@ public class ContractExtensionController {
                 .withEmployeeMaxStudyLevel(study.getStudyDescription())
                 .withStartDate(startDate)
                 .withEndDate(endDate)
+
+
                 .withDayOfWeekSet(dayOfWeekSet)
-                .withDurationDays(Duration.ZERO)
+                .withDurationDays(duration)
+
+
                 .withSchedule(new HashSet<>())
                 .withAdditionalData(additionalData)
                 .withLaborCategory(allContractData.getContractNewVersion().getContractJsonData().getLaborCategory())

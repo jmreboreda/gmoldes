@@ -16,19 +16,20 @@ public class ClientDTO {
     private Short nieNIF_dup;
     private String personOrCompanyName;
     private Short numberOfTimes;
-    private Character codeInSigaProgram;
+    private String codeInSigaProgram;
     private Date dateFrom;
     private Date dateTo;
     private Boolean isActive;
     private Date withoutActivity;
     private String clientType;
+    private Boolean claimInvoices;
 
     public ClientDTO() {
     }
 
     public ClientDTO(Integer id, Integer clientId, String nieNIF, Short nieNIF_dup, String personOrCompanyName,
-                     Short numberOfTimes, Character codeInSigaProgram, Date dateFrom, Date dateTo, Boolean isActive,
-                     Date withoutActivity, String clientType) {
+                     Short numberOfTimes, String codeInSigaProgram, Date dateFrom, Date dateTo, Boolean isActive,
+                     Date withoutActivity, String clientType, Boolean claimInvoices) {
         this.id = id;
         this.clientId = clientId;
         this.nieNIF = nieNIF;
@@ -41,6 +42,7 @@ public class ClientDTO {
         this.isActive = isActive;
         this.withoutActivity = withoutActivity;
         this.clientType = clientType;
+        this.claimInvoices = claimInvoices;
     }
 
     public Integer getId() {
@@ -91,11 +93,11 @@ public class ClientDTO {
         this.numberOfTimes = numberOfTimes;
     }
 
-    public Character getCodeInSigaProgram() {
+    public String getCodeInSigaProgram() {
         return codeInSigaProgram;
     }
 
-    public void setCodeInSigaProgram(Character codeInSigaProgram) {
+    public void setCodeInSigaProgram(String codeInSigaProgram) {
         this.codeInSigaProgram = codeInSigaProgram;
     }
 
@@ -139,6 +141,14 @@ public class ClientDTO {
         this.clientType = clientType;
     }
 
+    public Boolean getClaimInvoices() {
+        return claimInvoices;
+    }
+
+    public void setClaimInvoices(Boolean claimInvoices) {
+        this.claimInvoices = claimInvoices;
+    }
+
     public String toString() {
         return getPersonOrCompanyName();
     }
@@ -155,12 +165,13 @@ public class ClientDTO {
         private Short nieNIF_dup;
         private String personOrCompanyName;
         private Short numberOfTimes;
-        private Character codeInSigaProgram;
+        private String codeInSigaProgram;
         private Date dateFrom;
         private Date dateTo;
         private Boolean isActive;
         private Date withoutActivity;
         private String clientType;
+        private Boolean claimInvoices;
 
         public ClientDTOBuilder withId(Integer id) {
             this.id = id;
@@ -192,7 +203,7 @@ public class ClientDTO {
             return this;
         }
 
-        public ClientDTOBuilder withCodeInSigaProgram(Character codeInSigaProgram) {
+        public ClientDTOBuilder withCodeInSigaProgram(String codeInSigaProgram) {
             this.codeInSigaProgram = codeInSigaProgram;
             return this;
         }
@@ -222,9 +233,14 @@ public class ClientDTO {
             return this;
         }
 
+        public ClientDTOBuilder withClaimInvoices(Boolean claimInvoices) {
+            this.claimInvoices = claimInvoices;
+            return this;
+        }
+
         public ClientDTO build() {
             return new ClientDTO(this.id, this.clientId, this.nieNIF, this.nieNIF_dup, this.personOrCompanyName,
-            this.numberOfTimes, this.codeInSigaProgram, this.dateFrom, this.dateTo, this.isActive, this.withoutActivity, this.clientType);
+            this.numberOfTimes, this.codeInSigaProgram, this.dateFrom, this.dateTo, this.isActive, this.withoutActivity, this.clientType, this.claimInvoices);
         }
     }
 }

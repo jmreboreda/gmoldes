@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<fx:root prefHeight="600.0" type="AnchorPane" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
          <children>
@@ -41,33 +41,37 @@
                   <Insets left="3.0" top="10.0" />
                </VBox.margin>
             </Line>
-            <Button fx:id="newContractButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Nuevo contrato de trabajo" textAlignment="CENTER">
+            <Button fx:id="newContractButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Nuevo contrato de trabajo" textAlignment="CENTER">
                <VBox.margin>
-                  <Insets left="68.5" top="25.0" />
+                  <Insets left="23.5" top="25.0" />
                </VBox.margin>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="timeRecordButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Impresión de Registros Horarios" textAlignment="CENTER">
+            <Button fx:id="timeRecordButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Impresión de Registros Horarios" textAlignment="CENTER">
                <VBox.margin>
-                  <Insets left="68.5" top="10.0" />
+                  <Insets left="23.5" top="10.0" />
                </VBox.margin>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="contractVariationButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Variaciones de contratos" textAlignment="CENTER">
+            <Button fx:id="contractVariationButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Variaciones de contratos" textAlignment="CENTER">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <VBox.margin>
-                  <Insets left="68.5" top="10.0" />
+                  <Insets left="23.52" top="10.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="payrollCheckListButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="300.0" text="Relación para control de nómina mensual">
+            <Button fx:id="clientInvoiceCheckListButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Relación de control de recepción de facturas de clientes">
                <VBox.margin>
-                  <Insets left="68.5" top="10.0" />
+                  <Insets left="23.5" top="10.0" />
+               </VBox.margin></Button>
+            <Button fx:id="payrollCheckListButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Relación de control de recepción y envío de nóminas">
+               <VBox.margin>
+                  <Insets left="23.5" top="10.0" />
                </VBox.margin>
             </Button>
             <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="100.0" text="Salir" textAlignment="CENTER" textFill="#640000">

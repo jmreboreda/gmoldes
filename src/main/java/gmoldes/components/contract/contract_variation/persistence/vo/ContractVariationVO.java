@@ -36,7 +36,7 @@ import java.sql.Date;
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER,
-                query = "select p from ContractVariationVO p where p.contractNumber = :code order by p.contractNumber, p.startDate"
+                query = "select p from ContractVariationVO p where p.contractNumber = :code order by p.startDate"
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE,

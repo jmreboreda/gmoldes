@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.text.Collator;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -49,7 +50,7 @@ public class TimeRecordData extends VBox {
     private Parent parent;
 
     @FXML
-    private ChoiceBox<String> monthName;
+    private ChoiceBox<TimeRecord> monthName;
     @FXML
     private TextField yearNumber;
     @FXML
@@ -91,21 +92,19 @@ public class TimeRecordData extends VBox {
         printButton.setOnMouseClicked(this::onPrintTimeRecord);
         exitButton.setOnMouseClicked(this::onExit);
 
-        Locale locale = Locale.getDefault();
         monthName.setItems(FXCollections.observableArrayList(
-                Month.JANUARY.getDisplayName(TextStyle.FULL, locale),
-                Month.FEBRUARY.getDisplayName(TextStyle.FULL, locale),
-                Month.MARCH.getDisplayName(TextStyle.FULL, locale),
-                Month.APRIL.getDisplayName(TextStyle.FULL, locale),
-                Month.MAY.getDisplayName(TextStyle.FULL, locale),
-                Month.JUNE.getDisplayName(TextStyle.FULL, locale),
-                Month.JULY.getDisplayName(TextStyle.FULL, locale),
-                Month.AUGUST.getDisplayName(TextStyle.FULL, locale),
-                Month.SEPTEMBER.getDisplayName(TextStyle.FULL, locale),
-                Month.OCTOBER.getDisplayName(TextStyle.FULL, locale),
-                Month.NOVEMBER.getDisplayName(TextStyle.FULL, locale),
-                Month.DECEMBER.getDisplayName(TextStyle.FULL, locale)
-                )
+                TimeRecord.create().withNameOfMonth(Month.JANUARY).build(),
+                TimeRecord.create().withNameOfMonth(Month.FEBRUARY).build(),
+                TimeRecord.create().withNameOfMonth(Month.MARCH).build(),
+                TimeRecord.create().withNameOfMonth(Month.APRIL).build(),
+                TimeRecord.create().withNameOfMonth(Month.MAY).build(),
+                TimeRecord.create().withNameOfMonth(Month.JUNE).build(),
+                TimeRecord.create().withNameOfMonth(Month.JULY).build(),
+                TimeRecord.create().withNameOfMonth(Month.AUGUST).build(),
+                TimeRecord.create().withNameOfMonth(Month.SEPTEMBER).build(),
+                TimeRecord.create().withNameOfMonth(Month.OCTOBER).build(),
+                TimeRecord.create().withNameOfMonth(Month.NOVEMBER).build(),
+                TimeRecord.create().withNameOfMonth(Month.DECEMBER).build())
         );
 
         LocalDate localDate = LocalDate.now();
@@ -180,14 +179,26 @@ public class TimeRecordData extends VBox {
 
     private TimeRecord createTimeRecord(){
         TimeRecordCandidateDataDTO data = dataByTimeRecord.getSelectionModel().getSelectedItem();
+
+        Month timeRecordMonth = this.monthName.getSelectionModel().getSelectedItem().getNameOfMonth();
+        String yearMonthReceiptCopyText = "";
+        if(this.monthName.getSelectionModel().getSelectedItem().getNameOfMonth() == Month.DECEMBER){
+            Integer nextYear = Integer.parseInt(this.yearNumber.getText()) + 1;
+            yearMonthReceiptCopyText = "de " + Month.JANUARY.getDisplayName(TextStyle.FULL, Locale.getDefault()) + " de " + nextYear;
+        }
+        else{
+            yearMonthReceiptCopyText = "de " + timeRecordMonth.plus(1L).getDisplayName(TextStyle.FULL, Locale.getDefault()) + " de " + this.yearNumber.getText();
+        }
+
         return TimeRecord.create()
-                .withNameOfMonth(this.monthName.getSelectionModel().getSelectedItem())
+                .withNameOfMonth(this.monthName.getSelectionModel().getSelectedItem().getNameOfMonth())
                 .withYearNumber(this.yearNumber.getText())
                 .withEnterpriseName(clientForTimeRecord.getSelectionModel().getSelectedItem().toString())
                 .withQuoteAccountCode(data.getQuoteAccountCode())
                 .withEmployeeName(data.getEmployeeFullName())
                 .withEmployeeNIF(data.getEmployeeNif())
                 .withNumberHoursPerWeek(data.getHoursByWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase())
+                .withMonthYearReceiptCopyTetx(yearMonthReceiptCopyText)
                 .build();
     }
 
@@ -273,9 +284,12 @@ public class TimeRecordData extends VBox {
 
     private void refreshCandidatesData(List<TimeRecordCandidateDataDTO> candidates){
 
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
         List<TimeRecordCandidateDataDTO> sortedCandidatesByName = candidates
                 .stream()
-                .sorted(Comparator.comparing(TimeRecordCandidateDataDTO::getEmployeeFullName)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(TimeRecordCandidateDataDTO::getEmployeeFullName, primaryCollator)).collect(Collectors.toList());
 
         ObservableList<TimeRecordCandidateDataDTO> candidateObList = FXCollections.observableArrayList(sortedCandidatesByName);
         dataByTimeRecord.setItems(candidateObList);
@@ -295,9 +309,12 @@ public class TimeRecordData extends VBox {
             activeClientListWithoutDuplicates.add(itemMap.getValue());
         }
 
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
         return activeClientListWithoutDuplicates
                 .stream()
-                .sorted(Comparator.comparing(TimeRecordClientDTO::getNom_rzsoc)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(TimeRecordClientDTO::getNom_rzsoc, primaryCollator)).collect(Collectors.toList());
     }
 
     private PersonDTO retrievePersonByPersonId(Integer employeeId){
@@ -309,7 +326,7 @@ public class TimeRecordData extends VBox {
 
     private LocalDate retrieveDateForTimeRecordFromSelector(){
 
-        Integer numberOfMonth = (monthName.getSelectionModel().getSelectedIndex()) + 1;
+        Integer numberOfMonth = (monthName.getSelectionModel().getSelectedItem().getNameOfMonth().getValue());
         Integer numberOfYear = null;
 
         try{
