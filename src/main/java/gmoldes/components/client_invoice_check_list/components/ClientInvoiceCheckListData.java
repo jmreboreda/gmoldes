@@ -50,6 +50,8 @@ public class ClientInvoiceCheckListData extends VBox {
 
         columnClientGMFullName.setCellValueFactory(new PropertyValueFactory<ClientInvoiceCheckListDTO,String>("clientGMFullName"));
         columnSg21Code.setCellValueFactory(new PropertyValueFactory<ClientInvoiceCheckListDTO,String>("sg21Code"));
+        columnSg21Code.setStyle("-fx-alignment: CENTER;");
+
 
         this.month.setOnAction(this::onMonthChanged);
         this.year.setOnAction(this::onYearChanged);

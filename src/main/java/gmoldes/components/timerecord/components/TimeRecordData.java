@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.text.Collator;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -283,9 +284,12 @@ public class TimeRecordData extends VBox {
 
     private void refreshCandidatesData(List<TimeRecordCandidateDataDTO> candidates){
 
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
         List<TimeRecordCandidateDataDTO> sortedCandidatesByName = candidates
                 .stream()
-                .sorted(Comparator.comparing(TimeRecordCandidateDataDTO::getEmployeeFullName)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(TimeRecordCandidateDataDTO::getEmployeeFullName, primaryCollator)).collect(Collectors.toList());
 
         ObservableList<TimeRecordCandidateDataDTO> candidateObList = FXCollections.observableArrayList(sortedCandidatesByName);
         dataByTimeRecord.setItems(candidateObList);
@@ -305,9 +309,12 @@ public class TimeRecordData extends VBox {
             activeClientListWithoutDuplicates.add(itemMap.getValue());
         }
 
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
         return activeClientListWithoutDuplicates
                 .stream()
-                .sorted(Comparator.comparing(TimeRecordClientDTO::getNom_rzsoc)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(TimeRecordClientDTO::getNom_rzsoc, primaryCollator)).collect(Collectors.toList());
     }
 
     private PersonDTO retrievePersonByPersonId(Integer employeeId){

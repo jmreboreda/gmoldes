@@ -9,6 +9,7 @@ import gmoldes.domain.person.dto.PersonDTO;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.text.Collator;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.MonthDay;
@@ -117,9 +118,12 @@ public class ClientInvoiceCheckList {
             clientInvoiceCheckListDTOList.add(clientInvoiceCheckListDTO);
         }
 
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
         return clientInvoiceCheckListDTOList
                 .stream()
-                .sorted(Comparator.comparing(ClientInvoiceCheckListDTO::getClientGMFullName)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(ClientInvoiceCheckListDTO::getClientGMFullName, primaryCollator)).collect(Collectors.toList());
     }
 
     private List<ContractNewVersionDTO> findAllContractInForceInPeriod(Month month, Integer year){

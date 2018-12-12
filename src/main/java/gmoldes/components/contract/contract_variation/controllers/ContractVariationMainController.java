@@ -30,11 +30,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.text.Collator;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -137,9 +140,12 @@ public class ContractVariationMainController extends VBox {
         contractVariationContractData.clearAllContractData();
         List<ClientDTO> clientDTOList = applicationMainController.findAllClientWithContractInForceAtDate(workDate);
 
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
         List<ClientDTO> clientDTOListSorted = clientDTOList
                 .stream()
-                .sorted(Comparator.comparing(ClientDTO::getPersonOrCompanyName)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(ClientDTO::getPersonOrCompanyName, primaryCollator)).collect(Collectors.toList());
 
         ObservableList<ClientDTO> clientDTOS = FXCollections.observableArrayList(clientDTOListSorted);
         contractVariationParts.loadDataInClientSelector(clientDTOS);

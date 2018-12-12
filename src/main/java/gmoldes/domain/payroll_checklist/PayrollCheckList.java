@@ -8,6 +8,7 @@ import gmoldes.domain.person.dto.PersonDTO;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.text.Collator;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
@@ -98,9 +99,12 @@ public class PayrollCheckList {
             payrollCheckListDTOList.add(payrollCheckListDTO);
         }
 
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
         return payrollCheckListDTOList
                 .stream()
-                .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName, primaryCollator)).collect(Collectors.toList());
     }
 
     private List<ContractNewVersionDTO> findAllContractInForceInPeriod(Month month, Integer year){

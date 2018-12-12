@@ -16,7 +16,7 @@ public class ClientDTO {
     private Short nieNIF_dup;
     private String personOrCompanyName;
     private Short numberOfTimes;
-    private Character codeInSigaProgram;
+    private String codeInSigaProgram;
     private Date dateFrom;
     private Date dateTo;
     private Boolean isActive;
@@ -28,7 +28,7 @@ public class ClientDTO {
     }
 
     public ClientDTO(Integer id, Integer clientId, String nieNIF, Short nieNIF_dup, String personOrCompanyName,
-                     Short numberOfTimes, Character codeInSigaProgram, Date dateFrom, Date dateTo, Boolean isActive,
+                     Short numberOfTimes, String codeInSigaProgram, Date dateFrom, Date dateTo, Boolean isActive,
                      Date withoutActivity, String clientType, Boolean claimInvoices) {
         this.id = id;
         this.clientId = clientId;
@@ -93,11 +93,11 @@ public class ClientDTO {
         this.numberOfTimes = numberOfTimes;
     }
 
-    public Character getCodeInSigaProgram() {
+    public String getCodeInSigaProgram() {
         return codeInSigaProgram;
     }
 
-    public void setCodeInSigaProgram(Character codeInSigaProgram) {
+    public void setCodeInSigaProgram(String codeInSigaProgram) {
         this.codeInSigaProgram = codeInSigaProgram;
     }
 
@@ -165,7 +165,7 @@ public class ClientDTO {
         private Short nieNIF_dup;
         private String personOrCompanyName;
         private Short numberOfTimes;
-        private Character codeInSigaProgram;
+        private String codeInSigaProgram;
         private Date dateFrom;
         private Date dateTo;
         private Boolean isActive;
@@ -203,7 +203,7 @@ public class ClientDTO {
             return this;
         }
 
-        public ClientDTOBuilder withCodeInSigaProgram(Character codeInSigaProgram) {
+        public ClientDTOBuilder withCodeInSigaProgram(String codeInSigaProgram) {
             this.codeInSigaProgram = codeInSigaProgram;
             return this;
         }

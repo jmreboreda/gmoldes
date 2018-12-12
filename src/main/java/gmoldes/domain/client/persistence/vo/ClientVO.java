@@ -51,7 +51,7 @@ public class ClientVO implements Serializable {
     private String nom_rzsoc;
     private Short numvez;
     @Column(name = "cltsg21", length = 4)
-    private Character cltsg21;
+    private String cltsg21;
     private Date fdesde;
     private Date fhasta;
     private Boolean cltactivo;
@@ -109,11 +109,11 @@ public class ClientVO implements Serializable {
         this.numvez = numvez;
     }
 
-    public Character getCltsg21() {
+    public String getCltsg21() {
         return cltsg21;
     }
 
-    public void setCltsg21(Character cltsg21) {
+    public void setCltsg21(String cltsg21) {
         this.cltsg21 = cltsg21;
     }
 

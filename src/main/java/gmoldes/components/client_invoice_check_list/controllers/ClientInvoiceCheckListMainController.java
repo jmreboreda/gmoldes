@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.text.Collator;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
@@ -81,7 +82,6 @@ public class ClientInvoiceCheckListMainController extends VBox {
         ClientInvoiceCheckList clientInvoiceCheckList = new ClientInvoiceCheckList();
         List<ClientInvoiceCheckListDTO> clientInvoiceCheckListDTOList = clientInvoiceCheckList.retrieveAllClientGMWithInvoiceInForceInPeriod(month, year);
         for(ClientInvoiceCheckListDTO clientInvoiceCheckListDTO : clientInvoiceCheckListDTOList){
-            System.out.println("ClienteGMFullName: " + clientInvoiceCheckListDTO.getClientGMFullName() + " ::: Sg21Code: " + clientInvoiceCheckListDTO.getSg21Code() );
             withoutClientGMDuplicates.put(clientInvoiceCheckListDTO.getClientGMFullName(), clientInvoiceCheckListDTO);
         }
 
@@ -90,9 +90,12 @@ public class ClientInvoiceCheckListMainController extends VBox {
             withoutDuplicatesClientInvoiceCheckListDTO.add(itemMap.getValue());
         }
 
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
         List<ClientInvoiceCheckListDTO> orderedClientInvoiceCheckListDTO = withoutDuplicatesClientInvoiceCheckListDTO
                 .stream()
-                .sorted(Comparator.comparing(ClientInvoiceCheckListDTO::getClientGMFullName)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(ClientInvoiceCheckListDTO::getClientGMFullName, primaryCollator)).collect(Collectors.toList());
 
         ObservableList<ClientInvoiceCheckListDTO> clientInvoiceCheckListDTOS = FXCollections.observableArrayList(orderedClientInvoiceCheckListDTO);
         clientInvoiceCheckListData.getClientInvoiceTable().setItems(clientInvoiceCheckListDTOS);

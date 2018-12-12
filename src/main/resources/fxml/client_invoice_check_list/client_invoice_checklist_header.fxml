@@ -61,23 +61,23 @@
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="330.0" text="Listado de control de aviso de envío" textAlignment="CENTER" textFill="#640000">
                <font>
-                  <Font name="System Bold" size="16.0" />
+                  <Font name="System Bold" size="14.0" />
                </font>
                <GridPane.margin>
                   <Insets top="5.0" />
                </GridPane.margin>
             </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="330.0" text="y de recepción de las facturas mensuales" textAlignment="CENTER" textFill="#640000" GridPane.columnSpan="3" GridPane.rowIndex="1">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="330.0" text="y de recepción de facturas mensuales" textAlignment="CENTER" textFill="#640000" GridPane.columnSpan="3" GridPane.rowIndex="1">
                <font>
-                  <Font name="System Bold" size="16.0" />
+                  <Font name="System Bold" size="14.0" />
                </font>
                <GridPane.margin>
                   <Insets top="5.0" />
                </GridPane.margin>
             </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="330.0" text="de la actividad de los clientes" textAlignment="CENTER" textFill="#640000" GridPane.rowIndex="2">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="330.0" text="de las actividades de los clientes" textAlignment="CENTER" textFill="#640000" GridPane.rowIndex="2">
                <font>
-                  <Font name="System Bold" size="16.0" />
+                  <Font name="System Bold" size="14.0" />
                </font>
                <GridPane.margin>
                   <Insets bottom="20.0" top="5.0" />

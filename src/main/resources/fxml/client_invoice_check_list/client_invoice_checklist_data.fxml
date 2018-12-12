@@ -38,7 +38,7 @@
             <Insets top="10.0" />
          </VBox.margin>
       </HBox>
-      <TableView fx:id="payrollTable" minHeight="600.0">
+      <TableView fx:id="clientInvoiceTable" minHeight="600.0">
         <columns>
           <TableColumn fx:id="columnClientGMFullName" maxWidth="-1.0" minWidth="541.0" prefWidth="-1.0" resizable="false" text="Cliente Gestoría MOLDES" />
           <TableColumn fx:id="columnSg21Code" maxWidth="-1.0" minWidth="149.0" prefWidth="-1.0" resizable="false" text="Código cliente SG21" />
