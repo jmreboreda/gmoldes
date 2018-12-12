@@ -5,8 +5,10 @@ import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
 import javax.persistence.TypedQuery;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 public class ClientDAO {
@@ -54,14 +56,6 @@ public class ClientDAO {
 
         return query.getSingleResult();
     }
-//
-//    public List<ClientVO> findAllPersonInAlphabeticalOrder(){
-//
-//        Query query = session.createQuery(FIND_ALL_PERSON_IN_ALPHABETICAL_ORDER);
-//        List<ClientVO> personVOList = query.getResultList();
-//
-//        return personVOList;
-//    }
 
     public List<ClientVO> findAllActiveClientsInAlphabeticalOrder(){
 
@@ -78,30 +72,16 @@ public class ClientDAO {
         return query.getResultList();
     }
 
+    public List<ClientVO> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
 
-//    public Integer findPersonBySameName(ClientVO personVO){
-//
-//        List<ClientVO> personVOList;
-//        Integer personId = null;
-//
-//        Query query = session.createQuery(FIND_PERSON_BY_STRICT_NAME)
-//            .setParameter("code1", personVO.getApellido1())
-//            .setParameter("code2", personVO.getApellido2())
-//            .setParameter("code3", personVO.getNombre());
-//
-//            personVOList = query.getResultList();
-//            for(ClientVO pVO : personVOList){
-//                personId = pVO.getId();
-//            }
-//        return personId;
-//    }
+        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD, ClientVO.class);
+        Date initialDateOfPeriod = Date.valueOf(initialDate);
+        Date finalDateOfPeriod = Date.valueOf(finalDate);
 
-//    public Session getSession() {
-//        return session;
-//    }
-//
-//    public void setSession(Session session) {
-//        this.session = session;
-//    }
+        query.setParameter("initialDate", initialDateOfPeriod);
+        query.setParameter("finalDate", finalDateOfPeriod);
 
+
+        return query.getResultList();
+    }
 }

@@ -21,6 +21,7 @@ import gmoldes.domain.person.mapper.MapperPersonVODTO;
 import gmoldes.domain.person.persistence.dao.PersonDAO;
 import gmoldes.domain.person.persistence.vo.PersonVO;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +62,18 @@ public class ApplicationMainManager {
 
         return clientDTOList;
 
+    }
+
+    public List<ClientDTO> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+        ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
+        List<ClientVO> clientVOList = clientDAO.findAllClientGMWithInvoiceInForceInPeriod(initialDate, finalDate);
+
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+        for(ClientVO clientVO : clientVOList){
+            clientDTOList.add(MapperClientVODTO.map(clientVO));
+        }
+
+        return clientDTOList;
     }
 
     public List<ContractFullDataDTO> findAllDataForContractInForceAtDateByClientId(Integer clientId, LocalDate date){
@@ -282,7 +295,7 @@ public class ApplicationMainManager {
         ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
         ClientVO clientVO = clientDAO.findClientById(clientId);
 
-        return MapperClientVODTO.mapClientVODTO(clientVO);
+        return MapperClientVODTO.map(clientVO);
     }
 
     public PersonDTO retrievePersonByPersonID(Integer personId){

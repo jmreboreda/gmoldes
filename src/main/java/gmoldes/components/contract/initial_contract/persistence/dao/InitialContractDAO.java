@@ -129,10 +129,10 @@ public class InitialContractDAO {
         TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_ACTIVE_INITIAL_CONTRACT_IN_PERIOD, InitialContractVO.class);
 
         java.util.Date initialUtilDate = Date.from(initialDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        java.util.Date finallUtilDate = Date.from(finalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.util.Date finalUtilDate = Date.from(finalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         query.setParameter("codeInitialDate", initialUtilDate);
-        query.setParameter("codeFinalDate", finallUtilDate);
+        query.setParameter("codeFinalDate", finalUtilDate);
 
         return  query.getResultList();
     }
@@ -141,10 +141,10 @@ public class InitialContractDAO {
         TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_INITIAL_CONTRACT_IN_FORCE_IN_PERIOD, InitialContractVO.class);
 
         java.util.Date initialUtilDate = Date.from(initialDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        java.util.Date finallUtilDate = Date.from(finalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.util.Date finalUtilDate = Date.from(finalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         query.setParameter("codeInitialDate", initialUtilDate);
-        query.setParameter("codeFinalDate", finallUtilDate);
+        query.setParameter("codeFinalDate", finalUtilDate);
 
         return  query.getResultList();
     }
