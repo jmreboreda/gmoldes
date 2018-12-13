@@ -1,6 +1,8 @@
 package gmoldes.components.contract.new_contract.controllers;
 
 import com.lowagie.text.DocumentException;
+import gmoldes.ApplicationMainController;
+import gmoldes.ApplicationMainManager;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
@@ -26,6 +28,8 @@ import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
+import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.domain.traceability_contract_documentation.persistence.vo.TraceabilityContractDocumentationVO;
 import gmoldes.services.Email.EmailParameters;
 import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
@@ -238,7 +242,8 @@ public class NewContractMainController extends VBox {
         if (statusText.equals(ContractConstants.REVISION_WITHOUT_ERRORS)) {
             if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
                 persistOldContractToSave();
-                persistInitialContract();
+                Integer contractNumber = persistInitialContract();
+                persistTraceability(contractNumber);
                 contractActionComponents.enablePDFButton(true);
                 }
         }
@@ -381,7 +386,7 @@ public class NewContractMainController extends VBox {
         }
     }
 
-    private void persistInitialContract(){
+    private Integer persistInitialContract(){
 
         String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 
@@ -418,6 +423,27 @@ public class NewContractMainController extends VBox {
         }else{
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);
         }
+
+        return contractNumber;
+    }
+
+    private void persistTraceability(Integer contractNumber){
+
+        TraceabilityContractDocumentationDTO traceabilityDTO = TraceabilityContractDocumentationDTO.create()
+                .withContractNumber(contractNumber)
+                .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
+                .withStartDate(contractData.getDateFrom())
+                .withExpectedEndDate(contractData.getDateTo())
+                .build();
+
+        ContractManager contractManager = new ContractManager();
+        Integer id = contractManager.saveContractTraceability(traceabilityDTO);
+
+        if(id == null){
+
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_TRACEABILITY_BAD);
+        }
+
     }
 
     private void blockingInterfaceAfterContractPersistence(Integer contractNumber){
@@ -429,7 +455,9 @@ public class NewContractMainController extends VBox {
         contractSchedule.setMouseTransparent(true);
         contractPublicNotes.setMouseTransparent(true);
         contractPrivateNotes.setMouseTransparent(true);
+
         Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_SAVED_OK + contractNumber);
+
         contractActionComponents.enableOkButton(false);
         contractActionComponents.enableSendMailButton(true);
 

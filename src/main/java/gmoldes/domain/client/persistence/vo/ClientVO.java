@@ -8,7 +8,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "clientes", uniqueConstraints = {@UniqueConstraint(columnNames = {"nifcif", "nifcif_dup"})})
+@Table(name = "clients", uniqueConstraints = {@UniqueConstraint(columnNames = {"nifcif", "nifcif_dup"})})
 @NamedQueries(value = {
         @NamedQuery(
                 name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER,

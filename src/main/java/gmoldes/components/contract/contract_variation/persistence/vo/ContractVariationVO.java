@@ -58,7 +58,7 @@ import java.sql.Date;
 })
 
 @Entity
-@Table(name = "contractvariation")
+@Table(name = "contract_variation")
 @TypeDefs({
         @TypeDef(name = "string-array", typeClass = StringArrayType.class),
         @TypeDef(name = "int-array", typeClass = IntArrayType.class),

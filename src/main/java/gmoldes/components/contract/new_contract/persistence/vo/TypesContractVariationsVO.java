@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "typescontractvariations")
+@Table(name = "types_contract_variations")
 @NamedQueries(value = {
         @NamedQuery(
                 name = TypesContractVariationsVO.FIND_TYPES_CONTRACT_VARIATIONS_BY_ID,

@@ -10,7 +10,10 @@ import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.*;
-
+import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.domain.traceability_contract_documentation.mapper.MapperTraceabilityContractDocumentationDTOVO;
+import gmoldes.domain.traceability_contract_documentation.persistence.dao.TraceabilityContractDocumentationDAO;
+import gmoldes.domain.traceability_contract_documentation.persistence.vo.TraceabilityContractDocumentationVO;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -40,6 +43,13 @@ public class ContractManager {
         InitialContractVO initialContractVO = MapperInitialContractDTOVO.map(contractNewVersionDTO);
 
         return initialContractDAO.create(initialContractVO);
+    }
+
+    public Integer saveContractTraceability(TraceabilityContractDocumentationDTO traceabilityDTO){
+        TraceabilityContractDocumentationDAO traceabilityContractDocumentationDAO = TraceabilityContractDocumentationDAO.TraceabilityContractDocumentationDAOFactory.getInstance();
+        TraceabilityContractDocumentationVO traceabilityVO = MapperTraceabilityContractDocumentationDTOVO.map(traceabilityDTO);
+
+        return traceabilityContractDocumentationDAO.create(traceabilityVO);
     }
 
     public Integer updateInitialContract(ContractNewVersionDTO contractNewVersionDTO ){
