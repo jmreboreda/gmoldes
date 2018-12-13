@@ -43,7 +43,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import javax.mail.internet.AddressException;
 import java.awt.print.PrinterException;
 import java.io.IOException;
@@ -54,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.logging.Logger;
@@ -625,6 +625,18 @@ public class NewContractMainController extends VBox {
 
             String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 
+            String yearMonthReceiptCopyText;
+            Month actualMonth = this.contractData.getDateFrom().getMonth();
+            Month nextMonth = actualMonth.plus(1L);
+            Integer actualYear = this.contractData.getDateFrom().getYear();
+            Integer nextYear = actualYear + 1;
+            if(actualMonth == Month.DECEMBER){
+                yearMonthReceiptCopyText = "de " + Month.JANUARY.getDisplayName(TextStyle.FULL, Locale.getDefault()) + " de " + nextYear;
+            }
+            else{
+                yearMonthReceiptCopyText = "de " + nextMonth.getDisplayName(TextStyle.FULL, Locale.getDefault()) + " de " + actualYear;
+            }
+
             TimeRecord timeRecord = TimeRecord.create()
                     .withNameOfMonth(this.contractData.getDateFrom().getMonth())
                     .withYearNumber(Integer.toString(contractData.getDateFrom().getYear()))
@@ -633,6 +645,7 @@ public class NewContractMainController extends VBox {
                     .withEmployeeName(this.contractParts.getSelectedEmployee().getApellidos() + ", " + this.contractParts.getSelectedEmployee().getNom_rzsoc())
                     .withEmployeeNIF(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
                     .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase())
+                    .withMonthYearReceiptCopyTetx(yearMonthReceiptCopyText)
                     .build();
 
             /* Create the TimeRecordPDF */

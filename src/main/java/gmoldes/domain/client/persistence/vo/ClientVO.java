@@ -28,7 +28,7 @@ import java.util.Set;
         ),
         @NamedQuery(
                 name = ClientVO.FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD,
-                query = "select p from ClientVO as p where (p.fdesde is null or p.fdesde <= :initialDate) and (p.fhasta is null or p.fhasta >= :finalDate) and p.sinactividad is null and claiminvoices = true order by p.nom_rzsoc"
+                query = "select p from ClientVO as p where (p.fdesde is null or p.fdesde <= :finalDate) and (p.fhasta is null or p.fhasta >= :finalDate) and p.sinactividad is null and claiminvoices = true order by p.nom_rzsoc"
         )
 })
 

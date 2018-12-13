@@ -241,28 +241,39 @@ public class ContractVariationMainController extends VBox {
             return;
         }
 
-
-        if(!Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)){
-            return;
-        }
-
-            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
-                    this.getScene(),
-                    contractVariationParts,
-                    contractVariationTypes,
-                    contractVariationContractVariations);
-
-            Boolean isCorrectManagement = contractExtinctionController.manageContractExtinction();
-
-            if(isCorrectManagement){
-                contractVariationParts.setMouseTransparent(true);
-                contractVariationTypes.setMouseTransparent(true);
-                contractVariationContractVariations.setMouseTransparent(true);
-                contractVariationActionComponents.getOkButton().setDisable(true);
-                contractVariationActionComponents.getSendMailButton().setDisable(false);
+        // Contract conversion
+        RadioButton rbContractConversion = contractVariationTypes.getRbContractConversion();
+        if(rbContractConversion.isSelected()) {
+            Boolean contractConversionIsCorrect = contractVariationContractExtensionSelected();
+            if(contractConversionIsCorrect) {
+                persistenceOfContractVariation(new CompatibleVariationEvent(false, false,true, ""));
             }
 
             return;
+        }
+
+
+//        if(!Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)){
+//            return;
+//        }
+
+//            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
+//                    this.getScene(),
+//                    contractVariationParts,
+//                    contractVariationTypes,
+//                    contractVariationContractVariations);
+//
+//            Boolean isCorrectManagement = contractExtinctionController.manageContractExtinction();
+//
+//            if(isCorrectManagement){
+//                contractVariationParts.setMouseTransparent(true);
+//                contractVariationTypes.setMouseTransparent(true);
+//                contractVariationContractVariations.setMouseTransparent(true);
+//                contractVariationActionComponents.getOkButton().setDisable(true);
+//                contractVariationActionComponents.getSendMailButton().setDisable(false);
+//            }
+//
+//            return;
     }
 
     private void onExitButton(MouseEvent event){

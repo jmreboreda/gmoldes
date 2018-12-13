@@ -78,7 +78,7 @@ public class ClientDAO {
         Date initialDateOfPeriod = Date.valueOf(initialDate);
         Date finalDateOfPeriod = Date.valueOf(finalDate);
 
-        query.setParameter("initialDate", initialDateOfPeriod);
+//        query.setParameter("initialDate", initialDateOfPeriod);
         query.setParameter("finalDate", finalDateOfPeriod);
 
 
