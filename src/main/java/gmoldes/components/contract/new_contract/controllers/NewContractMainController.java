@@ -1,8 +1,6 @@
 package gmoldes.components.contract.new_contract.controllers;
 
 import com.lowagie.text.DocumentException;
-import gmoldes.ApplicationMainController;
-import gmoldes.ApplicationMainManager;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
@@ -29,7 +27,6 @@ import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
-import gmoldes.domain.traceability_contract_documentation.persistence.vo.TraceabilityContractDocumentationVO;
 import gmoldes.services.Email.EmailParameters;
 import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
@@ -243,7 +240,7 @@ public class NewContractMainController extends VBox {
             if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
                 persistOldContractToSave();
                 Integer contractNumber = persistInitialContract();
-                persistTraceability(contractNumber);
+                persistTraceabilityControlData(contractNumber);
                 contractActionComponents.enablePDFButton(true);
                 }
         }
@@ -424,15 +421,18 @@ public class NewContractMainController extends VBox {
         return contractNumber;
     }
 
-    private void persistTraceability(Integer contractNumber){
+    private void persistTraceabilityControlData(Integer contractNumber){
 
+        Integer contractVariationType = contractData.getContractType().getContractCode();
         LocalDate contractEndNoticeToSave = contractData.getDateTo() == null ?  LocalDate.of(9999, 12, 31) : null;
+        LocalDate dateFrom = contractData.getDateFrom();
+        LocalDate dateTo = contractData.getDateTo();
 
         TraceabilityContractDocumentationDTO traceabilityDTO = TraceabilityContractDocumentationDTO.create()
                 .withContractNumber(contractNumber)
-                .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
-                .withStartDate(contractData.getDateFrom())
-                .withExpectedEndDate(contractData.getDateTo())
+                .withVariationType(contractVariationType)
+                .withStartDate(dateFrom)
+                .withExpectedEndDate(dateTo)
                 .withContractEndNoticeReceptionDate(contractEndNoticeToSave)
                 .build();
 
@@ -441,7 +441,7 @@ public class NewContractMainController extends VBox {
 
         if(id == null){
 
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_TRACEABILITY_BAD);
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
         }
 
     }

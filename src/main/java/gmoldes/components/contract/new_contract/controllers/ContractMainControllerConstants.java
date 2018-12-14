@@ -13,7 +13,4 @@ public class ContractMainControllerConstants {
     public static final String QUESTION_SEND_MAIL_TO_CONTRACT_AGENT = "¿Se envía correo-e de datos al gestor?";
     public static final String CONTRACT_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT = "Contrato guardado pero no enviado al gestor.\n ¿Es correcto?";
     public static final String TIME_RECORD_PDF_NOT_CREATED = "No se ha podido crear el PDF del registro horario.";
-    public static final String PDF_CONTRACT_DATA_VIEWER_PROGRAM_IS_RUN = "Cierre la pestaña del visor de PDF dónde se está visualizando el documento de datos para el gestor laboral.";
-
-    public static final String CONTRACT_TRACEABILITY_BAD = "Ha ocurrido un error al pesistir la trazabilidad del contrato en \"traceability_contract_documentation\".";
 }
