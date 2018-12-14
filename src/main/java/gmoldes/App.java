@@ -27,8 +27,6 @@ import java.util.List;
 
 public class App extends Application {
 
-    public static final Integer END_OF_CONTRACT_NOTICE_DAYS = 20;
-
     @Override
     public void start(Stage primaryStage) throws Exception{
 
@@ -67,89 +65,15 @@ public class App extends Application {
 
     private void initialControlProcesses(Stage primaryStage) throws ParseException {
 
+        InitialChecks.alertByContractNewVersionExpiration(primaryStage);
+
         updateContractsInForceInDatabase();
-        //primaryStage.getScene().getWindow().hide();
-        alertByContractExpiration(primaryStage);
-        alertByContractNewVersionExpiration(primaryStage);
-        //alertByNewContractExpiration(primaryStage);
         alertOfPendingIDC(primaryStage);
     }
 
     private void updateContractsInForceInDatabase(){
         InitialChecks.UpdateContractsInForce();
     }
-
-    private void alertByContractExpiration(Stage primaryStage){
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(gmoldes.utilities.Parameters.DEFAULT_DATE_FORMAT);
-        String alert = "";
-        String missingExceededText = "";
-        List<ContractDTO> contractsExpiration = InitialChecks.contractExpirationControl();
-        if(!contractsExpiration.isEmpty()) {
-            for (ContractDTO contractDTO : contractsExpiration) {
-                Integer daysForContractExpiration = Period.between(LocalDate.now(), contractDTO.getDateTo()).getDays();
-                if(daysForContractExpiration >= 0){
-                    missingExceededText = "Faltan ";
-                }else{
-                    missingExceededText = "Excedido en ";
-                }
-                alert = alert + "Preaviso del contrato de " + contractDTO.getWorkerName() + " con " + contractDTO.getClientGMName()
-                        + ": vencimiento el día " + contractDTO.getDateTo().format(dateFormatter) + ". " + missingExceededText + Math.abs(daysForContractExpiration) + " días." + "\n\n";
-            }
-
-            Message.warningMessage(primaryStage.getOwner(), "Preavisos de fin de contrato pendientes de recepción", alert);
-        }
-    }
-
-    private void alertByContractNewVersionExpiration(Stage primaryStage){
-
-        String alertString = "";
-
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-        List<TraceabilityContractDocumentationDTO>  traceabilityContractDocumentationDTOList = applicationMainController.findTraceabilityForAllContractWithPendingContractEndNotice();
-        if(!traceabilityContractDocumentationDTOList.isEmpty()) {
-            for (TraceabilityContractDocumentationDTO traceabilityDTO : traceabilityContractDocumentationDTOList) {
-                if(ChronoUnit.DAYS.between(LocalDate.now(), traceabilityDTO.getExpectedEndDate()) <= 30){
-                     InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(traceabilityDTO.getContractNumber());
-                     Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
-                     ClientDTO clientDTO = applicationMainController.findClientById(clientGMId);
-                     Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
-                     PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
-
-                    System.out.println("Aquí tenemos uno de 30 días o menos: " + traceabilityDTO.getContractNumber() + " ::: " + clientDTO.getPersonOrCompanyName() + " ::: " + workerDTO.getApellidos());
-                }
-            }
-        }
-
-
-
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//        String alert = "";
-//        String missingExceededText = "";
-//        ApplicationMainController applicationMainController = new ApplicationMainController();
-//        List<ContractNewVersionDTO> contractNewVersionDTOList = applicationMainController.findAllTemporalContractInForceNow();
-//        if(!contractNewVersionDTOList.isEmpty()) {
-//            for (ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList) {
-//                Integer daysForContractExpiration = Period.between(LocalDate.now(), contractNewVersionDTO.getExpectedEndDate()).getDays();
-//                System.out.println(contractNewVersionDTO.getExpectedEndDate() + " - "+ LocalDate.now() + " = ¿"+ daysForContractExpiration + "? días");
-//                if (daysForContractExpiration <= END_OF_CONTRACT_NOTICE_DAYS) {
-//                    if(daysForContractExpiration - END_OF_CONTRACT_NOTICE_DAYS >= 0) {
-//                        missingExceededText = "Faltan ";
-//                    } else {
-//                        missingExceededText = "Excedido en ";
-//                    }
-//
-//                    PersonDTO worker = applicationMainController.findPersonById(contractNewVersionDTO.getContractJsonData().getWorkerId());
-//                    ClientDTO client = applicationMainController.findClientById(contractNewVersionDTO.getContractJsonData().getClientGMId());
-//                    alert = alert + "Preaviso del contrato de " + worker.getApellidos() + ", " + worker.getNom_rzsoc() + " con " + client.getPersonOrCompanyName()
-//                            + ": vencimiento el día " + contractNewVersionDTO.getExpectedEndDate().format(formatter) + ". " + missingExceededText + Math.abs(daysForContractExpiration) + " días." + "\n\n";
-//                }
-//            }
-//            if(!alert.isEmpty()) {
-//                Message.warningMessage(primaryStage.getOwner(), "Preavisos de fin de contrato pendientes de recepción", alert);
-//            }
-//        }
-    }
-
 
     private void alertOfPendingIDC(Stage primaryStage) throws ParseException {
         String alert = "";
