@@ -200,9 +200,11 @@ public class ContractExtinctionController{
 
     private Integer persistTraceabilityControlData(){
 
+        // In a contract extinction the date for the notice of termination of contract is set at 31-12-9999
+        LocalDate contractEndNoticeToSave = LocalDate.of(9999, 12, 31);
+
         Integer contractVariationType = contractVariationContractVariations.getContractVariationContractExtinction()
                 .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getId_variation();
-        LocalDate contractEndNoticeToSave = LocalDate.of(9999, 12, 31);
         Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
         LocalDate dateFrom = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
         LocalDate dateTo = null;

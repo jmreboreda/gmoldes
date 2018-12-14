@@ -17,6 +17,7 @@ import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
+import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.OSUtils;
@@ -227,9 +228,37 @@ public class ContractExtensionController {
             return ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT;
         }
 
+        if(persistTraceabilityControlData() == null){
+
+            return ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA;
+        }
+
         Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK);
 
         return null;
+    }
+
+    private Integer persistTraceabilityControlData(){
+
+        // The extension of the contract does not generate IDC, so the reception date of this is set at 31 -12-9999
+        LocalDate IDCReceptionDate = LocalDate.of(9999,12,31);
+
+        Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel()
+                .getSelectedItem().getContractNewVersion().getContractNumber();
+        LocalDate dateFrom = contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue();
+        LocalDate dateTo =  contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue();
+
+        TraceabilityContractDocumentationDTO traceabilityDTO = TraceabilityContractDocumentationDTO.create()
+                .withContractNumber(contractNumber)
+                .withVariationType(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)
+                .withStartDate(dateFrom)
+                .withExpectedEndDate(dateTo)
+                .withIDCReceptionDate(IDCReceptionDate)
+                .build();
+
+        ContractManager contractManager = new ContractManager();
+
+        return contractManager.saveContractTraceability(traceabilityDTO);
     }
 
     private Integer updateLastContractVariation(Integer contractNumber){

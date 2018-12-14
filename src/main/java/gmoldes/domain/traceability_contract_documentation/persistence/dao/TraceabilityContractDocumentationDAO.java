@@ -46,6 +46,12 @@ public class TraceabilityContractDocumentationDAO {
         return traceabilityContractDocumentationVO.getId();
     }
 
+    public List<TraceabilityContractDocumentationVO> findTraceabilityForAllContractWithPendingContractDocumentationToClient(){
+        TypedQuery<TraceabilityContractDocumentationVO> query = session.createNamedQuery(TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_DOCUMENTATION_TO_CLIENT, TraceabilityContractDocumentationVO.class);
+
+        return query.getResultList();
+    }
+
     public List<TraceabilityContractDocumentationVO> findTraceabilityForAllContractWithPendingIDC(){
         TypedQuery<TraceabilityContractDocumentationVO> query = session.createNamedQuery(TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_IDC, TraceabilityContractDocumentationVO.class);
 
@@ -57,12 +63,4 @@ public class TraceabilityContractDocumentationDAO {
 
         return query.getResultList();
     }
-
-
-    public List<TraceabilityContractDocumentationVO> findTraceabilityForAllContractWithPendingContractDocumentationToClient(){
-        TypedQuery<TraceabilityContractDocumentationVO> query = session.createNamedQuery(TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_DOCUMENTATION_TO_CLIENT, TraceabilityContractDocumentationVO.class);
-
-        return query.getResultList();
-    }
-
 }
