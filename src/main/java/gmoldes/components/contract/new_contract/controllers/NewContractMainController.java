@@ -345,10 +345,7 @@ public class NewContractMainController extends VBox {
 
     private void persistOldContractToSave() {
 
-        LocalDate endOfContractNotice = null;
-        if (contractData.getDateTo() == null) {
-            endOfContractNotice = LocalDate.of(9999, 12, 31);
-        }
+        LocalDate endOfContractNotice = contractData.getDateTo() == null ? LocalDate.of(9999, 12, 31) : null;
 
         String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 
@@ -429,11 +426,14 @@ public class NewContractMainController extends VBox {
 
     private void persistTraceability(Integer contractNumber){
 
+        LocalDate contractEndNoticeToSave = contractData.getDateTo() == null ?  LocalDate.of(9999, 12, 31) : null;
+
         TraceabilityContractDocumentationDTO traceabilityDTO = TraceabilityContractDocumentationDTO.create()
                 .withContractNumber(contractNumber)
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
                 .withStartDate(contractData.getDateFrom())
                 .withExpectedEndDate(contractData.getDateTo())
+                .withContractEndNoticeReceptionDate(contractEndNoticeToSave)
                 .build();
 
         ContractManager contractManager = new ContractManager();
