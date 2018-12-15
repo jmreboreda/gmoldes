@@ -186,12 +186,19 @@ public class ClientDTOOk {
     }
 
     public String toString() {
-
         if(isNaturalPerson){
-            return getSurNames() + ", " + name;
+            return getSurNames() + ", " + getName();
         }
 
-        return rzSocial;
+        return getRzSocial();
+    }
+
+    public String toNaturalName(){
+        if(isNaturalPerson){
+            return getName() + " " + getSurNames();
+        }
+
+        return getRzSocial();
     }
 
     public static ClientDTOOkBuilder create() {

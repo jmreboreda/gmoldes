@@ -55,7 +55,7 @@ public class InitialChecks {
                         missingExceededText = "Excedido en ";
                     }
 
-                    alertMessage = alertMessage +  "Preaviso de fin de contrato:\n" + clientDTO.toString() + " con " + workerDTO.toNaturalName()
+                    alertMessage = alertMessage +  "Preaviso de fin de contrato:\n" + clientDTO.toNaturalName() + " con " + workerDTO.toNaturalName()
                             + ": vencimiento el día " + traceabilityDTO.getExpectedEndDate().format(dateFormatter) + ".\n" + missingExceededText + Math.abs(daysToEndDate) + " días." + "\n\n";
                 }
             }
@@ -85,7 +85,7 @@ public class InitialChecks {
             PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
 
             idcControlDTO.setWorkerFullName(workerDTO.toNaturalName());
-            idcControlDTO.setClientGMFullName(clientDTO.toString());
+            idcControlDTO.setClientGMFullName(clientDTO.toNaturalName());
             idcControlDTO.setDateTo(dateFormatter.format(traceabilityDTO.getStartDate()));
             Integer days = Period.between(LocalDate.now(), traceabilityDTO.getStartDate()).getDays();
             idcControlDTO.setDays(days);
