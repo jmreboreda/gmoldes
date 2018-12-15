@@ -17,6 +17,7 @@ import gmoldes.domain.client.controllers.ClientCCCController;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.OldContractToSaveDTO;
 import gmoldes.domain.contract.dto.ProvisionalContractDataDTO;
@@ -270,7 +271,7 @@ public class NewContractMainController extends VBox {
             contractParts.clearEmployerCCC();
             return;
         }
-        List<ClientDTO> employers = findClientsByNamePattern(pattern);
+        List<ClientDTOOk> employers = findClientsByNamePattern(pattern);
         contractParts.refreshEmployers(employers);
     }
 
@@ -285,8 +286,8 @@ public class NewContractMainController extends VBox {
     }
 
     private void onSelectEmployer(SelectEmployerEvent selectEmployerEvent) {
-        ClientDTO selectedEmployer = selectEmployerEvent.getSelectedEmployer();
-        List<ClientDTO> clientDTOList = new ArrayList<>();
+        ClientDTOOk selectedEmployer = selectEmployerEvent.getSelectedEmployer();
+        List<ClientDTOOk> clientDTOList = new ArrayList<>();
         clientDTOList.add(selectedEmployer);
         contractParts.refreshEmployers(clientDTOList);
 
@@ -327,7 +328,7 @@ public class NewContractMainController extends VBox {
         }
     }
 
-    private List<ClientDTO> findClientsByNamePattern(String pattern) {
+    private List<ClientDTOOk> findClientsByNamePattern(String pattern) {
         return clientController.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
     }
 
@@ -350,7 +351,7 @@ public class NewContractMainController extends VBox {
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
                 .withVariationNumber(0)
                 .withClientGMId(contractParts.getSelectedEmployer().getId())
-                .withClientGMName(contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                .withClientGMName(contractParts.getSelectedEmployer().toString())
                 .withQuoteAccountCode(quoteAccountCode)
                 .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
                 .withWorkerName(contractParts.getSelectedEmployee().toString())
@@ -505,7 +506,7 @@ public class NewContractMainController extends VBox {
         return ContractDataToContractAgent.create()
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
                 .withOfficialContractNumber(null)
-                .withEmployerFullName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                .withEmployerFullName(this.contractParts.getSelectedEmployer().toString())
                 .withEmployerQuoteAccountCode(quoteAccountCode)
                 .withNotificationDate(this.contractData.getDateNotification().getDate())
                 .withNotificationHour(LocalTime.parse(contractData.getHourNotification().getText()))
@@ -570,7 +571,7 @@ public class NewContractMainController extends VBox {
         return ContractDataSubfolder.create()
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
                 .withOfficialContractNumber(null)
-                .withEmployerFullName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                .withEmployerFullName(this.contractParts.getSelectedEmployer().toString())
                 .withEmployerQuoteAccountCode(quoteAccountCode)
                 .withNotificationDate(this.contractData.getDateNotification().getDate())
                 .withNotificationHour(LocalTime.parse(contractData.getHourNotification().getText()))
@@ -669,7 +670,7 @@ public class NewContractMainController extends VBox {
             TimeRecord timeRecord = TimeRecord.create()
                     .withNameOfMonth(this.contractData.getDateFrom().getMonth())
                     .withYearNumber(Integer.toString(contractData.getDateFrom().getYear()))
-                    .withEnterpriseName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                    .withEnterpriseName(this.contractParts.getSelectedEmployer().toString())
                     .withQuoteAccountCode(quoteAccountCode)
                     .withEmployeeName(this.contractParts.getSelectedEmployee().getApellidos() + ", " + this.contractParts.getSelectedEmployee().getNom_rzsoc())
                     .withEmployeeNIF(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))

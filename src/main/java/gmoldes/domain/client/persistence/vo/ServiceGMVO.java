@@ -16,8 +16,8 @@ public class ServiceGMVO implements Serializable{
     private Date dateFrom;
     private Date dateTo;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="idcliente")
-    private ClientVO clientVO;
+    @JoinColumn(name="clientid")
+    private ClientVOOk clientVO;
 
     public ServiceGMVO() {
     }
@@ -54,11 +54,11 @@ public class ServiceGMVO implements Serializable{
         this.dateTo = dateTo;
     }
 
-    public ClientVO getClientVO() {
+    public ClientVOOk getClientVO() {
         return clientVO;
     }
 
-    public void setClientVO(ClientVO clientVO) {
+    public void setClientVO(ClientVOOk clientVO) {
         this.clientVO = clientVO;
     }
 }

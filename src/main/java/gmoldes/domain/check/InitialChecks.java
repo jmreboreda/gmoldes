@@ -1,14 +1,10 @@
 package gmoldes.domain.check;
 
 import gmoldes.ApplicationMainController;
-import gmoldes.ApplicationMainManager;
 import gmoldes.components.contract.controllers.ContractController;
-
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.check.dto.IDCControlDTO;
-import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.domain.contract.dto.ContractVariationDTO;
+import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
@@ -17,7 +13,6 @@ import gmoldes.utilities.Parameters;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -49,7 +44,7 @@ public class InitialChecks {
                     InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
 
                     Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
-                    ClientDTO clientDTO = applicationMainController.findClientById(clientGMId);
+                    ClientDTOOk clientDTO = applicationMainController.findClientById(clientGMId);
 
                     Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
                     PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
@@ -60,7 +55,7 @@ public class InitialChecks {
                         missingExceededText = "Excedido en ";
                     }
 
-                    alertMessage = alertMessage +  "Preaviso de fin de contrato:\n" + clientDTO.getPersonOrCompanyName() + " con " + workerDTO.toNaturalName()
+                    alertMessage = alertMessage +  "Preaviso de fin de contrato:\n" + clientDTO.toString() + " con " + workerDTO.toNaturalName()
                             + ": vencimiento el día " + traceabilityDTO.getExpectedEndDate().format(dateFormatter) + ".\n" + missingExceededText + Math.abs(daysToEndDate) + " días." + "\n\n";
                 }
             }
@@ -84,13 +79,13 @@ public class InitialChecks {
             InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
 
             Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
-            ClientDTO clientDTO = applicationMainController.findClientById(clientGMId);
+            ClientDTOOk clientDTO = applicationMainController.findClientById(clientGMId);
 
             Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
             PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
 
             idcControlDTO.setWorkerFullName(workerDTO.toNaturalName());
-            idcControlDTO.setClientGMFullName(clientDTO.getPersonOrCompanyName());
+            idcControlDTO.setClientGMFullName(clientDTO.toString());
             idcControlDTO.setDateTo(dateFormatter.format(traceabilityDTO.getStartDate()));
             Integer days = Period.between(LocalDate.now(), traceabilityDTO.getStartDate()).getDays();
             idcControlDTO.setDays(days);

@@ -6,6 +6,7 @@ import gmoldes.components.contract.initial_contract.persistence.dao.InitialContr
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.manager.TypesContractVariationsManager;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.MapperContractVariationVODTO;
 import gmoldes.domain.contract.mapper.MapperContractVariationVOtoContractNewVersionDTO;
@@ -42,7 +43,7 @@ public class ApplicationMainController {
     }
 
 
-    public List<ClientDTO> findAllClientWithContractInForceAtDate(LocalDate date){
+    public List<ClientDTOOk> findAllClientWithContractInForceAtDate(LocalDate date){
 
         return applicationMainManager.findAllClientWithContractInForceAtDate(date);
     }
@@ -58,7 +59,7 @@ public class ApplicationMainController {
 
     }
 
-    public List<ClientDTO> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+    public List<ClientDTOOk> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
         return applicationMainManager.findAllClientGMWithInvoiceInForceInPeriod(initialDate, finalDate);
     }
 
@@ -68,7 +69,7 @@ public class ApplicationMainController {
         return manager.findAllTypesContractVariations();
     }
 
-    public ClientDTO findClientById(Integer clientId){
+    public ClientDTOOk findClientById(Integer clientId){
 
         return applicationMainManager.retrieveClientByClientId(clientId);
     }

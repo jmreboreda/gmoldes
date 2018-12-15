@@ -2,7 +2,9 @@ package gmoldes.domain.client.controllers;
 
 import gmoldes.domain.client.Client;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.client.persistence.vo.ClientVO;
+import gmoldes.domain.client.persistence.vo.ClientVOOk;
 import gmoldes.domain.timerecord.dto.TimeRecordClientDTO;
 import gmoldes.domain.client.manager.ClientManager;
 
@@ -13,26 +15,30 @@ public class ClientController {
 
     ClientManager clientManager = new ClientManager();
 
-    public List<ClientDTO> findAllActiveClientByNamePatternInAlphabeticalOrder(String pattern){
+    public List<ClientDTOOk> findAllActiveClientByNamePatternInAlphabeticalOrder(String pattern){
 
         return clientManager.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
     }
 
-    public List<ClientDTO> findAllClientWithContractNewVersionInMonth(LocalDate date){
+    public List<ClientDTOOk> findAllClientWithContractNewVersionInMonth(LocalDate date){
 
         return clientManager.findAllClientWithContractNewVersionInMonth(date);
     }
 
-    public ClientDTO findClientById(Integer clientId){
+    public ClientDTOOk findClientById(Integer clientId){
 
-        ClientVO clientVO = clientManager.findClientById(clientId);
+        ClientVOOk clientVO = clientManager.findClientById(clientId);
 
-        return ClientDTO.create()
+        return ClientDTOOk.create()
                 .withId(clientVO.getId())
-                .withClientId(clientVO.getIdcliente())
-                .withPersonOrCompanyName(clientVO.getNom_rzsoc())
-                .withClientType(clientVO.getTipoclte())
-                .withNieNIF(clientVO.getNifcif())
+                .withClientId(clientVO.getClientId())
+                .withIsNaturalPerson(clientVO.getNaturalPerson())
+                .withIsNaturalPerson(clientVO.getNaturalPerson())
+                .withSurnames(clientVO.getSurNames())
+                .withName(clientVO.getName())
+                .withRzSocial(clientVO.getRzSocial())
+                .withClientType(clientVO.getClientType())
+                .withNieNIF(clientVO.getNieNif())
                 .build();
     }
 }

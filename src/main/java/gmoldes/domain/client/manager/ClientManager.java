@@ -2,11 +2,11 @@ package gmoldes.domain.client.manager;
 
 
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
-import gmoldes.domain.client.persistence.vo.ClientVO;
+import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.persistence.dao.ClientDAO;
+import gmoldes.domain.client.persistence.vo.ClientVOOk;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,24 +20,23 @@ public class ClientManager {
     public ClientManager() {
     }
 
-    public List<ClientDTO> findAllActiveClientByNamePatternInAlphabeticalOrder(String namePattern) {
+    public List<ClientDTOOk> findAllActiveClientByNamePatternInAlphabeticalOrder(String namePattern) {
 
-        List<ClientDTO> personDTOList = new ArrayList<>();
+        List<ClientDTOOk> personDTOList = new ArrayList<>();
         clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-        List<ClientVO> clientVOList = clientDAO.findAllActiveClientsByNamePatternInAlphabeticalOrder(namePattern);
-        for (ClientVO clientVO : clientVOList) {
-            ClientDTO clientDTO = ClientDTO.create()
+        List<ClientVOOk> clientVOList = clientDAO.findAllActiveClientsByNamePatternInAlphabeticalOrder(namePattern);
+        for (ClientVOOk clientVO : clientVOList) {
+            ClientDTOOk clientDTO = ClientDTOOk.create()
                     .withId(clientVO.getId())
-                    .withIsActive(clientVO.getCltactivo())
-                    .withCodeInSigaProgram(clientVO.getCltsg21())
-                    .withDateFrom(clientVO.getFdesde())
-                    .withDateTo(clientVO.getFhasta())
-                    .withNieNIF(clientVO.getNifcif())
-                    .withNieNIF_dup(clientVO.getNifcif_dup())
-                    .withPersonOrCompanyName(clientVO.getNom_rzsoc())
-                    .withNumberOfTimes(clientVO.getNumvez())
-                    .withWithOutActivity(clientVO.getSinactividad())
-                    .withClientType(clientVO.getTipoclte())
+                    .withActiveClient(clientVO.getActiveClient())
+                    .withSg21Code(clientVO.getSg21Code())
+                    .withDateFrom(clientVO.getDateFrom().toLocalDate())
+                    .withDateTo(clientVO.getDateTo().toLocalDate())
+                    .withNieNIF(clientVO.getNieNif())
+                    .withSg21Code(clientVO.getSurNames())
+                    .withName(clientVO.getName())
+                    .withWithOutActivity(clientVO.getWithoutActivity().toLocalDate())
+                    .withClientType(clientVO.getClientType())
                     .build();
 
             personDTOList.add(clientDTO);
@@ -45,8 +44,8 @@ public class ClientManager {
         return personDTOList;
     }
 
-    public List<ClientDTO> findAllClientWithContractNewVersionInMonth(LocalDate dateReceived){
-        List<ClientDTO> clientDTOList = new ArrayList<>();
+    public List<ClientDTOOk> findAllClientWithContractNewVersionInMonth(LocalDate dateReceived){
+        List<ClientDTOOk> clientDTOList = new ArrayList<>();
         ContractManager contractManager = new ContractManager();
         contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractManager.findAllContractNewVersionInMonthOfDate(dateReceived);
@@ -54,10 +53,13 @@ public class ClientManager {
             if(!contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours().equals("40:00")) {
                 Integer clientId = contractNewVersionDTO.getContractJsonData().getClientGMId();
                 clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-                ClientVO clientVO = clientDAO.findClientById(clientId);
-                ClientDTO clientDTO = ClientDTO.create()
+                ClientVOOk clientVO = clientDAO.findClientById(clientId);
+                ClientDTOOk clientDTO = ClientDTOOk.create()
                         .withClientId(contractNewVersionDTO.getContractJsonData().getClientGMId())
-                        .withPersonOrCompanyName(clientVO.getNom_rzsoc())
+                        .withIsNaturalPerson(clientVO.getNaturalPerson())
+                        .withSurnames(clientVO.getSurNames())
+                        .withName(clientVO.getName())
+                        .withRzSocial(clientVO.getRzSocial())
                         .build();
 
                 clientDTOList.add(clientDTO);
@@ -66,9 +68,9 @@ public class ClientManager {
         return clientDTOList;
     }
 
-    public ClientVO findClientById(Integer id){
+    public ClientVOOk findClientById(Integer id){
         ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-        ClientVO clientVO = clientDAO.findClientById(id);
+        ClientVOOk clientVO = clientDAO.findClientById(id);
 
         return clientVO;
 

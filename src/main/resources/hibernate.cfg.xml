@@ -32,6 +32,7 @@
  
         <!-- Annotated entity classes -->
         <mapping class="gmoldes.domain.client.persistence.vo.ClientVO"/>
+        <mapping class="gmoldes.domain.client.persistence.vo.ClientVOOk"/>
         <mapping class="gmoldes.components.contract.new_contract.persistence.vo.ContractVO"/>
         <mapping class="gmoldes.domain.person.persistence.vo.PersonVO"/>
         <mapping class ="gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO"/>

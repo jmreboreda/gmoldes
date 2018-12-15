@@ -396,7 +396,7 @@ public class ContractExtensionController {
         return ContractDataSubfolder.create()
                 .withNotificationType(notificationType)
                 .withOfficialContractNumber(allContractData.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
-                .withEmployerFullName(allContractData.getEmployer().getPersonOrCompanyName())
+                .withEmployerFullName(allContractData.getEmployer().toString())
                 .withEmployerQuoteAccountCode(allContractData.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
                 .withNotificationDate(clientNotificationDate)
                 .withNotificationHour(clientNotificationHour)

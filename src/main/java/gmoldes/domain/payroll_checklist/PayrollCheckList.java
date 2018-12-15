@@ -2,6 +2,7 @@ package gmoldes.domain.payroll_checklist;
 
 import gmoldes.ApplicationMainController;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.payroll_checklist.dto.PayrollCheckListDTO;
 import gmoldes.domain.person.dto.PersonDTO;
@@ -90,8 +91,8 @@ public class PayrollCheckList {
         ApplicationMainController applicationMainController = new ApplicationMainController();
         List<ContractNewVersionDTO> contractNewVersionDTOList = findAllContractInForceInPeriod(month, year);
         for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
-            ClientDTO employer = applicationMainController.findClientById(contractNewVersionDTO.getContractJsonData().getClientGMId());
-            String employerName = employer.getPersonOrCompanyName();
+            ClientDTOOk employer = applicationMainController.findClientById(contractNewVersionDTO.getContractJsonData().getClientGMId());
+            String employerName = employer.toString();
             PersonDTO worker = applicationMainController.findPersonById(contractNewVersionDTO.getContractJsonData().getWorkerId());
             String workerName = worker.getApellidos() + ", " + worker.getNom_rzsoc();
 

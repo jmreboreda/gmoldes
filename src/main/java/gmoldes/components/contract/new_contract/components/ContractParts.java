@@ -7,6 +7,7 @@ import gmoldes.components.contract.events.SelectEmployeeEvent;
 import gmoldes.components.contract.events.SelectEmployerEvent;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.contract.dto.ProvisionalContractDataDTO;
 import javafx.collections.FXCollections;
@@ -40,7 +41,7 @@ public class ContractParts extends HBox {
     @FXML
     private TextField employerName;
     @FXML
-    private ListView<ClientDTO> employersNames;
+    private ListView<ClientDTOOk> employersNames;
     @FXML
     private TextField employeeName;
     @FXML
@@ -82,7 +83,7 @@ public class ContractParts extends HBox {
         onEmployeeNamePatternChangedEventHandler.handle(searchEmployeesEvent);
     }
 
-    private void onSelectEmployer(ClientDTO newEmployerSelected){
+    private void onSelectEmployer(ClientDTOOk newEmployerSelected){
         if(newEmployerSelected == null){
             return;
         }
@@ -100,7 +101,7 @@ public class ContractParts extends HBox {
         onSelectEmployeeEventHandler.handle(selectEmployeeEvent);
     }
 
-    public ClientDTO getSelectedEmployer(){
+    public ClientDTOOk getSelectedEmployer(){
         return employersNames.getSelectionModel().getSelectedItem();
     }
 
@@ -184,8 +185,8 @@ public class ContractParts extends HBox {
         }
     }
 
-    public void refreshEmployers(List<ClientDTO> employers){
-        ObservableList<ClientDTO> listPersonsWhoMatchPattern = FXCollections.observableList(employers);
+    public void refreshEmployers(List<ClientDTOOk> employers){
+        ObservableList<ClientDTOOk> listPersonsWhoMatchPattern = FXCollections.observableList(employers);
         employersNames.setItems(listPersonsWhoMatchPattern);
     }
 

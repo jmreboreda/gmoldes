@@ -11,6 +11,7 @@ import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.utilities.Message;
@@ -138,16 +139,16 @@ public class ContractVariationMainController extends VBox {
         contractVariationParts.getContractSelector().getItems().clear();
         LocalDate workDate = contractVariationParts.getInForceDate().getValue();
         contractVariationContractData.clearAllContractData();
-        List<ClientDTO> clientDTOList = applicationMainController.findAllClientWithContractInForceAtDate(workDate);
+        List<ClientDTOOk> clientDTOList = applicationMainController.findAllClientWithContractInForceAtDate(workDate);
 
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
         primaryCollator.setStrength(Collator.PRIMARY);
 
-        List<ClientDTO> clientDTOListSorted = clientDTOList
+        List<ClientDTOOk> clientDTOListSorted = clientDTOList
                 .stream()
-                .sorted(Comparator.comparing(ClientDTO::getPersonOrCompanyName, primaryCollator)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(ClientDTOOk::toString, primaryCollator)).collect(Collectors.toList());
 
-        ObservableList<ClientDTO> clientDTOS = FXCollections.observableArrayList(clientDTOListSorted);
+        ObservableList<ClientDTOOk> clientDTOS = FXCollections.observableArrayList(clientDTOListSorted);
         contractVariationParts.loadDataInClientSelector(clientDTOS);
         contractVariationParts.getClientSelector().setItems(clientDTOS);
     }
@@ -155,7 +156,7 @@ public class ContractVariationMainController extends VBox {
     private void onChangeEmployer(ClientChangeEvent event){
 
         LocalDate selectedDate = event.getDate();
-        ClientDTO selectedClient = event.getClient();
+        ClientDTOOk selectedClient = event.getClient();
         refreshContractSelectorData(selectedClient, selectedDate);
 
         cleanDataForAllSelectableComponents();
@@ -428,7 +429,7 @@ public class ContractVariationMainController extends VBox {
         }
     }
 
-    private void refreshContractSelectorData(ClientDTO client, LocalDate selectedDate){
+    private void refreshContractSelectorData(ClientDTOOk client, LocalDate selectedDate){
 
         if(client == null){
             return;
