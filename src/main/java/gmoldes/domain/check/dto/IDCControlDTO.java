@@ -2,45 +2,45 @@ package gmoldes.domain.check.dto;
 
 public class IDCControlDTO {
 
-    private String descr_variacion;
-    private String trabajador_name;
-    private String clientegm_name;
-    private String date_to;
+    private String variationDescription;
+    private String workerFullName;
+    private String clientGMFullName;
+    private String dateTo;
     private Integer days;
 
     public IDCControlDTO() {
     }
 
-    public String getDescr_variacion() {
-        return descr_variacion;
+    public String getVariationDescription() {
+        return variationDescription;
     }
 
-    public void setDescr_variacion(String descr_variacion) {
-        this.descr_variacion = descr_variacion;
+    public void setVariationDescription(String variationDescription) {
+        this.variationDescription = variationDescription;
     }
 
-    public String getTrabajador_name() {
-        return trabajador_name;
+    public String getWorkerFullName() {
+        return workerFullName;
     }
 
-    public void setTrabajador_name(String trabajador_name) {
-        this.trabajador_name = trabajador_name;
+    public void setWorkerFullName(String workerFullName) {
+        this.workerFullName = workerFullName;
     }
 
-    public String getClientegm_name() {
-        return clientegm_name;
+    public String getClientGMFullName() {
+        return clientGMFullName;
     }
 
-    public void setClientegm_name(String clientegm_name) {
-        this.clientegm_name = clientegm_name;
+    public void setClientGMFullName(String clientGMFullName) {
+        this.clientGMFullName = clientGMFullName;
     }
 
-    public String getDate_to() {
-        return date_to;
+    public String getDateTo() {
+        return dateTo;
     }
 
-    public void setDate_to(String date_to) {
-        this.date_to = date_to;
+    public void setDateTo(String dateTo) {
+        this.dateTo = dateTo;
     }
 
     public Integer getDays() {

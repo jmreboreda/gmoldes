@@ -29,8 +29,8 @@ public class TraceabilityContractDocumentationVO implements Serializable{
         public static final String FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_DOCUMENTATION_TO_CLIENT = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_DOCUMENTATION_TO_CLIENT";
 
         @Id
-        @SequenceGenerator(name = "traceabilitycontractdocumentation_id_seq", sequenceName = "traceabilitycontractdocumentation_id_seq", allocationSize = 1)
-        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "traceabilitycontractdocumentation_id_seq")
+        @SequenceGenerator(name = "traceability_contract_documentation_id_seq", sequenceName = "traceability_contract_documentation_id_seq", allocationSize = 1)
+        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "traceability_contract_documentation_id_seq")
         @Column(name = "id", updatable = false)
         private Integer id;
         private Integer contractNumber;

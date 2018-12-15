@@ -1,12 +1,14 @@
 package gmoldes.domain.check;
 
 import gmoldes.ApplicationMainController;
+import gmoldes.ApplicationMainManager;
 import gmoldes.components.contract.controllers.ContractController;
 
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractDTO;
+import gmoldes.domain.contract.dto.ContractVariationDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
@@ -58,8 +60,8 @@ public class InitialChecks {
                         missingExceededText = "Excedido en ";
                     }
 
-                    alertMessage = alertMessage +  "Preaviso de fin de contrato del contrato de " + clientDTO.getPersonOrCompanyName() + " con " + workerDTO.toString()
-                            + ": vencimiento el día " + traceabilityDTO.getExpectedEndDate().format(dateFormatter) + ". " + missingExceededText + Math.abs(daysToEndDate) + " días." + "\n\n";
+                    alertMessage = alertMessage +  "Preaviso de fin de contrato:\n" + clientDTO.getPersonOrCompanyName() + " con " + workerDTO.toString()
+                            + ": vencimiento el día " + traceabilityDTO.getExpectedEndDate().format(dateFormatter) + ".\n" + missingExceededText + Math.abs(daysToEndDate) + " días." + "\n\n";
                 }
             }
 
@@ -69,21 +71,54 @@ public class InitialChecks {
         }
     }
 
+    public static void alertByContractWithPendingIDC(Stage primaryStage) throws ParseException {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        List<IDCControlDTO> idcControlDTOList = new ArrayList<>();
 
+        ApplicationMainController applicationMainController = new ApplicationMainController();
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = applicationMainController.findTraceabilityForAllContractWithPendingIDC();
+        for(TraceabilityContractDocumentationDTO traceabilityDTO : traceabilityContractDocumentationDTOList) {
+            IDCControlDTO idcControlDTO = new IDCControlDTO();
 
+            Integer contractNumber = traceabilityDTO.getContractNumber();
+            InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
 
+            Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
+            ClientDTO clientDTO = applicationMainController.findClientById(clientGMId);
 
+            Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
+            PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
 
+            idcControlDTO.setWorkerFullName(workerDTO.toString());
+            idcControlDTO.setClientGMFullName(clientDTO.getPersonOrCompanyName());
+            idcControlDTO.setDateTo(dateFormatter.format(traceabilityDTO.getStartDate()));
+            Integer days = Period.between(LocalDate.now(), traceabilityDTO.getStartDate()).getDays();
+            idcControlDTO.setDays(days);
+            String variation_description = retrieveVariationDescriptionById(traceabilityDTO.getVariationType());
+            idcControlDTO.setVariationDescription(variation_description);
+            idcControlDTOList.add(idcControlDTO);
+        }
 
+        if(!idcControlDTOList.isEmpty()){
 
+            String alertMessage = "";
+            String missingExceededText;
 
+            for(IDCControlDTO idcControlDTO : idcControlDTOList){
+                if(idcControlDTO.getDays() >= 0){
+                    missingExceededText = "Faltan ";
+                }else{
+                    missingExceededText = "Excedido en ";
+                }
+                int days = Math.abs(idcControlDTO.getDays());
 
+                alertMessage = alertMessage + "IDC Pendiente:\n" + idcControlDTO.getVariationDescription() + " de " + idcControlDTO.getClientGMFullName() + " con " +
+                        idcControlDTO.getWorkerFullName() + " desde " + idcControlDTO.getDateTo() + ".\n" + missingExceededText  + days + " días." + "\n\n";
+            }
 
-
-
-
-
-
+            Message.warningMessage(primaryStage.getOwner(), "IDC pendientes de recepción", alertMessage);
+        }
+    }
 
     public static void UpdateContractsInForce(){
         ContractController controller = new ContractController();
@@ -94,33 +129,7 @@ public class InitialChecks {
         logger.info(CONTRACT_IN_FORCE_UPDATE_TO + "FALSE: " + result1);
     }
 
-    public static List<ContractDTO> contractExpirationControl(){
-        ContractController controller = new ContractController();
-
-        return controller.findContractsExpiration();
-    }
-
-    public static List<IDCControlDTO> findPendingQuoteDataReportIDC() throws ParseException {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
-        List<IDCControlDTO> idcControlDTOList = new ArrayList<>();
-        ContractController controller = new ContractController();
-        List<ContractDTO> contractDTOList = controller.findPendingIDC();
-        for(ContractDTO contractDTO : contractDTOList){
-            IDCControlDTO idcControlDTO = new IDCControlDTO();
-            idcControlDTO.setTrabajador_name(contractDTO.getWorkerName());
-            idcControlDTO.setClientegm_name(contractDTO.getClientGMName());
-            idcControlDTO.setDate_to(dateFormatter.format(contractDTO.getDateFrom()));
-            Integer days = Period.between(LocalDate.now(), contractDTO.getDateFrom()).getDays();
-            idcControlDTO.setDays(days);
-            String variation_description = retrieveVariationDescriptionById(contractDTO.getVariationType());
-            idcControlDTO.setDescr_variacion(variation_description);
-            idcControlDTOList.add(idcControlDTO);
-        }
-
-        return idcControlDTOList;
-    }
-
-    public static String retrieveVariationDescriptionById(int idVariation){
+    private static String retrieveVariationDescriptionById(int idVariation){
         TypesContractVariationsController controller = new TypesContractVariationsController();
 
         return controller.findVariationDescriptionById(idVariation);

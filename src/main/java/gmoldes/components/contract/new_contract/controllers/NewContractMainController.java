@@ -426,13 +426,12 @@ public class NewContractMainController extends VBox {
         // In a new contract, the date for the notice of end of contract is set at 31-12-9999 if the contract is of indefinite duration
         LocalDate contractEndNoticeToSave = contractData.getDateTo() == null ?  LocalDate.of(9999, 12, 31) : null;
 
-        Integer contractVariationType = contractData.getContractType().getContractCode();
         LocalDate dateFrom = contractData.getDateFrom();
         LocalDate dateTo = contractData.getDateTo();
 
         TraceabilityContractDocumentationDTO traceabilityDTO = TraceabilityContractDocumentationDTO.create()
                 .withContractNumber(contractNumber)
-                .withVariationType(contractVariationType)
+                .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
                 .withStartDate(dateFrom)
                 .withExpectedEndDate(dateTo)
                 .withContractEndNoticeReceptionDate(contractEndNoticeToSave)

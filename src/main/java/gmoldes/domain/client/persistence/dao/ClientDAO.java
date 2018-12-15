@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import javax.persistence.TypedQuery;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 public class ClientDAO {
@@ -51,7 +50,7 @@ public class ClientDAO {
 
     public ClientVO findClientById(Integer clientId){
 
-        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_CLIENT_BY_CLIENTID, ClientVO.class);
+        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_CLIENT_BY_CLIENT_ID, ClientVO.class);
         query.setParameter("clientId", clientId);
 
         return query.getSingleResult();

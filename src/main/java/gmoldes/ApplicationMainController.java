@@ -112,4 +112,9 @@ public class ApplicationMainController {
         return applicationMainManager.findTraceabilityForAllContractWithPendingContractEndNotice();
     }
 
+    public List<TraceabilityContractDocumentationDTO> findTraceabilityForAllContractWithPendingIDC(){
+
+        return applicationMainManager.findTraceabilityForAllContractWithPendingIDC();
+    }
+
 }

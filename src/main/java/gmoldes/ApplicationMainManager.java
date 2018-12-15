@@ -275,6 +275,19 @@ public class ApplicationMainManager {
         return traceabilityContractDocumentationDTOList;
     }
 
+    public List<TraceabilityContractDocumentationDTO> findTraceabilityForAllContractWithPendingIDC(){
+
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = new ArrayList<>();
+
+        TraceabilityContractDocumentationDAO traceabilityContractDocumentationDAO = TraceabilityContractDocumentationDAO.TraceabilityContractDocumentationDAOFactory.getInstance();
+        List<TraceabilityContractDocumentationVO> traceabilityContractDocumentationVOList = traceabilityContractDocumentationDAO.findTraceabilityForAllContractWithPendingIDC();
+        for(TraceabilityContractDocumentationVO traceabilityContractDocumentationVO : traceabilityContractDocumentationVOList){
+            traceabilityContractDocumentationDTOList.add(MapperTraceabilityContractDocumentationVODTO.map(traceabilityContractDocumentationVO));
+        }
+
+        return traceabilityContractDocumentationDTOList;
+    }
+
     public List<ContractNewVersionDTO> findAllContractsInForceAtDate(LocalDate date){
 
         List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
