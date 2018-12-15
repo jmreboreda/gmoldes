@@ -152,6 +152,11 @@ public class PersonDTO {
         return getApellidos() + ", " + getNom_rzsoc();
     }
 
+    public String toNaturalName(){
+
+        return getNom_rzsoc() + " " + getApellidos();
+    }
+
     public static PersonDTO.PersonBuilder create() {
         return new PersonDTO.PersonBuilder();
     }

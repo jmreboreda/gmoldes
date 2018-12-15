@@ -60,7 +60,7 @@ public class InitialChecks {
                         missingExceededText = "Excedido en ";
                     }
 
-                    alertMessage = alertMessage +  "Preaviso de fin de contrato:\n" + clientDTO.getPersonOrCompanyName() + " con " + workerDTO.toString()
+                    alertMessage = alertMessage +  "Preaviso de fin de contrato:\n" + clientDTO.getPersonOrCompanyName() + " con " + workerDTO.toNaturalName()
                             + ": vencimiento el día " + traceabilityDTO.getExpectedEndDate().format(dateFormatter) + ".\n" + missingExceededText + Math.abs(daysToEndDate) + " días." + "\n\n";
                 }
             }
@@ -71,7 +71,7 @@ public class InitialChecks {
         }
     }
 
-    public static void alertByContractWithPendingIDC(Stage primaryStage) throws ParseException {
+    public static void alertByContractNewVersionWithPendingIDC(Stage primaryStage) throws ParseException {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         List<IDCControlDTO> idcControlDTOList = new ArrayList<>();
 
@@ -89,7 +89,7 @@ public class InitialChecks {
             Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
             PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
 
-            idcControlDTO.setWorkerFullName(workerDTO.toString());
+            idcControlDTO.setWorkerFullName(workerDTO.toNaturalName());
             idcControlDTO.setClientGMFullName(clientDTO.getPersonOrCompanyName());
             idcControlDTO.setDateTo(dateFormatter.format(traceabilityDTO.getStartDate()));
             Integer days = Period.between(LocalDate.now(), traceabilityDTO.getStartDate()).getDays();
@@ -120,7 +120,7 @@ public class InitialChecks {
         }
     }
 
-    public static void UpdateContractsInForce(){
+    public static void UpdateOldContractVersionInForce(){
         ContractController controller = new ContractController();
 
         int result = controller.establishContractsInForce();

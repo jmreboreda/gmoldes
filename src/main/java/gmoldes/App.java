@@ -50,15 +50,9 @@ public class App extends Application {
 
     private void initialControlProcesses(Stage primaryStage) throws ParseException {
 
+        InitialChecks.alertByContractNewVersionWithPendingIDC(primaryStage);
         InitialChecks.alertByContractNewVersionExpiration(primaryStage);
-        InitialChecks.alertByContractWithPendingIDC(primaryStage);
-
-        updateContractsInForceInDatabase();
+        InitialChecks.UpdateOldContractVersionInForce();
     }
-
-    private void updateContractsInForceInDatabase(){
-        InitialChecks.UpdateContractsInForce();
-    }
-
-}
+ }
 
