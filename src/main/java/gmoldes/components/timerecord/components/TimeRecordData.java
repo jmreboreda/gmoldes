@@ -7,7 +7,6 @@ import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
 import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.client.controllers.ClientController;
-import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.ContractTypeDTO;

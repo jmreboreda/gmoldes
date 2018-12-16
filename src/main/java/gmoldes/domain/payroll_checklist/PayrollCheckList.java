@@ -1,7 +1,6 @@
 package gmoldes.domain.payroll_checklist;
 
 import gmoldes.ApplicationMainController;
-import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.payroll_checklist.dto.PayrollCheckListDTO;

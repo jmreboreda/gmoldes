@@ -1,11 +1,9 @@
 package gmoldes.domain.client_invoice_checklist;
 
 import gmoldes.ApplicationMainController;
-import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.client_invoice_checklist.dto.ClientInvoiceCheckListDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.person.dto.PersonDTO;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -13,7 +11,6 @@ import java.awt.datatransfer.StringSelection;
 import java.text.Collator;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.MonthDay;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.*;
