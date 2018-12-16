@@ -92,13 +92,12 @@ public class ApplicationMainManager {
         List<ClientDTO> clientDTOList = new ArrayList<>();
         ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
         for(ServiceGMVO serviceGMVO : serviceGMVOList){
-
             Integer clientId = serviceGMVO.getClientVO().getClientId();
-
-            List<ClientVO> clientVOList = clientDAO.findClientById(clientId);
-            for(ClientVO clientVO : clientVOList) {
-                ClientDTO clientDTO = MapperClientVODTO.map(clientVO);
+            ClientVO clientVO = clientDAO.findClientById(clientId);
+            if(clientVO.getWithoutActivity() == null){
+                clientDTOList.add(MapperClientVODTO.map(clientVO));
             }
+
         }
 
         return clientDTOList;
@@ -118,7 +117,7 @@ public class ApplicationMainManager {
 
         List<ContractFullDataDTO> contractFullDataDTOList = new ArrayList<>();
 
-        List<ClientDTO> clientDTOList = retrieveClientByClientId(clientId);
+        ClientDTO clientDTO = retrieveClientByClientId(clientId);
 
         // Initial contract
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractsInForceAtDate(date);
@@ -345,17 +344,13 @@ public class ApplicationMainManager {
         return contractVariationDTOList;
     }
 
-    public List<ClientDTO> retrieveClientByClientId(Integer clientId){
+    public ClientDTO retrieveClientByClientId(Integer clientId){
 
         List<ClientDTO> clientDTOList = new ArrayList<>();
         ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-        List<ClientVO> clientVOList = clientDAO.findClientById(clientId);
-        for(ClientVO clientVO : clientVOList){
-            ClientDTO clientDTO = MapperClientVODTO.map(clientVO);
-            clientDTOList.add(clientDTO);
-        }
 
-        return clientDTOList;
+        return MapperClientVODTO.map(clientDAO.findClientById(clientId));
+
     }
 
     public PersonDTO retrievePersonByPersonID(Integer personId){

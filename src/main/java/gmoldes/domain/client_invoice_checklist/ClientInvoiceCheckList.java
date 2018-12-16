@@ -109,8 +109,6 @@ public class ClientInvoiceCheckList {
         LocalDate periodFinalDate =  LocalDate.of(yearReceived, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
         List<ClientDTO> clientDTOList = applicationMainController.findAllClientGMWithInvoicesToClaimInPeriod(periodInitialDate, periodFinalDate);
-
-//        List<ClientDTO> clientDTOList = applicationMainController.findAllClientGMWithInvoiceInForceInPeriod(periodInitialDate, periodFinalDate);
         for(ClientDTO clientDTO : clientDTOList){
             String clientFullName = clientDTO.toString();
             String clientSg21Code = clientDTO.getSg21Code();

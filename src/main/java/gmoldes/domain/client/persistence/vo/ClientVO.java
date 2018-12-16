@@ -184,5 +184,13 @@ public class ClientVO implements Serializable {
     public void setServicesGM(Set<ServiceGMVO> servicesGM) {
         this.servicesGM = servicesGM;
     }
+
+    public String toString(){
+        if(isNaturalPerson){
+            return getName() + " " + getSurNames();
+        }
+
+        return rzSocial;
+    }
 }
 
