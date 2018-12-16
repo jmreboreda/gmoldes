@@ -109,7 +109,7 @@ public class ApplicationMainManager {
         ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
         Map<Integer, LocalDate> initialContractStartDateMap = new HashMap();
 
-        // Get all initial contract date of contract in force at date
+        // Get initial contract date of all contract in force at date
         List<InitialContractVO> initialContractInForceAtDate = initialContractDAO.findAllContractInForceAtDate(date);
         for(InitialContractVO initialContractVO : initialContractInForceAtDate){
             initialContractStartDateMap.put(initialContractVO.getContractNumber(), initialContractVO.getStartDate().toLocalDate());
