@@ -1,11 +1,7 @@
 package gmoldes.domain.client.controllers;
 
-import gmoldes.domain.client.Client;
-import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.client.persistence.vo.ClientVO;
-import gmoldes.domain.client.persistence.vo.ClientVOOk;
-import gmoldes.domain.timerecord.dto.TimeRecordClientDTO;
 import gmoldes.domain.client.manager.ClientManager;
 
 import java.time.LocalDate;
@@ -27,7 +23,7 @@ public class ClientController {
 
     public ClientDTOOk findClientById(Integer clientId){
 
-        ClientVOOk clientVO = clientManager.findClientById(clientId);
+        ClientVO clientVO = clientManager.findClientById(clientId);
 
         return ClientDTOOk.create()
                 .withId(clientVO.getId())

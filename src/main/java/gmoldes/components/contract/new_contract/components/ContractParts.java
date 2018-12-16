@@ -100,6 +100,14 @@ public class ContractParts extends HBox {
         onSelectEmployeeEventHandler.handle(selectEmployeeEvent);
     }
 
+    public TextField getEmployerName(){
+        return this.employerName;
+    }
+
+    public TextField getEmployeeName(){
+        return this.employeeName;
+    }
+
     public ClientDTOOk getSelectedEmployer(){
         return employersNames.getSelectionModel().getSelectedItem();
     }

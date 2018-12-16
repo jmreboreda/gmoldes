@@ -1,7 +1,6 @@
 package gmoldes.domain.person.persistence.dao;
 
 
-import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.domain.person.persistence.vo.PersonVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
@@ -78,9 +77,9 @@ public class PersonDAO {
         return query.getResultList();
     }
 
-    public List<PersonVO> findAllPersonsByNamePatternInAlphabeticalOrder(String nameLetters){
+    public List<PersonVO> findAllPersonsByNamePattern(String nameLetters){
 
-        TypedQuery<PersonVO> query = session.createNamedQuery(PersonVO.FIND_ALL_PERSONS_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER, PersonVO.class);
+        TypedQuery<PersonVO> query = session.createNamedQuery(PersonVO.FIND_ALL_PERSONS_BY_NAME_PATTERN, PersonVO.class);
         query.setParameter("code", "%" + nameLetters.toLowerCase() + "%");
 
         return query.getResultList();

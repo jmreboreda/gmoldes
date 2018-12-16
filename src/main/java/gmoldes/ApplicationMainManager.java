@@ -13,7 +13,7 @@ import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.client.manager.ClientManager;
 import gmoldes.domain.client.mapper.MapperClientVODTO;
 import gmoldes.domain.client.persistence.dao.ClientDAO;
-import gmoldes.domain.client.persistence.vo.ClientVOOk;
+import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.*;
 import gmoldes.domain.person.dto.PersonDTO;
@@ -56,7 +56,7 @@ public class ApplicationMainManager {
 
         ClientManager clientManager = new ClientManager();
         for (Map.Entry<Integer, String> entry : clientIdMap.entrySet()) {
-            ClientVOOk clientVO = clientManager.findClientById(entry.getKey());
+            ClientVO clientVO = clientManager.findClientById(entry.getKey());
             ClientDTOOk clientDTO = ClientDTOOk.create()
                     .withClientId(clientVO.getClientId())
                     .withIsNaturalPerson(clientVO.getNaturalPerson())
@@ -73,10 +73,10 @@ public class ApplicationMainManager {
 
     public List<ClientDTOOk> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
         ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-        List<ClientVOOk> clientVOList = clientDAO.findAllClientGMWithInvoiceInForceInPeriod(initialDate, finalDate);
+        List<ClientVO> clientVOList = clientDAO.findAllClientGMWithInvoiceInForceInPeriod(initialDate, finalDate);
 
         List<ClientDTOOk> clientDTOList = new ArrayList<>();
-        for(ClientVOOk clientVO : clientVOList){
+        for(ClientVO clientVO : clientVOList){
             clientDTOList.add(MapperClientVODTO.map(clientVO));
         }
 
@@ -326,7 +326,7 @@ public class ApplicationMainManager {
 
     public ClientDTOOk retrieveClientByClientId(Integer clientId){
         ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-        ClientVOOk clientVO = clientDAO.findClientById(clientId);
+        ClientVO clientVO = clientDAO.findClientById(clientId);
 
         return MapperClientVODTO.map(clientVO);
     }

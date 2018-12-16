@@ -2,7 +2,6 @@ package gmoldes.domain.client.persistence.dao;
 
 
 import gmoldes.domain.client.persistence.vo.ClientVO;
-import gmoldes.domain.client.persistence.vo.ClientVOOk;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -36,7 +35,7 @@ public class ClientDAO {
         this.session = session;
     }
 
-    public Integer createClient(ClientVOOk clientVO) {
+    public Integer createClient(ClientVO clientVO) {
 
         try {
             session.beginTransaction();
@@ -49,32 +48,32 @@ public class ClientDAO {
             return clientVO.getId();
     }
 
-    public ClientVOOk findClientById(Integer clientId){
+    public ClientVO findClientById(Integer clientId){
 
-        TypedQuery<ClientVOOk> query = session.createNamedQuery(ClientVOOk.FIND_CLIENT_BY_CLIENT_ID, ClientVOOk.class);
+        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_CLIENT_BY_CLIENT_ID, ClientVO.class);
         query.setParameter("clientId", clientId);
 
         return query.getSingleResult();
     }
 
-    public List<ClientVOOk> findAllActiveClientsInAlphabeticalOrder(){
+    public List<ClientVO> findAllActiveClientsInAlphabeticalOrder(){
 
-        TypedQuery<ClientVOOk> query = session.createNamedQuery(ClientVOOk.FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER, ClientVOOk.class);
+        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER, ClientVO.class);
 
         return query.getResultList();
     }
 
-    public List<ClientVOOk> findAllActiveClientsByNamePatternInAlphabeticalOrder(String nameLetters){
+    public List<ClientVO> findAllActiveClientsByNamePattern(String nameLetters){
 
-        TypedQuery<ClientVOOk> query = session.createNamedQuery(ClientVOOk.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER, ClientVOOk.class);
+        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN, ClientVO.class);
         query.setParameter("lettersOfName", "%" + nameLetters.toLowerCase() + "%");
 
         return query.getResultList();
     }
 
-    public List<ClientVOOk> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+    public List<ClientVO> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
 
-        TypedQuery<ClientVOOk> query = session.createNamedQuery(ClientVOOk.FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD, ClientVOOk.class);
+        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD, ClientVO.class);
         Date initialDateOfPeriod = Date.valueOf(initialDate);
         Date finalDateOfPeriod = Date.valueOf(finalDate);
 

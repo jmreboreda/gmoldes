@@ -2,65 +2,66 @@ package gmoldes.domain.client.persistence.vo;
 
 import javax.persistence.*;
 import java.io.Serializable;
-//import java.util.Date;
 import java.sql.Date;
 import java.util.Set;
 
-
 @Entity
-@Table(name = "client", uniqueConstraints = {@UniqueConstraint(columnNames = {"nifcif", "nifcif_dup"})})
+//@Table(name = "client", uniqueConstraints = {@UniqueConstraint(columnNames = {"nifcif", "nifcif_dup"})})
+@Table(name = "client_ok")
+
 @NamedQueries(value = {
         @NamedQuery(
-                name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER,
-                query = "select p from ClientVO as p where p.tipoclte like '%Asesoría%' and lower(p.nom_rzsoc) like lower(:code) and p.cltactivo = true order by p.nom_rzsoc"
+                name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN,
+                query = "select p from ClientVO as p where p.clientType like '%Asesoría%' and (lower(p.rzSocial) like lower(:lettersOfName) or lower(p.surNames) like lower(:lettersOfName) or lower(p.name) like lower(:lettersOfName)) and p.activeClient = true"
         ),
         @NamedQuery(
                 name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER,
-                query = "select p from ClientVO as p where p.cltactivo = true order by p.nom_rzsoc"
+                query = "select p from ClientVO as p where p.activeClient = true order by p.surNames, p.name, p.rzSocial"
         ),
         @NamedQuery(
                 name = ClientVO.FIND_CLIENT_BY_SAME_NAME,
-                query = "select p from ClientVO as p where p.nom_rzsoc = :nom_rzsoc"
+                query = "select p from ClientVO as p where (p.rzSocial = :nom_rzsoc or concat(surNames, ', ', name) = :nom_rzsoc)"
         ),
         @NamedQuery(
                 name = ClientVO.FIND_CLIENT_BY_CLIENT_ID,
-                query = "select p from ClientVO as p where p.idcliente = :clientId"
+                query = "select p from ClientVO as p where p.clientId = :clientId"
         ),
         @NamedQuery(
                 name = ClientVO.FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD,
-                query = "select p from ClientVO as p where (p.fdesde is null or p.fdesde <= :finalDate) and (p.fhasta is null or p.fhasta >= :finalDate) and p.sinactividad is null and claiminvoices = true order by p.nom_rzsoc"
+                query = "select p from ClientVO as p where (p.dateFrom is null or p.dateFrom <= :finalDate) and (p.dateTo is null or p.dateTo >= :finalDate) and p.withoutActivity is null and claiminvoices = true order by p.rzSocial, p.surNames, p.name"
         )
 })
 
 public class ClientVO implements Serializable {
 
-    public static final String FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER = "ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER";
+    public static final String FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN = "ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN";
     public static final String FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER = "ClientVO.FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER";
     public static final String FIND_CLIENT_BY_SAME_NAME = "ClientVO.FIND_CLIENT_BY_SAME_NAME";
     public static final String FIND_CLIENT_BY_CLIENT_ID = "ClientVO.FIND_CLIENT_BY_CLIENT_ID";
     public static final String FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD = "ClientVO.FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD";
 
     @Id
-    @SequenceGenerator(name = "clientes_id_seq", sequenceName = "clientes_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clientes_id_seq")
+    @SequenceGenerator(name = "client_ok_id_seq", sequenceName = "client_ok_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_ok_id_seq")
     @Column(name = "id", updatable = false)
     private Integer id;
-    private Integer idcliente;
-    private String nifcif;
-    private Short nifcif_dup;
-    private String nom_rzsoc;
-    private Short numvez;
-    @Column(name = "cltsg21", length = 4)
-    private String cltsg21;
-    private Date fdesde;
-    private Date fhasta;
-    private Boolean cltactivo;
-    private Date sinactividad;
-    private String tipoclte;
+    @Column(name = "clientid")
+    private Integer clientId;
+    private Boolean isNaturalPerson;
+    private String nieNif;
+    private String surNames;
+    private String name;
+    private String rzSocial;
+    private Date dateFrom;
+    private Date dateTo;
+    private String clientType;
+    @Column(name = "sg21code", length = 4)
+    private String sg21Code;
+    private Boolean activeClient;
+    private Date withoutActivity;
     private Boolean claimInvoices;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientVO", cascade = CascadeType.ALL)
     private Set<ServiceGMVO> servicesGM;
-
 
     public Integer getId() {
         return id;
@@ -70,100 +71,100 @@ public class ClientVO implements Serializable {
         this.id = id;
     }
 
-    public Integer getIdcliente() {
-        return idcliente;
+    public Integer getClientId() {
+        return clientId;
     }
 
-    public void setIdcliente(Integer idcliente) {
-        this.idcliente = idcliente;
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
     }
 
-    public String getNifcif() {
-        return nifcif;
+    public Boolean getNaturalPerson() {
+        return isNaturalPerson;
     }
 
-    public void setNifcif(String nifcif) {
-        this.nifcif = nifcif;
+    public void setNaturalPerson(Boolean naturalPerson) {
+        isNaturalPerson = naturalPerson;
     }
 
-    public Short getNifcif_dup() {
-        return nifcif_dup;
+    public String getNieNif() {
+        return nieNif;
     }
 
-    public void setNifcif_dup(Short nifcif_dup) {
-        this.nifcif_dup = nifcif_dup;
+    public void setNifCif(String nieNif) {
+        this.nieNif = nieNif;
     }
 
-    public String getNom_rzsoc() {
-        return nom_rzsoc;
+    public String getSurNames() {
+        return surNames;
     }
 
-    public void setNom_rzsoc(String nom_rzsoc) {
-        this.nom_rzsoc = nom_rzsoc;
+    public void setSurNames(String surNames) {
+        this.surNames = surNames;
     }
 
-    public Short getNumvez() {
-        return numvez;
+    public String getName() {
+        return name;
     }
 
-    public void setNumvez(Short numvez) {
-        this.numvez = numvez;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCltsg21() {
-        return cltsg21;
+    public String getRzSocial() {
+        return rzSocial;
     }
 
-    public void setCltsg21(String cltsg21) {
-        this.cltsg21 = cltsg21;
+    public void setRzSocial(String rzSocial) {
+        this.rzSocial = rzSocial;
     }
 
-    public Date getFdesde() {
-        return fdesde;
+    public Date getDateFrom() {
+        return dateFrom;
     }
 
-    public void setFdesde(Date fdesde) {
-        this.fdesde = fdesde;
+    public void setDateFrom(Date dateFrom) {
+        this.dateFrom = dateFrom;
     }
 
-    public Date getFhasta() {
-        return fhasta;
+    public Date getDateTo() {
+        return dateTo;
     }
 
-    public void setFhasta(Date fhasta) {
-        this.fhasta = fhasta;
+    public void setDateTo(Date dateTo) {
+        this.dateTo = dateTo;
     }
 
-    public Boolean getCltactivo() {
-        return cltactivo;
+    public String getClientType() {
+        return clientType;
     }
 
-    public void setCltactivo(Boolean cltactivo) {
-        this.cltactivo = cltactivo;
+    public void setClientType(String clientType) {
+        this.clientType = clientType;
     }
 
-    public Date getSinactividad() {
-        return sinactividad;
+    public String getSg21Code() {
+        return sg21Code;
     }
 
-    public void setSinactividad(Date sinactividad) {
-        this.sinactividad = sinactividad;
+    public void setSg21Code(String sg21Code) {
+        this.sg21Code = sg21Code;
     }
 
-    public String getTipoclte() {
-        return tipoclte;
+    public Boolean getActiveClient() {
+        return activeClient;
     }
 
-    public void setTipoclte(String tipoclte) {
-        this.tipoclte = tipoclte;
+    public void setActiveClient(Boolean activeClient) {
+        this.activeClient = activeClient;
     }
 
-    public Set<ServiceGMVO> getServicesGM() {
-        return servicesGM;
+    public Date getWithoutActivity() {
+        return withoutActivity;
     }
 
-    public void setServicesGM(Set<ServiceGMVO> servicesGM) {
-        this.servicesGM = servicesGM;
+    public void setWithoutActivity(Date withoutActivity) {
+        this.withoutActivity = withoutActivity;
     }
 
     public Boolean getClaimInvoices() {
@@ -173,4 +174,13 @@ public class ClientVO implements Serializable {
     public void setClaimInvoices(Boolean claimInvoices) {
         this.claimInvoices = claimInvoices;
     }
+
+    public Set<ServiceGMVO> getServicesGM() {
+        return servicesGM;
+    }
+
+    public void setServicesGM(Set<ServiceGMVO> servicesGM) {
+        this.servicesGM = servicesGM;
+    }
 }
+

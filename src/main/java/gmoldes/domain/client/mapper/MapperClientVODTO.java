@@ -1,15 +1,13 @@
 package gmoldes.domain.client.mapper;
 
-import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.client.persistence.vo.ClientVO;
-import gmoldes.domain.client.persistence.vo.ClientVOOk;
 
 import java.time.LocalDate;
 
 public class MapperClientVODTO {
 
-    public static ClientDTOOk map(ClientVOOk clientVO) {
+    public static ClientDTOOk map(ClientVO clientVO) {
 
         LocalDate dateFrom = clientVO.getDateFrom() != null ? clientVO.getDateFrom().toLocalDate() : null;
         LocalDate dateTo = clientVO.getDateTo() != null ? clientVO.getDateTo().toLocalDate() : null;

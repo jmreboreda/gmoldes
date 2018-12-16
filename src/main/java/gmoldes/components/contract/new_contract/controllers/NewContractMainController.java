@@ -16,7 +16,6 @@ import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.client.controllers.ClientCCCController;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientCCCDTO;
-import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.dto.ClientDTOOk;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.OldContractToSaveDTO;
@@ -36,16 +35,21 @@ import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javax.mail.internet.AddressException;
+import javax.swing.*;
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -281,7 +285,7 @@ public class NewContractMainController extends VBox {
             contractParts.clearEmployeesData();
             return;
         }
-        List<PersonDTO> employees = findPersonsByNamePattern(pattern);
+        List<PersonDTO> employees = findPersonsByNamePatternInAlphabeticalOrder(pattern);
         contractParts.refreshEmployees(employees);
     }
 
@@ -332,7 +336,7 @@ public class NewContractMainController extends VBox {
         return clientController.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
     }
 
-    private List<PersonDTO> findPersonsByNamePattern(String pattern) {
+    private List<PersonDTO> findPersonsByNamePatternInAlphabeticalOrder(String pattern) {
         return personController.findAllPersonsByNamePatternInAlphabeticalOrder(pattern);
     }
 
