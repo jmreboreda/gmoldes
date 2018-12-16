@@ -7,7 +7,7 @@ import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
 import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.client.controllers.ClientController;
-import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.person.controllers.PersonController;
@@ -264,10 +264,10 @@ public class TimeRecordData extends VBox {
         ClientController clientController = new ClientController();
         LocalDate yearMonthDayDate = retrieveDateForTimeRecordFromSelector();
 
-        List<ClientDTOOk> clientWithTimeRecordContract = clientController.findAllClientWithContractNewVersionInMonth(yearMonthDayDate);
+        List<ClientDTO> clientWithTimeRecordContract = clientController.findAllClientWithContractNewVersionInMonth(yearMonthDayDate);
 
         List<TimeRecordClientDTO> activeClientList = new ArrayList<>();
-        for(ClientDTOOk clientDTO: clientWithTimeRecordContract){
+        for(ClientDTO clientDTO: clientWithTimeRecordContract){
             TimeRecordClientDTO timeRecordClientDTO = TimeRecordClientDTO.create()
                     .withIdcliente(clientDTO.getClientId())
                     .withNom_rzsoc(clientDTO.toString())

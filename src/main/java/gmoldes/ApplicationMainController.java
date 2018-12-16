@@ -5,13 +5,14 @@ import gmoldes.components.contract.contract_variation.persistence.vo.ContractVar
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.manager.TypesContractVariationsManager;
-import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.MapperContractVariationVODTO;
 import gmoldes.domain.contract.mapper.MapperContractVariationVOtoContractNewVersionDTO;
 import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
 import gmoldes.domain.contract.mapper.MapperInitialContractVOtoContractNewVersionDTO;
 import gmoldes.domain.person.dto.PersonDTO;
+import gmoldes.domain.servicegm.dto.ServiceGMDTO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 
 import java.time.LocalDate;
@@ -41,7 +42,7 @@ public class ApplicationMainController {
     }
 
 
-    public List<ClientDTOOk> findAllClientWithContractInForceAtDate(LocalDate date){
+    public List<ClientDTO> findAllClientWithContractInForceAtDate(LocalDate date){
 
         return applicationMainManager.findAllClientWithContractInForceAtDate(date);
     }
@@ -57,8 +58,14 @@ public class ApplicationMainController {
 
     }
 
-    public List<ClientDTOOk> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+    public List<ClientDTO> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+
         return applicationMainManager.findAllClientGMWithInvoiceInForceInPeriod(initialDate, finalDate);
+    }
+
+    public List<ClientDTO> findAllClientGMWithInvoicesToClaimInPeriod(LocalDate periodInitialDate, LocalDate periodFinalDate){
+
+        return applicationMainManager.findAllClientGMWithInvoicesToClaimInPeriod(periodInitialDate, periodFinalDate);
     }
 
     public List<TypesContractVariationsDTO> findAllTypesContractVariations(){
@@ -67,7 +74,7 @@ public class ApplicationMainController {
         return manager.findAllTypesContractVariations();
     }
 
-    public ClientDTOOk findClientById(Integer clientId){
+    public ClientDTO findClientById(Integer clientId){
 
         return applicationMainManager.retrieveClientByClientId(clientId);
     }

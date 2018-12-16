@@ -48,12 +48,12 @@ public class ClientDAO {
             return clientVO.getId();
     }
 
-    public ClientVO findClientById(Integer clientId){
+    public List<ClientVO> findClientById(Integer clientId){
 
         TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_CLIENT_BY_CLIENT_ID, ClientVO.class);
         query.setParameter("clientId", clientId);
 
-        return query.getSingleResult();
+        return query.getResultList();
     }
 
     public List<ClientVO> findAllActiveClientsInAlphabeticalOrder(){

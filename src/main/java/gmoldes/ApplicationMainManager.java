@@ -9,7 +9,7 @@ import gmoldes.components.contract.new_contract.persistence.dao.ContractTypeDAO;
 import gmoldes.components.contract.new_contract.persistence.dao.TypesContractVariationsDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO;
 import gmoldes.components.contract.new_contract.persistence.vo.TypesContractVariationsVO;
-import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.manager.ClientManager;
 import gmoldes.domain.client.mapper.MapperClientVODTO;
 import gmoldes.domain.client.persistence.dao.ClientDAO;
@@ -20,6 +20,8 @@ import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.mapper.MapperPersonVODTO;
 import gmoldes.domain.person.persistence.dao.PersonDAO;
 import gmoldes.domain.person.persistence.vo.PersonVO;
+import gmoldes.domain.servicegm.persistence.dao.ServiceGMDAO;
+import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.domain.traceability_contract_documentation.mapper.MapperTraceabilityContractDocumentationVODTO;
 import gmoldes.domain.traceability_contract_documentation.persistence.dao.TraceabilityContractDocumentationDAO;
@@ -33,9 +35,9 @@ import java.util.Map;
 
 public class ApplicationMainManager {
 
-    public List<ClientDTOOk> findAllClientWithContractInForceAtDate(LocalDate date){
+    public List<ClientDTO> findAllClientWithContractInForceAtDate(LocalDate date){
 
-        List<ClientDTOOk> clientDTOList = new ArrayList<>();
+        List<ClientDTO> clientDTOList = new ArrayList<>();
 
         // Initial contract
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
@@ -57,7 +59,7 @@ public class ApplicationMainManager {
         ClientManager clientManager = new ClientManager();
         for (Map.Entry<Integer, String> entry : clientIdMap.entrySet()) {
             ClientVO clientVO = clientManager.findClientById(entry.getKey());
-            ClientDTOOk clientDTO = ClientDTOOk.create()
+            ClientDTO clientDTO = ClientDTO.create()
                     .withClientId(clientVO.getClientId())
                     .withIsNaturalPerson(clientVO.getNaturalPerson())
                     .withSurnames(clientVO.getSurNames())
@@ -71,13 +73,32 @@ public class ApplicationMainManager {
 
     }
 
-    public List<ClientDTOOk> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+    public List<ClientDTO> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
         ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
         List<ClientVO> clientVOList = clientDAO.findAllClientGMWithInvoiceInForceInPeriod(initialDate, finalDate);
 
-        List<ClientDTOOk> clientDTOList = new ArrayList<>();
+        List<ClientDTO> clientDTOList = new ArrayList<>();
         for(ClientVO clientVO : clientVOList){
             clientDTOList.add(MapperClientVODTO.map(clientVO));
+        }
+
+        return clientDTOList;
+    }
+
+    public List<ClientDTO> findAllClientGMWithInvoicesToClaimInPeriod(LocalDate periodInitialDate, LocalDate periodFinalDate){
+        ServiceGMDAO serviceGMDAO = ServiceGMDAO.ServiceGMDAOFactory.getInstance();
+        List<ServiceGMVO> serviceGMVOList = serviceGMDAO.findAllClientGMWithInvoicesToClaimInPeriod(periodInitialDate, periodFinalDate);
+
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+        ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
+        for(ServiceGMVO serviceGMVO : serviceGMVOList){
+
+            Integer clientId = serviceGMVO.getClientVO().getClientId();
+
+            List<ClientVO> clientVOList = clientDAO.findClientById(clientId);
+            for(ClientVO clientVO : clientVOList) {
+                ClientDTO clientDTO = MapperClientVODTO.map(clientVO);
+            }
         }
 
         return clientDTOList;
@@ -97,7 +118,7 @@ public class ApplicationMainManager {
 
         List<ContractFullDataDTO> contractFullDataDTOList = new ArrayList<>();
 
-        ClientDTOOk clientDTO = retrieveClientByClientId(clientId);
+        List<ClientDTO> clientDTOList = retrieveClientByClientId(clientId);
 
         // Initial contract
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractsInForceAtDate(date);
@@ -324,11 +345,17 @@ public class ApplicationMainManager {
         return contractVariationDTOList;
     }
 
-    public ClientDTOOk retrieveClientByClientId(Integer clientId){
-        ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-        ClientVO clientVO = clientDAO.findClientById(clientId);
+    public List<ClientDTO> retrieveClientByClientId(Integer clientId){
 
-        return MapperClientVODTO.map(clientVO);
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+        ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
+        List<ClientVO> clientVOList = clientDAO.findClientById(clientId);
+        for(ClientVO clientVO : clientVOList){
+            ClientDTO clientDTO = MapperClientVODTO.map(clientVO);
+            clientDTOList.add(clientDTO);
+        }
+
+        return clientDTOList;
     }
 
     public PersonDTO retrievePersonByPersonID(Integer personId){

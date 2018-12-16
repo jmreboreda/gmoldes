@@ -1,21 +1,21 @@
 package gmoldes.components.contract.events;
 
-import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.dto.ClientDTO;
 import javafx.event.Event;
 import javafx.event.EventType;
 
 public class SelectEmployerEvent extends Event {
 
 	public static final EventType<SelectEmployerEvent> SELECT_EMPLOYER_EVENT = new EventType<>("SELECT_EMPLOYER_EVENT");
-	private final ClientDTOOk newClientEmployerSelected;
+	private final ClientDTO newClientEmployerSelected;
 
 
-	public SelectEmployerEvent(ClientDTOOk newClientEmployerSelected) {
+	public SelectEmployerEvent(ClientDTO newClientEmployerSelected) {
 		super(SELECT_EMPLOYER_EVENT);
 		this.newClientEmployerSelected = newClientEmployerSelected;
 	}
 
-	public ClientDTOOk getSelectedEmployer() {
+	public ClientDTO getSelectedEmployer() {
 		return newClientEmployerSelected;
 	}
 }

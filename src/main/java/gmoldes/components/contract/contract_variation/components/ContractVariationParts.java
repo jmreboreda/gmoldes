@@ -2,7 +2,7 @@ package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
-import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.utilities.Utilities;
 import javafx.collections.ObservableList;
@@ -28,7 +28,7 @@ public class ContractVariationParts extends VBox {
     @FXML
     private DatePicker inForceDate;
     @FXML
-    private ChoiceBox<ClientDTOOk> client;
+    private ChoiceBox<ClientDTO> client;
     @FXML
     private ChoiceBox<ContractFullDataDTO> contract;
 
@@ -55,11 +55,11 @@ public class ContractVariationParts extends VBox {
         this.inForceDate = inForceDate;
     }
 
-    public ChoiceBox<ClientDTOOk> getClientSelector() {
+    public ChoiceBox<ClientDTO> getClientSelector() {
         return client;
     }
 
-    public void setClient(ChoiceBox<ClientDTOOk> client) {
+    public void setClient(ChoiceBox<ClientDTO> client) {
         this.client = client;
     }
 

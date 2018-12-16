@@ -1,19 +1,19 @@
 package gmoldes.domain.client.mapper;
 
-import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
 
 import java.time.LocalDate;
 
 public class MapperClientVODTO {
 
-    public static ClientDTOOk map(ClientVO clientVO) {
+    public static ClientDTO map(ClientVO clientVO) {
 
         LocalDate dateFrom = clientVO.getDateFrom() != null ? clientVO.getDateFrom().toLocalDate() : null;
         LocalDate dateTo = clientVO.getDateTo() != null ? clientVO.getDateTo().toLocalDate() : null;
         LocalDate withoutActivityDate = clientVO.getWithoutActivity() != null ? clientVO.getWithoutActivity().toLocalDate() : null;
 
-            ClientDTOOk clientDTO = ClientDTOOk.create()
+            ClientDTO clientDTO = ClientDTO.create()
                     .withId(clientVO.getId())
                     .withClientId(clientVO.getClientId())
                     .withIsNaturalPerson(clientVO.getNaturalPerson())

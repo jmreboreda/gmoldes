@@ -5,13 +5,13 @@
  */
 package gmoldes.domain.client.dto;
 
-import gmoldes.domain.client.persistence.vo.ServiceGMVO;
+import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 
-public class ClientDTOOk {
+public class ClientDTO {
 
     private Integer id;
     private Integer clientId;
@@ -29,10 +29,10 @@ public class ClientDTOOk {
     private Boolean claimInvoices;
     private Set<ServiceGMVO> servicesGM;
 
-    public ClientDTOOk() {
+    public ClientDTO() {
     }
 
-    public ClientDTOOk(
+    public ClientDTO(
             Integer id,
             Integer clientId,
             Boolean isNaturalPerson,
@@ -294,8 +294,8 @@ public class ClientDTOOk {
             return this;
         }
 
-        public ClientDTOOk build() {
-            return new ClientDTOOk(this.id, this.clientId, this.isNaturalPerson, this.nieNif, this.surNames, this.name,this.rzSocial, this.dateFrom, this.dateTo,
+        public ClientDTO build() {
+            return new ClientDTO(this.id, this.clientId, this.isNaturalPerson, this.nieNif, this.surNames, this.name,this.rzSocial, this.dateFrom, this.dateTo,
             this.clientType, this.sg21Code, this.activeClient, this.withoutActivity, this.claimInvoices, this.servicesGM);
         }
     }

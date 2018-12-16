@@ -8,9 +8,9 @@
  
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost/patata</property>
-        <property name="hibernate.connection.username">patata</property>
-        <property name="hibernate.connection.password">patata</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost/gmoldesnew</property>
+        <property name="hibernate.connection.username">jmrb</property>
+        <property name="hibernate.connection.password">L100mhdSL</property>
 
         <property name="hibernate.c3p0.min_size">5</property>
         <property name="hibernate.c3p0.max_size">20</property>
@@ -32,7 +32,6 @@
  
         <!-- Annotated entity classes -->
         <mapping class="gmoldes.domain.client.persistence.vo.ClientVO"/>
-        <mapping class="gmoldes.domain.client.persistence.vo.ClientVOOk"/>
         <mapping class="gmoldes.components.contract.new_contract.persistence.vo.ContractVO"/>
         <mapping class="gmoldes.domain.person.persistence.vo.PersonVO"/>
         <mapping class ="gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO"/>
@@ -42,7 +41,7 @@
         <mapping class="gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO"/>
         <mapping class="gmoldes.domain.client.persistence.vo.ClientCCCVO"/>
         <mapping class="gmoldes.domain.person.persistence.vo.StudyVO"/>
-        <mapping class="gmoldes.domain.client.persistence.vo.ServiceGMVO"/>
+        <mapping class="gmoldes.domain.servicegm.persistence.vo.ServiceGMVO"/>
 
     </session-factory>
 </hibernate-configuration>

@@ -1,6 +1,6 @@
 package gmoldes.domain.client;
 
-import gmoldes.domain.client.persistence.vo.ServiceGMVO;
+import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
 
 import java.util.Date;
 import java.util.Set;

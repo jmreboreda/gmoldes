@@ -16,7 +16,7 @@ import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.client.controllers.ClientCCCController;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientCCCDTO;
-import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.OldContractToSaveDTO;
 import gmoldes.domain.contract.dto.ProvisionalContractDataDTO;
@@ -35,21 +35,16 @@ import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javax.mail.internet.AddressException;
-import javax.swing.*;
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -275,7 +270,7 @@ public class NewContractMainController extends VBox {
             contractParts.clearEmployerCCC();
             return;
         }
-        List<ClientDTOOk> employers = findClientsByNamePattern(pattern);
+        List<ClientDTO> employers = findClientsByNamePattern(pattern);
         contractParts.refreshEmployers(employers);
     }
 
@@ -290,8 +285,8 @@ public class NewContractMainController extends VBox {
     }
 
     private void onSelectEmployer(SelectEmployerEvent selectEmployerEvent) {
-        ClientDTOOk selectedEmployer = selectEmployerEvent.getSelectedEmployer();
-        List<ClientDTOOk> clientDTOList = new ArrayList<>();
+        ClientDTO selectedEmployer = selectEmployerEvent.getSelectedEmployer();
+        List<ClientDTO> clientDTOList = new ArrayList<>();
         clientDTOList.add(selectedEmployer);
         contractParts.refreshEmployers(clientDTOList);
 
@@ -332,7 +327,7 @@ public class NewContractMainController extends VBox {
         }
     }
 
-    private List<ClientDTOOk> findClientsByNamePattern(String pattern) {
+    private List<ClientDTO> findClientsByNamePattern(String pattern) {
         return clientController.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
     }
 

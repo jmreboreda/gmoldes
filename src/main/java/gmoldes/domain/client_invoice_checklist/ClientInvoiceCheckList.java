@@ -1,9 +1,10 @@
 package gmoldes.domain.client_invoice_checklist;
 
 import gmoldes.ApplicationMainController;
-import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client_invoice_checklist.dto.ClientInvoiceCheckListDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.servicegm.dto.ServiceGMDTO;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -92,7 +93,7 @@ public class ClientInvoiceCheckList {
         clipboard.setContents(ss, ss);
     }
 
-    public List<ClientInvoiceCheckListDTO> retrieveAllClientGMWithInvoiceInForceInPeriod(Month month, Integer year){
+    public List<ClientInvoiceCheckListDTO> findAllClientGMWithInvoicesToClaimInPeriod(Month month, Integer year){
 
         List<ClientInvoiceCheckListDTO> clientInvoiceCheckListDTOList = new ArrayList<>();
         ApplicationMainController applicationMainController = new ApplicationMainController();
@@ -107,8 +108,10 @@ public class ClientInvoiceCheckList {
         LocalDate periodInitialDate = LocalDate.of(yearReceived, monthReceived, dayReceived);
         LocalDate periodFinalDate =  LocalDate.of(yearReceived, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        List<ClientDTOOk> clientDTOList = applicationMainController.findAllClientGMWithInvoiceInForceInPeriod(periodInitialDate, periodFinalDate);
-        for(ClientDTOOk clientDTO : clientDTOList){
+        List<ClientDTO> clientDTOList = applicationMainController.findAllClientGMWithInvoicesToClaimInPeriod(periodInitialDate, periodFinalDate);
+
+//        List<ClientDTO> clientDTOList = applicationMainController.findAllClientGMWithInvoiceInForceInPeriod(periodInitialDate, periodFinalDate);
+        for(ClientDTO clientDTO : clientDTOList){
             String clientFullName = clientDTO.toString();
             String clientSg21Code = clientDTO.getSg21Code();
 

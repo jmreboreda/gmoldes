@@ -1,20 +1,20 @@
 package gmoldes.domain.contract.dto;
 
-import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 
 import java.time.LocalDate;
 
 public class ContractFullDataDTO {
 
-    private ClientDTOOk employer;
+    private ClientDTO employer;
     private PersonDTO employee;
     private LocalDate initialContractDate;
     private ContractNewVersionDTO contractNewVersion;
     private ContractTypeDTO contractType;
     private TypesContractVariationsDTO typesContractVariationsDTO;
 
-    public ContractFullDataDTO(ClientDTOOk employer,
+    public ContractFullDataDTO(ClientDTO employer,
                                PersonDTO employee,
                                LocalDate initialContractDate,
                                ContractNewVersionDTO contractNewVersion,
@@ -30,11 +30,11 @@ public class ContractFullDataDTO {
 
     }
 
-    public ClientDTOOk getEmployer() {
+    public ClientDTO getEmployer() {
         return employer;
     }
 
-    public void setEmployer(ClientDTOOk employer) {
+    public void setEmployer(ClientDTO employer) {
         this.employer = employer;
     }
 
@@ -92,14 +92,14 @@ public class ContractFullDataDTO {
 
     public static class ContractFullDataDTOBuilder {
 
-        private ClientDTOOk employer;
+        private ClientDTO employer;
         private PersonDTO employee;
         private LocalDate initialContractDate;
         private ContractNewVersionDTO contractNewVersion;
         private ContractTypeDTO contractType;
         private TypesContractVariationsDTO typesContractVariationsDTO;
 
-        public ContractFullDataDTOBuilder withEmployer(ClientDTOOk employer) {
+        public ContractFullDataDTOBuilder withEmployer(ClientDTO employer) {
             this.employer = employer;
             return this;
         }

@@ -1,13 +1,15 @@
 package gmoldes.domain.client.persistence.vo;
 
+import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
 
 @Entity
-//@Table(name = "client", uniqueConstraints = {@UniqueConstraint(columnNames = {"nifcif", "nifcif_dup"})})
-@Table(name = "client_ok")
+//@Table(name = "client", uniqueConstraints = {@UniqueConstraint(columnNames = {"clientId", "clientType"})})
+@Table(name = "client")
 
 @NamedQueries(value = {
         @NamedQuery(
@@ -41,11 +43,11 @@ public class ClientVO implements Serializable {
     public static final String FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD = "ClientVO.FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD";
 
     @Id
-    @SequenceGenerator(name = "client_ok_id_seq", sequenceName = "client_ok_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_ok_id_seq")
+    @SequenceGenerator(name = "client_id_seq", sequenceName = "client_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_id_seq")
     @Column(name = "id", updatable = false)
     private Integer id;
-    @Column(name = "clientid")
+    //@Column(name = "clientid")
     private Integer clientId;
     private Boolean isNaturalPerson;
     private String nieNif;

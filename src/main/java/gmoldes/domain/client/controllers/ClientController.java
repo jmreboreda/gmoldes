@@ -1,6 +1,6 @@
 package gmoldes.domain.client.controllers;
 
-import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.domain.client.manager.ClientManager;
 
@@ -11,21 +11,21 @@ public class ClientController {
 
     ClientManager clientManager = new ClientManager();
 
-    public List<ClientDTOOk> findAllActiveClientByNamePatternInAlphabeticalOrder(String pattern){
+    public List<ClientDTO> findAllActiveClientByNamePatternInAlphabeticalOrder(String pattern){
 
         return clientManager.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
     }
 
-    public List<ClientDTOOk> findAllClientWithContractNewVersionInMonth(LocalDate date){
+    public List<ClientDTO> findAllClientWithContractNewVersionInMonth(LocalDate date){
 
         return clientManager.findAllClientWithContractNewVersionInMonth(date);
     }
 
-    public ClientDTOOk findClientById(Integer clientId){
+    public ClientDTO findClientById(Integer clientId){
 
         ClientVO clientVO = clientManager.findClientById(clientId);
 
-        return ClientDTOOk.create()
+        return ClientDTO.create()
                 .withId(clientVO.getId())
                 .withClientId(clientVO.getClientId())
                 .withIsNaturalPerson(clientVO.getNaturalPerson())

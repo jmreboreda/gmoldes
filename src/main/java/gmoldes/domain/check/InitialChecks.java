@@ -4,7 +4,7 @@ import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.controllers.ContractController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.check.dto.IDCControlDTO;
-import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
@@ -44,7 +44,7 @@ public class InitialChecks {
                     InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
 
                     Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
-                    ClientDTOOk clientDTO = applicationMainController.findClientById(clientGMId);
+                    ClientDTO clientDTO = applicationMainController.findClientById(clientGMId);
 
                     Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
                     PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
@@ -79,7 +79,7 @@ public class InitialChecks {
             InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
 
             Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
-            ClientDTOOk clientDTO = applicationMainController.findClientById(clientGMId);
+            ClientDTO clientDTO = applicationMainController.findClientById(clientGMId);
 
             Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
             PersonDTO workerDTO = applicationMainController.findPersonById(workerId);

@@ -3,11 +3,10 @@ package gmoldes.domain.client.manager;
 
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
-import gmoldes.domain.client.dto.ClientDTOOk;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.payroll_checklist.dto.PayrollCheckListDTO;
 
 import java.text.Collator;
 import java.time.LocalDate;
@@ -25,9 +24,9 @@ public class ClientManager {
     public ClientManager() {
     }
 
-    public List<ClientDTOOk> findAllActiveClientByNamePatternInAlphabeticalOrder(String namePattern) {
+    public List<ClientDTO> findAllActiveClientByNamePatternInAlphabeticalOrder(String namePattern) {
 
-        List<ClientDTOOk> clientDTOList = new ArrayList<>();
+        List<ClientDTO> clientDTOList = new ArrayList<>();
         clientDAO = ClientDAO.ClientDAOFactory.getInstance();
         List<ClientVO> clientVOList = clientDAO.findAllActiveClientsByNamePattern(namePattern);
         for (ClientVO clientVO : clientVOList) {
@@ -35,7 +34,7 @@ public class ClientManager {
             LocalDate dateTo = clientVO.getDateTo() != null ? clientVO.getDateTo().toLocalDate() : null;
             LocalDate withoutActivityDate = clientVO.getWithoutActivity() != null ? clientVO.getWithoutActivity().toLocalDate() : null;
 
-            ClientDTOOk clientDTO = ClientDTOOk.create()
+            ClientDTO clientDTO = ClientDTO.create()
                     .withId(clientVO.getId())
                     .withIsNaturalPerson(clientVO.getNaturalPerson())
                     .withActiveClient(clientVO.getActiveClient())
@@ -59,11 +58,11 @@ public class ClientManager {
 
         return clientDTOList
                 .stream()
-                .sorted(Comparator.comparing(ClientDTOOk::toString, primaryCollator)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(ClientDTO::toString, primaryCollator)).collect(Collectors.toList());
     }
 
-    public List<ClientDTOOk> findAllClientWithContractNewVersionInMonth(LocalDate dateReceived){
-        List<ClientDTOOk> clientDTOList = new ArrayList<>();
+    public List<ClientDTO> findAllClientWithContractNewVersionInMonth(LocalDate dateReceived){
+        List<ClientDTO> clientDTOList = new ArrayList<>();
         ContractManager contractManager = new ContractManager();
         contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractManager.findAllContractNewVersionInMonthOfDate(dateReceived);
@@ -72,7 +71,7 @@ public class ClientManager {
                 Integer clientId = contractNewVersionDTO.getContractJsonData().getClientGMId();
                 clientDAO = ClientDAO.ClientDAOFactory.getInstance();
                 ClientVO clientVO = clientDAO.findClientById(clientId);
-                ClientDTOOk clientDTO = ClientDTOOk.create()
+                ClientDTO clientDTO = ClientDTO.create()
                         .withClientId(contractNewVersionDTO.getContractJsonData().getClientGMId())
                         .withIsNaturalPerson(clientVO.getNaturalPerson())
                         .withSurnames(clientVO.getSurNames())
