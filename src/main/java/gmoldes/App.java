@@ -27,7 +27,6 @@ public class App extends Application {
             ctJson.oldContractToJsonGenerator();
         }
 
-
         initialControlProcesses(primaryStage);
 
         initialScene.getWindow().hide();
