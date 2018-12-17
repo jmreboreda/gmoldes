@@ -30,7 +30,7 @@ public class InitialChecks {
 
     public static void alertByContractNewVersionExpiration(Stage primaryStage){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(gmoldes.utilities.Parameters.DEFAULT_DATE_FORMAT);
-        String alertMessage = "";
+        StringBuilder alertMessage = new StringBuilder();
         String missingExceededText;
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
@@ -55,13 +55,16 @@ public class InitialChecks {
                         missingExceededText = "Excedido en ";
                     }
 
-                    alertMessage = alertMessage +  "Preaviso de fin de contrato:\n" + clientDTO.toNaturalName() + " con " + workerDTO.toNaturalName()
-                            + ": vencimiento el día " + traceabilityDTO.getExpectedEndDate().format(dateFormatter) + ".\n" + missingExceededText + Math.abs(daysToEndDate) + " días." + "\n\n";
+                    alertMessage.append("Preaviso de fin de contrato:\n")
+                            .append(clientDTO.toNaturalName()).append(" con ")
+                            .append(workerDTO.toNaturalName())
+                            .append(": vencimiento el día ").append(traceabilityDTO.getExpectedEndDate().format(dateFormatter)).append(".\n")
+                            .append(missingExceededText).append(Math.abs(daysToEndDate)).append(" días.").append("\n\n");
                 }
             }
 
-            if(!alertMessage.isEmpty()) {
-                Message.warningMessage(primaryStage.getOwner(), "Preavisos de fin de contrato pendientes de recepción", alertMessage);
+            if(alertMessage.length() > 0) {
+                Message.warningMessage(primaryStage.getOwner(), "Preavisos de fin de contrato pendientes de recepción", alertMessage.toString());
             }
         }
     }
@@ -96,7 +99,7 @@ public class InitialChecks {
 
         if(!idcControlDTOList.isEmpty()){
 
-            String alertMessage = "";
+            StringBuilder alertMessage = new StringBuilder();
             String missingExceededText;
 
             for(IDCControlDTO idcControlDTO : idcControlDTOList) {
@@ -109,21 +112,24 @@ public class InitialChecks {
 
                     int days = Math.abs(idcControlDTO.getDays());
 
-                    alertMessage = alertMessage + "IDC Pendiente:\n" + idcControlDTO.getVariationDescription() + " de " + idcControlDTO.getClientGMFullName() + " con " +
-                            idcControlDTO.getWorkerFullName() + " desde " + idcControlDTO.getDateTo() + ".\n" + missingExceededText + days + " días." + "\n\n";
+                    alertMessage.append("IDC Pendiente:\n").append(idcControlDTO.getVariationDescription())
+                            .append(" de ").append(idcControlDTO.getClientGMFullName())
+                            .append(" con ").append(idcControlDTO.getWorkerFullName())
+                            .append(" desde ").append(idcControlDTO.getDateTo()).append(".\n")
+                            .append(missingExceededText).append(days).append(" días.").append("\n\n");
                 }
             }
 
-            if(!alertMessage.isEmpty()) {
+            if(alertMessage.length() > 0) {
 
-                Message.warningMessage(primaryStage.getOwner(), "IDC pendientes de recepción", alertMessage);
+                Message.warningMessage(primaryStage.getOwner(), "IDC pendientes de recepción", alertMessage.toString());
             }
         }
     }
 
     public static void alertByDelaySendingLaborDocumentationToClients(Stage primaryStage){
         ApplicationMainController applicationMainController = new ApplicationMainController();
-        String alertMessage = "";
+        StringBuilder alertMessage = new StringBuilder();
 
         List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = applicationMainController.findTraceabilityForAllContractWithPendingLaborDocumentation();
         if(!traceabilityContractDocumentationDTOList.isEmpty()){
@@ -134,15 +140,17 @@ public class InitialChecks {
                     InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
                     ClientDTO clientDTO = applicationMainController.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
                     PersonDTO workerDTO = applicationMainController.findPersonById(initialContractDTO.getContractJsonData().getWorkerId());
-                    alertMessage = alertMessage + "La documentación del contrato número " + contractNumber + " entre " + clientDTO.toNaturalName() + " y " +
-                            workerDTO.toNaturalName() + " está pendiente desde hace " +  daysOfDocumentationDelay + " días.\n\n";
+                    alertMessage.append("La documentación del contrato número ").append(contractNumber)
+                            .append(" entre ").append(clientDTO.toNaturalName()).append(" y ")
+                            .append(workerDTO.toNaturalName()).append(" está pendiente desde hace ")
+                            .append(daysOfDocumentationDelay).append(" días.\n\n");
 
                 }
             }
 
-            if(!alertMessage.isEmpty()) {
+            if(alertMessage.length() > 0) {
 
-                Message.warningMessage(primaryStage.getOwner(), "Documentación de contratos pendiente de recepción", alertMessage);
+                Message.warningMessage(primaryStage.getOwner(), "Documentación de contratos pendiente de recepción", alertMessage.toString());
             }
         }
     }
