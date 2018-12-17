@@ -1,7 +1,7 @@
 package gmoldes;
 
-import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
+import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.new_contract.mapper.MapperContractTypeVODTO;
@@ -20,8 +20,14 @@ import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.mapper.MapperPersonVODTO;
 import gmoldes.domain.person.persistence.dao.PersonDAO;
 import gmoldes.domain.person.persistence.vo.PersonVO;
+import gmoldes.domain.servicegm.persistence.dao.ServiceGMDAO;
+import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
+import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.domain.traceability_contract_documentation.mapper.MapperTraceabilityContractDocumentationVODTO;
+import gmoldes.domain.traceability_contract_documentation.persistence.dao.TraceabilityContractDocumentationDAO;
+import gmoldes.domain.traceability_contract_documentation.persistence.vo.TraceabilityContractDocumentationVO;
+
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,8 +60,11 @@ public class ApplicationMainManager {
         for (Map.Entry<Integer, String> entry : clientIdMap.entrySet()) {
             ClientVO clientVO = clientManager.findClientById(entry.getKey());
             ClientDTO clientDTO = ClientDTO.create()
-                    .withClientId(clientVO.getIdcliente())
-                    .withPersonOrCompanyName(clientVO.getNom_rzsoc())
+                    .withClientId(clientVO.getClientId())
+                    .withIsNaturalPerson(clientVO.getNaturalPerson())
+                    .withSurnames(clientVO.getSurNames())
+                    .withName(clientVO.getName())
+                    .withRzSocial(clientVO.getRzSocial())
                     .build();
             clientDTOList.add(clientDTO);
         }
@@ -76,13 +85,31 @@ public class ApplicationMainManager {
         return clientDTOList;
     }
 
+    public List<ClientDTO> findAllClientGMWithInvoicesToClaimInPeriod(LocalDate periodInitialDate, LocalDate periodFinalDate){
+        ServiceGMDAO serviceGMDAO = ServiceGMDAO.ServiceGMDAOFactory.getInstance();
+        List<ServiceGMVO> serviceGMVOList = serviceGMDAO.findAllClientGMWithInvoicesToClaimInPeriod(periodInitialDate, periodFinalDate);
+
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+        ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
+        for(ServiceGMVO serviceGMVO : serviceGMVOList){
+            Integer clientId = serviceGMVO.getClientVO().getClientId();
+            ClientVO clientVO = clientDAO.findClientById(clientId);
+            if(clientVO.getWithoutActivity() == null){
+                clientDTOList.add(MapperClientVODTO.map(clientVO));
+            }
+
+        }
+
+        return clientDTOList;
+    }
+
     public List<ContractFullDataDTO> findAllDataForContractInForceAtDateByClientId(Integer clientId, LocalDate date){
 
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
         Map<Integer, LocalDate> initialContractStartDateMap = new HashMap();
 
-        // Get all initial contract date of contract in force at date
+        // Get initial contract date of all contract in force at date
         List<InitialContractVO> initialContractInForceAtDate = initialContractDAO.findAllContractInForceAtDate(date);
         for(InitialContractVO initialContractVO : initialContractInForceAtDate){
             initialContractStartDateMap.put(initialContractVO.getContractNumber(), initialContractVO.getStartDate().toLocalDate());
@@ -255,6 +282,32 @@ public class ApplicationMainManager {
         return contractNewVersionDTOList;
     }
 
+    public List<TraceabilityContractDocumentationDTO> findTraceabilityForAllContractWithPendingContractEndNotice(){
+
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = new ArrayList<>();
+
+        TraceabilityContractDocumentationDAO traceabilityContractDocumentationDAO = TraceabilityContractDocumentationDAO.TraceabilityContractDocumentationDAOFactory.getInstance();
+        List<TraceabilityContractDocumentationVO> traceabilityContractDocumentationVOList = traceabilityContractDocumentationDAO.findTraceabilityForAllContractWithPendingContractEndNotice();
+        for(TraceabilityContractDocumentationVO traceabilityContractDocumentationVO : traceabilityContractDocumentationVOList){
+            traceabilityContractDocumentationDTOList.add(MapperTraceabilityContractDocumentationVODTO.map(traceabilityContractDocumentationVO));
+        }
+
+        return traceabilityContractDocumentationDTOList;
+    }
+
+    public List<TraceabilityContractDocumentationDTO> findTraceabilityForAllContractWithPendingIDC(){
+
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = new ArrayList<>();
+
+        TraceabilityContractDocumentationDAO traceabilityContractDocumentationDAO = TraceabilityContractDocumentationDAO.TraceabilityContractDocumentationDAOFactory.getInstance();
+        List<TraceabilityContractDocumentationVO> traceabilityContractDocumentationVOList = traceabilityContractDocumentationDAO.findTraceabilityForAllContractWithPendingIDC();
+        for(TraceabilityContractDocumentationVO traceabilityContractDocumentationVO : traceabilityContractDocumentationVOList){
+            traceabilityContractDocumentationDTOList.add(MapperTraceabilityContractDocumentationVODTO.map(traceabilityContractDocumentationVO));
+        }
+
+        return traceabilityContractDocumentationDTOList;
+    }
+
     public List<ContractNewVersionDTO> findAllContractsInForceAtDate(LocalDate date){
 
         List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
@@ -291,11 +344,27 @@ public class ApplicationMainManager {
         return contractVariationDTOList;
     }
 
-    public ClientDTO retrieveClientByClientId(Integer clientId){
-        ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-        ClientVO clientVO = clientDAO.findClientById(clientId);
+    public List<TraceabilityContractDocumentationDTO> findTraceabilityForAllContractWithPendingLaborDocumentation(){
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = new ArrayList<>();
 
-        return MapperClientVODTO.map(clientVO);
+        TraceabilityContractDocumentationDAO traceabilityContractDocumentationDAO = TraceabilityContractDocumentationDAO.TraceabilityContractDocumentationDAOFactory.getInstance();
+        List<TraceabilityContractDocumentationVO> traceabilityContractDocumentationVOList = traceabilityContractDocumentationDAO.findTraceabilityForAllContractWithPendingLaborDocumentation();
+
+        for(TraceabilityContractDocumentationVO traceabilityContractDocumentationVO : traceabilityContractDocumentationVOList){
+            TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO = MapperTraceabilityContractDocumentationVODTO.map(traceabilityContractDocumentationVO);
+            traceabilityContractDocumentationDTOList.add(traceabilityContractDocumentationDTO)
+;        }
+
+        return traceabilityContractDocumentationDTOList;
+    }
+
+    public ClientDTO retrieveClientByClientId(Integer clientId){
+
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+        ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
+
+        return MapperClientVODTO.map(clientDAO.findClientById(clientId));
+
     }
 
     public PersonDTO retrievePersonByPersonID(Integer personId){

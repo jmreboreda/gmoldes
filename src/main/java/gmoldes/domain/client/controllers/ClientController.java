@@ -1,9 +1,7 @@
 package gmoldes.domain.client.controllers;
 
-import gmoldes.domain.client.Client;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
-import gmoldes.domain.timerecord.dto.TimeRecordClientDTO;
 import gmoldes.domain.client.manager.ClientManager;
 
 import java.time.LocalDate;
@@ -29,10 +27,14 @@ public class ClientController {
 
         return ClientDTO.create()
                 .withId(clientVO.getId())
-                .withClientId(clientVO.getIdcliente())
-                .withPersonOrCompanyName(clientVO.getNom_rzsoc())
-                .withClientType(clientVO.getTipoclte())
-                .withNieNIF(clientVO.getNifcif())
+                .withClientId(clientVO.getClientId())
+                .withIsNaturalPerson(clientVO.getNaturalPerson())
+                .withIsNaturalPerson(clientVO.getNaturalPerson())
+                .withSurnames(clientVO.getSurNames())
+                .withName(clientVO.getName())
+                .withRzSocial(clientVO.getRzSocial())
+                .withClientType(clientVO.getClientType())
+                .withNieNIF(clientVO.getNieNif())
                 .build();
     }
 }

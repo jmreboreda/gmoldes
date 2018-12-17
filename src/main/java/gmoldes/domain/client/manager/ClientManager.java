@@ -2,15 +2,19 @@ package gmoldes.domain.client.manager;
 
 
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
+import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 
+import java.text.Collator;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class ClientManager {
 
@@ -22,27 +26,39 @@ public class ClientManager {
 
     public List<ClientDTO> findAllActiveClientByNamePatternInAlphabeticalOrder(String namePattern) {
 
-        List<ClientDTO> personDTOList = new ArrayList<>();
+        List<ClientDTO> clientDTOList = new ArrayList<>();
         clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-        List<ClientVO> clientVOList = clientDAO.findAllActiveClientsByNamePatternInAlphabeticalOrder(namePattern);
+        List<ClientVO> clientVOList = clientDAO.findAllActiveClientsByNamePattern(namePattern);
         for (ClientVO clientVO : clientVOList) {
+            LocalDate dateFrom = clientVO.getDateFrom() != null ? clientVO.getDateFrom().toLocalDate() : null;
+            LocalDate dateTo = clientVO.getDateTo() != null ? clientVO.getDateTo().toLocalDate() : null;
+            LocalDate withoutActivityDate = clientVO.getWithoutActivity() != null ? clientVO.getWithoutActivity().toLocalDate() : null;
+
             ClientDTO clientDTO = ClientDTO.create()
                     .withId(clientVO.getId())
-                    .withIsActive(clientVO.getCltactivo())
-                    .withCodeInSigaProgram(clientVO.getCltsg21())
-                    .withDateFrom(clientVO.getFdesde())
-                    .withDateTo(clientVO.getFhasta())
-                    .withNieNIF(clientVO.getNifcif())
-                    .withNieNIF_dup(clientVO.getNifcif_dup())
-                    .withPersonOrCompanyName(clientVO.getNom_rzsoc())
-                    .withNumberOfTimes(clientVO.getNumvez())
-                    .withWithOutActivity(clientVO.getSinactividad())
-                    .withClientType(clientVO.getTipoclte())
+                    .withIsNaturalPerson(clientVO.getNaturalPerson())
+                    .withActiveClient(clientVO.getActiveClient())
+                    .withSg21Code(clientVO.getSg21Code())
+                    .withDateFrom(dateFrom)
+                    .withDateTo(dateTo)
+                    .withNieNIF(clientVO.getNieNif())
+                    .withSurnames(clientVO.getSurNames())
+                    .withSg21Code(clientVO.getSg21Code())
+                    .withName(clientVO.getName())
+                    .withRzSocial(clientVO.getRzSocial())
+                    .withWithOutActivity(withoutActivityDate)
+                    .withClientType(clientVO.getClientType())
                     .build();
 
-            personDTOList.add(clientDTO);
+            clientDTOList.add(clientDTO);
         }
-        return personDTOList;
+
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
+        return clientDTOList
+                .stream()
+                .sorted(Comparator.comparing(ClientDTO::toString, primaryCollator)).collect(Collectors.toList());
     }
 
     public List<ClientDTO> findAllClientWithContractNewVersionInMonth(LocalDate dateReceived){
@@ -57,7 +73,10 @@ public class ClientManager {
                 ClientVO clientVO = clientDAO.findClientById(clientId);
                 ClientDTO clientDTO = ClientDTO.create()
                         .withClientId(contractNewVersionDTO.getContractJsonData().getClientGMId())
-                        .withPersonOrCompanyName(clientVO.getNom_rzsoc())
+                        .withIsNaturalPerson(clientVO.getNaturalPerson())
+                        .withSurnames(clientVO.getSurNames())
+                        .withName(clientVO.getName())
+                        .withRzSocial(clientVO.getRzSocial())
                         .build();
 
                 clientDTOList.add(clientDTO);

@@ -7,8 +7,8 @@ import gmoldes.components.contract.events.SelectEmployeeEvent;
 import gmoldes.components.contract.events.SelectEmployerEvent;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.contract.dto.ProvisionalContractDataDTO;
+import gmoldes.domain.person.dto.PersonDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -98,6 +98,14 @@ public class ContractParts extends HBox {
         employeeName.setText(newPersonValue.toString());
         final SelectEmployeeEvent selectEmployeeEvent = new SelectEmployeeEvent(newPersonValue);
         onSelectEmployeeEventHandler.handle(selectEmployeeEvent);
+    }
+
+    public TextField getEmployerName(){
+        return this.employerName;
+    }
+
+    public TextField getEmployeeName(){
+        return this.employeeName;
     }
 
     public ClientDTO getSelectedEmployer(){

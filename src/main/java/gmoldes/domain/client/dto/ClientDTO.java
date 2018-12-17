@@ -5,44 +5,64 @@
  */
 package gmoldes.domain.client.dto;
 
-import java.util.Date;
+import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
+
+import java.time.LocalDate;
+import java.util.Set;
 
 
 public class ClientDTO {
 
     private Integer id;
     private Integer clientId;
-    private String nieNIF;
-    private Short nieNIF_dup;
-    private String personOrCompanyName;
-    private Short numberOfTimes;
-    private String codeInSigaProgram;
-    private Date dateFrom;
-    private Date dateTo;
-    private Boolean isActive;
-    private Date withoutActivity;
+    private Boolean isNaturalPerson;
+    private String nieNif;
+    private String surNames;
+    private String name;
+    private String rzSocial;
+    private LocalDate dateFrom;
+    private LocalDate dateTo;
     private String clientType;
+    private String sg21Code;
+    private Boolean activeClient;
+    private LocalDate withoutActivity;
     private Boolean claimInvoices;
+    private Set<ServiceGMVO> servicesGM;
 
     public ClientDTO() {
     }
 
-    public ClientDTO(Integer id, Integer clientId, String nieNIF, Short nieNIF_dup, String personOrCompanyName,
-                     Short numberOfTimes, String codeInSigaProgram, Date dateFrom, Date dateTo, Boolean isActive,
-                     Date withoutActivity, String clientType, Boolean claimInvoices) {
+    public ClientDTO(
+            Integer id,
+            Integer clientId,
+            Boolean isNaturalPerson,
+            String nieNif,
+            String surNames,
+            String name,
+            String rzSocial,
+            LocalDate dateFrom,
+            LocalDate dateTo,
+            String clientType,
+            String sg21Code,
+            Boolean activeClient,
+            LocalDate withoutActivity,
+            Boolean claimInvoices,
+            Set<ServiceGMVO> servicesGM) {
         this.id = id;
         this.clientId = clientId;
-        this.nieNIF = nieNIF;
-        this.nieNIF_dup = nieNIF_dup;
-        this.personOrCompanyName = personOrCompanyName;
-        this.numberOfTimes = numberOfTimes;
-        this.codeInSigaProgram = codeInSigaProgram;
+        this.isNaturalPerson = isNaturalPerson;
+        this.nieNif = nieNif;
+        this.surNames = surNames;
+        this.name = name;
+        this.rzSocial = rzSocial;
+        this.sg21Code = sg21Code;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
-        this.isActive = isActive;
+        this.activeClient = activeClient;
         this.withoutActivity = withoutActivity;
         this.clientType = clientType;
         this.claimInvoices = claimInvoices;
+        this.servicesGM = servicesGM;
     }
 
     public Integer getId() {
@@ -61,76 +81,60 @@ public class ClientDTO {
         this.clientId = clientId;
     }
 
-    public String getNieNIF() {
-        return nieNIF;
+    public Boolean getNaturalPerson() {
+        return isNaturalPerson;
     }
 
-    public void setNieNIF(String nieNIF) {
-        this.nieNIF = nieNIF;
+    public void setNaturalPerson(Boolean naturalPerson) {
+        isNaturalPerson = naturalPerson;
     }
 
-    public Short getNieNIF_dup() {
-        return nieNIF_dup;
+    public String getNieNif() {
+        return nieNif;
     }
 
-    public void setNieNIF_dup(Short nieNIF_dup) {
-        this.nieNIF_dup = nieNIF_dup;
+    public void setNieNif(String nieNif) {
+        this.nieNif = nieNif;
     }
 
-    public String getPersonOrCompanyName() {
-        return personOrCompanyName;
+    public String getSurNames() {
+        return surNames;
     }
 
-    public void setPersonOrCompanyName(String personOrCompanyName) {
-        this.personOrCompanyName = personOrCompanyName;
+    public void setSurNames(String surNames) {
+        this.surNames = surNames;
     }
 
-    public Short getNumberOfTimes() {
-        return numberOfTimes;
+    public String getName() {
+        return name;
     }
 
-    public void setNumberOfTimes(Short numberOfTimes) {
-        this.numberOfTimes = numberOfTimes;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCodeInSigaProgram() {
-        return codeInSigaProgram;
+    public String getRzSocial() {
+        return rzSocial;
     }
 
-    public void setCodeInSigaProgram(String codeInSigaProgram) {
-        this.codeInSigaProgram = codeInSigaProgram;
+    public void setRzSocial(String rzSocial) {
+        this.rzSocial = rzSocial;
     }
 
-    public Date getDateFrom() {
+    public LocalDate getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(Date dateFrom) {
+    public void setDateFrom(LocalDate dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public Date getDateTo() {
+    public LocalDate getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(Date dateTo) {
+    public void setDateTo(LocalDate dateTo) {
         this.dateTo = dateTo;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public Date getWithoutActivity() {
-        return withoutActivity;
-    }
-
-    public void setWithoutActivity(Date withoutActivity) {
-        this.withoutActivity = withoutActivity;
     }
 
     public String getClientType() {
@@ -141,6 +145,30 @@ public class ClientDTO {
         this.clientType = clientType;
     }
 
+    public String getSg21Code() {
+        return sg21Code;
+    }
+
+    public void setSg21Code(String sg21Code) {
+        this.sg21Code = sg21Code;
+    }
+
+    public Boolean getActiveClient() {
+        return activeClient;
+    }
+
+    public void setActiveClient(Boolean activeClient) {
+        this.activeClient = activeClient;
+    }
+
+    public LocalDate getWithoutActivity() {
+        return withoutActivity;
+    }
+
+    public void setWithoutActivity(LocalDate withoutActivity) {
+        this.withoutActivity = withoutActivity;
+    }
+
     public Boolean getClaimInvoices() {
         return claimInvoices;
     }
@@ -149,98 +177,126 @@ public class ClientDTO {
         this.claimInvoices = claimInvoices;
     }
 
+    public Set<ServiceGMVO> getServicesGM() {
+        return servicesGM;
+    }
+
+    public void setServicesGM(Set<ServiceGMVO> servicesGM) {
+        this.servicesGM = servicesGM;
+    }
+
     public String toString() {
-        return getPersonOrCompanyName();
+        if(isNaturalPerson){
+            return getSurNames() + ", " + getName();
+        }
+
+        return getRzSocial();
     }
 
-    public static ClientDTOBuilder create() {
-        return new ClientDTOBuilder();
+    public String toNaturalName(){
+        if(isNaturalPerson){
+            return getName() + " " + getSurNames();
+        }
+
+        return getRzSocial();
     }
 
-    public static class ClientDTOBuilder {
+    public static ClientDTOOkBuilder create() {
+        return new ClientDTOOkBuilder();
+    }
+
+    public static class ClientDTOOkBuilder {
 
         private Integer id;
         private Integer clientId;
-        private String nieNIF;
-        private Short nieNIF_dup;
-        private String personOrCompanyName;
-        private Short numberOfTimes;
-        private String codeInSigaProgram;
-        private Date dateFrom;
-        private Date dateTo;
-        private Boolean isActive;
-        private Date withoutActivity;
+        private Boolean isNaturalPerson;
+        private String nieNif;
+        private String surNames;
+        private String name;
+        private String rzSocial;
+        private LocalDate dateFrom;
+        private LocalDate dateTo;
         private String clientType;
+        private String sg21Code;
+        private Boolean activeClient;
+        private LocalDate withoutActivity;
         private Boolean claimInvoices;
+        private Set<ServiceGMVO> servicesGM;
 
-        public ClientDTOBuilder withId(Integer id) {
+        public ClientDTOOkBuilder withId(Integer id) {
             this.id = id;
             return this;
         }
 
-        public ClientDTOBuilder withClientId(Integer clientId) {
+        public ClientDTOOkBuilder withClientId(Integer clientId) {
             this.clientId = clientId;
             return this;
         }
 
-        public ClientDTOBuilder withNieNIF(String nieNIF) {
-            this.nieNIF = nieNIF;
+        public ClientDTOOkBuilder withIsNaturalPerson(Boolean isNaturalPerson) {
+            this.isNaturalPerson = isNaturalPerson;
             return this;
         }
 
-        public ClientDTOBuilder withNieNIF_dup(Short nieNIF_dup) {
-            this.nieNIF_dup = nieNIF_dup;
+        public ClientDTOOkBuilder withNieNIF(String nieNIF) {
+            this.nieNif = nieNIF;
             return this;
         }
 
-        public ClientDTOBuilder withPersonOrCompanyName(String personOrCompanyName) {
-            this.personOrCompanyName = personOrCompanyName;
+        public ClientDTOOkBuilder withSurnames(String surNames) {
+            this.surNames = surNames;
             return this;
         }
 
-        public ClientDTOBuilder withNumberOfTimes(Short numberOfTimes) {
-            this.numberOfTimes = numberOfTimes;
+        public ClientDTOOkBuilder withName(String name) {
+            this.name = name;
             return this;
         }
 
-        public ClientDTOBuilder withCodeInSigaProgram(String codeInSigaProgram) {
-            this.codeInSigaProgram = codeInSigaProgram;
+        public ClientDTOOkBuilder withRzSocial(String rzSocial) {
+            this.rzSocial = rzSocial;
             return this;
         }
 
-        public ClientDTOBuilder withDateFrom(Date dateFrom) {
+        public ClientDTOOkBuilder withDateFrom(LocalDate dateFrom) {
             this.dateFrom = dateFrom;
             return this;
         }
 
-        public ClientDTOBuilder withDateTo(Date dateTo) {
+        public ClientDTOOkBuilder withDateTo(LocalDate dateTo) {
             this.dateTo = dateTo;
             return this;
         }
 
-        public ClientDTOBuilder withIsActive(Boolean isActive) {
-            this.isActive = isActive;
-            return this;
-        }
-
-        public ClientDTOBuilder withWithOutActivity(Date withoutActivity) {
-            this.withoutActivity = withoutActivity;
-            return this;
-        }
-
-        public ClientDTOBuilder withClientType(String clientType) {
+        public ClientDTOOkBuilder withClientType(String clientType) {
             this.clientType = clientType;
             return this;
         }
 
-        public ClientDTOBuilder withClaimInvoices(Boolean claimInvoices) {
+        public ClientDTOOkBuilder withSg21Code(String sg21Code) {
+            this.sg21Code = sg21Code;
+            return this;
+        }
+
+
+        public ClientDTOOkBuilder withActiveClient(Boolean activeClient) {
+            this.activeClient = activeClient;
+            return this;
+        }
+
+        public ClientDTOOkBuilder withWithOutActivity(LocalDate withoutActivity) {
+            this.withoutActivity = withoutActivity;
+            return this;
+        }
+
+        public ClientDTOOkBuilder withClaimInvoices(Boolean claimInvoices) {
             this.claimInvoices = claimInvoices;
             return this;
         }
 
         public ClientDTO build() {
-            return new ClientDTO(this.id, this.clientId, this.nieNIF, this.nieNIF_dup, this.personOrCompanyName,
-            this.numberOfTimes, this.codeInSigaProgram, this.dateFrom, this.dateTo, this.isActive, this.withoutActivity, this.clientType, this.claimInvoices);
+            return new ClientDTO(this.id, this.clientId, this.isNaturalPerson, this.nieNif, this.surNames, this.name,this.rzSocial, this.dateFrom, this.dateTo,
+            this.clientType, this.sg21Code, this.activeClient, this.withoutActivity, this.claimInvoices, this.servicesGM);
         }
     }
 }

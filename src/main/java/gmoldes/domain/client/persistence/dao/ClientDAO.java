@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import javax.persistence.TypedQuery;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 public class ClientDAO {
@@ -51,7 +50,7 @@ public class ClientDAO {
 
     public ClientVO findClientById(Integer clientId){
 
-        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_CLIENT_BY_CLIENTID, ClientVO.class);
+        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_CLIENT_BY_CLIENT_ID, ClientVO.class);
         query.setParameter("clientId", clientId);
 
         return query.getSingleResult();
@@ -64,10 +63,10 @@ public class ClientDAO {
         return query.getResultList();
     }
 
-    public List<ClientVO> findAllActiveClientsByNamePatternInAlphabeticalOrder(String nameLetters){
+    public List<ClientVO> findAllActiveClientsByNamePattern(String nameLetters){
 
-        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN_IN_ALPHABETICAL_ORDER, ClientVO.class);
-        query.setParameter("code", "%" + nameLetters.toLowerCase() + "%");
+        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN, ClientVO.class);
+        query.setParameter("lettersOfName", "%" + nameLetters.toLowerCase() + "%");
 
         return query.getResultList();
     }
@@ -78,7 +77,7 @@ public class ClientDAO {
         Date initialDateOfPeriod = Date.valueOf(initialDate);
         Date finalDateOfPeriod = Date.valueOf(finalDate);
 
-        query.setParameter("initialDate", initialDateOfPeriod);
+//        query.setParameter("initialDate", initialDateOfPeriod);
         query.setParameter("finalDate", finalDateOfPeriod);
 
 

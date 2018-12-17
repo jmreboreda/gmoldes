@@ -14,10 +14,9 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
 
-import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.interactive.viewerpreferences.PDViewerPreferences;
 import org.apache.pdfbox.printing.PDFPageable;
 import org.apache.pdfbox.printing.PDFPrintable;
 import org.apache.pdfbox.printing.Scaling;
@@ -32,45 +31,54 @@ public class Printer {
 //        PDViewerPreferences PDFDocumentPreferences = PDFDocumentLoaded.getDocumentCatalog().getViewerPreferences();
 //        System.out.println("Preferencias: " + PDFDocumentPreferences);
 
-        PrintRequestAttributeSet datts = new HashPrintRequestAttributeSet();
+        PrintRequestAttributeSet praSet = new HashPrintRequestAttributeSet();
         MediaSizeName DINA4 = MediaSize.ISO.A4.getMediaSizeName();
         MediaSizeName DINA3 = MediaSize.ISO.A3.getMediaSizeName();
 
         if(printAttributes.get("papersize").equals("A4")) {
-            datts.add(DINA4);
+            praSet.add(DINA4);
         } else{
-            datts.add(DINA3);
+            praSet.add(DINA3);
         }
         if(printAttributes.get("sides").equals("DUPLEX")) {
-            datts.add(Sides.TWO_SIDED_SHORT_EDGE);
+            praSet.add(Sides.TWO_SIDED_SHORT_EDGE);
         } else{
-            datts.add(Sides.ONE_SIDED);
+            praSet.add(Sides.ONE_SIDED);
         }
         if(printAttributes.get("chromacity").equals("MONOCHROME")) {
-            datts.add(Chromaticity.MONOCHROME);
+            praSet.add(Chromaticity.MONOCHROME);
         }else{
-            datts.add(Chromaticity.COLOR);
+            praSet.add(Chromaticity.COLOR);
         }
         if(printAttributes.get("orientation").equals("LANDSCAPE")) {
-            datts.add(OrientationRequested.LANDSCAPE);
+            praSet.add(OrientationRequested.LANDSCAPE);
         }else{
-            datts.add(OrientationRequested.PORTRAIT);
+            praSet.add(OrientationRequested.PORTRAIT);
         }
-        datts.add(new Copies(1));
-        datts.add(new JobName("GmoldesJob", Locale.getDefault()));
+        praSet.add(new Copies(1));
+        praSet.add(new JobName("GmoldesJob", Locale.getDefault()));
 
-        PrintService printServiceForAttributes = getPrintServiceForAttributes(datts);
+        PrintService printServiceForAttributes = getPrintServiceForAttributes(praSet);
         if(printServiceForAttributes == null){
             PDFDocumentLoaded.close();
 
             return "fail";
         }
         else {
+
+            if(praSet.containsValue(MediaSizeName.ISO_A3)){
+
+                MediaTray trayForA3Paper = getTrayToA3Paper(printServiceForAttributes);
+                if(trayForA3Paper != null) {
+                    praSet.add(trayForA3Paper);
+                }
+            }
+
             PrinterJob printerJob = PrinterJob.getPrinterJob();
             printerJob.setPageable(new PDFPageable(PDFDocumentLoaded));
             printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.SHRINK_TO_FIT));
             printerJob.setPrintService(printServiceForAttributes);
-            printerJob.print(datts);
+            printerJob.print(praSet);
 
             PDFDocumentLoaded.close();
         }
@@ -98,6 +106,27 @@ public class Printer {
         }
 
         return serviceForPrint;
+    }
+
+    private static MediaTray getTrayToA3Paper(PrintService printServiceForAttributes){
+
+        // We chose something compatible with the printable interface
+        DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
+
+        MediaTray selectedTray = null;
+        Object o = printServiceForAttributes.getSupportedAttributeValues(Media.class, flavor, null);
+        if (o != null && o.getClass().isArray()) {
+            for (Media media : (Media[]) o) {
+                if (media instanceof MediaTray) {
+                    System.out.println(media.getValue() + " : " + media + " - " + media.getClass().getName());
+                    if(media.toString().equals(Parameters.PRINTER_TRAY_OF_A3)){
+                        selectedTray = (MediaTray) media;
+                    }
+                }
+            }
+        }
+
+        return selectedTray;
     }
 
     private static AttributeSet getAttributesForPrintService(PrintService printService){

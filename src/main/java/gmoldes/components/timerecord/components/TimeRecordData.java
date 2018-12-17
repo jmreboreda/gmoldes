@@ -268,9 +268,9 @@ public class TimeRecordData extends VBox {
 
         List<TimeRecordClientDTO> activeClientList = new ArrayList<>();
         for(ClientDTO clientDTO: clientWithTimeRecordContract){
-            TimeRecordClientDTO timeRecordClientDTO= TimeRecordClientDTO.create()
+            TimeRecordClientDTO timeRecordClientDTO = TimeRecordClientDTO.create()
                     .withIdcliente(clientDTO.getClientId())
-                    .withNom_rzsoc(clientDTO.getPersonOrCompanyName())
+                    .withNom_rzsoc(clientDTO.toString())
                     .build();
 
             activeClientList.add(timeRecordClientDTO);

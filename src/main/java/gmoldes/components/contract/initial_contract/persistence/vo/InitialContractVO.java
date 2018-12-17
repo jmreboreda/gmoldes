@@ -62,7 +62,7 @@ import java.sql.Date;
 })
 
 @Entity
-@Table(name = "initialcontract")
+@Table(name = "initial_contract")
 @TypeDefs({
         @TypeDef(name = "string-array", typeClass = StringArrayType.class),
         @TypeDef(name = "int-array", typeClass = IntArrayType.class),

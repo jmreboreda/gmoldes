@@ -26,6 +26,7 @@ import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
+import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.services.Email.EmailParameters;
 import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
@@ -43,7 +44,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import javax.mail.internet.AddressException;
 import java.awt.print.PrinterException;
 import java.io.IOException;
@@ -54,6 +54,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.logging.Logger;
@@ -238,7 +239,8 @@ public class NewContractMainController extends VBox {
         if (statusText.equals(ContractConstants.REVISION_WITHOUT_ERRORS)) {
             if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
                 persistOldContractToSave();
-                persistInitialContract();
+                Integer contractNumber = persistInitialContract();
+                persistTraceabilityControlData(contractNumber);
                 contractActionComponents.enablePDFButton(true);
                 }
         }
@@ -278,7 +280,7 @@ public class NewContractMainController extends VBox {
             contractParts.clearEmployeesData();
             return;
         }
-        List<PersonDTO> employees = findPersonsByNamePattern(pattern);
+        List<PersonDTO> employees = findPersonsByNamePatternInAlphabeticalOrder(pattern);
         contractParts.refreshEmployees(employees);
     }
 
@@ -329,7 +331,7 @@ public class NewContractMainController extends VBox {
         return clientController.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
     }
 
-    private List<PersonDTO> findPersonsByNamePattern(String pattern) {
+    private List<PersonDTO> findPersonsByNamePatternInAlphabeticalOrder(String pattern) {
         return personController.findAllPersonsByNamePatternInAlphabeticalOrder(pattern);
     }
 
@@ -340,10 +342,7 @@ public class NewContractMainController extends VBox {
 
     private void persistOldContractToSave() {
 
-        LocalDate endOfContractNotice = null;
-        if (contractData.getDateTo() == null) {
-            endOfContractNotice = LocalDate.of(9999, 12, 31);
-        }
+        LocalDate endOfContractNotice = contractData.getDateTo() == null ? LocalDate.of(9999, 12, 31) : null;
 
         String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 
@@ -351,7 +350,7 @@ public class NewContractMainController extends VBox {
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
                 .withVariationNumber(0)
                 .withClientGMId(contractParts.getSelectedEmployer().getId())
-                .withClientGMName(contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                .withClientGMName(contractParts.getSelectedEmployer().toString())
                 .withQuoteAccountCode(quoteAccountCode)
                 .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
                 .withWorkerName(contractParts.getSelectedEmployee().toString())
@@ -381,7 +380,7 @@ public class NewContractMainController extends VBox {
         }
     }
 
-    private void persistInitialContract(){
+    private Integer persistInitialContract(){
 
         String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 
@@ -418,6 +417,34 @@ public class NewContractMainController extends VBox {
         }else{
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);
         }
+
+        return contractNumber;
+    }
+
+    private void persistTraceabilityControlData(Integer contractNumber){
+
+        // In a new contract, the date for the notice of end of contract is set at 31-12-9999 if the contract is of indefinite duration
+        LocalDate contractEndNoticeToSave = contractData.getDateTo() == null ?  LocalDate.of(9999, 12, 31) : null;
+
+        LocalDate dateFrom = contractData.getDateFrom();
+        LocalDate dateTo = contractData.getDateTo();
+
+        TraceabilityContractDocumentationDTO traceabilityDTO = TraceabilityContractDocumentationDTO.create()
+                .withContractNumber(contractNumber)
+                .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
+                .withStartDate(dateFrom)
+                .withExpectedEndDate(dateTo)
+                .withContractEndNoticeReceptionDate(contractEndNoticeToSave)
+                .build();
+
+        ContractManager contractManager = new ContractManager();
+        Integer id = contractManager.saveContractTraceability(traceabilityDTO);
+
+        if(id == null){
+
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
+        }
+
     }
 
     private void blockingInterfaceAfterContractPersistence(Integer contractNumber){
@@ -429,7 +456,9 @@ public class NewContractMainController extends VBox {
         contractSchedule.setMouseTransparent(true);
         contractPublicNotes.setMouseTransparent(true);
         contractPrivateNotes.setMouseTransparent(true);
+
         Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_SAVED_OK + contractNumber);
+
         contractActionComponents.enableOkButton(false);
         contractActionComponents.enableSendMailButton(true);
 
@@ -476,7 +505,7 @@ public class NewContractMainController extends VBox {
         return ContractDataToContractAgent.create()
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
                 .withOfficialContractNumber(null)
-                .withEmployerFullName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                .withEmployerFullName(this.contractParts.getSelectedEmployer().toString())
                 .withEmployerQuoteAccountCode(quoteAccountCode)
                 .withNotificationDate(this.contractData.getDateNotification().getDate())
                 .withNotificationHour(LocalTime.parse(contractData.getHourNotification().getText()))
@@ -541,7 +570,7 @@ public class NewContractMainController extends VBox {
         return ContractDataSubfolder.create()
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
                 .withOfficialContractNumber(null)
-                .withEmployerFullName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                .withEmployerFullName(this.contractParts.getSelectedEmployer().toString())
                 .withEmployerQuoteAccountCode(quoteAccountCode)
                 .withNotificationDate(this.contractData.getDateNotification().getDate())
                 .withNotificationHour(LocalTime.parse(contractData.getHourNotification().getText()))
@@ -625,14 +654,27 @@ public class NewContractMainController extends VBox {
 
             String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
 
+            String yearMonthReceiptCopyText;
+            Month actualMonth = this.contractData.getDateFrom().getMonth();
+            Month nextMonth = actualMonth.plus(1L);
+            Integer actualYear = this.contractData.getDateFrom().getYear();
+            Integer nextYear = actualYear + 1;
+            if(actualMonth == Month.DECEMBER){
+                yearMonthReceiptCopyText = "de " + Month.JANUARY.getDisplayName(TextStyle.FULL, Locale.getDefault()) + " de " + nextYear;
+            }
+            else{
+                yearMonthReceiptCopyText = "de " + nextMonth.getDisplayName(TextStyle.FULL, Locale.getDefault()) + " de " + actualYear;
+            }
+
             TimeRecord timeRecord = TimeRecord.create()
                     .withNameOfMonth(this.contractData.getDateFrom().getMonth())
                     .withYearNumber(Integer.toString(contractData.getDateFrom().getYear()))
-                    .withEnterpriseName(this.contractParts.getSelectedEmployer().getPersonOrCompanyName())
+                    .withEnterpriseName(this.contractParts.getSelectedEmployer().toString())
                     .withQuoteAccountCode(quoteAccountCode)
                     .withEmployeeName(this.contractParts.getSelectedEmployee().getApellidos() + ", " + this.contractParts.getSelectedEmployee().getNom_rzsoc())
                     .withEmployeeNIF(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
                     .withNumberHoursPerWeek(this.contractData.getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase())
+                    .withMonthYearReceiptCopyTetx(yearMonthReceiptCopyText)
                     .build();
 
             /* Create the TimeRecordPDF */

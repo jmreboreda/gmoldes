@@ -41,7 +41,7 @@ public class ContractConstants {
     public static final String EXTINCTION_CAUSE_NOT_ESTABLISHED = "No se ha establecido la causa de extinción del contrato.";
     public static final String ERROR_IN_EXTINCTION_DATA = "La fecha de extinción del contrato es errónea.";
     public static final String HOLIDAYS_SITUATION_NOT_ESTABLISHED = "No se ha establecido la situación de disfrute de las vacaciones.";
-    public static final String EXTINCTION_DATE_EXCEEDED_BY_DATE_REQUESTED = "No se puede extinguir un contrato en una fecha posterior a su fecha de extinción prevista anteriormente.";
+    public static final String EXTINCTION_DATE_EXCEEDED_BY_DATE_REQUESTED = "No se puede extinguir un contrato en una fecha posterior a su fecha de extinción prevista.";
     public static final String  EXIST_FUTURE_VARIATION_OF_SELECTED_CONTRACT  = "Existen variaciones registradas en el futuro para el contrato seleccionado " +
             "con fecha posterior a la seleccionada.\nNo es posible registrar nuevas variaciones en la fecha seleccionada.";
     public static final String ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD = "Error actualizando el último registro de \"contractvariation\" en la base de datos.";
@@ -68,7 +68,8 @@ public class ContractConstants {
             " tiene que  ser la inmediatamente posterior a la de finalización establecida para el contrato.";
     public static final String EXIST_PREVIOUS_INCOMPATIBLE_CONTRACT_VARIATION_EXTENSION = "Está registrada una prórroga del contrato que es incompatible con la solicitada.";
     public static final String CONTRACT_EXTENSION_PERSISTENCE_OK = "Prórroga del contrato registrada correctamente.";
-    public static final String CONTRACT_VARIATIONS_IN_THE_FUTURE_NOT_ALLOW_EXTINCTION_ON_REQUESTED_DATE = "Operaciones registradas con fecha posterior a la fecha de inicio solicitada" +
-            " no permiten la extinción del contrato en la fecha solicitada.";
+    public static final String CONTRACT_VARIATIONS_IN_THE_FUTURE_NOT_ALLOW_EXTINCTION_ON_REQUESTED_DATE = "Operaciones registradas con posterioridad a la fecha solicitada" +
+            " no permiten la extinción del contrato en dicha fecha.";
+    public static final String ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA = "Ha ocurrido un error al pesistir la trazabilidad del contrato en \"traceability_contract_documentation\".";
 
 }

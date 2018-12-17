@@ -91,7 +91,7 @@ public class PayrollCheckList {
         List<ContractNewVersionDTO> contractNewVersionDTOList = findAllContractInForceInPeriod(month, year);
         for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
             ClientDTO employer = applicationMainController.findClientById(contractNewVersionDTO.getContractJsonData().getClientGMId());
-            String employerName = employer.getPersonOrCompanyName();
+            String employerName = employer.toString();
             PersonDTO worker = applicationMainController.findPersonById(contractNewVersionDTO.getContractJsonData().getWorkerId());
             String workerName = worker.getApellidos() + ", " + worker.getNom_rzsoc();
 

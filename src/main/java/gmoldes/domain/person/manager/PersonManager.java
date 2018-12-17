@@ -5,8 +5,12 @@ import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.persistence.dao.PersonDAO;
 import gmoldes.domain.person.persistence.vo.PersonVO;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class PersonManager {
 
@@ -43,7 +47,7 @@ public class PersonManager {
 
         List<PersonDTO> personDTOList = new ArrayList<>();
         PersonDAO personDAO = PersonDAO.PersonDAOFactory.getInstance();
-        List<PersonVO> personVOList = personDAO.findAllPersonsByNamePatternInAlphabeticalOrder(namePattern);
+        List<PersonVO> personVOList = personDAO.findAllPersonsByNamePattern(namePattern);
         for (PersonVO personVO : personVOList) {
             PersonDTO personDTO = PersonDTO.create()
                     .withIdpersona(personVO.getIdpersona())
@@ -63,7 +67,13 @@ public class PersonManager {
 
             personDTOList.add(personDTO);
         }
-        return personDTOList;
+
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
+        return personDTOList
+                .stream()
+                .sorted(Comparator.comparing(PersonDTO::toString, primaryCollator)).collect(Collectors.toList());
     }
 
     public PersonDTO findPersonById(Integer id){

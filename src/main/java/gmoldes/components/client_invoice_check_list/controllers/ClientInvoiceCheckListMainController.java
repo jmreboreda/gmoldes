@@ -4,13 +4,8 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.client_invoice_check_list.components.ClientInvoiceCheckListAction;
 import gmoldes.components.client_invoice_check_list.components.ClientInvoiceCheckListData;
 import gmoldes.components.client_invoice_check_list.components.ClientInvoiceCheckListHeader;
-import gmoldes.components.payroll_check_list.components.PayrollCheckListAction;
-import gmoldes.components.payroll_check_list.components.PayrollCheckListData;
-import gmoldes.components.payroll_check_list.components.PayrollCheckListHeader;
 import gmoldes.domain.client_invoice_checklist.ClientInvoiceCheckList;
 import gmoldes.domain.client_invoice_checklist.dto.ClientInvoiceCheckListDTO;
-import gmoldes.domain.payroll_checklist.PayrollCheckList;
-import gmoldes.domain.payroll_checklist.dto.PayrollCheckListDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -80,7 +75,7 @@ public class ClientInvoiceCheckListMainController extends VBox {
         Integer year = Integer.parseInt(clientInvoiceCheckListData.getYear().getText());
 
         ClientInvoiceCheckList clientInvoiceCheckList = new ClientInvoiceCheckList();
-        List<ClientInvoiceCheckListDTO> clientInvoiceCheckListDTOList = clientInvoiceCheckList.retrieveAllClientGMWithInvoiceInForceInPeriod(month, year);
+        List<ClientInvoiceCheckListDTO> clientInvoiceCheckListDTOList = clientInvoiceCheckList.findAllClientGMWithInvoicesToClaimInPeriod(month, year);
         for(ClientInvoiceCheckListDTO clientInvoiceCheckListDTO : clientInvoiceCheckListDTOList){
             withoutClientGMDuplicates.put(clientInvoiceCheckListDTO.getClientGMFullName(), clientInvoiceCheckListDTO);
         }
