@@ -40,6 +40,7 @@ public class Printer {
             datts.add(DINA4);
         } else{
             datts.add(DINA3);
+            datts.add(MediaTray.BOTTOM);
         }
         if(printAttributes.get("sides").equals("DUPLEX")) {
             datts.add(Sides.TWO_SIDED_SHORT_EDGE);
