@@ -20,7 +20,7 @@ import java.sql.Date;
                 query = "select p from ContractVariationVO  p where startDate <= :codeFinalDate and (endingDate is null or endingDate >= :codeInitialDate) " +
                         "and (expectedEndDate is null or expectedEndDate >= :codeInitialDate) " +
                         "and (modificationDate is null or modificationDate >= :codeInitialDate) " +
-                        "and variationType < 800 order by contractNumber, startDate"
+                        "and variationType < 800 order by p.contractNumber, p.modificationDate, p.endingDate"
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_TEMPORAL_IN_FORCE_NOW,
@@ -32,16 +32,17 @@ import java.sql.Date;
                         "and (endingDate is null or endingDate >= :codeInitialDate) " +
                         "and (expectedEndDate is null or expectedEndDate >= :codeInitialDate) " +
                         "and (modificationDate is null or modificationDate >= :codeInitialDate) " +
-                        "order by contractNumber, startDate, modificationDate"
+                        "order by p.contractNumber, p.modificationDate, p.endingDate"
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER,
-                query = "select p from ContractVariationVO p where p.contractNumber = :code order by p.startDate"
+                query = "select p from ContractVariationVO p where p.contractNumber = :code order by p.modificationDate, p.endingDate"
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE,
                 query = "select p from ContractVariationVO p where p.startDate <= :date and p.endingDate is null " +
-                        " and (p.modificationDate is null or p.modificationDate >= :date) and (p.expectedEndDate is null or p.expectedEndDate >= :date)"
+                        " and (p.modificationDate is null or p.modificationDate >= :date) and (p.expectedEndDate is null or p.expectedEndDate >= :date) order by p.modificationDate," +
+                        " p.endingDate"
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_ORDERED_BY_CONTRACT_NUMBER_AND_START_DATE,
@@ -49,11 +50,12 @@ import java.sql.Date;
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_NOW_BY_CLIENT_ID,
-                query = "select p from InitialContractVO p where p.startDate <= :date and p.endingDate is null and p.modificationDate is null"
+                query = "select p from InitialContractVO p where p.startDate <= :date and p.endingDate is null and p.modificationDate is null order by p.modificationDate, p.endingDate"
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_AFTER_DATE_BY_CONTRACT_NUMBER,
-                query = "select p from ContractVariationVO p where contractNumber = :contractNumber and (startDate >= :dateFromSearch or expectedEndDate >= :dateFromSearch) order by startDate"
+                query = "select p from ContractVariationVO p where contractNumber = :contractNumber and (startDate >= :dateFromSearch or expectedEndDate >= :dateFromSearch)" +
+                        " order by p.modificationDate, p.endingDate"
         )
 })
 

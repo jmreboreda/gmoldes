@@ -42,6 +42,8 @@ public class ContractExtinctionController{
     private ContractManager contractManager = new ContractManager();
     private Scene scene;
 
+    private static final Integer EXTINCTION_CODE_BY_CONTRACT_SUBROGATION = 910;
+
     public ContractExtinctionController(
             Scene scene,
             ContractVariationParts contractVariationParts,
@@ -132,13 +134,13 @@ public class ContractExtinctionController{
                     ContractConstants.EXTINCTION_DATE_EXCEEDED_BY_DATE_REQUESTED);
         }
 
-        // 2. Extinction of contract already exists -------------------------------------
+        // 2. The extinction of the contract already exists and is not by prior subrogation of the contract
         List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
         List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
         for (ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
             for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
                 if (typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
-                        typesContractVariationsDTO.getExtinction()) {
+                        typesContractVariationsDTO.getExtinction() && !typesContractVariationsDTO.getId_variation().equals(EXTINCTION_CODE_BY_CONTRACT_SUBROGATION)) {
 
                     return new CompatibleVariationEvent(
                             true,
@@ -151,10 +153,9 @@ public class ContractExtinctionController{
 
         // 3. Registered transactions with date after the requested start date do not allow the termination of the contract on the requested date
         List<ContractVariationDTO> contractVariationDTOList1 = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
-
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList1) {
-            if(contractVariationDTO.getModificationDate() == null && contractVariationDTO.getExpectedEndDate().isAfter(extinctionDate) ||
-                    contractVariationDTO.getEndingDate().isBefore(extinctionDate)){
+            if(contractVariationDTO.getStartDate().isAfter(extinctionDate) ||
+                    (contractVariationDTO.getModificationDate() != null && contractVariationDTO.getModificationDate().isAfter(extinctionDate))){
 
                 return new CompatibleVariationEvent(
                     true,
