@@ -121,6 +121,32 @@ public class InitialChecks {
         }
     }
 
+    public static void alertByDelaySendingLaborDocumentationToClients(Stage primaryStage){
+        ApplicationMainController applicationMainController = new ApplicationMainController();
+        String alertMessage = "";
+
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = applicationMainController.findTraceabilityForAllContractWithPendingLaborDocumentation();
+        if(!traceabilityContractDocumentationDTOList.isEmpty()){
+            for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
+                Long daysOfDocumentationDelay = ChronoUnit.DAYS.between(traceabilityContractDocumentationDTO.getStartDate(), LocalDate.now());
+                Integer contractNumber = traceabilityContractDocumentationDTO.getContractNumber();
+                if(daysOfDocumentationDelay >= 10){
+                    InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
+                    ClientDTO clientDTO = applicationMainController.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
+                    PersonDTO workerDTO = applicationMainController.findPersonById(initialContractDTO.getContractJsonData().getWorkerId());
+                    alertMessage = alertMessage + "La documentación del contrato número " + contractNumber + " entre " + clientDTO.toNaturalName() + " y " +
+                            workerDTO.toNaturalName() + " está pendiente desde hace " +  daysOfDocumentationDelay + " días.\n\n";
+
+                }
+            }
+
+            if(!alertMessage.isEmpty()) {
+
+                Message.warningMessage(primaryStage.getOwner(), "Documentación de contratos pendiente de recepción", alertMessage);
+            }
+        }
+    }
+
     public static void UpdateOldContractVersionInForce(){
         ContractController controller = new ContractController();
 

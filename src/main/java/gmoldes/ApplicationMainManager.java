@@ -344,6 +344,20 @@ public class ApplicationMainManager {
         return contractVariationDTOList;
     }
 
+    public List<TraceabilityContractDocumentationDTO> findTraceabilityForAllContractWithPendingLaborDocumentation(){
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = new ArrayList<>();
+
+        TraceabilityContractDocumentationDAO traceabilityContractDocumentationDAO = TraceabilityContractDocumentationDAO.TraceabilityContractDocumentationDAOFactory.getInstance();
+        List<TraceabilityContractDocumentationVO> traceabilityContractDocumentationVOList = traceabilityContractDocumentationDAO.findTraceabilityForAllContractWithPendingLaborDocumentation();
+
+        for(TraceabilityContractDocumentationVO traceabilityContractDocumentationVO : traceabilityContractDocumentationVOList){
+            TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO = MapperTraceabilityContractDocumentationVODTO.map(traceabilityContractDocumentationVO);
+            traceabilityContractDocumentationDTOList.add(traceabilityContractDocumentationDTO)
+;        }
+
+        return traceabilityContractDocumentationDTOList;
+    }
+
     public ClientDTO retrieveClientByClientId(Integer clientId){
 
         List<ClientDTO> clientDTOList = new ArrayList<>();

@@ -63,4 +63,10 @@ public class TraceabilityContractDocumentationDAO {
 
         return query.getResultList();
     }
+
+    public List<TraceabilityContractDocumentationVO> findTraceabilityForAllContractWithPendingLaborDocumentation(){
+        TypedQuery<TraceabilityContractDocumentationVO> query = session.createNamedQuery(TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_DOCUMENTATION_TO_CLIENT, TraceabilityContractDocumentationVO.class);
+
+        return query.getResultList();
+    }
 }

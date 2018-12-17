@@ -3,7 +3,6 @@ package gmoldes;
 
 import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
-import gmoldes.utilities.OldContractsToJSONUtility;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
@@ -20,12 +19,6 @@ public class App extends Application {
         Scene initialScene = new Scene(indicator);
         primaryStage.setScene(initialScene);
         primaryStage.show();
-
-
-        if(false) {
-            OldContractsToJSONUtility ctJson = new OldContractsToJSONUtility();
-            ctJson.oldContractToJsonGenerator();
-        }
 
         initialControlProcesses(primaryStage);
 
@@ -51,6 +44,7 @@ public class App extends Application {
 
         InitialChecks.alertByContractNewVersionWithPendingIDC(primaryStage);
         InitialChecks.alertByContractNewVersionExpiration(primaryStage);
+        InitialChecks.alertByDelaySendingLaborDocumentationToClients(primaryStage);
         InitialChecks.UpdateOldContractVersionInForce();
     }
  }
