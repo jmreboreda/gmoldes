@@ -30,34 +30,34 @@ public class Printer {
 //        PDViewerPreferences PDFDocumentPreferences = PDFDocumentLoaded.getDocumentCatalog().getViewerPreferences();
 //        System.out.println("Preferencias: " + PDFDocumentPreferences);
 
-        PrintRequestAttributeSet datts = new HashPrintRequestAttributeSet();
+        PrintRequestAttributeSet praSet = new HashPrintRequestAttributeSet();
         MediaSizeName DINA4 = MediaSize.ISO.A4.getMediaSizeName();
         MediaSizeName DINA3 = MediaSize.ISO.A3.getMediaSizeName();
 
         if(printAttributes.get("papersize").equals("A4")) {
-            datts.add(DINA4);
+            praSet.add(DINA4);
         } else{
-            datts.add(DINA3);
+            praSet.add(DINA3);
         }
         if(printAttributes.get("sides").equals("DUPLEX")) {
-            datts.add(Sides.TWO_SIDED_SHORT_EDGE);
+            praSet.add(Sides.TWO_SIDED_SHORT_EDGE);
         } else{
-            datts.add(Sides.ONE_SIDED);
+            praSet.add(Sides.ONE_SIDED);
         }
         if(printAttributes.get("chromacity").equals("MONOCHROME")) {
-            datts.add(Chromaticity.MONOCHROME);
+            praSet.add(Chromaticity.MONOCHROME);
         }else{
-            datts.add(Chromaticity.COLOR);
+            praSet.add(Chromaticity.COLOR);
         }
         if(printAttributes.get("orientation").equals("LANDSCAPE")) {
-            datts.add(OrientationRequested.LANDSCAPE);
+            praSet.add(OrientationRequested.LANDSCAPE);
         }else{
-            datts.add(OrientationRequested.PORTRAIT);
+            praSet.add(OrientationRequested.PORTRAIT);
         }
-        datts.add(new Copies(1));
-        datts.add(new JobName("GmoldesJob", Locale.getDefault()));
+        praSet.add(new Copies(1));
+        praSet.add(new JobName("GmoldesJob", Locale.getDefault()));
 
-        PrintService printServiceForAttributes = getPrintServiceForAttributes(datts);
+        PrintService printServiceForAttributes = getPrintServiceForAttributes(praSet);
         if(printServiceForAttributes == null){
             PDFDocumentLoaded.close();
 
@@ -65,17 +65,19 @@ public class Printer {
         }
         else {
 
-            if(datts.containsValue(MediaSizeName.ISO_A3)){
+            if(praSet.containsValue(MediaSizeName.ISO_A3)){
 
                 MediaTray trayForA3Paper = getTrayToA3Paper(printServiceForAttributes);
-                datts.add(trayForA3Paper);
+                if(trayForA3Paper != null) {
+                    praSet.add(trayForA3Paper);
+                }
             }
 
             PrinterJob printerJob = PrinterJob.getPrinterJob();
             printerJob.setPageable(new PDFPageable(PDFDocumentLoaded));
             printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.SHRINK_TO_FIT));
             printerJob.setPrintService(printServiceForAttributes);
-            printerJob.print(datts);
+            printerJob.print(praSet);
 
             PDFDocumentLoaded.close();
         }
