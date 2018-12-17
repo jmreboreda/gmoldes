@@ -342,8 +342,6 @@ public class ContractExtinctionController{
                 .withStartDate(null)
                 .withEndDate(startDate)
                 .withDayOfWeekSet(dayOfWeekSet)
-
-
                 .withDurationDays(Duration.ZERO)
                 .withSchedule(new HashSet<>())
                 .withAdditionalData(additionalData)

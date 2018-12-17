@@ -99,19 +99,25 @@ public class InitialChecks {
             String alertMessage = "";
             String missingExceededText;
 
-            for(IDCControlDTO idcControlDTO : idcControlDTOList){
-                if(idcControlDTO.getDays() >= 0){
-                    missingExceededText = "Faltan ";
-                }else{
-                    missingExceededText = "Excedido en ";
-                }
-                int days = Math.abs(idcControlDTO.getDays());
+            for(IDCControlDTO idcControlDTO : idcControlDTOList) {
+                if (idcControlDTO.getDays() <= 3) {
+                    if (idcControlDTO.getDays() >= 0) {
+                        missingExceededText = "Faltan ";
+                    } else {
+                        missingExceededText = "Excedido en ";
+                    }
 
-                alertMessage = alertMessage + "IDC Pendiente:\n" + idcControlDTO.getVariationDescription() + " de " + idcControlDTO.getClientGMFullName() + " con " +
-                        idcControlDTO.getWorkerFullName() + " desde " + idcControlDTO.getDateTo() + ".\n" + missingExceededText  + days + " días." + "\n\n";
+                    int days = Math.abs(idcControlDTO.getDays());
+
+                    alertMessage = alertMessage + "IDC Pendiente:\n" + idcControlDTO.getVariationDescription() + " de " + idcControlDTO.getClientGMFullName() + " con " +
+                            idcControlDTO.getWorkerFullName() + " desde " + idcControlDTO.getDateTo() + ".\n" + missingExceededText + days + " días." + "\n\n";
+                }
             }
 
-            Message.warningMessage(primaryStage.getOwner(), "IDC pendientes de recepción", alertMessage);
+            if(!alertMessage.isEmpty()) {
+
+                Message.warningMessage(primaryStage.getOwner(), "IDC pendientes de recepción", alertMessage);
+            }
         }
     }
 

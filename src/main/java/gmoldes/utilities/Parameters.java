@@ -4,6 +4,7 @@ public class Parameters {
 
     /** Printer */
     public static final String DEFAULT_PRINTER = "KONICA MINOLTA";
+    public static final String PRINTER_TRAY_OF_A3 = "Bandeja 3";
     public static final String NO_PRINTER_FOR_THESE_ATTRIBUTES = "No hay impresora para imprimir con los atributos indicados.";
 
     /** System */

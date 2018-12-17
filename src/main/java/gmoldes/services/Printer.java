@@ -14,10 +14,8 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
 
-import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.printing.PDFPageable;
 import org.apache.pdfbox.printing.PDFPrintable;
 import org.apache.pdfbox.printing.Scaling;
@@ -40,7 +38,6 @@ public class Printer {
             datts.add(DINA4);
         } else{
             datts.add(DINA3);
-            datts.add(MediaTray.BOTTOM);
         }
         if(printAttributes.get("sides").equals("DUPLEX")) {
             datts.add(Sides.TWO_SIDED_SHORT_EDGE);
@@ -67,6 +64,13 @@ public class Printer {
             return "fail";
         }
         else {
+
+            if(datts.containsValue(MediaSizeName.ISO_A3)){
+
+                MediaTray trayForA3Paper = getTrayToA3Paper(printServiceForAttributes);
+                datts.add(trayForA3Paper);
+            }
+
             PrinterJob printerJob = PrinterJob.getPrinterJob();
             printerJob.setPageable(new PDFPageable(PDFDocumentLoaded));
             printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.SHRINK_TO_FIT));
@@ -99,6 +103,27 @@ public class Printer {
         }
 
         return serviceForPrint;
+    }
+
+    private static MediaTray getTrayToA3Paper(PrintService printServiceForAttributes){
+
+        // We chose something compatible with the printable interface
+        DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
+
+        MediaTray selectedTray = null;
+        Object o = printServiceForAttributes.getSupportedAttributeValues(Media.class, flavor, null);
+        if (o != null && o.getClass().isArray()) {
+            for (Media media : (Media[]) o) {
+                if (media instanceof MediaTray) {
+                    System.out.println(media.getValue() + " : " + media + " - " + media.getClass().getName());
+                    if(media.toString().equals(Parameters.PRINTER_TRAY_OF_A3)){
+                        selectedTray = (MediaTray) media;
+                    }
+                }
+            }
+        }
+
+        return selectedTray;
     }
 
     private static AttributeSet getAttributesForPrintService(PrintService printService){
