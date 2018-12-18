@@ -56,9 +56,10 @@ public class Printer {
             praSet.add(OrientationRequested.PORTRAIT);
         }
         praSet.add(new Copies(1));
-        praSet.add(new JobName("GmoldesJob", Locale.getDefault()));
+        praSet.add(new JobName("GmoldesPrintJob", Locale.getDefault()));
 
         PrintService printServiceForAttributes = getPrintServiceForAttributes(praSet);
+
         if(printServiceForAttributes == null){
             PDFDocumentLoaded.close();
 
@@ -76,7 +77,13 @@ public class Printer {
 
             PrinterJob printerJob = PrinterJob.getPrinterJob();
             printerJob.setPageable(new PDFPageable(PDFDocumentLoaded));
-            printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.SHRINK_TO_FIT));
+            if(praSet.containsValue(MediaSizeName.ISO_A3)) {
+                printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.SHRINK_TO_FIT));
+            }else{
+                printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.ACTUAL_SIZE));
+
+            }
+
             printerJob.setPrintService(printServiceForAttributes);
             printerJob.print(praSet);
 
@@ -96,11 +103,12 @@ public class Printer {
             for (PrintService printService : printServicesForAttributes) {
 //                AttributeSet attributes = getAttributesForPrintService(printService);
 //                DocFlavor[] docF = getSupportedDocFlavorForPrintService(printService);
+                DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
                 if (printService.getName().contains(Parameters.DEFAULT_PRINTER)) {
                     serviceForPrint = printService;
                     break;
                 } else {
-                    serviceForPrint = ServiceUI.printDialog(null, 100, 100, printServicesForAttributes, null, null, datts);
+                    serviceForPrint = ServiceUI.printDialog(null, 100, 100, printServicesForAttributes, null, flavor, datts);
                 }
             }
         }

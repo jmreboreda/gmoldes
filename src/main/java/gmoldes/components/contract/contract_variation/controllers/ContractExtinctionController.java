@@ -208,13 +208,14 @@ public class ContractExtinctionController{
                 .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getId_variation();
         Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
         LocalDate dateFrom = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
-        LocalDate dateTo = null;
 
         TraceabilityContractDocumentationDTO traceabilityDTO = TraceabilityContractDocumentationDTO.create()
                 .withContractNumber(contractNumber)
                 .withVariationType(contractVariationType)
                 .withStartDate(dateFrom)
-                .withExpectedEndDate(dateTo)
+                .withExpectedEndDate(dateFrom)
+                .withIDCReceptionDate(null)
+                .withDateDeliveryContractDocumentationToClient(null)
                 .withContractEndNoticeReceptionDate(contractEndNoticeToSave)
                 .build();
 
