@@ -22,11 +22,9 @@ public class ClientDTO {
     private String rzSocial;
     private LocalDate dateFrom;
     private LocalDate dateTo;
-    private String clientType;
     private String sg21Code;
     private Boolean activeClient;
     private LocalDate withoutActivity;
-    private Boolean claimInvoices;
     private Set<ServiceGMVO> servicesGM;
 
     public ClientDTO() {
@@ -42,11 +40,9 @@ public class ClientDTO {
             String rzSocial,
             LocalDate dateFrom,
             LocalDate dateTo,
-            String clientType,
             String sg21Code,
             Boolean activeClient,
             LocalDate withoutActivity,
-            Boolean claimInvoices,
             Set<ServiceGMVO> servicesGM) {
         this.id = id;
         this.clientId = clientId;
@@ -60,8 +56,6 @@ public class ClientDTO {
         this.dateTo = dateTo;
         this.activeClient = activeClient;
         this.withoutActivity = withoutActivity;
-        this.clientType = clientType;
-        this.claimInvoices = claimInvoices;
         this.servicesGM = servicesGM;
     }
 
@@ -137,14 +131,6 @@ public class ClientDTO {
         this.dateTo = dateTo;
     }
 
-    public String getClientType() {
-        return clientType;
-    }
-
-    public void setClientType(String clientType) {
-        this.clientType = clientType;
-    }
-
     public String getSg21Code() {
         return sg21Code;
     }
@@ -167,14 +153,6 @@ public class ClientDTO {
 
     public void setWithoutActivity(LocalDate withoutActivity) {
         this.withoutActivity = withoutActivity;
-    }
-
-    public Boolean getClaimInvoices() {
-        return claimInvoices;
-    }
-
-    public void setClaimInvoices(Boolean claimInvoices) {
-        this.claimInvoices = claimInvoices;
     }
 
     public Set<ServiceGMVO> getServicesGM() {
@@ -216,11 +194,9 @@ public class ClientDTO {
         private String rzSocial;
         private LocalDate dateFrom;
         private LocalDate dateTo;
-        private String clientType;
         private String sg21Code;
         private Boolean activeClient;
         private LocalDate withoutActivity;
-        private Boolean claimInvoices;
         private Set<ServiceGMVO> servicesGM;
 
         public ClientDTOOkBuilder withId(Integer id) {
@@ -268,11 +244,6 @@ public class ClientDTO {
             return this;
         }
 
-        public ClientDTOOkBuilder withClientType(String clientType) {
-            this.clientType = clientType;
-            return this;
-        }
-
         public ClientDTOOkBuilder withSg21Code(String sg21Code) {
             this.sg21Code = sg21Code;
             return this;
@@ -289,14 +260,14 @@ public class ClientDTO {
             return this;
         }
 
-        public ClientDTOOkBuilder withClaimInvoices(Boolean claimInvoices) {
-            this.claimInvoices = claimInvoices;
+        public ClientDTOOkBuilder withServicesGM(Set<ServiceGMVO> serviceGMVOSet){
+            this.servicesGM = serviceGMVOSet;
             return this;
         }
 
         public ClientDTO build() {
             return new ClientDTO(this.id, this.clientId, this.isNaturalPerson, this.nieNif, this.surNames, this.name,this.rzSocial, this.dateFrom, this.dateTo,
-            this.clientType, this.sg21Code, this.activeClient, this.withoutActivity, this.claimInvoices, this.servicesGM);
+                    this.sg21Code, this.activeClient, this.withoutActivity, this.servicesGM);
         }
     }
 }

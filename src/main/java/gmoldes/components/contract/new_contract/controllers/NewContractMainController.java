@@ -1,6 +1,7 @@
 package gmoldes.components.contract.new_contract.controllers;
 
 import com.lowagie.text.DocumentException;
+import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
@@ -270,7 +271,7 @@ public class NewContractMainController extends VBox {
             contractParts.clearEmployerCCC();
             return;
         }
-        List<ClientDTO> employers = findClientsByNamePattern(pattern);
+        List<ClientDTO> employers = findClientsWithAdvisoryServicesByNamePattern(pattern);
         contractParts.refreshEmployers(employers);
     }
 
@@ -327,8 +328,10 @@ public class NewContractMainController extends VBox {
         }
     }
 
-    private List<ClientDTO> findClientsByNamePattern(String pattern) {
-        return clientController.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
+    private List<ClientDTO> findClientsWithAdvisoryServicesByNamePattern(String pattern) {
+        ApplicationMainController applicationMainController = new ApplicationMainController();
+
+        return applicationMainController.findAllActiveClientWithAdvisoryServicesByNamePatternInAlphabeticalOrder(pattern);
     }
 
     private List<PersonDTO> findPersonsByNamePatternInAlphabeticalOrder(String pattern) {

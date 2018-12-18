@@ -24,9 +24,8 @@ public class MapperClientVODTO {
                     .withSg21Code(clientVO.getSg21Code())
                     .withDateFrom(dateFrom)
                     .withDateTo(dateTo)
-                    .withActiveClient(clientVO.getActiveClient())
                     .withWithOutActivity(withoutActivityDate)
-                    .withClientType(clientVO.getClientType())
+                    .withServicesGM(clientVO.getServicesGM())
                     .build();
 
         return clientDTO;

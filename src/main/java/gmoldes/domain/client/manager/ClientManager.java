@@ -37,7 +37,6 @@ public class ClientManager {
             ClientDTO clientDTO = ClientDTO.create()
                     .withId(clientVO.getId())
                     .withIsNaturalPerson(clientVO.getNaturalPerson())
-                    .withActiveClient(clientVO.getActiveClient())
                     .withSg21Code(clientVO.getSg21Code())
                     .withDateFrom(dateFrom)
                     .withDateTo(dateTo)
@@ -47,7 +46,7 @@ public class ClientManager {
                     .withName(clientVO.getName())
                     .withRzSocial(clientVO.getRzSocial())
                     .withWithOutActivity(withoutActivityDate)
-                    .withClientType(clientVO.getClientType())
+                    .withServicesGM(clientVO.getServicesGM())
                     .build();
 
             clientDTOList.add(clientDTO);

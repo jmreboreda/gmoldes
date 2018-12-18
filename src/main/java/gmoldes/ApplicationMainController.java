@@ -5,6 +5,8 @@ import gmoldes.components.contract.contract_variation.persistence.vo.ContractVar
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.manager.TypesContractVariationsManager;
+import gmoldes.domain.client.Client;
+import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.MapperContractVariationVODTO;
@@ -13,13 +15,18 @@ import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
 import gmoldes.domain.contract.mapper.MapperInitialContractVOtoContractNewVersionDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.servicegm.dto.ServiceGMDTO;
+import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class ApplicationMainController {
+
+    private static final String SERVICE_FOR_WORK_CONTRACTS = "Asesoría";
 
     private ApplicationMainManager applicationMainManager = new ApplicationMainManager();
 
@@ -39,6 +46,24 @@ public class ApplicationMainController {
         }
 
         return contractNewVersionDTOList;
+    }
+
+    public List<ClientDTO> findAllActiveClientWithAdvisoryServicesByNamePatternInAlphabeticalOrder(String pattern){
+
+        List<ClientDTO> clientDTOListWithAdvisoryServicesByNamePattern = new ArrayList<>();
+
+        ClientController clientController = new ClientController();
+        List<ClientDTO> clientDTOList = clientController.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);
+        for(ClientDTO clientDTO : clientDTOList) {
+        Set<ServiceGMVO> serviceGMDTOSet = clientDTO.getServicesGM();
+            for (ServiceGMVO serviceGMVO : serviceGMDTOSet) {
+                if (serviceGMVO.getService().contains(SERVICE_FOR_WORK_CONTRACTS)) {
+                    clientDTOListWithAdvisoryServicesByNamePattern.add(clientDTO);
+                }
+            }
+        }
+
+        return clientDTOListWithAdvisoryServicesByNamePattern;
     }
 
 
