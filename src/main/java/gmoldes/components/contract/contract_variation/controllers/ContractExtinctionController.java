@@ -182,20 +182,20 @@ public class ContractExtinctionController{
 
     public String persistContractExtinction(){
 
-        ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
+        ContractNewVersionDTO contractNewVersionToBeExtinguished = contractVariationParts
                 .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
 
-        if(updateLastContractVariationToExtinction(contractNewVersionExtinctedDTO) == null) {
+        if(updateLastVariationOfContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
 
             return ContractConstants.ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD;
         }
 
-        if(persistNewContractExtinctionVariation(contractNewVersionExtinctedDTO) == null) {
+        if(persistNewContractExtinctionVariation(contractNewVersionToBeExtinguished) == null) {
 
             return ContractConstants.ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION;
         }
 
-        if(updateInitialContractOfContractExtinction(contractNewVersionExtinctedDTO) == null) {
+        if(updateInitialContractOfContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
 
             return ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT;
         }
@@ -220,7 +220,7 @@ public class ContractExtinctionController{
         Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
         LocalDate dateFrom = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
 
-        TraceabilityContractDocumentationDTO traceabilityDTO = TraceabilityContractDocumentationDTO.create()
+        TraceabilityContractDocumentationDTO traceabilityContractExtinctionDTO = TraceabilityContractDocumentationDTO.create()
                 .withContractNumber(contractNumber)
                 .withVariationType(contractVariationType)
                 .withStartDate(dateFrom)
@@ -232,10 +232,10 @@ public class ContractExtinctionController{
 
         ContractManager contractManager = new ContractManager();
 
-        return contractManager.saveContractTraceability(traceabilityDTO);
+        return contractManager.saveContractTraceability(traceabilityContractExtinctionDTO);
     }
 
-    private Integer updateLastContractVariationToExtinction(ContractNewVersionDTO contractNewVersionExtinctedDTO){
+    private Integer updateLastVariationOfContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
@@ -272,7 +272,7 @@ public class ContractExtinctionController{
         return contractManager.saveContractVariation(contractNewVersionExtinctedDTO);
     }
 
-    private Integer updateInitialContractOfContractExtinction(ContractNewVersionDTO contractNewVersionExtinctedDTO){
+    private Integer updateInitialContractOfContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
         LocalDate dateOfExtinction = contractVariationContractVariations.getContractVariationContractExtinction()
                 .getDateFrom().getValue();
