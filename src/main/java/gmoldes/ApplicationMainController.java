@@ -83,10 +83,10 @@ public class ApplicationMainController {
 
     }
 
-    public List<ClientDTO> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
-
-        return applicationMainManager.findAllClientGMWithInvoiceInForceInPeriod(initialDate, finalDate);
-    }
+//    public List<ClientDTO> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+//
+//        return applicationMainManager.findAllClientGMWithInvoiceInForceInPeriod(initialDate, finalDate);
+//    }
 
     public List<ClientDTO> findAllClientGMWithInvoicesToClaimInPeriod(LocalDate periodInitialDate, LocalDate periodFinalDate){
 

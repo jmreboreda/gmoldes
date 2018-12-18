@@ -71,16 +71,16 @@ public class ClientDAO {
         return query.getResultList();
     }
 
-    public List<ClientVO> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
-
-        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD, ClientVO.class);
-        Date initialDateOfPeriod = Date.valueOf(initialDate);
-        Date finalDateOfPeriod = Date.valueOf(finalDate);
-
-//        query.setParameter("initialDate", initialDateOfPeriod);
-        query.setParameter("finalDate", finalDateOfPeriod);
-
-
-        return query.getResultList();
-    }
+//    public List<ClientVO> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+//
+//        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_ALL_CLIENT_WITH_INVOICES_TO_BE_REQUIRED_IN_PERIOD, ClientVO.class);
+//        Date initialDateOfPeriod = Date.valueOf(initialDate);
+//        Date finalDateOfPeriod = Date.valueOf(finalDate);
+//
+////        query.setParameter("initialDate", initialDateOfPeriod);
+//        query.setParameter("finalDate", finalDateOfPeriod);
+//
+//
+//        return query.getResultList();
+//    }
 }

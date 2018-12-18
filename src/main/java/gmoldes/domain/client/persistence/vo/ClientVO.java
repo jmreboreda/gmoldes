@@ -14,7 +14,11 @@ import java.util.Set;
 @NamedQueries(value = {
         @NamedQuery(
                 name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN,
-                query = "select p from ClientVO as p where (lower(p.rzSocial) like lower(:lettersOfName) or lower(p.surNames) like lower(:lettersOfName) or lower(p.name) like lower(:lettersOfName)) and p.dateTo is null and withoutActivity is null"
+                query = "select p from ClientVO as p where (lower(p.rzSocial) like lower(:lettersOfName)" +
+                        " or lower(p.surNames) like lower(:lettersOfName)" +
+                        " or lower(p.name) like lower(:lettersOfName)" +
+                        " or lower(concat(surNames, ', ', name)) like lower(:lettersOfName))" +
+                        " and p.dateTo is null and withoutActivity is null"
         ),
         @NamedQuery(
                 name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER,

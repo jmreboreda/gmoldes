@@ -151,7 +151,18 @@ public class ContractExtinctionController{
             }
         }
 
-        // 3. Registered transactions with date after the requested start date do not allow the termination of the contract on the requested date
+        // 3. The termination date is prior to the contract start date
+        InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(selectedContractNumber);
+        if(initialContractDTO.getStartDate().isAfter(extinctionDate)){
+
+            return new CompatibleVariationEvent(
+                    true,
+                    null,
+                    null,
+                    ContractConstants.EXTINCTION_DATE_PRIOR_CONTRACT_START_DATE);
+        }
+
+        // 4. Registered transactions with date after the requested start date do not allow the termination of the contract on the requested date
         List<ContractVariationDTO> contractVariationDTOList1 = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList1) {
             if(contractVariationDTO.getStartDate().isAfter(extinctionDate) ||
