@@ -68,13 +68,13 @@ public class Printer {
         }
         else {
 
-            if(praSet.containsValue(MediaSizeName.ISO_A3)){
-
-                MediaTray trayForA3Paper = getTrayToA3Paper(printServiceForAttributes);
-                if(trayForA3Paper != null) {
-                    praSet.add(trayForA3Paper);
-                }
-            }
+//            if(praSet.containsValue(MediaSizeName.ISO_A3)){
+//
+//                MediaTray trayForA3Paper = getTrayToA3Paper(printServiceForAttributes);
+//                if(trayForA3Paper != null) {
+//                    praSet.add(trayForA3Paper);
+//                }
+//            }
 
             PrinterJob printerJob = PrinterJob.getPrinterJob();
             printerJob.setPageable(new PDFPageable(PDFDocumentLoaded));
