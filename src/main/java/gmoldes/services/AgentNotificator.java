@@ -1,6 +1,6 @@
 package gmoldes.services;
 
-import gmoldes.components.contract.new_contract.components.ContractParts;
+import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.services.email.EmailData;
 import gmoldes.services.email.EmailParameters;
 import gmoldes.services.email.EmailSender;
@@ -8,26 +8,25 @@ import gmoldes.services.email.EmailSender;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import java.nio.file.Path;
 
 public class AgentNotificator {
 
     public AgentNotificator() {
     }
 
-    public Boolean sendEmailToContractAgent(Path path, String fileName, ContractParts contractParts) throws AddressException {
-        Boolean isSendOk = false;
+    public Boolean sendEmailToContractAgent(EmailDataCreationDTO emailDataCreationDTO) throws AddressException {
 
+        Boolean isSendOk = false;
 
         EmailData emailData = EmailData.create()
                 .withEmailFrom(new InternetAddress(EmailParameters.EMAIL_FROM_TO_SEND_CONTRACT))
                 .withEmailTo(new InternetAddress(EmailParameters.EMAIL_TO_SEND_CONTRACT))
                 .withEmailDeliveryNotification(new InternetAddress(EmailParameters.EMAIL_DELIVERY_NOTIFICATION))
-                .withEmailSubject(EmailParameters.TEXT_NEW_CONTRACT_IN_MAIL_SUBJECT + contractParts.getSelectedEmployee() +
-                        " [" + contractParts.getSelectedEmployer() + "]")
+                .withEmailSubject(EmailParameters.STANDARD_TEXT_GESTORIAGM + emailDataCreationDTO.getVariationTypeText() + emailDataCreationDTO.getEmployee() +
+                        " [" + emailDataCreationDTO.getEmployer() + "]")
                 .withEmailMessageText(EmailParameters .STANDARD_TEXT_SEND_CONTRACT_DATA + EmailParameters.STANDARD_LOPD_TEXT_SEND_MAIL)
-                .withAttachedPath(path)
-                .withAttachedName(fileName)
+                .withAttachedPath(emailDataCreationDTO.getPath())
+                .withAttachedName(emailDataCreationDTO.getFileName())
                 .build();
         EmailSender emailSender = new EmailSender();
         try {

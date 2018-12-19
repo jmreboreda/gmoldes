@@ -8,6 +8,9 @@ import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractAgent;
+import gmoldes.domain.client.manager.ClientManager;
+import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.services.AgentNotificator;
 import gmoldes.components.contract.new_contract.services.NewContractDataSubfolderPDFCreator;
 import gmoldes.components.contract.new_contract.services.NewContractDataToContractAgentPDFCreator;
@@ -28,6 +31,7 @@ import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.services.email.EmailData;
 import gmoldes.services.email.EmailParameters;
 import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
@@ -170,12 +174,15 @@ public class NewContractMainController extends VBox {
         Path pathOut;
 
         if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
+
             ContractDataToContractAgent contractDataToContractAgent = createContractDataToContractAgent();
             pathOut = retrievePathToContractDataToContractAgentPDF(contractDataToContractAgent);
             String attachedFileName = contractDataToContractAgent.toFileName().concat(".pdf");
             AgentNotificator agentNotificator = new AgentNotificator();
+            EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName);
+
             try {
-                isSendOk = agentNotificator.sendEmailToContractAgent(pathOut, attachedFileName, this.contractParts);
+                isSendOk = agentNotificator.sendEmailToContractAgent(emailDataCreationDTO);
             } catch (AddressException e) {
                 e.printStackTrace();
             }
@@ -737,6 +744,20 @@ public class NewContractMainController extends VBox {
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
         }
+    }
+
+    private EmailDataCreationDTO retrieveDateForEmailCreation(Path path, String attachedFileName){
+
+        ClientDTO employerDTO = contractParts.getSelectedEmployer();
+        PersonDTO employeeDTO = contractParts.getSelectedEmployee();
+        String variationTypeText = EmailParameters.STANDARD_NEW_CONTRACT_TEXT;
+        return EmailDataCreationDTO.create()
+                .withPath(path)
+                .withFileName(attachedFileName)
+                .withEmployer(employerDTO)
+                .withEmployee(employeeDTO)
+                .withVariationTypeText(variationTypeText)
+                .build();
     }
 
 //    private Integer mapContractTypeStringToInteger(String contractType){
