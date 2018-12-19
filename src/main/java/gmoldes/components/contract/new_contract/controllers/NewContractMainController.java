@@ -8,7 +8,7 @@ import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractAgent;
-import gmoldes.components.contract.new_contract.services.NewContractAgentNotificator;
+import gmoldes.services.AgentNotificator;
 import gmoldes.components.contract.new_contract.services.NewContractDataSubfolderPDFCreator;
 import gmoldes.components.contract.new_contract.services.NewContractDataToContractAgentPDFCreator;
 import gmoldes.components.contract.new_contract.services.NewContractRecordHistorySubfolderPDFCreator;
@@ -28,7 +28,7 @@ import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
-import gmoldes.services.Email.EmailParameters;
+import gmoldes.services.email.EmailParameters;
 import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.OSUtils;
@@ -173,7 +173,7 @@ public class NewContractMainController extends VBox {
             ContractDataToContractAgent contractDataToContractAgent = createContractDataToContractAgent();
             pathOut = retrievePathToContractDataToContractAgentPDF(contractDataToContractAgent);
             String attachedFileName = contractDataToContractAgent.toFileName().concat(".pdf");
-            NewContractAgentNotificator agentNotificator = new NewContractAgentNotificator();
+            AgentNotificator agentNotificator = new AgentNotificator();
             try {
                 isSendOk = agentNotificator.sendEmailToContractAgent(pathOut, attachedFileName, this.contractParts);
             } catch (AddressException e) {

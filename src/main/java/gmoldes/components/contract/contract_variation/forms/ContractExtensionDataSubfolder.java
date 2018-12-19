@@ -1,7 +1,6 @@
-package gmoldes.components.contract.new_contract.forms;
+package gmoldes.components.contract.contract_variation.forms;
 
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
-import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 
 import java.time.DayOfWeek;
@@ -11,7 +10,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-public class ContractDataSubfolder {
+public class ContractExtensionDataSubfolder {
 
     private String notificationType;
     private String officialContractNumber;
@@ -38,12 +37,12 @@ public class ContractDataSubfolder {
     private String laborCategory;
     private String gmContractNumber;
 
-    public ContractDataSubfolder(String notificationType, String officialContractNumber, String employerFullName, String employerQuoteAccountCode, LocalDate notificationDate,
-                                 LocalTime notificationHour, String employeeFullName, String employeeNif, String employeeNASS,
-                                 String employeeBirthDate, String employeeCivilState, String employeeNationality, String employeeFullAddress,
-                                 String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, Duration hoursWorkWeek, String contractTypeDescription,
-                                 LocalDate startDate, LocalDate endDate, Duration durationDays, Set<WorkDaySchedule> schedule,
-                                 String additionalData, String laborCategory, String gmContractNumber) {
+    public ContractExtensionDataSubfolder(String notificationType, String officialContractNumber, String employerFullName, String employerQuoteAccountCode, LocalDate notificationDate,
+                                          LocalTime notificationHour, String employeeFullName, String employeeNif, String employeeNASS,
+                                          String employeeBirthDate, String employeeCivilState, String employeeNationality, String employeeFullAddress,
+                                          String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, Duration hoursWorkWeek, String contractTypeDescription,
+                                          LocalDate startDate, LocalDate endDate, Duration durationDays, Set<WorkDaySchedule> schedule,
+                                          String additionalData, String laborCategory, String gmContractNumber) {
 
         this.notificationType = notificationType;
         this.officialContractNumber = officialContractNumber;
@@ -183,11 +182,11 @@ public class ContractDataSubfolder {
                 Utilities.replaceWithUnderscore(employeeFullName);
     }
 
-    public static ContractDataSubfolderBuilder create() {
-        return new ContractDataSubfolderBuilder();
+    public static ContractExtensionDataSubfolderBuilder create() {
+        return new ContractExtensionDataSubfolderBuilder();
     }
 
-    public static class ContractDataSubfolderBuilder {
+    public static class ContractExtensionDataSubfolderBuilder {
 
         private String notificationType;
         private String officialContractNumber;
@@ -214,129 +213,129 @@ public class ContractDataSubfolder {
         private String laborCategory;
         private String gmContractNumber;
 
-        public ContractDataSubfolderBuilder withNotificationType(String notificationType) {
+        public ContractExtensionDataSubfolderBuilder withNotificationType(String notificationType) {
             this.notificationType = notificationType;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withOfficialContractNumber(String officialContractNumber) {
+        public ContractExtensionDataSubfolderBuilder withOfficialContractNumber(String officialContractNumber) {
             this.officialContractNumber = officialContractNumber;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withEmployerFullName(String employerFullName) {
+        public ContractExtensionDataSubfolderBuilder withEmployerFullName(String employerFullName) {
             this.employerFullName = employerFullName;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withEmployerQuoteAccountCode(String employerQuoteAccountCode) {
+        public ContractExtensionDataSubfolderBuilder withEmployerQuoteAccountCode(String employerQuoteAccountCode) {
             this.employerQuoteAccountCode = employerQuoteAccountCode;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withNotificationDate(LocalDate notificationDate) {
+        public ContractExtensionDataSubfolderBuilder withNotificationDate(LocalDate notificationDate) {
             this.notificationDate = notificationDate;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withNotificationHour(LocalTime notificationHour) {
+        public ContractExtensionDataSubfolderBuilder withNotificationHour(LocalTime notificationHour) {
             this.notificationHour = notificationHour;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withEmployeeFullName(String employeeFullName) {
+        public ContractExtensionDataSubfolderBuilder withEmployeeFullName(String employeeFullName) {
             this.employeeFullName = employeeFullName;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withEmployeeNif(String employeeNif) {
+        public ContractExtensionDataSubfolderBuilder withEmployeeNif(String employeeNif) {
             this.employeeNif = employeeNif;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withEmployeeNASS(String employeeNASS) {
+        public ContractExtensionDataSubfolderBuilder withEmployeeNASS(String employeeNASS) {
             this.employeeNASS = employeeNASS;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withEmployeeBirthDate(String employeeBirthDate) {
+        public ContractExtensionDataSubfolderBuilder withEmployeeBirthDate(String employeeBirthDate) {
             this.employeeBirthDate = employeeBirthDate;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withEmployeeCivilState(String employeeCivilState) {
+        public ContractExtensionDataSubfolderBuilder withEmployeeCivilState(String employeeCivilState) {
             this.employeeCivilState = employeeCivilState;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withEmployeeNationality(String employeeNationality) {
+        public ContractExtensionDataSubfolderBuilder withEmployeeNationality(String employeeNationality) {
             this.employeeNationality = employeeNationality;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withEmployeeFullAddress(String employeeFullAddress) {
+        public ContractExtensionDataSubfolderBuilder withEmployeeFullAddress(String employeeFullAddress) {
             this.employeeFullAddress = employeeFullAddress;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withEmployeeMaxStudyLevel(String employeeMaxStudyLevel) {
+        public ContractExtensionDataSubfolderBuilder withEmployeeMaxStudyLevel(String employeeMaxStudyLevel) {
             this.employeeMaxStudyLevel = employeeMaxStudyLevel;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withDayOfWeekSet(Set<DayOfWeek> dayOfWeekSet) {
+        public ContractExtensionDataSubfolderBuilder withDayOfWeekSet(Set<DayOfWeek> dayOfWeekSet) {
             this.dayOfWeekSet = dayOfWeekSet;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withHoursWorkWeek(Duration hoursWorkWeek) {
+        public ContractExtensionDataSubfolderBuilder withHoursWorkWeek(Duration hoursWorkWeek) {
             this.hoursWorkWeek = hoursWorkWeek;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withContractTypeDescription(String contractTypeDescription) {
+        public ContractExtensionDataSubfolderBuilder withContractTypeDescription(String contractTypeDescription) {
             this.contractTypeDescription = contractTypeDescription;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withStartDate(LocalDate startDate) {
+        public ContractExtensionDataSubfolderBuilder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withEndDate(LocalDate endDate) {
+        public ContractExtensionDataSubfolderBuilder withEndDate(LocalDate endDate) {
             this.endDate = endDate;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withDurationDays(Duration durationDays) {
+        public ContractExtensionDataSubfolderBuilder withDurationDays(Duration durationDays) {
             this.durationDays = durationDays;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withSchedule(Set<WorkDaySchedule> schedule) {
+        public ContractExtensionDataSubfolderBuilder withSchedule(Set<WorkDaySchedule> schedule) {
             this.schedule = schedule;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withAdditionalData(String additionalData) {
+        public ContractExtensionDataSubfolderBuilder withAdditionalData(String additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withLaborCategory(String laborCategory) {
+        public ContractExtensionDataSubfolderBuilder withLaborCategory(String laborCategory) {
             this.laborCategory = laborCategory;
             return this;
         }
 
-        public ContractDataSubfolderBuilder withGmContractNumber(String gmContractNumber) {
+        public ContractExtensionDataSubfolderBuilder withGmContractNumber(String gmContractNumber) {
             this.gmContractNumber = gmContractNumber;
             return this;
         }
 
 
-        public ContractDataSubfolder build() {
-            return new ContractDataSubfolder(this.notificationType, this.officialContractNumber,this.employerFullName, this.employerQuoteAccountCode,
+        public ContractExtensionDataSubfolder build() {
+            return new ContractExtensionDataSubfolder(this.notificationType, this.officialContractNumber,this.employerFullName, this.employerQuoteAccountCode,
                     this.notificationDate, this.notificationHour, this.employeeFullName, this.employeeNif, this.employeeNASS, this.employeeBirthDate,
                     this.employeeCivilState, this.employeeNationality, this.employeeFullAddress, this.employeeMaxStudyLevel, this.dayOfWeekSet,
                     this.hoursWorkWeek, this.contractTypeDescription, this.startDate, this.endDate, this.durationDays, this.schedule, this.additionalData,

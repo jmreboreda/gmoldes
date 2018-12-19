@@ -7,6 +7,8 @@ import gmoldes.components.contract.contract_variation.components.ContractVariati
 import gmoldes.components.contract.contract_variation.components.ContractVariationTypes;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
 import gmoldes.components.contract.contract_variation.events.MessageEvent;
+import gmoldes.components.contract.contract_variation.forms.ContractExtensionDataSubfolder;
+import gmoldes.components.contract.contract_variation.services.ContractExtensionDataSubfolderPDFCreator;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
@@ -76,9 +78,9 @@ public class ContractExtensionController {
         StringBuilder sb = new StringBuilder();
         sb.append(" ");
 
-        ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString(), durationDays);
+        ContractExtensionDataSubfolder contractExtensionDataSubfolder = createContractExtensionDataSubfolder(sb.toString(), durationDays);
 
-        printContractDataSubfolder(contractDataSubfolder);
+        printContractExtensionDataSubfolder(contractExtensionDataSubfolder);
 
         return true;
     }
@@ -359,7 +361,7 @@ public class ContractExtensionController {
         return contractManager.updateInitialContract(contractNewVersionToUpdateDTO);
     }
 
-    private ContractDataSubfolder createContractDataSubfolder(String additionalData, Duration duration){
+    private ContractExtensionDataSubfolder createContractExtensionDataSubfolder(String additionalData, Duration duration){
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
 
@@ -393,7 +395,7 @@ public class ContractExtensionController {
         String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription() +
                 " [" + allContractData.getContractNewVersion().getContractJsonData().getWeeklyWorkHours() + HOURS_WORK_WEEK_TEXT + "]";
 
-        return ContractDataSubfolder.create()
+        return ContractExtensionDataSubfolder.create()
                 .withNotificationType(notificationType)
                 .withOfficialContractNumber(allContractData.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
                 .withEmployerFullName(allContractData.getEmployer().toString())
@@ -423,8 +425,8 @@ public class ContractExtensionController {
                 .build();
     }
 
-    private void printContractDataSubfolder(ContractDataSubfolder contractDataSubfolder){
-        Path pathToContractDataSubfolder = retrievePathToContractDataSubfolderPDF(contractDataSubfolder);
+    private void printContractExtensionDataSubfolder(ContractExtensionDataSubfolder contractDataSubfolder){
+        Path pathToContractExtensionDataSubfolder = retrievePathToContractExtensionDataSubfolderPDF(contractDataSubfolder);
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("papersize","A3");
@@ -433,7 +435,7 @@ public class ContractExtensionController {
         attributes.put("orientation","LANDSCAPE");
 
         try {
-            String printOk = Printer.printPDF(pathToContractDataSubfolder.toString(), attributes);
+            String printOk = Printer.printPDF(pathToContractExtensionDataSubfolder.toString(), attributes);
             Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
                 Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
@@ -443,16 +445,16 @@ public class ContractExtensionController {
         }
     }
 
-    private Path retrievePathToContractDataSubfolderPDF(ContractDataSubfolder contractDataSubfolder){
+    private Path retrievePathToContractExtensionDataSubfolderPDF(ContractExtensionDataSubfolder contractDataSubfolder){
         Path pathOut = null;
 
         final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
         String temporalDir = maybePath.get().toString();
 
-        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
+        Path pathToContractExtensionDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
         try {
-            Files.createDirectories(pathToContractDataSubfolder.getParent());
-            pathOut = NewContractDataSubfolderPDFCreator.createContractDataSubfolderPDF(contractDataSubfolder, pathToContractDataSubfolder);
+            Files.createDirectories(pathToContractExtensionDataSubfolder.getParent());
+            pathOut = ContractExtensionDataSubfolderPDFCreator.createContractExtensionDataSubfolderPDF(contractDataSubfolder, pathToContractExtensionDataSubfolder);
         } catch (IOException | DocumentException e) {
             e.printStackTrace();
         }
