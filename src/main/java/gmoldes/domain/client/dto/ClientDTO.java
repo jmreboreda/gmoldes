@@ -5,6 +5,7 @@
  */
 package gmoldes.domain.client.dto;
 
+import gmoldes.domain.client.persistence.vo.ClientCCCVO;
 import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
 
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class ClientDTO {
     private Boolean activeClient;
     private LocalDate withoutActivity;
     private Set<ServiceGMVO> servicesGM;
+    private Set<ClientCCCVO> clientCCC;
 
     public ClientDTO() {
     }
@@ -43,7 +45,8 @@ public class ClientDTO {
             String sg21Code,
             Boolean activeClient,
             LocalDate withoutActivity,
-            Set<ServiceGMVO> servicesGM) {
+            Set<ServiceGMVO> servicesGM,
+            Set<ClientCCCVO> clientCCC) {
         this.id = id;
         this.clientId = clientId;
         this.isNaturalPerson = isNaturalPerson;
@@ -57,6 +60,7 @@ public class ClientDTO {
         this.activeClient = activeClient;
         this.withoutActivity = withoutActivity;
         this.servicesGM = servicesGM;
+        this.clientCCC = clientCCC;
     }
 
     public Integer getId() {
@@ -163,6 +167,14 @@ public class ClientDTO {
         this.servicesGM = servicesGM;
     }
 
+    public Set<ClientCCCVO> getClientCCC() {
+        return clientCCC;
+    }
+
+    public void setClientCCC(Set<ClientCCCVO> clientCCC) {
+        this.clientCCC = clientCCC;
+    }
+
     public String toString() {
         if(isNaturalPerson){
             return getSurNames() + ", " + getName();
@@ -198,6 +210,7 @@ public class ClientDTO {
         private Boolean activeClient;
         private LocalDate withoutActivity;
         private Set<ServiceGMVO> servicesGM;
+        private Set<ClientCCCVO> clientCCC;
 
         public ClientDTOOkBuilder withId(Integer id) {
             this.id = id;
@@ -265,9 +278,14 @@ public class ClientDTO {
             return this;
         }
 
+        public ClientDTOOkBuilder withClientCCC(Set<ClientCCCVO> clientCCC){
+            this.clientCCC = clientCCC;
+            return this;
+        }
+
         public ClientDTO build() {
             return new ClientDTO(this.id, this.clientId, this.isNaturalPerson, this.nieNif, this.surNames, this.name,this.rzSocial, this.dateFrom, this.dateTo,
-                    this.sg21Code, this.activeClient, this.withoutActivity, this.servicesGM);
+                    this.sg21Code, this.activeClient, this.withoutActivity, this.servicesGM, this.clientCCC);
         }
     }
 }

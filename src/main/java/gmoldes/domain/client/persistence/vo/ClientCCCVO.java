@@ -10,7 +10,8 @@ import java.io.Serializable;
                 name = ClientCCCVO.FIND_ALL_CCC_BY_CLIENTID,
                 query = "select p from ClientCCCVO p where clientId = :code"
         )
-})
+})//    private Integer clientId;
+
 
 public class ClientCCCVO implements Serializable{
 
@@ -21,9 +22,10 @@ public class ClientCCCVO implements Serializable{
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ccc_inss_id_seq")
     @Column(name = "id", updatable = false)
     private Integer id;
-    private Integer clientId;
     private String ccc_inss;
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="clientid")
+    private ClientVO clientVO;
 
     public ClientCCCVO() {
     }
@@ -36,13 +38,13 @@ public class ClientCCCVO implements Serializable{
         this.id = id;
     }
 
-    public Integer getIdcliente() {
-        return clientId;
-    }
-
-    public void setIdcliente(Integer idcliente) {
-        this.clientId = idcliente;
-    }
+//    public Integer getIdcliente() {
+//        return clientId;
+//    }
+//
+//    public void setIdcliente(Integer idcliente) {
+//        this.clientId = idcliente;
+//    }
 
     public String getCcc_inss() {
         return ccc_inss;
@@ -50,5 +52,13 @@ public class ClientCCCVO implements Serializable{
 
     public void setCcc_inss(String ccc_inss) {
         this.ccc_inss = ccc_inss;
+    }
+
+    public ClientVO getClientVO() {
+        return clientVO;
+    }
+
+    public void setClientVO(ClientVO clientVO) {
+        this.clientVO = clientVO;
     }
 }

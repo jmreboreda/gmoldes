@@ -47,6 +47,7 @@ public class ClientManager {
                     .withRzSocial(clientVO.getRzSocial())
                     .withWithOutActivity(withoutActivityDate)
                     .withServicesGM(clientVO.getServicesGM())
+                    .withClientCCC(clientVO.getClientCCC())
                     .build();
 
             clientDTOList.add(clientDTO);

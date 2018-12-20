@@ -64,6 +64,8 @@ public class ClientVO implements Serializable {
     private Date withoutActivity;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientVO", cascade = CascadeType.ALL)
     private Set<ServiceGMVO> servicesGM;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientVO", cascade = CascadeType.ALL)
+    private Set<ClientCCCVO> clientCCC;
 
     public Integer getId() {
         return id;
@@ -159,6 +161,14 @@ public class ClientVO implements Serializable {
 
     public void setServicesGM(Set<ServiceGMVO> servicesGM) {
         this.servicesGM = servicesGM;
+    }
+
+    public Set<ClientCCCVO> getClientCCC() {
+        return clientCCC;
+    }
+
+    public void setClientCCC(Set<ClientCCCVO> clientCCC) {
+        this.clientCCC = clientCCC;
     }
 
     public String toString(){

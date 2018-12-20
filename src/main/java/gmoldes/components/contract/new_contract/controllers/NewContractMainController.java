@@ -9,6 +9,8 @@ import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractAgent;
 import gmoldes.domain.client.manager.ClientManager;
+import gmoldes.domain.client.mapper.MapperClientCCCVODTO;
+import gmoldes.domain.client.persistence.vo.ClientCCCVO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.services.AgentNotificator;
@@ -299,7 +301,7 @@ public class NewContractMainController extends VBox {
         contractParts.refreshEmployers(clientDTOList);
 
         Integer selectedEmployerId = selectEmployerEvent.getSelectedEmployer().getId();
-        updateClientCCC(selectedEmployerId);
+        updateClientCCC(selectedEmployer);
     }
 
     private void onSelectEmployee(SelectEmployeeEvent selectEmployeeEvent) {
@@ -345,8 +347,19 @@ public class NewContractMainController extends VBox {
         return personController.findAllPersonsByNamePatternInAlphabeticalOrder(pattern);
     }
 
-    private void updateClientCCC(Integer id) {
-        List<ClientCCCDTO> clientCCCDTOList = clientCCCController.findAllCCCByClientId(id);
+    private void updateClientCCC(ClientDTO selectedClient) {
+
+        List<ClientCCCDTO> clientCCCDTOList = new ArrayList<>();
+
+        for(ClientCCCVO clientCCCVO : selectedClient.getClientCCC()) {
+            System.out.println("Id: " + clientCCCVO.getId() + " ::: clientId: " + clientCCCVO.getClientVO().getClientId() + " ::: " + clientCCCVO.getCcc_inss());
+            ClientCCCDTO clientCCCDTO = ClientCCCDTO.create()
+                    .withId(clientCCCVO.getId())
+                    .withClientId(clientCCCVO.getClientVO().getClientId())
+                    .withCccInss(clientCCCVO.getCcc_inss())
+                    .build();
+            clientCCCDTOList.add(clientCCCDTO);
+        }
         contractParts.refreshEmployerCCC(clientCCCDTOList);
     }
 
@@ -354,7 +367,7 @@ public class NewContractMainController extends VBox {
 
         LocalDate endOfContractNotice = contractData.getDateTo() == null ? LocalDate.of(9999, 12, 31) : null;
 
-        String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
+        String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
 
         OldContractToSaveDTO oldContractToSaveDTO = OldContractToSaveDTO.create()
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
@@ -392,7 +405,7 @@ public class NewContractMainController extends VBox {
 
     private Integer persistInitialContract(){
 
-        String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
+        String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
 
         ContractJsonData contractJsonData = ContractJsonData.create()
                 .withIdentificationContractNumberINEM(null)
@@ -483,7 +496,7 @@ public class NewContractMainController extends VBox {
         if(contractParts.getSelectedCCC() == null){
             quoteAccountCode = "";
         }else{
-            quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
+            quoteAccountCode = contractParts.getSelectedCCC().getCccInss();
         }
 
         Integer studyId = Integer.parseInt(this.contractParts.getSelectedEmployee().getNivestud().toString());
@@ -548,7 +561,7 @@ public class NewContractMainController extends VBox {
         if(contractParts.getSelectedCCC() == null){
             quoteAccountCode = "";
         }else{
-            quoteAccountCode = contractParts.getSelectedCCC().getCcc_inss();
+            quoteAccountCode = contractParts.getSelectedCCC().getCccInss();
         }
 
         Integer studyId = Integer.parseInt(this.contractParts.getSelectedEmployee().getNivestud().toString());
@@ -662,7 +675,7 @@ public class NewContractMainController extends VBox {
     private void verifyPrintTimeRecord(){
         if(this.contractData.getFullPartialWorkDay().equals(ContractConstants.PARTIAL_WORKDAY)){
 
-            String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCcc_inss();
+            String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
 
             String yearMonthReceiptCopyText;
             Month actualMonth = this.contractData.getDateFrom().getMonth();

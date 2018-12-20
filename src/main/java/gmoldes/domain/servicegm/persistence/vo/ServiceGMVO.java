@@ -25,8 +25,12 @@ public class ServiceGMVO implements Serializable{
     public static final String FIND_SERVICE_GM_BY_CLIENT_ID = "ServiceGMVO.FIND_SERVICE_GM_BY_CLIENT_ID";
     public static final String FIND_ALL_CLIENT_WITH_INVOICES_TO_CLAIM_IN_PERIOD = "ServiceGMVO.FIND_ALL_CLIENT_WITH_INVOICES_TO_CLAIM_IN_PERIOD";
 
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "servicegm_id_seq", sequenceName = "servicegm_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "servicegm_id_seq")
+    @Column(name = "id", updatable = false)
     private Integer id;
     private Date dateFrom;
     private Date dateTo;
