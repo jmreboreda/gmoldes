@@ -27,6 +27,8 @@ public class InitialChecks {
     private static final String CONTRACT_IN_FORCE_UPDATE_TO = "Contract in force update to ";
 
     public static final Integer END_OF_CONTRACT_NOTICE_DAYS = 20;
+    public static final Integer LIMIT_DAYS_DELAY_RECEIPT_CONTRACT_LABOR_DOCUMENTATION = 10;
+
 
     public static void alertByContractNewVersionExpiration(Stage primaryStage){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(gmoldes.utilities.Parameters.DEFAULT_DATE_FORMAT);
@@ -136,7 +138,7 @@ public class InitialChecks {
             for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
                 Long daysOfDocumentationDelay = ChronoUnit.DAYS.between(traceabilityContractDocumentationDTO.getStartDate(), LocalDate.now());
                 Integer contractNumber = traceabilityContractDocumentationDTO.getContractNumber();
-                if(daysOfDocumentationDelay >= 10){
+                if(daysOfDocumentationDelay >= LIMIT_DAYS_DELAY_RECEIPT_CONTRACT_LABOR_DOCUMENTATION){
                     InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
                     ClientDTO clientDTO = applicationMainController.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
                     PersonDTO workerDTO = applicationMainController.findPersonById(initialContractDTO.getContractJsonData().getWorkerId());
