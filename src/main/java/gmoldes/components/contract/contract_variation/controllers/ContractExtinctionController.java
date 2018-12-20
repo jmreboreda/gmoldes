@@ -7,11 +7,11 @@ import gmoldes.components.contract.contract_variation.components.ContractVariati
 import gmoldes.components.contract.contract_variation.components.ContractVariationTypes;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
 import gmoldes.components.contract.contract_variation.events.MessageEvent;
+import gmoldes.components.contract.contract_variation.forms.ContractExtinctionDataSubfolder;
+import gmoldes.components.contract.contract_variation.services.ContractExtinctionDataSubfolderPDFCreator;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
-import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
-import gmoldes.components.contract.new_contract.services.NewContractDataSubfolderPDFCreator;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
@@ -29,7 +29,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -77,9 +76,9 @@ public class ContractExtinctionController{
         sb.append(". Vacaciones ");
         sb.append(holidaysUsedText);
 
-        ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(sb.toString());
+        ContractExtinctionDataSubfolder contractExtinctionDataSubfolder = createContractExtinctionDataSubfolder(sb.toString());
 
-        printContractDataSubfolder(contractDataSubfolder);
+        printContractExtinctionDataSubfolder(contractExtinctionDataSubfolder);
 
         return true;
     }
@@ -151,7 +150,18 @@ public class ContractExtinctionController{
             }
         }
 
-        // 3. Registered transactions with date after the requested start date do not allow the termination of the contract on the requested date
+        // 3. The termination date is prior to the contract start date
+        InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(selectedContractNumber);
+        if(initialContractDTO.getStartDate().isAfter(extinctionDate)){
+
+            return new CompatibleVariationEvent(
+                    true,
+                    null,
+                    null,
+                    ContractConstants.EXTINCTION_DATE_PRIOR_CONTRACT_START_DATE);
+        }
+
+        // 4. Registered transactions with date after the requested start date do not allow the termination of the contract on the requested date
         List<ContractVariationDTO> contractVariationDTOList1 = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList1) {
             if(contractVariationDTO.getStartDate().isAfter(extinctionDate) ||
@@ -171,20 +181,20 @@ public class ContractExtinctionController{
 
     public String persistContractExtinction(){
 
-        ContractNewVersionDTO contractNewVersionExtinctedDTO = contractVariationParts
+        ContractNewVersionDTO contractNewVersionToBeExtinguished = contractVariationParts
                 .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
 
-        if(updateLastContractVariationToExtinction(contractNewVersionExtinctedDTO) == null) {
+        if(updateLastVariationOfContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
 
             return ContractConstants.ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD;
         }
 
-        if(persistNewContractExtinctionVariation(contractNewVersionExtinctedDTO) == null) {
+        if(persistNewContractExtinctionVariation(contractNewVersionToBeExtinguished) == null) {
 
             return ContractConstants.ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION;
         }
 
-        if(updateInitialContractOfContractExtinction(contractNewVersionExtinctedDTO) == null) {
+        if(updateInitialContractOfContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
 
             return ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT;
         }
@@ -208,22 +218,23 @@ public class ContractExtinctionController{
                 .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getId_variation();
         Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
         LocalDate dateFrom = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
-        LocalDate dateTo = null;
 
-        TraceabilityContractDocumentationDTO traceabilityDTO = TraceabilityContractDocumentationDTO.create()
+        TraceabilityContractDocumentationDTO traceabilityContractExtinctionDTO = TraceabilityContractDocumentationDTO.create()
                 .withContractNumber(contractNumber)
                 .withVariationType(contractVariationType)
                 .withStartDate(dateFrom)
-                .withExpectedEndDate(dateTo)
+                .withExpectedEndDate(dateFrom)
+                .withIDCReceptionDate(null)
+                .withDateDeliveryContractDocumentationToClient(null)
                 .withContractEndNoticeReceptionDate(contractEndNoticeToSave)
                 .build();
 
         ContractManager contractManager = new ContractManager();
 
-        return contractManager.saveContractTraceability(traceabilityDTO);
+        return contractManager.saveContractTraceability(traceabilityContractExtinctionDTO);
     }
 
-    private Integer updateLastContractVariationToExtinction(ContractNewVersionDTO contractNewVersionExtinctedDTO){
+    private Integer updateLastVariationOfContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
@@ -260,7 +271,7 @@ public class ContractExtinctionController{
         return contractManager.saveContractVariation(contractNewVersionExtinctedDTO);
     }
 
-    private Integer updateInitialContractOfContractExtinction(ContractNewVersionDTO contractNewVersionExtinctedDTO){
+    private Integer updateInitialContractOfContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
         LocalDate dateOfExtinction = contractVariationContractVariations.getContractVariationContractExtinction()
                 .getDateFrom().getValue();
@@ -282,7 +293,7 @@ public class ContractExtinctionController{
         return contractManager.updateInitialContract(contractNewVersionToUpdateDTO);
     }
 
-    private ContractDataSubfolder createContractDataSubfolder(String additionalData){
+    private ContractExtinctionDataSubfolder createContractExtinctionDataSubfolder(String additionalData){
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
 
@@ -323,7 +334,7 @@ public class ContractExtinctionController{
 
         String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription();
 
-        return ContractDataSubfolder.create()
+        return ContractExtinctionDataSubfolder.create()
                 .withNotificationType(notificationType)
                 .withOfficialContractNumber(allContractData.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
                 .withEmployerFullName(allContractData.getEmployer().toString())
@@ -342,15 +353,15 @@ public class ContractExtinctionController{
                 .withStartDate(null)
                 .withEndDate(startDate)
                 .withDayOfWeekSet(dayOfWeekSet)
-                .withDurationDays(Duration.ZERO)
+                .withDurationDays("")
                 .withSchedule(new HashSet<>())
                 .withAdditionalData(additionalData)
                 .withLaborCategory(allContractData.getContractNewVersion().getContractJsonData().getLaborCategory())
                 .build();
     }
 
-    private void printContractDataSubfolder(ContractDataSubfolder contractDataSubfolder){
-        Path pathToContractDataSubfolder = retrievePathToContractDataSubfolderPDF(contractDataSubfolder);
+    private void printContractExtinctionDataSubfolder(ContractExtinctionDataSubfolder contractExtinctionDataSubfolder){
+        Path pathToContractExtinctionDataSubfolder = retrievePathToContractExtinctionDataSubfolderPDF(contractExtinctionDataSubfolder);
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("papersize","A3");
@@ -359,7 +370,7 @@ public class ContractExtinctionController{
         attributes.put("orientation","LANDSCAPE");
 
         try {
-            String printOk = Printer.printPDF(pathToContractDataSubfolder.toString(), attributes);
+            String printOk = Printer.printPDF(pathToContractExtinctionDataSubfolder.toString(), attributes);
             Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
                 Message.warningMessage(scene.getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
@@ -369,16 +380,16 @@ public class ContractExtinctionController{
         }
     }
 
-    private Path retrievePathToContractDataSubfolderPDF(ContractDataSubfolder contractDataSubfolder){
+    private Path retrievePathToContractExtinctionDataSubfolderPDF(ContractExtinctionDataSubfolder contractExtinctionDataSubfolder){
         Path pathOut = null;
 
         final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
         String temporalDir = maybePath.get().toString();
 
-        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
+        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractExtinctionDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
         try {
             Files.createDirectories(pathToContractDataSubfolder.getParent());
-            pathOut = NewContractDataSubfolderPDFCreator.createContractDataSubfolderPDF(contractDataSubfolder, pathToContractDataSubfolder);
+            pathOut = ContractExtinctionDataSubfolderPDFCreator.createContractExtinctionDataSubfolderPDF(contractExtinctionDataSubfolder, pathToContractDataSubfolder);
         } catch (IOException | DocumentException e) {
             e.printStackTrace();
         }

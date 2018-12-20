@@ -73,17 +73,17 @@ public class ApplicationMainManager {
 
     }
 
-    public List<ClientDTO> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
-        ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-        List<ClientVO> clientVOList = clientDAO.findAllClientGMWithInvoiceInForceInPeriod(initialDate, finalDate);
-
-        List<ClientDTO> clientDTOList = new ArrayList<>();
-        for(ClientVO clientVO : clientVOList){
-            clientDTOList.add(MapperClientVODTO.map(clientVO));
-        }
-
-        return clientDTOList;
-    }
+//    public List<ClientDTO> findAllClientGMWithInvoiceInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+//        ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
+//        List<ClientVO> clientVOList = clientDAO.findAllClientGMWithInvoiceInForceInPeriod(initialDate, finalDate);
+//
+//        List<ClientDTO> clientDTOList = new ArrayList<>();
+//        for(ClientVO clientVO : clientVOList){
+//            clientDTOList.add(MapperClientVODTO.map(clientVO));
+//        }
+//
+//        return clientDTOList;
+//    }
 
     public List<ClientDTO> findAllClientGMWithInvoicesToClaimInPeriod(LocalDate periodInitialDate, LocalDate periodFinalDate){
         ServiceGMDAO serviceGMDAO = ServiceGMDAO.ServiceGMDAOFactory.getInstance();

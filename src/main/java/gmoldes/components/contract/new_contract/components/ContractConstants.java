@@ -47,7 +47,11 @@ public class ContractConstants {
     public static final String ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD = "Error actualizando el último registro de \"contractvariation\" en la base de datos.";
     public static final String ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION = "Error creando nuevo registro de extinción de contrato en \"contractvariation\" en la base de datos.";
     public static final String ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT = "Error actualizando la fecha de extinción del contrato en \"initialcontract\" en la base de datos.";
+
+    // Extinciones de contratos
     public static final String CONTRACT_EXTINCTION_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT = "Se ha registrado la variación del contrato pero no enviado al gestor.\n ¿Es correcto?";
+    public static final String EXTINCTION_DATE_PRIOR_CONTRACT_START_DATE = "La fecha de extinción indicada es anterior a la fecha de inicio del contrato.";
+
     // Prórrogas de contratos
     public static final String MAXIMUM_NUMBER_LEGALLY_PERMITTED_EXTENSIONS_IS_ALREADY_REGISTERED = "Ya están registradas el número máximo de prórrogas legalmente permitidas para este contrato.";
     public static final String MAXIMUM_LEGAL_NUMBER_OF_MONTHS_OF_CONTRACT_IS_EXCEEDED = "Con las fechas seleccionadas se sobrepasa el máximo número legal de meses de duración del contrato.";

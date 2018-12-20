@@ -1,4 +1,4 @@
-package gmoldes.services.Email;
+package gmoldes.services.email;
 
 import javax.mail.internet.InternetAddress;
 import java.nio.file.Path;
@@ -25,7 +25,7 @@ public class EmailData {
         this.emailTo = emailTo;
         this.emailDeliveryNotification = emailDeliveryNotification;
         this.emailSubject = emailSubject;
-        this.emailMessageText =emailMessageText;
+        this.emailMessageText = emailMessageText;
         this.attachedPath = attachedPath;
         this.attachedName = attachedName;
     }

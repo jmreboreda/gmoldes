@@ -14,11 +14,15 @@ import java.util.Set;
 @NamedQueries(value = {
         @NamedQuery(
                 name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN,
-                query = "select p from ClientVO as p where p.clientType like '%Asesoría%' and (lower(p.rzSocial) like lower(:lettersOfName) or lower(p.surNames) like lower(:lettersOfName) or lower(p.name) like lower(:lettersOfName)) and p.activeClient = true"
+                query = "select p from ClientVO as p where (lower(p.rzSocial) like lower(:lettersOfName)" +
+                        " or lower(p.surNames) like lower(:lettersOfName)" +
+                        " or lower(p.name) like lower(:lettersOfName)" +
+                        " or lower(concat(surNames, ', ', name)) like lower(:lettersOfName))" +
+                        " and p.dateTo is null and withoutActivity is null"
         ),
         @NamedQuery(
                 name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER,
-                query = "select p from ClientVO as p where p.activeClient = true order by p.surNames, p.name, p.rzSocial"
+                query = "select p from ClientVO as p where p.dateTo is null order by p.surNames, p.name, p.rzSocial"
         ),
         @NamedQuery(
                 name = ClientVO.FIND_CLIENT_BY_SAME_NAME,
@@ -47,7 +51,6 @@ public class ClientVO implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_id_seq")
     @Column(name = "id", updatable = false)
     private Integer id;
-    //@Column(name = "clientid")
     private Integer clientId;
     private Boolean isNaturalPerson;
     private String nieNif;
@@ -56,12 +59,9 @@ public class ClientVO implements Serializable {
     private String rzSocial;
     private Date dateFrom;
     private Date dateTo;
-    private String clientType;
     @Column(name = "sg21code", length = 4)
     private String sg21Code;
-    private Boolean activeClient;
     private Date withoutActivity;
-    private Boolean claimInvoices;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientVO", cascade = CascadeType.ALL)
     private Set<ServiceGMVO> servicesGM;
 
@@ -137,14 +137,6 @@ public class ClientVO implements Serializable {
         this.dateTo = dateTo;
     }
 
-    public String getClientType() {
-        return clientType;
-    }
-
-    public void setClientType(String clientType) {
-        this.clientType = clientType;
-    }
-
     public String getSg21Code() {
         return sg21Code;
     }
@@ -153,28 +145,12 @@ public class ClientVO implements Serializable {
         this.sg21Code = sg21Code;
     }
 
-    public Boolean getActiveClient() {
-        return activeClient;
-    }
-
-    public void setActiveClient(Boolean activeClient) {
-        this.activeClient = activeClient;
-    }
-
     public Date getWithoutActivity() {
         return withoutActivity;
     }
 
     public void setWithoutActivity(Date withoutActivity) {
         this.withoutActivity = withoutActivity;
-    }
-
-    public Boolean getClaimInvoices() {
-        return claimInvoices;
-    }
-
-    public void setClaimInvoices(Boolean claimInvoices) {
-        this.claimInvoices = claimInvoices;
     }
 
     public Set<ServiceGMVO> getServicesGM() {

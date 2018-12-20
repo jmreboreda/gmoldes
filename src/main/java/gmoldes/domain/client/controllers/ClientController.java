@@ -33,7 +33,6 @@ public class ClientController {
                 .withSurnames(clientVO.getSurNames())
                 .withName(clientVO.getName())
                 .withRzSocial(clientVO.getRzSocial())
-                .withClientType(clientVO.getClientType())
                 .withNieNIF(clientVO.getNieNif())
                 .build();
     }
