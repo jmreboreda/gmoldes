@@ -58,6 +58,7 @@ public class Printer {
         praSet.add(new Copies(1));
         praSet.add(new JobName("GmoldesPrintJob", Locale.getDefault()));
 
+        // Check existence of printing services for the indicated attributes
         PrintService printServiceForAttributes = getPrintServiceForAttributes(praSet);
 
         if(printServiceForAttributes == null){
@@ -67,22 +68,22 @@ public class Printer {
         }
         else {
 
-            if(praSet.containsValue(MediaSizeName.ISO_A3)){
-
-                MediaTray trayForA3Paper = getTrayToA3Paper(printServiceForAttributes);
-                if(trayForA3Paper != null) {
-                    praSet.add(trayForA3Paper);
-                }
-            }
+//            if(praSet.containsValue(MediaSizeName.ISO_A3)){
+//
+//                MediaTray trayForA3Paper = getTrayToA3Paper(printServiceForAttributes);
+//                if(trayForA3Paper != null) {
+//                    praSet.add(trayForA3Paper);
+//                }
+//            }
 
             PrinterJob printerJob = PrinterJob.getPrinterJob();
             printerJob.setPageable(new PDFPageable(PDFDocumentLoaded));
-            if(praSet.containsValue(MediaSizeName.ISO_A3)) {
-                printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.SHRINK_TO_FIT));
-            }else{
+//            if(praSet.containsValue(MediaSizeName.ISO_A3)) {
+//                printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.SHRINK_TO_FIT));
+//            }else{
                 printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.ACTUAL_SIZE));
 
-            }
+//            }
 
             printerJob.setPrintService(printServiceForAttributes);
             printerJob.print(praSet);
