@@ -8,7 +8,7 @@ import java.io.Serializable;
 @NamedQueries(value = {
         @NamedQuery(
                 name = ClientCCCVO.FIND_ALL_CCC_BY_CLIENTID,
-                query = "select p from ClientCCCVO p where idcliente = :code"
+                query = "select p from ClientCCCVO p where clientId = :code"
         )
 })
 
@@ -21,7 +21,7 @@ public class ClientCCCVO implements Serializable{
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ccc_inss_id_seq")
     @Column(name = "id", updatable = false)
     private Integer id;
-    private Integer idcliente;
+    private Integer clientId;
     private String ccc_inss;
 
 
@@ -37,11 +37,11 @@ public class ClientCCCVO implements Serializable{
     }
 
     public Integer getIdcliente() {
-        return idcliente;
+        return clientId;
     }
 
     public void setIdcliente(Integer idcliente) {
-        this.idcliente = idcliente;
+        this.clientId = idcliente;
     }
 
     public String getCcc_inss() {
