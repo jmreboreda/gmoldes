@@ -803,7 +803,36 @@ public class NewContractMainController extends VBox {
         }
 
         /** Subfolder record of contract history */
-        Path pathToContractRecordHistorySubfolder = retrievePathToContractRecordHistorySubfolderPDF(contractDataSubfolder);
+        String contractTypeDescription = contractData.getContractType().getColloquial() + ", " + contractFullDataDTO.getContractType().getContractDescription();
+
+        ContractDataSubfolder contractHistoryDataSubfolder = ContractDataSubfolder.create()
+                .withNotificationType(contractDataSubfolder.getNotificationType())
+                .withOfficialContractNumber(contractDataSubfolder.getOfficialContractNumber())
+                .withEmployerFullName(contractDataSubfolder.getEmployerFullName())
+                .withEmployerQuoteAccountCode(contractDataSubfolder.getEmployerQuoteAccountCode())
+                .withNotificationDate(contractDataSubfolder.getNotificationDate())
+                .withNotificationHour(contractDataSubfolder.getNotificationHour())
+                .withEmployeeFullName(contractDataSubfolder.getEmployeeFullName())
+                .withEmployeeNif(contractDataSubfolder.getEmployeeNif())
+                .withEmployeeNASS(contractDataSubfolder.getEmployeeNASS())
+                .withEmployeeBirthDate(contractDataSubfolder.getEmployeeBirthDate())
+                .withEmployeeCivilState(contractDataSubfolder.getEmployeeCivilState())
+                .withEmployeeNationality(contractDataSubfolder.getEmployeeNationality())
+                .withEmployeeFullAddress(contractDataSubfolder.getEmployeeFullAddress())
+                .withEmployeeMaxStudyLevel(contractDataSubfolder.getEmployeeMaxStudyLevel())
+                .withDayOfWeekSet(contractDataSubfolder.getDayOfWeekSet())
+                .withHoursWorkWeek(contractDataSubfolder.getHoursWorkWeek())
+                .withContractTypeDescription(contractTypeDescription)
+                .withStartDate(contractDataSubfolder.getStartDate())
+                .withEndDate(contractDataSubfolder.getEndDate())
+                .withDurationDays(contractDataSubfolder.getDurationDays())
+                .withSchedule(contractDataSubfolder.getSchedule())
+                .withAdditionalData(contractDataSubfolder.getAdditionalData())
+                .withLaborCategory(contractDataSubfolder.getLaborCategory())
+                .withGmContractNumber(contractDataSubfolder.getGmContractNumber())
+                .build();
+
+        Path pathToContractRecordHistorySubfolder = retrievePathToContractRecordHistorySubfolderPDF(contractHistoryDataSubfolder);
 
         try {
             String printOk = Printer.printPDF(pathToContractRecordHistorySubfolder.toString(), attributes);
