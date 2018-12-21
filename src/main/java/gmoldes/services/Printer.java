@@ -1,5 +1,19 @@
 package gmoldes.services;
 
+import gmoldes.utilities.Parameters;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
+import org.apache.pdfbox.printing.PDFPrintable;
+import org.apache.pdfbox.printing.Scaling;
+import javax.print.DocFlavor;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.ServiceUI;
+import javax.print.attribute.Attribute;
+import javax.print.attribute.AttributeSet;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.*;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
@@ -7,29 +21,11 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.print.*;
-import javax.print.attribute.Attribute;
-import javax.print.attribute.AttributeSet;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.*;
-
-import gmoldes.utilities.Parameters;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.interactive.viewerpreferences.PDViewerPreferences;
-import org.apache.pdfbox.printing.PDFPageable;
-import org.apache.pdfbox.printing.PDFPrintable;
-import org.apache.pdfbox.printing.Scaling;
-
 public class Printer {
 
     public static String printPDF(String pathToPDF, Map<String, String> printAttributes) throws IOException, PrinterException {
 
-        //PrintService serviceForPrint = null;
         PDDocument PDFDocumentLoaded = PDDocument.load(new File(pathToPDF));
-
-//        PDViewerPreferences PDFDocumentPreferences = PDFDocumentLoaded.getDocumentCatalog().getViewerPreferences();
-//        System.out.println("Preferencias: " + PDFDocumentPreferences);
 
         PrintRequestAttributeSet praSet = new HashPrintRequestAttributeSet();
         MediaSizeName DINA4 = MediaSize.ISO.A4.getMediaSizeName();
@@ -68,22 +64,9 @@ public class Printer {
         }
         else {
 
-//            if(praSet.containsValue(MediaSizeName.ISO_A3)){
-//
-//                MediaTray trayForA3Paper = getTrayToA3Paper(printServiceForAttributes);
-//                if(trayForA3Paper != null) {
-//                    praSet.add(trayForA3Paper);
-//                }
-//            }
-
             PrinterJob printerJob = PrinterJob.getPrinterJob();
             printerJob.setPageable(new PDFPageable(PDFDocumentLoaded));
-//            if(praSet.containsValue(MediaSizeName.ISO_A3)) {
-//                printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.SHRINK_TO_FIT));
-//            }else{
-                printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.ACTUAL_SIZE));
-
-//            }
+            printerJob.setPrintable(new PDFPrintable(PDFDocumentLoaded, Scaling.ACTUAL_SIZE));
 
             printerJob.setPrintService(printServiceForAttributes);
             printerJob.print(praSet);
@@ -102,8 +85,6 @@ public class Printer {
         }
         else {
             for (PrintService printService : printServicesForAttributes) {
-//                AttributeSet attributes = getAttributesForPrintService(printService);
-//                DocFlavor[] docF = getSupportedDocFlavorForPrintService(printService);
                 DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
                 if (printService.getName().contains(Parameters.DEFAULT_PRINTER)) {
                     serviceForPrint = printService;
@@ -150,7 +131,7 @@ public class Printer {
 
     private static DocFlavor[] getSupportedDocFlavorForPrintService(PrintService printService){
         DocFlavor[] docF = printService.getSupportedDocFlavors();
-        for(int i = 0; i <docF.length; i++){
+        for(int i = 0; i < docF.length; i++){
             System.out.println(docF[i]);
         }
         return docF;

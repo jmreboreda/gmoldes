@@ -1,6 +1,7 @@
 package gmoldes;
 
 
+import gmoldes.components.client_invoice_check_list.forms.ClientInvoiceCheckListForm;
 import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.client.Client;
@@ -21,28 +22,14 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        ClientInvoiceCheckListForm form = new ClientInvoiceCheckListForm();
+        form.createPDFdoc();
+
         /* Initial control processes */
         ProgressIndicator indicator = new ProgressIndicator();
         Scene initialScene = new Scene(indicator);
         primaryStage.setScene(initialScene);
         primaryStage.show();
-
-
-//        //***************************************************************************************************
-//        ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
-//        ClientVO clientVO = clientDAO.findClientById(7);
-//
-//        ClientDTO clientDTO = MapperClientVODTO.map(clientVO);
-//
-//        System.out.println(clientDTO.toNaturalName());
-//        for(ServiceGMVO serviceGMVO :clientDTO.getServicesGM()){
-//            System.out.println(serviceGMVO.getService());
-//        }
-//
-//        for(ClientCCCVO clientCCCVO : clientDTO.getClientCCC()) {
-//            System.out.println(clientCCCVO.getCcc_inss());
-//        }
-//        //***************************************************************************************************
 
         initialControlProcesses(primaryStage);
 

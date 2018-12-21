@@ -152,7 +152,8 @@ public class InitialContractDAO {
     public List<InitialContractVO> findAllInitialContractsInForceAtDate(LocalDate date){
         TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_INITIAL_CONTRACTS_IN_FORCE_AT_DATE, InitialContractVO.class);
 
-        java.util.Date atDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+//        java.util.Date atDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date atDate = Date.valueOf(date);
         query.setParameter("date", atDate);
 
         return  query.getResultList();
