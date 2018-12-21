@@ -19,6 +19,8 @@ public class MapperContractTypeVODTO {
                 .withIsFullTime(contractTypeVO.getIsFullTime())
                 .withIsMenuSelectable(contractTypeVO.getIsMenuSelectable())
                 .withIsDeterminedDuration(contractTypeVO.getIsDeterminedDuration())
+                .withIsSurrogate(contractTypeVO.getSurrogate())
+                .withIsAdminPartnerSimilar(contractTypeVO.getAdminPartnerSimilar())
                 .build();
     }
 }
