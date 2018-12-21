@@ -26,6 +26,7 @@ public class MapperClientVODTO {
                     .withDateTo(dateTo)
                     .withWithOutActivity(withoutActivityDate)
                     .withServicesGM(clientVO.getServicesGM())
+                    .withClientCCC(clientVO.getClientCCC())
                     .build();
 
         return clientDTO;

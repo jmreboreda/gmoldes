@@ -12,19 +12,19 @@ public class ClientCCCManager {
     public ClientCCCManager() {
     }
 
-    public List<ClientCCCDTO> findAllCCCByClientId(Integer id){
-        ClientCCCDAO clientCCCDAO = ClientCCCDAO.ClientCCCDAOFactory.getInstance();
-        List<ClientCCCVO> clientCCCVOList = clientCCCDAO.findAllCCCByClientId(id);
-
-        List<ClientCCCDTO> clientCCCDTOList = new ArrayList<>();
-        for(ClientCCCVO clientCCCVO : clientCCCVOList){
-            ClientCCCDTO clientCCCDTO = new ClientCCCDTO(
-                    clientCCCVO.getId(),
-                    clientCCCVO.getIdcliente(),
-                    clientCCCVO.getCcc_inss());
-            clientCCCDTOList.add(clientCCCDTO);
-        }
-
-        return clientCCCDTOList;
-    }
+//    public List<ClientCCCDTO> findAllCCCByClientId(Integer id){
+//        ClientCCCDAO clientCCCDAO = ClientCCCDAO.ClientCCCDAOFactory.getInstance();
+//        List<ClientCCCVO> clientCCCVOList = clientCCCDAO.findAllCCCByClientId(id);
+//
+//        List<ClientCCCDTO> clientCCCDTOList = new ArrayList<>();
+//        for(ClientCCCVO clientCCCVO : clientCCCVOList){
+//            ClientCCCDTO clientCCCDTO = new ClientCCCDTO(
+//                    clientCCCVO.getId(),
+//                    clientCCCVO.getIdcliente(),
+//                    clientCCCVO.getCcc_inss());
+//            clientCCCDTOList.add(clientCCCDTO);
+//        }
+//
+//        return clientCCCDTOList;
+//    }
 }

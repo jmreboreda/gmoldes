@@ -3,13 +3,13 @@ package gmoldes.domain.client.dto;
 public class ClientCCCDTO {
 
     private Integer id;
-    private Integer idcliente;
-    private String ccc_inss;
+    private Integer clientId;
+    private String cccInss;
 
-    public ClientCCCDTO(Integer id, Integer idcliente, String ccc_inss) {
+    public ClientCCCDTO(Integer id, Integer clientId, String cccInss) {
         this.id = id;
-        this.idcliente = idcliente;
-        this.ccc_inss = ccc_inss;
+        this.clientId = clientId;
+        this.cccInss = cccInss;
     }
 
     public Integer getId() {
@@ -20,23 +20,53 @@ public class ClientCCCDTO {
         this.id = id;
     }
 
-    public Integer getIdcliente() {
-        return idcliente;
+    public Integer getClientId() {
+        return clientId;
     }
 
-    public void setIdcliente(Integer idcliente) {
-        this.idcliente = idcliente;
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
     }
 
-    public String getCcc_inss() {
-        return ccc_inss;
+    public String getCccInss() {
+        return cccInss;
     }
 
-    public void setCcc_inss(String ccc_inss) {
-        this.ccc_inss = ccc_inss;
+    public void setCccInss(String cccInss) {
+        this.cccInss = cccInss;
     }
 
     public String toString(){
-        return ccc_inss;
+        return cccInss;
+    }
+
+    public static ClientCCCDTOBuilder create() {
+        return new ClientCCCDTOBuilder();
+    }
+
+    public static class ClientCCCDTOBuilder {
+
+        private Integer id;
+        private Integer clientId;
+        private String cccInss;
+
+        public ClientCCCDTOBuilder withId(Integer id) {
+            this.id = id;
+            return this;
+        }
+
+        public ClientCCCDTOBuilder withClientId(Integer clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        public ClientCCCDTOBuilder withCccInss(String cccInss) {
+            this.cccInss = cccInss;
+            return this;
+        }
+
+        public ClientCCCDTO build() {
+            return new ClientCCCDTO(this.id, this.clientId, this.cccInss);
+        }
     }
 }

@@ -40,7 +40,7 @@ import java.sql.Date;
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE,
-                query = "select p from ContractVariationVO p where p.startDate <= :date and p.endingDate is null " +
+                query = "select p from ContractVariationVO p where p.startDate <= :date and (p.endingDate is null or p.endingDate >= :date)" +
                         " and (p.modificationDate is null or p.modificationDate >= :date) and (p.expectedEndDate is null or p.expectedEndDate >= :date) order by p.modificationDate," +
                         " p.endingDate"
         ),

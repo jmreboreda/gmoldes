@@ -10,9 +10,9 @@ public class ClientCCCController {
     public ClientCCCController() {
     }
 
-    public List<ClientCCCDTO> findAllCCCByClientId(Integer id) {
-        ClientCCCManager manager = new ClientCCCManager();
-
-        return manager.findAllCCCByClientId(id);
-    }
+//    public List<ClientCCCDTO> findAllCCCByClientId(Integer id) {
+//        ClientCCCManager manager = new ClientCCCManager();
+//
+//        return manager.findAllCCCByClientId(id);
+//    }
 }
