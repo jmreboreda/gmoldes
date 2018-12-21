@@ -5,6 +5,8 @@
 <?import gmoldes.components.contract.contract_variation.components.ContractVariationContractExtinction?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -13,9 +15,11 @@
       <children>
          <Group fx:id="contractVariationsGroup">
             <children>
+               <HBox />
                 <ContractVariationContractExtension fx:id="contractVariationContractExtension" />
                 <ContractVariationContractConversion fx:id="contractVariationContractConversion" />
                 <ContractVariationContractExtinction fx:id="contractVariationContractExtinction" />
+               <TextArea fx:id="publicNotes" maxHeight="70.0" promptText="Notas para el gestor" />
             </children>
          </Group>
       </children>
