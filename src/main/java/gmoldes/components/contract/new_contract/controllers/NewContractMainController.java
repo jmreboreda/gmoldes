@@ -352,7 +352,6 @@ public class NewContractMainController extends VBox {
         List<ClientCCCDTO> clientCCCDTOList = new ArrayList<>();
 
         for(ClientCCCVO clientCCCVO : selectedClient.getClientCCC()) {
-            System.out.println("Id: " + clientCCCVO.getId() + " ::: clientId: " + clientCCCVO.getClientVO().getClientId() + " ::: " + clientCCCVO.getCcc_inss());
             ClientCCCDTO clientCCCDTO = ClientCCCDTO.create()
                     .withId(clientCCCVO.getId())
                     .withClientId(clientCCCVO.getClientVO().getClientId())
