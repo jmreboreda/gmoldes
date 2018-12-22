@@ -6,13 +6,24 @@ import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
 import gmoldes.components.contract.contract_variation.events.MessageEvent;
+import gmoldes.components.contract.contract_variation.services.CompilerAllContractData;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
+import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
+import gmoldes.components.contract.new_contract.forms.ContractDataToContractAgent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.domain.contractjsondata.ContractJsonData;
+import gmoldes.domain.email.EmailDataCreationDTO;
+import gmoldes.domain.person.dto.PersonDTO;
+import gmoldes.services.AgentNotificator;
+import gmoldes.services.email.EmailData;
+import gmoldes.services.email.EmailParameters;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import javafx.beans.value.ChangeListener;
@@ -23,6 +34,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
@@ -31,6 +43,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.mail.internet.AddressException;
+import java.nio.file.Path;
 import java.text.Collator;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -111,6 +125,8 @@ public class ContractVariationMainController extends VBox {
 
         contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().setToggleGroup(holidaysToggleGroup);
         contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().setToggleGroup(holidaysToggleGroup);
+        contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysCalculate().setToggleGroup(holidaysToggleGroup);
+
 
         //Binding
         contractVariationTypes.disableProperty().bind(this.contractVariationParts.getContractSelector().valueProperty().isNull());
@@ -124,6 +140,8 @@ public class ContractVariationMainController extends VBox {
         // Button actions
         contractVariationActionComponents.setOnOkButton(this::onOkButton);
         contractVariationActionComponents.setOnExitButton(this::onExitButton);
+        contractVariationActionComponents.setOnSendMailButton(this::onSendMailButton);
+
 
         clientSelectorLoadData();
     }
@@ -289,6 +307,10 @@ public class ContractVariationMainController extends VBox {
         stage.close();
     }
 
+    private void onSendMailButton(MouseEvent event){
+
+    }
+
     private Boolean contractVariationContractExtinctionIsSelected(){
 
         ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
@@ -447,6 +469,22 @@ public class ContractVariationMainController extends VBox {
         if(contractFullDataDTOS.size() == 1){
             contractVariationParts.getContractSelector().getSelectionModel().select(0);
         }
+    }
+
+
+
+    private EmailDataCreationDTO retrieveDateForEmailCreation(Path path, String attachedFileName){
+
+        ClientDTO employerDTO = contractVariationParts.getClientSelector().getValue();
+        PersonDTO employeeDTO = contractVariationParts.getContractSelector().getValue().getEmployee();
+        String variationTypeText = EmailParameters.STANDARD_NEW_CONTRACT_TEXT;
+        return EmailDataCreationDTO.create()
+                .withPath(path)
+                .withFileName(attachedFileName)
+                .withEmployer(employerDTO)
+                .withEmployee(employeeDTO)
+                .withVariationTypeText(variationTypeText)
+                .build();
     }
 
     private CompatibleVariationEvent dateToNotifyContractVariationToAdministrationIsCorrect(LocalDate date){

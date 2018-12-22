@@ -64,6 +64,11 @@
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>
                         </RadioButton>
+                        <RadioButton fx:id="rbHolidaysCalculate" mnemonicParsing="false" text="Calcular" toggleGroup="$holidaysToggleGroup">
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </RadioButton>
                      </children>
                      <VBox.margin>
                         <Insets top="10.0" />

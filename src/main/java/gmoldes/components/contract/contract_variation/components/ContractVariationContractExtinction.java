@@ -33,6 +33,8 @@ public class ContractVariationContractExtinction extends VBox {
     @FXML
     private RadioButton rbHolidaysNo;
     @FXML
+    private RadioButton rbHolidaysCalculate;
+    @FXML
     private TextArea publicNotes;
 
     public ContractVariationContractExtinction() {
@@ -95,6 +97,14 @@ public class ContractVariationContractExtinction extends VBox {
         this.rbHolidaysNo = rbHolidaysNo;
     }
 
+    public RadioButton getRbHolidaysCalculate() {
+        return rbHolidaysCalculate;
+    }
+
+    public void setRbHolidaysCalculate(RadioButton rbHolidaysCalculate) {
+        this.rbHolidaysCalculate = rbHolidaysCalculate;
+    }
+
     public TextArea getPublicNotes() {
         return publicNotes;
     }
@@ -109,6 +119,7 @@ public class ContractVariationContractExtinction extends VBox {
         getDateFrom().setValue(null);
         getRbHolidaysYes().setSelected(false);
         getRbHolidaysNo().setSelected(false);
+        getRbHolidaysCalculate().setSelected(false);
         getPublicNotes().setText("");
     }
 }
