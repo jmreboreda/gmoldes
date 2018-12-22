@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ public class ContractVariationContractConversion extends VBox {
     private DatePicker dateFrom;
     @FXML
     private DatePicker dateTo;
+    @FXML
+    private TextArea publicNotes;
 
     public ContractVariationContractConversion() {
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_CONTRACT_CONVERSION_FXML);
@@ -75,6 +78,14 @@ public class ContractVariationContractConversion extends VBox {
 
     public void setDateTo(DatePicker dateTo) {
         this.dateTo = dateTo;
+    }
+
+    public TextArea getPublicNotes() {
+        return publicNotes;
+    }
+
+    public void setPublicNotes(TextArea publicNotes) {
+        this.publicNotes = publicNotes;
     }
 
     private void loadContractConversionExtinctionCausesSelector(){
