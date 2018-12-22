@@ -304,8 +304,8 @@ public class ContractExtensionController {
         LocalDate finalDateOfExtension = contractVariationContractVariations.getContractVariationContractExtension()
                 .getDateTo().getValue();
 
-        String identificationContractNumberINEM = contractNewVersionExtendedDTO.getContractJsonData().getIdentificationContractNumberINEM();
-        String newIdentificationContractNumberINEM = identificationContractNumberINEM.concat("-1");
+        String newIdentificationContractNumberINEM = contractNewVersionExtendedDTO.getContractJsonData().getIdentificationContractNumberINEM() != null ?
+                contractNewVersionExtendedDTO.getContractJsonData().getIdentificationContractNumberINEM().concat("-1") : "";
 
         ContractJsonData newContractJsonData = ContractJsonData.create()
                 .withClientGMId(contractNewVersionExtendedDTO.getContractJsonData().getClientGMId())

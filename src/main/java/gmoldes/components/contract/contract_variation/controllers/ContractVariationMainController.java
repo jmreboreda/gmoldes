@@ -578,6 +578,9 @@ public class ContractVariationMainController extends VBox {
                     + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase() +  "]";
         }
 
+        Set<DayOfWeek> dayOfWeekSet = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getContractJsonData().getDaysOfWeekToWork() != null ?
+                retrieveDayOfWeekSet(contractVariationParts.getContractSelector().getValue().getContractNewVersion().getContractJsonData().getDaysOfWeekToWork()) : null;
+
         Duration contractDurationDays = Duration.ZERO;
         if(contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().getText() != null){
             contractDurationDays = Duration.parse("P" + contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().getText() + "D");
@@ -601,7 +604,7 @@ public class ContractVariationMainController extends VBox {
                 .withEmployeeFullAddress(contractVariationParts.getContractSelector().getValue().getEmployee().getDireccion() + "  " + contractVariationParts.getContractSelector().getValue().getEmployee().getCodpostal()
                         + " " + contractVariationParts.getContractSelector().getValue().getEmployee().getLocalidad())
                 .withEmployeeMaxStudyLevel(employeeMaximumStudyLevel)
-                .withDayOfWeekSet(retrieveDayOfWeekSet(contractVariationParts.getContractSelector().getValue().getContractNewVersion().getContractJsonData().getDaysOfWeekToWork()))
+                .withDayOfWeekSet(dayOfWeekSet)
                 .withContractTypeDescription(contractTypeDescription)
                 .withStartDate(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue())
                 .withEndDate(contractVariationContractVariations.getContractVariationContractExtension().getDateTo().getValue())
