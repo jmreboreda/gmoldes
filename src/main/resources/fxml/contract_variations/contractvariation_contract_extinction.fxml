@@ -6,6 +6,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -63,9 +64,26 @@
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>
                         </RadioButton>
+                        <RadioButton fx:id="rbHolidaysCalculate" mnemonicParsing="false" text="Calcular" toggleGroup="$holidaysToggleGroup">
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </RadioButton>
                      </children>
                      <VBox.margin>
                         <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <TextArea fx:id="publicNotes" maxHeight="30.0" minWidth="857.0" promptText="Notas adicionales para el gestor">
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </TextArea>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="10.0" />
                      </VBox.margin>
                   </HBox>
                </children>

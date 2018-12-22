@@ -47,4 +47,23 @@ public class TypesContractVariationsManager {
 
         return typesContractVariationsDTOList;
     }
+
+    public TypesContractVariationsDTO findTypesContractVariationsById(Integer typesContractVariationId){
+
+        TypesContractVariationsVO typesContractVariationsVO = typesContractVariationsDAO.findTypesContractVariationsById(typesContractVariationId);
+
+        return TypesContractVariationsDTO.create()
+                .withId(typesContractVariationsVO.getId())
+                .withId_Variation(typesContractVariationsVO.getId_variation())
+                .withVariationDescription(typesContractVariationsVO.getVariation_description())
+                .withExtinction(typesContractVariationsVO.getExtinction())
+                .withConversion(typesContractVariationsVO.getConversion())
+                .withSpecial(typesContractVariationsVO.getSpecial())
+                .withExtension(typesContractVariationsVO.getExtension())
+                .withCategory(typesContractVariationsVO.getCategory())
+                .withInitial(typesContractVariationsVO.getInitial())
+                .withReincorporation(typesContractVariationsVO.getReincorporation())
+                .withWorkingDay(typesContractVariationsVO.getWorkingDay())
+                .build();
+    }
 }

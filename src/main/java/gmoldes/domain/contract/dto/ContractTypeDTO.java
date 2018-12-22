@@ -13,6 +13,8 @@ public class ContractTypeDTO {
     private Boolean isFullTime;
     private Boolean isMenuSelectable;
     private Boolean isDeterminedDuration;
+    private Boolean isSurrogate;
+    private Boolean isAdminPartnerSimilar;
 
     public ContractTypeDTO(Integer id,
                               Integer contractCode,
@@ -24,7 +26,9 @@ public class ContractTypeDTO {
                               Boolean isPartialTime,
                               Boolean isFullTime,
                               Boolean isMenuSelectable,
-                              Boolean isDeterminedDuration) {
+                              Boolean isDeterminedDuration,
+                              Boolean isSurrogate,
+                              Boolean isAdminPartnerSimilar) {
         this.id = id;
         this.contractCode = contractCode;
         this.contractDescription = contractDescription;
@@ -35,7 +39,10 @@ public class ContractTypeDTO {
         this.isPartialTime = isPartialTime;
         this.isFullTime = isFullTime;
         this.isMenuSelectable = isMenuSelectable;
-        this.isDeterminedDuration =isDeterminedDuration;
+        this.isDeterminedDuration = isDeterminedDuration;
+        this.isSurrogate = isSurrogate;
+        this.isAdminPartnerSimilar = isAdminPartnerSimilar;
+
     }
 
     public Integer getId() {
@@ -126,6 +133,22 @@ public class ContractTypeDTO {
         this.isDeterminedDuration = isDeterminedDuration;
     }
 
+    public Boolean getSurrogate() {
+        return isSurrogate;
+    }
+
+    public void setSurrogate(Boolean surrogate) {
+        isSurrogate = surrogate;
+    }
+
+    public Boolean getAdminPartnerSimilar() {
+        return isAdminPartnerSimilar;
+    }
+
+    public void setAdminPartnerSimilar(Boolean adminPartnerSimilar) {
+        isAdminPartnerSimilar = adminPartnerSimilar;
+    }
+
     public String toString(){
         return  getColloquial() + " [ " + getContractDescription() + " ] ";
     }
@@ -147,6 +170,8 @@ public class ContractTypeDTO {
         private Boolean isFullTime;
         private Boolean isMenuSelectable;
         private Boolean isDeterminedDuration;
+        private Boolean isSurrogate;
+        private Boolean isAdminPartnerSimilar;
 
         public ContractTypeDTOBuilder withId(Integer id) {
             this.id = id;
@@ -203,9 +228,20 @@ public class ContractTypeDTO {
             return this;
         }
 
+        public ContractTypeDTOBuilder withIsSurrogate(Boolean isSurrogate) {
+            this.isSurrogate = isSurrogate;
+            return this;
+        }
+
+        public ContractTypeDTOBuilder withIsAdminPartnerSimilar(Boolean isAdminPartnerSimilar) {
+            this.isAdminPartnerSimilar = isAdminPartnerSimilar;
+            return this;
+        }
+
+
         public ContractTypeDTO build() {
             return new ContractTypeDTO(this.id, this.contractCode, this.contractDescription, this.colloquial, this.isInitialContract, this.isTemporal,
-            this.isUndefined, this.isPartialTime, this.isFullTime, this.isMenuSelectable, this.isDeterminedDuration);
+            this.isUndefined, this.isPartialTime, this.isFullTime, this.isMenuSelectable, this.isDeterminedDuration, this.isSurrogate, this.isAdminPartnerSimilar);
         }
     }
 }

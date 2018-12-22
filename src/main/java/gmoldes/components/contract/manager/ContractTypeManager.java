@@ -29,6 +29,8 @@ public class ContractTypeManager {
                     .withIsPartialTime(contractTypeVO.getIsPartialTime())
                     .withIsFullTime(contractTypeVO.getIsFullTime())
                     .withIsMenuSelectable(contractTypeVO.getIsMenuSelectable())
+                    .withIsSurrogate(contractTypeVO.getSurrogate())
+                    .withIsAdminPartnerSimilar(contractTypeVO.getAdminPartnerSimilar())
                     .build();
 
             contractTypeDTOList.add(contractTypeDTO);
@@ -52,6 +54,8 @@ public class ContractTypeManager {
                 .withIsPartialTime(contractTypeVO.getIsPartialTime())
                 .withIsFullTime(contractTypeVO.getIsFullTime())
                 .withIsMenuSelectable(contractTypeVO.getIsMenuSelectable())
+                .withIsSurrogate(contractTypeVO.getSurrogate())
+                .withIsAdminPartnerSimilar(contractTypeVO.getAdminPartnerSimilar())
                 .build();
     }
 }

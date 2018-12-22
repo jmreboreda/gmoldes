@@ -9,10 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +32,10 @@ public class ContractVariationContractExtinction extends VBox {
     private RadioButton rbHolidaysYes;
     @FXML
     private RadioButton rbHolidaysNo;
+    @FXML
+    private RadioButton rbHolidaysCalculate;
+    @FXML
+    private TextArea publicNotes;
 
     public ContractVariationContractExtinction() {
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_CONTRACT_EXTINCTION_FXML);
@@ -96,11 +97,29 @@ public class ContractVariationContractExtinction extends VBox {
         this.rbHolidaysNo = rbHolidaysNo;
     }
 
+    public RadioButton getRbHolidaysCalculate() {
+        return rbHolidaysCalculate;
+    }
+
+    public void setRbHolidaysCalculate(RadioButton rbHolidaysCalculate) {
+        this.rbHolidaysCalculate = rbHolidaysCalculate;
+    }
+
+    public TextArea getPublicNotes() {
+        return publicNotes;
+    }
+
+    public void setPublicNotes(TextArea publicNotes) {
+        this.publicNotes = publicNotes;
+    }
+
     public void cleanComponents(){
 
         getExtinctionCauseSelector().getSelectionModel().select(null);
         getDateFrom().setValue(null);
         getRbHolidaysYes().setSelected(false);
         getRbHolidaysNo().setSelected(false);
+        getRbHolidaysCalculate().setSelected(false);
+        getPublicNotes().setText("");
     }
 }

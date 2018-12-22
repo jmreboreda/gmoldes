@@ -68,13 +68,23 @@ public class ContractExtinctionController{
         String extinctionContractCause = contractVariationContractVariations.getContractVariationContractExtinction()
                 .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
 
-        String holidaysUsedText = contractVariationContractVariations.getContractVariationContractExtinction()
-                .getRbHolidaysYes().isSelected() ? "disfrutadas." : "no disfrutadas.";
+        String holidaysUsedText;
+        if(contractVariationContractVariations.getContractVariationContractExtinction()
+                .getRbHolidaysYes().isSelected()){
+            holidaysUsedText = "disfrutadas.";
+        } else if(contractVariationContractVariations.getContractVariationContractExtinction()
+                .getRbHolidaysNo().isSelected()){
+            holidaysUsedText = "no disfrutadas.";
+        }else{
+            holidaysUsedText = "a calcular.";
+        }
 
         StringBuilder sb = new StringBuilder();
         sb.append(extinctionContractCause);
         sb.append(". Vacaciones ");
         sb.append(holidaysUsedText);
+        sb.append("\n");
+        sb.append(contractVariationContractVariations.getContractVariationContractExtinction().getPublicNotes().getText());
 
         ContractExtinctionDataSubfolder contractExtinctionDataSubfolder = createContractExtinctionDataSubfolder(sb.toString());
 
@@ -106,7 +116,8 @@ public class ContractExtinctionController{
             }
 
             if(!contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().isSelected() &&
-                    !contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().isSelected()){
+                    !contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().isSelected() &&
+                    !contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysCalculate().isSelected()){
 
                 return new MessageEvent(ContractConstants.HOLIDAYS_SITUATION_NOT_ESTABLISHED);
             }
