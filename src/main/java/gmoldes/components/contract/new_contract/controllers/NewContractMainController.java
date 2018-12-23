@@ -3,38 +3,27 @@ package gmoldes.components.contract.new_contract.controllers;
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.*;
-import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
-import gmoldes.components.contract.new_contract.forms.ContractDataToContractAgent;
-import gmoldes.domain.client.persistence.vo.ClientCCCVO;
-import gmoldes.domain.contract.dto.*;
-import gmoldes.domain.document_for_print.ContractDataDocumentCreator;
-import gmoldes.domain.email.EmailDataCreationDTO;
-import gmoldes.services.AgentNotificator;
-import gmoldes.components.contract.new_contract.services.NewContractDataSubfolderPDFCreator;
-import gmoldes.components.contract.new_contract.services.NewContractDataToContractAgentPDFCreator;
-import gmoldes.components.contract.new_contract.services.NewContractRecordHistorySubfolderPDFCreator;
+import gmoldes.components.contract.new_contract.forms.NewContractDataToContractsAgent;
 import gmoldes.components.timerecord.components.TimeRecordConstants;
 import gmoldes.components.timerecord.forms.TimeRecord;
-import gmoldes.domain.client.controllers.ClientCCCController;
-import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.client.persistence.vo.ClientCCCVO;
+import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contractjsondata.ContractJsonData;
+import gmoldes.domain.document_for_print.ContractDataDocumentCreator;
+import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.person.dto.StudyDTO;
-import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.services.AgentNotificator;
 import gmoldes.services.email.EmailParameters;
-import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
-import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
@@ -48,19 +37,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import javax.mail.internet.AddressException;
-import java.awt.print.PrinterException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 public class NewContractMainController extends VBox {
@@ -68,9 +55,7 @@ public class NewContractMainController extends VBox {
     private static final Logger logger = Logger.getLogger(NewContractMainController.class.getSimpleName());
     private static final String MAIN_FXML = "/fxml/new_contract/contract_main.fxml";
 
-    private ClientController clientController = new ClientController();
     private PersonController personController = new PersonController();
-    private ClientCCCController clientCCCController = new ClientCCCController();
 
     private Boolean contractHasBeenSavedInDatabase = false;
     private Boolean contractHasBeenSentToContractAgent = false;
@@ -199,13 +184,15 @@ public class NewContractMainController extends VBox {
         if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
 
             ContractDataDocumentCreator contractDocumentCreator = new ContractDataDocumentCreator(this);
-            ContractDataToContractAgent initialContractDataToContractAgent = contractDocumentCreator.createInitialContractDataDocumentForContractsAgent();
+
+            NewContractDataToContractsAgent initialContractDataToContractAgent = contractDocumentCreator.createInitialContractDataDocumentForContractsAgent();
 
             pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(initialContractDataToContractAgent);
 
-//            pathOut = retrievePathToContractDataToContractAgentPDF(initialContractDataToContractAgent);
             String attachedFileName = initialContractDataToContractAgent.toFileName().concat(".pdf");
+
             AgentNotificator agentNotificator = new AgentNotificator();
+
             EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName);
 
             try {
@@ -214,9 +201,11 @@ public class NewContractMainController extends VBox {
                 e.printStackTrace();
             }
             if(isSendOk){
+
                 Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_SEND_OK);
                 contractHasBeenSentToContractAgent = true;
                 contractActionComponents.enableSendMailButton(false);
+
             }else{
                 Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_NOT_SEND_OK);
             }
@@ -246,7 +235,7 @@ public class NewContractMainController extends VBox {
         Path pathOut;
 
         ContractDataDocumentCreator contractDocumentCreator = new ContractDataDocumentCreator(this);
-        ContractDataToContractAgent initialContractDataToContractAgent = contractDocumentCreator.createInitialContractDataDocumentForContractsAgent();
+        NewContractDataToContractsAgent initialContractDataToContractAgent = contractDocumentCreator.createInitialContractDataDocumentForContractsAgent();
 
         pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(initialContractDataToContractAgent);
 
@@ -429,53 +418,7 @@ public class NewContractMainController extends VBox {
     private Integer persistInitialContract(){
 
         ContractFullDataDTO contractFullDataDTO = retrieveContractFullData();
-//        String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
-//
-//        ContractJsonData contractJsonData = ContractJsonData.create()
-//                .withIdentificationContractNumberINEM(null)
-//                .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork().toString())
-//                .withWeeklyWorkHours(contractData.getHoursWorkWeek())
-//                .withNotesForContractManager(contractPublicNotes.getPublicNotes())
-//                .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
-//                .withLaborCategory(contractData.getLaborCategory())
-//                .withContractType(contractData.getContractType().getContractCode())
-//                .withFullPartialWorkDay(contractData.getFullPartialWorkDay())
-//                .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
-//                .withQuoteAccountCode(quoteAccountCode)
-//                .withClientGMId(contractParts.getSelectedEmployer().getId())
-//                .build();
-//
-//        Integer variationTypeId;
-//        ContractTypeDTO contractTypeDTO = contractData.getContractType();
-//        if(contractTypeDTO.getAdminPartnerSimilar()){
-//            variationTypeId = ContractParameters.INITIAL_CONTRACT_ADMIN_PARTNER_SIMILAR;
-//
-//        }else if(contractTypeDTO.getSurrogate()){
-//            variationTypeId = ContractParameters.INITIAL_CONTRACT_SURROGATE_CONTRACT;
-//        }else{
-//            variationTypeId = ContractParameters.ORDINARY_INITIAL_CONTRACT;
-//        }
-//
-//        ContractNewVersionDTO initialContractDTO = ContractNewVersionDTO.create()
-//                .withVariationType(variationTypeId)
-//                .withStartDate(contractData.getDateFrom())
-//                .withExpectedEndDate(contractData.getDateTo())
-//                .withModificationDate(null)
-//                .withEndingDate(null)
-//                .withContractJsonData(contractJsonData)
-//                .build();
-//
-//        TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
-//        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(variationTypeId);
-//
-//        ContractFullDataDTO contractFullDataDTO = ContractFullDataDTO.create()
-//                .withEmployer(contractParts.getSelectedEmployer())
-//                .withEmployee(contractParts.getSelectedEmployee())
-//                .withInitialContractDate(contractData.getDateFrom())
-//                .withContractNewVersionDTO(initialContractDTO)
-//                .withContractType(contractData.getContractType())
-//                .withTypesContractVariationsDTO(typesContractVariationsDTO)
-//                .build();
+
         ContractNewVersionDTO initialContractDTO = contractFullDataDTO.getContractNewVersion();
         ContractManager contractManager = new ContractManager();
         Integer contractNumber = contractManager.saveInitialContract(initialContractDTO);
@@ -537,119 +480,6 @@ public class NewContractMainController extends VBox {
 
     }
 
-//    private ContractDataToContractAgent createContractDataToContractAgent(ContractFullDataDTO contractFullDataDTO){
-//
-//        SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
-//
-//        String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
-//
-//        Integer studyId = Integer.parseInt(this.contractParts.getSelectedEmployee().getNivestud().toString());
-//        StudyManager studyManager = new StudyManager();
-//        StudyDTO studyDTO = studyManager.findStudyById(studyId);
-//        String employeeMaximumStudyLevel = studyDTO.getStudyDescription();
-//
-//
-//        String contractTypeDescription = contractFullDataDTO.getContractType().getColloquial() + ", " + contractFullDataDTO.getContractType().getContractDescription();
-//
-//        String fullPartialWorkDays = contractFullDataDTO.getContractNewVersion().getContractJsonData().getFullPartialWorkDay();
-//        if(fullPartialWorkDays.equals(ContractConstants.PARTIAL_WORKDAY)){
-//            contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase() +  "]";
-//        }
-//
-//        Duration contractDurationDays = Duration.ZERO;
-//        if(this.contractData.getContractDurationDays() != null){
-//            contractDurationDays = Duration.parse("P" + this.contractData.getContractDurationDays() + "D");
-//        }
-//
-//        Set<WorkDaySchedule> schedule = this.contractSchedule.retrieveScheduleWithScheduleDays();
-//
-//        return ContractDataToContractAgent.create()
-//                .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
-//                .withOfficialContractNumber(null)
-//                .withEmployerFullName(this.contractParts.getSelectedEmployer().toString())
-//                .withEmployerQuoteAccountCode(quoteAccountCode)
-//                .withNotificationDate(this.contractData.getDateNotification().getDate())
-//                .withNotificationHour(LocalTime.parse(contractData.getHourNotification().getText()))
-//                .withEmployeeFullName(this.contractParts.getSelectedEmployee().toString())
-//                .withEmployeeNif(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
-//                .withEmployeeNASS(this.contractParts.getSelectedEmployee().getNumafss())
-//                .withEmployeeBirthDate(dateFormatter.format(this.contractParts.getSelectedEmployee().getFechanacim()))
-//                .withEmployeeCivilState(this.contractParts.getSelectedEmployee().getEstciv())
-//                .withEmployeeNationality(this.contractParts.getSelectedEmployee().getNacionalidad())
-//                .withEmployeeFullAddress(this.contractParts.getSelectedEmployee().getDireccion() + "  " + this.contractParts.getSelectedEmployee().getCodpostal()
-//                        + " " + this.contractParts.getSelectedEmployee().getLocalidad())
-//                .withEmployeeMaxStudyLevel(employeeMaximumStudyLevel)
-//                .withDayOfWeekSet(this.contractData.getDaysOfWeekToWork())
-//                .withContractTypeDescription(contractTypeDescription)
-//                .withStartDate(this.contractData.getDateFrom())
-//                .withEndDate(this.contractData.getDateTo())
-//                .withDurationDays(contractDurationDays)
-//                .withSchedule(schedule)
-//                .withAdditionalData(this.contractPublicNotes.getPublicNotes())
-//                .withLaborCategory(this.contractData.getLaborCategory())
-//                .build();
-//    }
-
-//    private ContractDataSubfolder createContractDataSubfolder(ContractFullDataDTO contractFullDataDTO){
-//
-//        Integer contractNumber = contractFullDataDTO.getContractNewVersion().getContractNumber();
-//        SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
-//
-//        String quoteAccountCode = !contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode().isEmpty() ?
-//                contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode() : "";
-//
-//        Integer studyId = contractFullDataDTO.getEmployee().getNivestud();
-//        StudyManager studyManager = new StudyManager();
-//        StudyDTO studyDTO = studyManager.findStudyById(studyId);
-//        String employeeMaximumStudyLevel = studyDTO.getStudyDescription();
-//
-//        Integer contractTypeCode = contractFullDataDTO.getContractNewVersion().getContractJsonData().getContractType();
-//        ContractTypeController contractTypeController = new ContractTypeController();
-//        ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractTypeCode);
-//
-//        String contractTypeDescription = contractTypeDTO.getColloquial() + ", " + contractFullDataDTO.getContractType().getContractDescription();
-//
-//        String fullPartialWorkDays = contractFullDataDTO.getContractNewVersion().getContractJsonData().getFullPartialWorkDay();
-//        if(fullPartialWorkDays.equals(ContractConstants.PARTIAL_WORKDAY)){
-//            contractTypeDescription = contractTypeDescription + " [" + contractData.getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase() +  "]";
-//        }
-//
-//        Duration contractDurationDays = Duration.ZERO;
-//        if(this.contractData.getContractDurationDays() != null){
-//            contractDurationDays = Duration.parse("P" + this.contractData.getContractDurationDays() + "D");
-//        }
-//
-//        Set<WorkDaySchedule> schedule = this.contractSchedule.retrieveScheduleWithScheduleDays();
-//
-//        return ContractDataSubfolder.create()
-//                .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
-//                .withOfficialContractNumber(null)
-//                .withEmployerFullName(this.contractParts.getSelectedEmployer().toString())
-//                .withEmployerQuoteAccountCode(quoteAccountCode)
-//                .withNotificationDate(this.contractData.getDateNotification().getDate())
-//                .withNotificationHour(LocalTime.parse(contractData.getHourNotification().getText()))
-//                .withEmployeeFullName(this.contractParts.getSelectedEmployee().toString())
-//                .withEmployeeNif(Utilities.formatAsNIF(this.contractParts.getSelectedEmployee().getNifcif()))
-//                .withEmployeeNASS(this.contractParts.getSelectedEmployee().getNumafss())
-//                .withEmployeeBirthDate(dateFormatter.format(this.contractParts.getSelectedEmployee().getFechanacim()))
-//                .withEmployeeCivilState(this.contractParts.getSelectedEmployee().getEstciv())
-//                .withEmployeeNationality(this.contractParts.getSelectedEmployee().getNacionalidad())
-//                .withEmployeeFullAddress(this.contractParts.getSelectedEmployee().getDireccion() + "  " + this.contractParts.getSelectedEmployee().getCodpostal()
-//                + " " + this.contractParts.getSelectedEmployee().getLocalidad())
-//                .withEmployeeMaxStudyLevel(employeeMaximumStudyLevel)
-//                .withDayOfWeekSet(this.contractData.getDaysOfWeekToWork())
-//                .withHoursWorkWeek(Utilities.converterTimeStringToDuration(this.contractData.getHoursWorkWeek()))
-//                .withContractTypeDescription(contractTypeDescription)
-//                .withStartDate(this.contractData.getDateFrom())
-//                .withEndDate(this.contractData.getDateTo())
-//                .withDurationDays(contractDurationDays)
-//                .withSchedule(schedule)
-//                .withAdditionalData(this.contractPublicNotes.getPublicNotes())
-//                .withLaborCategory(this.contractData.getLaborCategory())
-//                .withGmContractNumber(contractNumber.toString() + " - 0")
-//                .build();
-//    }
-
     private ContractFullDataDTO retrieveContractFullData(){
 
         String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
@@ -703,59 +533,6 @@ public class NewContractMainController extends VBox {
         return contractFullDataDTO;
     }
 
-//    private Path retrievePathToContractDataToContractAgentPDF(ContractDataToContractAgent contractDataToContractAgent){
-//        Path pathOut = null;
-//
-//        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
-//        String temporalDir = maybePath.get().toString();
-//
-//        Path pathToContractDataToContractAgent = Paths.get(Parameters.USER_HOME, temporalDir, contractDataToContractAgent.toFileName().concat("_gst.pdf"));
-//        try {
-//            Files.createDirectories(pathToContractDataToContractAgent.getParent());
-//            pathOut = NewContractDataToContractAgentPDFCreator.createContractDataToContractAgentPDF(contractDataToContractAgent, pathToContractDataToContractAgent);
-//        } catch (IOException | DocumentException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return pathOut;
-//    }
-
-//    private Path retrievePathToContractDataSubfolderPDF(ContractDataSubfolder contractDataSubfolder){
-//        Path pathOut = null;
-//
-//        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
-//        String temporalDir = maybePath.get().toString();
-//
-//        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
-//        try {
-//            Files.createDirectories(pathToContractDataSubfolder.getParent());
-//            pathOut = NewContractDataSubfolderPDFCreator.createContractDataSubfolderPDF(contractDataSubfolder, pathToContractDataSubfolder);
-//        } catch (IOException | DocumentException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return pathOut;
-//    }
-
-//    private Path retrievePathToContractRecordHistorySubfolderPDF(ContractDataSubfolder contractDataSubfolder){
-//        Path pathOut = null;
-//
-//        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
-//        String temporalDir = maybePath.get().toString();
-//
-//        String fileName = ContractConstants.CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT + Utilities.replaceWithUnderscore(contractDataSubfolder.getEmployeeFullName());
-//
-//        Path pathToContractRecordHistorySubfolder = Paths.get(Parameters.USER_HOME, temporalDir, fileName.concat(Parameters.PDF_EXTENSION));
-//        try {
-//            Files.createDirectories(pathToContractRecordHistorySubfolder.getParent());
-//            pathOut = NewContractRecordHistorySubfolderPDFCreator.createContractRecordHistorySubfolderPDF(contractDataSubfolder, pathToContractRecordHistorySubfolder);
-//        } catch (IOException | DocumentException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return pathOut;
-//    }
-
     private void verifyPrintTimeRecord(){
         if(this.contractData.getFullPartialWorkDay().equals(ContractConstants.PARTIAL_WORKDAY)){
 
@@ -808,73 +585,6 @@ public class NewContractMainController extends VBox {
         }
     }
 
-//    private void printSubfoldersOfTheContract(ContractFullDataDTO contractFullDataDTO){
-//
-//        Integer contractNumber = contractFullDataDTO.getContractNewVersion().getContractNumber();
-//
-//        /** Contract data subfolder */
-//        ContractDataSubfolder contractDataSubfolder = createContractDataSubfolder(contractFullDataDTO);
-//        Path pathToContractDataSubfolder = retrievePathToContractDataSubfolderPDF(contractDataSubfolder);
-//
-//        Map<String, String> attributes = new HashMap<>();
-//        attributes.put("papersize","A3");
-//        attributes.put("sides", "ONE_SIDED");
-//        attributes.put("chromacity","MONOCHROME");
-//        attributes.put("orientation","LANDSCAPE");
-//
-//        try {
-//            String printOk = Printer.printPDF(pathToContractDataSubfolder.toString(), attributes);
-//            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
-//            if(!printOk.equals("ok")){
-//                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
-//            }
-//        } catch (IOException | PrinterException e) {
-//            e.printStackTrace();
-//        }
-//
-//        /** Subfolder record of contract history */
-//        String contractTypeDescription = contractData.getContractType().getColloquial() + ", " + contractFullDataDTO.getContractType().getContractDescription();
-//
-//        ContractDataSubfolder contractHistoryDataSubfolder = ContractDataSubfolder.create()
-//                .withNotificationType(contractDataSubfolder.getNotificationType())
-//                .withOfficialContractNumber(contractDataSubfolder.getOfficialContractNumber())
-//                .withEmployerFullName(contractDataSubfolder.getEmployerFullName())
-//                .withEmployerQuoteAccountCode(contractDataSubfolder.getEmployerQuoteAccountCode())
-//                .withNotificationDate(contractDataSubfolder.getNotificationDate())
-//                .withNotificationHour(contractDataSubfolder.getNotificationHour())
-//                .withEmployeeFullName(contractDataSubfolder.getEmployeeFullName())
-//                .withEmployeeNif(contractDataSubfolder.getEmployeeNif())
-//                .withEmployeeNASS(contractDataSubfolder.getEmployeeNASS())
-//                .withEmployeeBirthDate(contractDataSubfolder.getEmployeeBirthDate())
-//                .withEmployeeCivilState(contractDataSubfolder.getEmployeeCivilState())
-//                .withEmployeeNationality(contractDataSubfolder.getEmployeeNationality())
-//                .withEmployeeFullAddress(contractDataSubfolder.getEmployeeFullAddress())
-//                .withEmployeeMaxStudyLevel(contractDataSubfolder.getEmployeeMaxStudyLevel())
-//                .withDayOfWeekSet(contractDataSubfolder.getDayOfWeekSet())
-//                .withHoursWorkWeek(contractDataSubfolder.getHoursWorkWeek())
-//                .withContractTypeDescription(contractTypeDescription)
-//                .withStartDate(contractDataSubfolder.getStartDate())
-//                .withEndDate(contractDataSubfolder.getEndDate())
-//                .withDurationDays(contractDataSubfolder.getDurationDays())
-//                .withSchedule(contractDataSubfolder.getSchedule())
-//                .withAdditionalData(contractDataSubfolder.getAdditionalData())
-//                .withLaborCategory(contractDataSubfolder.getLaborCategory())
-//                .withGmContractNumber(contractDataSubfolder.getGmContractNumber())
-//                .build();
-//
-//        Path pathToContractRecordHistorySubfolder = retrievePathToContractRecordHistorySubfolderPDF(contractHistoryDataSubfolder);
-//
-//        try {
-//            String printOk = Printer.printPDF(pathToContractRecordHistorySubfolder.toString(), attributes);
-//            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SUBFOLFER_RECORD_OF_CONTRACT_HISTORY_TO_PRINTER_OK);
-//            if(!printOk.equals("ok")){
-//                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
-//            }
-//        } catch (IOException | PrinterException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     private EmailDataCreationDTO retrieveDateForEmailCreation(Path path, String attachedFileName){
 
         ClientDTO employerDTO = contractParts.getSelectedEmployer();
@@ -888,59 +598,4 @@ public class NewContractMainController extends VBox {
                 .withVariationTypeText(variationTypeText)
                 .build();
     }
-
-//    private Integer mapContractTypeStringToInteger(String contractType){
-//        Integer thisContractType = 999;
-//
-//        if(contractType.contains("Normal")){
-//            thisContractType = 1;
-//        }
-//        if(contractType.contains("Eventual")){
-//            thisContractType = 3;
-//        }
-//        if(contractType.contains("Obra")){
-//            thisContractType = 4;
-//        }
-//        if(contractType.contains("Formación")){
-//            thisContractType = 5;
-//        }
-//        if(contractType.contains("Prácticas")){
-//            thisContractType = 6;
-//        }
-//        if(contractType.contains("Subrogación")){
-//            thisContractType = 7;
-//        }
-//        if(contractType.contains("Socio")){
-//            thisContractType = 8;
-//        }
-//        if(contractType.contains("Administrador")){
-//            thisContractType = 9;
-//        }
-//        if(contractType.contains("relevo")){
-//            thisContractType = 10;
-//        }
-//        if(contractType.contains("embarazo")){
-//            thisContractType = 11;
-//        }
-//        if(contractType.contains("maternidad")){
-//            thisContractType = 12;
-//        }
-//        if(contractType.contains("Conversión")){
-//            thisContractType = 13;
-//        }
-//        if(contractType.contains("baja laboral")){
-//            thisContractType = 14;
-//        }
-//        if(contractType.contains("vacaciones")){
-//            thisContractType = 15;
-//        }
-//        if(contractType.contains("discontinuo")){
-//            thisContractType = 16;
-//        }
-//        if(contractType.contains("excedencia")){
-//            thisContractType = 17;
-//        }
-//
-//        return thisContractType;
-//    }
 }

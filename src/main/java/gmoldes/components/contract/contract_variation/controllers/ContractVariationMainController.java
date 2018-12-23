@@ -1,38 +1,20 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
-import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
 import gmoldes.components.contract.contract_variation.events.MessageEvent;
-import gmoldes.components.contract.contract_variation.services.CompilerAllContractData;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
-import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
-import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
-import gmoldes.components.contract.new_contract.forms.ContractDataToContractAgent;
-import gmoldes.components.contract.new_contract.services.NewContractDataToContractAgentPDFCreator;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
-import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
-import gmoldes.domain.contractjsondata.ContractJsonData;
-import gmoldes.domain.email.EmailDataCreationDTO;
-import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.person.dto.StudyDTO;
-import gmoldes.domain.person.manager.StudyManager;
-import gmoldes.services.AgentNotificator;
-import gmoldes.services.email.EmailData;
-import gmoldes.services.email.EmailParameters;
 import gmoldes.utilities.Message;
-import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
-import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -41,7 +23,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
@@ -50,17 +31,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.mail.internet.AddressException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.Collator;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.logging.Logger;
@@ -329,7 +302,7 @@ public class ContractVariationMainController extends VBox {
 //
 //            ContractFullDataDTO contractFullDataDTO = retrieveContractFullData();
 //
-//            ContractDataToContractAgent contractDataToContractAgent = createContractDataToContractAgent(contractFullDataDTO);
+//            NewContractDataToContractsAgent contractDataToContractAgent = createContractDataToContractAgent(contractFullDataDTO);
 //            pathOut = retrievePathToContractDataToContractAgentPDF(contractDataToContractAgent);
 //            String attachedFileName = contractDataToContractAgent.toFileName().concat(".pdf");
 //            AgentNotificator agentNotificator = new AgentNotificator();
@@ -557,7 +530,7 @@ public class ContractVariationMainController extends VBox {
 //        return contractFullDataDTO;
 //    }
 //
-//    private ContractDataToContractAgent createContractDataToContractAgent(ContractFullDataDTO contractFullDataDTO){
+//    private NewContractDataToContractsAgent createContractDataToContractAgent(ContractFullDataDTO contractFullDataDTO){
 //
 //        SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
 //
@@ -588,7 +561,7 @@ public class ContractVariationMainController extends VBox {
 //
 //        Set<WorkDaySchedule> schedule = null;
 //
-//        return ContractDataToContractAgent.create()
+//        return NewContractDataToContractsAgent.create()
 //                .withNotificationType(Parameters.CONTRACT_EXTENSION_TEXT)
 //                .withOfficialContractNumber(contractVariationParts.getContractSelector().getValue().getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
 //                .withEmployerFullName(contractVariationParts.getClientSelector().getValue().toString())
@@ -615,7 +588,7 @@ public class ContractVariationMainController extends VBox {
 //                .build();
 //    }
 //
-//    private Path retrievePathToContractDataToContractAgentPDF(ContractDataToContractAgent contractDataToContractAgent){
+//    private Path retrievePathToContractDataToContractAgentPDF(NewContractDataToContractsAgent contractDataToContractAgent){
 //        Path pathOut = null;
 //
 //        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
