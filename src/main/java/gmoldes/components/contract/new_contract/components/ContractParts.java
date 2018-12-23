@@ -118,13 +118,13 @@ public class ContractParts extends HBox {
 
     public ClientCCCDTO getSelectedCCC(){
         if(cotizationCode.getItems().isEmpty()) {
-            return null;
-        }
-        else if(cotizationCode.getSelectionModel().getSelectedItem() == null){
-            return null;
-        }
 
-        return cotizationCode.getSelectionModel().getSelectedItem();
+            return null;
+        }
+        else {
+
+            return cotizationCode.getValue();
+        }
     }
 
 
