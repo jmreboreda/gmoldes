@@ -46,6 +46,11 @@ public class ContractVariationContractConversion extends VBox {
 
         dateFrom.setConverter(Utilities.dateConverter);
         dateTo.setConverter(Utilities.dateConverter);
+
+        dateFrom.disableProperty().bind(this.contractConversionSelector.valueProperty().isNull());
+        dateTo.disableProperty().bind(this.contractConversionSelector.valueProperty().isNull());
+        publicNotes.disableProperty().bind(this.contractConversionSelector.valueProperty().isNull());
+
     }
 
     public Group getContractConversionGroup() {

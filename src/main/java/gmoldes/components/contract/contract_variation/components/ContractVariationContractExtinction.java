@@ -47,6 +47,12 @@ public class ContractVariationContractExtinction extends VBox {
 
         dateFrom.setConverter(Utilities.dateConverter);
 
+        dateFrom.disableProperty().bind(this.extinctionCauseSelector.valueProperty().isNull());
+        rbHolidaysYes.disableProperty().bind(this.extinctionCauseSelector.valueProperty().isNull());
+        rbHolidaysNo.disableProperty().bind(this.extinctionCauseSelector.valueProperty().isNull());
+        rbHolidaysCalculate.disableProperty().bind(this.extinctionCauseSelector.valueProperty().isNull());
+        publicNotes.disableProperty().bind(this.extinctionCauseSelector.valueProperty().isNull());
+
     }
 
     public ToggleGroup getHolidaysToggleGroup() {
