@@ -15,7 +15,7 @@ import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.vo.ClientCCCVO;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contractjsondata.ContractJsonData;
-import gmoldes.domain.document_for_print.ContractDataDocumentCreator;
+import gmoldes.domain.document_for_print.NewContractDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
@@ -183,7 +183,7 @@ public class NewContractMainController extends VBox {
 
         if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
 
-            ContractDataDocumentCreator contractDocumentCreator = new ContractDataDocumentCreator(this);
+            NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator(this);
 
             NewContractDataToContractsAgent initialContractDataToContractAgent = contractDocumentCreator.createInitialContractDataDocumentForContractsAgent();
 
@@ -234,7 +234,7 @@ public class NewContractMainController extends VBox {
     private void onViewPDFButton(MouseEvent mouseEvent) {
         Path pathOut;
 
-        ContractDataDocumentCreator contractDocumentCreator = new ContractDataDocumentCreator(this);
+        NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator(this);
         NewContractDataToContractsAgent initialContractDataToContractAgent = contractDocumentCreator.createInitialContractDataDocumentForContractsAgent();
 
         pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(initialContractDataToContractAgent);
@@ -426,7 +426,7 @@ public class NewContractMainController extends VBox {
             blockingInterfaceAfterContractPersistence(contractFullDataDTO);
             verifyPrintTimeRecord();
 
-            ContractDataDocumentCreator contractDocumentCreator = new ContractDataDocumentCreator(this);
+            NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator(this);
             contractDocumentCreator.printSubfoldersOfTheInitialContract();
 
         }else{

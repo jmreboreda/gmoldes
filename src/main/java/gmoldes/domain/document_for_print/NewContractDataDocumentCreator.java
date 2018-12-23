@@ -38,21 +38,21 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public class ContractDataDocumentCreator {
+public class NewContractDataDocumentCreator {
 
-    private NewContractMainController mainController;
+    private NewContractMainController newContractMainController;
 
-    public ContractDataDocumentCreator(NewContractMainController mainController) {
-        this.mainController = mainController;
+    public NewContractDataDocumentCreator(NewContractMainController newContractMainController) {
+        this.newContractMainController = newContractMainController;
     }
 
     public NewContractDataToContractsAgent createInitialContractDataDocumentForContractsAgent(){
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
 
-        String quoteAccountCode = this.mainController.getContractParts().getSelectedCCC() == null ? "" : mainController.getContractParts().getSelectedCCC().getCccInss();
+        String quoteAccountCode = this.newContractMainController.getContractParts().getSelectedCCC() == null ? "" : newContractMainController.getContractParts().getSelectedCCC().getCccInss();
 
-        Integer studyId = Integer.parseInt(this.mainController.getContractParts().getSelectedEmployee().getNivestud().toString());
+        Integer studyId = Integer.parseInt(this.newContractMainController.getContractParts().getSelectedEmployee().getNivestud().toString());
         StudyManager studyManager = new StudyManager();
         StudyDTO studyDTO = studyManager.findStudyById(studyId);
         String employeeMaximumStudyLevel = studyDTO.getStudyDescription();
@@ -64,43 +64,42 @@ public class ContractDataDocumentCreator {
 
         String fullPartialWorkDays = contractFullDataDTO.getContractNewVersion().getContractJsonData().getFullPartialWorkDay();
         if(fullPartialWorkDays.equals(ContractConstants.PARTIAL_WORKDAY)){
-            contractTypeDescription = contractTypeDescription + " [" + this.mainController.getContractData().getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase() +  "]";
+            contractTypeDescription = contractTypeDescription + " [" + this.newContractMainController.getContractData().getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase() +  "]";
         }
 
         Duration contractDurationDays = Duration.ZERO;
-        if(this.mainController.getContractData().getContractDurationDays() != null){
-            contractDurationDays = Duration.parse("P" + this.mainController.getContractData().getContractDurationDays() + "D");
+        if(this.newContractMainController.getContractData().getContractDurationDays() != null){
+            contractDurationDays = Duration.parse("P" + this.newContractMainController.getContractData().getContractDurationDays() + "D");
         }
 
-        Set<WorkDaySchedule> schedule = this.mainController.getContractSchedule().retrieveScheduleWithScheduleDays();
+        Set<WorkDaySchedule> schedule = this.newContractMainController.getContractSchedule().retrieveScheduleWithScheduleDays();
 
         return NewContractDataToContractsAgent.create()
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
                 .withOfficialContractNumber(null)
-                .withEmployerFullName(this.mainController.getContractParts().getSelectedEmployer().toString())
+                .withEmployerFullName(this.newContractMainController.getContractParts().getSelectedEmployer().toString())
                 .withEmployerQuoteAccountCode(quoteAccountCode)
-                .withNotificationDate(this.mainController.getContractData().getDateNotification().getDate())
-                .withNotificationHour(LocalTime.parse(this.mainController.getContractData().getHourNotification().getText()))
-                .withEmployeeFullName(this.mainController.getContractParts().getSelectedEmployee().toString())
-                .withEmployeeNif(Utilities.formatAsNIF(this.mainController.getContractParts().getSelectedEmployee().getNifcif()))
-                .withEmployeeNASS(this.mainController.getContractParts().getSelectedEmployee().getNumafss())
-                .withEmployeeBirthDate(dateFormatter.format(this.mainController.getContractParts().getSelectedEmployee().getFechanacim()))
-                .withEmployeeCivilState(this.mainController.getContractParts().getSelectedEmployee().getEstciv())
-                .withEmployeeNationality(this.mainController.getContractParts().getSelectedEmployee().getNacionalidad())
-                .withEmployeeFullAddress(this.mainController.getContractParts().getSelectedEmployee().getDireccion() + "  " + this.mainController.getContractParts().getSelectedEmployee().getCodpostal()
-                        + " " +this.mainController.getContractParts().getSelectedEmployee().getLocalidad())
+                .withNotificationDate(this.newContractMainController.getContractData().getDateNotification().getDate())
+                .withNotificationHour(LocalTime.parse(this.newContractMainController.getContractData().getHourNotification().getText()))
+                .withEmployeeFullName(this.newContractMainController.getContractParts().getSelectedEmployee().toString())
+                .withEmployeeNif(Utilities.formatAsNIF(this.newContractMainController.getContractParts().getSelectedEmployee().getNifcif()))
+                .withEmployeeNASS(this.newContractMainController.getContractParts().getSelectedEmployee().getNumafss())
+                .withEmployeeBirthDate(dateFormatter.format(this.newContractMainController.getContractParts().getSelectedEmployee().getFechanacim()))
+                .withEmployeeCivilState(this.newContractMainController.getContractParts().getSelectedEmployee().getEstciv())
+                .withEmployeeNationality(this.newContractMainController.getContractParts().getSelectedEmployee().getNacionalidad())
+                .withEmployeeFullAddress(this.newContractMainController.getContractParts().getSelectedEmployee().getDireccion() + "  " + this.newContractMainController.getContractParts().getSelectedEmployee().getCodpostal()
+                        + " " +this.newContractMainController.getContractParts().getSelectedEmployee().getLocalidad())
                 .withEmployeeMaxStudyLevel(employeeMaximumStudyLevel)
-                .withDayOfWeekSet(this.mainController.getContractData().getDaysOfWeekToWork())
+                .withDayOfWeekSet(this.newContractMainController.getContractData().getDaysOfWeekToWork())
                 .withContractTypeDescription(contractTypeDescription)
-                .withStartDate(this.mainController.getContractData().getDateFrom())
-                .withEndDate(this.mainController.getContractData().getDateTo())
+                .withStartDate(this.newContractMainController.getContractData().getDateFrom())
+                .withEndDate(this.newContractMainController.getContractData().getDateTo())
                 .withDurationDays(contractDurationDays)
                 .withSchedule(schedule)
-                .withAdditionalData(this.mainController.getContractPublicNotes().getPublicNotes())
-                .withLaborCategory(this.mainController.getContractData().getLaborCategory())
+                .withAdditionalData(this.newContractMainController.getContractPublicNotes().getPublicNotes())
+                .withLaborCategory(this.newContractMainController.getContractData().getLaborCategory())
                 .build();
     }
-
 
     public void printSubfoldersOfTheInitialContract(){
 
@@ -119,16 +118,16 @@ public class ContractDataDocumentCreator {
 
         try {
             String printOk = Printer.printPDF(pathToContractDataSubfolder.toString(), attributes);
-            Message.warningMessage(this.mainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
+            Message.warningMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
-                Message.warningMessage(this.mainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
+                Message.warningMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
         }
 
         /** Subfolder record of contract history */
-        String contractTypeDescription = this.mainController.getContractData().getContractType().getColloquial() + ", " + contractFullDataDTO.getContractType().getContractDescription();
+        String contractTypeDescription = this.newContractMainController.getContractData().getContractType().getColloquial() + ", " + contractFullDataDTO.getContractType().getContractDescription();
 
         ContractDataSubfolder contractHistoryDataSubfolder = ContractDataSubfolder.create()
                 .withNotificationType(contractDataSubfolder.getNotificationType())
@@ -161,9 +160,9 @@ public class ContractDataDocumentCreator {
 
         try {
             String printOk = Printer.printPDF(pathToContractRecordHistorySubfolder.toString(), attributes);
-            Message.warningMessage(this.mainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SUBFOLFER_RECORD_OF_CONTRACT_HISTORY_TO_PRINTER_OK);
+            Message.warningMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SUBFOLFER_RECORD_OF_CONTRACT_HISTORY_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
-                Message.warningMessage(this.mainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
+                Message.warningMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
@@ -174,7 +173,7 @@ public class ContractDataDocumentCreator {
 
         ContractFullDataDTO contractFullDataDTO = retrieveContractFullData();
 
-        Integer contractNumber = Integer.parseInt(this.mainController.getProvisionalContractData().getContractNumber());
+        Integer contractNumber = Integer.parseInt(this.newContractMainController.getProvisionalContractData().getContractNumber());
         SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
 
         String quoteAccountCode = !contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode().isEmpty() ?
@@ -193,65 +192,65 @@ public class ContractDataDocumentCreator {
 
         String fullPartialWorkDays = contractFullDataDTO.getContractNewVersion().getContractJsonData().getFullPartialWorkDay();
         if(fullPartialWorkDays.equals(ContractConstants.PARTIAL_WORKDAY)){
-            contractTypeDescription = contractTypeDescription + " [" + this.mainController.getContractData().getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase() +  "]";
+            contractTypeDescription = contractTypeDescription + " [" + this.newContractMainController.getContractData().getHoursWorkWeek() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase() +  "]";
         }
 
         Duration contractDurationDays = Duration.ZERO;
-        if(this.mainController.getContractData().getContractDurationDays() != null){
-            contractDurationDays = Duration.parse("P" + this.mainController.getContractData().getContractDurationDays() + "D");
+        if(this.newContractMainController.getContractData().getContractDurationDays() != null){
+            contractDurationDays = Duration.parse("P" + this.newContractMainController.getContractData().getContractDurationDays() + "D");
         }
 
-        Set<WorkDaySchedule> schedule = this.mainController.getContractSchedule().retrieveScheduleWithScheduleDays();
+        Set<WorkDaySchedule> schedule = this.newContractMainController.getContractSchedule().retrieveScheduleWithScheduleDays();
 
         return ContractDataSubfolder.create()
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
                 .withOfficialContractNumber(null)
-                .withEmployerFullName(this.mainController.getContractParts().getSelectedEmployer().toString())
+                .withEmployerFullName(this.newContractMainController.getContractParts().getSelectedEmployer().toString())
                 .withEmployerQuoteAccountCode(quoteAccountCode)
-                .withNotificationDate(this.mainController.getContractData().getDateNotification().getDate())
-                .withNotificationHour(LocalTime.parse(this.mainController.getContractData().getHourNotification().getText()))
-                .withEmployeeFullName(this.mainController.getContractParts().getSelectedEmployee().toString())
-                .withEmployeeNif(Utilities.formatAsNIF(this.mainController.getContractParts().getSelectedEmployee().getNifcif()))
-                .withEmployeeNASS(this.mainController.getContractParts().getSelectedEmployee().getNumafss())
-                .withEmployeeBirthDate(dateFormatter.format(this.mainController.getContractParts().getSelectedEmployee().getFechanacim()))
-                .withEmployeeCivilState(this.mainController.getContractParts().getSelectedEmployee().getEstciv())
-                .withEmployeeNationality(this.mainController.getContractParts().getSelectedEmployee().getNacionalidad())
-                .withEmployeeFullAddress(this.mainController.getContractParts().getSelectedEmployee().getDireccion() + "  " + this.mainController.getContractParts().getSelectedEmployee().getCodpostal()
-                        + " " + this.mainController.getContractParts().getSelectedEmployee().getLocalidad())
+                .withNotificationDate(this.newContractMainController.getContractData().getDateNotification().getDate())
+                .withNotificationHour(LocalTime.parse(this.newContractMainController.getContractData().getHourNotification().getText()))
+                .withEmployeeFullName(this.newContractMainController.getContractParts().getSelectedEmployee().toString())
+                .withEmployeeNif(Utilities.formatAsNIF(this.newContractMainController.getContractParts().getSelectedEmployee().getNifcif()))
+                .withEmployeeNASS(this.newContractMainController.getContractParts().getSelectedEmployee().getNumafss())
+                .withEmployeeBirthDate(dateFormatter.format(this.newContractMainController.getContractParts().getSelectedEmployee().getFechanacim()))
+                .withEmployeeCivilState(this.newContractMainController.getContractParts().getSelectedEmployee().getEstciv())
+                .withEmployeeNationality(this.newContractMainController.getContractParts().getSelectedEmployee().getNacionalidad())
+                .withEmployeeFullAddress(this.newContractMainController.getContractParts().getSelectedEmployee().getDireccion() + "  " + this.newContractMainController.getContractParts().getSelectedEmployee().getCodpostal()
+                        + " " + this.newContractMainController.getContractParts().getSelectedEmployee().getLocalidad())
                 .withEmployeeMaxStudyLevel(employeeMaximumStudyLevel)
-                .withDayOfWeekSet(this.mainController.getContractData().getDaysOfWeekToWork())
-                .withHoursWorkWeek(Utilities.converterTimeStringToDuration(this.mainController.getContractData().getHoursWorkWeek()))
+                .withDayOfWeekSet(this.newContractMainController.getContractData().getDaysOfWeekToWork())
+                .withHoursWorkWeek(Utilities.converterTimeStringToDuration(this.newContractMainController.getContractData().getHoursWorkWeek()))
                 .withContractTypeDescription(contractTypeDescription)
-                .withStartDate(this.mainController.getContractData().getDateFrom())
-                .withEndDate(this.mainController.getContractData().getDateTo())
+                .withStartDate(this.newContractMainController.getContractData().getDateFrom())
+                .withEndDate(this.newContractMainController.getContractData().getDateTo())
                 .withDurationDays(contractDurationDays)
                 .withSchedule(schedule)
-                .withAdditionalData(this.mainController.getContractPublicNotes().getPublicNotes())
-                .withLaborCategory(this.mainController.getContractData().getLaborCategory())
+                .withAdditionalData(this.newContractMainController.getContractPublicNotes().getPublicNotes())
+                .withLaborCategory(this.newContractMainController.getContractData().getLaborCategory())
                 .withGmContractNumber(contractNumber.toString())
                 .build();
     }
 
     private ContractFullDataDTO retrieveContractFullData(){
 
-        String quoteAccountCode = this.mainController.getContractParts().getSelectedCCC() == null ? "" : this.mainController.getContractParts().getSelectedCCC().toString();
+        String quoteAccountCode = this.newContractMainController.getContractParts().getSelectedCCC() == null ? "" : this.newContractMainController.getContractParts().getSelectedCCC().toString();
 
         ContractJsonData contractJsonData = ContractJsonData.create()
                 .withIdentificationContractNumberINEM(null)
-                .withDaysOfWeekToWork(this.mainController.getContractData().getDaysOfWeekToWork().toString())
-                .withWeeklyWorkHours(this.mainController.getContractData().getHoursWorkWeek())
-                .withNotesForContractManager(this.mainController.getContractPublicNotes().getPublicNotes())
-                .withPrivateNotes(this.mainController.getContractPrivateNotes().getPrivateNotes())
-                .withLaborCategory(this.mainController.getContractData().getLaborCategory())
-                .withContractType(this.mainController.getContractData().getContractType().getContractCode())
-                .withFullPartialWorkDay(this.mainController.getContractData().getFullPartialWorkDay())
-                .withWorkerId(this.mainController.getContractParts().getSelectedEmployee().getIdpersona())
+                .withDaysOfWeekToWork(this.newContractMainController.getContractData().getDaysOfWeekToWork().toString())
+                .withWeeklyWorkHours(this.newContractMainController.getContractData().getHoursWorkWeek())
+                .withNotesForContractManager(this.newContractMainController.getContractPublicNotes().getPublicNotes())
+                .withPrivateNotes(this.newContractMainController.getContractPrivateNotes().getPrivateNotes())
+                .withLaborCategory(this.newContractMainController.getContractData().getLaborCategory())
+                .withContractType(this.newContractMainController.getContractData().getContractType().getContractCode())
+                .withFullPartialWorkDay(this.newContractMainController.getContractData().getFullPartialWorkDay())
+                .withWorkerId(this.newContractMainController.getContractParts().getSelectedEmployee().getIdpersona())
                 .withQuoteAccountCode(quoteAccountCode)
-                .withClientGMId(this.mainController.getContractParts().getSelectedEmployer().getId())
+                .withClientGMId(this.newContractMainController.getContractParts().getSelectedEmployer().getId())
                 .build();
 
         Integer variationTypeId;
-        ContractTypeDTO contractTypeDTO = this.mainController.getContractData().getContractType();
+        ContractTypeDTO contractTypeDTO = this.newContractMainController.getContractData().getContractType();
         if(contractTypeDTO.getAdminPartnerSimilar()){
             variationTypeId = ContractParameters.INITIAL_CONTRACT_ADMIN_PARTNER_SIMILAR;
 
@@ -263,8 +262,8 @@ public class ContractDataDocumentCreator {
 
         ContractNewVersionDTO initialContractDTO = ContractNewVersionDTO.create()
                 .withVariationType(variationTypeId)
-                .withStartDate(this.mainController.getContractData().getDateFrom())
-                .withExpectedEndDate(this.mainController.getContractData().getDateTo())
+                .withStartDate(this.newContractMainController.getContractData().getDateFrom())
+                .withExpectedEndDate(this.newContractMainController.getContractData().getDateTo())
                 .withModificationDate(null)
                 .withEndingDate(null)
                 .withContractJsonData(contractJsonData)
@@ -274,11 +273,11 @@ public class ContractDataDocumentCreator {
         TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(variationTypeId);
 
         ContractFullDataDTO contractFullDataDTO = ContractFullDataDTO.create()
-                .withEmployer(this.mainController.getContractParts().getSelectedEmployer())
-                .withEmployee(this.mainController.getContractParts().getSelectedEmployee())
-                .withInitialContractDate(this.mainController.getContractData().getDateFrom())
+                .withEmployer(this.newContractMainController.getContractParts().getSelectedEmployer())
+                .withEmployee(this.newContractMainController.getContractParts().getSelectedEmployee())
+                .withInitialContractDate(this.newContractMainController.getContractData().getDateFrom())
                 .withContractNewVersionDTO(initialContractDTO)
-                .withContractType(this.mainController.getContractData().getContractType())
+                .withContractType(this.newContractMainController.getContractData().getContractType())
                 .withTypesContractVariationsDTO(typesContractVariationsDTO)
                 .build();
 

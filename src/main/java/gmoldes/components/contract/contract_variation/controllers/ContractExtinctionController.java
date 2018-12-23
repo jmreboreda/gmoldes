@@ -13,6 +13,7 @@ import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.domain.contract.dto.*;
+import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
 import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
@@ -54,6 +55,18 @@ public class ContractExtinctionController{
         this.contractVariationContractVariations = contractVariationContractVariations;
     }
 
+    public ContractVariationParts getContractVariationParts() {
+        return contractVariationParts;
+    }
+
+    public ContractVariationTypes getContractVariationTypes() {
+        return contractVariationTypes;
+    }
+
+    public ContractVariationContractVariations getContractVariationContractVariations() {
+        return contractVariationContractVariations;
+    }
+
     public Boolean manageContractExtinction() {
 
         String errorPersistingContractExtinction = persistContractExtinction();
@@ -86,7 +99,8 @@ public class ContractExtinctionController{
         sb.append("\n");
         sb.append(contractVariationContractVariations.getContractVariationContractExtinction().getPublicNotes().getText());
 
-        ContractExtinctionDataSubfolder contractExtinctionDataSubfolder = createContractExtinctionDataSubfolder(sb.toString());
+        ContractExtinctionDataDocumentCreator contractExtinctionDataDocumentCreator = new ContractExtinctionDataDocumentCreator(this);
+        ContractExtinctionDataSubfolder contractExtinctionDataSubfolder = contractExtinctionDataDocumentCreator.createContractExtinctionDataSubfolder(sb.toString());
 
         printContractExtinctionDataSubfolder(contractExtinctionDataSubfolder);
 
@@ -304,75 +318,79 @@ public class ContractExtinctionController{
         return contractManager.updateInitialContract(contractNewVersionToUpdateDTO);
     }
 
-    private ContractExtinctionDataSubfolder createContractExtinctionDataSubfolder(String additionalData){
-
-        SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
-
-        ContractFullDataDTO allContractData = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem();
-
-        String notificationType = "";
-        if(contractVariationTypes.getRbContractExtinction().isSelected()){
-            notificationType = Parameters.CONTRACT_EXTINCTION_TEXT;
-        }
-        if(contractVariationTypes.getRbContractConversion().isSelected()){
-            notificationType = Parameters.CONTRACT_CONVERSION_TEXT;
-        }
-        if(contractVariationTypes.getRbContractExtension().isSelected()){
-            notificationType = Parameters.CONTRACT_EXTENSION_TEXT;
-        }
-
-        LocalDate clientNotificationDate = contractVariationTypes.getDateNotification().getDate();
-        LocalTime clientNotificationHour = LocalTime.parse(contractVariationTypes.getHourNotification().getText());
-
-        String birthDate = allContractData.getEmployee().getFechanacim() != null ? dateFormatter.format(allContractData.getEmployee().getFechanacim()) : null;
-
-        LocalDate startDate = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
-
-        String daysOfWeek = allContractData.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork();
-        Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(daysOfWeek);
-
-        String address = allContractData.getEmployee().getDireccion() != null ?  allContractData.getEmployee().getDireccion() : "";
-        String codPostal = allContractData.getEmployee().getCodpostal() != null ? allContractData.getEmployee().getCodpostal().toString() : "";
-        String location = allContractData.getEmployee().getLocalidad() != null ? allContractData.getEmployee().getLocalidad() : "";
-        String fullAddress = address + "   " + codPostal + "   " + location;
-
-        StudyManager studyManager = new StudyManager();
-        StudyDTO study = studyManager.findStudyById(allContractData.getEmployee().getNivestud());
-
-        ContractTypeController contractTypeController = new ContractTypeController();
-        Integer contractTypeId = allContractData.getContractNewVersion().getContractJsonData().getContractType();
-        ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractTypeId);
-
-        String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription();
-
-        return ContractExtinctionDataSubfolder.create()
-                .withNotificationType(notificationType)
-                .withOfficialContractNumber(allContractData.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
-                .withEmployerFullName(allContractData.getEmployer().toString())
-                .withEmployerQuoteAccountCode(allContractData.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
-                .withNotificationDate(clientNotificationDate)
-                .withNotificationHour(clientNotificationHour)
-                .withEmployeeFullName(allContractData.getEmployee().getApellidos() + ", " + allContractData.getEmployee().getNom_rzsoc())
-                .withEmployeeNif(Utilities.formatAsNIF(allContractData.getEmployee().getNifcif()))
-                .withEmployeeNASS(allContractData.getEmployee().getNumafss())
-                .withEmployeeBirthDate(birthDate)
-                .withEmployeeCivilState(allContractData.getEmployee().getEstciv())
-                .withEmployeeNationality(allContractData.getEmployee().getNacionalidad())
-                .withEmployeeFullAddress(fullAddress)
-                .withContractTypeDescription(contractDescription)
-                .withEmployeeMaxStudyLevel(study.getStudyDescription())
-                .withStartDate(null)
-                .withEndDate(startDate)
-                .withDayOfWeekSet(dayOfWeekSet)
-                .withDurationDays("")
-                .withSchedule(new HashSet<>())
-                .withAdditionalData(additionalData)
-                .withLaborCategory(allContractData.getContractNewVersion().getContractJsonData().getLaborCategory())
-                .build();
-    }
+//    private ContractExtinctionDataSubfolder createContractExtinctionDataSubfolder(String additionalData){
+//
+//        SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
+//
+//        ContractFullDataDTO allContractData = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem();
+//
+//        String notificationType = "";
+//        if(contractVariationTypes.getRbContractExtinction().isSelected()){
+//            notificationType = Parameters.CONTRACT_EXTINCTION_TEXT;
+//        }
+//        if(contractVariationTypes.getRbContractConversion().isSelected()){
+//            notificationType = Parameters.CONTRACT_CONVERSION_TEXT;
+//        }
+//        if(contractVariationTypes.getRbContractExtension().isSelected()){
+//            notificationType = Parameters.CONTRACT_EXTENSION_TEXT;
+//        }
+//
+//        LocalDate clientNotificationDate = contractVariationTypes.getDateNotification().getDate();
+//        LocalTime clientNotificationHour = LocalTime.parse(contractVariationTypes.getHourNotification().getText());
+//
+//        String birthDate = allContractData.getEmployee().getFechanacim() != null ? dateFormatter.format(allContractData.getEmployee().getFechanacim()) : null;
+//
+//        LocalDate startDate = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+//
+//        String daysOfWeek = allContractData.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork();
+//        Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(daysOfWeek);
+//
+//        String address = allContractData.getEmployee().getDireccion() != null ?  allContractData.getEmployee().getDireccion() : "";
+//        String codPostal = allContractData.getEmployee().getCodpostal() != null ? allContractData.getEmployee().getCodpostal().toString() : "";
+//        String location = allContractData.getEmployee().getLocalidad() != null ? allContractData.getEmployee().getLocalidad() : "";
+//        String fullAddress = address + "   " + codPostal + "   " + location;
+//
+//        StudyManager studyManager = new StudyManager();
+//        StudyDTO study = studyManager.findStudyById(allContractData.getEmployee().getNivestud());
+//
+//        ContractTypeController contractTypeController = new ContractTypeController();
+//        Integer contractTypeId = allContractData.getContractNewVersion().getContractJsonData().getContractType();
+//        ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractTypeId);
+//
+//        String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription();
+//
+//        return ContractExtinctionDataSubfolder.create()
+//                .withNotificationType(notificationType)
+//                .withOfficialContractNumber(allContractData.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
+//                .withEmployerFullName(allContractData.getEmployer().toString())
+//                .withEmployerQuoteAccountCode(allContractData.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
+//                .withNotificationDate(clientNotificationDate)
+//                .withNotificationHour(clientNotificationHour)
+//                .withEmployeeFullName(allContractData.getEmployee().getApellidos() + ", " + allContractData.getEmployee().getNom_rzsoc())
+//                .withEmployeeNif(Utilities.formatAsNIF(allContractData.getEmployee().getNifcif()))
+//                .withEmployeeNASS(allContractData.getEmployee().getNumafss())
+//                .withEmployeeBirthDate(birthDate)
+//                .withEmployeeCivilState(allContractData.getEmployee().getEstciv())
+//                .withEmployeeNationality(allContractData.getEmployee().getNacionalidad())
+//                .withEmployeeFullAddress(fullAddress)
+//                .withContractTypeDescription(contractDescription)
+//                .withEmployeeMaxStudyLevel(study.getStudyDescription())
+//                .withStartDate(null)
+//                .withEndDate(startDate)
+//                .withDayOfWeekSet(dayOfWeekSet)
+//                .withDurationDays("")
+//                .withSchedule(new HashSet<>())
+//                .withAdditionalData(additionalData)
+//                .withLaborCategory(allContractData.getContractNewVersion().getContractJsonData().getLaborCategory())
+//                .build();
+//    }
 
     private void printContractExtinctionDataSubfolder(ContractExtinctionDataSubfolder contractExtinctionDataSubfolder){
-        Path pathToContractExtinctionDataSubfolder = retrievePathToContractExtinctionDataSubfolderPDF(contractExtinctionDataSubfolder);
+
+        ContractExtinctionDataDocumentCreator contractExtinctionDataDocumentCreator = new ContractExtinctionDataDocumentCreator(this);
+        Path pathToContractExtinctionDataSubfolder = contractExtinctionDataDocumentCreator.retrievePathToContractExtinctionDataSubfolderPDF(contractExtinctionDataSubfolder);
+
+//        Path pathToContractExtinctionDataSubfolder = retrievePathToContractExtinctionDataSubfolderPDF(contractExtinctionDataSubfolder);
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("papersize","A3");
@@ -391,57 +409,57 @@ public class ContractExtinctionController{
         }
     }
 
-    private Path retrievePathToContractExtinctionDataSubfolderPDF(ContractExtinctionDataSubfolder contractExtinctionDataSubfolder){
-        Path pathOut = null;
+//    private Path retrievePathToContractExtinctionDataSubfolderPDF(ContractExtinctionDataSubfolder contractExtinctionDataSubfolder){
+//        Path pathOut = null;
+//
+//        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
+//        String temporalDir = maybePath.get().toString();
+//
+//        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractExtinctionDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
+//        try {
+//            Files.createDirectories(pathToContractDataSubfolder.getParent());
+//            pathOut = ContractExtinctionDataSubfolderPDFCreator.createContractExtinctionDataSubfolderPDF(contractExtinctionDataSubfolder, pathToContractDataSubfolder);
+//        } catch (IOException | DocumentException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return pathOut;
+//    }
 
-        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
-        String temporalDir = maybePath.get().toString();
-
-        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractExtinctionDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
-        try {
-            Files.createDirectories(pathToContractDataSubfolder.getParent());
-            pathOut = ContractExtinctionDataSubfolderPDFCreator.createContractExtinctionDataSubfolderPDF(contractExtinctionDataSubfolder, pathToContractDataSubfolder);
-        } catch (IOException | DocumentException e) {
-            e.printStackTrace();
-        }
-
-        return pathOut;
-    }
-
-    private Set<DayOfWeek> retrieveDayOfWeekSet(String daysOfWeek){
-
-        Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
-
-        if(daysOfWeek.contains("MONDAY")){
-            dayOfWeekSet.add(DayOfWeek.MONDAY);
-        }
-
-        if(daysOfWeek.contains("TUESDAY")){
-            dayOfWeekSet.add(DayOfWeek.TUESDAY);
-        }
-
-        if(daysOfWeek.contains("WEDNESDAY")){
-            dayOfWeekSet.add(DayOfWeek.WEDNESDAY);
-        }
-
-
-        if(daysOfWeek.contains("THURSDAY")){
-            dayOfWeekSet.add(DayOfWeek.THURSDAY);
-        }
-
-
-        if(daysOfWeek.contains("FRIDAY")){
-            dayOfWeekSet.add(DayOfWeek.FRIDAY);
-        }
-
-        if(daysOfWeek.contains("SATURDAY")){
-            dayOfWeekSet.add(DayOfWeek.SATURDAY);
-        }
-
-        if(daysOfWeek.contains("SUNDAY")){
-            dayOfWeekSet.add(DayOfWeek.SUNDAY);
-        }
-
-        return dayOfWeekSet;
-    }
+//    private Set<DayOfWeek> retrieveDayOfWeekSet(String daysOfWeek){
+//
+//        Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
+//
+//        if(daysOfWeek.contains("MONDAY")){
+//            dayOfWeekSet.add(DayOfWeek.MONDAY);
+//        }
+//
+//        if(daysOfWeek.contains("TUESDAY")){
+//            dayOfWeekSet.add(DayOfWeek.TUESDAY);
+//        }
+//
+//        if(daysOfWeek.contains("WEDNESDAY")){
+//            dayOfWeekSet.add(DayOfWeek.WEDNESDAY);
+//        }
+//
+//
+//        if(daysOfWeek.contains("THURSDAY")){
+//            dayOfWeekSet.add(DayOfWeek.THURSDAY);
+//        }
+//
+//
+//        if(daysOfWeek.contains("FRIDAY")){
+//            dayOfWeekSet.add(DayOfWeek.FRIDAY);
+//        }
+//
+//        if(daysOfWeek.contains("SATURDAY")){
+//            dayOfWeekSet.add(DayOfWeek.SATURDAY);
+//        }
+//
+//        if(daysOfWeek.contains("SUNDAY")){
+//            dayOfWeekSet.add(DayOfWeek.SUNDAY);
+//        }
+//
+//        return dayOfWeekSet;
+//    }
 }
