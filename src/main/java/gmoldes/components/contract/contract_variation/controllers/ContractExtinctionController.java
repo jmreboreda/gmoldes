@@ -36,23 +36,23 @@ import java.util.*;
 
 public class ContractExtinctionController{
 
-    private ContractVariationParts contractVariationParts;
-    private ContractVariationTypes contractVariationTypes;
-    private ContractVariationContractVariations contractVariationContractVariations;
+//    private ContractVariationParts contractVariationParts;
+//    private ContractVariationTypes contractVariationTypes;
+//    private ContractVariationContractVariations contractVariationContractVariations;
     private ContractManager contractManager = new ContractManager();
     private ContractVariationMainController contractVariationMainController;
 
     private static final Integer EXTINCTION_CODE_BY_CONTRACT_SUBROGATION = 910;
 
     public ContractExtinctionController(
-            ContractVariationMainController contractVariationMainController,
-            ContractVariationParts contractVariationParts,
-            ContractVariationTypes contractVariationTypes,
-            ContractVariationContractVariations contractVariationContractVariations) {
+            ContractVariationMainController contractVariationMainController){
+//            ContractVariationParts contractVariationParts,
+//            ContractVariationTypes contractVariationTypes,
+//            ContractVariationContractVariations contractVariationContractVariations) {
         this.contractVariationMainController = contractVariationMainController;
-        this.contractVariationParts = contractVariationParts;
-        this.contractVariationTypes = contractVariationTypes;
-        this.contractVariationContractVariations = contractVariationContractVariations;
+//        this.contractVariationParts = contractVariationParts;
+//        this.contractVariationTypes = contractVariationTypes;
+//        this.contractVariationContractVariations = contractVariationContractVariations;
     }
 
     public Boolean manageContractExtinction() {
@@ -76,29 +76,29 @@ public class ContractExtinctionController{
 
     public MessageEvent verifyIsCorrectContractExtinctionData(){
 
-            if(contractVariationTypes.getDateNotification().getDate() == null){
+            if(contractVariationMainController.getContractVariationTypes().getDateNotification().getDate() == null){
 
                 return new MessageEvent(ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED);
             }
 
-            if(contractVariationTypes.getHourNotification().getText() == null){
+            if(contractVariationMainController.getContractVariationTypes().getHourNotification().getText() == null){
 
                 return new MessageEvent(ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED);
             }
 
-            if(contractVariationContractVariations.getContractVariationContractExtinction().getExtinctionCauseSelector().getSelectionModel().getSelectedItem() == null){
+            if(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getExtinctionCauseSelector().getSelectionModel().getSelectedItem() == null){
 
                 return new MessageEvent(ContractConstants.EXTINCTION_CAUSE_NOT_ESTABLISHED);
             }
 
-            if(contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue() == null){
+            if(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue() == null){
 
                 return new MessageEvent(ContractConstants.ERROR_IN_EXTINCTION_DATA);
             }
 
-            if(!contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysYes().isSelected() &&
-                    !contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().isSelected() &&
-                    !contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysCalculate().isSelected()){
+            if(!contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getRbHolidaysYes().isSelected() &&
+                    !contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getRbHolidaysNo().isSelected() &&
+                    !contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getRbHolidaysCalculate().isSelected()){
 
                 return new MessageEvent(ContractConstants.HOLIDAYS_SITUATION_NOT_ESTABLISHED);
             }
@@ -110,11 +110,11 @@ public class ContractExtinctionController{
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
-        Integer selectedContractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
+        Integer selectedContractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
 
         // 1. Expiration date requested for the contract is higher than the expected termination date
-        LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
-        LocalDate extinctionDate = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+        LocalDate expectedEndDate = contractVariationMainController.getContractVariationParts().getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
+        LocalDate extinctionDate = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue();
 
         if (expectedEndDate != null && extinctionDate.isAfter(expectedEndDate)) {
 
@@ -173,7 +173,7 @@ public class ContractExtinctionController{
 
     public String persistContractExtinction(){
 
-        ContractNewVersionDTO contractNewVersionToBeExtinguished = contractVariationParts
+        ContractNewVersionDTO contractNewVersionToBeExtinguished = contractVariationMainController.getContractVariationParts()
                 .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
 
         if(updateLastVariationOfContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
@@ -206,10 +206,10 @@ public class ContractExtinctionController{
         // In a contract extinction the date for the notice of termination of contract is set at 31-12-9999
         LocalDate contractEndNoticeToSave = LocalDate.of(9999, 12, 31);
 
-        Integer contractVariationType = contractVariationContractVariations.getContractVariationContractExtinction()
+        Integer contractVariationType = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
                 .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getId_variation();
-        Integer contractNumber = contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
-        LocalDate dateFrom = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
+        Integer contractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
+        LocalDate dateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue();
 
         TraceabilityContractDocumentationDTO traceabilityContractExtinctionDTO = TraceabilityContractDocumentationDTO.create()
                 .withContractNumber(contractNumber)
@@ -237,7 +237,7 @@ public class ContractExtinctionController{
             return 0;
         }
 
-        LocalDate dateOfExtinction = contractVariationContractVariations.getContractVariationContractExtinction()
+        LocalDate dateOfExtinction = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
                 .getDateFrom().getValue();
 
         contractNewVersionExtinctedDTO.setModificationDate(dateOfExtinction);
@@ -248,10 +248,10 @@ public class ContractExtinctionController{
 
     private Integer persistNewContractExtinctionVariation(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
-        Integer contractVariationExtinctionCause = contractVariationContractVariations.getContractVariationContractExtinction()
+        Integer contractVariationExtinctionCause = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
                 .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getId_variation();
 
-        LocalDate dateOfExtinction = contractVariationContractVariations.getContractVariationContractExtinction()
+        LocalDate dateOfExtinction = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
                 .getDateFrom().getValue();
 
         contractNewVersionExtinctedDTO.setId(null);
@@ -265,7 +265,7 @@ public class ContractExtinctionController{
 
     private Integer updateInitialContractOfContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
-        LocalDate dateOfExtinction = contractVariationContractVariations.getContractVariationContractExtinction()
+        LocalDate dateOfExtinction = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
                 .getDateFrom().getValue();
 
         InitialContractDTO initialContractToUpdateDTO = contractManager.findLastTuplaOfInitialContractByContractNumber(contractNewVersionExtinctedDTO.getContractNumber());
@@ -289,8 +289,6 @@ public class ContractExtinctionController{
 
         ContractExtinctionDataDocumentCreator contractExtinctionDataDocumentCreator = new ContractExtinctionDataDocumentCreator(contractVariationMainController);
         Path pathToContractExtinctionDataSubfolder = contractExtinctionDataDocumentCreator.retrievePathToContractExtinctionDataSubfolderPDF(contractExtinctionDataSubfolder);
-
-//        Path pathToContractExtinctionDataSubfolder = retrievePathToContractExtinctionDataSubfolderPDF(contractExtinctionDataSubfolder);
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("papersize","A3");

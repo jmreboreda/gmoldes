@@ -79,7 +79,7 @@ public class ContractExtinctionDataDocumentCreator {
                 .withEmployerQuoteAccountCode(contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
                 .withNotificationDate(this.contractVariationMainController.getContractVariationTypes().getDateNotification().getDate())
                 .withNotificationHour(LocalTime.parse(this.contractVariationMainController.getContractVariationTypes().getHourNotification().getText()))
-                .withEmployeeFullName(contractFullDataDTO.getEmployer().toString())
+                .withEmployeeFullName(contractFullDataDTO.getEmployee().toString())
                 .withEmployeeNif(Utilities.formatAsNIF(contractFullDataDTO.getEmployee().getNifcif()))
                 .withEmployeeNASS(contractFullDataDTO.getEmployee().getNumafss())
                 .withEmployeeBirthDate(employeeBirthDate)

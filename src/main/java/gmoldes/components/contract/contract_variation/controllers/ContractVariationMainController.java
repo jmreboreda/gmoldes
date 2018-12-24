@@ -90,7 +90,7 @@ public class ContractVariationMainController extends VBox {
 
 
     @FXML
-    public void initialize() {
+    private void initialize() {
 
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
@@ -333,7 +333,7 @@ public class ContractVariationMainController extends VBox {
 
     private Boolean contractVariationContractExtinctionIsSelected(){
 
-        ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this, contractVariationParts, contractVariationTypes, contractVariationContractVariations);
+        ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
 
         MessageEvent messageEvent = contractExtinctionController.verifyIsCorrectContractExtinctionData();
         String messageText = messageEvent.getMessageText();
@@ -401,11 +401,7 @@ public class ContractVariationMainController extends VBox {
         // Contract extinction persistence
         if (persistenceEvent.getContractExtinctionEvent()) {
 
-            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
-                    this,
-                    contractVariationParts,
-                    contractVariationTypes,
-                    contractVariationContractVariations);
+            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
 
             isCorrectManagement = contractExtinctionController.manageContractExtinction();
         }
@@ -422,6 +418,13 @@ public class ContractVariationMainController extends VBox {
             isCorrectManagement = contractExtensionController.manageContractExtension();
 
         }
+
+        // Contract conversion persistence(){
+
+
+
+
+        //}
 
         if(isCorrectManagement){
             contractVariationParts.setMouseTransparent(true);
