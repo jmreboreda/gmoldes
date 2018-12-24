@@ -162,7 +162,7 @@ public class ContractDataToContractsAgent {
 
         return Utilities.replaceWithUnderscore(employerFullName)
                 + "_" +
-                Utilities.replaceWithUnderscore(Parameters.NEW_CONTRACT_TEXT.toLowerCase())
+                Utilities.replaceWithUnderscore(getNotificationType().toLowerCase())
                 + "_" +
                 dateInFileName.format(dateFormatter)
                 + "_" +

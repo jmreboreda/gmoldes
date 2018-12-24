@@ -1,77 +1,60 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
-import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
-import gmoldes.components.contract.contract_variation.components.ContractVariationContractVariations;
-import gmoldes.components.contract.contract_variation.components.ContractVariationParts;
-import gmoldes.components.contract.contract_variation.components.ContractVariationTypes;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
 import gmoldes.components.contract.contract_variation.events.MessageEvent;
+import gmoldes.components.contract.contract_variation.events.ContractVariationPersistenceEvent;
 import gmoldes.components.contract.contract_variation.forms.ContractExtinctionDataSubfolder;
-import gmoldes.components.contract.contract_variation.services.ContractExtinctionDataSubfolderPDFCreator;
-import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
-import gmoldes.domain.person.dto.StudyDTO;
-import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
-import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
-import gmoldes.utilities.Utilities;
-import javafx.scene.Scene;
+
 import java.awt.print.PrinterException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 public class ContractExtinctionController{
 
-//    private ContractVariationParts contractVariationParts;
-//    private ContractVariationTypes contractVariationTypes;
-//    private ContractVariationContractVariations contractVariationContractVariations;
+
     private ContractManager contractManager = new ContractManager();
     private ContractVariationMainController contractVariationMainController;
 
     private static final Integer EXTINCTION_CODE_BY_CONTRACT_SUBROGATION = 910;
 
-    public ContractExtinctionController(
-            ContractVariationMainController contractVariationMainController){
-//            ContractVariationParts contractVariationParts,
-//            ContractVariationTypes contractVariationTypes,
-//            ContractVariationContractVariations contractVariationContractVariations) {
-        this.contractVariationMainController = contractVariationMainController;
-//        this.contractVariationParts = contractVariationParts;
-//        this.contractVariationTypes = contractVariationTypes;
-//        this.contractVariationContractVariations = contractVariationContractVariations;
+    public ContractExtinctionController(ContractVariationMainController contractVariationMainController){
+
+            this.contractVariationMainController = contractVariationMainController;
     }
 
     public Boolean manageContractExtinction() {
 
-        String errorPersistingContractExtinction = persistContractExtinction();
-        if (errorPersistingContractExtinction != null) {
+        ContractVariationPersistenceEvent persistenceEvent = persistContractExtinction();
 
-            Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, errorPersistingContractExtinction);
-            Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_NOT_OK);
+        if(persistenceEvent.getPersistenceIsOk()){
 
-            return false;
+            Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, persistenceEvent.getPersistenceMessage());
+
+            ContractExtinctionDataDocumentCreator contractExtinctionDataDocumentCreator = new ContractExtinctionDataDocumentCreator(contractVariationMainController);
+            ContractExtinctionDataSubfolder contractExtinctionDataSubfolder = contractExtinctionDataDocumentCreator.createContractExtinctionDataSubfolder();
+
+            printContractExtinctionDataSubfolder(contractExtinctionDataSubfolder);
+
+            return true;
         }
 
-        ContractExtinctionDataDocumentCreator contractExtinctionDataDocumentCreator = new ContractExtinctionDataDocumentCreator(contractVariationMainController);
-        ContractExtinctionDataSubfolder contractExtinctionDataSubfolder = contractExtinctionDataDocumentCreator.createContractExtinctionDataSubfolder();
+        Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, persistenceEvent.getPersistenceMessage());
+        Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_NOT_OK);
 
-        printContractExtinctionDataSubfolder(contractExtinctionDataSubfolder);
+            return false;
 
-        return true;
+
     }
 
     public MessageEvent verifyIsCorrectContractExtinctionData(){
@@ -171,34 +154,32 @@ public class ContractExtinctionController{
         return new CompatibleVariationEvent(true, false, false, "");
     }
 
-    public String persistContractExtinction(){
+    public ContractVariationPersistenceEvent persistContractExtinction(){
 
         ContractNewVersionDTO contractNewVersionToBeExtinguished = contractVariationMainController.getContractVariationParts()
                 .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
 
         if(updateLastVariationOfContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
 
-            return ContractConstants.ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD;
+            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD);
         }
 
         if(persistNewContractExtinctionVariation(contractNewVersionToBeExtinguished) == null) {
 
-            return ContractConstants.ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION;
+            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION);
         }
 
         if(updateInitialContractOfContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
 
-            return ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT;
+            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT);
         }
 
         if(persistTraceabilityControlData() == null){
 
-            return ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA;
+            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
         }
 
-        Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
-
-        return null;
+        return new ContractVariationPersistenceEvent(true, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
     }
 
     private Integer persistTraceabilityControlData(){
