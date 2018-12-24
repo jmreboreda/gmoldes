@@ -7,7 +7,7 @@ import gmoldes.components.contract.controllers.TypesContractVariationsController
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.*;
-import gmoldes.components.contract.new_contract.forms.NewContractDataToContractsAgent;
+import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.components.timerecord.components.TimeRecordConstants;
 import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.client.dto.ClientCCCDTO;
@@ -185,7 +185,7 @@ public class NewContractMainController extends VBox {
 
             NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator(this);
 
-            NewContractDataToContractsAgent initialContractDataToContractAgent = contractDocumentCreator.createInitialContractDataDocumentForContractsAgent();
+            ContractDataToContractsAgent initialContractDataToContractAgent = contractDocumentCreator.createInitialContractDataDocumentForContractsAgent();
 
             pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(initialContractDataToContractAgent);
 
@@ -235,7 +235,7 @@ public class NewContractMainController extends VBox {
         Path pathOut;
 
         NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator(this);
-        NewContractDataToContractsAgent initialContractDataToContractAgent = contractDocumentCreator.createInitialContractDataDocumentForContractsAgent();
+        ContractDataToContractsAgent initialContractDataToContractAgent = contractDocumentCreator.createInitialContractDataDocumentForContractsAgent();
 
         pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(initialContractDataToContractAgent);
 

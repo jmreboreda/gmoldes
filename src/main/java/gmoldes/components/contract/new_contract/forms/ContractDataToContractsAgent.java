@@ -11,7 +11,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-public class NewContractDataToContractsAgent {
+public class ContractDataToContractsAgent {
 
     private String notificationType;
     private String officialContractNumber;
@@ -36,12 +36,12 @@ public class NewContractDataToContractsAgent {
     private String additionalData;
     private String laborCategory;
 
-    public NewContractDataToContractsAgent(String notificationType, String officialContractNumber, String employerFullName, String employerQuoteAccountCode, LocalDate notificationDate,
-                                           LocalTime notificationHour, String employeeFullName, String employeeNif, String employeeNASS,
-                                           String employeeBirthDate, String employeeCivilState, String employeeNationality, String employeeFullAddress,
-                                           String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, String contractTypeDescription,
-                                           LocalDate startDate, LocalDate endDate, Duration durationDays, Set<WorkDaySchedule> schedule,
-                                           String additionalData, String laborCategory) {
+    public ContractDataToContractsAgent(String notificationType, String officialContractNumber, String employerFullName, String employerQuoteAccountCode, LocalDate notificationDate,
+                                        LocalTime notificationHour, String employeeFullName, String employeeNif, String employeeNASS,
+                                        String employeeBirthDate, String employeeCivilState, String employeeNationality, String employeeFullAddress,
+                                        String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, String contractTypeDescription,
+                                        LocalDate startDate, LocalDate endDate, Duration durationDays, Set<WorkDaySchedule> schedule,
+                                        String additionalData, String laborCategory) {
 
         this.notificationType = notificationType;
         this.officialContractNumber = officialContractNumber;
@@ -158,11 +158,13 @@ public class NewContractDataToContractsAgent {
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd_MM_yyyy");
 
+        LocalDate dateInFileName = getStartDate() != null ? getStartDate() : getEndDate();
+
         return Utilities.replaceWithUnderscore(employerFullName)
                 + "_" +
                 Utilities.replaceWithUnderscore(Parameters.NEW_CONTRACT_TEXT.toLowerCase())
                 + "_" +
-                startDate.format(dateFormatter)
+                dateInFileName.format(dateFormatter)
                 + "_" +
                 Utilities.replaceWithUnderscore(employeeFullName);
     }
@@ -307,8 +309,8 @@ public class NewContractDataToContractsAgent {
         }
 
 
-        public NewContractDataToContractsAgent build() {
-            return new NewContractDataToContractsAgent(this.notificationType, this.officialContractNumber,this.employerFullName, this.employerQuoteAccountCode,
+        public ContractDataToContractsAgent build() {
+            return new ContractDataToContractsAgent(this.notificationType, this.officialContractNumber,this.employerFullName, this.employerQuoteAccountCode,
                     this.notificationDate, this.notificationHour, this.employeeFullName, this.employeeNif, this.employeeNASS, this.employeeBirthDate,
                     this.employeeCivilState, this.employeeNationality, this.employeeFullAddress, this.employeeMaxStudyLevel, this.dayOfWeekSet,
                     this.contractTypeDescription, this.startDate, this.endDate, this.durationDays, this.schedule, this.additionalData,

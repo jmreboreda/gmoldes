@@ -8,9 +8,9 @@ import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.controllers.NewContractMainController;
 import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
-import gmoldes.components.contract.new_contract.forms.NewContractDataToContractsAgent;
+import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
+import gmoldes.components.contract.new_contract.services.ContractDataToContractAgentPDFCreator;
 import gmoldes.components.contract.new_contract.services.NewContractDataSubfolderPDFCreator;
-import gmoldes.components.contract.new_contract.services.NewContractDataToContractAgentPDFCreator;
 import gmoldes.components.contract.new_contract.services.NewContractRecordHistorySubfolderPDFCreator;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
@@ -46,7 +46,7 @@ public class NewContractDataDocumentCreator {
         this.newContractMainController = newContractMainController;
     }
 
-    public NewContractDataToContractsAgent createInitialContractDataDocumentForContractsAgent(){
+    public ContractDataToContractsAgent createInitialContractDataDocumentForContractsAgent(){
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
 
@@ -74,7 +74,7 @@ public class NewContractDataDocumentCreator {
 
         Set<WorkDaySchedule> schedule = this.newContractMainController.getContractSchedule().retrieveScheduleWithScheduleDays();
 
-        return NewContractDataToContractsAgent.create()
+        return ContractDataToContractsAgent.create()
                 .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
                 .withOfficialContractNumber(null)
                 .withEmployerFullName(this.newContractMainController.getContractParts().getSelectedEmployer().toString())
@@ -320,16 +320,16 @@ public class NewContractDataDocumentCreator {
         return pathOut;
     }
 
-    public Path retrievePathToContractDataToContractAgentPDF(NewContractDataToContractsAgent newContractDataToContractsAgent){
+    public Path retrievePathToContractDataToContractAgentPDF(ContractDataToContractsAgent contractDataToContractsAgent){
         Path pathOut = null;
 
         final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
         String temporalDir = maybePath.get().toString();
 
-        Path pathToContractDataToContractAgent = Paths.get(Parameters.USER_HOME, temporalDir, newContractDataToContractsAgent.toFileName().concat("_gst.pdf"));
+        Path pathToContractDataToContractAgent = Paths.get(Parameters.USER_HOME, temporalDir, contractDataToContractsAgent.toFileName().concat("_gst.pdf"));
         try {
             Files.createDirectories(pathToContractDataToContractAgent.getParent());
-            pathOut = NewContractDataToContractAgentPDFCreator.createContractDataToContractAgentPDF(newContractDataToContractsAgent, pathToContractDataToContractAgent);
+            pathOut = ContractDataToContractAgentPDFCreator.createContractDataToContractAgentPDF(contractDataToContractsAgent, pathToContractDataToContractAgent);
         } catch (IOException | DocumentException e) {
             e.printStackTrace();
         }
