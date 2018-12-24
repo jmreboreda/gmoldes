@@ -11,7 +11,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-public class ContractDataToContractAgent {
+public class ContractDataToContractsAgent {
 
     private String notificationType;
     private String officialContractNumber;
@@ -36,12 +36,12 @@ public class ContractDataToContractAgent {
     private String additionalData;
     private String laborCategory;
 
-    public ContractDataToContractAgent(String notificationType, String officialContractNumber, String employerFullName, String employerQuoteAccountCode, LocalDate notificationDate,
-                                       LocalTime notificationHour, String employeeFullName, String employeeNif, String employeeNASS,
-                                       String employeeBirthDate, String employeeCivilState, String employeeNationality, String employeeFullAddress,
-                                       String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, String contractTypeDescription,
-                                       LocalDate startDate, LocalDate endDate, Duration durationDays, Set<WorkDaySchedule> schedule,
-                                       String additionalData, String laborCategory) {
+    public ContractDataToContractsAgent(String notificationType, String officialContractNumber, String employerFullName, String employerQuoteAccountCode, LocalDate notificationDate,
+                                        LocalTime notificationHour, String employeeFullName, String employeeNif, String employeeNASS,
+                                        String employeeBirthDate, String employeeCivilState, String employeeNationality, String employeeFullAddress,
+                                        String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, String contractTypeDescription,
+                                        LocalDate startDate, LocalDate endDate, Duration durationDays, Set<WorkDaySchedule> schedule,
+                                        String additionalData, String laborCategory) {
 
         this.notificationType = notificationType;
         this.officialContractNumber = officialContractNumber;
@@ -158,20 +158,22 @@ public class ContractDataToContractAgent {
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd_MM_yyyy");
 
+        LocalDate dateInFileName = getStartDate() != null ? getStartDate() : getEndDate();
+
         return Utilities.replaceWithUnderscore(employerFullName)
                 + "_" +
                 Utilities.replaceWithUnderscore(Parameters.NEW_CONTRACT_TEXT.toLowerCase())
                 + "_" +
-                startDate.format(dateFormatter)
+                dateInFileName.format(dateFormatter)
                 + "_" +
                 Utilities.replaceWithUnderscore(employeeFullName);
     }
 
-    public static ContractDataToContractAgentBuilder create() {
-        return new ContractDataToContractAgentBuilder();
+    public static NewContractDataToContractAgentBuilder create() {
+        return new NewContractDataToContractAgentBuilder();
     }
 
-    public static class ContractDataToContractAgentBuilder {
+    public static class NewContractDataToContractAgentBuilder {
 
         private String notificationType;
         private String officialContractNumber;
@@ -196,119 +198,119 @@ public class ContractDataToContractAgent {
         private String additionalData;
         private String laborCategory;
 
-        public ContractDataToContractAgentBuilder withNotificationType(String notificationType) {
+        public NewContractDataToContractAgentBuilder withNotificationType(String notificationType) {
             this.notificationType = notificationType;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withOfficialContractNumber(String officialContractNumber) {
+        public NewContractDataToContractAgentBuilder withOfficialContractNumber(String officialContractNumber) {
             this.officialContractNumber = officialContractNumber;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withEmployerFullName(String employerFullName) {
+        public NewContractDataToContractAgentBuilder withEmployerFullName(String employerFullName) {
             this.employerFullName = employerFullName;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withEmployerQuoteAccountCode(String employerQuoteAccountCode) {
+        public NewContractDataToContractAgentBuilder withEmployerQuoteAccountCode(String employerQuoteAccountCode) {
             this.employerQuoteAccountCode = employerQuoteAccountCode;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withNotificationDate(LocalDate notificationDate) {
+        public NewContractDataToContractAgentBuilder withNotificationDate(LocalDate notificationDate) {
             this.notificationDate = notificationDate;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withNotificationHour(LocalTime notificationHour) {
+        public NewContractDataToContractAgentBuilder withNotificationHour(LocalTime notificationHour) {
             this.notificationHour = notificationHour;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withEmployeeFullName(String employeeFullName) {
+        public NewContractDataToContractAgentBuilder withEmployeeFullName(String employeeFullName) {
             this.employeeFullName = employeeFullName;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withEmployeeNif(String employeeNif) {
+        public NewContractDataToContractAgentBuilder withEmployeeNif(String employeeNif) {
             this.employeeNif = employeeNif;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withEmployeeNASS(String employeeNASS) {
+        public NewContractDataToContractAgentBuilder withEmployeeNASS(String employeeNASS) {
             this.employeeNASS = employeeNASS;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withEmployeeBirthDate(String employeeBirthDate) {
+        public NewContractDataToContractAgentBuilder withEmployeeBirthDate(String employeeBirthDate) {
             this.employeeBirthDate = employeeBirthDate;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withEmployeeCivilState(String employeeCivilState) {
+        public NewContractDataToContractAgentBuilder withEmployeeCivilState(String employeeCivilState) {
             this.employeeCivilState = employeeCivilState;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withEmployeeNationality(String employeeNationality) {
+        public NewContractDataToContractAgentBuilder withEmployeeNationality(String employeeNationality) {
             this.employeeNationality = employeeNationality;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withEmployeeFullAddress(String employeeFullAddress) {
+        public NewContractDataToContractAgentBuilder withEmployeeFullAddress(String employeeFullAddress) {
             this.employeeFullAddress = employeeFullAddress;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withEmployeeMaxStudyLevel(String employeeMaxStudyLevel) {
+        public NewContractDataToContractAgentBuilder withEmployeeMaxStudyLevel(String employeeMaxStudyLevel) {
             this.employeeMaxStudyLevel = employeeMaxStudyLevel;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withDayOfWeekSet(Set<DayOfWeek> dayOfWeekSet) {
+        public NewContractDataToContractAgentBuilder withDayOfWeekSet(Set<DayOfWeek> dayOfWeekSet) {
             this.dayOfWeekSet = dayOfWeekSet;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withContractTypeDescription(String contractTypeDescription) {
+        public NewContractDataToContractAgentBuilder withContractTypeDescription(String contractTypeDescription) {
             this.contractTypeDescription = contractTypeDescription;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withStartDate(LocalDate startDate) {
+        public NewContractDataToContractAgentBuilder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withEndDate(LocalDate endDate) {
+        public NewContractDataToContractAgentBuilder withEndDate(LocalDate endDate) {
             this.endDate = endDate;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withDurationDays(Duration durationDays) {
+        public NewContractDataToContractAgentBuilder withDurationDays(Duration durationDays) {
             this.durationDays = durationDays;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withSchedule(Set<WorkDaySchedule> schedule) {
+        public NewContractDataToContractAgentBuilder withSchedule(Set<WorkDaySchedule> schedule) {
             this.schedule = schedule;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withAdditionalData(String additionalData) {
+        public NewContractDataToContractAgentBuilder withAdditionalData(String additionalData) {
             this.additionalData = additionalData;
             return this;
         }
 
-        public ContractDataToContractAgentBuilder withLaborCategory(String laborCategory) {
+        public NewContractDataToContractAgentBuilder withLaborCategory(String laborCategory) {
             this.laborCategory = laborCategory;
             return this;
         }
 
 
-        public ContractDataToContractAgent build() {
-            return new ContractDataToContractAgent(this.notificationType, this.officialContractNumber,this.employerFullName, this.employerQuoteAccountCode,
+        public ContractDataToContractsAgent build() {
+            return new ContractDataToContractsAgent(this.notificationType, this.officialContractNumber,this.employerFullName, this.employerQuoteAccountCode,
                     this.notificationDate, this.notificationHour, this.employeeFullName, this.employeeNif, this.employeeNASS, this.employeeBirthDate,
                     this.employeeCivilState, this.employeeNationality, this.employeeFullAddress, this.employeeMaxStudyLevel, this.dayOfWeekSet,
                     this.contractTypeDescription, this.startDate, this.endDate, this.durationDays, this.schedule, this.additionalData,

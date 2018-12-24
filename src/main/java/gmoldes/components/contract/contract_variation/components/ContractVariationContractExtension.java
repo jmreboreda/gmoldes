@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -28,6 +29,8 @@ public class ContractVariationContractExtension extends VBox {
     private DatePicker dateTo;
     @FXML
     private TextField contractExtensionDuration;
+    @FXML
+    private TextArea publicNotes;
 
     public ContractVariationContractExtension() {
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_CONTRACT_EXTENSION_FXML);
@@ -73,10 +76,19 @@ public class ContractVariationContractExtension extends VBox {
         this.contractExtensionDuration = contractExtensionDuration;
     }
 
+    public TextArea getPublicNotes() {
+        return publicNotes;
+    }
+
+    public void setPublicNotes(TextArea publicNotes) {
+        this.publicNotes = publicNotes;
+    }
+
     public void cleanComponents(){
 
         getDateFrom().setValue(null);
         getDateTo().setValue(null);
         getContractExtensionDuration().setText(null);
+        getPublicNotes().setText("");
     }
 }
