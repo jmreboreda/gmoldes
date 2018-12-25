@@ -3,7 +3,6 @@ package gmoldes.domain.document_for_print;
 import com.lowagie.text.DocumentException;
 import gmoldes.components.contract.contract_variation.controllers.ContractVariationMainController;
 import gmoldes.components.contract.contract_variation.forms.ContractExtensionDataSubfolder;
-import gmoldes.components.contract.contract_variation.services.ContractExtensionDataSubfolderPDFCreator;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
@@ -33,6 +32,7 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -48,8 +48,7 @@ public class ContractExtensionDataDocumentCreator {
 
     public ContractDataToContractsAgent createContractExtensionDataDocumentForContractsAgent(){
 
-        SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
-
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         ContractFullDataDTO contractFullDataDTO = retrieveContractFullData();
 
         String employeeBirthDate = contractFullDataDTO.getEmployee().getFechanacim() != null ? dateFormatter.format(contractFullDataDTO.getEmployee().getFechanacim()) : "";
@@ -104,6 +103,7 @@ public class ContractExtensionDataDocumentCreator {
     public ContractExtensionDataSubfolder createContractExtensionDataSubfolder(){
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
+        SimpleDateFormat timeFormatter = new SimpleDateFormat(Parameters.DEFAULT_TIME_FORMAT);
 
         ContractFullDataDTO contractFullDataDTO = this.contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem();
 
@@ -149,8 +149,8 @@ public class ContractExtensionDataDocumentCreator {
                 .withOfficialContractNumber(contractFullDataDTO.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
                 .withEmployerFullName(contractFullDataDTO.getEmployer().toString())
                 .withEmployerQuoteAccountCode(contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
-                .withNotificationDate(clientNotificationDate)
-                .withNotificationHour(clientNotificationHour)
+                .withNotificationDate(dateFormatter.format(clientNotificationDate))
+                .withNotificationHour(timeFormatter.format(clientNotificationHour))
                 .withEmployeeFullName(contractFullDataDTO.getEmployee().getApellidos() + ", " + contractFullDataDTO.getEmployee().getNom_rzsoc())
                 .withEmployeeNif(Utilities.formatAsNIF(contractFullDataDTO.getEmployee().getNifcif()))
                 .withEmployeeNASS(contractFullDataDTO.getEmployee().getNumafss())
@@ -160,10 +160,10 @@ public class ContractExtensionDataDocumentCreator {
                 .withEmployeeFullAddress(fullAddress)
                 .withContractTypeDescription(contractTypeDescription)
                 .withEmployeeMaxStudyLevel(study.getStudyDescription())
-                .withStartDate(startDate)
-                .withEndDate(endDate)
+                .withStartDate(dateFormatter.format(startDate))
+                .withEndDate(dateFormatter.format(endDate))
                 .withDayOfWeekSet(dayOfWeekSet)
-                .withDurationDays(durationDays)
+                .withDurationDays(Long.toString(durationDays.toDays()))
                 .withSchedule(new HashSet<>())
                 .withAdditionalData(retrievePublicNotes())
                 .withLaborCategory(contractFullDataDTO.getContractNewVersion().getContractJsonData().getLaborCategory())
@@ -308,22 +308,22 @@ public class ContractExtensionDataDocumentCreator {
         return dayOfWeekSet;
     }
 
-    public Path retrievePathToContractExtensionDataSubfolderPDF(ContractExtensionDataSubfolder contractExtinctionDataSubfolder){
-        Path pathOut = null;
-
-        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
-        String temporalDir = maybePath.get().toString();
-
-        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractExtinctionDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
-        try {
-            Files.createDirectories(pathToContractDataSubfolder.getParent());
-            pathOut = ContractExtensionDataSubfolderPDFCreator.createContractExtensionDataSubfolderPDF(contractExtinctionDataSubfolder, pathToContractDataSubfolder);
-        } catch (IOException | DocumentException e) {
-            e.printStackTrace();
-        }
-
-        return pathOut;
-    }
+//    public Path retrievePathToContractExtensionDataSubfolderPDF(ContractExtensionDataSubfolder contractExtinctionDataSubfolder){
+//        Path pathOut = null;
+//
+//        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
+//        String temporalDir = maybePath.get().toString();
+//
+//        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractExtinctionDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
+//        try {
+//            Files.createDirectories(pathToContractDataSubfolder.getParent());
+//            pathOut = ContractExtensionDataSubfolderPDFCreator.createContractExtensionDataSubfolderPDF(contractExtinctionDataSubfolder, pathToContractDataSubfolder);
+//        } catch (IOException | DocumentException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return pathOut;
+//    }
 
     public Path retrievePathToContractDataToContractAgentPDF(ContractDataToContractsAgent contractDataToContractsAgent){
         Path pathOut = null;

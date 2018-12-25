@@ -2,9 +2,6 @@ package gmoldes.components.contract.contract_variation.controllers;
 
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
-import gmoldes.components.contract.contract_variation.components.ContractVariationContractVariations;
-import gmoldes.components.contract.contract_variation.components.ContractVariationParts;
-import gmoldes.components.contract.contract_variation.components.ContractVariationTypes;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
 import gmoldes.components.contract.contract_variation.events.ContractVariationPersistenceEvent;
 import gmoldes.components.contract.contract_variation.events.MessageEvent;
@@ -14,8 +11,6 @@ import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
-import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
-import gmoldes.components.contract.new_contract.services.NewContractDataSubfolderPDFCreator;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.person.dto.StudyDTO;
@@ -26,15 +21,14 @@ import gmoldes.utilities.Message;
 import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
-import javafx.scene.Scene;
 
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -68,7 +62,7 @@ public class ContractExtensionController {
 
             ContractExtensionDataSubfolder contractExtensionDataSubfolder = createContractExtensionDataSubfolder(sb.toString(), durationDays);
 
-        printContractExtensionDataSubfolder(contractExtensionDataSubfolder);
+            printContractExtensionDataSubfolder(contractExtensionDataSubfolder);
 
             return true;
         }
@@ -357,19 +351,21 @@ public class ContractExtensionController {
 
     private ContractExtensionDataSubfolder createContractExtensionDataSubfolder(String additionalData, Duration duration){
 
-        SimpleDateFormat dateFormatter = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
+
 
         ContractFullDataDTO allContractData = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem();
 
         String notificationType = Parameters.CONTRACT_EXTENSION_TEXT;
 
-        LocalDate clientNotificationDate = contractVariationMainController.getContractVariationTypes().getDateNotification().getDate();
-        LocalTime clientNotificationHour = LocalTime.parse(contractVariationMainController.getContractVariationTypes().getHourNotification().getText());
+        String clientNotificationDate = dateFormatter.format(contractVariationMainController.getContractVariationTypes().getDateNotification().getDate());
+        String clientNotificationHour = contractVariationMainController.getContractVariationTypes().getHourNotification().getTime().format(timeFormatter);
 
         String birthDate = allContractData.getEmployee().getFechanacim() != null ? dateFormatter.format(allContractData.getEmployee().getFechanacim()) : null;
 
-        LocalDate startDate = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue();
-        LocalDate endDate = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue();
+        String startDate = dateFormatter.format(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue());
+        String endDate = dateFormatter.format(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue());
 
         String daysOfWeek = allContractData.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork();
         Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(daysOfWeek);
@@ -407,12 +403,8 @@ public class ContractExtensionController {
                 .withEmployeeMaxStudyLevel(study.getStudyDescription())
                 .withStartDate(startDate)
                 .withEndDate(endDate)
-
-
                 .withDayOfWeekSet(dayOfWeekSet)
-                .withDurationDays(duration)
-
-
+                .withDurationDays(Long.toString(duration.toDays()))
                 .withSchedule(new HashSet<>())
                 .withAdditionalData(additionalData)
                 .withLaborCategory(allContractData.getContractNewVersion().getContractJsonData().getLaborCategory())

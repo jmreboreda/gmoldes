@@ -8,7 +8,6 @@ import gmoldes.components.contract.contract_variation.events.CompatibleVariation
 import gmoldes.components.contract.contract_variation.events.MessageEvent;
 import gmoldes.components.contract.contract_variation.events.VariationTypeEvent;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
-import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
@@ -240,7 +239,9 @@ public class ContractVariationMainController extends VBox {
 
         contractVariationContractVariations.getContractVariationContractExtension().cleanComponents();
         contractVariationContractVariations.getContractVariationContractExtension().toFront();
-        contractVariationTypes.getHourNotification().requestFocus();
+        LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
+        contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().setValue(expectedEndDate.plusDays(1L));
+        contractVariationContractVariations.getContractVariationContractExtension().getPublicNotes().setText(ContractConstants.NOT_VARIATION_OTHER_CONDITIONS_OF_CONTRACT);
 
         contractVariationActionComponents.getOkButton().setDisable(false);
     }

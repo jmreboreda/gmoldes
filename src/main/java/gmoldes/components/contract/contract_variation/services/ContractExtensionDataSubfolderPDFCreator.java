@@ -28,19 +28,24 @@ public class ContractExtensionDataSubfolderPDFCreator {
 
         PdfReader reader = new PdfReader(PATH_TO_PDF_TEMPLATE);
         PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(pathOut.toString()));
+
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        String startDate = contractExtensionDataSubfolder.getStartDate() != null ? contractExtensionDataSubfolder.getStartDate().format(dateFormatter) : "";
-        String endDate = contractExtensionDataSubfolder.getEndDate() != null ? contractExtensionDataSubfolder.getEndDate().format(dateFormatter) : "";
+//        String startDate = contractExtensionDataSubfolder.getStartDate() != null ? contractExtensionDataSubfolder.getStartDate() : "";
+//        String endDate = contractExtensionDataSubfolder.getEndDate() != null ? contractExtensionDataSubfolder.getEndDate() : "";
+//
+//        String durationDays = contractExtensionDataSubfolder.getDurationDays() + " días";
+
+//        String contractTypeDescription = contractExtensionDataSubfolder.getContractTypeDescription();
 
         AcroFields contractExtensionDataSubfolderPDFFields = stamp.getAcroFields();
         contractExtensionDataSubfolderPDFFields.setField("notificationType",contractExtensionDataSubfolder.getNotificationType());
         contractExtensionDataSubfolderPDFFields.setField("officialContractNumber",contractExtensionDataSubfolder.getOfficialContractNumber());
         contractExtensionDataSubfolderPDFFields.setField("employerFullName",contractExtensionDataSubfolder.getEmployerFullName());
         contractExtensionDataSubfolderPDFFields.setField("employerCCC",contractExtensionDataSubfolder.getEmployerQuoteAccountCode());
-        contractExtensionDataSubfolderPDFFields.setField("notificationDate",contractExtensionDataSubfolder.getNotificationDate().format(dateFormatter));
-        contractExtensionDataSubfolderPDFFields.setField("notificationHour",contractExtensionDataSubfolder.getNotificationHour().format(timeFormatter));
+        contractExtensionDataSubfolderPDFFields.setField("notificationDate",contractExtensionDataSubfolder.getNotificationDate());
+        contractExtensionDataSubfolderPDFFields.setField("notificationHour",contractExtensionDataSubfolder.getNotificationHour());
         contractExtensionDataSubfolderPDFFields.setField("employeeFullName",contractExtensionDataSubfolder.getEmployeeFullName());
         contractExtensionDataSubfolderPDFFields.setField("employeeNIF",contractExtensionDataSubfolder.getEmployeeNif());
         contractExtensionDataSubfolderPDFFields.setField("employeeNASS",contractExtensionDataSubfolder.getEmployeeNASS());
@@ -71,9 +76,9 @@ public class ContractExtensionDataSubfolderPDFCreator {
             contractExtensionDataSubfolderPDFFields.setField("sunday", "Yes");
         }
         contractExtensionDataSubfolderPDFFields.setField("contractType",contractExtensionDataSubfolder.getContractTypeDescription());
-        contractExtensionDataSubfolderPDFFields.setField("startDate", startDate);
-        contractExtensionDataSubfolderPDFFields.setField("endDate", endDate);
-        contractExtensionDataSubfolderPDFFields.setField("durationDays", contractExtensionDataSubfolder.getDurationDays().toString() + " días");
+        contractExtensionDataSubfolderPDFFields.setField("startDate", contractExtensionDataSubfolder.getStartDate());
+        contractExtensionDataSubfolderPDFFields.setField("endDate", contractExtensionDataSubfolder.getEndDate());
+        contractExtensionDataSubfolderPDFFields.setField("durationDays", contractExtensionDataSubfolder.getDurationDays() + " días");
 
 
         /* Start of the form fill loop*/

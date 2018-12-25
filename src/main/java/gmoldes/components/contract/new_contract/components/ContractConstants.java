@@ -58,6 +58,7 @@ public class ContractConstants {
     public static final String SELECTED_CONTRACT_IS_NOT_EXTENDABLE = "El contrato seleccionado no admite prórrogas.";
     public static final String UNDEFINED_DURATION_CONTRACTS_ARE_NOT_EXTENDABLE = "Los contratos indefinidos no son prorrogables.";
     public static final String THIS_TYPE_OF_DETERMINED_DURATION_CONTRACT_IS_NOT_EXTENDABLE = "Este tipo de contratos de duración determinada no es prorrogable.";
+    public static final String NOT_VARIATION_OTHER_CONDITIONS_OF_CONTRACT = "Permanecerán sin cambios las restantes condiciones del contrato.";
     public static final String ERROR_EXTENSION_CONTRACT_DATE_FROM = "La fecha de inicio de la prórroga es errónea.";
     public static final String ERROR_EXTENSION_CONTRACT_DATE_TO = "La fecha de finalización de la prórroga es errónea.";
     public static final String EXTENSION_DATE_EXCEEDED = "No se puede prorrogar un contrato desde una fecha posterior a su fecha de extinción prevista anteriormente.";

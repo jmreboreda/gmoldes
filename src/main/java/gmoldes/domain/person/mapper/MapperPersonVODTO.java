@@ -15,7 +15,7 @@ public class MapperPersonVODTO {
                 .withNifcif(personVO.getNifcif())
                 .withNifcifdup(personVO.getNifcifdup())
                 .withNumafss(personVO.getNumafss())
-                .withFechanacim(personVO.getFechanacim())
+                .withFechanacim(personVO.getFechanacim().toLocalDate())
                 .withEstciv(personVO.getEstciv())
                 .withDireccion(personVO.getDireccion())
                 .withLocalidad(personVO.getLocalidad())
