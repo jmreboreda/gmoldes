@@ -168,13 +168,10 @@ public class ContractExtensionDataSubfolder {
 
     public String toFileName(){
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd_MM_yyyy");
-
         String fileNameDate = startDate != null ? startDate : endDate;
 
         return Utilities.replaceWithUnderscore(employerFullName)
                 + "_" +
-//                Utilities.replaceWithUnderscore(Parameters.NEW_CONTRACT_TEXT.toLowerCase())
                 Utilities.replaceWithUnderscore(getNotificationType().toLowerCase())
                 + "_" +
                 fileNameDate

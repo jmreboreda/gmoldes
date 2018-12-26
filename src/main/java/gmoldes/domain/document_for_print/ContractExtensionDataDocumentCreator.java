@@ -144,6 +144,7 @@ public class ContractExtensionDataDocumentCreator {
         Duration durationDays = Utilities.convertIntegerToDuration(Integer.parseInt(contractVariationMainController.getContractVariationContractVariations()
                 .getContractVariationContractExtension().getContractExtensionDuration().getText()));
 
+        String contractNumberGM = contractFullDataDTO.getContractNewVersion().getContractNumber().toString();
 
         return ContractExtensionDataSubfolder.create()
                 .withNotificationType(notificationType)
@@ -168,6 +169,7 @@ public class ContractExtensionDataDocumentCreator {
                 .withSchedule(new HashSet<>())
                 .withAdditionalData(retrievePublicNotes())
                 .withLaborCategory(contractFullDataDTO.getContractNewVersion().getContractJsonData().getLaborCategory())
+                .withGmContractNumber(contractNumberGM)
                 .build();
     }
 

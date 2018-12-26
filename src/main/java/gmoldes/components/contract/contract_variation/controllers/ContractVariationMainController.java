@@ -3,10 +3,7 @@ package gmoldes.components.contract.contract_variation.controllers;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
-import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
-import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract.contract_variation.events.MessageEvent;
-import gmoldes.components.contract.contract_variation.events.VariationTypeEvent;
+import gmoldes.components.contract.contract_variation.events.*;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
@@ -259,50 +256,76 @@ public class ContractVariationMainController extends VBox {
         // Contract extinction
         RadioButton rbContractExtinction = contractVariationTypes.getRbContractExtinction();
         if(rbContractExtinction.isSelected()) {
-            Boolean contractExtinctionIsCorrect = contractVariationContractExtinctionIsSelected();
-            if(contractExtinctionIsCorrect) {
-                VariationTypeEvent event = persistenceOfContractVariation(new CompatibleVariationEvent(true, false,false, ""));
-                if(event != null){
-                    isContractVariationExtinction = event.getContractVariationExtinction();
-                    isContractVariationExtension = event.getContractVariationExtension();
-                    isContractVariationConversion = event.getContractVariationConversion();
-                }
+            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
+
+            MessageEvent messageEvent = contractExtinctionController.executeContractExtinctionOperations();
+            if (!messageEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK)) {
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageEvent.getMessageText());
+                contractVariationContractVariations.getContractVariationContractExtinction().cleanComponents();
+
+                return;
             }
 
-            return;
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
+
+
+//
+//            ContractVariationPersistenceEvent persistenceEvent = contractExtinctionController.manageContractExtinction();
+//            if(!persistenceEvent.getPersistenceIsOk()){
+//                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, persistenceEvent.getPersistenceMessage());
+//
+//                return;
+//            }
+
+
         }
 
-        // Contract extension
-        RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
-        if(rbContractExtension.isSelected()) {
-            Boolean contractExtensionIsCorrect = contractVariationContractExtensionSelected();
-            if(contractExtensionIsCorrect) {
-                VariationTypeEvent event = persistenceOfContractVariation(new CompatibleVariationEvent(false, true,false, ""));
-                if(event != null){
-                    isContractVariationExtinction = event.getContractVariationExtinction();
-                    isContractVariationExtension = event.getContractVariationExtension();
-                    isContractVariationConversion = event.getContractVariationConversion();
-                }
-            }
 
-            return;
-        }
+//        if(rbContractExtinction.isSelected()) {
+//            Boolean contractExtinctionIsCorrect = contractVariationContractExtinctionIsSelected();
+//            if(contractExtinctionIsCorrect) {
+//                VariationTypeEvent event = persistenceOfContractVariation(new CompatibleVariationEvent(true, false,false, ""));
+//                if(event != null){
+//                    isContractVariationExtinction = event.getContractVariationExtinction();
+//                    isContractVariationExtension = event.getContractVariationExtension();
+//                    isContractVariationConversion = event.getContractVariationConversion();
+//                }
+//            }
+//
+//            return;
+//        }
 
-        // Contract conversion
-        RadioButton rbContractConversion = contractVariationTypes.getRbContractConversion();
-        if(rbContractConversion.isSelected()) {
-            Boolean contractConversionIsCorrect = contractVariationContractExtensionSelected();
-            if(contractConversionIsCorrect) {
-                VariationTypeEvent event = persistenceOfContractVariation(new CompatibleVariationEvent(false, false,true, ""));
-                if(event != null){
-                    isContractVariationExtinction = event.getContractVariationExtinction();
-                    isContractVariationExtension = event.getContractVariationExtension();
-                    isContractVariationConversion = event.getContractVariationConversion();
-                }
-            }
+//        // Contract extension
+//        RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
+//        if(rbContractExtension.isSelected()) {
+//            Boolean contractExtensionIsCorrect = contractVariationContractExtensionSelected();
+//            if(contractExtensionIsCorrect) {
+//                VariationTypeEvent event = persistenceOfContractVariation(new CompatibleVariationEvent(false, true,false, ""));
+//                if(event != null){
+//                    isContractVariationExtinction = event.getContractVariationExtinction();
+//                    isContractVariationExtension = event.getContractVariationExtension();
+//                    isContractVariationConversion = event.getContractVariationConversion();
+//                }
+//            }
+//
+//            return;
+//        }
 
-            return;
-        }
+//        // Contract conversion
+//        RadioButton rbContractConversion = contractVariationTypes.getRbContractConversion();
+//        if(rbContractConversion.isSelected()) {
+//            Boolean contractConversionIsCorrect = contractVariationContractExtensionSelected();
+//            if(contractConversionIsCorrect) {
+//                VariationTypeEvent event = persistenceOfContractVariation(new CompatibleVariationEvent(false, false,true, ""));
+//                if(event != null){
+//                    isContractVariationExtinction = event.getContractVariationExtinction();
+//                    isContractVariationExtension = event.getContractVariationExtension();
+//                    isContractVariationConversion = event.getContractVariationConversion();
+//                }
+//            }
+//
+//            return;
+//        }
     }
 
     private void onExitButton(MouseEvent event){
@@ -357,6 +380,7 @@ public class ContractVariationMainController extends VBox {
 
         System.out.println(messageText);    // <- NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED
 
+        // Verify notification period to Administration
         LocalDate effectDateRequestedForContractVariation = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
         CompatibleVariationEvent isCorrectDataToNotifyAdministration = dateToNotifyContractVariationToAdministrationIsCorrect(effectDateRequestedForContractVariation);
         if(!isCorrectDataToNotifyAdministration.getErrorContractVariationMessage().isEmpty()){
@@ -401,61 +425,61 @@ public class ContractVariationMainController extends VBox {
         return true;
     }
 
-    private VariationTypeEvent persistenceOfContractVariation(CompatibleVariationEvent compatibleVariationEvent) {
-
-        if (!Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)) {
-            return null;
-        }
-
-        Boolean isCorrectManagement = false;
-        VariationTypeEvent variationTypeEvent = null;
-
-        // Contract extinction persistence
-        if (compatibleVariationEvent.getContractExtinctionEvent()) {
-
-            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
-
-            isCorrectManagement = contractExtinctionController.manageContractExtinction();
-        }
-
-        // Contract extension persistence
-        if (compatibleVariationEvent.getContractExtensionEvent()) {
-
-            ContractExtensionController contractExtensionController = new ContractExtensionController(this);
-
-            isCorrectManagement = contractExtensionController.manageContractExtension();
-
-        }
-
-        // Contract conversion persistence(){
-
-
-
-
-        //}
-
-        if(isCorrectManagement){
-            contractVariationParts.setMouseTransparent(true);
-            contractVariationTypes.setMouseTransparent(true);
-            contractVariationContractVariations.setMouseTransparent(true);
-            contractVariationActionComponents.getOkButton().setDisable(true);
-            contractVariationActionComponents.getSendMailButton().setDisable(false);
-        }
-
-        if(compatibleVariationEvent.getContractExtinctionEvent()){
-            variationTypeEvent = new VariationTypeEvent(true, false, false);
-        }
-
-        if(compatibleVariationEvent.getContractExtensionEvent()){
-            variationTypeEvent = new VariationTypeEvent(false, true, false);
-        }
-
-        if(compatibleVariationEvent.getContractConversionEvent()){
-            variationTypeEvent = new VariationTypeEvent(false, false, true);
-        }
-
-        return variationTypeEvent;
-    }
+//    private VariationTypeEvent persistenceOfContractVariation(CompatibleVariationEvent compatibleVariationEvent) {
+//
+//        if (!Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)) {
+//            return null;
+//        }
+//
+//        Boolean isCorrectManagement = false;
+//        VariationTypeEvent variationTypeEvent = null;
+//
+//        // Contract extinction persistence
+//        if (compatibleVariationEvent.getContractExtinctionEvent()) {
+//
+//            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
+//
+//            isCorrectManagement = contractExtinctionController.manageContractExtinction();
+//        }
+//
+//        // Contract extension persistence
+//        if (compatibleVariationEvent.getContractExtensionEvent()) {
+//
+//            ContractExtensionController contractExtensionController = new ContractExtensionController(this);
+//
+//            isCorrectManagement = contractExtensionController.manageContractExtension();
+//
+//        }
+//
+//        // Contract conversion persistence(){
+//
+//
+//
+//
+//        //}
+//
+//        if(isCorrectManagement){
+//            contractVariationParts.setMouseTransparent(true);
+//            contractVariationTypes.setMouseTransparent(true);
+//            contractVariationContractVariations.setMouseTransparent(true);
+//            contractVariationActionComponents.getOkButton().setDisable(true);
+//            contractVariationActionComponents.getSendMailButton().setDisable(false);
+//        }
+//
+//        if(compatibleVariationEvent.getContractExtinctionEvent()){
+//            variationTypeEvent = new VariationTypeEvent(true, false, false);
+//        }
+//
+//        if(compatibleVariationEvent.getContractExtensionEvent()){
+//            variationTypeEvent = new VariationTypeEvent(false, true, false);
+//        }
+//
+//        if(compatibleVariationEvent.getContractConversionEvent()){
+//            variationTypeEvent = new VariationTypeEvent(false, false, true);
+//        }
+//
+//        return variationTypeEvent;
+//    }
 
     private void loadContractExtinctionCauseSelector(){
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();

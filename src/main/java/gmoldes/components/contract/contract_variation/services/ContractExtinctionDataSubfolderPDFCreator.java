@@ -32,16 +32,16 @@ public class ContractExtinctionDataSubfolderPDFCreator {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        String startDate = contractExtinctionDataSubfolder.getStartDate() != null ? contractExtinctionDataSubfolder.getStartDate().format(dateFormatter) : "";
-        String endDate = contractExtinctionDataSubfolder.getEndDate() != null ? contractExtinctionDataSubfolder.getEndDate().format(dateFormatter) : "";
+        String startDate = contractExtinctionDataSubfolder.getStartDate() != null ? contractExtinctionDataSubfolder.getStartDate() : "";
+        String endDate = contractExtinctionDataSubfolder.getEndDate() != null ? contractExtinctionDataSubfolder.getEndDate() : "";
 
         AcroFields contractExtinctionDataSubfolderPDFFields = stamp.getAcroFields();
         contractExtinctionDataSubfolderPDFFields.setField("notificationType",contractExtinctionDataSubfolder.getNotificationType());
         contractExtinctionDataSubfolderPDFFields.setField("officialContractNumber",contractExtinctionDataSubfolder.getOfficialContractNumber());
         contractExtinctionDataSubfolderPDFFields.setField("employerFullName",contractExtinctionDataSubfolder.getEmployerFullName());
         contractExtinctionDataSubfolderPDFFields.setField("employerCCC",contractExtinctionDataSubfolder.getEmployerQuoteAccountCode());
-        contractExtinctionDataSubfolderPDFFields.setField("notificationDate",contractExtinctionDataSubfolder.getNotificationDate().format(dateFormatter));
-        contractExtinctionDataSubfolderPDFFields.setField("notificationHour",contractExtinctionDataSubfolder.getNotificationHour().format(timeFormatter));
+        contractExtinctionDataSubfolderPDFFields.setField("notificationDate",contractExtinctionDataSubfolder.getNotificationDate());
+        contractExtinctionDataSubfolderPDFFields.setField("notificationHour",contractExtinctionDataSubfolder.getNotificationHour());
         contractExtinctionDataSubfolderPDFFields.setField("employeeFullName",contractExtinctionDataSubfolder.getEmployeeFullName());
         contractExtinctionDataSubfolderPDFFields.setField("employeeNIF",contractExtinctionDataSubfolder.getEmployeeNif());
         contractExtinctionDataSubfolderPDFFields.setField("employeeNASS",contractExtinctionDataSubfolder.getEmployeeNASS());

@@ -387,6 +387,9 @@ public class ContractExtensionController {
         String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription() +
                 " [" + allContractData.getContractNewVersion().getContractJsonData().getWeeklyWorkHours() + HOURS_WORK_WEEK_TEXT + "]";
 
+        String durationDays = duration != null ? Long.toString(duration.toDays()) : "";
+
+
         return ContractExtensionDataSubfolder.create()
                 .withNotificationType(notificationType)
                 .withOfficialContractNumber(allContractData.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
@@ -406,7 +409,7 @@ public class ContractExtensionController {
                 .withStartDate(startDate)
                 .withEndDate(endDate)
                 .withDayOfWeekSet(dayOfWeekSet)
-                .withDurationDays(Long.toString(duration.toDays()))
+                .withDurationDays(durationDays)
                 .withSchedule(new HashSet<>())
                 .withAdditionalData(additionalData)
                 .withLaborCategory(allContractData.getContractNewVersion().getContractJsonData().getLaborCategory())

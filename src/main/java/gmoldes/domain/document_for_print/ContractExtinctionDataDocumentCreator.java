@@ -70,6 +70,9 @@ public class ContractExtinctionDataDocumentCreator {
 
         Set<WorkDaySchedule> schedule = null;
 
+        String publicNotes = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
+                .getPublicNotes().getText();
+
 
 
         return ContractDataToContractsAgent.create()
@@ -94,74 +97,77 @@ public class ContractExtinctionDataDocumentCreator {
                 .withEndDate(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue())
                 .withDurationDays(Duration.ZERO)
                 .withSchedule(schedule)
-                .withAdditionalData(retrievePublicNotes())
+                .withAdditionalData(publicNotes)
                 .withLaborCategory(contractFullDataDTO.getContractNewVersion().getContractJsonData().getLaborCategory())
                 .build();
     }
 
-    public ContractExtinctionDataSubfolder createContractExtinctionDataSubfolder(){
-
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
-
-        ContractFullDataDTO contractFullDataDTO = this.contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem();
-
-        String notificationType = Parameters.CONTRACT_EXTINCTION_TEXT;
-
-        LocalDate clientNotificationDate = this.contractVariationMainController.getContractVariationTypes().getDateNotification().getDate();
-        LocalTime clientNotificationHour = LocalTime.parse(this.contractVariationMainController.getContractVariationTypes().getHourNotification().getText());
-
-        String birthDate = contractFullDataDTO.getEmployee().getFechanacim() != null ? dateFormatter.format(contractFullDataDTO.getEmployee().getFechanacim()) : null;
-
-        LocalDate startDate = this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue();
-
-        String daysOfWeek = contractFullDataDTO.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork();
-        Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(daysOfWeek);
-
-        String address = contractFullDataDTO.getEmployee().getDireccion() != null ?  contractFullDataDTO.getEmployee().getDireccion() : "";
-        String codPostal = contractFullDataDTO.getEmployee().getCodpostal() != null ? contractFullDataDTO.getEmployee().getCodpostal().toString() : "";
-        String location = contractFullDataDTO.getEmployee().getLocalidad() != null ? contractFullDataDTO.getEmployee().getLocalidad() : "";
-        String fullAddress = address + "   " + codPostal + "   " + location;
-
-        StudyManager studyManager = new StudyManager();
-        StudyDTO study = studyManager.findStudyById(contractFullDataDTO.getEmployee().getNivestud());
-
-        ContractTypeController contractTypeController = new ContractTypeController();
-        Integer contractTypeId = contractFullDataDTO.getContractNewVersion().getContractJsonData().getContractType();
-        ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractTypeId);
-
-        String contractTypeDescription = contractTypeDTO.getColloquial() + ", " + contractFullDataDTO.getContractType().getContractDescription();
-
-        String fullPartialWorkDays = contractFullDataDTO.getContractNewVersion().getContractJsonData().getFullPartialWorkDay();
-        if(fullPartialWorkDays.equals(ContractConstants.PARTIAL_WORKDAY)) {
-            contractTypeDescription = contractTypeDescription + " [" + this.contractVariationMainController.getContractVariationParts().getContractSelector().getValue()
-                    .getContractNewVersion().getContractJsonData().getWeeklyWorkHours() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase() + "]";
-        }
-
-        return ContractExtinctionDataSubfolder.create()
-                .withNotificationType(notificationType)
-                .withOfficialContractNumber(contractFullDataDTO.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
-                .withEmployerFullName(contractFullDataDTO.getEmployer().toString())
-                .withEmployerQuoteAccountCode(contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
-                .withNotificationDate(clientNotificationDate)
-                .withNotificationHour(clientNotificationHour)
-                .withEmployeeFullName(contractFullDataDTO.getEmployee().getApellidos() + ", " + contractFullDataDTO.getEmployee().getNom_rzsoc())
-                .withEmployeeNif(Utilities.formatAsNIF(contractFullDataDTO.getEmployee().getNifcif()))
-                .withEmployeeNASS(contractFullDataDTO.getEmployee().getNumafss())
-                .withEmployeeBirthDate(birthDate)
-                .withEmployeeCivilState(contractFullDataDTO.getEmployee().getEstciv())
-                .withEmployeeNationality(contractFullDataDTO.getEmployee().getNacionalidad())
-                .withEmployeeFullAddress(fullAddress)
-                .withContractTypeDescription(contractTypeDescription)
-                .withEmployeeMaxStudyLevel(study.getStudyDescription())
-                .withStartDate(null)
-                .withEndDate(startDate)
-                .withDayOfWeekSet(dayOfWeekSet)
-                .withDurationDays("")
-                .withSchedule(new HashSet<>())
-                .withAdditionalData(retrievePublicNotes())
-                .withLaborCategory(contractFullDataDTO.getContractNewVersion().getContractJsonData().getLaborCategory())
-                .build();
-    }
+//    public ContractExtinctionDataSubfolder createContractExtinctionDataSubfolder(){
+//
+//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+//
+//        ContractFullDataDTO contractFullDataDTO = this.contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem();
+//
+//        String notificationType = Parameters.CONTRACT_EXTINCTION_TEXT;
+//
+//        String clientNotificationDate = dateFormatter.format(this.contractVariationMainController.getContractVariationTypes().getDateNotification().getDate());
+//        String clientNotificationHour = this.contractVariationMainController.getContractVariationTypes().getHourNotification().getText();
+//
+//        String birthDate = contractFullDataDTO.getEmployee().getFechanacim() != null ? dateFormatter.format(contractFullDataDTO.getEmployee().getFechanacim()) : null;
+//
+//        String startDate = dateFormatter.format(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue());
+//
+//        String daysOfWeek = contractFullDataDTO.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork();
+//        Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(daysOfWeek);
+//
+//        String address = contractFullDataDTO.getEmployee().getDireccion() != null ?  contractFullDataDTO.getEmployee().getDireccion() : "";
+//        String codPostal = contractFullDataDTO.getEmployee().getCodpostal() != null ? contractFullDataDTO.getEmployee().getCodpostal().toString() : "";
+//        String location = contractFullDataDTO.getEmployee().getLocalidad() != null ? contractFullDataDTO.getEmployee().getLocalidad() : "";
+//        String fullAddress = address + "   " + codPostal + "   " + location;
+//
+//        StudyManager studyManager = new StudyManager();
+//        StudyDTO study = studyManager.findStudyById(contractFullDataDTO.getEmployee().getNivestud());
+//
+//        ContractTypeController contractTypeController = new ContractTypeController();
+//        Integer contractTypeId = contractFullDataDTO.getContractNewVersion().getContractJsonData().getContractType();
+//        ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractTypeId);
+//
+//        String contractTypeDescription = contractTypeDTO.getColloquial() + ", " + contractFullDataDTO.getContractType().getContractDescription();
+//
+//        String fullPartialWorkDays = contractFullDataDTO.getContractNewVersion().getContractJsonData().getFullPartialWorkDay();
+//        if(fullPartialWorkDays.equals(ContractConstants.PARTIAL_WORKDAY)) {
+//            contractTypeDescription = contractTypeDescription + " [" + this.contractVariationMainController.getContractVariationParts().getContractSelector().getValue()
+//                    .getContractNewVersion().getContractJsonData().getWeeklyWorkHours() + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase() + "]";
+//        }
+//
+//        String contractNumberGM = contractFullDataDTO.getContractNewVersion().getContractNumber().toString();
+//
+//        return ContractExtinctionDataSubfolder.create()
+//                .withNotificationType(notificationType)
+//                .withOfficialContractNumber(contractFullDataDTO.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
+//                .withEmployerFullName(contractFullDataDTO.getEmployer().toString())
+//                .withEmployerQuoteAccountCode(contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
+//                .withNotificationDate(clientNotificationDate)
+//                .withNotificationHour(clientNotificationHour)
+//                .withEmployeeFullName(contractFullDataDTO.getEmployee().getApellidos() + ", " + contractFullDataDTO.getEmployee().getNom_rzsoc())
+//                .withEmployeeNif(Utilities.formatAsNIF(contractFullDataDTO.getEmployee().getNifcif()))
+//                .withEmployeeNASS(contractFullDataDTO.getEmployee().getNumafss())
+//                .withEmployeeBirthDate(birthDate)
+//                .withEmployeeCivilState(contractFullDataDTO.getEmployee().getEstciv())
+//                .withEmployeeNationality(contractFullDataDTO.getEmployee().getNacionalidad())
+//                .withEmployeeFullAddress(fullAddress)
+//                .withContractTypeDescription(contractTypeDescription)
+//                .withEmployeeMaxStudyLevel(study.getStudyDescription())
+//                .withStartDate(null)
+//                .withEndDate(startDate)
+//                .withDayOfWeekSet(dayOfWeekSet)
+//                .withDurationDays("")
+//                .withSchedule(new HashSet<>())
+//                .withAdditionalData(retrievePublicNotes())
+//                .withLaborCategory(contractFullDataDTO.getContractNewVersion().getContractJsonData().getLaborCategory())
+//                .withGmContractNumber(contractNumberGM)
+//                .build();
+//    }
 
     private ContractFullDataDTO retrieveContractFullData(){
 
@@ -238,31 +244,31 @@ public class ContractExtinctionDataDocumentCreator {
 
     }
 
-    private String retrievePublicNotes(){
-
-        String extinctionContractCause = this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
-                .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
-
-        String holidaysUsedText;
-        if(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
-                .getRbHolidaysYes().isSelected()){
-            holidaysUsedText = "disfrutadas.";
-        } else if(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
-                .getRbHolidaysNo().isSelected()){
-            holidaysUsedText = "no disfrutadas.";
-        }else{
-            holidaysUsedText = "a calcular.";
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(extinctionContractCause);
-        sb.append(". Vacaciones ");
-        sb.append(holidaysUsedText);
-        sb.append("\n");
-        sb.append(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getPublicNotes().getText());
-
-        return sb.toString();
-    }
+//    private String retrievePublicNotes(){
+//
+//        String extinctionContractCause = this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
+//                .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
+//
+//        String holidaysUsedText;
+//        if(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
+//                .getRbHolidaysYes().isSelected()){
+//            holidaysUsedText = "disfrutadas.";
+//        } else if(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
+//                .getRbHolidaysNo().isSelected()){
+//            holidaysUsedText = "no disfrutadas.";
+//        }else{
+//            holidaysUsedText = "a calcular.";
+//        }
+//
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(extinctionContractCause);
+//        sb.append(". Vacaciones ");
+//        sb.append(holidaysUsedText);
+//        sb.append("\n");
+//        sb.append(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getPublicNotes().getText());
+//
+//        return sb.toString();
+//    }
 
     private Set<DayOfWeek> retrieveDayOfWeekSet(String daysOfWeek){
 

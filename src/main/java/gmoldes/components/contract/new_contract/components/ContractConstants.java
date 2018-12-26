@@ -51,7 +51,7 @@ public class ContractConstants {
     // Extinciones de contratos
     public static final String CONTRACT_EXTINCTION_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT = "Se ha registrado la variación del contrato pero no enviado al gestor.\n ¿Es correcto?";
     public static final String EXTINCTION_DATE_PRIOR_CONTRACT_START_DATE = "La fecha de extinción indicada es anterior a la fecha de inicio del contrato.";
-
+    public static final String CONTRACT_EXTINCTION_OPERATION_ABANDONED = "Se ha abandonado la operación de extinción del contrato.";
     // Prórrogas de contratos
     public static final String MAXIMUM_NUMBER_LEGALLY_PERMITTED_EXTENSIONS_IS_ALREADY_REGISTERED = "Ya están registradas el número máximo de prórrogas legalmente permitidas para este contrato.";
     public static final String MAXIMUM_LEGAL_NUMBER_OF_MONTHS_OF_CONTRACT_IS_EXCEEDED = "Con las fechas seleccionadas se sobrepasa el máximo número legal de meses de duración del contrato.";
