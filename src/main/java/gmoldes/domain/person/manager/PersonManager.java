@@ -6,6 +6,7 @@ import gmoldes.domain.person.persistence.dao.PersonDAO;
 import gmoldes.domain.person.persistence.vo.PersonVO;
 
 import java.text.Collator;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -49,6 +50,7 @@ public class PersonManager {
         PersonDAO personDAO = PersonDAO.PersonDAOFactory.getInstance();
         List<PersonVO> personVOList = personDAO.findAllPersonsByNamePattern(namePattern);
         for (PersonVO personVO : personVOList) {
+            LocalDate fechaNacim = personVO.getFechanacim() != null ? personVO.getFechanacim().toLocalDate() : null;
             PersonDTO personDTO = PersonDTO.create()
                     .withIdpersona(personVO.getIdpersona())
                     .withApellidos(personVO.getApellidos())
@@ -57,7 +59,7 @@ public class PersonManager {
                     .withDireccion(personVO.getDireccion())
                     .withEstciv(personVO.getEstciv())
                     .withNumafss(personVO.getNumafss())
-                    .withFechanacim(personVO.getFechanacim().toLocalDate())
+                    .withFechanacim(fechaNacim)
                     .withLocalidad(personVO.getLocalidad())
                     .withNacionalidad(personVO.getNacionalidad())
                     .withNifcif(personVO.getNifcif())
