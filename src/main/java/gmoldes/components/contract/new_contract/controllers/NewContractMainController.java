@@ -22,7 +22,7 @@ import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.services.AgentNotificator;
-import gmoldes.services.email.EmailParameters;
+import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
@@ -196,18 +196,18 @@ public class NewContractMainController extends VBox {
             EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName);
 
             try {
-                isSendOk = agentNotificator.sendEmailToContractAgent(emailDataCreationDTO);
+                isSendOk = agentNotificator.sendEmailToContractsAgent(emailDataCreationDTO);
             } catch (AddressException e) {
                 e.printStackTrace();
             }
             if(isSendOk){
 
-                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_SEND_OK);
+                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_SEND_OK);
                 contractHasBeenSentToContractAgent = true;
                 contractActionComponents.enableSendMailButton(false);
 
             }else{
-                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_NOT_SEND_OK);
+                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_NOT_SEND_OK);
             }
         }
     }
@@ -589,7 +589,7 @@ public class NewContractMainController extends VBox {
 
         ClientDTO employerDTO = contractParts.getSelectedEmployer();
         PersonDTO employeeDTO = contractParts.getSelectedEmployee();
-        String variationTypeText = EmailParameters.STANDARD_NEW_CONTRACT_TEXT;
+        String variationTypeText = EmailConstants.STANDARD_NEW_CONTRACT_TEXT;
         return EmailDataCreationDTO.create()
                 .withPath(path)
                 .withFileName(attachedFileName)

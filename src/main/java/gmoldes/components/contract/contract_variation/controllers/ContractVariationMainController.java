@@ -18,7 +18,7 @@ import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.services.AgentNotificator;
-import gmoldes.services.email.EmailParameters;
+import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import javafx.beans.value.ChangeListener;
@@ -263,9 +263,10 @@ public class ContractVariationMainController extends VBox {
             ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
 
             MessageEvent messageEvent = contractExtinctionController.executeContractExtinctionOperations();
-            if (!messageEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK)) {
+            if (!messageEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK) &&
+                    !messageEvent.getMessageText().isEmpty()) {
                 Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageEvent.getMessageText());
-                contractVariationContractVariations.getContractVariationContractExtinction().cleanComponents();
+                //contractVariationContractVariations.getContractVariationContractExtinction().cleanComponents();
 
                 return;
             }
@@ -275,24 +276,25 @@ public class ContractVariationMainController extends VBox {
             return;
         }
 
-//        // Contract extension
-//        RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
-//        if(rbContractExtension.isSelected()) {
-//            ContractExtensionController contractExtensionController = new ContractExtensionController(this);
-//
-//            MessageEvent messageEvent = contractExtensionController.executeContractExtensionOperations();
-//            if (!messageEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK)) {
-//                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageEvent.getMessageText());
-//                contractVariationContractVariations.getContractVariationContractExtinction().cleanComponents();
-//
-//                return;
-//            }
-//
-//            setDataEditionBlockedAndEnableSendMail();
-//
-//            return;
-//
-//        }
+        // Contract extension
+        RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
+        if(rbContractExtension.isSelected()) {
+            ContractExtensionController contractExtensionController = new ContractExtensionController(this);
+
+            MessageEvent messageEvent = contractExtensionController.executeContractExtensionOperations();
+            if (!messageEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK) &&
+                    !messageEvent.getMessageText().isEmpty()) {
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageEvent.getMessageText());
+                //contractVariationContractVariations.getContractVariationContractExtension().cleanComponents();
+
+                return;
+            }
+
+            setDataEditionBlockedAndEnableSendMail();
+
+            return;
+
+        }
 
 
 //        // Contract conversion
@@ -343,12 +345,12 @@ public class ContractVariationMainController extends VBox {
 
             if(isSendOk){
 
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_SEND_OK);
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_SEND_OK);
                 contractHasBeenSentToContractAgent = true;
                 this.contractVariationActionComponents.enableSendMailButton(false);
 
             }else{
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_NOT_SEND_OK);
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_NOT_SEND_OK);
             }
         }
     }
@@ -502,7 +504,7 @@ public class ContractVariationMainController extends VBox {
 //        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailParameters.STANDARD_CONTRACT_EXTINCTION_TEXT);
 //
 //        try {
-//            isSendOk = agentNotificator.sendEmailToContractAgent(emailDataCreationDTO);
+//            isSendOk = agentNotificator.sendEmailToContractsAgent(emailDataCreationDTO);
 //        } catch (AddressException e) {
 //            e.printStackTrace();
 //        }
@@ -526,10 +528,10 @@ public class ContractVariationMainController extends VBox {
 
         AgentNotificator agentNotificator = new AgentNotificator();
 
-        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailParameters.STANDARD_CONTRACT_EXTENSION_TEXT);
+        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailConstants.STANDARD_CONTRACT_EXTENSION_TEXT);
 
         try {
-            isSendOk = agentNotificator.sendEmailToContractAgent(emailDataCreationDTO);
+            isSendOk = agentNotificator.sendEmailToContractsAgent(emailDataCreationDTO);
         } catch (AddressException e) {
             e.printStackTrace();
         }

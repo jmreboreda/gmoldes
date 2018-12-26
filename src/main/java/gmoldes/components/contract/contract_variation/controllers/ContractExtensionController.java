@@ -21,7 +21,7 @@ import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
-import gmoldes.services.email.EmailParameters;
+import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
@@ -84,7 +84,7 @@ public class ContractExtensionController{
         // 4. Persistence question
         if (!Message.confirmationMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)) {
 
-            return new MessageEvent(ContractConstants.CONTRACT_EXTINCTION_OPERATION_ABANDONED);
+            return new MessageEvent(ContractConstants.CONTRACT_EXTENSION_OPERATION_ABANDONED);
         }
 
         // 5. Persist contract extension
@@ -94,7 +94,7 @@ public class ContractExtensionController{
             return new MessageEvent(persistenceEvent.getPersistenceMessage());
         }
 
-        Message.warningMessage(this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
+        Message.warningMessage(this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK);
 
 
         // 6. Persist traceability
@@ -156,16 +156,16 @@ public class ContractExtensionController{
 
         if(ChronoUnit.DAYS.between(limitDatePreviousOfNotifyToAdministration, date) >= 0){
             return new CompatibleVariationEvent(
-                    null,
-                    null,
-                    null,
+                    false,
+                    true,
+                    false,
                     "");
         }
 
         return new CompatibleVariationEvent(
-                null,
-                null,
-                null,
+                false,
+                true,
+                false,
                 ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION);
     }
 
@@ -188,9 +188,9 @@ public class ContractExtensionController{
             if(counter >= ContractParameters.MAXIMUM_NUMBER_OF_EXTENSIONS_OF_A_CONTRACT) {
 
                 return new CompatibleVariationEvent(
+                        false,
                         true,
-                        null,
-                        null,
+                        false,
                         ContractConstants.MAXIMUM_NUMBER_LEGALLY_PERMITTED_EXTENSIONS_IS_ALREADY_REGISTERED);
             }
         }
@@ -223,9 +223,9 @@ public class ContractExtensionController{
             System.out.println("Número meses más prórroga (en meses promedio): " + numberDaysOfContractDuration/ContractParameters.AVERAGE_OF_DAYS_IN_A_MONTH);
 
             return new CompatibleVariationEvent(
+                    false,
                     true,
-                    null,
-                    null,
+                    false,
                     ContractConstants.MAXIMUM_LEGAL_NUMBER_OF_MONTHS_OF_CONTRACT_IS_EXCEEDED);
         }
 
@@ -236,9 +236,9 @@ public class ContractExtensionController{
         if(contractExtensionDateFrom.isBefore(contractExpectedEndDate) ||
                 contractExtensionDateFrom.equals(contractExpectedEndDate)){
             return new CompatibleVariationEvent(
+                    false,
                     true,
-                    null,
-                    null,
+                    false,
                     ContractConstants.INITIAL_DATE_EXTENSION_MUST_BE_IMMEDIATELY_AFTER_CONTRACT_EXPECTED_END_DATE);
         }
 
@@ -252,15 +252,15 @@ public class ContractExtensionController{
                         (contractExtensionDateFrom.isBefore(contractVariationDTO.getExpectedEndDate())) ||
                         contractExtensionDateFrom.equals(contractVariationDTO.getExpectedEndDate())){
                     return new CompatibleVariationEvent(
+                            false,
                             true,
-                            null,
-                            null,
+                            false,
                             ContractConstants.EXIST_PREVIOUS_INCOMPATIBLE_CONTRACT_VARIATION_EXTENSION);
                 }
             }
         }
 
-        return new CompatibleVariationEvent(true, false, false, "");
+        return new CompatibleVariationEvent(false, true, false, "");
     }
 
 
@@ -542,10 +542,10 @@ public class ContractExtensionController{
 
         AgentNotificator agentNotificator = new AgentNotificator();
 
-        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailParameters.STANDARD_CONTRACT_EXTINCTION_TEXT);
+        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailConstants.STANDARD_CONTRACT_EXTINCTION_TEXT);
 
         try {
-            isSendOk = agentNotificator.sendEmailToContractAgent(emailDataCreationDTO);
+            isSendOk = agentNotificator.sendEmailToContractsAgent(emailDataCreationDTO);
         } catch (AddressException e) {
             e.printStackTrace();
         }

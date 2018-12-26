@@ -20,7 +20,7 @@ import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
-import gmoldes.services.email.EmailParameters;
+import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
@@ -475,10 +475,10 @@ public class ContractExtinctionController{
 
         AgentNotificator agentNotificator = new AgentNotificator();
 
-        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailParameters.STANDARD_CONTRACT_EXTINCTION_TEXT);
+        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailConstants.STANDARD_CONTRACT_EXTINCTION_TEXT);
 
         try {
-            isSendOk = agentNotificator.sendEmailToContractAgent(emailDataCreationDTO);
+            isSendOk = agentNotificator.sendEmailToContractsAgent(emailDataCreationDTO);
         } catch (AddressException e) {
             e.printStackTrace();
         }
