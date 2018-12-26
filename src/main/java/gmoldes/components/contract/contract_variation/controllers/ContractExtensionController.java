@@ -1,83 +1,120 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
-import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract.contract_variation.events.ContractVariationPersistenceEvent;
 import gmoldes.components.contract.contract_variation.events.MessageEvent;
-import gmoldes.components.contract.contract_variation.forms.ContractExtensionDataSubfolder;
-import gmoldes.components.contract.contract_variation.services.ContractExtensionDataSubfolderPDFCreator;
+import gmoldes.components.contract.contract_variation.events.ContractVariationPersistenceEvent;
+import gmoldes.components.contract.contract_variation.forms.ContractExtinctionDataSubfolder;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
+import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.*;
-import gmoldes.domain.contractjsondata.ContractJsonData;
+import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
+import gmoldes.domain.email.EmailDataCreationDTO;
+import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
+import gmoldes.services.email.EmailParameters;
 import gmoldes.utilities.Message;
-import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 
+import javax.mail.internet.AddressException;
 import java.awt.print.PrinterException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.*;
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-public class ContractExtensionController {
+public class ContractExtensionController{
 
-    private ContractVariationMainController contractVariationMainController;
 
     private ContractManager contractManager = new ContractManager();
-
-    private static final Integer VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION = 220;
-    private static final String HOURS_WORK_WEEK_TEXT = " horas de trabajo por semana ";
+    private ContractVariationMainController contractVariationMainController;
 
     public ContractExtensionController(ContractVariationMainController contractVariationMainController){
 
         this.contractVariationMainController = contractVariationMainController;
     }
 
-     public Boolean manageContractExtension() {
 
-        ContractVariationPersistenceEvent persistenceEvent = persistContractExtension();
+    public MessageEvent executeContractExtensionOperations(){
 
-        if(persistenceEvent.getPersistenceIsOk()){
+        // 1. Verify correct contract extension data
+        MessageEvent messageEvent = verifyIsCorrectContractExtensionData();
+        if(!messageEvent.getMessageText().equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)){
 
-            Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, persistenceEvent.getPersistenceMessage());
-
-            String durationContractExtensionText = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getContractExtensionDuration().getText();
-            Duration durationDays = Utilities.convertIntegerToDuration(Integer.parseInt(durationContractExtensionText));
-
-            StringBuilder sb = new StringBuilder();
-
-            String publicNotes = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getPublicNotes().getText();
-            sb.append(publicNotes);
-
-            ContractExtensionDataSubfolder contractExtensionDataSubfolder = createContractExtensionDataSubfolder(sb.toString(), durationDays);
-
-            printContractExtensionDataSubfolder(contractExtensionDataSubfolder);
-
-            return true;
+            return messageEvent;
         }
 
+        // 2.Verify the notification period to the Labor Administration
+        LocalDate effectDateRequestedForContractVariation = contractVariationMainController.getContractVariationContractVariations()
+                .getContractVariationContractExtension().getDateFrom().getValue();
 
-        System.out.println(persistenceEvent.getPersistenceMessage());
-        Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, persistenceEvent.getPersistenceMessage());
-        Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_NOT_OK);
+        CompatibleVariationEvent dateAdministrationCompatibleEvent = dateToNotifyContractVariationToAdministrationIsCorrect(effectDateRequestedForContractVariation);
+        if(dateAdministrationCompatibleEvent.getErrorContractVariationMessage().equals(ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION)){
+            Boolean isCorrectDate = Message.confirmationMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+                    dateAdministrationCompatibleEvent.getErrorContractVariationMessage());
+            if(!isCorrectDate){
 
-        return false;
+                return new MessageEvent("");
+            }
+        }
+
+        // 3. Check exist incompatible operations
+        CompatibleVariationEvent compatibleVariationEvent = checkExistenceIncompatibleVariationsForContractExtension();
+        if(compatibleVariationEvent.getErrorContractVariationMessage() != null){
+
+            return new MessageEvent(compatibleVariationEvent.getErrorContractVariationMessage());
+        }
+
+        // 4. Persistence question
+        if (!Message.confirmationMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)) {
+
+            return new MessageEvent(ContractConstants.CONTRACT_EXTINCTION_OPERATION_ABANDONED);
+        }
+
+        // 5. Persist contract extinction
+        ContractVariationPersistenceEvent persistenceEvent = persistContractExtinction();
+        if(!persistenceEvent.getPersistenceIsOk()) {
+
+            return new MessageEvent(persistenceEvent.getPersistenceMessage());
+        }
+
+        Message.warningMessage(this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
+
+
+        // 6. Persist traceability
+        Integer traceabilityId = persistTraceabilityControlData();
+        if(traceabilityId == null){
+
+            return new MessageEvent("Ha petado la persistencia de la trazabilidad de la extinción del contrato.");
+        }
+
+        // 7. Print documentation
+        StringBuilder sb = new StringBuilder();
+
+        String publicNotes = retrievePublicNotes();
+        sb.append(publicNotes);
+
+        ContractExtinctionDataSubfolder contractExtinctionDataSubfolder = createContractExtinctionDataSubfolder(sb.toString(), null);
+
+        printContractExtinctionDataSubfolder(contractExtinctionDataSubfolder);
+
+        return new MessageEvent(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
     }
 
-    public MessageEvent verifyIsCorrectContractExtensionData(){
+    private MessageEvent verifyIsCorrectContractExtensionData(){
 
         if(contractVariationMainController.getContractVariationTypes().getDateNotification().getDate() == null){
 
@@ -99,8 +136,8 @@ public class ContractExtensionController {
             return new MessageEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_TO);
         }
 
-        if(Period.between(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue(),
-                contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue()).getDays() < 0){
+        if(ChronoUnit.DAYS.between(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue(),
+                contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue()) <= 0){
 
             return new MessageEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES);
         }
@@ -108,116 +145,81 @@ public class ContractExtensionController {
         return new MessageEvent(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED);
     }
 
+
+    private CompatibleVariationEvent dateToNotifyContractVariationToAdministrationIsCorrect(LocalDate date){
+
+        LocalDate limitDatePreviousOfNotifyToAdministration = contractVariationMainController.getContractVariationParts().getInForceDate().getValue()
+                .minusDays(ContractParameters.MAXIMUM_NUMBER_DAYS_OF_DELAY_IN_NOTIFICATIONS_TO_THE_LABOR_ADMINISTRACION);
+
+        if(ChronoUnit.DAYS.between(limitDatePreviousOfNotifyToAdministration, date) >= 0){
+            return new CompatibleVariationEvent(
+                    null,
+                    null,
+                    null,
+                    "");
+        }
+
+        return new CompatibleVariationEvent(
+                null,
+                null,
+                null,
+                ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION);
+    }
+
     public CompatibleVariationEvent checkExistenceIncompatibleVariationsForContractExtension() {
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
-        Integer contractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
-        LocalDate contractExtensionDateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue();
-        LocalDate contractExtensionDateTo = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue();
+        Integer selectedContractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
 
-        // 1. The maximum number of legally permitted extensions is already registered
-        Integer counter = 0;
-        List<ContractVariationDTO> contractVariationDTOList =  applicationMainController.findAllContractVariationByContractNumber(contractNumber);
-        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList){
-            if(contractVariationDTO.getVariationType().equals(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)){
-                counter++;
-            }
+        // 1. Extension date from requested for the contract is higher than the expected termination date
+        LocalDate expectedEndDate = contractVariationMainController.getContractVariationParts().getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
+        LocalDate extinctionDate = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue();
 
-            if(counter >= ContractParameters.MAXIMUM_NUMBER_OF_EXTENSIONS_OF_A_CONTRACT) {
+        if (expectedEndDate != null && extinctionDate.isAfter(expectedEndDate)) {
+
+            return new CompatibleVariationEvent(
+                    true,
+                    null,
+                    null,
+                    ContractConstants.EXTINCTION_DATE_EXCEEDED_BY_DATE_REQUESTED);
+        }
+
+
+        // 4. Registered transactions with date after the requested start date do not allow the termination of the contract on the requested date
+        List<ContractVariationDTO> contractVariationDTOList1 = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
+        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList1) {
+            if(contractVariationDTO.getStartDate().isAfter(extinctionDate) ||
+                    (contractVariationDTO.getModificationDate() != null && contractVariationDTO.getModificationDate().isAfter(extinctionDate))){
 
                 return new CompatibleVariationEvent(
                         true,
                         null,
                         null,
-                        ContractConstants.MAXIMUM_NUMBER_LEGALLY_PERMITTED_EXTENSIONS_IS_ALREADY_REGISTERED);
+                        ContractConstants.CONTRACT_VARIATIONS_IN_THE_FUTURE_NOT_ALLOW_EXTINCTION_ON_REQUESTED_DATE);
             }
+
         }
 
-        // 2. Exceeded the number of months of maximum duration of the initial contract plus its extensions
-        List<ContractNewVersionDTO> contractNewVersionDTOList = applicationMainController.findHistoryOfContractByContractNumber(contractNumber);
-
-        Long numberDaysOfContractDuration = 0L;
-
-        if(contractNewVersionDTOList.size() == 1){
-            numberDaysOfContractDuration = ChronoUnit.DAYS.between(contractNewVersionDTOList.get(0).getStartDate(), contractNewVersionDTOList.get(0).getExpectedEndDate()) + 1;
-            numberDaysOfContractDuration = numberDaysOfContractDuration + ChronoUnit.DAYS.between(contractExtensionDateFrom, contractExtensionDateTo) + 1;
-        }
-        else {
-
-            Integer whileCounter = 0;
-            while (whileCounter + 1 < contractNewVersionDTOList.size()) {
-
-                LocalDate previousDate = contractNewVersionDTOList.get(whileCounter).getStartDate();
-                LocalDate nextDate = contractNewVersionDTOList.get(whileCounter + 1).getStartDate();
-
-                numberDaysOfContractDuration = numberDaysOfContractDuration + ChronoUnit.DAYS.between(previousDate, nextDate) + 1;
-
-                whileCounter++;
-            }
-        }
-
-        if(numberDaysOfContractDuration/ContractParameters.AVERAGE_OF_DAYS_IN_A_MONTH > ContractParameters.NUMBER_MONTHS_MAXIMUM_DURATION_INITIAL_CONTRACT_PLUS_ITS_EXTENSIONS){
-
-            System.out.println("Número meses más prórroga (en meses promedio): " + numberDaysOfContractDuration/ContractParameters.AVERAGE_OF_DAYS_IN_A_MONTH);
-
-            return new CompatibleVariationEvent(
-                    true,
-                    null,
-                    null,
-                    ContractConstants.MAXIMUM_LEGAL_NUMBER_OF_MONTHS_OF_CONTRACT_IS_EXCEEDED);
-        }
-
-        System.out.println("Número meses más prórroga (en meses promedio): " + numberDaysOfContractDuration/ContractParameters.AVERAGE_OF_DAYS_IN_A_MONTH);
-
-        // 3. The initial date of the extension of a contract can not be earlier than the end date established for it
-        LocalDate contractExpectedEndDate = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate();
-        if(contractExtensionDateFrom.isBefore(contractExpectedEndDate) ||
-                contractExtensionDateFrom.equals(contractExpectedEndDate)){
-            return new CompatibleVariationEvent(
-                    true,
-                    null,
-                    null,
-                    ContractConstants.INITIAL_DATE_EXTENSION_MUST_BE_IMMEDIATELY_AFTER_CONTRACT_EXPECTED_END_DATE);
-        }
-
-        // 4. An extension of the contract incompatible with the requested one is already registered
-        List<ContractVariationDTO> contractVariationDTOList_2 =  applicationMainController.findAllContractVariationByContractNumber(contractNumber);
-        List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
-        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList_2) {
-            for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
-                if (typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
-                        typesContractVariationsDTO.getExtension() &&
-                        (contractExtensionDateFrom.isBefore(contractVariationDTO.getExpectedEndDate())) ||
-                        contractExtensionDateFrom.equals(contractVariationDTO.getExpectedEndDate())){
-                    return new CompatibleVariationEvent(
-                            true,
-                            null,
-                            null,
-                            ContractConstants.EXIST_PREVIOUS_INCOMPATIBLE_CONTRACT_VARIATION_EXTENSION);
-                }
-            }
-        }
-
-        return new CompatibleVariationEvent(true, false, false, "");
+        return new CompatibleVariationEvent(true, false, false, null);
     }
 
-    public ContractVariationPersistenceEvent persistContractExtension(){
+    public ContractVariationPersistenceEvent persistContractExtinction(){
 
-        final ContractNewVersionDTO contractNewVersionExtendedDTO = contractVariationMainController.getContractVariationParts().getContractSelector()
-                .getSelectionModel().getSelectedItem().getContractNewVersion();
+        ContractNewVersionDTO contractNewVersionToBeExtinguished = contractVariationMainController.getContractVariationParts()
+                .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
 
-        if(updateLastContractVariation(contractNewVersionExtendedDTO.getContractNumber()) == null) {
+        if(updateLastVariationOfContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
 
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD);
         }
 
-        if(persistNewContractVariation(contractNewVersionExtendedDTO) == null) {
+        if(persistNewContractExtinctionVariation(contractNewVersionToBeExtinguished) == null) {
 
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION);
         }
 
-        if(updateInitialContractOfContractExtension(contractNewVersionExtendedDTO.getContractNumber()) == null) {
+        if(updateInitialContractOfContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
 
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT);
         }
@@ -227,115 +229,78 @@ public class ContractExtensionController {
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
         }
 
-        return new ContractVariationPersistenceEvent(true, ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK);
+        return new ContractVariationPersistenceEvent(true, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
     }
 
     private Integer persistTraceabilityControlData(){
 
-        // The extension of the contract does not generate IDC, so the reception date of this is set at 31 -12-9999
-        LocalDate IDCReceptionDate = LocalDate.of(9999,12,31);
+        // In a contract extinction the date for the notice of termination of contract is set at 31-12-9999
+        LocalDate contractEndNoticeToSave = LocalDate.of(9999, 12, 31);
 
-        Integer contractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel()
-                .getSelectedItem().getContractNewVersion().getContractNumber();
-        LocalDate dateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue();
-        LocalDate dateTo =  contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue();
+        Integer contractVariationType = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
+                .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getId_variation();
+        Integer contractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
+        LocalDate dateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue();
 
-        TraceabilityContractDocumentationDTO traceabilityDTO = TraceabilityContractDocumentationDTO.create()
+        TraceabilityContractDocumentationDTO traceabilityContractExtinctionDTO = TraceabilityContractDocumentationDTO.create()
                 .withContractNumber(contractNumber)
-                .withVariationType(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)
+                .withVariationType(contractVariationType)
                 .withStartDate(dateFrom)
-                .withExpectedEndDate(dateTo)
-                .withIDCReceptionDate(IDCReceptionDate)
+                .withExpectedEndDate(dateFrom)
+                .withIDCReceptionDate(null)
+                .withDateDeliveryContractDocumentationToClient(null)
+                .withContractEndNoticeReceptionDate(contractEndNoticeToSave)
                 .build();
 
         ContractManager contractManager = new ContractManager();
 
-        return contractManager.saveContractTraceability(traceabilityDTO);
+        return contractManager.saveContractTraceability(traceabilityContractExtinctionDTO);
     }
 
-    private Integer updateLastContractVariation(Integer contractNumber){
+    private Integer updateLastVariationOfContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
+        Integer contractNumber = contractNewVersionExtinctedDTO.getContractNumber();
         List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(contractNumber);
         if(contractVariationDTOList.isEmpty())
         {
             return 0;
         }
 
-        LocalDate initialDateOfExtension = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension()
+        LocalDate dateOfExtinction = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
                 .getDateFrom().getValue();
 
-        ContractNewVersionDTO contractNewVersionDTOtoUpdate = new ContractNewVersionDTO();
-        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList){
-            if(contractVariationDTO.getModificationDate() == null){
+        contractNewVersionExtinctedDTO.setModificationDate(dateOfExtinction);
+        contractNewVersionExtinctedDTO.setEndingDate(dateOfExtinction);
 
-                contractNewVersionDTOtoUpdate = ContractNewVersionDTO.create()
-                        .withId(contractVariationDTO.getId())
-                        .withContractNumber(contractVariationDTO.getContractNumber())
-                        .withVariationType(contractVariationDTO.getVariationType())
-                        .withStartDate(contractVariationDTO.getStartDate())
-                        .withExpectedEndDate(contractVariationDTO.getExpectedEndDate())
-                        .withModificationDate(initialDateOfExtension)
-                        .withEndingDate(initialDateOfExtension)
-                        .withContractJsonData(contractVariationDTO.getContractJsonData())
-                        .build();
-            }
-        }
-
-        return contractManager.updateContractVariation(contractNewVersionDTOtoUpdate);
+        return contractManager.updateContractVariation(contractNewVersionExtinctedDTO);
     }
 
-    private Integer persistNewContractVariation(ContractNewVersionDTO contractNewVersionExtendedDTO){
+    private Integer persistNewContractExtinctionVariation(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
-        LocalDate initialDateOfExtension = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension()
+        Integer contractVariationExtinctionCause = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
+                .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getId_variation();
+
+        LocalDate dateOfExtinction = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
                 .getDateFrom().getValue();
 
-        LocalDate finalDateOfExtension = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension()
-                .getDateTo().getValue();
+        contractNewVersionExtinctedDTO.setId(null);
+        contractNewVersionExtinctedDTO.setVariationType(contractVariationExtinctionCause);
+        contractNewVersionExtinctedDTO.setStartDate(dateOfExtinction);
+        contractNewVersionExtinctedDTO.setModificationDate(dateOfExtinction);
+        contractNewVersionExtinctedDTO.setEndingDate(dateOfExtinction);
 
-        String newIdentificationContractNumberINEM = contractNewVersionExtendedDTO.getContractJsonData().getIdentificationContractNumberINEM() != null ?
-                contractNewVersionExtendedDTO.getContractJsonData().getIdentificationContractNumberINEM().concat("-1") : "";
-
-        ContractJsonData newContractJsonData = ContractJsonData.create()
-                .withClientGMId(contractNewVersionExtendedDTO.getContractJsonData().getClientGMId())
-                .withWorkerId(contractNewVersionExtendedDTO.getContractJsonData().getWorkerId())
-                .withQuoteAccountCode(contractNewVersionExtendedDTO.getContractJsonData().getQuoteAccountCode())
-                .withContractType(contractNewVersionExtendedDTO.getContractJsonData().getContractType())
-                .withLaborCategory(contractNewVersionExtendedDTO.getContractJsonData().getLaborCategory())
-                .withWeeklyWorkHours(contractNewVersionExtendedDTO.getContractJsonData().getWeeklyWorkHours())
-                .withDaysOfWeekToWork(contractNewVersionExtendedDTO.getContractJsonData().getDaysOfWeekToWork())
-                .withFullPartialWorkDay(contractNewVersionExtendedDTO.getContractJsonData().getFullPartialWorkDay())
-                .withIdentificationContractNumberINEM(newIdentificationContractNumberINEM)
-                .withNotesForContractManager(contractNewVersionExtendedDTO.getContractJsonData().getNotesForContractManager())
-                .withPrivateNotes(contractNewVersionExtendedDTO.getContractJsonData().getPrivateNotes())
-                .build();
-
-        ContractNewVersionDTO newContractExtensionToPersist = ContractNewVersionDTO.create()
-                .withId(null)
-                .withContractNumber(contractNewVersionExtendedDTO.getContractNumber())
-                .withVariationType(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)
-                .withStartDate(initialDateOfExtension)
-                .withExpectedEndDate(finalDateOfExtension)
-                .withModificationDate(null)
-                .withEndingDate(null)
-                .withContractJsonData(newContractJsonData)
-                .build();
-
-        return contractManager.saveContractVariation(newContractExtensionToPersist);
+        return contractManager.saveContractVariation(contractNewVersionExtinctedDTO);
     }
 
-    private Integer updateInitialContractOfContractExtension(Integer contractNumber){
+    private Integer updateInitialContractOfContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
-        LocalDate initialDateOfExtension = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension()
+        LocalDate dateOfExtinction = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
                 .getDateFrom().getValue();
 
-        InitialContractDTO initialContractToUpdateDTO = contractManager.findLastTuplaOfInitialContractByContractNumber(contractNumber);
-
-        if(initialContractToUpdateDTO.getModificationDate() != null) {
-
-            return 0;
-        }
+        InitialContractDTO initialContractToUpdateDTO = contractManager.findLastTuplaOfInitialContractByContractNumber(contractNewVersionExtinctedDTO.getContractNumber());
+        initialContractToUpdateDTO.setEndingDate(dateOfExtinction);
 
         ContractNewVersionDTO contractNewVersionToUpdateDTO = ContractNewVersionDTO.create()
                 .withId(initialContractToUpdateDTO.getId())
@@ -343,7 +308,7 @@ public class ContractExtensionController {
                 .withVariationType(initialContractToUpdateDTO.getVariationType())
                 .withStartDate(initialContractToUpdateDTO.getStartDate())
                 .withExpectedEndDate(initialContractToUpdateDTO.getExpectedEndDate())
-                .withModificationDate(initialDateOfExtension)
+                .withModificationDate(initialContractToUpdateDTO.getModificationDate())
                 .withEndingDate(initialContractToUpdateDTO.getEndingDate())
                 .withContractJsonData(initialContractToUpdateDTO.getContractJsonData())
                 .build();
@@ -351,7 +316,33 @@ public class ContractExtensionController {
         return contractManager.updateInitialContract(contractNewVersionToUpdateDTO);
     }
 
-    private ContractExtensionDataSubfolder createContractExtensionDataSubfolder(String additionalData, Duration duration){
+    private String retrievePublicNotes(){
+
+        String extinctionContractCause = this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
+                .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
+
+        String holidaysUsedText;
+        if(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
+                .getRbHolidaysYes().isSelected()){
+            holidaysUsedText = "disfrutadas.";
+        } else if(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
+                .getRbHolidaysNo().isSelected()){
+            holidaysUsedText = "no disfrutadas.";
+        }else{
+            holidaysUsedText = "a calcular.";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(extinctionContractCause);
+        sb.append(". Vacaciones ");
+        sb.append(holidaysUsedText);
+        sb.append("\n");
+        sb.append(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getPublicNotes().getText());
+
+        return sb.toString();
+    }
+
+    private ContractExtinctionDataSubfolder createContractExtinctionDataSubfolder(String additionalData, Duration duration){
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
@@ -359,15 +350,15 @@ public class ContractExtensionController {
 
         ContractFullDataDTO allContractData = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem();
 
-        String notificationType = Parameters.CONTRACT_EXTENSION_TEXT;
+        String notificationType = Parameters.CONTRACT_EXTINCTION_TEXT;
 
         String clientNotificationDate = dateFormatter.format(contractVariationMainController.getContractVariationTypes().getDateNotification().getDate());
         String clientNotificationHour = contractVariationMainController.getContractVariationTypes().getHourNotification().getTime().format(timeFormatter);
 
         String birthDate = allContractData.getEmployee().getFechanacim() != null ? dateFormatter.format(allContractData.getEmployee().getFechanacim()) : null;
 
-        String startDate = dateFormatter.format(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue());
-        String endDate = dateFormatter.format(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue());
+        String startDate = null;
+        String endDate = dateFormatter.format(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue());
 
         String daysOfWeek = allContractData.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork();
         Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(daysOfWeek);
@@ -384,13 +375,11 @@ public class ContractExtensionController {
         Integer contractTypeId = allContractData.getContractNewVersion().getContractJsonData().getContractType();
         ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractTypeId);
 
-        String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription() +
-                " [" + allContractData.getContractNewVersion().getContractJsonData().getWeeklyWorkHours() + HOURS_WORK_WEEK_TEXT + "]";
+        String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription();
 
         String durationDays = duration != null ? Long.toString(duration.toDays()) : "";
 
-
-        return ContractExtensionDataSubfolder.create()
+        return ContractExtinctionDataSubfolder.create()
                 .withNotificationType(notificationType)
                 .withOfficialContractNumber(allContractData.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
                 .withEmployerFullName(allContractData.getEmployer().toString())
@@ -416,8 +405,10 @@ public class ContractExtensionController {
                 .build();
     }
 
-    private void printContractExtensionDataSubfolder(ContractExtensionDataSubfolder contractDataSubfolder){
-        Path pathToContractExtensionDataSubfolder = retrievePathToContractExtensionDataSubfolderPDF(contractDataSubfolder);
+    private void printContractExtinctionDataSubfolder(ContractExtinctionDataSubfolder contractExtinctionDataSubfolder){
+
+        ContractExtinctionDataDocumentCreator contractExtinctionDataDocumentCreator = new ContractExtinctionDataDocumentCreator(contractVariationMainController);
+        Path pathToContractExtinctionDataSubfolder = contractExtinctionDataDocumentCreator.retrievePathToContractExtinctionDataSubfolderPDF(contractExtinctionDataSubfolder);
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("papersize","A3");
@@ -426,7 +417,7 @@ public class ContractExtensionController {
         attributes.put("orientation","LANDSCAPE");
 
         try {
-            String printOk = Printer.printPDF(pathToContractExtensionDataSubfolder.toString(), attributes);
+            String printOk = Printer.printPDF(pathToContractExtinctionDataSubfolder.toString(), attributes);
             Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
                 Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
@@ -436,21 +427,46 @@ public class ContractExtensionController {
         }
     }
 
-    private Path retrievePathToContractExtensionDataSubfolderPDF(ContractExtensionDataSubfolder contractDataSubfolder){
-        Path pathOut = null;
+    public Boolean sendsMailContractVariationExtinction(){
 
-        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
-        String temporalDir = maybePath.get().toString();
+        Boolean isSendOk = false;
+        Path pathOut;
 
-        Path pathToContractExtensionDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
+        ContractExtinctionDataDocumentCreator contractExtinctionDocumentCreator = new ContractExtinctionDataDocumentCreator(contractVariationMainController);
+
+        String publicNotes = retrievePublicNotes();
+
+        ContractDataToContractsAgent contractExtinctionDataToContractAgent = contractExtinctionDocumentCreator.createContractExtinctionDataDocumentForContractsAgent(publicNotes);
+
+        pathOut = contractExtinctionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
+
+
+        String attachedFileName = contractExtinctionDataToContractAgent.toFileName().concat(".pdf");
+
+        AgentNotificator agentNotificator = new AgentNotificator();
+
+        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailParameters.STANDARD_CONTRACT_EXTINCTION_TEXT);
+
         try {
-            Files.createDirectories(pathToContractExtensionDataSubfolder.getParent());
-            pathOut = ContractExtensionDataSubfolderPDFCreator.createContractExtensionDataSubfolderPDF(contractDataSubfolder, pathToContractExtensionDataSubfolder);
-        } catch (IOException | DocumentException e) {
+            isSendOk = agentNotificator.sendEmailToContractAgent(emailDataCreationDTO);
+        } catch (AddressException e) {
             e.printStackTrace();
         }
 
-        return pathOut;
+        return isSendOk;
+    }
+
+    private EmailDataCreationDTO retrieveDateForEmailCreation(Path path, String attachedFileName, String variationTypeText){
+
+        ClientDTO employerDTO = this.contractVariationMainController.getContractVariationParts().getClientSelector().getValue();
+        PersonDTO employeeDTO = this.contractVariationMainController.getContractVariationParts().getContractSelector().getValue().getEmployee();
+        return EmailDataCreationDTO.create()
+                .withPath(path)
+                .withFileName(attachedFileName)
+                .withEmployer(employerDTO)
+                .withEmployee(employeeDTO)
+                .withVariationTypeText(variationTypeText)
+                .build();
     }
 
     private Set<DayOfWeek> retrieveDayOfWeekSet(String daysOfWeek){
