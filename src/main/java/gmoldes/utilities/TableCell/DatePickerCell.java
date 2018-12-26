@@ -10,6 +10,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -44,7 +45,7 @@ public class DatePickerCell<S, T> extends TableCell<ContractScheduleDayDTO, Loca
 
         super.updateItem(item, empty);
 
-        SimpleDateFormat smp = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter smp = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
 
         if (null == this.datePicker) {
             System.out.println("datePicker is NULL");

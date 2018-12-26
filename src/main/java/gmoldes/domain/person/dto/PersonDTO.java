@@ -6,6 +6,7 @@
 package gmoldes.domain.person.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -17,7 +18,7 @@ public class PersonDTO {
     private String nifcif;
     private Short nifcifdup;
     private String numafss;
-    private Date fechanacim;
+    private LocalDate fechanacim;
     private String estciv;
     private String direccion;
     private String localidad;
@@ -26,7 +27,7 @@ public class PersonDTO {
     private String nacionalidad;
 
     public PersonDTO(Integer idpersona, String apellidos, String nom_rzsoc, String nifcif, Short nifcifdup,
-                     String numafss, Date fechanacim, String estciv, String direccion, String localidad,
+                     String numafss, LocalDate fechanacim, String estciv, String direccion, String localidad,
                      BigDecimal codpostal, Integer nivestud, String nacionalidad) {
         this.idpersona = idpersona;
         this.apellidos = apellidos;
@@ -91,11 +92,11 @@ public class PersonDTO {
         this.numafss = numafss;
     }
 
-    public Date getFechanacim() {
+    public LocalDate getFechanacim() {
         return fechanacim;
     }
 
-    public void setFechanacim(Date fechanacim) {
+    public void setFechanacim(LocalDate fechanacim) {
         this.fechanacim = fechanacim;
     }
 
@@ -169,7 +170,7 @@ public class PersonDTO {
         private String nifcif;
         private Short nifcifdup;
         private String numafss;
-        private Date fechanacim;
+        private LocalDate fechanacim;
         private String estciv;
         private String direccion;
         private String localidad;
@@ -207,7 +208,7 @@ public class PersonDTO {
             return this;
         }
 
-        public PersonDTO.PersonBuilder withFechanacim(Date fechanacim) {
+        public PersonDTO.PersonBuilder withFechanacim(LocalDate fechanacim) {
             this.fechanacim = fechanacim;
             return this;
         }

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -48,6 +49,14 @@
                      <VBox.margin>
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <TextArea fx:id="publicNotes" maxHeight="30.0" minWidth="725.0" promptText="Notas adicionales para el gestor">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin></TextArea>
+                     </children>
                   </HBox>
                </children>
             </VBox>

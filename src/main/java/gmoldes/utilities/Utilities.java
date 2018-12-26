@@ -2,9 +2,7 @@ package gmoldes.utilities;
 
 import javafx.util.StringConverter;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -144,7 +142,7 @@ public class Utilities {
 
     public static boolean validateDate(String date) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
+            DateFormat dateFormat = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
             dateFormat.setLenient(false);
             dateFormat.parse(date);
         } catch (ParseException e) {

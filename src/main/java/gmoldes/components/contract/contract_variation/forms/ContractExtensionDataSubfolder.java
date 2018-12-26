@@ -16,8 +16,8 @@ public class ContractExtensionDataSubfolder {
     private String officialContractNumber;
     private String employerFullName;
     private String employerQuoteAccountCode;
-    private LocalDate notificationDate;
-    private LocalTime notificationHour;
+    private String notificationDate;
+    private String notificationHour;
     private String employeeFullName;
     private String employeeNif;
     private String employeeNASS;
@@ -27,21 +27,21 @@ public class ContractExtensionDataSubfolder {
     private String employeeFullAddress;
     private String employeeMaxStudyLevel;
     private Set<DayOfWeek> dayOfWeekSet;
-    private Duration hoursWorkWeek;
+    private String hoursWorkWeek;
     private String contractTypeDescription;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Duration durationDays;
+    private String startDate;
+    private String endDate;
+    private String durationDays;
     private Set<WorkDaySchedule> schedule;
     private String additionalData;
     private String laborCategory;
     private String gmContractNumber;
 
-    public ContractExtensionDataSubfolder(String notificationType, String officialContractNumber, String employerFullName, String employerQuoteAccountCode, LocalDate notificationDate,
-                                          LocalTime notificationHour, String employeeFullName, String employeeNif, String employeeNASS,
+    public ContractExtensionDataSubfolder(String notificationType, String officialContractNumber, String employerFullName, String employerQuoteAccountCode, String notificationDate,
+                                          String notificationHour, String employeeFullName, String employeeNif, String employeeNASS,
                                           String employeeBirthDate, String employeeCivilState, String employeeNationality, String employeeFullAddress,
-                                          String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, Duration hoursWorkWeek, String contractTypeDescription,
-                                          LocalDate startDate, LocalDate endDate, Duration durationDays, Set<WorkDaySchedule> schedule,
+                                          String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, String hoursWorkWeek, String contractTypeDescription,
+                                          String startDate, String endDate, String durationDays, Set<WorkDaySchedule> schedule,
                                           String additionalData, String laborCategory, String gmContractNumber) {
 
         this.notificationType = notificationType;
@@ -86,11 +86,11 @@ public class ContractExtensionDataSubfolder {
         return employerQuoteAccountCode;
     }
 
-    public LocalDate getNotificationDate() {
+    public String getNotificationDate() {
         return notificationDate;
     }
 
-    public LocalTime getNotificationHour() {
+    public String getNotificationHour() {
         return notificationHour;
     }
 
@@ -130,7 +130,7 @@ public class ContractExtensionDataSubfolder {
         return dayOfWeekSet;
     }
 
-    public Duration getHoursWorkWeek() {
+    public String getHoursWorkWeek() {
         return hoursWorkWeek;
     }
 
@@ -138,15 +138,15 @@ public class ContractExtensionDataSubfolder {
         return contractTypeDescription;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public Duration getDurationDays() {
+    public String getDurationDays() {
         return durationDays;
     }
 
@@ -170,14 +170,14 @@ public class ContractExtensionDataSubfolder {
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd_MM_yyyy");
 
-        LocalDate fileNameDate = startDate != null ? startDate : endDate;
+        String fileNameDate = startDate != null ? startDate : endDate;
 
         return Utilities.replaceWithUnderscore(employerFullName)
                 + "_" +
 //                Utilities.replaceWithUnderscore(Parameters.NEW_CONTRACT_TEXT.toLowerCase())
                 Utilities.replaceWithUnderscore(getNotificationType().toLowerCase())
                 + "_" +
-                fileNameDate.format(dateFormatter)
+                fileNameDate
                 + "_" +
                 Utilities.replaceWithUnderscore(employeeFullName);
     }
@@ -192,8 +192,8 @@ public class ContractExtensionDataSubfolder {
         private String officialContractNumber;
         private String employerFullName;
         private String employerQuoteAccountCode;
-        private LocalDate notificationDate;
-        private LocalTime notificationHour;
+        private String notificationDate;
+        private String notificationHour;
         private String employeeFullName;
         private String employeeNif;
         private String employeeNASS;
@@ -203,11 +203,11 @@ public class ContractExtensionDataSubfolder {
         private String employeeFullAddress;
         private String employeeMaxStudyLevel;
         private Set<DayOfWeek> dayOfWeekSet;
-        private Duration hoursWorkWeek;
+        private String hoursWorkWeek;
         private String contractTypeDescription;
-        private LocalDate startDate;
-        private LocalDate endDate;
-        private Duration durationDays;
+        private String startDate;
+        private String endDate;
+        private String durationDays;
         private Set<WorkDaySchedule> schedule;
         private String additionalData;
         private String laborCategory;
@@ -233,12 +233,12 @@ public class ContractExtensionDataSubfolder {
             return this;
         }
 
-        public ContractExtensionDataSubfolderBuilder withNotificationDate(LocalDate notificationDate) {
+        public ContractExtensionDataSubfolderBuilder withNotificationDate(String notificationDate) {
             this.notificationDate = notificationDate;
             return this;
         }
 
-        public ContractExtensionDataSubfolderBuilder withNotificationHour(LocalTime notificationHour) {
+        public ContractExtensionDataSubfolderBuilder withNotificationHour(String notificationHour) {
             this.notificationHour = notificationHour;
             return this;
         }
@@ -288,7 +288,7 @@ public class ContractExtensionDataSubfolder {
             return this;
         }
 
-        public ContractExtensionDataSubfolderBuilder withHoursWorkWeek(Duration hoursWorkWeek) {
+        public ContractExtensionDataSubfolderBuilder withHoursWorkWeek(String hoursWorkWeek) {
             this.hoursWorkWeek = hoursWorkWeek;
             return this;
         }
@@ -298,17 +298,17 @@ public class ContractExtensionDataSubfolder {
             return this;
         }
 
-        public ContractExtensionDataSubfolderBuilder withStartDate(LocalDate startDate) {
+        public ContractExtensionDataSubfolderBuilder withStartDate(String startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public ContractExtensionDataSubfolderBuilder withEndDate(LocalDate endDate) {
+        public ContractExtensionDataSubfolderBuilder withEndDate(String endDate) {
             this.endDate = endDate;
             return this;
         }
 
-        public ContractExtensionDataSubfolderBuilder withDurationDays(Duration durationDays) {
+        public ContractExtensionDataSubfolderBuilder withDurationDays(String durationDays) {
             this.durationDays = durationDays;
             return this;
         }

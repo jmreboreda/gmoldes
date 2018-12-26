@@ -2,6 +2,11 @@ package gmoldes.components.contract.new_contract.components;
 
 public class ContractParameters {
 
+    public static final Integer ORDINARY_INITIAL_CONTRACT = 100;
+    public static final Integer INITIAL_CONTRACT_ADMIN_PARTNER_SIMILAR = 101;
+    public static final Integer INITIAL_CONTRACT_SURROGATE_CONTRACT = 109;
+    public static final Integer CONTRACT_EXTENSION_ID = 220;
+
     public static final Long MAXIMUM_NUMBER_DAYS_OF_DELAY_IN_NOTIFICATIONS_TO_THE_LABOR_ADMINISTRACION = 3l;
 
     public static final Integer MAXIMUM_NUMBER_OF_EXTENSIONS_OF_A_CONTRACT = 1;

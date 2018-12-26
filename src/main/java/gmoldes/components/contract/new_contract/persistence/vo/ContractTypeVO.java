@@ -36,6 +36,8 @@ public class ContractTypeVO implements Serializable{
     private Boolean isFullTime;
     private Boolean isMenuSelectable;
     private Boolean isDeterminedDuration;
+    private Boolean isSurrogate;
+    private Boolean isAdminPartnerSimilar;
 
     public ContractTypeVO() {
     }
@@ -126,5 +128,21 @@ public class ContractTypeVO implements Serializable{
 
     public void setIsDeterminedDuration(Boolean isDeterminedDuration) {
         this.isDeterminedDuration = isDeterminedDuration;
+    }
+
+    public Boolean getSurrogate() {
+        return isSurrogate;
+    }
+
+    public void setSurrogated(Boolean surrogate) {
+        isSurrogate = surrogate;
+    }
+
+    public Boolean getAdminPartnerSimilar() {
+        return isAdminPartnerSimilar;
+    }
+
+    public void setAdminPartnerSimilar(Boolean adminPartnerSimilar) {
+        isAdminPartnerSimilar = adminPartnerSimilar;
     }
 }
