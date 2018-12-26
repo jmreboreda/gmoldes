@@ -267,17 +267,6 @@ public class ContractVariationMainController extends VBox {
             }
 
             Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
-
-
-//
-//            ContractVariationPersistenceEvent persistenceEvent = contractExtinctionController.manageContractExtinction();
-//            if(!persistenceEvent.getPersistenceIsOk()){
-//                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, persistenceEvent.getPersistenceMessage());
-//
-//                return;
-//            }
-
-
         }
 
 
@@ -383,7 +372,7 @@ public class ContractVariationMainController extends VBox {
         // Verify notification period to Administration
         LocalDate effectDateRequestedForContractVariation = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
         CompatibleVariationEvent isCorrectDataToNotifyAdministration = dateToNotifyContractVariationToAdministrationIsCorrect(effectDateRequestedForContractVariation);
-        if(!isCorrectDataToNotifyAdministration.getErrorContractVariationMessage().isEmpty()){
+        if(isCorrectDataToNotifyAdministration.getErrorContractVariationMessage().isEmpty()){
             Boolean isCorrectDate = Message.confirmationMessage(contractVariationParts.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION);
             if(!isCorrectDate){

@@ -8,6 +8,7 @@ import gmoldes.components.contract.contract_variation.forms.ContractExtinctionDa
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
 import gmoldes.domain.person.dto.StudyDTO;
@@ -25,6 +26,7 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class ContractExtinctionController{
@@ -50,7 +52,23 @@ public class ContractExtinctionController{
             return messageEvent;
         }
 
-        // 2. Check exist incompatible operations
+        // 2.Verify the notification period to the Labor Administration
+        LocalDate effectDateRequestedForContractVariation = contractVariationMainController.getContractVariationContractVariations()
+                .getContractVariationContractExtinction().getDateFrom().getValue();
+
+        CompatibleVariationEvent dateAdministrationCompatibleEvent = dateToNotifyContractVariationToAdministrationIsCorrect(effectDateRequestedForContractVariation);
+        if(dateAdministrationCompatibleEvent.getErrorContractVariationMessage().equals(ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION)){
+            Boolean isCorrectDate = Message.confirmationMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+                    dateAdministrationCompatibleEvent.getErrorContractVariationMessage());
+            if(!isCorrectDate){
+
+                return new MessageEvent("");
+            }
+        }
+
+
+
+        // 3. Check exist incompatible operations
         CompatibleVariationEvent compatibleVariationEvent = checkExistenceIncompatibleVariationsForContractExtinction();
         if(compatibleVariationEvent.getErrorContractVariationMessage() != null){
 
@@ -136,6 +154,27 @@ public class ContractExtinctionController{
             }
 
         return new MessageEvent(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED);
+    }
+
+
+    private CompatibleVariationEvent dateToNotifyContractVariationToAdministrationIsCorrect(LocalDate date){
+
+        LocalDate limitDatePreviousOfNotifyToAdministration = contractVariationMainController.getContractVariationParts().getInForceDate().getValue()
+                .minusDays(ContractParameters.MAXIMUM_NUMBER_DAYS_OF_DELAY_IN_NOTIFICATIONS_TO_THE_LABOR_ADMINISTRACION);
+
+        if(ChronoUnit.DAYS.between(limitDatePreviousOfNotifyToAdministration, date) >= 0){
+            return new CompatibleVariationEvent(
+                    null,
+                    null,
+                    null,
+                    "");
+        }
+
+        return new CompatibleVariationEvent(
+                null,
+                null,
+                null,
+                ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION);
     }
 
     public CompatibleVariationEvent checkExistenceIncompatibleVariationsForContractExtinction() {
