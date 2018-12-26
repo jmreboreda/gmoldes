@@ -4,7 +4,6 @@ import com.lowagie.text.DocumentException;
 import gmoldes.components.contract.contract_variation.controllers.ContractVariationMainController;
 import gmoldes.components.contract.contract_variation.forms.ContractExtinctionDataSubfolder;
 import gmoldes.components.contract.contract_variation.services.ContractExtinctionDataSubfolderPDFCreator;
-import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
@@ -13,7 +12,6 @@ import gmoldes.components.contract.new_contract.services.ContractDataToContractA
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.person.dto.PersonDTO;
@@ -27,8 +25,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -47,7 +43,7 @@ public class ContractExtinctionDataDocumentCreator {
         this.contractVariationMainController = contractVariationMainController;
     }
 
-    public ContractDataToContractsAgent createContractExtinctionDataDocumentForContractsAgent(){
+    public ContractDataToContractsAgent createContractExtinctionDataDocumentForContractsAgent(String publicNotes){
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
 
@@ -69,11 +65,6 @@ public class ContractExtinctionDataDocumentCreator {
         }
 
         Set<WorkDaySchedule> schedule = null;
-
-        String publicNotes = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
-                .getPublicNotes().getText();
-
-
 
         return ContractDataToContractsAgent.create()
                 .withNotificationType(Parameters.CONTRACT_EXTINCTION_TEXT)

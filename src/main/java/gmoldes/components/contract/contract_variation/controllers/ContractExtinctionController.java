@@ -9,16 +9,23 @@ import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
+import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
+import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
+import gmoldes.domain.email.EmailDataCreationDTO;
+import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.dto.StudyDTO;
 import gmoldes.domain.person.manager.StudyManager;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
+import gmoldes.services.email.EmailParameters;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 
+import javax.mail.internet.AddressException;
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -66,8 +73,6 @@ public class ContractExtinctionController{
             }
         }
 
-
-
         // 3. Check exist incompatible operations
         CompatibleVariationEvent compatibleVariationEvent = checkExistenceIncompatibleVariationsForContractExtinction();
         if(compatibleVariationEvent.getErrorContractVariationMessage() != null){
@@ -75,20 +80,30 @@ public class ContractExtinctionController{
             return new MessageEvent(compatibleVariationEvent.getErrorContractVariationMessage());
         }
 
+        // 4. Persistence question
         if (!Message.confirmationMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)) {
 
             return new MessageEvent(ContractConstants.CONTRACT_EXTINCTION_OPERATION_ABANDONED);
         }
 
-        // 3. Persist data
+        // 5. Persist contract extinction
         ContractVariationPersistenceEvent persistenceEvent = persistContractExtinction();
         if(!persistenceEvent.getPersistenceIsOk()) {
 
             return new MessageEvent(persistenceEvent.getPersistenceMessage());
         }
 
-        Integer traceabilityId = persistTraceabilityControlData();
+        Message.warningMessage(this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
 
+
+        // 6. Persist traceability
+        Integer traceabilityId = persistTraceabilityControlData();
+        if(traceabilityId == null){
+
+            return new MessageEvent("Ha petado la persistencia de la trazabilidad de la extinción del contrato.");
+        }
+
+        // 7. Print documentation
         StringBuilder sb = new StringBuilder();
 
         String publicNotes = retrievePublicNotes();
@@ -99,32 +114,9 @@ public class ContractExtinctionController{
         printContractExtinctionDataSubfolder(contractExtinctionDataSubfolder);
 
         return new MessageEvent(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
-
     }
 
-//    public ContractVariationPersistenceEvent manageContractExtinction() {
-//
-//        ContractVariationPersistenceEvent persistenceEvent = persistContractExtinction();
-//
-//        if(!persistenceEvent.getPersistenceIsOk()) {
-//
-//            return persistenceEvent;
-//        }
-//
-//
-//
-//
-//
-//
-//        Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, persistenceEvent.getPersistenceMessage());
-//        Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_NOT_OK);
-//
-//            return false;
-//
-//
-//    }
-
-    public MessageEvent verifyIsCorrectContractExtinctionData(){
+    private MessageEvent verifyIsCorrectContractExtinctionData(){
 
             if(contractVariationMainController.getContractVariationTypes().getDateNotification().getDate() == null){
 
@@ -463,6 +455,48 @@ public class ContractExtinctionController{
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
         }
+    }
+
+    public Boolean sendsMailContractVariationExtinction(){
+
+        Boolean isSendOk = false;
+        Path pathOut;
+
+        ContractExtinctionDataDocumentCreator contractExtinctionDocumentCreator = new ContractExtinctionDataDocumentCreator(contractVariationMainController);
+
+        String publicNotes = retrievePublicNotes();
+
+        ContractDataToContractsAgent contractExtinctionDataToContractAgent = contractExtinctionDocumentCreator.createContractExtinctionDataDocumentForContractsAgent(publicNotes);
+
+        pathOut = contractExtinctionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
+
+
+        String attachedFileName = contractExtinctionDataToContractAgent.toFileName().concat(".pdf");
+
+        AgentNotificator agentNotificator = new AgentNotificator();
+
+        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailParameters.STANDARD_CONTRACT_EXTINCTION_TEXT);
+
+        try {
+            isSendOk = agentNotificator.sendEmailToContractAgent(emailDataCreationDTO);
+        } catch (AddressException e) {
+            e.printStackTrace();
+        }
+
+        return isSendOk;
+    }
+
+    private EmailDataCreationDTO retrieveDateForEmailCreation(Path path, String attachedFileName, String variationTypeText){
+
+        ClientDTO employerDTO = this.contractVariationMainController.getContractVariationParts().getClientSelector().getValue();
+        PersonDTO employeeDTO = this.contractVariationMainController.getContractVariationParts().getContractSelector().getValue().getEmployee();
+        return EmailDataCreationDTO.create()
+                .withPath(path)
+                .withFileName(attachedFileName)
+                .withEmployer(employerDTO)
+                .withEmployee(employeeDTO)
+                .withVariationTypeText(variationTypeText)
+                .build();
     }
 
     private Set<DayOfWeek> retrieveDayOfWeekSet(String daysOfWeek){
