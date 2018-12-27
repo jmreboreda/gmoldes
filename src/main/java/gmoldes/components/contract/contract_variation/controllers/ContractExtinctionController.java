@@ -93,15 +93,14 @@ public class ContractExtinctionController{
             return new MessageEvent(persistenceEvent.getPersistenceMessage());
         }
 
-        Message.warningMessage(this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
-
-
         // 6. Persist traceability
         Integer traceabilityContractExtinctionId = persistTraceabilityControlData();
         if(traceabilityContractExtinctionId == null){
 
             return new MessageEvent(ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
         }
+
+        Message.warningMessage(this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
 
         // 7. Print documentation
         StringBuilder sb = new StringBuilder();

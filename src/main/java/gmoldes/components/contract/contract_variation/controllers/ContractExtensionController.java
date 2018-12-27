@@ -95,8 +95,6 @@ public class ContractExtensionController{
             return new MessageEvent(persistenceEvent.getPersistenceMessage());
         }
 
-        Message.warningMessage(this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK);
-
 
         // 6. Persist traceability
         Integer traceabilityContractExtensionId = persistTraceabilityControlData();
@@ -104,6 +102,8 @@ public class ContractExtensionController{
 
             return new MessageEvent(ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
         }
+
+        Message.warningMessage(this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK);
 
         // 7. Print documentation
         StringBuilder sb = new StringBuilder();
