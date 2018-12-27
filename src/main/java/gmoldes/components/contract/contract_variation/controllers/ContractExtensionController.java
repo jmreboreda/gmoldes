@@ -1,13 +1,13 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
 import gmoldes.ApplicationMainController;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
 import gmoldes.components.contract.contract_variation.events.ContractVariationPersistenceEvent;
 import gmoldes.components.contract.contract_variation.events.MessageContractVariationEvent;
-import gmoldes.components.contract.contract_variation.forms.ContractExtensionDataSubfolder;
+import gmoldes.components.contract.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
@@ -111,7 +111,7 @@ public class ContractExtensionController{
         String publicNotes = retrievePublicNotes();
         sb.append(publicNotes);
 
-        ContractExtensionDataSubfolder contractExtensionDataSubfolder = createContractExtensionDataSubfolder(sb.toString());
+        ContractVariationDataSubfolder contractExtensionDataSubfolder = createContractVariationDataSubfolder(sb.toString());
 
         printContractExtensionDataSubfolder(contractExtensionDataSubfolder);
 
@@ -427,7 +427,7 @@ public class ContractExtensionController{
         return sb.toString();
     }
 
-    private ContractExtensionDataSubfolder createContractExtensionDataSubfolder(String additionalData){
+    private ContractVariationDataSubfolder createContractVariationDataSubfolder(String additionalData){
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
@@ -467,7 +467,10 @@ public class ContractExtensionController{
 
         String durationDays = Long.toString(ChronoUnit.DAYS.between(dateFrom, dateTo) + 1L);
 
-        return ContractExtensionDataSubfolder.create()
+        return ContractVariationDataSubfolder.create()
+                .withContractExtinction(false)
+                .withContractExtension(true)
+                .withContractConversion(false)
                 .withNotificationType(notificationType)
                 .withOfficialContractNumber(allContractData.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
                 .withEmployerFullName(allContractData.getEmployer().toString())
@@ -493,7 +496,7 @@ public class ContractExtensionController{
                 .build();
     }
 
-    private void printContractExtensionDataSubfolder(ContractExtensionDataSubfolder contractExtensionDataSubfolder){
+    private void printContractExtensionDataSubfolder(ContractVariationDataSubfolder contractExtensionDataSubfolder){
 
         ContractExtensionDataDocumentCreator contractExtensionDataDocumentCreator = new ContractExtensionDataDocumentCreator(contractVariationMainController);
         Path pathToContractExtensionDataSubfolder = contractExtensionDataDocumentCreator.retrievePathToContractExtensionDataSubfolderPDF(contractExtensionDataSubfolder);
