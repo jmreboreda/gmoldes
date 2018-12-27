@@ -467,6 +467,8 @@ public class ContractExtensionController{
 
         String durationDays = Long.toString(ChronoUnit.DAYS.between(dateFrom, dateTo) + 1L);
 
+        String gmContractNumber = allContractData.getContractNewVersion().getContractNumber() != null ? allContractData.getContractNewVersion().getContractNumber().toString() : null;
+
         return ContractVariationDataSubfolder.create()
                 .withContractExtinction(false)
                 .withContractExtension(true)
@@ -493,6 +495,7 @@ public class ContractExtensionController{
                 .withSchedule(new HashSet<>())
                 .withAdditionalData(additionalData)
                 .withLaborCategory(allContractData.getContractNewVersion().getContractJsonData().getLaborCategory())
+                .withGmContractNumber(gmContractNumber)
                 .build();
     }
 
