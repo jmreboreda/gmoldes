@@ -526,12 +526,12 @@ public class ContractExtensionController{
 
         String publicNotes = retrievePublicNotes();
 
-        ContractDataToContractsAgent contractExtinctionDataToContractAgent = contractExtensionDocumentCreator.createContractExtensionDataDocumentForContractsAgent(publicNotes);
+        ContractDataToContractsAgent contractExtensionDataToContractAgent = contractExtensionDocumentCreator.createContractExtensionDataDocumentForContractsAgent(publicNotes);
 
-        pathOut = contractExtensionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
+        pathOut = contractExtensionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtensionDataToContractAgent);
 
 
-        String attachedFileName = contractExtinctionDataToContractAgent.toFileName().concat(".pdf");
+        String attachedFileName = contractExtensionDataToContractAgent.toFileName().concat(".pdf");
 
         AgentNotificator agentNotificator = new AgentNotificator();
 
