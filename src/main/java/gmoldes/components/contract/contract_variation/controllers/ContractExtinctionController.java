@@ -2,9 +2,9 @@ package gmoldes.components.contract.contract_variation.controllers;
 
 import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract.contract_variation.events.MessageEvent;
+import gmoldes.components.contract.contract_variation.events.MessageContractVariationEvent;
 import gmoldes.components.contract.contract_variation.events.ContractVariationPersistenceEvent;
-import gmoldes.components.contract.contract_variation.forms.ContractExtinctionDataSubfolder;
+import gmoldes.components.contract.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.ContractConstants;
@@ -12,7 +12,7 @@ import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.*;
-import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
+import gmoldes.domain.document_for_print.ContractVariationDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.dto.StudyDTO;
@@ -50,10 +50,10 @@ public class ContractExtinctionController{
     }
 
 
-    public MessageEvent executeContractExtinctionOperations(){
+    public MessageContractVariationEvent executeContractExtinctionOperations(){
 
         // 1. Verify correct contract extinction data
-        MessageEvent messageEvent = verifyIsCorrectContractExtinctionData();
+        MessageContractVariationEvent messageEvent = verifyIsCorrectContractExtinctionData();
         if(!messageEvent.getMessageText().equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)){
 
             return messageEvent;
@@ -69,7 +69,7 @@ public class ContractExtinctionController{
                     dateAdministrationCompatibleEvent.getErrorContractVariationMessage());
             if(!isCorrectDate){
 
-                return new MessageEvent("");
+                return new MessageContractVariationEvent("", null);
             }
         }
 
@@ -77,27 +77,27 @@ public class ContractExtinctionController{
         CompatibleVariationEvent compatibleVariationEvent = checkExistenceIncompatibleVariationsForContractExtinction();
         if(compatibleVariationEvent.getErrorContractVariationMessage() != null){
 
-            return new MessageEvent(compatibleVariationEvent.getErrorContractVariationMessage());
+            return new MessageContractVariationEvent(compatibleVariationEvent.getErrorContractVariationMessage(), null);
         }
 
         // 4. Persistence question
         if (!Message.confirmationMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)) {
 
-            return new MessageEvent(ContractConstants.CONTRACT_EXTINCTION_OPERATION_ABANDONED);
+            return new MessageContractVariationEvent(ContractConstants.CONTRACT_EXTINCTION_OPERATION_ABANDONED, null);
         }
 
         // 5. Persist contract extinction
         ContractVariationPersistenceEvent persistenceEvent = persistContractExtinction();
         if(!persistenceEvent.getPersistenceIsOk()) {
 
-            return new MessageEvent(persistenceEvent.getPersistenceMessage());
+            return new MessageContractVariationEvent(persistenceEvent.getPersistenceMessage(),null);
         }
 
         // 6. Persist traceability
         Integer traceabilityContractExtinctionId = persistTraceabilityControlData();
         if(traceabilityContractExtinctionId == null){
 
-            return new MessageEvent(ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
+            return new MessageContractVariationEvent(ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA, null);
         }
 
         Message.warningMessage(this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
@@ -108,43 +108,43 @@ public class ContractExtinctionController{
         String publicNotes = retrievePublicNotes();
         sb.append(publicNotes);
 
-        ContractExtinctionDataSubfolder contractExtinctionDataSubfolder = createContractExtinctionDataSubfolder(sb.toString(), null);
+        ContractVariationDataSubfolder contractExtinctionDataSubfolder = createContractExtinctionDataSubfolder(sb.toString(), null);
 
         printContractExtinctionDataSubfolder(contractExtinctionDataSubfolder);
 
-        return new MessageEvent(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
+        return new MessageContractVariationEvent(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK, contractExtinctionDataSubfolder);
     }
 
-    private MessageEvent verifyIsCorrectContractExtinctionData(){
+    private MessageContractVariationEvent verifyIsCorrectContractExtinctionData(){
 
             if(contractVariationMainController.getContractVariationTypes().getDateNotification().getDate() == null){
 
-                return new MessageEvent(ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED);
+                return new MessageContractVariationEvent(ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED, null);
             }
 
             if(contractVariationMainController.getContractVariationTypes().getHourNotification().getText() == null){
 
-                return new MessageEvent(ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED);
+                return new MessageContractVariationEvent(ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED, null);
             }
 
             if(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getExtinctionCauseSelector().getSelectionModel().getSelectedItem() == null){
 
-                return new MessageEvent(ContractConstants.EXTINCTION_CAUSE_NOT_ESTABLISHED);
+                return new MessageContractVariationEvent(ContractConstants.EXTINCTION_CAUSE_NOT_ESTABLISHED, null);
             }
 
             if(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue() == null){
 
-                return new MessageEvent(ContractConstants.ERROR_IN_EXTINCTION_DATA);
+                return new MessageContractVariationEvent(ContractConstants.ERROR_IN_EXTINCTION_DATA, null);
             }
 
             if(!contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getRbHolidaysYes().isSelected() &&
                     !contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getRbHolidaysNo().isSelected() &&
                     !contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getRbHolidaysCalculate().isSelected()){
 
-                return new MessageEvent(ContractConstants.HOLIDAYS_SITUATION_NOT_ESTABLISHED);
+                return new MessageContractVariationEvent(ContractConstants.HOLIDAYS_SITUATION_NOT_ESTABLISHED, null);
             }
 
-        return new MessageEvent(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED);
+        return new MessageContractVariationEvent(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED, null);
     }
 
 
@@ -366,7 +366,7 @@ public class ContractExtinctionController{
         return sb.toString();
     }
 
-    private ContractExtinctionDataSubfolder createContractExtinctionDataSubfolder(String additionalData, Duration duration){
+    private ContractVariationDataSubfolder createContractExtinctionDataSubfolder(String additionalData, Duration duration){
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
@@ -403,7 +403,12 @@ public class ContractExtinctionController{
 
         String durationDays = duration != null ? Long.toString(duration.toDays()) : "";
 
-        return ContractExtinctionDataSubfolder.create()
+        String gmContractNumber = allContractData.getContractNewVersion().getContractNumber() != null ? allContractData.getContractNewVersion().getContractNumber().toString() : null;
+
+        return ContractVariationDataSubfolder.create()
+                .withContractExtinction(true)
+                .withContractExtension(false)
+                .withContractConversion(false)
                 .withNotificationType(notificationType)
                 .withOfficialContractNumber(allContractData.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
                 .withEmployerFullName(allContractData.getEmployer().toString())
@@ -426,13 +431,14 @@ public class ContractExtinctionController{
                 .withSchedule(new HashSet<>())
                 .withAdditionalData(additionalData)
                 .withLaborCategory(allContractData.getContractNewVersion().getContractJsonData().getLaborCategory())
+                .withGmContractNumber(gmContractNumber)
                 .build();
     }
 
-    private void printContractExtinctionDataSubfolder(ContractExtinctionDataSubfolder contractExtinctionDataSubfolder){
+    private void printContractExtinctionDataSubfolder(ContractVariationDataSubfolder contractVariationDataSubfolder){
 
-        ContractExtinctionDataDocumentCreator contractExtinctionDataDocumentCreator = new ContractExtinctionDataDocumentCreator(contractVariationMainController);
-        Path pathToContractExtinctionDataSubfolder = contractExtinctionDataDocumentCreator.retrievePathToContractExtinctionDataSubfolderPDF(contractExtinctionDataSubfolder);
+        ContractVariationDataDocumentCreator contractVariationDataDocumentCreator = new ContractVariationDataDocumentCreator(contractVariationMainController, contractVariationDataSubfolder);
+        Path pathToContractVariationDataSubfolder = contractVariationDataDocumentCreator.retrievePathToContractVariationDataSubfolderPDF(contractVariationDataSubfolder);
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("papersize","A3");
@@ -441,7 +447,7 @@ public class ContractExtinctionController{
         attributes.put("orientation","LANDSCAPE");
 
         try {
-            String printOk = Printer.printPDF(pathToContractExtinctionDataSubfolder.toString(), attributes);
+            String printOk = Printer.printPDF(pathToContractVariationDataSubfolder.toString(), attributes);
             Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
                 Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
@@ -451,18 +457,18 @@ public class ContractExtinctionController{
         }
     }
 
-    public Boolean sendsMailContractVariationExtinction(){
+    public Boolean sendsMailContractVariationExtinction(ContractVariationDataSubfolder contractVariationDataSubfolder){
 
         Boolean isSendOk = false;
         Path pathOut;
 
-        ContractExtinctionDataDocumentCreator contractExtinctionDocumentCreator = new ContractExtinctionDataDocumentCreator(contractVariationMainController);
+        ContractVariationDataDocumentCreator contractVariationDocumentCreator = new ContractVariationDataDocumentCreator(contractVariationMainController, contractVariationDataSubfolder);
 
         String publicNotes = retrievePublicNotes();
 
-        ContractDataToContractsAgent contractExtinctionDataToContractAgent = contractExtinctionDocumentCreator.createContractExtinctionDataDocumentForContractsAgent(publicNotes);
+        ContractDataToContractsAgent contractExtinctionDataToContractAgent = contractVariationDocumentCreator.createContractVariationDataDocumentForContractsAgent(publicNotes);
 
-        pathOut = contractExtinctionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
+        pathOut = contractVariationDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
 
 
         String attachedFileName = contractExtinctionDataToContractAgent.toFileName().concat(".pdf");

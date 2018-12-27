@@ -34,16 +34,18 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public class ContractExtinctionDataDocumentCreator {
+public class ContractVariationDataDocumentCreator {
 
     private ContractVariationMainController contractVariationMainController;
+    private ContractVariationDataSubfolder contractVariationDataSubfolder;
 
-    public ContractExtinctionDataDocumentCreator(ContractVariationMainController contractVariationMainController) {
+    public ContractVariationDataDocumentCreator(ContractVariationMainController contractVariationMainController, ContractVariationDataSubfolder contractVariationDataSubfolder) {
 
         this.contractVariationMainController = contractVariationMainController;
+        this.contractVariationDataSubfolder = contractVariationDataSubfolder;
     }
 
-    public ContractDataToContractsAgent createContractExtinctionDataDocumentForContractsAgent(String publicNotes){
+    public ContractDataToContractsAgent createContractVariationDataDocumentForContractsAgent(String publicNotes){
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
 
@@ -66,8 +68,33 @@ public class ContractExtinctionDataDocumentCreator {
 
         Set<WorkDaySchedule> schedule = null;
 
+        String notificationType = "";
+        LocalDate dateFrom = null;
+        LocalDate dateTo = null;
+
+        if(contractVariationDataSubfolder.getContractExtinction()){
+            notificationType = ContractConstants.STANDARD_CONTRACT_EXTINCTION_TEXT;
+            dateFrom = null;
+            dateTo = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue();
+        }
+
+        if(contractVariationDataSubfolder.getContractExtension()){
+            notificationType = ContractConstants.STANDARD_CONTRACT_EXTENSION_TEXT;
+            dateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue();
+            dateTo = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue();
+
+        }
+
+        if(contractVariationDataSubfolder.getContractConversion()){
+            notificationType = ContractConstants.STANDARD_CONTRACT_CONVERSION_TEXT;
+            dateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractConversion().getDateFrom().getValue();
+            dateTo = null;
+
+        }
+
+
         return ContractDataToContractsAgent.create()
-                .withNotificationType(ContractConstants.STANDARD_CONTRACT_EXTINCTION_TEXT)
+                .withNotificationType(notificationType)
                 .withOfficialContractNumber(contractFullDataDTO.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
                 .withEmployerFullName(contractFullDataDTO.getEmployer().toString())
                 .withEmployerQuoteAccountCode(contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
@@ -84,8 +111,8 @@ public class ContractExtinctionDataDocumentCreator {
                 .withEmployeeMaxStudyLevel(employeeMaximumStudyLevel)
                 .withDayOfWeekSet(retrieveDayOfWeekSet(contractFullDataDTO.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork()))
                 .withContractTypeDescription(contractTypeDescription)
-                .withStartDate(null)
-                .withEndDate(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue())
+                .withStartDate(dateFrom)
+                .withEndDate(dateTo)
                 .withDurationDays(Duration.ZERO)
                 .withSchedule(schedule)
                 .withAdditionalData(publicNotes)
@@ -231,16 +258,16 @@ public class ContractExtinctionDataDocumentCreator {
         return dayOfWeekSet;
     }
 
-    public Path retrievePathToContractExtinctionDataSubfolderPDF(ContractVariationDataSubfolder contractExtinctionDataSubfolder){
+    public Path retrievePathToContractVariationDataSubfolderPDF(ContractVariationDataSubfolder contractVariationDataSubfolder){
         Path pathOut = null;
 
         final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
         String temporalDir = maybePath.get().toString();
 
-        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractExtinctionDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
+        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractVariationDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
         try {
             Files.createDirectories(pathToContractDataSubfolder.getParent());
-            pathOut = ContractVariationDataSubfolderPDFCreator.createContractVariationDataSubfolderPDF(contractExtinctionDataSubfolder, pathToContractDataSubfolder);
+            pathOut = ContractVariationDataSubfolderPDFCreator.createContractVariationDataSubfolderPDF(contractVariationDataSubfolder, pathToContractDataSubfolder);
         } catch (IOException | DocumentException e) {
             e.printStackTrace();
         }

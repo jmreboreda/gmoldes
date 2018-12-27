@@ -5,7 +5,6 @@ import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 import gmoldes.components.contract.contract_variation.forms.ContractExtensionDataSubfolder;
-import gmoldes.components.contract.contract_variation.forms.ContractExtinctionDataSubfolder;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;

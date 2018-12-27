@@ -4,14 +4,13 @@ import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.utilities.Utilities;
 
 import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-public class ContractExtinctionDataSubfolder {
+public class ContractVariationDataSubfolder {
 
+    private Boolean isContractExtinction;
+    private Boolean isContractExtension;
+    private Boolean isContractConversion;
     private String notificationType;
     private String officialContractNumber;
     private String employerFullName;
@@ -37,13 +36,17 @@ public class ContractExtinctionDataSubfolder {
     private String laborCategory;
     private String gmContractNumber;
 
-    public ContractExtinctionDataSubfolder(String notificationType, String officialContractNumber, String employerFullName, String employerQuoteAccountCode, String notificationDate,
-                                           String notificationHour, String employeeFullName, String employeeNif, String employeeNASS,
-                                           String employeeBirthDate, String employeeCivilState, String employeeNationality, String employeeFullAddress,
-                                           String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, String hoursWorkWeek, String contractTypeDescription,
-                                           String startDate, String endDate, String durationDays, Set<WorkDaySchedule> schedule,
-                                           String additionalData, String laborCategory, String gmContractNumber) {
+    public ContractVariationDataSubfolder(Boolean isContractExtinction, Boolean isContractExtension,Boolean isContractConversion, String notificationType,
+                                          String officialContractNumber, String employerFullName, String employerQuoteAccountCode, String notificationDate,
+                                          String notificationHour, String employeeFullName, String employeeNif, String employeeNASS,
+                                          String employeeBirthDate, String employeeCivilState, String employeeNationality, String employeeFullAddress,
+                                          String employeeMaxStudyLevel, Set<DayOfWeek> dayOfWeekSet, String hoursWorkWeek, String contractTypeDescription,
+                                          String startDate, String endDate, String durationDays, Set<WorkDaySchedule> schedule,
+                                          String additionalData, String laborCategory, String gmContractNumber) {
 
+        this.isContractExtinction = isContractExtinction;
+        this.isContractExtension = isContractExtension;
+        this.isContractConversion = isContractConversion;
         this.notificationType = notificationType;
         this.officialContractNumber = officialContractNumber;
         this.employerFullName = employerFullName;
@@ -68,6 +71,30 @@ public class ContractExtinctionDataSubfolder {
         this.additionalData = additionalData;
         this.laborCategory = laborCategory;
         this.gmContractNumber = gmContractNumber;
+    }
+
+    public Boolean getContractExtinction() {
+        return isContractExtinction;
+    }
+
+    public void setContractExtinction(Boolean contractExtinction) {
+        isContractExtinction = contractExtinction;
+    }
+
+    public Boolean getContractExtension() {
+        return isContractExtension;
+    }
+
+    public void setContractExtension(Boolean contractExtension) {
+        isContractExtension = contractExtension;
+    }
+
+    public Boolean getContractConversion() {
+        return isContractConversion;
+    }
+
+    public void setContractConversion(Boolean contractConversion) {
+        isContractConversion = contractConversion;
     }
 
     public String getNotificationType() {
@@ -185,6 +212,9 @@ public class ContractExtinctionDataSubfolder {
 
     public static class ContractExtinctionDataSubfolderBuilder {
 
+        private Boolean isContractExtinction;
+        private Boolean isContractExtension;
+        private Boolean isContractConversion;
         private String notificationType;
         private String officialContractNumber;
         private String employerFullName;
@@ -209,6 +239,21 @@ public class ContractExtinctionDataSubfolder {
         private String additionalData;
         private String laborCategory;
         private String gmContractNumber;
+
+        public ContractExtinctionDataSubfolderBuilder withContractExtinction(Boolean isContractExtinction) {
+            this.isContractExtinction = isContractExtinction;
+            return this;
+        }
+
+        public ContractExtinctionDataSubfolderBuilder withContractExtension(Boolean isContractExtension) {
+            this.isContractExtension = isContractExtension;
+            return this;
+        }
+
+        public ContractExtinctionDataSubfolderBuilder withContractConversion(Boolean isContractConversion) {
+            this.isContractConversion = isContractConversion;
+            return this;
+        }
 
         public ContractExtinctionDataSubfolderBuilder withNotificationType(String notificationType) {
             this.notificationType = notificationType;
@@ -331,8 +376,8 @@ public class ContractExtinctionDataSubfolder {
         }
 
 
-        public ContractExtinctionDataSubfolder build() {
-            return new ContractExtinctionDataSubfolder(this.notificationType, this.officialContractNumber,this.employerFullName, this.employerQuoteAccountCode,
+        public ContractVariationDataSubfolder build() {
+            return new ContractVariationDataSubfolder(this.isContractExtinction, this.isContractExtension, this.isContractConversion, this.notificationType, this.officialContractNumber,this.employerFullName, this.employerQuoteAccountCode,
                     this.notificationDate, this.notificationHour, this.employeeFullName, this.employeeNif, this.employeeNASS, this.employeeBirthDate,
                     this.employeeCivilState, this.employeeNationality, this.employeeFullAddress, this.employeeMaxStudyLevel, this.dayOfWeekSet,
                     this.hoursWorkWeek, this.contractTypeDescription, this.startDate, this.endDate, this.durationDays, this.schedule, this.additionalData,

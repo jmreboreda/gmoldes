@@ -3,7 +3,7 @@ package gmoldes.components.contract.contract_variation.controllers;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
 import gmoldes.components.contract.contract_variation.events.ContractVariationPersistenceEvent;
-import gmoldes.components.contract.contract_variation.events.MessageEvent;
+import gmoldes.components.contract.contract_variation.events.MessageContractVariationEvent;
 import gmoldes.components.contract.contract_variation.forms.ContractExtensionDataSubfolder;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
@@ -52,13 +52,13 @@ public class ContractExtensionController{
     }
 
 
-    public MessageEvent executeContractExtensionOperations(){
+    public MessageContractVariationEvent executeContractExtensionOperations(){
 
         // 1. Verify correct contract extension data
-        MessageEvent messageEvent = verifyIsCorrectContractExtensionData();
-        if(!messageEvent.getMessageText().equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)){
+        MessageContractVariationEvent messageContractVariationEvent = verifyIsCorrectContractExtensionData();
+        if(!messageContractVariationEvent.getMessageText().equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)){
 
-            return messageEvent;
+            return messageContractVariationEvent;
         }
 
         // 2.Verify the notification period to the Labor Administration
@@ -71,7 +71,7 @@ public class ContractExtensionController{
                     dateAdministrationCompatibleEvent.getErrorContractVariationMessage());
             if(!isCorrectDate){
 
-                return new MessageEvent("");
+                return new MessageContractVariationEvent("", null);
             }
         }
 
@@ -79,20 +79,20 @@ public class ContractExtensionController{
         CompatibleVariationEvent compatibleVariationEvent = checkExistenceIncompatibleVariationsForContractExtension();
         if(compatibleVariationEvent.getErrorContractVariationMessage() != null){
 
-            return new MessageEvent(compatibleVariationEvent.getErrorContractVariationMessage());
+            return new MessageContractVariationEvent(compatibleVariationEvent.getErrorContractVariationMessage(),null);
         }
 
         // 4. Persistence question
         if (!Message.confirmationMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)) {
 
-            return new MessageEvent(ContractConstants.CONTRACT_EXTENSION_OPERATION_ABANDONED);
+            return new MessageContractVariationEvent(ContractConstants.CONTRACT_EXTENSION_OPERATION_ABANDONED, null);
         }
 
         // 5. Persist contract extension
         ContractVariationPersistenceEvent persistenceEvent = persistContractExtension();
         if(!persistenceEvent.getPersistenceIsOk()) {
 
-            return new MessageEvent(persistenceEvent.getPersistenceMessage());
+            return new MessageContractVariationEvent(persistenceEvent.getPersistenceMessage(),null);
         }
 
 
@@ -100,7 +100,7 @@ public class ContractExtensionController{
         Integer traceabilityContractExtensionId = persistTraceabilityControlData();
         if(traceabilityContractExtensionId == null){
 
-            return new MessageEvent(ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
+            return new MessageContractVariationEvent(ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA, null);
         }
 
         Message.warningMessage(this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK);
@@ -115,38 +115,38 @@ public class ContractExtensionController{
 
         printContractExtensionDataSubfolder(contractExtensionDataSubfolder);
 
-        return new MessageEvent(ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK);
+        return new MessageContractVariationEvent(ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK,null);
     }
 
-    private MessageEvent verifyIsCorrectContractExtensionData(){
+    private MessageContractVariationEvent verifyIsCorrectContractExtensionData(){
 
         if(contractVariationMainController.getContractVariationTypes().getDateNotification().getDate() == null){
 
-            return new MessageEvent(ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED);
+            return new MessageContractVariationEvent(ContractConstants.DATE_NOTIFICATION_NOT_ESTABLISHED,null);
         }
 
         if(contractVariationMainController.getContractVariationTypes().getHourNotification().getText() == null){
 
-            return new MessageEvent(ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED);
+            return new MessageContractVariationEvent(ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED, null);
         }
 
         if(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue() == null){
 
-            return new MessageEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_FROM);
+            return new MessageContractVariationEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_FROM, null);
         }
 
         if(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue() == null){
 
-            return new MessageEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_TO);
+            return new MessageContractVariationEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_TO, null);
         }
 
         if(ChronoUnit.DAYS.between(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue(),
                 contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue()) <= 0){
 
-            return new MessageEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES);
+            return new MessageContractVariationEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES, null);
         }
 
-        return new MessageEvent(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED);
+        return new MessageContractVariationEvent(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED,null);
     }
 
 

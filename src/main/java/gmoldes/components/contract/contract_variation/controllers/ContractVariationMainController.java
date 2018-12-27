@@ -5,11 +5,13 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract.contract_variation.events.MessageEvent;
+import gmoldes.components.contract.contract_variation.events.MessageContractVariationEvent;
+import gmoldes.components.contract.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
+import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
@@ -59,14 +61,9 @@ public class ContractVariationMainController extends VBox {
     private ApplicationMainController applicationMainController = new ApplicationMainController();
     private ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
     private ContractExtensionController contractExtensionController = new ContractExtensionController(this);
+    private ContractVariationDataSubfolder contractVariationDataSubfolder;
 
 
-    private Boolean isContractVariationExtinction = false;
-    private Boolean isContractVariationExtension = false;
-    private Boolean isContractVariationConversion = false;
-
-
-//    private ContractManager contractManager = new ContractManager();
     private Boolean contractHasBeenSavedInDatabase = false;
     private Boolean contractHasBeenSentToContractAgent = false;
 
@@ -258,14 +255,15 @@ public class ContractVariationMainController extends VBox {
         if(rbContractExtinction.isSelected()) {
             ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
 
-            MessageEvent messageEvent = contractExtinctionController.executeContractExtinctionOperations();
-            if (!messageEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK) &&
-                    !messageEvent.getMessageText().isEmpty()) {
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageEvent.getMessageText());
+            MessageContractVariationEvent messageContractVariationEvent = contractExtinctionController.executeContractExtinctionOperations();
+            if (!messageContractVariationEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK) &&
+                    !messageContractVariationEvent.getMessageText().isEmpty()) {
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageContractVariationEvent.getMessageText());
 
                 return;
             }
 
+            this.contractVariationDataSubfolder = messageContractVariationEvent.getContractVariationDataSubfolder();
             setDataEditionBlockedAndEnableSendMail();
 
             return;
@@ -276,10 +274,10 @@ public class ContractVariationMainController extends VBox {
         if(rbContractExtension.isSelected()) {
             ContractExtensionController contractExtensionController = new ContractExtensionController(this);
 
-            MessageEvent messageEvent = contractExtensionController.executeContractExtensionOperations();
-            if (!messageEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK) &&
-                    !messageEvent.getMessageText().isEmpty()) {
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageEvent.getMessageText());
+            MessageContractVariationEvent messageContractVariationEvent = contractExtensionController.executeContractExtensionOperations();
+            if (!messageContractVariationEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK) &&
+                    !messageContractVariationEvent.getMessageText().isEmpty()) {
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageContractVariationEvent.getMessageText());
 
                 return;
             }
@@ -329,7 +327,7 @@ public class ContractVariationMainController extends VBox {
             // Contract extinction
             RadioButton rbContractExtinction = contractVariationTypes.getRbContractExtinction();
             if(rbContractExtinction.isSelected()) {
-                isSendOk = contractExtinctionController.sendsMailContractVariationExtinction();
+                isSendOk = contractExtinctionController.sendsMailContractVariationExtinction(this.contractVariationDataSubfolder);
             }
 
 
