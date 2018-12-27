@@ -3,6 +3,7 @@ package gmoldes.domain.document_for_print;
 import com.lowagie.text.DocumentException;
 import gmoldes.components.contract.contract_variation.controllers.ContractVariationMainController;
 import gmoldes.components.contract.contract_variation.forms.ContractExtensionDataSubfolder;
+import gmoldes.components.contract.contract_variation.services.ContractExtensionDataSubfolderPDFCreator;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
@@ -311,22 +312,22 @@ public class ContractExtensionDataDocumentCreator {
         return dayOfWeekSet;
     }
 
-//    public Path retrievePathToContractExtensionDataSubfolderPDF(ContractExtensionDataSubfolder contractExtinctionDataSubfolder){
-//        Path pathOut = null;
-//
-//        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
-//        String temporalDir = maybePath.get().toString();
-//
-//        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractExtinctionDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
-//        try {
-//            Files.createDirectories(pathToContractDataSubfolder.getParent());
-//            pathOut = ContractExtensionDataSubfolderPDFCreator.createContractExtensionDataSubfolderPDF(contractExtinctionDataSubfolder, pathToContractDataSubfolder);
-//        } catch (IOException | DocumentException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return pathOut;
-//    }
+    public Path retrievePathToContractExtensionDataSubfolderPDF(ContractExtensionDataSubfolder contractExtensionDataSubfolder){
+        Path pathOut = null;
+
+        final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
+        String temporalDir = maybePath.get().toString();
+
+        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractExtensionDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
+        try {
+            Files.createDirectories(pathToContractDataSubfolder.getParent());
+            pathOut = ContractExtensionDataSubfolderPDFCreator.createContractExtensionDataSubfolderPDF(contractExtensionDataSubfolder, pathToContractDataSubfolder);
+        } catch (IOException | DocumentException e) {
+            e.printStackTrace();
+        }
+
+        return pathOut;
+    }
 
     public Path retrievePathToContractDataToContractAgentPDF(ContractDataToContractsAgent contractDataToContractsAgent){
         Path pathOut = null;

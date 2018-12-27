@@ -266,7 +266,6 @@ public class ContractVariationMainController extends VBox {
             if (!messageEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK) &&
                     !messageEvent.getMessageText().isEmpty()) {
                 Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageEvent.getMessageText());
-                //contractVariationContractVariations.getContractVariationContractExtinction().cleanComponents();
 
                 return;
             }
@@ -285,7 +284,6 @@ public class ContractVariationMainController extends VBox {
             if (!messageEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK) &&
                     !messageEvent.getMessageText().isEmpty()) {
                 Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageEvent.getMessageText());
-                //contractVariationContractVariations.getContractVariationContractExtension().cleanComponents();
 
                 return;
             }

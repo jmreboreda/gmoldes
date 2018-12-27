@@ -4,6 +4,7 @@ import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
 import gmoldes.components.contract.contract_variation.events.MessageEvent;
 import gmoldes.components.contract.contract_variation.events.ContractVariationPersistenceEvent;
+import gmoldes.components.contract.contract_variation.forms.ContractExtensionDataSubfolder;
 import gmoldes.components.contract.contract_variation.forms.ContractExtinctionDataSubfolder;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
@@ -13,6 +14,7 @@ import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAge
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contractjsondata.ContractJsonData;
+import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
 import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;
@@ -110,9 +112,9 @@ public class ContractExtensionController{
         String publicNotes = retrievePublicNotes();
         sb.append(publicNotes);
 
-        ContractExtinctionDataSubfolder contractExtinctionDataSubfolder = createContractExtinctionDataSubfolder(sb.toString(), null);
+        ContractExtensionDataSubfolder contractExtensionDataSubfolder = createContractExtensionDataSubfolder(sb.toString(), null);
 
-        printContractExtinctionDataSubfolder(contractExtinctionDataSubfolder);
+        printContractExtensionDataSubfolder(contractExtensionDataSubfolder);
 
         return new MessageEvent(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
     }
@@ -235,6 +237,7 @@ public class ContractExtensionController{
         LocalDate contractExpectedEndDate = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate();
         if(contractExtensionDateFrom.isBefore(contractExpectedEndDate) ||
                 contractExtensionDateFrom.equals(contractExpectedEndDate)){
+
             return new CompatibleVariationEvent(
                     false,
                     true,
@@ -251,6 +254,7 @@ public class ContractExtensionController{
                         typesContractVariationsDTO.getExtension() &&
                         (contractExtensionDateFrom.isBefore(contractVariationDTO.getExpectedEndDate())) ||
                         contractExtensionDateFrom.equals(contractVariationDTO.getExpectedEndDate())){
+
                     return new CompatibleVariationEvent(
                             false,
                             true,
@@ -260,7 +264,7 @@ public class ContractExtensionController{
             }
         }
 
-        return new CompatibleVariationEvent(false, true, false, "");
+        return new CompatibleVariationEvent(false, true, false, null);
     }
 
 
@@ -415,31 +419,20 @@ public class ContractExtensionController{
 
     private String retrievePublicNotes(){
 
-        String extinctionContractCause = this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
-                .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
+        ApplicationMainController applicationMainController = new ApplicationMainController();
 
-        String holidaysUsedText;
-        if(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
-                .getRbHolidaysYes().isSelected()){
-            holidaysUsedText = "disfrutadas.";
-        } else if(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
-                .getRbHolidaysNo().isSelected()){
-            holidaysUsedText = "no disfrutadas.";
-        }else{
-            holidaysUsedText = "a calcular.";
-        }
+        TypesContractVariationsDTO typesContractVariationsDTO = applicationMainController.findTypeContractVariationById(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION);
+        String contractVariationType = typesContractVariationsDTO.getVariation_description();
 
         StringBuilder sb = new StringBuilder();
-        sb.append(extinctionContractCause);
-        sb.append(". Vacaciones ");
-        sb.append(holidaysUsedText);
-        sb.append("\n");
-        sb.append(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getPublicNotes().getText());
+        sb.append(contractVariationType);
+        sb.append(". ");
+        sb.append(this.contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getPublicNotes().getText());
 
         return sb.toString();
     }
 
-    private ContractExtinctionDataSubfolder createContractExtinctionDataSubfolder(String additionalData, Duration duration){
+    private ContractExtensionDataSubfolder createContractExtensionDataSubfolder(String additionalData, Duration duration){
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
@@ -454,8 +447,8 @@ public class ContractExtensionController{
 
         String birthDate = allContractData.getEmployee().getFechanacim() != null ? dateFormatter.format(allContractData.getEmployee().getFechanacim()) : null;
 
-        String startDate = null;
-        String endDate = dateFormatter.format(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue());
+        String startDate = dateFormatter.format(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue());;
+        String endDate = dateFormatter.format(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue());
 
         String daysOfWeek = allContractData.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork();
         Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(daysOfWeek);
@@ -476,7 +469,7 @@ public class ContractExtensionController{
 
         String durationDays = duration != null ? Long.toString(duration.toDays()) : "";
 
-        return ContractExtinctionDataSubfolder.create()
+        return ContractExtensionDataSubfolder.create()
                 .withNotificationType(notificationType)
                 .withOfficialContractNumber(allContractData.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
                 .withEmployerFullName(allContractData.getEmployer().toString())
@@ -502,10 +495,10 @@ public class ContractExtensionController{
                 .build();
     }
 
-    private void printContractExtinctionDataSubfolder(ContractExtinctionDataSubfolder contractExtinctionDataSubfolder){
+    private void printContractExtensionDataSubfolder(ContractExtensionDataSubfolder contractExtensionDataSubfolder){
 
-        ContractExtinctionDataDocumentCreator contractExtinctionDataDocumentCreator = new ContractExtinctionDataDocumentCreator(contractVariationMainController);
-        Path pathToContractExtinctionDataSubfolder = contractExtinctionDataDocumentCreator.retrievePathToContractExtinctionDataSubfolderPDF(contractExtinctionDataSubfolder);
+        ContractExtensionDataDocumentCreator contractExtensionDataDocumentCreator = new ContractExtensionDataDocumentCreator(contractVariationMainController);
+        Path pathToContractExtensionDataSubfolder = contractExtensionDataDocumentCreator.retrievePathToContractExtensionDataSubfolderPDF(contractExtensionDataSubfolder);
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("papersize","A3");
@@ -514,7 +507,7 @@ public class ContractExtensionController{
         attributes.put("orientation","LANDSCAPE");
 
         try {
-            String printOk = Printer.printPDF(pathToContractExtinctionDataSubfolder.toString(), attributes);
+            String printOk = Printer.printPDF(pathToContractExtensionDataSubfolder.toString(), attributes);
             Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
                 Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
