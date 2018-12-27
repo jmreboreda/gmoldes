@@ -81,7 +81,9 @@ public class PersonManager {
     public PersonDTO findPersonById(Integer id){
         PersonDAO personDAO = PersonDAO.PersonDAOFactory.getInstance();
         PersonVO personVO = personDAO.findPersonById(id);
-        PersonDTO personDTO = PersonDTO.create()
+        LocalDate fechaNacim = personVO.getFechanacim() != null ? personVO.getFechanacim().toLocalDate() : null;
+
+        return PersonDTO.create()
                 .withIdpersona(personVO.getIdpersona())
                 .withApellidos(personVO.getApellidos())
                 .withNom_rzsoc(personVO.getNom_rzsoc())
@@ -89,14 +91,12 @@ public class PersonManager {
                 .withDireccion(personVO.getDireccion())
                 .withNumafss(personVO.getNumafss())
                 .withEstciv(personVO.getEstciv())
-                .withFechanacim(personVO.getFechanacim().toLocalDate())
+                .withFechanacim(fechaNacim)
                 .withLocalidad(personVO.getLocalidad())
                 .withNacionalidad(personVO.getNacionalidad())
                 .withNifcif(personVO.getNifcif())
                 .withNifcifdup(personVO.getNifcifdup())
                 .withNivestud(personVO.getNivestud())
                 .build();
-
-        return personDTO;
     }
 }
