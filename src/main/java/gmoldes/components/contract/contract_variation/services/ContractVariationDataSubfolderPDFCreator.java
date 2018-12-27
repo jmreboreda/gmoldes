@@ -4,10 +4,9 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
-import gmoldes.components.contract.contract_variation.forms.ContractExtinctionDataSubfolder;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
-import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
+import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 
 import java.io.FileOutputStream;
@@ -18,67 +17,64 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-public class ContractExtinctionDataSubfolderPDFCreator {
+public class ContractVariationDataSubfolderPDFCreator {
 
     private static final String PATH_TO_PDF_TEMPLATE = "/pdf_forms/DGM_003_Datos_Alta_o_Cambio_Contrato_Trabajo.pdf";
 
-    public ContractExtinctionDataSubfolderPDFCreator() {
+    public ContractVariationDataSubfolderPDFCreator() {
     }
 
-    public static Path createContractExtinctionDataSubfolderPDF(ContractExtinctionDataSubfolder contractExtinctionDataSubfolder, Path pathOut) throws IOException, DocumentException {
+    public static Path createContractVariationDataSubfolderPDF(ContractVariationDataSubfolder contractVariationDataSubfolder, Path pathOut) throws IOException, DocumentException {
 
         PdfReader reader = new PdfReader(PATH_TO_PDF_TEMPLATE);
         PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(pathOut.toString()));
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
-        String startDate = contractExtinctionDataSubfolder.getStartDate() != null ? contractExtinctionDataSubfolder.getStartDate().format(dateFormatter) : "";
-        String endDate = contractExtinctionDataSubfolder.getEndDate() != null ? contractExtinctionDataSubfolder.getEndDate().format(dateFormatter) : "";
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
 
         AcroFields contractExtinctionDataSubfolderPDFFields = stamp.getAcroFields();
-        contractExtinctionDataSubfolderPDFFields.setField("notificationType",contractExtinctionDataSubfolder.getNotificationType());
-        contractExtinctionDataSubfolderPDFFields.setField("officialContractNumber",contractExtinctionDataSubfolder.getOfficialContractNumber());
-        contractExtinctionDataSubfolderPDFFields.setField("employerFullName",contractExtinctionDataSubfolder.getEmployerFullName());
-        contractExtinctionDataSubfolderPDFFields.setField("employerCCC",contractExtinctionDataSubfolder.getEmployerQuoteAccountCode());
-        contractExtinctionDataSubfolderPDFFields.setField("notificationDate",contractExtinctionDataSubfolder.getNotificationDate().format(dateFormatter));
-        contractExtinctionDataSubfolderPDFFields.setField("notificationHour",contractExtinctionDataSubfolder.getNotificationHour().format(timeFormatter));
-        contractExtinctionDataSubfolderPDFFields.setField("employeeFullName",contractExtinctionDataSubfolder.getEmployeeFullName());
-        contractExtinctionDataSubfolderPDFFields.setField("employeeNIF",contractExtinctionDataSubfolder.getEmployeeNif());
-        contractExtinctionDataSubfolderPDFFields.setField("employeeNASS",contractExtinctionDataSubfolder.getEmployeeNASS());
-        contractExtinctionDataSubfolderPDFFields.setField("employeeBirthDate",contractExtinctionDataSubfolder.getEmployeeBirthDate());
-        contractExtinctionDataSubfolderPDFFields.setField("employeeCivilState",contractExtinctionDataSubfolder.getEmployeeCivilState());
-        contractExtinctionDataSubfolderPDFFields.setField("employeeNationality",contractExtinctionDataSubfolder.getEmployeeNationality());
-        contractExtinctionDataSubfolderPDFFields.setField("employeeFullAddress",contractExtinctionDataSubfolder.getEmployeeFullAddress());
-        contractExtinctionDataSubfolderPDFFields.setField("employeeMaxStudyLevel",contractExtinctionDataSubfolder.getEmployeeMaxStudyLevel());
-        if(contractExtinctionDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.MONDAY)) {
+        contractExtinctionDataSubfolderPDFFields.setField("notificationType",contractVariationDataSubfolder.getNotificationType());
+        contractExtinctionDataSubfolderPDFFields.setField("officialContractNumber",contractVariationDataSubfolder.getOfficialContractNumber());
+        contractExtinctionDataSubfolderPDFFields.setField("employerFullName",contractVariationDataSubfolder.getEmployerFullName());
+        contractExtinctionDataSubfolderPDFFields.setField("employerCCC",contractVariationDataSubfolder.getEmployerQuoteAccountCode());
+        contractExtinctionDataSubfolderPDFFields.setField("notificationDate",contractVariationDataSubfolder.getNotificationDate());
+        contractExtinctionDataSubfolderPDFFields.setField("notificationHour",contractVariationDataSubfolder.getNotificationHour());
+        contractExtinctionDataSubfolderPDFFields.setField("employeeFullName",contractVariationDataSubfolder.getEmployeeFullName());
+        contractExtinctionDataSubfolderPDFFields.setField("employeeNIF",contractVariationDataSubfolder.getEmployeeNif());
+        contractExtinctionDataSubfolderPDFFields.setField("employeeNASS",contractVariationDataSubfolder.getEmployeeNASS());
+        contractExtinctionDataSubfolderPDFFields.setField("employeeBirthDate",contractVariationDataSubfolder.getEmployeeBirthDate());
+        contractExtinctionDataSubfolderPDFFields.setField("employeeCivilState",contractVariationDataSubfolder.getEmployeeCivilState());
+        contractExtinctionDataSubfolderPDFFields.setField("employeeNationality",contractVariationDataSubfolder.getEmployeeNationality());
+        contractExtinctionDataSubfolderPDFFields.setField("employeeFullAddress",contractVariationDataSubfolder.getEmployeeFullAddress());
+        contractExtinctionDataSubfolderPDFFields.setField("employeeMaxStudyLevel",contractVariationDataSubfolder.getEmployeeMaxStudyLevel());
+        if(contractVariationDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.MONDAY)) {
             contractExtinctionDataSubfolderPDFFields.setField("monday", "Yes");
         }
-        if(contractExtinctionDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.TUESDAY)) {
+        if(contractVariationDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.TUESDAY)) {
             contractExtinctionDataSubfolderPDFFields.setField("tuesday", "Yes");
         }
-        if(contractExtinctionDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.WEDNESDAY)) {
+        if(contractVariationDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.WEDNESDAY)) {
             contractExtinctionDataSubfolderPDFFields.setField("wednesday", "Yes");
         }
-        if(contractExtinctionDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.THURSDAY)) {
+        if(contractVariationDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.THURSDAY)) {
             contractExtinctionDataSubfolderPDFFields.setField("thursday", "Yes");
         }
-        if(contractExtinctionDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.FRIDAY)) {
+        if(contractVariationDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.FRIDAY)) {
             contractExtinctionDataSubfolderPDFFields.setField("friday", "Yes");
         }
-        if(contractExtinctionDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.SATURDAY)) {
+        if(contractVariationDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.SATURDAY)) {
             contractExtinctionDataSubfolderPDFFields.setField("saturday", "Yes");
         }
-        if(contractExtinctionDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.SUNDAY)) {
+        if(contractVariationDataSubfolder.getDayOfWeekSet().contains(DayOfWeek.SUNDAY)) {
             contractExtinctionDataSubfolderPDFFields.setField("sunday", "Yes");
         }
-        contractExtinctionDataSubfolderPDFFields.setField("contractType",contractExtinctionDataSubfolder.getContractTypeDescription());
-        contractExtinctionDataSubfolderPDFFields.setField("startDate", startDate);
-        contractExtinctionDataSubfolderPDFFields.setField("endDate", endDate);
-        contractExtinctionDataSubfolderPDFFields.setField("durationDays", contractExtinctionDataSubfolder.getDurationDays());
+        contractExtinctionDataSubfolderPDFFields.setField("contractType",contractVariationDataSubfolder.getContractTypeDescription());
+        contractExtinctionDataSubfolderPDFFields.setField("startDate", contractVariationDataSubfolder.getStartDate());
+        contractExtinctionDataSubfolderPDFFields.setField("endDate", contractVariationDataSubfolder.getEndDate());
+        contractExtinctionDataSubfolderPDFFields.setField("durationDays", contractVariationDataSubfolder.getDurationDays());
 
 
         /* Start of the form fill loop*/
-        for(WorkDaySchedule workDay : contractExtinctionDataSubfolder.getSchedule()){
+        for(WorkDaySchedule workDay : contractVariationDataSubfolder.getSchedule()){
             if(workDay.getDayOfWeek().equals(DayOfWeek.MONDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()))){
                 String workDayPDF = "";
                 String dateOne = "";
@@ -353,9 +349,9 @@ public class ContractExtinctionDataSubfolderPDFCreator {
             }
         }
 
-        contractExtinctionDataSubfolderPDFFields.setField("additionalData",contractExtinctionDataSubfolder.getAdditionalData());
-        contractExtinctionDataSubfolderPDFFields.setField("laborCategory",contractExtinctionDataSubfolder.getLaborCategory());
-        contractExtinctionDataSubfolderPDFFields.setField("GMcontractNumber",contractExtinctionDataSubfolder.getGmContractNumber());
+        contractExtinctionDataSubfolderPDFFields.setField("additionalData",contractVariationDataSubfolder.getAdditionalData());
+        contractExtinctionDataSubfolderPDFFields.setField("laborCategory",contractVariationDataSubfolder.getLaborCategory());
+        contractExtinctionDataSubfolderPDFFields.setField("GMcontractNumber",contractVariationDataSubfolder.getGmContractNumber());
 
         stamp.setFormFlattening(true);
         stamp.close();

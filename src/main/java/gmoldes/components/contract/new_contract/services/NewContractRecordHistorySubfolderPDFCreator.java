@@ -4,9 +4,9 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
-import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
+import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 
 import java.io.FileOutputStream;
@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
-import java.util.Locale;
 
 public class NewContractRecordHistorySubfolderPDFCreator {
 
@@ -28,7 +26,7 @@ public class NewContractRecordHistorySubfolderPDFCreator {
 
         PdfReader reader = new PdfReader(PATH_TO_PDF_TEMPLATE);
         PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(pathOut.toString()));
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
 
         String workDays = "";
 

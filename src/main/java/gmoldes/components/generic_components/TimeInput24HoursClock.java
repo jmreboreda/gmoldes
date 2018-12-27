@@ -1,9 +1,9 @@
 package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,6 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
 import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 
@@ -59,6 +61,15 @@ public class TimeInput24HoursClock extends HBox {
 
     public void setText(String text){
         this.textField.setText(text);
+    }
+
+    public LocalTime getTime(){
+        if(textField.getText().isEmpty()){
+            return null;
+        }
+
+        return LocalTime.parse(this.textField.getText() + ":00");
+
     }
 
     public void setTextLabel (String text){

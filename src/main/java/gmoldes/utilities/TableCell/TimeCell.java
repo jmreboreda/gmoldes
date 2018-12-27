@@ -1,6 +1,7 @@
 package gmoldes.utilities.TableCell;
 
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
+import gmoldes.utilities.Parameters;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
@@ -68,7 +69,7 @@ public class TimeCell extends TableCell<ContractScheduleDayDTO, LocalTime> {
     private void createTextField() {
         Pattern timePattern = Pattern.compile("\\d{2}[:]\\d{2}");
 
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
         textField = new TextField(getString());
         textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
         textField.setOnKeyReleased(t -> {

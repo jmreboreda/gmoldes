@@ -1,6 +1,7 @@
 package gmoldes.components.contract.new_contract.components;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.domain.contract.dto.ProvisionalContractDataDTO;
 import gmoldes.utilities.Parameters;
 import javafx.beans.value.ChangeListener;

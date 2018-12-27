@@ -5,7 +5,6 @@ import gmoldes.components.contract.contract_variation.persistence.vo.ContractVar
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.manager.TypesContractVariationsManager;
-import gmoldes.domain.client.Client;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.*;
@@ -14,13 +13,11 @@ import gmoldes.domain.contract.mapper.MapperContractVariationVOtoContractNewVers
 import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
 import gmoldes.domain.contract.mapper.MapperInitialContractVOtoContractNewVersionDTO;
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.servicegm.dto.ServiceGMDTO;
 import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -108,6 +105,11 @@ public class ApplicationMainController {
 
         return applicationMainManager.retrievePersonByPersonID(personId);
 
+    }
+
+    public TypesContractVariationsDTO findTypeContractVariationById(Integer typeContractVariationId){
+
+        return applicationMainManager.retrieveTypesContractVariations(typeContractVariationId);
     }
 
     public List<ContractNewVersionDTO> findAllTemporalContractInForceNow() {

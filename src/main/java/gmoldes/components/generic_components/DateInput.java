@@ -1,6 +1,7 @@
 package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,8 +11,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.util.converter.LocalDateStringConverter;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DateInput extends HBox {
 
@@ -36,7 +39,8 @@ public class DateInput extends HBox {
         this.dateInput.setMaxWidth(130);
         setMargin(dateInput, new Insets(0, 0, 0, 5));
 
-        dateInput.setConverter(Utilities.dateConverter);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        dateInput.setConverter(new LocalDateStringConverter(dateFormatter, null));
         dateInput.showWeekNumbersProperty().set(false);
         dateInput.setEditable(false);
         dateInput.setValue(LocalDate.now());

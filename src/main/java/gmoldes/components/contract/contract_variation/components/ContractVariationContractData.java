@@ -2,6 +2,7 @@ package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
+import gmoldes.utilities.Parameters;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
@@ -119,7 +120,7 @@ public class ContractVariationContractData extends VBox {
     }
 
     public void setAllContractData(ContractFullDataDTO contractFullDataDTO){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
 
         this.getContractNumber().setText(contractFullDataDTO.getContractNewVersion().getContractNumber().toString());
 

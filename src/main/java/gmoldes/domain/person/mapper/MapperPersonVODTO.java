@@ -3,10 +3,14 @@ package gmoldes.domain.person.mapper;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.persistence.vo.PersonVO;
 
+import java.time.LocalDate;
+
 public class MapperPersonVODTO {
 
 
     public static PersonDTO mapPersonVODTO(PersonVO personVO){
+
+        LocalDate fechaNacim = personVO.getFechanacim() != null ? personVO.getFechanacim().toLocalDate() : null;
 
         return PersonDTO.create()
                 .withIdpersona(personVO.getIdpersona())
@@ -15,7 +19,7 @@ public class MapperPersonVODTO {
                 .withNifcif(personVO.getNifcif())
                 .withNifcifdup(personVO.getNifcifdup())
                 .withNumafss(personVO.getNumafss())
-                .withFechanacim(personVO.getFechanacim())
+                .withFechanacim(fechaNacim)
                 .withEstciv(personVO.getEstciv())
                 .withDireccion(personVO.getDireccion())
                 .withLocalidad(personVO.getLocalidad())

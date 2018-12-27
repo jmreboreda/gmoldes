@@ -381,7 +381,7 @@ public class ApplicationMainManager {
         return MapperContractTypeVODTO.mapContractTypeVODTO(contractTypeVO);
     }
 
-    private TypesContractVariationsDTO retrieveTypesContractVariations(Integer variationType){
+    public TypesContractVariationsDTO retrieveTypesContractVariations(Integer variationType){
         TypesContractVariationsDAO typesContractVariationsDAO = TypesContractVariationsDAO.TypesContractVariationsDAOFactory.getInstance();
         TypesContractVariationsVO typesContractVariationsDTO = typesContractVariationsDAO.findTypesContractVariationsById(variationType);
 

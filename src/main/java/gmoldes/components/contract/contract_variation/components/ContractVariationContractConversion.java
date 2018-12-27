@@ -3,6 +3,7 @@ package gmoldes.components.contract.contract_variation.components;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +15,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
+import javafx.util.converter.LocalDateStringConverter;
 
+import java.text.DateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +48,9 @@ public class ContractVariationContractConversion extends VBox {
     @FXML
     private void initialize(){
 
-        dateFrom.setConverter(Utilities.dateConverter);
-        dateTo.setConverter(Utilities.dateConverter);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        dateFrom.setConverter(new LocalDateStringConverter(dateFormatter, null));
+        dateTo.setConverter(new LocalDateStringConverter(dateFormatter, null));
 
         dateFrom.disableProperty().bind(this.contractConversionSelector.valueProperty().isNull());
         dateTo.disableProperty().bind(this.contractConversionSelector.valueProperty().isNull());

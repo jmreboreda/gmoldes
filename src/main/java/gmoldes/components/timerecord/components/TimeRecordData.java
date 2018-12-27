@@ -3,7 +3,7 @@ package gmoldes.components.timerecord.components;
 import com.lowagie.text.DocumentException;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.ContractTypeController;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
 import gmoldes.components.timerecord.forms.TimeRecord;
 import gmoldes.domain.client.controllers.ClientController;

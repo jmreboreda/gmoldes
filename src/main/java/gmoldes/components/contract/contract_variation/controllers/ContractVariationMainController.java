@@ -5,21 +5,19 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract.contract_variation.events.MessageEvent;
+import gmoldes.components.contract.contract_variation.events.MessageContractVariationEvent;
+import gmoldes.components.contract.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
-import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
-import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
+import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
-import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.services.AgentNotificator;
-import gmoldes.services.email.EmailParameters;
+import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import javafx.beans.value.ChangeListener;
@@ -38,7 +36,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.mail.internet.AddressException;
 import java.nio.file.Path;
 import java.text.Collator;
 import java.time.DayOfWeek;
@@ -62,7 +59,10 @@ public class ContractVariationMainController extends VBox {
     private Parent parent;
 
     private ApplicationMainController applicationMainController = new ApplicationMainController();
-    private ContractManager contractManager = new ContractManager();
+    private ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
+    private ContractExtensionController contractExtensionController = new ContractExtensionController(this);
+    private ContractVariationDataSubfolder contractVariationDataSubfolder;
+
 
     private Boolean contractHasBeenSavedInDatabase = false;
     private Boolean contractHasBeenSentToContractAgent = false;
@@ -90,7 +90,7 @@ public class ContractVariationMainController extends VBox {
 
 
     @FXML
-    public void initialize() {
+    private void initialize() {
 
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
@@ -137,7 +137,6 @@ public class ContractVariationMainController extends VBox {
         contractVariationActionComponents.setOnOkButton(this::onOkButton);
         contractVariationActionComponents.setOnExitButton(this::onExitButton);
         contractVariationActionComponents.setOnSendMailButton(this::onSendMailButton);
-
 
         clientSelectorLoadData();
     }
@@ -234,7 +233,9 @@ public class ContractVariationMainController extends VBox {
 
         contractVariationContractVariations.getContractVariationContractExtension().cleanComponents();
         contractVariationContractVariations.getContractVariationContractExtension().toFront();
-        contractVariationTypes.getHourNotification().requestFocus();
+        LocalDate expectedEndDate = contractVariationParts.getContractSelector().getValue().getContractNewVersion().getExpectedEndDate();
+        contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().setValue(expectedEndDate.plusDays(1L));
+        contractVariationContractVariations.getContractVariationContractExtension().getPublicNotes().setText(ContractConstants.NOT_VARIATION_OTHER_CONDITIONS_OF_CONTRACT);
 
         contractVariationActionComponents.getOkButton().setDisable(false);
     }
@@ -252,10 +253,18 @@ public class ContractVariationMainController extends VBox {
         // Contract extinction
         RadioButton rbContractExtinction = contractVariationTypes.getRbContractExtinction();
         if(rbContractExtinction.isSelected()) {
-            Boolean contractExtinctionIsCorrect = contractVariationContractExtinctionIsSelected();
-            if(contractExtinctionIsCorrect) {
-                persistenceOfContractVariation(new CompatibleVariationEvent(true, false,false, ""));
+            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
+
+            MessageContractVariationEvent messageContractVariationEvent = contractExtinctionController.executeContractExtinctionOperations();
+            if (!messageContractVariationEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK) &&
+                    !messageContractVariationEvent.getMessageText().isEmpty()) {
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageContractVariationEvent.getMessageText());
+
+                return;
             }
+
+            this.contractVariationDataSubfolder = messageContractVariationEvent.getContractVariationDataSubfolder();
+            setDataEditionBlockedAndEnableSendMail();
 
             return;
         }
@@ -263,24 +272,38 @@ public class ContractVariationMainController extends VBox {
         // Contract extension
         RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
         if(rbContractExtension.isSelected()) {
-            Boolean contractExtensionIsCorrect = contractVariationContractExtensionSelected();
-            if(contractExtensionIsCorrect) {
-                persistenceOfContractVariation(new CompatibleVariationEvent(false, true,false, ""));
+            ContractExtensionController contractExtensionController = new ContractExtensionController(this);
+
+            MessageContractVariationEvent messageContractVariationEvent = contractExtensionController.executeContractExtensionOperations();
+            if (!messageContractVariationEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK) &&
+                    !messageContractVariationEvent.getMessageText().isEmpty()) {
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageContractVariationEvent.getMessageText());
+
+                return;
             }
 
-            return;
-        }
-
-        // Contract conversion
-        RadioButton rbContractConversion = contractVariationTypes.getRbContractConversion();
-        if(rbContractConversion.isSelected()) {
-            Boolean contractConversionIsCorrect = contractVariationContractExtensionSelected();
-            if(contractConversionIsCorrect) {
-                persistenceOfContractVariation(new CompatibleVariationEvent(false, false,true, ""));
-            }
+            setDataEditionBlockedAndEnableSendMail();
 
             return;
+
         }
+
+
+//        // Contract conversion
+//        RadioButton rbContractConversion = contractVariationTypes.getRbContractConversion();
+//        if(rbContractConversion.isSelected()) {
+//            Boolean contractConversionIsCorrect = contractVariationContractExtensionSelected();
+//            if(contractConversionIsCorrect) {
+//                VariationTypeEvent event = persistenceOfContractVariation(new CompatibleVariationEvent(false, false,true, ""));
+//                if(event != null){
+//                    isContractVariationExtinction = event.getContractVariationExtinction();
+//                    isContractVariationExtension = event.getContractVariationExtension();
+//                    isContractVariationConversion = event.getContractVariationConversion();
+//                }
+//            }
+//
+//            return;
+//        }
     }
 
     private void onExitButton(MouseEvent event){
@@ -298,137 +321,31 @@ public class ContractVariationMainController extends VBox {
 
     private void onSendMailButton(MouseEvent event){
         Boolean isSendOk = false;
-        Path pathOut;
 
         if (Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
 
-            ContractExtinctionDataDocumentCreator contractExtinctionDocumentCreator = new ContractExtinctionDataDocumentCreator(this);
-
-            ContractDataToContractsAgent initialContractDataToContractAgent = contractExtinctionDocumentCreator.createContractExtinctionDataDocumentForContractsAgent();
-
-            pathOut = contractExtinctionDocumentCreator.retrievePathToContractDataToContractAgentPDF(initialContractDataToContractAgent);
-
-            String attachedFileName = initialContractDataToContractAgent.toFileName().concat(".pdf");
-
-            AgentNotificator agentNotificator = new AgentNotificator();
-
-            EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName);
-
-            try {
-                isSendOk = agentNotificator.sendEmailToContractAgent(emailDataCreationDTO);
-            } catch (AddressException e) {
-                e.printStackTrace();
+            // Contract extinction
+            RadioButton rbContractExtinction = contractVariationTypes.getRbContractExtinction();
+            if(rbContractExtinction.isSelected()) {
+                isSendOk = contractExtinctionController.sendsMailContractVariationExtinction(this.contractVariationDataSubfolder);
             }
+
+
+            // Contract extension
+            RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
+            if(rbContractExtension.isSelected()) {
+                isSendOk = contractExtensionController.sendsMailContractVariationExtension();
+            }
+
             if(isSendOk){
 
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_SEND_OK);
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_SEND_OK);
                 contractHasBeenSentToContractAgent = true;
                 this.contractVariationActionComponents.enableSendMailButton(false);
 
             }else{
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_NOT_SEND_OK);
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_NOT_SEND_OK);
             }
-        }
-    }
-
-    private Boolean contractVariationContractExtinctionIsSelected(){
-
-        ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this, contractVariationParts, contractVariationTypes, contractVariationContractVariations);
-
-        MessageEvent messageEvent = contractExtinctionController.verifyIsCorrectContractExtinctionData();
-        String messageText = messageEvent.getMessageText();
-        if (!messageText.equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)) {
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageText);
-
-            return false;
-        }
-
-        System.out.println(messageText);    // <- NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED
-
-        LocalDate effectDateRequestedForContractVariation = contractVariationContractVariations.getContractVariationContractExtinction().getDateFrom().getValue();
-        CompatibleVariationEvent isCorrectDataToNotifyAdministration = dateToNotifyContractVariationToAdministrationIsCorrect(effectDateRequestedForContractVariation);
-        if(!isCorrectDataToNotifyAdministration.getErrorContractVariationMessage().isEmpty()){
-            Boolean isCorrectDate = Message.confirmationMessage(contractVariationParts.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
-                    ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION);
-            if(!isCorrectDate){
-                return false;
-            }
-        }
-
-        CompatibleVariationEvent event = contractExtinctionController.checkExistenceIncompatibleVariationsForContractExtinction();
-        if(!event.getErrorContractVariationMessage().isEmpty()){
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, event.getErrorContractVariationMessage());
-
-            return false;
-        }
-
-        return true;
-    }
-
-    private Boolean contractVariationContractExtensionSelected(){
-
-        ContractExtensionController contractExtensionController = new ContractExtensionController(
-                this.getScene(), contractVariationParts, contractVariationTypes, contractVariationContractVariations);
-
-        MessageEvent messageEvent = contractExtensionController.verifyIsCorrectContractExtensionData();
-        String messageText = messageEvent.getMessageText();
-        if (!messageText.equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)) {
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageText);
-
-            return false;
-        }
-
-        System.out.println(messageText);    // <- NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED
-
-        CompatibleVariationEvent event = contractExtensionController.checkExistenceIncompatibleVariationsForContractExtension();
-        if(!event.getErrorContractVariationMessage().isEmpty()){
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, event.getErrorContractVariationMessage());
-
-            return false;
-        }
-
-        return true;
-    }
-
-    private void persistenceOfContractVariation(CompatibleVariationEvent persistenceEvent) {
-
-        if (!Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)) {
-            return;
-        }
-
-        Boolean isCorrectManagement = false;
-
-        // Contract extinction persistence
-        if (persistenceEvent.getContractExtinctionEvent()) {
-
-            ContractExtinctionController contractExtinctionController = new ContractExtinctionController(
-                    this,
-                    contractVariationParts,
-                    contractVariationTypes,
-                    contractVariationContractVariations);
-
-            isCorrectManagement = contractExtinctionController.manageContractExtinction();
-        }
-
-        // Contract extension persistence
-        if (persistenceEvent.getContractExtensionEvent()) {
-
-            ContractExtensionController contractExtensionController = new ContractExtensionController(
-                    this.getScene(),
-                    contractVariationParts,
-                    contractVariationTypes,
-                    contractVariationContractVariations);
-
-            isCorrectManagement = contractExtensionController.manageContractExtension();
-
-        }
-
-        if(isCorrectManagement){
-            contractVariationParts.setMouseTransparent(true);
-            contractVariationTypes.setMouseTransparent(true);
-            contractVariationContractVariations.setMouseTransparent(true);
-            contractVariationActionComponents.getOkButton().setDisable(true);
-            contractVariationActionComponents.getSendMailButton().setDisable(false);
         }
     }
 
@@ -525,11 +442,10 @@ public class ContractVariationMainController extends VBox {
         contractVariationContractVariations.getContractVariationContractConversion().getDateTo().setValue(null);
     }
 
-    private EmailDataCreationDTO retrieveDateForEmailCreation(Path path, String attachedFileName){
+    private EmailDataCreationDTO retrieveDateForEmailCreation(Path path, String attachedFileName, String variationTypeText){
 
         ClientDTO employerDTO = this.contractVariationParts.getClientSelector().getValue();
         PersonDTO employeeDTO = this.contractVariationParts.getContractSelector().getValue().getEmployee();
-        String variationTypeText = EmailParameters.STANDARD_NEW_CONTRACT_TEXT;
         return EmailDataCreationDTO.create()
                 .withPath(path)
                 .withFileName(attachedFileName)
@@ -537,6 +453,15 @@ public class ContractVariationMainController extends VBox {
                 .withEmployee(employeeDTO)
                 .withVariationTypeText(variationTypeText)
                 .build();
+    }
+
+    private void setDataEditionBlockedAndEnableSendMail() {
+
+        contractVariationParts.setMouseTransparent(true);
+        contractVariationTypes.setMouseTransparent(true);
+        contractVariationContractVariations.setMouseTransparent(true);
+        contractVariationActionComponents.getOkButton().setDisable(true);
+        contractVariationActionComponents.getSendMailButton().setDisable(false);
     }
 
     private Set<DayOfWeek> retrieveDayOfWeekSet(String daysOfWeek){

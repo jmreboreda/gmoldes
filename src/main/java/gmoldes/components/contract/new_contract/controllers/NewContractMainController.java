@@ -6,6 +6,7 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.components.timerecord.components.TimeRecordConstants;
@@ -22,7 +23,7 @@ import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.services.AgentNotificator;
-import gmoldes.services.email.EmailParameters;
+import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
@@ -49,6 +50,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
+
+import static gmoldes.components.contract.ContractConstants.STANDARD_NEW_CONTRACT_TEXT;
 
 public class NewContractMainController extends VBox {
 
@@ -196,18 +199,18 @@ public class NewContractMainController extends VBox {
             EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName);
 
             try {
-                isSendOk = agentNotificator.sendEmailToContractAgent(emailDataCreationDTO);
+                isSendOk = agentNotificator.sendEmailToContractsAgent(emailDataCreationDTO);
             } catch (AddressException e) {
                 e.printStackTrace();
             }
             if(isSendOk){
 
-                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_SEND_OK);
+                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_SEND_OK);
                 contractHasBeenSentToContractAgent = true;
                 contractActionComponents.enableSendMailButton(false);
 
             }else{
-                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailParameters.MAIL_NOT_SEND_OK);
+                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_NOT_SEND_OK);
             }
         }
     }
@@ -244,15 +247,15 @@ public class NewContractMainController extends VBox {
                 String[] command = {"sh", "-c", "xdg-open " + pathOut};
                 pdfViewerProcess = Runtime.getRuntime().exec(command);
             } catch (IOException e) {
-                System.out.println("No se ha podido abrir el documento \"" + initialContractDataToContractAgent.toFileName().concat(".pdf") + "\"");
+                System.out.println("No se ha podido abrir el documento \"" + initialContractDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
                 e.printStackTrace();
             }
-        }else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
+        }else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
             String[] command = {"cmd","/c","start","\"visor\"","\"" + pathOut + "\""};
             try {
                 pdfViewerProcess = Runtime.getRuntime().exec(command);
             } catch (IOException e) {
-                System.out.println("No se ha podido abrir el documento \"" + initialContractDataToContractAgent.toFileName().concat(".pdf") + "\"");
+                System.out.println("No se ha podido abrir el documento \"" + initialContractDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
                 e.printStackTrace();
             }
         }
@@ -465,7 +468,7 @@ public class NewContractMainController extends VBox {
     private void blockingInterfaceAfterContractPersistence(ContractFullDataDTO contractFullDataDTO){
         Integer contractNumber = contractFullDataDTO.getContractNewVersion().getContractNumber();
         contractHasBeenSavedInDatabase = true;
-        provisionalContractData.setContractText(Parameters.NEW_CONTRACT_TEXT + " nº");
+        provisionalContractData.setContractText(STANDARD_NEW_CONTRACT_TEXT + " nº");
         provisionalContractData.setContractNumber(contractNumber);
         contractParts.setMouseTransparent(true);
         contractData.setMouseTransparent(true);
@@ -589,7 +592,7 @@ public class NewContractMainController extends VBox {
 
         ClientDTO employerDTO = contractParts.getSelectedEmployer();
         PersonDTO employeeDTO = contractParts.getSelectedEmployee();
-        String variationTypeText = EmailParameters.STANDARD_NEW_CONTRACT_TEXT;
+        String variationTypeText = EmailConstants.STANDARD_NEW_CONTRACT_TEXT;
         return EmailDataCreationDTO.create()
                 .withPath(path)
                 .withFileName(attachedFileName)

@@ -4,6 +4,7 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
+import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,7 +14,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
+import javafx.util.converter.LocalDateStringConverter;
+
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ContractVariationParts extends VBox {
 
@@ -40,7 +44,8 @@ public class ContractVariationParts extends VBox {
     @FXML
     public void initialize() {
 
-        inForceDate.setConverter(Utilities.dateConverter);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        inForceDate.setConverter(new LocalDateStringConverter(dateFormatter, null));
         inForceDate.setValue(LocalDate.now());
         inForceDate.setMouseTransparent(true);
         client.setOnAction(this::onChangeEmployer);

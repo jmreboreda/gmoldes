@@ -15,7 +15,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-         /* Initial control processes */
+        /* Initial control processes */
         ProgressIndicator indicator = new ProgressIndicator();
         Scene initialScene = new Scene(indicator);
         primaryStage.setScene(initialScene);

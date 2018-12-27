@@ -4,8 +4,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
-import gmoldes.components.contract.new_contract.components.ContractParameters;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.utilities.Parameters;
@@ -17,10 +16,11 @@ import java.nio.file.Path;
 import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+
+import static gmoldes.components.contract.ContractConstants.STANDARD_NEW_CONTRACT_TEXT;
 
 public class ContractDataToContractAgentPDFCreator {
 
@@ -33,8 +33,8 @@ public class ContractDataToContractAgentPDFCreator {
 
         PdfReader reader = new PdfReader(PATH_TO_PDF_TEMPLATE);
         PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(pathOut.toString()));
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
 
         String officialContractNumber = contractDataToContractsAgent.getOfficialContractNumber() != null ? contractDataToContractsAgent.getOfficialContractNumber() : "";
 
@@ -42,8 +42,8 @@ public class ContractDataToContractAgentPDFCreator {
         String endDate = contractDataToContractsAgent.getEndDate() != null ? contractDataToContractsAgent.getEndDate().format(dateFormatter) : "";
 
         String durationDaysText = "";
-        if(contractDataToContractsAgent.getNotificationType().contains(Parameters.NEW_CONTRACT_TEXT) ||
-                contractDataToContractsAgent.getNotificationType().contains(Parameters.CONTRACT_CONVERSION_TEXT)){
+        if(contractDataToContractsAgent.getNotificationType().contains(STANDARD_NEW_CONTRACT_TEXT) ||
+                contractDataToContractsAgent.getNotificationType().contains(ContractConstants.STANDARD_CONTRACT_CONVERSION_TEXT)){
             if(contractDataToContractsAgent.getEndDate() == null){
                 durationDaysText = ContractConstants.UNDEFINED_DURATION_TEXT;
             }else{
@@ -51,11 +51,11 @@ public class ContractDataToContractAgentPDFCreator {
             }
         }
 
-        if(contractDataToContractsAgent.getNotificationType().contains(Parameters.CONTRACT_EXTINCTION_TEXT)){
+        if(contractDataToContractsAgent.getNotificationType().contains(ContractConstants.STANDARD_CONTRACT_EXTINCTION_TEXT)){
             durationDaysText = "";
         }
 
-        if(contractDataToContractsAgent.getNotificationType().contains(Parameters.CONTRACT_EXTENSION_TEXT)){
+        if(contractDataToContractsAgent.getNotificationType().contains(ContractConstants.STANDARD_CONTRACT_EXTENSION_TEXT)){
             durationDaysText = contractDataToContractsAgent.getDurationDays().toDays() + " días";
         }
 

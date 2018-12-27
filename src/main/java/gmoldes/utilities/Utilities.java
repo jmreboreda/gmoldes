@@ -2,9 +2,7 @@ package gmoldes.utilities;
 
 import javafx.util.StringConverter;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,26 +20,26 @@ import java.util.regex.Pattern;
 
 public class Utilities {
 
-    public static StringConverter dateConverter = new StringConverter<LocalDate>() {
-        DateTimeFormatter dateFormatter =
-                DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
-        @Override
-        public String toString(LocalDate date) {
-            if (date != null) {
-                return dateFormatter.format(date);
-            } else {
-                return "";
-            }
-        }
-        @Override
-        public LocalDate fromString(String string) {
-            if (string != null && !string.isEmpty()) {
-                return LocalDate.parse(string, dateFormatter);
-            } else {
-                return null;
-            }
-        }
-    };
+//    public static StringConverter dateConverter = new StringConverter<LocalDate>() {
+//        DateTimeFormatter dateFormatter =
+//                DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+//        @Override
+//        public String toString(LocalDate date) {
+//            if (date != null) {
+//                return dateFormatter.format(date);
+//            } else {
+//                return "";
+//            }
+//        }
+//        @Override
+//        public LocalDate fromString(String string) {
+//            if (string != null && !string.isEmpty()) {
+//                return LocalDate.parse(string, dateFormatter);
+//            } else {
+//                return null;
+//            }
+//        }
+//    };
 
     public static Duration converterTimeStringToDuration(String timeAsString){
         String minutes = null;
@@ -119,7 +117,7 @@ public class Utilities {
 
     public static Date validateStringAsTime(String time){
         Date hour;
-        DateFormat hourFormatter = new SimpleDateFormat("HH:mm");
+        DateFormat hourFormatter = new SimpleDateFormat(Parameters.DEFAULT_TIME_FORMAT);
         hourFormatter.setLenient(false);
         try{
             hour = hourFormatter.parse(time);
@@ -144,7 +142,7 @@ public class Utilities {
 
     public static boolean validateDate(String date) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
+            DateFormat dateFormat = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
             dateFormat.setLenient(false);
             dateFormat.parse(date);
         } catch (ParseException e) {
