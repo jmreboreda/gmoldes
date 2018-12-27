@@ -100,7 +100,7 @@ public class ContractExtensionController{
         Integer traceabilityId = persistTraceabilityControlData();
         if(traceabilityId == null){
 
-            return new MessageEvent("Ha petado la persistencia de la trazabilidad de la extinción del contrato.");
+            return new MessageEvent("Ha petado la persistencia de la trazabilidad de la prórroga del contrato.");
         }
 
         // 7. Print documentation
@@ -277,12 +277,12 @@ public class ContractExtensionController{
 
         if(persistNewContractVariation(contractNewVersionExtendedDTO) == null) {
 
-            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION);
+            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_INSERTING_NEW_EXTENSION_RECORD_IN_CONTRACT_VARIATION);
         }
 
         if(updateInitialContractOfContractExtension(contractNewVersionExtendedDTO.getContractNumber()) == null) {
 
-            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT);
+            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_MODIFICATION_DATE_IN_INITIAL_CONTRACT);
         }
 
         if(persistTraceabilityControlData() == null){
