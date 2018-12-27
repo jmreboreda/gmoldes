@@ -112,7 +112,7 @@ public class ContractExtensionController{
         String publicNotes = retrievePublicNotes();
         sb.append(publicNotes);
 
-        ContractExtensionDataSubfolder contractExtensionDataSubfolder = createContractExtensionDataSubfolder(sb.toString(), null);
+        ContractExtensionDataSubfolder contractExtensionDataSubfolder = createContractExtensionDataSubfolder(sb.toString());
 
         printContractExtensionDataSubfolder(contractExtensionDataSubfolder);
 
@@ -432,7 +432,7 @@ public class ContractExtensionController{
         return sb.toString();
     }
 
-    private ContractExtensionDataSubfolder createContractExtensionDataSubfolder(String additionalData, Duration duration){
+    private ContractExtensionDataSubfolder createContractExtensionDataSubfolder(String additionalData){
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
@@ -440,15 +440,18 @@ public class ContractExtensionController{
 
         ContractFullDataDTO allContractData = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem();
 
-        String notificationType = Parameters.CONTRACT_EXTINCTION_TEXT;
+        String notificationType = Parameters.CONTRACT_EXTENSION_TEXT;
 
         String clientNotificationDate = dateFormatter.format(contractVariationMainController.getContractVariationTypes().getDateNotification().getDate());
         String clientNotificationHour = contractVariationMainController.getContractVariationTypes().getHourNotification().getTime().format(timeFormatter);
 
         String birthDate = allContractData.getEmployee().getFechanacim() != null ? dateFormatter.format(allContractData.getEmployee().getFechanacim()) : null;
 
-        String startDate = dateFormatter.format(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue());;
-        String endDate = dateFormatter.format(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue());
+        LocalDate dateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue();
+        LocalDate dateTo = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue();
+
+        String startDate = dateFormatter.format(dateFrom);
+        String endDate = dateFormatter.format(dateTo);
 
         String daysOfWeek = allContractData.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork();
         Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(daysOfWeek);
@@ -467,7 +470,7 @@ public class ContractExtensionController{
 
         String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription();
 
-        String durationDays = duration != null ? Long.toString(duration.toDays()) : "";
+        String durationDays = Long.toString(ChronoUnit.DAYS.between(dateFrom, dateTo) + 1L);
 
         return ContractExtensionDataSubfolder.create()
                 .withNotificationType(notificationType)
