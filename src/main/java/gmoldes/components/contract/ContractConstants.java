@@ -1,4 +1,4 @@
-package gmoldes.components.contract.new_contract.components;
+package gmoldes.components.contract;
 
 import java.time.Duration;
 
@@ -28,7 +28,11 @@ public class ContractConstants {
     public static final String TIME_DURATION_WORK_DAY_COLUMN_TITLE = "Jornada:\nHoras de\nduración";
 
     /** Contract forms*/
-    public static final String CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT = "Expediente_contrato_trabajo_";
+    public static final String STANDARD_NEW_CONTRACT_TEXT = "Nuevo contrato";
+    public static final String STANDARD_CONTRACT_EXTINCTION_TEXT = "Finalización de contrato";
+    public static final String STANDARD_CONTRACT_CONVERSION_TEXT = "Conversión de contrato";
+    public static final String STANDARD_CONTRACT_EXTENSION_TEXT = "Prórroga de contrato";
+    public static final String STANDARD_CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT = "Expediente contrato trabajo";
 
     /** Contract variation **/
     public static final String VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION = "La fecha establecida de variación del contrato aparentemente excede el plazo máximo" +

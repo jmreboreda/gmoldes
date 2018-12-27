@@ -30,7 +30,7 @@ public class OSUtils {
         osmap.put("sunos", OperatingSystem.SOLARIS);
     }
 
-    public static OperatingSystem currentOS() {
+    private static OperatingSystem currentOS() {
         return osmap.entrySet().stream()
                 .filter(e -> OS.contains(e.getKey()))
                 .map(Entry::getValue)
@@ -54,5 +54,9 @@ public class OSUtils {
             final Path path = Paths.get(tempDirMap.get(os));
             return Optional.of(path);
         }
+    }
+
+    public static String getOSName(){
+        return OS;
     }
 }

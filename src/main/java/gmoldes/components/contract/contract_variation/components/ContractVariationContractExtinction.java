@@ -3,6 +3,7 @@ package gmoldes.components.contract.contract_variation.components;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +12,9 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.util.converter.LocalDateStringConverter;
+
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +49,8 @@ public class ContractVariationContractExtinction extends VBox {
     @FXML
     private void initialize(){
 
-        dateFrom.setConverter(Utilities.dateConverter);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        dateFrom.setConverter(new LocalDateStringConverter(dateFormatter, null));
 
         dateFrom.disableProperty().bind(this.extinctionCauseSelector.valueProperty().isNull());
         rbHolidaysYes.disableProperty().bind(this.extinctionCauseSelector.valueProperty().isNull());

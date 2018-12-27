@@ -6,6 +6,7 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.components.timerecord.components.TimeRecordConstants;
@@ -49,6 +50,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
+
+import static gmoldes.components.contract.ContractConstants.STANDARD_NEW_CONTRACT_TEXT;
 
 public class NewContractMainController extends VBox {
 
@@ -244,15 +247,15 @@ public class NewContractMainController extends VBox {
                 String[] command = {"sh", "-c", "xdg-open " + pathOut};
                 pdfViewerProcess = Runtime.getRuntime().exec(command);
             } catch (IOException e) {
-                System.out.println("No se ha podido abrir el documento \"" + initialContractDataToContractAgent.toFileName().concat(".pdf") + "\"");
+                System.out.println("No se ha podido abrir el documento \"" + initialContractDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
                 e.printStackTrace();
             }
-        }else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains("windows")){
+        }else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
             String[] command = {"cmd","/c","start","\"visor\"","\"" + pathOut + "\""};
             try {
                 pdfViewerProcess = Runtime.getRuntime().exec(command);
             } catch (IOException e) {
-                System.out.println("No se ha podido abrir el documento \"" + initialContractDataToContractAgent.toFileName().concat(".pdf") + "\"");
+                System.out.println("No se ha podido abrir el documento \"" + initialContractDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
                 e.printStackTrace();
             }
         }
@@ -465,7 +468,7 @@ public class NewContractMainController extends VBox {
     private void blockingInterfaceAfterContractPersistence(ContractFullDataDTO contractFullDataDTO){
         Integer contractNumber = contractFullDataDTO.getContractNewVersion().getContractNumber();
         contractHasBeenSavedInDatabase = true;
-        provisionalContractData.setContractText(Parameters.NEW_CONTRACT_TEXT + " nº");
+        provisionalContractData.setContractText(STANDARD_NEW_CONTRACT_TEXT + " nº");
         provisionalContractData.setContractNumber(contractNumber);
         contractParts.setMouseTransparent(true);
         contractData.setMouseTransparent(true);

@@ -2,6 +2,7 @@ package gmoldes.components.contract.new_contract.components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
 import gmoldes.utilities.*;

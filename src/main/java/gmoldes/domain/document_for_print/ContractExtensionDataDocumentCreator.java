@@ -6,7 +6,7 @@ import gmoldes.components.contract.contract_variation.forms.ContractExtensionDat
 import gmoldes.components.contract.contract_variation.services.ContractExtensionDataSubfolderPDFCreator;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
@@ -28,8 +28,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -76,7 +74,7 @@ public class ContractExtensionDataDocumentCreator {
         Set<WorkDaySchedule> schedule = null;
 
         return ContractDataToContractsAgent.create()
-                .withNotificationType(Parameters.CONTRACT_EXTENSION_TEXT)
+                .withNotificationType(ContractConstants.STANDARD_CONTRACT_EXTENSION_TEXT)
                 .withOfficialContractNumber(contractFullDataDTO.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
                 .withEmployerFullName(contractFullDataDTO.getEmployer().toString())
                 .withEmployerQuoteAccountCode(contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
@@ -109,7 +107,7 @@ public class ContractExtensionDataDocumentCreator {
 
         ContractFullDataDTO contractFullDataDTO = this.contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem();
 
-        String notificationType = Parameters.CONTRACT_EXTENSION_TEXT;
+        String notificationType = ContractConstants.STANDARD_CONTRACT_EXTENSION_TEXT;
 
         LocalDate clientNotificationDate = this.contractVariationMainController.getContractVariationTypes().getDateNotification().getDate();
         LocalTime clientNotificationHour = LocalTime.parse(this.contractVariationMainController.getContractVariationTypes().getHourNotification().getText());

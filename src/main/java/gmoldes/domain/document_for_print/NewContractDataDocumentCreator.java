@@ -3,7 +3,7 @@ package gmoldes.domain.document_for_print;
 import com.lowagie.text.DocumentException;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.controllers.NewContractMainController;
@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -42,14 +41,13 @@ import java.util.Set;
 public class NewContractDataDocumentCreator {
 
     private NewContractMainController newContractMainController;
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
 
     public NewContractDataDocumentCreator(NewContractMainController newContractMainController) {
         this.newContractMainController = newContractMainController;
     }
 
     public ContractDataToContractsAgent createInitialContractDataDocumentForContractsAgent(){
-
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
 
         String quoteAccountCode = this.newContractMainController.getContractParts().getSelectedCCC() == null ? "" : newContractMainController.getContractParts().getSelectedCCC().getCccInss();
 
@@ -76,7 +74,7 @@ public class NewContractDataDocumentCreator {
         Set<WorkDaySchedule> schedule = this.newContractMainController.getContractSchedule().retrieveScheduleWithScheduleDays();
 
         return ContractDataToContractsAgent.create()
-                .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
+                .withNotificationType(ContractConstants.STANDARD_NEW_CONTRACT_TEXT)
                 .withOfficialContractNumber(null)
                 .withEmployerFullName(this.newContractMainController.getContractParts().getSelectedEmployer().toString())
                 .withEmployerQuoteAccountCode(quoteAccountCode)
@@ -204,7 +202,7 @@ public class NewContractDataDocumentCreator {
         Set<WorkDaySchedule> schedule = this.newContractMainController.getContractSchedule().retrieveScheduleWithScheduleDays();
 
         return ContractDataSubfolder.create()
-                .withNotificationType(Parameters.NEW_CONTRACT_TEXT)
+                .withNotificationType(ContractConstants.STANDARD_NEW_CONTRACT_TEXT)
                 .withOfficialContractNumber(null)
                 .withEmployerFullName(this.newContractMainController.getContractParts().getSelectedEmployer().toString())
                 .withEmployerQuoteAccountCode(quoteAccountCode)
@@ -308,7 +306,7 @@ public class NewContractDataDocumentCreator {
         final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
         String temporalDir = maybePath.get().toString();
 
-        String fileName = ContractConstants.CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT + Utilities.replaceWithUnderscore(contractDataSubfolder.getEmployeeFullName());
+        String fileName = Utilities.replaceWithUnderscore(ContractConstants.STANDARD_CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT.concat("_").concat(contractDataSubfolder.getEmployeeFullName()));
 
         Path pathToContractRecordHistorySubfolder = Paths.get(Parameters.USER_HOME, temporalDir, fileName.concat(Parameters.PDF_EXTENSION));
         try {

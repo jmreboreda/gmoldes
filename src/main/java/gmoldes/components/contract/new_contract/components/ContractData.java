@@ -3,6 +3,7 @@ package gmoldes.components.contract.new_contract.components;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.generic_components.*;
 import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.contract.dto.ProvisionalContractDataDTO;

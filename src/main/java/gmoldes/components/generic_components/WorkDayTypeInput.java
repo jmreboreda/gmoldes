@@ -2,7 +2,7 @@ package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

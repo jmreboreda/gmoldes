@@ -5,7 +5,7 @@ import gmoldes.components.contract.contract_variation.controllers.ContractVariat
 import gmoldes.components.contract.contract_variation.forms.ContractExtinctionDataSubfolder;
 import gmoldes.components.contract.contract_variation.services.ContractExtinctionDataSubfolderPDFCreator;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.components.contract.new_contract.services.ContractDataToContractAgentPDFCreator;
@@ -67,7 +67,7 @@ public class ContractExtinctionDataDocumentCreator {
         Set<WorkDaySchedule> schedule = null;
 
         return ContractDataToContractsAgent.create()
-                .withNotificationType(Parameters.CONTRACT_EXTINCTION_TEXT)
+                .withNotificationType(ContractConstants.STANDARD_CONTRACT_EXTINCTION_TEXT)
                 .withOfficialContractNumber(contractFullDataDTO.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
                 .withEmployerFullName(contractFullDataDTO.getEmployer().toString())
                 .withEmployerQuoteAccountCode(contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode())

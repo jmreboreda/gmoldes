@@ -7,7 +7,7 @@ import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
 import gmoldes.components.contract.contract_variation.events.MessageEvent;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
 import gmoldes.domain.client.dto.ClientDTO;

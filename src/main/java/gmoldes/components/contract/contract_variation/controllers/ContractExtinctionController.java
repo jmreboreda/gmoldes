@@ -7,7 +7,7 @@ import gmoldes.components.contract.contract_variation.events.ContractVariationPe
 import gmoldes.components.contract.contract_variation.forms.ContractExtinctionDataSubfolder;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
@@ -97,10 +97,10 @@ public class ContractExtinctionController{
 
 
         // 6. Persist traceability
-        Integer traceabilityId = persistTraceabilityControlData();
-        if(traceabilityId == null){
+        Integer traceabilityContractExtinctionId = persistTraceabilityControlData();
+        if(traceabilityContractExtinctionId == null){
 
-            return new MessageEvent("Ha petado la persistencia de la trazabilidad de la extinción del contrato.");
+            return new MessageEvent(ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
         }
 
         // 7. Print documentation
@@ -254,11 +254,6 @@ public class ContractExtinctionController{
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT);
         }
 
-        if(persistTraceabilityControlData() == null){
-
-            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
-        }
-
         return new ContractVariationPersistenceEvent(true, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
     }
 
@@ -380,7 +375,7 @@ public class ContractExtinctionController{
 
         ContractFullDataDTO allContractData = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem();
 
-        String notificationType = Parameters.CONTRACT_EXTINCTION_TEXT;
+        String notificationType = ContractConstants.STANDARD_CONTRACT_EXTINCTION_TEXT;
 
         String clientNotificationDate = dateFormatter.format(contractVariationMainController.getContractVariationTypes().getDateNotification().getDate());
         String clientNotificationHour = contractVariationMainController.getContractVariationTypes().getHourNotification().getTime().format(timeFormatter);

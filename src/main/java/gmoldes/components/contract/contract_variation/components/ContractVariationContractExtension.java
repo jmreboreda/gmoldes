@@ -1,6 +1,7 @@
 package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,6 +13,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.util.converter.LocalDateStringConverter;
+
+import java.time.format.DateTimeFormatter;
 
 public class ContractVariationContractExtension extends VBox {
 
@@ -39,8 +43,9 @@ public class ContractVariationContractExtension extends VBox {
     @FXML
     private void initialize(){
 
-        dateFrom.setConverter(Utilities.dateConverter);
-        dateTo.setConverter(Utilities.dateConverter);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        dateFrom.setConverter(new LocalDateStringConverter(dateFormatter, null));
+        dateTo.setConverter(new LocalDateStringConverter(dateFormatter, null));
 
     }
 

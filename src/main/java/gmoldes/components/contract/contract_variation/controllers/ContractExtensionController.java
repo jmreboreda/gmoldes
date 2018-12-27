@@ -7,7 +7,7 @@ import gmoldes.components.contract.contract_variation.events.MessageEvent;
 import gmoldes.components.contract.contract_variation.forms.ContractExtensionDataSubfolder;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.components.contract.new_contract.components.ContractConstants;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
@@ -35,6 +35,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+
+import static gmoldes.utilities.Parameters.PDF_EXTENSION;
 
 public class ContractExtensionController{
 
@@ -97,10 +99,10 @@ public class ContractExtensionController{
 
 
         // 6. Persist traceability
-        Integer traceabilityId = persistTraceabilityControlData();
-        if(traceabilityId == null){
+        Integer traceabilityContractExtensionId = persistTraceabilityControlData();
+        if(traceabilityContractExtensionId == null){
 
-            return new MessageEvent("Ha petado la persistencia de la trazabilidad de la prórroga del contrato.");
+            return new MessageEvent(ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
         }
 
         // 7. Print documentation
@@ -285,35 +287,7 @@ public class ContractExtensionController{
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_MODIFICATION_DATE_IN_INITIAL_CONTRACT);
         }
 
-        if(persistTraceabilityControlData() == null){
-
-            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
-        }
-
         return new ContractVariationPersistenceEvent(true, ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK);
-    }
-
-    private Integer persistTraceabilityControlData(){
-
-        // The extension of the contract does not generate IDC, so the reception date of this is set at 31 -12-9999
-        LocalDate IDCReceptionDate = LocalDate.of(9999,12,31);
-
-        Integer contractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel()
-                .getSelectedItem().getContractNewVersion().getContractNumber();
-        LocalDate dateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue();
-        LocalDate dateTo =  contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue();
-
-        TraceabilityContractDocumentationDTO traceabilityDTO = TraceabilityContractDocumentationDTO.create()
-                .withContractNumber(contractNumber)
-                .withVariationType(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)
-                .withStartDate(dateFrom)
-                .withExpectedEndDate(dateTo)
-                .withIDCReceptionDate(IDCReceptionDate)
-                .build();
-
-        ContractManager contractManager = new ContractManager();
-
-        return contractManager.saveContractTraceability(traceabilityDTO);
     }
 
     private Integer updateLastContractVariation(Integer contractNumber){
@@ -414,6 +388,30 @@ public class ContractExtensionController{
         return contractManager.updateInitialContract(contractNewVersionToUpdateDTO);
     }
 
+    private Integer persistTraceabilityControlData(){
+
+        // The extension of the contract does not generate IDC, so the reception date of this is set at 31 -12-9999
+        LocalDate IDCReceptionDate = LocalDate.of(9999,12,31);
+
+        Integer contractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel()
+                .getSelectedItem().getContractNewVersion().getContractNumber();
+        LocalDate dateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue();
+        LocalDate dateTo =  contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue();
+
+        TraceabilityContractDocumentationDTO traceabilityDTO = TraceabilityContractDocumentationDTO.create()
+                .withContractNumber(contractNumber)
+                .withVariationType(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)
+                .withStartDate(dateFrom)
+                .withExpectedEndDate(dateTo)
+                .withIDCReceptionDate(IDCReceptionDate)
+                .build();
+
+        ContractManager contractManager = new ContractManager();
+
+        System.out.println("Contract extension traceability Ok.");
+        return contractManager.saveContractTraceability(traceabilityDTO);
+    }
+
     private String retrievePublicNotes(){
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
@@ -437,7 +435,7 @@ public class ContractExtensionController{
 
         ContractFullDataDTO allContractData = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem();
 
-        String notificationType = Parameters.CONTRACT_EXTENSION_TEXT;
+        String notificationType = ContractConstants.STANDARD_CONTRACT_EXTENSION_TEXT;
 
         String clientNotificationDate = dateFormatter.format(contractVariationMainController.getContractVariationTypes().getDateNotification().getDate());
         String clientNotificationHour = contractVariationMainController.getContractVariationTypes().getHourNotification().getTime().format(timeFormatter);
@@ -531,7 +529,7 @@ public class ContractExtensionController{
         pathOut = contractExtensionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtensionDataToContractAgent);
 
 
-        String attachedFileName = contractExtensionDataToContractAgent.toFileName().concat(".pdf");
+        String attachedFileName = contractExtensionDataToContractAgent.toFileName().concat(PDF_EXTENSION);
 
         AgentNotificator agentNotificator = new AgentNotificator();
 
