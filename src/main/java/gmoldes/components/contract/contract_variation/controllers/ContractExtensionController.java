@@ -2,10 +2,9 @@ package gmoldes.components.contract.contract_variation.controllers;
 
 import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract.contract_variation.events.MessageEvent;
 import gmoldes.components.contract.contract_variation.events.ContractVariationPersistenceEvent;
+import gmoldes.components.contract.contract_variation.events.MessageEvent;
 import gmoldes.components.contract.contract_variation.forms.ContractExtensionDataSubfolder;
-import gmoldes.components.contract.contract_variation.forms.ContractExtinctionDataSubfolder;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractConstants;
@@ -15,7 +14,6 @@ import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
-import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.dto.StudyDTO;
@@ -33,7 +31,6 @@ import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -116,7 +113,7 @@ public class ContractExtensionController{
 
         printContractExtensionDataSubfolder(contractExtensionDataSubfolder);
 
-        return new MessageEvent(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
+        return new MessageEvent(ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK);
     }
 
     private MessageEvent verifyIsCorrectContractExtensionData(){
@@ -525,20 +522,20 @@ public class ContractExtensionController{
         Boolean isSendOk = false;
         Path pathOut;
 
-        ContractExtinctionDataDocumentCreator contractExtinctionDocumentCreator = new ContractExtinctionDataDocumentCreator(contractVariationMainController);
+        ContractExtensionDataDocumentCreator contractExtensionDocumentCreator = new ContractExtensionDataDocumentCreator(contractVariationMainController);
 
         String publicNotes = retrievePublicNotes();
 
-        ContractDataToContractsAgent contractExtinctionDataToContractAgent = contractExtinctionDocumentCreator.createContractExtinctionDataDocumentForContractsAgent(publicNotes);
+        ContractDataToContractsAgent contractExtinctionDataToContractAgent = contractExtensionDocumentCreator.createContractExtensionDataDocumentForContractsAgent(publicNotes);
 
-        pathOut = contractExtinctionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
+        pathOut = contractExtensionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
 
 
         String attachedFileName = contractExtinctionDataToContractAgent.toFileName().concat(".pdf");
 
         AgentNotificator agentNotificator = new AgentNotificator();
 
-        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailConstants.STANDARD_CONTRACT_EXTINCTION_TEXT);
+        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailConstants.STANDARD_CONTRACT_EXTENSION_TEXT);
 
         try {
             isSendOk = agentNotificator.sendEmailToContractsAgent(emailDataCreationDTO);

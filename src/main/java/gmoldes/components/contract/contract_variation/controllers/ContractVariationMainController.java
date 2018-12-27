@@ -10,14 +10,11 @@ import gmoldes.components.contract.controllers.TypesContractVariationsController
 import gmoldes.components.contract.new_contract.components.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
-import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
-import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.services.AgentNotificator;
 import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
@@ -37,7 +34,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.mail.internet.AddressException;
 import java.nio.file.Path;
 import java.text.Collator;
 import java.time.DayOfWeek;
@@ -337,9 +333,11 @@ public class ContractVariationMainController extends VBox {
             }
 
 
-//            if(isContractVariationExtension) {
-//                isSendOk = contractExtensionController.sendsMailContractVariationExtension();
-//            }
+            // Contract extension
+            RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
+            if(rbContractExtension.isSelected()) {
+                isSendOk = contractExtensionController.sendsMailContractVariationExtension();
+            }
 
             if(isSendOk){
 
@@ -481,60 +479,6 @@ public class ContractVariationMainController extends VBox {
 
         ObservableList<TypesContractVariationsDTO> typesContractVariationsDTOS = FXCollections.observableArrayList(typesContractVariationsExtinctionDTOList);
         contractVariationContractVariations.getContractVariationContractExtinction().getExtinctionCauseSelector().setItems(typesContractVariationsDTOS);
-    }
-
-//    private Boolean sendsMailContractVariationExtinction(){
-//
-//        Boolean isSendOk = false;
-//        Path pathOut;
-//
-//        ContractExtinctionDataDocumentCreator contractExtinctionDocumentCreator = new ContractExtinctionDataDocumentCreator(this);
-//
-//        ContractDataToContractsAgent contractExtinctionDataToContractAgent = contractExtinctionDocumentCreator.createContractExtinctionDataDocumentForContractsAgent();
-//
-//        pathOut = contractExtinctionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
-//
-//
-//        String attachedFileName = contractExtinctionDataToContractAgent.toFileName().concat(".pdf");
-//
-//        AgentNotificator agentNotificator = new AgentNotificator();
-//
-//        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailParameters.STANDARD_CONTRACT_EXTINCTION_TEXT);
-//
-//        try {
-//            isSendOk = agentNotificator.sendEmailToContractsAgent(emailDataCreationDTO);
-//        } catch (AddressException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return isSendOk;
-//    }
-
-    private Boolean sendsMailContractVariationExtension(){
-
-        Boolean isSendOk = false;
-        Path pathOut;
-
-        ContractExtensionDataDocumentCreator contractExtensionDocumentCreator = new ContractExtensionDataDocumentCreator(this);
-
-        ContractDataToContractsAgent contractExtensionDataToContractAgent = contractExtensionDocumentCreator.createContractExtensionDataDocumentForContractsAgent();
-
-        pathOut = contractExtensionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtensionDataToContractAgent);
-
-
-        String attachedFileName = contractExtensionDataToContractAgent.toFileName().concat(".pdf");
-
-        AgentNotificator agentNotificator = new AgentNotificator();
-
-        EmailDataCreationDTO emailDataCreationDTO = retrieveDateForEmailCreation(pathOut, attachedFileName, EmailConstants.STANDARD_CONTRACT_EXTENSION_TEXT);
-
-        try {
-            isSendOk = agentNotificator.sendEmailToContractsAgent(emailDataCreationDTO);
-        } catch (AddressException e) {
-            e.printStackTrace();
-        }
-
-        return isSendOk;
     }
 
     private void setContractExtensionDuration(LocalDate newValueDateTo){

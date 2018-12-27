@@ -48,7 +48,7 @@ public class ContractExtensionDataDocumentCreator {
         this.contractVariationMainController = contractVariationMainController;
     }
 
-    public ContractDataToContractsAgent createContractExtensionDataDocumentForContractsAgent(){
+    public ContractDataToContractsAgent createContractExtensionDataDocumentForContractsAgent(String publicNotes){
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         ContractFullDataDTO contractFullDataDTO = retrieveContractFullData();
@@ -97,7 +97,7 @@ public class ContractExtensionDataDocumentCreator {
                 .withEndDate(endDate)
                 .withDurationDays(durationDays)
                 .withSchedule(schedule)
-                .withAdditionalData(retrievePublicNotes())
+                .withAdditionalData(publicNotes)
                 .withLaborCategory(contractFullDataDTO.getContractNewVersion().getContractJsonData().getLaborCategory())
                 .build();
     }
