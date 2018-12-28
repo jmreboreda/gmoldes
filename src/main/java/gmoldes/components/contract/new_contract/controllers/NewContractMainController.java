@@ -3,10 +3,10 @@ package gmoldes.components.contract.new_contract.controllers;
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.components.timerecord.components.TimeRecordConstants;
@@ -39,6 +39,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.mail.internet.AddressException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -49,6 +52,7 @@ import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import static gmoldes.components.contract.ContractConstants.STANDARD_NEW_CONTRACT_TEXT;
@@ -485,12 +489,50 @@ public class NewContractMainController extends VBox {
 
     private ContractFullDataDTO retrieveContractFullData(){
 
+        Set<WorkDaySchedule> workDayScheduleSet = contractSchedule.retrieveScheduleWithScheduleDays();
+
+        Integer counter = 0;
+
+        JsonObjectBuilder jsonScheduleBuilder = Json.createObjectBuilder();
+
+        for(WorkDaySchedule workDaySchedule : workDayScheduleSet){
+
+            String dayOfWeek = workDaySchedule.getDayOfWeek() != null ? workDaySchedule.getDayOfWeek() : "";
+            String date = workDaySchedule.getDate() != null ? workDaySchedule.getDate().toString() : "";
+            String amFrom = workDaySchedule.getAmFrom() != null ? workDaySchedule.getAmFrom().toString() : "";
+            String amTo = workDaySchedule.getAmTo() != null ? workDaySchedule.getAmTo().toString() : "";
+            String pmFrom = workDaySchedule.getPmFrom() != null ? workDaySchedule.getPmFrom().toString() : "";
+            String pmTo = workDaySchedule.getPmTo() != null ? workDaySchedule.getPmTo().toString() : "";
+            String durationHours = workDaySchedule.getDurationHours() != null ? Long.toString(workDaySchedule.getDurationHours().toHours()) : "";
+
+            JsonObjectBuilder jsonDayBuilder = Json.createObjectBuilder();
+
+            jsonDayBuilder .add("dayOfWeek", dayOfWeek)
+                            .add("date",date)
+                            .add("amFrom", amFrom)
+                            .add("amTo", amTo)
+                            .add("pmFrom", pmFrom)
+                            .add("pmTo",pmTo)
+                            .add("durationHours", durationHours);
+
+            JsonObject scheduleDay = jsonDayBuilder.build();
+
+            System.out.println(jsonDayBuilder);
+
+            jsonScheduleBuilder.add("day" + counter , scheduleDay);
+
+            counter++;
+        }
+
+        JsonObject scheduleJson = jsonScheduleBuilder.build();
+
         String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
 
         ContractJsonData contractJsonData = ContractJsonData.create()
                 .withIdentificationContractNumberINEM(null)
                 .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork().toString())
                 .withWeeklyWorkHours(contractData.getHoursWorkWeek())
+                .withWorkWeekSchedule(scheduleJson)
                 .withNotesForContractManager(contractPublicNotes.getPublicNotes())
                 .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
                 .withLaborCategory(contractData.getLaborCategory())
