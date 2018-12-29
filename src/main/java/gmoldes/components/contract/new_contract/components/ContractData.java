@@ -71,12 +71,6 @@ public class ContractData extends AnchorPane {
         this.hourNotification.setInputMinWidth(75D);
         loadContractType();
 
-        //init();
-
-    }
-
-    private void init(){
-
     }
 
     public DateInput getDateNotification() {

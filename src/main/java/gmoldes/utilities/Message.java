@@ -1,20 +1,20 @@
 package gmoldes.utilities;
 
-import gmoldes.App;
+import gmoldes.domain.check.CheckConstants;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 import java.util.Optional;
 
 public class Message {
+
+//    //private static Image icon = new Image("/resources/new_contract_icon/GMapp_PNG_64x64.png");
+//    private static Image icon = new Image("/pics/new_contract_icon/GMapp_PNG_64x64.png");
 
     public static Boolean standardConfirmationMessage(Window window, String title, String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -45,6 +45,7 @@ public class Message {
         alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setContentText(message);
+        alert.getDialogPane().setCursor(Cursor.WAIT);
 
         ButtonType buttonTypeYes = new ButtonType("Si");
         ButtonType buttonTypeNo = new ButtonType("No");
@@ -67,8 +68,18 @@ public class Message {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setResizable(true);
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        //System.out.println(title.length());
+        if(title.contains(CheckConstants.INITIAL_CHECK_HEADER_TEXT)){
+            Double minimumWidth = title.length() < 74 ? 74*9.5 : title.length() * 9.5;      // Yea!, magic numbers!
+            alert.getDialogPane().setMinWidth(minimumWidth);
+        }else{
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        }
+
+        alert.getDialogPane().setCursor(Cursor.WAIT);
+
         alert.setContentText(message);
+
         alert.showAndWait();
     }
 
