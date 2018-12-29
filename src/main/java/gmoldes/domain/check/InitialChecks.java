@@ -29,6 +29,8 @@ public class InitialChecks {
     public static void alertByContractNewVersionExpiration(Stage primaryStage){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(gmoldes.utilities.Parameters.DEFAULT_DATE_FORMAT);
         StringBuilder alertMessage = new StringBuilder();
+        alertMessage.append("Preavisos de fin de contrato:\n\n");
+        Integer counter = 1;
         String missingExceededText;
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
@@ -53,11 +55,12 @@ public class InitialChecks {
                         missingExceededText = "Excedido en ";
                     }
 
-                    alertMessage.append("Preaviso de fin de contrato:\n")
+                    alertMessage.append(counter).append("] ")
                             .append(clientDTO.toNaturalName()).append(" con ")
                             .append(workerDTO.toNaturalName())
                             .append(": vencimiento el día ").append(traceabilityDTO.getExpectedEndDate().format(dateFormatter)).append(".\n")
                             .append(missingExceededText).append(Math.abs(daysToEndDate)).append(" días.").append("\n\n");
+                    counter++;
                 }
             }
 

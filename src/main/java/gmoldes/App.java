@@ -16,14 +16,14 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         /* Initial control processes */
-        ProgressIndicator indicator = new ProgressIndicator();
-        Scene initialScene = new Scene(indicator);
-        primaryStage.setScene(initialScene);
-        primaryStage.show();
+//        ProgressIndicator indicator = new ProgressIndicator();
+//        Scene initialScene = new Scene(indicator);
+//        primaryStage.setScene(initialScene);
+//        primaryStage.show();
 
         initialControlProcesses(primaryStage);
 
-        initialScene.getWindow().hide();
+//        initialScene.getWindow().hide();
 
         /* Initial menu */
         InitialMenuController controller = new InitialMenuController();

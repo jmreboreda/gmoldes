@@ -1,5 +1,6 @@
 package gmoldes.utilities;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import gmoldes.domain.check.CheckConstants;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
@@ -16,7 +17,6 @@ import java.util.Optional;
 public class Message {
 
     private static Image icon = new Image("/pics/GMapp_PNG_64x64.png");
-//    private static Image icon = new Image("/pics/new_contract_icon/GMapp_PNG_64x64.png");
 
     public static Boolean standardConfirmationMessage(Window window, String title, String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -47,6 +47,10 @@ public class Message {
         alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setContentText(message);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(icon);
+
         alert.getDialogPane().setCursor(Cursor.WAIT);
 
         ButtonType buttonTypeYes = new ButtonType("Si");
@@ -72,6 +76,7 @@ public class Message {
         alert.setHeaderText(null);
         alert.setResizable(true);
         //System.out.println(title.length());
+        System.out.println("window: " + window);
         if(title.contains(CheckConstants.INITIAL_CHECK_HEADER_TEXT)){
             Double minimumWidth = title.length() < 74 ? 74*9.5 : title.length() * 9.5;      // Yea!, magic numbers!
             alert.getDialogPane().setMinWidth(minimumWidth);
@@ -79,13 +84,17 @@ public class Message {
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         }
 
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(icon);
-
         alert.getDialogPane().setCursor(Cursor.WAIT);
         alert.setContentText(message);
 
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(icon);
+//        stage.setAlwaysOnTop(Boolean.TRUE);
+
         alert.showAndWait();
+        stage.requestFocus();
+
+
     }
 
     public static void errorMessage(Window window, String title, String message){
