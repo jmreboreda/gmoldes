@@ -86,8 +86,8 @@ public class Message {
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(icon);
-        stage.setAlwaysOnTop(Boolean.TRUE);
-        stage.requestFocus();
+//        stage.setAlwaysOnTop(Boolean.TRUE);
+//        stage.requestFocus();
         alert.showAndWait();
 
 
