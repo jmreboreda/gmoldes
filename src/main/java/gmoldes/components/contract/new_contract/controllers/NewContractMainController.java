@@ -114,6 +114,7 @@ public class NewContractMainController extends VBox {
         contractParts.setOnSearchEmployees(this::onSearchEmployees);
         contractParts.setOnSelectEmployer(this::onSelectEmployer);
         contractParts.setOnSelectEmployee(this::onSelectEmployee);
+        contractData.setOnChangeContractType(this::OnChangeContractType);
         contractData.setOnChangeContractDataHoursWorkWeek(this::onChangeContractDataHoursWorkWeek);
         contractSchedule.setOnChangeScheduleDuration(this::onChangeScheduleDuration);
 
@@ -146,6 +147,7 @@ public class NewContractMainController extends VBox {
     }
 
     private void setTabPaneIcon(){
+
         Tab contractPartsPane = tabPane.getTabs().get(0);
         ImageView iconParts = new ImageView(new Image("/pics/new_contract_icon/contract_parts_icon.png"));
         iconParts.setFitWidth(20); iconParts.setFitHeight(20);
@@ -334,6 +336,27 @@ public class NewContractMainController extends VBox {
         contractParts.refreshEmployees(personDTOList);
     }
 
+    private void OnChangeContractType(ChangeContractTypeEvent event){
+
+        if(event.getContractType().getIsTemporal() ||
+        event.getContractType().getIsDeterminedDuration()){
+            contractData.getContractDurationInput().getRadioButtonTemporal().setSelected(true);
+            //contractData.getContractDurationInput().getRadioButtonUndefined().setSelected(false);
+        }else{
+            //contractData.getContractDurationInput().getRadioButtonTemporal().setSelected(false);
+            contractData.getContractDurationInput().getRadioButtonUndefined().setSelected(true);
+        }
+
+        if(event.getContractType().getIsFullTime()){
+            contractData.getWorkDayType().getRadioButtonFullWorkDay().setSelected(true);
+            //contractData.getWorkDayType().getRadioButtonPartialWorkDay().setSelected(false);
+        }else{
+            //contractData.getWorkDayType().getRadioButtonFullWorkDay().setSelected(false);
+            contractData.getWorkDayType().getRadioButtonPartialWorkDay().setSelected(true);
+        }
+
+    }
+
     private void onChangeContractDataHoursWorkWeek(ChangeContractDataHoursWorkWeekEvent event) {
         Duration scheduleHoursWorkWeekDuration = Utilities.converterTimeStringToDuration(contractSchedule.getHoursWorkWeek());
         Duration contractDataWorkWeekDuration = event.getContractDataHoursWorkWeek();
@@ -497,31 +520,34 @@ public class NewContractMainController extends VBox {
 
         for(WorkDaySchedule workDaySchedule : workDayScheduleSet){
 
-            String dayOfWeek = workDaySchedule.getDayOfWeek() != null ? workDaySchedule.getDayOfWeek() : "";
-            String date = workDaySchedule.getDate() != null ? workDaySchedule.getDate().toString() : "";
-            String amFrom = workDaySchedule.getAmFrom() != null ? workDaySchedule.getAmFrom().toString() : "";
-            String amTo = workDaySchedule.getAmTo() != null ? workDaySchedule.getAmTo().toString() : "";
-            String pmFrom = workDaySchedule.getPmFrom() != null ? workDaySchedule.getPmFrom().toString() : "";
-            String pmTo = workDaySchedule.getPmTo() != null ? workDaySchedule.getPmTo().toString() : "";
-            String durationHours = workDaySchedule.getDurationHours() != null ? Long.toString(workDaySchedule.getDurationHours().toHours()) : "";
+            if(workDaySchedule.getDayOfWeek().isEmpty()) {
 
-            JsonObjectBuilder jsonDayBuilder = Json.createObjectBuilder();
+                String dayOfWeek = workDaySchedule.getDayOfWeek() != null ? workDaySchedule.getDayOfWeek() : "";
+                String date = workDaySchedule.getDate() != null ? workDaySchedule.getDate().toString() : "";
+                String amFrom = workDaySchedule.getAmFrom() != null ? workDaySchedule.getAmFrom().toString() : "";
+                String amTo = workDaySchedule.getAmTo() != null ? workDaySchedule.getAmTo().toString() : "";
+                String pmFrom = workDaySchedule.getPmFrom() != null ? workDaySchedule.getPmFrom().toString() : "";
+                String pmTo = workDaySchedule.getPmTo() != null ? workDaySchedule.getPmTo().toString() : "";
+                String durationHours = workDaySchedule.getDurationHours() != null ? Long.toString(workDaySchedule.getDurationHours().toHours()) : "";
 
-            jsonDayBuilder .add("dayOfWeek", dayOfWeek)
-                            .add("date",date)
-                            .add("amFrom", amFrom)
-                            .add("amTo", amTo)
-                            .add("pmFrom", pmFrom)
-                            .add("pmTo",pmTo)
-                            .add("durationHours", durationHours);
+                JsonObjectBuilder jsonDayBuilder = Json.createObjectBuilder();
 
-            JsonObject scheduleDay = jsonDayBuilder.build();
+                jsonDayBuilder.add("dayOfWeek", dayOfWeek)
+                        .add("date", date)
+                        .add("amFrom", amFrom)
+                        .add("amTo", amTo)
+                        .add("pmFrom", pmFrom)
+                        .add("pmTo", pmTo)
+                        .add("durationHours", durationHours);
 
-            System.out.println(jsonDayBuilder);
+                JsonObject scheduleDay = jsonDayBuilder.build();
 
-            jsonScheduleBuilder.add("day" + counter , scheduleDay);
+                System.out.println(jsonDayBuilder);
 
-            counter++;
+                jsonScheduleBuilder.add("day" + counter, scheduleDay);
+
+                counter++;
+            }
         }
 
         JsonObject scheduleJson = jsonScheduleBuilder.build();

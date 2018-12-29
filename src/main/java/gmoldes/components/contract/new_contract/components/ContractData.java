@@ -4,6 +4,7 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
 import gmoldes.components.contract.ContractConstants;
+import gmoldes.components.contract.events.ChangeContractTypeEvent;
 import gmoldes.components.generic_components.*;
 import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.contract.dto.ProvisionalContractDataDTO;
@@ -32,6 +33,8 @@ public class ContractData extends AnchorPane {
 
     private static final Logger logger = Logger.getLogger(ContractData.class.getSimpleName());
     private static final String CONTRACT_DATA_FXML = "/fxml/new_contract/contract_data.fxml";
+
+    private EventHandler<ChangeContractTypeEvent> changeContractTypeEventHandler;
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
@@ -63,6 +66,7 @@ public class ContractData extends AnchorPane {
     private void initialize(){
         logger.info("Initializing contract data fxml ...");
 
+        contractType.setOnAction(this::onChangeContractType);
         dateNotification.setOnAction(this::onDateNotification);
         this.hourNotification.setInputMinWidth(75D);
         loadContractType();
@@ -93,6 +97,10 @@ public class ContractData extends AnchorPane {
 
     private void onDateNotification(ActionEvent actionEvent){
         this.hourNotification.requestFocus();
+    }
+
+    private void onChangeContractType(ActionEvent event){
+        changeContractTypeEventHandler.handle(new ChangeContractTypeEvent(this.getContractType()));
     }
 
     public ProvisionalContractDataDTO getAllProvisionalContractData(){
@@ -217,6 +225,10 @@ public class ContractData extends AnchorPane {
         return ContractConstants.PARTIAL_WORKDAY;
     }
 
+    public void setWorkDayType(WorkDayTypeInput workDayType) {
+        this.workDayType = workDayType;
+    }
+
     public WorkDayTypeInput getWorkDayType(){
         return this.workDayType;
     }
@@ -272,6 +284,10 @@ public class ContractData extends AnchorPane {
 
     public void setOnChangeContractDataHoursWorkWeek(EventHandler<ChangeContractDataHoursWorkWeekEvent> handler){
         workDayType.setOnChangeContractDataHoursWorkWeek(handler);
+    }
+
+    public void setOnChangeContractType(EventHandler<ChangeContractTypeEvent> changeContractTypeEventEventHandler){
+        this.changeContractTypeEventHandler = changeContractTypeEventEventHandler;
     }
 
     private List<ContractTypeDTO> retrieveContractTypeWithoutDuplicatesSorted(List<ContractTypeDTO> contractTypeDTOList ){
