@@ -66,6 +66,7 @@ public class InitialChecks {
 
             if(alertMessage.length() > 0) {
                 Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Preavisos de fin de contrato pendientes de recepción"), alertMessage.toString());
+
             }
         }
     }
@@ -122,7 +123,6 @@ public class InitialChecks {
             }
 
             if(alertMessage.length() > 0) {
-
                 Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("IDC pendientes de recepción"), alertMessage.toString());
             }
         }

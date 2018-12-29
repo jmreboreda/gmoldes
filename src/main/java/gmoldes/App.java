@@ -5,7 +5,6 @@ import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
 
 import java.text.ParseException;

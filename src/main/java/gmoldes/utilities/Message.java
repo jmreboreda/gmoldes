@@ -1,6 +1,5 @@
 package gmoldes.utilities;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import gmoldes.domain.check.CheckConstants;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
@@ -75,8 +74,6 @@ public class Message {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setResizable(true);
-        //System.out.println(title.length());
-        System.out.println("window: " + window);
         if(title.contains(CheckConstants.INITIAL_CHECK_HEADER_TEXT)){
             Double minimumWidth = title.length() < 74 ? 74*9.5 : title.length() * 9.5;      // Yea!, magic numbers!
             alert.getDialogPane().setMinWidth(minimumWidth);
@@ -89,10 +86,9 @@ public class Message {
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(icon);
-//        stage.setAlwaysOnTop(Boolean.TRUE);
-
-        alert.showAndWait();
+        stage.setAlwaysOnTop(Boolean.TRUE);
         stage.requestFocus();
+        alert.showAndWait();
 
 
     }
