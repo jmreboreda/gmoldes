@@ -4,8 +4,10 @@ import gmoldes.domain.check.CheckConstants;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
@@ -13,7 +15,7 @@ import java.util.Optional;
 
 public class Message {
 
-//    //private static Image icon = new Image("/resources/new_contract_icon/GMapp_PNG_64x64.png");
+    private static Image icon = new Image("/pics/GMapp_PNG_64x64.png");
 //    private static Image icon = new Image("/pics/new_contract_icon/GMapp_PNG_64x64.png");
 
     public static Boolean standardConfirmationMessage(Window window, String title, String message){
@@ -61,6 +63,7 @@ public class Message {
     }
 
     public static void warningMessage(Window window, String title, String message){
+
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.initStyle(StageStyle.UTILITY);
         alert.initModality(Modality.WINDOW_MODAL);
@@ -76,8 +79,10 @@ public class Message {
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         }
 
-        alert.getDialogPane().setCursor(Cursor.WAIT);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(icon);
 
+        alert.getDialogPane().setCursor(Cursor.WAIT);
         alert.setContentText(message);
 
         alert.showAndWait();
