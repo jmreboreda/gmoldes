@@ -1,29 +1,19 @@
-package gmoldes;
+package gmoldes.domain.check;
 
 import gmoldes.components.initial_menu.InitialMenuController;
-import gmoldes.domain.check.InitialChecks;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
+import javafx.collections.*;
+import javafx.concurrent.*;
+import javafx.geometry.*;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.*;
 import javafx.util.Duration;
 
 import java.text.ParseException;
@@ -31,7 +21,7 @@ import java.text.ParseException;
 /**
  * Example of displaying a splash page for a standalone JavaFX application
  */
-public class App extends Application {
+public class TaskBasedSplash extends Application {
     public static final String APPLICATION_ICON =
             "/pics/GMapp_PNG_64x64.png";
     public static final String SPLASH_IMAGE =
@@ -129,12 +119,14 @@ public class App extends Application {
                 fadeSplash.setOnFinished(actionEvent -> initStage.hide());
                 fadeSplash.play();
 
-                // Initial checks
                 try {
                     initialControlProcesses(initStage);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+//                InitialChecks.alertByContractNewVersionWithPendingIDC(initStage);
+//                InitialChecks.alertByContractNewVersionExpiration(initStage);
+//                InitialChecks.alertByDelaySendingLaborDocumentationToClients(initStage);
 
                 /* Initial menu */
                 InitialMenuController controller = new InitialMenuController();
@@ -144,7 +136,7 @@ public class App extends Application {
                 mainStage.setResizable(false);
                 mainStage.setTitle("Menú principal");
                 Scene scene = new Scene(controller);
-                scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
+                scene.getStylesheets().add(TaskBasedSplash.class.getResource("/css_stylesheet/application.css").toExternalForm());
                 mainStage.setScene(scene);
                 mainStage.show();
 

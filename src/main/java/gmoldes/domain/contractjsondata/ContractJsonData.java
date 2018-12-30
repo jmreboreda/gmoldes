@@ -9,7 +9,6 @@ public class ContractJsonData {
     private String laborCategory ;
     private String weeklyWorkHours;
     private String daysOfWeekToWork;
-    private Object workWeekSchedule;
     private String fullPartialWorkDay;
     private String identificationContractNumberINEM;
     private String notesForContractManager;
@@ -26,7 +25,6 @@ public class ContractJsonData {
             String laborCategory,
             String weeklyWorkHours,
             String daysOfWeekToWork,
-            Object workWeekSchedule,
             String fullPartialWorkDay,
             String identificationContractNumberINEM,
             String notesForContractManager,
@@ -39,7 +37,6 @@ public class ContractJsonData {
         this.laborCategory = laborCategory;
         this.weeklyWorkHours = weeklyWorkHours;
         this.daysOfWeekToWork = daysOfWeekToWork;
-        this.workWeekSchedule = workWeekSchedule;
         this.fullPartialWorkDay = fullPartialWorkDay;
         this.identificationContractNumberINEM = identificationContractNumberINEM;
         this.notesForContractManager = notesForContractManager;
@@ -102,14 +99,6 @@ public class ContractJsonData {
         this.daysOfWeekToWork = daysOfWeekToWork;
     }
 
-    public Object getWorkWeekSchedule() {
-        return workWeekSchedule;
-    }
-
-    public void setWorkWeekSchedule(Object workWeekSchedule) {
-        this.workWeekSchedule = workWeekSchedule;
-    }
-
     public String getFullPartialWorkDay() {
         return fullPartialWorkDay;
     }
@@ -155,7 +144,6 @@ public class ContractJsonData {
         private Integer contractType;
         private String weeklyWorkHours;
         private String daysOfWeekToWork;
-        private Object workWeekSchedule;
         private String fullPartialWorkDay;
         private String identificationContractNumberINEM;
         private String notesForContractManager;
@@ -197,11 +185,6 @@ public class ContractJsonData {
             return this;
         }
 
-        public ContractJsonDataBuilder withWorkWeekSchedule(Object workWeekSchedule) {
-            this.workWeekSchedule = workWeekSchedule;
-            return this;
-        }
-
         public ContractJsonDataBuilder withFullPartialWorkDay(String fullPartialWorkDay) {
             this.fullPartialWorkDay = fullPartialWorkDay;
             return this;
@@ -225,7 +208,7 @@ public class ContractJsonData {
 
         public ContractJsonData build() {
             return new ContractJsonData(this.clientGMId,  this.workerId, this.quoteAccountCode, this.contractType, this.laborCategory, this.weeklyWorkHours,
-                    this.daysOfWeekToWork, this.workWeekSchedule, this.fullPartialWorkDay, this.identificationContractNumberINEM, this.notesForContractManager, this.privateNotes);
+                    this.daysOfWeekToWork, this.fullPartialWorkDay, this.identificationContractNumberINEM, this.notesForContractManager, this.privateNotes);
         }
     }
 }

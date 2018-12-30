@@ -71,7 +71,7 @@ public class InitialChecks {
         }
     }
 
-    public static void alertByContractNewVersionWithPendingIDC(Stage primaryStage) throws ParseException {
+    public static void alertByContractNewVersionWithPendingIDC(Stage primaryStage) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         List<IDCControlDTO> idcControlDTOList = new ArrayList<>();
 
