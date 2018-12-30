@@ -520,7 +520,7 @@ public class NewContractMainController extends VBox {
 
         for(WorkDaySchedule workDaySchedule : workDayScheduleSet){
 
-            if(workDaySchedule.getDayOfWeek().isEmpty()) {
+            if(!workDaySchedule.getDayOfWeek().isEmpty()) {
 
                 String dayOfWeek = workDaySchedule.getDayOfWeek() != null ? workDaySchedule.getDayOfWeek() : "";
                 String date = workDaySchedule.getDate() != null ? workDaySchedule.getDate().toString() : "";
@@ -551,6 +551,7 @@ public class NewContractMainController extends VBox {
         }
 
         JsonObject scheduleJson = jsonScheduleBuilder.build();
+        System.out.println(scheduleJson);
 
         String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
 

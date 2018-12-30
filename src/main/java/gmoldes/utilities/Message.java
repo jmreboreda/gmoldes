@@ -50,7 +50,7 @@ public class Message {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(icon);
 
-        alert.getDialogPane().setCursor(Cursor.WAIT);
+        alert.getDialogPane().setCursor(Cursor.DEFAULT);
 
         ButtonType buttonTypeYes = new ButtonType("Si");
         ButtonType buttonTypeNo = new ButtonType("No");
@@ -77,17 +77,16 @@ public class Message {
         if(title.contains(CheckConstants.INITIAL_CHECK_HEADER_TEXT)){
             Double minimumWidth = title.length() < 74 ? 74*9.5 : title.length() * 9.5;      // Yea!, magic numbers!
             alert.getDialogPane().setMinWidth(minimumWidth);
+            alert.getDialogPane().setCursor(Cursor.WAIT);
         }else{
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.getDialogPane().setCursor(Cursor.DEFAULT);
         }
 
-        alert.getDialogPane().setCursor(Cursor.WAIT);
         alert.setContentText(message);
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(icon);
-//        stage.setAlwaysOnTop(Boolean.TRUE);
-//        stage.requestFocus();
         alert.showAndWait();
 
 

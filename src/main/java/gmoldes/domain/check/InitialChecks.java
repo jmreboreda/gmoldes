@@ -114,8 +114,8 @@ public class InitialChecks {
 
                     int days = Math.abs(idcControlDTO.getDays());
 
-                    alertMessage.append("IDC Pendiente:\n").append(idcControlDTO.getVariationDescription())
-                            .append(" de ").append(idcControlDTO.getClientGMFullName())
+                    alertMessage.append("IDC pendiente por ").append(idcControlDTO.getVariationDescription().toLowerCase()).append(":\n")
+                            .append("De ").append(idcControlDTO.getClientGMFullName())
                             .append(" con ").append(idcControlDTO.getWorkerFullName())
                             .append(" desde ").append(idcControlDTO.getDateTo()).append(".\n")
                             .append(missingExceededText).append(days).append(" días.").append("\n\n");
