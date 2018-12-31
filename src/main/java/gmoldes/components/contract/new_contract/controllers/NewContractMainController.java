@@ -1,7 +1,6 @@
 package gmoldes.components.contract.new_contract.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
@@ -43,12 +42,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.json.JSONObject;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.mail.internet.AddressException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -473,11 +467,13 @@ public class NewContractMainController extends VBox {
 
     private Integer persistContractSchedule(Integer contractNumber){
 
-        Set<ContractDayScheduleJsonData> contractDayScheduleJsonDataSet = new HashSet<>();
+        Integer counter = 0;
 
-//        Set<ContractDayScheduleJsonData> schedule = new HashSet<>();
+        Map<String, ContractDayScheduleJsonData> contractDayScheduleJsonDataSet = new HashMap<>();
 
-        ContractScheduleJsonData contractScheduleJsonData = new ContractScheduleJsonData();
+        ContractScheduleJsonData schedule = new ContractScheduleJsonData();
+
+//        ContractScheduleJsonData contractScheduleJsonData = new ContractScheduleJsonData();
 
         Set<WorkDaySchedule> scheduleSet = contractSchedule.retrieveScheduleWithScheduleDays();
         for(WorkDaySchedule workDaySchedule : scheduleSet){
@@ -502,16 +498,23 @@ public class NewContractMainController extends VBox {
                         .withDurationHours(durationHours)
                         .build();
 
-                contractDayScheduleJsonDataSet.add(contractDayScheduleJson);
-//                schedule.add(contractDayScheduleJson.toJson());
-                System.out.println("toJson: " + contractDayScheduleJson.toJson().toString());
+                contractDayScheduleJsonDataSet.put("workDay" + counter, contractDayScheduleJson);
+                counter++;
             }
 
-            contractScheduleJsonData.setSchedule(contractDayScheduleJsonDataSet);
+            schedule.setSchedule(contractDayScheduleJsonDataSet);
+
+//            Map<String, ContractDayScheduleJsonData> scheduleDB = schedule.getSchedule();
+//
+//            for(Integer i = 0; i < scheduleDB.size(); i++) {
+//                ContractDayScheduleJsonData day = scheduleDB.get("workDay" + i);
+//                System.out.println(new Gson().toJson(day));
+//            }
         }
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
+        System.out.println("schedule toJson: " + new Gson().toJson(schedule));
 
+        ApplicationMainController applicationMainController = new ApplicationMainController();
         InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
 
         ContractScheduleDTO contractScheduleDTO = ContractScheduleDTO.create()
@@ -521,7 +524,7 @@ public class NewContractMainController extends VBox {
                 .withExpectedEndDate(initialContractDTO.getExpectedEndDate())
                 .withModificationDate(initialContractDTO.getModificationDate())
                 .withEndingDate(initialContractDTO.getEndingDate())
-                .withContractScheduleJsonData(contractScheduleJsonData.toString())
+                .withContractScheduleJsonData(schedule)
                 .withIsInitialContract(Boolean.TRUE)
                 .withVariationId(initialContractDTO.getId())
                 .build();

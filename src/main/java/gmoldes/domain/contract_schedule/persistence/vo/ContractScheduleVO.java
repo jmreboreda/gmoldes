@@ -1,11 +1,12 @@
 package gmoldes.domain.contract_schedule.persistence.vo;
 
-//import com.vladmihalcea.hibernate.type.array.IntArrayType;
-//import com.vladmihalcea.hibernate.type.array.StringArrayType;
-//import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-//import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
-//import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
-//import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import com.vladmihalcea.hibernate.type.array.IntArrayType;
+import com.vladmihalcea.hibernate.type.array.StringArrayType;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
+import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
 import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -14,17 +15,18 @@ import org.hibernate.annotations.TypeDefs;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Map;
 
 @Entity
 @Table(name = "contract_schedule")
-//@TypeDefs({
-//        @TypeDef(name = "string-array", typeClass = StringArrayType.class),
-//        @TypeDef(name = "int-array", typeClass = IntArrayType.class),
-//        @TypeDef(name = "json", typeClass = JsonStringType.class),
-//        @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class),
-//        @TypeDef(name = "jsonb-node", typeClass = JsonNodeBinaryType.class),
-//        @TypeDef(name = "json-node", typeClass = JsonNodeStringType.class),
-//})
+@TypeDefs({
+        @TypeDef(name = "string-array", typeClass = StringArrayType.class),
+        @TypeDef(name = "int-array", typeClass = IntArrayType.class),
+        @TypeDef(name = "json", typeClass = JsonStringType.class),
+        @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class),
+        @TypeDef(name = "jsonb-node", typeClass = JsonNodeBinaryType.class),
+        @TypeDef(name = "json-node", typeClass = JsonNodeStringType.class),
+})
 
 public class ContractScheduleVO implements Serializable {
 
@@ -39,9 +41,9 @@ public class ContractScheduleVO implements Serializable {
     private Date expectedEndDate;
     private Date modificationDate;
     private Date endingDate;
-//    @Type(type = "jsonb")
-//    @Column(columnDefinition = "jsonb")
-    private String contractScheduleJsonData;
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    private ContractScheduleJsonData contractScheduleJsonData;
     private Boolean isInitialContract;
     private Integer variationId;
 
@@ -101,11 +103,11 @@ public class ContractScheduleVO implements Serializable {
         this.endingDate = endingDate;
     }
 
-    public String getContractScheduleJsonData() {
+    public ContractScheduleJsonData getContractScheduleJsonData() {
         return contractScheduleJsonData;
     }
 
-    public void setContractScheduleJsonData(String contractScheduleJsonData) {
+    public void setContractScheduleJsonData(ContractScheduleJsonData contractScheduleJsonData) {
         this.contractScheduleJsonData = contractScheduleJsonData;
     }
 

@@ -156,7 +156,7 @@ public class ContractDataToContractsAgent {
 
     public String toFileName(){
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd_MM_yyyy");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
 
         LocalDate dateInFileName = getStartDate() != null ? getStartDate() : getEndDate();
 

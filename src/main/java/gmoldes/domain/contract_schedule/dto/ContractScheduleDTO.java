@@ -5,6 +5,7 @@ import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class ContractScheduleDTO {
@@ -16,7 +17,7 @@ public class ContractScheduleDTO {
     private LocalDate expectedEndDate;
     private LocalDate modificationDate;
     private LocalDate endingDate;
-    private String contractScheduleJsonData;
+    private ContractScheduleJsonData contractScheduleJsonData;
     private Boolean isInitialContract;
     private Integer variationId;
 
@@ -27,7 +28,7 @@ public class ContractScheduleDTO {
                                LocalDate expectedEndDate,
                                LocalDate modificationDate,
                                LocalDate endingDate,
-                               String contractScheduleJsonData,
+                               ContractScheduleJsonData contractScheduleJsonData,
                                Boolean isInitialContract,
                                Integer variationId) {
         this.id = id;
@@ -70,7 +71,7 @@ public class ContractScheduleDTO {
         return endingDate;
     }
 
-    public String getContractScheduleJsonData() {
+    public ContractScheduleJsonData getContractScheduleJsonData() {
         return contractScheduleJsonData;
     }
 
@@ -95,7 +96,7 @@ public class ContractScheduleDTO {
         private LocalDate expectedEndDate;
         private LocalDate modificationDate;
         private LocalDate endingDate;
-        private String contractScheduleJsonData;
+        private ContractScheduleJsonData contractScheduleJsonData;
         private Boolean isInitialContract;
         private Integer variationId;
 
@@ -135,7 +136,7 @@ public class ContractScheduleDTO {
         }
 
 
-        public ContractScheduleDTOBuilder withContractScheduleJsonData(String contractScheduleJsonData) {
+        public ContractScheduleDTOBuilder withContractScheduleJsonData(ContractScheduleJsonData contractScheduleJsonData) {
             this.contractScheduleJsonData = contractScheduleJsonData;
             return this;
         }

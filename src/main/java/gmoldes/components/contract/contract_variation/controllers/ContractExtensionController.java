@@ -36,8 +36,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-import static gmoldes.utilities.Parameters.PDF_EXTENSION;
-
 public class ContractExtensionController{
 
 
@@ -535,7 +533,7 @@ public class ContractExtensionController{
         pathOut = contractExtensionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtensionDataToContractAgent);
 
 
-        String attachedFileName = contractExtensionDataToContractAgent.toFileName().concat(PDF_EXTENSION);
+        String attachedFileName = contractExtensionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION);
 
         AgentNotificator agentNotificator = new AgentNotificator();
 

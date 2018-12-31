@@ -1,7 +1,5 @@
 package gmoldes.domain.contractjsondata;
 
-import org.json.JSONObject;
-
 public class ContractDayScheduleJsonData {
 
     private String dayOfWeek;
@@ -20,6 +18,9 @@ public class ContractDayScheduleJsonData {
         this.pmFrom = pmFrom;
         this.pmTo = pmTo;
         this.durationHours = durationHours;
+    }
+
+    public ContractDayScheduleJsonData() {
     }
 
     public String getDayOfWeek() {
@@ -48,11 +49,6 @@ public class ContractDayScheduleJsonData {
 
     public Long getDurationHours() {
         return durationHours;
-    }
-
-    public JSONObject toJson(){
-
-        return new JSONObject(this);
     }
 
     public static ContractDayScheduleJsonData.WorkDayBuilder create() {

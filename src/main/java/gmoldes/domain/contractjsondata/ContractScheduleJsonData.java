@@ -1,22 +1,24 @@
 package gmoldes.domain.contractjsondata;
 
-import java.util.Set;
+import java.util.Map;
 
 public class ContractScheduleJsonData {
 
-    private Set<ContractDayScheduleJsonData> schedule;
-
-    public ContractScheduleJsonData(Set<ContractDayScheduleJsonData> schedule) {
-        this.schedule = schedule;
-    }
+    private Map<String, ContractDayScheduleJsonData> schedule;
 
     public ContractScheduleJsonData() {
     }
-    public Set<ContractDayScheduleJsonData> getSchedule() {
+
+    public ContractScheduleJsonData(Map<String, ContractDayScheduleJsonData> schedule) {
+        this.schedule = schedule;
+    }
+
+
+    public Map<String, ContractDayScheduleJsonData> getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(Set<ContractDayScheduleJsonData> schedule) {
+    public void setSchedule(Map<String, ContractDayScheduleJsonData> schedule) {
         this.schedule = schedule;
     }
 }
