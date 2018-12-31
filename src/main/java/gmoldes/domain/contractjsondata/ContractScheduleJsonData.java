@@ -1,7 +1,5 @@
 package gmoldes.domain.contractjsondata;
 
-import org.json.JSONObject;
-
 import java.util.Set;
 
 public class ContractScheduleJsonData {
