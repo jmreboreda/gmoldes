@@ -34,7 +34,8 @@ public class ContractScheduleDAO {
             session.getTransaction().commit();
         }
         catch (Exception e){
-            //System.err.println("No se ha podido guardar el horario del contrato: " + e.getMessage());
+            System.err.println("No se ha podido guardar el horario del contrato: " + e.getMessage());
+            System.out.println(e);
         }
 
         return contractScheduleVO.getId();

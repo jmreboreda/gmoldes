@@ -63,7 +63,7 @@ public class App extends Application {
                         "linear-gradient(" +
                         "to bottom, " +
                         "chocolate, " +
-                        "derive(chocolate, 50%)" +
+                        "derive(chocolate, 25%)" +
                         ");"
         );
         splashLayout.setEffect(new DropShadow());
@@ -78,10 +78,10 @@ public class App extends Application {
                         FXCollections.observableArrayList();
 
                 for (int i = 0; i < 10; i++) {
-                    Thread.sleep(40);
+                    Thread.sleep(125);
                     updateProgress(i + 1, 10);
                 }
-                Thread.sleep(400);
+                Thread.sleep(100);
                 return foundFriends;
             }
         };

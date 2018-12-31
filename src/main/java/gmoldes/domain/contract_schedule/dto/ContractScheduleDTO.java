@@ -1,8 +1,10 @@
 package gmoldes.domain.contract_schedule.dto;
 
+import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
 import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 public class ContractScheduleDTO {
@@ -14,7 +16,7 @@ public class ContractScheduleDTO {
     private LocalDate expectedEndDate;
     private LocalDate modificationDate;
     private LocalDate endingDate;
-    private Set<ContractScheduleJsonData> contractScheduleJsonData;
+    private ContractScheduleJsonData contractScheduleJsonData;
     private Boolean isInitialContract;
     private Integer variationId;
 
@@ -25,7 +27,7 @@ public class ContractScheduleDTO {
                                LocalDate expectedEndDate,
                                LocalDate modificationDate,
                                LocalDate endingDate,
-                               Set<ContractScheduleJsonData> contractScheduleJsonData,
+                               ContractScheduleJsonData contractScheduleJsonData,
                                Boolean isInitialContract,
                                Integer variationId) {
         this.id = id;
@@ -68,7 +70,7 @@ public class ContractScheduleDTO {
         return endingDate;
     }
 
-    public Set<ContractScheduleJsonData> getContractScheduleJsonData() {
+    public ContractScheduleJsonData getContractScheduleJsonData() {
         return contractScheduleJsonData;
     }
 
@@ -93,7 +95,7 @@ public class ContractScheduleDTO {
         private LocalDate expectedEndDate;
         private LocalDate modificationDate;
         private LocalDate endingDate;
-        private Set<ContractScheduleJsonData> contractScheduleJsonData;
+        private ContractScheduleJsonData contractScheduleJsonData;
         private Boolean isInitialContract;
         private Integer variationId;
 
@@ -133,7 +135,7 @@ public class ContractScheduleDTO {
         }
 
 
-        public ContractScheduleDTOBuilder withContractScheduleJsonData(Set<ContractScheduleJsonData> contractScheduleJsonData) {
+        public ContractScheduleDTOBuilder withContractScheduleJsonData(ContractScheduleJsonData contractScheduleJsonData) {
             this.contractScheduleJsonData = contractScheduleJsonData;
             return this;
         }

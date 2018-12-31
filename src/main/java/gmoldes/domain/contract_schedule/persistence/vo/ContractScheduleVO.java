@@ -6,6 +6,7 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
 import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.TypeDefs;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -42,7 +44,7 @@ public class ContractScheduleVO implements Serializable {
     private Date endingDate;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private Set<ContractScheduleJsonData> contractScheduleJsonData;
+    private ContractScheduleJsonData contractScheduleJsonData;
     private Boolean isInitialContract;
     private Integer variationId;
 
@@ -102,11 +104,11 @@ public class ContractScheduleVO implements Serializable {
         this.endingDate = endingDate;
     }
 
-    public Set<ContractScheduleJsonData> getContractScheduleJsonData() {
+    public ContractScheduleJsonData getContractScheduleJsonData() {
         return contractScheduleJsonData;
     }
 
-    public void setContractScheduleJsonData(Set<ContractScheduleJsonData> contractScheduleJsonData) {
+    public void setContractScheduleJsonData(ContractScheduleJsonData contractScheduleJsonData) {
         this.contractScheduleJsonData = contractScheduleJsonData;
     }
 

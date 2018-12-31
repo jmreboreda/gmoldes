@@ -16,6 +16,7 @@ import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.vo.ClientCCCVO;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract_schedule.dto.ContractScheduleDTO;
+import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
 import gmoldes.domain.document_for_print.NewContractDataDocumentCreator;
@@ -40,7 +41,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.mail.internet.AddressException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -271,8 +277,8 @@ public class NewContractMainController extends VBox {
             if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
                 persistOldContractToSave();
                 Integer contractNumber = persistInitialContract();
-                persistContractSchedule(contractNumber);
                 persistTraceabilityControlData(contractNumber);
+                Integer id = persistContractSchedule(contractNumber);
                 contractActionComponents.enablePDFButton(true);
                 }
         }
@@ -465,28 +471,41 @@ public class NewContractMainController extends VBox {
 
     private Integer persistContractSchedule(Integer contractNumber){
 
-        Set<ContractScheduleJsonData> contractScheduleJsonDataSet = new HashSet<>();
+        Set<ContractDayScheduleJsonData> contractDayScheduleJsonDataSet = new HashSet<>();
 
-        Set<WorkDaySchedule> scheduleSet = retrieveContractSchedule();
-        for(WorkDaySchedule workDaySchedule: scheduleSet){
+//        Set<ContractDayScheduleJsonData> schedule = new HashSet<>();
 
-            String date = workDaySchedule.getDate() != null ? workDaySchedule.getDate().toString() : null;
-            String amFrom = workDaySchedule.getAmFrom() != null ? workDaySchedule.getAmFrom().toString() : null;
-            String amTo = workDaySchedule.getAmTo() != null ? workDaySchedule.getAmTo().toString() : null;
-            String pmFrom = workDaySchedule.getPmFrom() != null ? workDaySchedule.getPmFrom().toString() : null;
-            String pmTo = workDaySchedule.getPmTo() != null ? workDaySchedule.getPmTo().toString() : null;
-            Long hours = workDaySchedule.getDurationHours() != null ? workDaySchedule.getDurationHours().toHours() : null;
-            ContractScheduleJsonData contractScheduleJsonData = ContractScheduleJsonData.create()
-                    .withDayOfWeek(workDaySchedule.getDayOfWeek())
-                    .withDate(date)
-                    .withAmFrom(amFrom)
-                    .withAmTo(amTo)
-                    .withPmFrom(pmFrom)
-                    .withPmTo(pmTo)
-                    .withDurationHours(hours)
-                    .build();
+        ContractScheduleJsonData contractScheduleJsonData = new ContractScheduleJsonData();
 
-            contractScheduleJsonDataSet.add(contractScheduleJsonData);
+        Set<WorkDaySchedule> scheduleSet = contractSchedule.retrieveScheduleWithScheduleDays();
+        for(WorkDaySchedule workDaySchedule : scheduleSet){
+
+            if(!workDaySchedule.getDayOfWeek().isEmpty()) {
+
+                String dayOfWeek = workDaySchedule.getDayOfWeek() != null ? workDaySchedule.getDayOfWeek() : "";
+                String date = workDaySchedule.getDate() != null ? workDaySchedule.getDate().toString() : "";
+                String amFrom = workDaySchedule.getAmFrom() != null ? workDaySchedule.getAmFrom().toString() : "";
+                String amTo = workDaySchedule.getAmTo() != null ? workDaySchedule.getAmTo().toString() : "";
+                String pmFrom = workDaySchedule.getPmFrom() != null ? workDaySchedule.getPmFrom().toString() : "";
+                String pmTo = workDaySchedule.getPmTo() != null ? workDaySchedule.getPmTo().toString() : "";
+                Long durationHours = workDaySchedule.getDurationHours() != null ? workDaySchedule.getDurationHours().toHours() : 0;
+
+                ContractDayScheduleJsonData contractDayScheduleJson = ContractDayScheduleJsonData.create()
+                        .withDayOfWeek(dayOfWeek)
+                        .withDate(date)
+                        .withAmFrom(amFrom)
+                        .withAmTo(amTo)
+                        .withPmFrom(pmFrom)
+                        .withPmTo(pmTo)
+                        .withDurationHours(durationHours)
+                        .build();
+
+                contractDayScheduleJsonDataSet.add(contractDayScheduleJson);
+//                schedule.add(contractDayScheduleJson.toJson());
+                System.out.println("toJson: " + contractDayScheduleJson.toJson().toString());
+            }
+
+            contractScheduleJsonData.setSchedule(contractDayScheduleJsonDataSet);
         }
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
@@ -500,7 +519,7 @@ public class NewContractMainController extends VBox {
                 .withExpectedEndDate(initialContractDTO.getExpectedEndDate())
                 .withModificationDate(initialContractDTO.getModificationDate())
                 .withEndingDate(initialContractDTO.getEndingDate())
-                .withContractScheduleJsonData(contractScheduleJsonDataSet)
+                .withContractScheduleJsonData(contractScheduleJsonData)
                 .withIsInitialContract(Boolean.TRUE)
                 .withVariationId(initialContractDTO.getId())
                 .build();

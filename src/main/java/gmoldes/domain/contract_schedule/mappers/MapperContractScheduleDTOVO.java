@@ -1,7 +1,5 @@
 package gmoldes.domain.contract_schedule.mappers;
 
-import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
-import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract_schedule.dto.ContractScheduleDTO;
 import gmoldes.domain.contract_schedule.persistence.vo.ContractScheduleVO;
 
