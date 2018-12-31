@@ -13,7 +13,7 @@ import gmoldes.utilities.Parameters;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.text.ParseException;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -55,7 +55,7 @@ public class InitialChecks {
                         missingExceededText = "Excedido en ";
                     }
 
-                    alertMessage.append(counter).append("] ")
+                    alertMessage.append(counter).append(") ")
                             .append(clientDTO.toNaturalName()).append(" con ")
                             .append(workerDTO.toNaturalName())
                             .append(": vencimiento el día ").append(traceabilityDTO.getExpectedEndDate().format(dateFormatter)).append(".\n")
@@ -66,7 +66,6 @@ public class InitialChecks {
 
             if(alertMessage.length() > 0) {
                 Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Preavisos de fin de contrato pendientes de recepción"), alertMessage.toString());
-
             }
         }
     }

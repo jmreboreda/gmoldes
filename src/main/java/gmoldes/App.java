@@ -1,5 +1,7 @@
 package gmoldes;
 
+import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
+import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
 import javafx.animation.FadeTransition;
@@ -26,7 +28,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * Example of displaying a splash page for a standalone JavaFX application
