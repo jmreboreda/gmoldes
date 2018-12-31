@@ -471,7 +471,7 @@ public class ContractExtinctionController{
         pathOut = contractVariationDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
 
 
-        String attachedFileName = contractExtinctionDataToContractAgent.toFileName().concat(".pdf");
+        String attachedFileName = contractExtinctionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION);
 
         AgentNotificator agentNotificator = new AgentNotificator();
 

@@ -93,6 +93,22 @@ public class WorkDayTypeInput extends HBox {
         this.hoursWorkWeek.setText(hoursWorkWeek);
     }
 
+    public RadioButton getRadioButtonFullWorkDay() {
+        return radioButtonFullWorkDay;
+    }
+
+    public void setRadioButtonFullWorkDay(RadioButton radioButtonFullWorkDay) {
+        this.radioButtonFullWorkDay = radioButtonFullWorkDay;
+    }
+
+    public RadioButton getRadioButtonPartialWorkDay() {
+        return radioButtonPartialWorkDay;
+    }
+
+    public void setRadioButtonPartialWorkDay(RadioButton radioButtonPartialWorkDay) {
+        this.radioButtonPartialWorkDay = radioButtonPartialWorkDay;
+    }
+
     public void setRadioButtonFullWorkDay(Boolean bol){
         this.radioButtonFullWorkDay.setSelected(bol);
     }

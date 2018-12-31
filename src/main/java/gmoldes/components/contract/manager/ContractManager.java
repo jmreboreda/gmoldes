@@ -5,11 +5,16 @@ import gmoldes.components.contract.contract_variation.persistence.dao.ContractVa
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
+import gmoldes.components.contract.new_contract.components.ContractSchedule;
 import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDTOVO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.*;
+import gmoldes.domain.contract_schedule.dto.ContractScheduleDTO;
+import gmoldes.domain.contract_schedule.mappers.MapperContractScheduleDTOVO;
+import gmoldes.domain.contract_schedule.persistence.dao.ContractScheduleDAO;
+import gmoldes.domain.contract_schedule.persistence.vo.ContractScheduleVO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.domain.traceability_contract_documentation.mapper.MapperTraceabilityContractDocumentationDTOVO;
 import gmoldes.domain.traceability_contract_documentation.persistence.dao.TraceabilityContractDocumentationDAO;
@@ -71,6 +76,13 @@ public class ContractManager {
         ContractVariationVO contractVariationVO = MapperContractNewVersionDTOtoContractVariationVO.map(contractNewVersionDTO);
 
         return contractVariationDAO.update(contractVariationVO);
+    }
+
+    public Integer saveContractSchedule(ContractScheduleDTO contractScheduleDTO){
+        ContractScheduleDAO contractScheduleDAO = ContractScheduleDAO.ContractScheduleDAOFactory.getInstance();
+        ContractScheduleVO contractScheduleVO = MapperContractScheduleDTOVO.map(contractScheduleDTO);
+
+        return contractScheduleDAO.create(contractScheduleVO);
     }
 
     public List<ContractDTO> findAllContractsOrderedByContractNumberAndVariation(){

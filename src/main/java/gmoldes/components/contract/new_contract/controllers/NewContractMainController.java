@@ -1,12 +1,13 @@
 package gmoldes.components.contract.new_contract.controllers;
 
+import com.google.gson.Gson;
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.components.timerecord.components.TimeRecordConstants;
@@ -15,7 +16,10 @@ import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.vo.ClientCCCVO;
 import gmoldes.domain.contract.dto.*;
+import gmoldes.domain.contract_schedule.dto.ContractScheduleDTO;
+import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
 import gmoldes.domain.contractjsondata.ContractJsonData;
+import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
 import gmoldes.domain.document_for_print.NewContractDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.controllers.PersonController;
@@ -46,9 +50,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static gmoldes.components.contract.ContractConstants.STANDARD_NEW_CONTRACT_TEXT;
@@ -110,6 +112,7 @@ public class NewContractMainController extends VBox {
         contractParts.setOnSearchEmployees(this::onSearchEmployees);
         contractParts.setOnSelectEmployer(this::onSelectEmployer);
         contractParts.setOnSelectEmployee(this::onSelectEmployee);
+        contractData.setOnChangeContractType(this::OnChangeContractType);
         contractData.setOnChangeContractDataHoursWorkWeek(this::onChangeContractDataHoursWorkWeek);
         contractSchedule.setOnChangeScheduleDuration(this::onChangeScheduleDuration);
 
@@ -142,6 +145,7 @@ public class NewContractMainController extends VBox {
     }
 
     private void setTabPaneIcon(){
+
         Tab contractPartsPane = tabPane.getTabs().get(0);
         ImageView iconParts = new ImageView(new Image("/pics/new_contract_icon/contract_parts_icon.png"));
         iconParts.setFitWidth(20); iconParts.setFitHeight(20);
@@ -270,6 +274,7 @@ public class NewContractMainController extends VBox {
                 persistOldContractToSave();
                 Integer contractNumber = persistInitialContract();
                 persistTraceabilityControlData(contractNumber);
+                Integer id = persistContractSchedule(contractNumber);
                 contractActionComponents.enablePDFButton(true);
                 }
         }
@@ -328,6 +333,27 @@ public class NewContractMainController extends VBox {
         List<PersonDTO> personDTOList = new ArrayList<>();
         personDTOList.add(selectedEmployee);
         contractParts.refreshEmployees(personDTOList);
+    }
+
+    private void OnChangeContractType(ChangeContractTypeEvent event){
+
+        if(event.getContractType().getIsTemporal() ||
+        event.getContractType().getIsDeterminedDuration()){
+            contractData.getContractDurationInput().getRadioButtonTemporal().setSelected(true);
+            //contractData.getContractDurationInput().getRadioButtonUndefined().setSelected(false);
+        }else{
+            //contractData.getContractDurationInput().getRadioButtonTemporal().setSelected(false);
+            contractData.getContractDurationInput().getRadioButtonUndefined().setSelected(true);
+        }
+
+        if(event.getContractType().getIsFullTime()){
+            contractData.getWorkDayType().getRadioButtonFullWorkDay().setSelected(true);
+            //contractData.getWorkDayType().getRadioButtonPartialWorkDay().setSelected(false);
+        }else{
+            //contractData.getWorkDayType().getRadioButtonFullWorkDay().setSelected(false);
+            contractData.getWorkDayType().getRadioButtonPartialWorkDay().setSelected(true);
+        }
+
     }
 
     private void onChangeContractDataHoursWorkWeek(ChangeContractDataHoursWorkWeekEvent event) {
@@ -439,6 +465,75 @@ public class NewContractMainController extends VBox {
         return contractNumber;
     }
 
+    private Integer persistContractSchedule(Integer contractNumber){
+
+        Integer counter = 0;
+
+        Map<String, ContractDayScheduleJsonData> contractDayScheduleJsonDataSet = new HashMap<>();
+
+        ContractScheduleJsonData schedule = new ContractScheduleJsonData();
+
+//        ContractScheduleJsonData contractScheduleJsonData = new ContractScheduleJsonData();
+
+        Set<WorkDaySchedule> scheduleSet = contractSchedule.retrieveScheduleWithScheduleDays();
+        for(WorkDaySchedule workDaySchedule : scheduleSet){
+
+            if(!workDaySchedule.getDayOfWeek().isEmpty()) {
+
+                String dayOfWeek = workDaySchedule.getDayOfWeek() != null ? workDaySchedule.getDayOfWeek() : "";
+                String date = workDaySchedule.getDate() != null ? workDaySchedule.getDate().toString() : "";
+                String amFrom = workDaySchedule.getAmFrom() != null ? workDaySchedule.getAmFrom().toString() : "";
+                String amTo = workDaySchedule.getAmTo() != null ? workDaySchedule.getAmTo().toString() : "";
+                String pmFrom = workDaySchedule.getPmFrom() != null ? workDaySchedule.getPmFrom().toString() : "";
+                String pmTo = workDaySchedule.getPmTo() != null ? workDaySchedule.getPmTo().toString() : "";
+                Long durationHours = workDaySchedule.getDurationHours() != null ? workDaySchedule.getDurationHours().toHours() : 0;
+
+                ContractDayScheduleJsonData contractDayScheduleJson = ContractDayScheduleJsonData.create()
+                        .withDayOfWeek(dayOfWeek)
+                        .withDate(date)
+                        .withAmFrom(amFrom)
+                        .withAmTo(amTo)
+                        .withPmFrom(pmFrom)
+                        .withPmTo(pmTo)
+                        .withDurationHours(durationHours)
+                        .build();
+
+                contractDayScheduleJsonDataSet.put("workDay" + counter, contractDayScheduleJson);
+                counter++;
+            }
+
+            schedule.setSchedule(contractDayScheduleJsonDataSet);
+
+//            Map<String, ContractDayScheduleJsonData> scheduleDB = schedule.getSchedule();
+//
+//            for(Integer i = 0; i < scheduleDB.size(); i++) {
+//                ContractDayScheduleJsonData day = scheduleDB.get("workDay" + i);
+//                System.out.println(new Gson().toJson(day));
+//            }
+        }
+
+        System.out.println("schedule toJson: " + new Gson().toJson(schedule));
+
+        ApplicationMainController applicationMainController = new ApplicationMainController();
+        InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
+
+        ContractScheduleDTO contractScheduleDTO = ContractScheduleDTO.create()
+                .withContractNumber(initialContractDTO.getContractNumber())
+                .withVariationType(initialContractDTO.getVariationType())
+                .withStartDate(initialContractDTO.getStartDate())
+                .withExpectedEndDate(initialContractDTO.getExpectedEndDate())
+                .withModificationDate(initialContractDTO.getModificationDate())
+                .withEndingDate(initialContractDTO.getEndingDate())
+                .withContractScheduleJsonData(schedule)
+                .withIsInitialContract(Boolean.TRUE)
+                .withVariationId(initialContractDTO.getId())
+                .build();
+
+        ContractManager contractManager = new ContractManager();
+
+        return contractManager.saveContractSchedule(contractScheduleDTO);
+    }
+
     private void persistTraceabilityControlData(Integer contractNumber){
 
         // In a new contract, the date for the notice of end of contract is set at 31-12-9999 if the contract is of indefinite duration
@@ -481,6 +576,46 @@ public class NewContractMainController extends VBox {
         contractActionComponents.enableOkButton(false);
         contractActionComponents.enableSendMailButton(true);
 
+    }
+
+    private Set<WorkDaySchedule> retrieveContractSchedule(){
+//        JsonObjectBuilder jsonScheduleBuilder = Json.createObjectBuilder();
+//
+//        for(WorkDaySchedule workDaySchedule : workDayScheduleSet){
+//
+//            if(!workDaySchedule.getDayOfWeek().isEmpty()) {
+//
+//                String dayOfWeek = workDaySchedule.getDayOfWeek() != null ? workDaySchedule.getDayOfWeek() : "";
+//                String date = workDaySchedule.getDate() != null ? workDaySchedule.getDate().toString() : "";
+//                String amFrom = workDaySchedule.getAmFrom() != null ? workDaySchedule.getAmFrom().toString() : "";
+//                String amTo = workDaySchedule.getAmTo() != null ? workDaySchedule.getAmTo().toString() : "";
+//                String pmFrom = workDaySchedule.getPmFrom() != null ? workDaySchedule.getPmFrom().toString() : "";
+//                String pmTo = workDaySchedule.getPmTo() != null ? workDaySchedule.getPmTo().toString() : "";
+//                String durationHours = workDaySchedule.getDurationHours() != null ? Long.toString(workDaySchedule.getDurationHours().toHours()) : "";
+//
+//                JsonObjectBuilder jsonDayBuilder = Json.createObjectBuilder();
+//
+//                jsonDayBuilder.add("dayOfWeek", dayOfWeek)
+//                        .add("date", date)
+//                        .add("amFrom", amFrom)
+//                        .add("amTo", amTo)
+//                        .add("pmFrom", pmFrom)
+//                        .add("pmTo", pmTo)
+//                        .add("durationHours", durationHours);
+//
+//                JsonObject scheduleDay = jsonDayBuilder.build();
+//
+//                System.out.println(jsonDayBuilder);
+//
+//               scheduleSet.add(scheduleDay);
+//            }
+//        }
+
+//        JsonObject scheduleJson = jsonScheduleBuilder.build();
+//
+//        System.out.println(scheduleJson);
+
+        return contractSchedule.retrieveScheduleWithScheduleDays();
     }
 
     private ContractFullDataDTO retrieveContractFullData(){

@@ -89,11 +89,17 @@
             <Button fx:id="clientInvoiceCheckListButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Relación de control de recepción de facturas de clientes">
                <VBox.margin>
                   <Insets left="23.5" top="10.0" />
-               </VBox.margin></Button>
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <Button fx:id="payrollCheckListButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Relación de control de recepción y envío de nóminas">
                <VBox.margin>
                   <Insets left="23.5" top="10.0" />
                </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
             <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="100.0" text="Salir" textAlignment="CENTER" textFill="#640000">
                <VBox.margin>

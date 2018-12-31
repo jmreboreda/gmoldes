@@ -14,7 +14,14 @@ public class WorkDaySchedule {
     private LocalTime pmTo;
     private Duration durationHours;
 
-    public WorkDaySchedule(String dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, Duration durationHours) {
+    public WorkDaySchedule(String dayOfWeek,
+                           LocalDate date,
+                           LocalTime amFrom,
+                           LocalTime amTo,
+                           LocalTime pmFrom,
+                           LocalTime pmTo,
+                           Duration durationHours) {
+
         this.dayOfWeek = dayOfWeek;
         this.date = date;
         this.amFrom = amFrom;

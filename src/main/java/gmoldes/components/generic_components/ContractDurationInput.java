@@ -124,4 +124,20 @@ public class ContractDurationInput extends HBox {
     public Boolean radioButtonTemporalIsSelected(){
         return this.radioButtonTemporal.isSelected();
     }
+
+    public RadioButton getRadioButtonUndefined() {
+        return radioButtonUndefined;
+    }
+
+    public RadioButton getRadioButtonTemporal() {
+        return radioButtonTemporal;
+    }
+
+    public void setRadioButtonUndefined(Boolean radioButtonUndefined) {
+        this.radioButtonUndefined.setSelected(radioButtonUndefined);
+    }
+
+    public void setRadioButtonTemporal(Boolean radioButtonTemporal) {
+        this.radioButtonTemporal.setSelected(radioButtonTemporal);
+    }
 }

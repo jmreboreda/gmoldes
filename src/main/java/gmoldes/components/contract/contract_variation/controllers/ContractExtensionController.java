@@ -36,8 +36,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-import static gmoldes.utilities.Parameters.PDF_EXTENSION;
-
 public class ContractExtensionController{
 
 
@@ -467,6 +465,8 @@ public class ContractExtensionController{
 
         String durationDays = Long.toString(ChronoUnit.DAYS.between(dateFrom, dateTo) + 1L);
 
+        String gmContractNumber = allContractData.getContractNewVersion().getContractNumber() != null ? allContractData.getContractNewVersion().getContractNumber().toString() : null;
+
         return ContractVariationDataSubfolder.create()
                 .withContractExtinction(false)
                 .withContractExtension(true)
@@ -493,6 +493,7 @@ public class ContractExtensionController{
                 .withSchedule(new HashSet<>())
                 .withAdditionalData(additionalData)
                 .withLaborCategory(allContractData.getContractNewVersion().getContractJsonData().getLaborCategory())
+                .withGmContractNumber(gmContractNumber)
                 .build();
     }
 
@@ -532,7 +533,7 @@ public class ContractExtensionController{
         pathOut = contractExtensionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtensionDataToContractAgent);
 
 
-        String attachedFileName = contractExtensionDataToContractAgent.toFileName().concat(PDF_EXTENSION);
+        String attachedFileName = contractExtensionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION);
 
         AgentNotificator agentNotificator = new AgentNotificator();
 

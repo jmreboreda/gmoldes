@@ -172,6 +172,5 @@ public class InitialContractDAO {
         query.setParameter("clientId", clientId);
 
         return  query.getResultList();
-
     }
 }

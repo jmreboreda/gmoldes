@@ -13,7 +13,7 @@ import gmoldes.utilities.Parameters;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.text.ParseException;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -26,13 +26,11 @@ public class InitialChecks {
     private static final Logger logger = LoggerFactory.getLogger(InitialChecks.class.getSimpleName());
     private static final String CONTRACT_IN_FORCE_UPDATE_TO = "Contract in force update to ";
 
-    public static final Integer END_OF_CONTRACT_NOTICE_DAYS = 20;
-    public static final Integer LIMIT_DAYS_DELAY_RECEIPT_CONTRACT_LABOR_DOCUMENTATION = 10;
-
-
     public static void alertByContractNewVersionExpiration(Stage primaryStage){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(gmoldes.utilities.Parameters.DEFAULT_DATE_FORMAT);
         StringBuilder alertMessage = new StringBuilder();
+        alertMessage.append("Preavisos de fin de contrato:\n\n");
+        Integer counter = 1;
         String missingExceededText;
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
@@ -40,7 +38,7 @@ public class InitialChecks {
         if(!traceabilityContractDocumentationDTOList.isEmpty()) {
             for (TraceabilityContractDocumentationDTO traceabilityDTO : traceabilityContractDocumentationDTOList) {
                 Long daysToEndDate = ChronoUnit.DAYS.between(LocalDate.now(), traceabilityDTO.getExpectedEndDate());
-                if(daysToEndDate <= END_OF_CONTRACT_NOTICE_DAYS){
+                if(daysToEndDate <= CheckConstants.END_OF_CONTRACT_NOTICE_DAYS){
 
                     Integer contractNumber = traceabilityDTO.getContractNumber();
                     InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
@@ -57,21 +55,22 @@ public class InitialChecks {
                         missingExceededText = "Excedido en ";
                     }
 
-                    alertMessage.append("Preaviso de fin de contrato:\n")
+                    alertMessage.append(counter).append(") ")
                             .append(clientDTO.toNaturalName()).append(" con ")
                             .append(workerDTO.toNaturalName())
                             .append(": vencimiento el día ").append(traceabilityDTO.getExpectedEndDate().format(dateFormatter)).append(".\n")
                             .append(missingExceededText).append(Math.abs(daysToEndDate)).append(" días.").append("\n\n");
+                    counter++;
                 }
             }
 
             if(alertMessage.length() > 0) {
-                Message.warningMessage(primaryStage.getOwner(), "Preavisos de fin de contrato pendientes de recepción", alertMessage.toString());
+                Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Preavisos de fin de contrato pendientes de recepción"), alertMessage.toString());
             }
         }
     }
 
-    public static void alertByContractNewVersionWithPendingIDC(Stage primaryStage) throws ParseException {
+    public static void alertByContractNewVersionWithPendingIDC(Stage primaryStage) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         List<IDCControlDTO> idcControlDTOList = new ArrayList<>();
 
@@ -114,8 +113,8 @@ public class InitialChecks {
 
                     int days = Math.abs(idcControlDTO.getDays());
 
-                    alertMessage.append("IDC Pendiente:\n").append(idcControlDTO.getVariationDescription())
-                            .append(" de ").append(idcControlDTO.getClientGMFullName())
+                    alertMessage.append("IDC pendiente por ").append(idcControlDTO.getVariationDescription().toLowerCase()).append(":\n")
+                            .append("De ").append(idcControlDTO.getClientGMFullName())
                             .append(" con ").append(idcControlDTO.getWorkerFullName())
                             .append(" desde ").append(idcControlDTO.getDateTo()).append(".\n")
                             .append(missingExceededText).append(days).append(" días.").append("\n\n");
@@ -123,8 +122,7 @@ public class InitialChecks {
             }
 
             if(alertMessage.length() > 0) {
-
-                Message.warningMessage(primaryStage.getOwner(), "IDC pendientes de recepción", alertMessage.toString());
+                Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("IDC pendientes de recepción"), alertMessage.toString());
             }
         }
     }
@@ -138,21 +136,23 @@ public class InitialChecks {
             for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
                 Long daysOfDocumentationDelay = ChronoUnit.DAYS.between(traceabilityContractDocumentationDTO.getStartDate(), LocalDate.now());
                 Integer contractNumber = traceabilityContractDocumentationDTO.getContractNumber();
-                if(daysOfDocumentationDelay >= LIMIT_DAYS_DELAY_RECEIPT_CONTRACT_LABOR_DOCUMENTATION){
+                if(daysOfDocumentationDelay >= CheckConstants.LIMIT_DAYS_DELAY_RECEIPT_CONTRACT_LABOR_DOCUMENTATION){
                     InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
                     ClientDTO clientDTO = applicationMainController.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
                     PersonDTO workerDTO = applicationMainController.findPersonById(initialContractDTO.getContractJsonData().getWorkerId());
-                    alertMessage.append("La documentación del contrato número ").append(contractNumber)
-                            .append(" entre ").append(clientDTO.toNaturalName()).append(" y ")
-                            .append(workerDTO.toNaturalName()).append(" está pendiente desde hace ")
-                            .append(daysOfDocumentationDelay).append(" días.\n\n");
+                    String variation_description = retrieveVariationDescriptionById(traceabilityContractDocumentationDTO.getVariationType());
+                    alertMessage.append("Contrato número: ").append(contractNumber).append("\n");
+                    alertMessage.append("Entre  ").append(clientDTO.toNaturalName());
+                    alertMessage.append(" y ").append(workerDTO.toNaturalName()).append("\n");
+                    alertMessage.append("Documentación: ").append(variation_description).append(".\n");
 
+                    alertMessage.append("La documentación indicada está pendiente desde hace ").append(daysOfDocumentationDelay).append(" días.\n\n");
                 }
             }
 
             if(alertMessage.length() > 0) {
 
-                Message.warningMessage(primaryStage.getOwner(), "Documentación de contratos pendiente de recepción", alertMessage.toString());
+                Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Documentación de contratos pendiente de recepción"), alertMessage.toString());
             }
         }
     }
