@@ -521,7 +521,7 @@ public class NewContractMainController extends VBox {
                 .withExpectedEndDate(initialContractDTO.getExpectedEndDate())
                 .withModificationDate(initialContractDTO.getModificationDate())
                 .withEndingDate(initialContractDTO.getEndingDate())
-                .withContractScheduleJsonData(contractScheduleJsonData)
+                .withContractScheduleJsonData(contractScheduleJsonData.toString())
                 .withIsInitialContract(Boolean.TRUE)
                 .withVariationId(initialContractDTO.getId())
                 .build();

@@ -16,7 +16,7 @@ public class ContractScheduleDTO {
     private LocalDate expectedEndDate;
     private LocalDate modificationDate;
     private LocalDate endingDate;
-    private ContractScheduleJsonData contractScheduleJsonData;
+    private String contractScheduleJsonData;
     private Boolean isInitialContract;
     private Integer variationId;
 
@@ -27,7 +27,7 @@ public class ContractScheduleDTO {
                                LocalDate expectedEndDate,
                                LocalDate modificationDate,
                                LocalDate endingDate,
-                               ContractScheduleJsonData contractScheduleJsonData,
+                               String contractScheduleJsonData,
                                Boolean isInitialContract,
                                Integer variationId) {
         this.id = id;
@@ -70,7 +70,7 @@ public class ContractScheduleDTO {
         return endingDate;
     }
 
-    public ContractScheduleJsonData getContractScheduleJsonData() {
+    public String getContractScheduleJsonData() {
         return contractScheduleJsonData;
     }
 
@@ -95,7 +95,7 @@ public class ContractScheduleDTO {
         private LocalDate expectedEndDate;
         private LocalDate modificationDate;
         private LocalDate endingDate;
-        private ContractScheduleJsonData contractScheduleJsonData;
+        private String contractScheduleJsonData;
         private Boolean isInitialContract;
         private Integer variationId;
 
@@ -135,7 +135,7 @@ public class ContractScheduleDTO {
         }
 
 
-        public ContractScheduleDTOBuilder withContractScheduleJsonData(ContractScheduleJsonData contractScheduleJsonData) {
+        public ContractScheduleDTOBuilder withContractScheduleJsonData(String contractScheduleJsonData) {
             this.contractScheduleJsonData = contractScheduleJsonData;
             return this;
         }
