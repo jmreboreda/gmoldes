@@ -503,19 +503,23 @@ public class NewContractMainController extends VBox {
             }
 
             schedule.setSchedule(contractDayScheduleJsonDataSet);
-
-//            Map<String, ContractDayScheduleJsonData> scheduleDB = schedule.getSchedule();
-//
-//            for(Integer i = 0; i < scheduleDB.size(); i++) {
-//                ContractDayScheduleJsonData day = scheduleDB.get("workDay" + i);
-//                System.out.println(new Gson().toJson(day));
-//            }
         }
 
         System.out.println("schedule toJson: " + new Gson().toJson(schedule));
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
         InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
+
+
+//        Integer idToSchedule = initialContractDTO.getId();
+//
+//            Map<String, ContractDayScheduleJsonData> scheduleDB = initialContractDTO.;
+//
+//            for(Integer i = 0; i < scheduleDB.size(); i++) {
+//                ContractDayScheduleJsonData day = scheduleDB.get("workDay" + i);
+//                System.out.println(new Gson().toJson(day));
+//            }
+
 
         ContractScheduleDTO contractScheduleDTO = ContractScheduleDTO.create()
                 .withContractNumber(initialContractDTO.getContractNumber())
