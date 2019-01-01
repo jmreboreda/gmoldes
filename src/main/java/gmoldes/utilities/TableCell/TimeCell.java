@@ -121,15 +121,6 @@ public class TimeCell extends TableCell<ContractScheduleDayDTO, LocalTime> {
         });
     }
 
-    private Boolean isValidKey(KeyEvent t){
-
-        if(t.getCode().isDigitKey() || t.getCode() == KeyCode.COLON ){
-            return true;
-        }
-
-        return false;
-    }
-
     private String getString() {
         return getItem() == null ? null : getItem().toString();
     }
