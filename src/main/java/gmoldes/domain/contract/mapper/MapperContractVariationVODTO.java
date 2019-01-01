@@ -28,6 +28,7 @@ public class MapperContractVariationVODTO {
                 .withModificationDate(modificationDate)
                 .withEndingDate(endingDate)
                 .withContractJsonData(contractVariationVO.getContractJsonData())
+                .withContractScheduleJsonData(contractVariationVO.getContractScheduleJsonData())
                 .build();
     }
 }

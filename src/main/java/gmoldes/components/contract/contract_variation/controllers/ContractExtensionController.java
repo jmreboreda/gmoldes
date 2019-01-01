@@ -314,6 +314,7 @@ public class ContractExtensionController{
                         .withModificationDate(initialDateOfExtension)
                         .withEndingDate(initialDateOfExtension)
                         .withContractJsonData(contractVariationDTO.getContractJsonData())
+                        .withContractScheduleJsonData(contractVariationDTO.getContractScheduleJsonData())
                         .build();
             }
         }
@@ -355,6 +356,7 @@ public class ContractExtensionController{
                 .withModificationDate(null)
                 .withEndingDate(null)
                 .withContractJsonData(newContractJsonData)
+                .withContractScheduleJsonData(contractNewVersionExtendedDTO.getContractScheduleJsonData())
                 .build();
 
         return contractManager.saveContractVariation(newContractExtensionToPersist);
@@ -381,6 +383,7 @@ public class ContractExtensionController{
                 .withModificationDate(initialDateOfExtension)
                 .withEndingDate(initialContractToUpdateDTO.getEndingDate())
                 .withContractJsonData(initialContractToUpdateDTO.getContractJsonData())
+                .withContractScheduleJsonData(initialContractToUpdateDTO.getContractScheduleJsonData())
                 .build();
 
         return contractManager.updateInitialContract(contractNewVersionToUpdateDTO);

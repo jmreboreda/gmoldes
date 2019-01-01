@@ -6,6 +6,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +21,6 @@ public class TimeCell extends TableCell<ContractScheduleDayDTO, LocalTime> {
 
     @Override
     public void startEdit() {
-
         super.startEdit();
 
         if (textField == null) {
@@ -67,14 +67,32 @@ public class TimeCell extends TableCell<ContractScheduleDayDTO, LocalTime> {
     }
 
     private void createTextField() {
-        Pattern timePattern = Pattern.compile("\\d{2}[:]\\d{2}");
+        Pattern timePatternHHmm = Pattern.compile("\\d{2}[:]\\d{2}");
+        Pattern timePatternH = Pattern.compile("\\d{1}");
+        Pattern timePatternHH = Pattern.compile("\\d{2}");
 
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
         textField = new TextField(getString());
         textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
         textField.setOnKeyReleased(t -> {
+
             if (t.getCode() == KeyCode.ENTER && textField.getText() != null) {
-                if(timePattern.matcher(textField.getText()).matches()) {
+
+                if(timePatternH.matcher(textField.getText()).matches() || timePatternHH.matcher(textField.getText()).matches()){
+                  if(Integer.parseInt(textField.getText()) >= 0 && Integer.parseInt(textField.getText()) <= 24){
+
+                      if(textField.getLength() == 1){
+                          commitEdit(LocalTime.parse("0".concat(textField.getText()).concat(":00"), timeFormatter));
+                      }else{
+                          commitEdit(LocalTime.parse(textField.getText().concat(":00"), timeFormatter));
+                      }
+                  }else{
+                      textField.setText(null);
+                      commitEdit(null);
+                      cancelEdit();
+                  }
+
+                }else if(timePatternHHmm.matcher(textField.getText()).matches()) {
                     try {
                         if(LocalTime.parse(textField.getText(), timeFormatter).isBefore(LocalTime.MAX)){
                             try {
