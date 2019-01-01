@@ -23,6 +23,7 @@ public class MapperInitialContractDTOVO {
         initialContractVO.setModificationDate(modificationDate);
         initialContractVO.setEndingDate(endingDate);
         initialContractVO.setContractJsonData(contractNewVersionDTO.getContractJsonData());
+        initialContractVO.setContractScheduleJsonData(contractNewVersionDTO.getContractScheduleJsonData());
 
         return initialContractVO;
     }

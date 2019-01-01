@@ -6,7 +6,9 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import gmoldes.domain.contract_schedule.persistence.vo.ContractScheduleVO;
 import gmoldes.domain.contractjsondata.ContractJsonData;
+import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -99,6 +101,9 @@ public class InitialContractVO implements Serializable {
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private ContractJsonData contractJsonData;
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    private ContractScheduleJsonData contractScheduleJsonData;
 
     public Integer getId() {
         return id;
@@ -162,5 +167,13 @@ public class InitialContractVO implements Serializable {
 
     public void setContractJsonData(ContractJsonData contractJsonData) {
         this.contractJsonData = contractJsonData;
+    }
+
+    public ContractScheduleJsonData getContractScheduleJsonData() {
+        return contractScheduleJsonData;
+    }
+
+    public void setContractScheduleJsonData(ContractScheduleJsonData contractScheduleJsonData) {
+        this.contractScheduleJsonData = contractScheduleJsonData;
     }
 }

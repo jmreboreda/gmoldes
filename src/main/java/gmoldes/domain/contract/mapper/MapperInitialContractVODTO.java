@@ -15,15 +15,15 @@ public class MapperInitialContractVODTO {
         LocalDate modificationDate = initialContractVO.getModificationDate() != null ? initialContractVO.getModificationDate().toLocalDate() : null;
         LocalDate endingDate = initialContractVO.getEndingDate() != null ? initialContractVO.getEndingDate().toLocalDate() : null;
         return  InitialContractDTO.create()
-                    .withId(initialContractVO.getId())
-                    .withContractNumber(initialContractVO.getContractNumber())
-                    .withVariationType(initialContractVO.getVariationType())
-                    .withStartDate(initialContractVO.getStartDate().toLocalDate())
-                    .withExpectedEndDate(expectedEndDate)
-                    .withModificationDate(modificationDate)
-                    .withEndingDate(endingDate)
-                    .withContractJsonData(initialContractVO.getContractJsonData())
-                    .build();
+                .withId(initialContractVO.getId())
+                .withContractNumber(initialContractVO.getContractNumber())
+                .withVariationType(initialContractVO.getVariationType())
+                .withStartDate(initialContractVO.getStartDate().toLocalDate())
+                .withExpectedEndDate(expectedEndDate)
+                .withModificationDate(modificationDate)
+                .withEndingDate(endingDate)
+                .withContractJsonData(initialContractVO.getContractJsonData())
+                .withContractScheduleJsonData(initialContractVO.getContractScheduleJsonData())
+                .build();
     }
-
 }

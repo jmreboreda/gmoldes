@@ -1,6 +1,7 @@
 package gmoldes.domain.contract.dto;
 
 import gmoldes.domain.contractjsondata.ContractJsonData;
+import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
 
 import java.time.LocalDate;
 
@@ -15,6 +16,7 @@ public class ContractNewVersionDTO {
     private LocalDate modificationDate;
     private LocalDate endingDate;
     private ContractJsonData contractJsonData;
+    private ContractScheduleJsonData contractScheduleJsonData;
 
     public ContractNewVersionDTO() {
     }
@@ -27,7 +29,8 @@ public class ContractNewVersionDTO {
                                  LocalDate expectedEndDate,
                                  LocalDate modificationDate,
                                  LocalDate endingDate,
-                                 ContractJsonData contractJsonData) {
+                                 ContractJsonData contractJsonData,
+                                 ContractScheduleJsonData contractScheduleJsonData) {
         this.id = id;
         this.contractNumber = contractNumber;
         this.variationType = variationType;
@@ -37,6 +40,7 @@ public class ContractNewVersionDTO {
         this.modificationDate = modificationDate;
         this.endingDate = endingDate;
         this.contractJsonData = contractJsonData;
+        this.contractScheduleJsonData = contractScheduleJsonData;
     }
 
     public Integer getId() {
@@ -111,7 +115,15 @@ public class ContractNewVersionDTO {
         this.contractJsonData = contractJsonData;
     }
 
-//    public String toMyString(){
+    public ContractScheduleJsonData getContractScheduleJsonData() {
+        return contractScheduleJsonData;
+    }
+
+    public void setContractScheduleJsonData(ContractScheduleJsonData contractScheduleJsonData) {
+        this.contractScheduleJsonData = contractScheduleJsonData;
+    }
+
+    //    public String toMyString(){
 //
 //        return "------------------------------------" + "\n" +
 //                "Contrato: "+ getContractNumber() + " - VariationType: " + getVariationType() + "\n" +
@@ -137,6 +149,7 @@ public class ContractNewVersionDTO {
         private LocalDate modificationDate;
         private LocalDate endingDate;
         private ContractJsonData contractJsonData;
+        private ContractScheduleJsonData contractScheduleJsonData;
 
         public ContractNewVersionDTOBuilder withId(Integer id) {
             this.id = id;
@@ -184,8 +197,13 @@ public class ContractNewVersionDTO {
             return this;
         }
 
+        public ContractNewVersionDTOBuilder withContractScheduleJsonData(ContractScheduleJsonData contractScheduleJsonData) {
+            this.contractScheduleJsonData = contractScheduleJsonData;
+            return this;
+        }
+
         public ContractNewVersionDTO build() {
-            return new ContractNewVersionDTO(this.id, this.contractNumber, this.variationType, this.initialContractDate, this.startDate, this.expectedEndDate, this.modificationDate, this.endingDate, this.contractJsonData);
+            return new ContractNewVersionDTO(this.id, this.contractNumber, this.variationType, this.initialContractDate, this.startDate, this.expectedEndDate, this.modificationDate, this.endingDate, this.contractJsonData, this.contractScheduleJsonData);
         }
     }
 

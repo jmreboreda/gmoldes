@@ -137,6 +137,7 @@ public class ApplicationMainManager {
                         .withModificationDate(modificationDate)
                         .withEndingDate(endingDate)
                         .withContractJsonData(initialContractVO.getContractJsonData())
+                        .withContractScheduleJsonData(initialContractVO.getContractScheduleJsonData())
                         .build();
 
                 PersonDTO employeeDTO = retrievePersonByPersonID(initialContractVO.getContractJsonData().getWorkerId());
@@ -177,6 +178,7 @@ public class ApplicationMainManager {
                         .withModificationDate(modificationDate)
                         .withEndingDate(endingDate)
                         .withContractJsonData(contractVariationVO.getContractJsonData())
+                        .withContractScheduleJsonData(contractVariationVO.getContractScheduleJsonData())
                         .build();
 
                 PersonDTO employeeDTO = retrievePersonByPersonID(contractVariationVO.getContractJsonData().getWorkerId());
@@ -230,6 +232,7 @@ public class ApplicationMainManager {
                     .withModificationDate(modificationDate)
                     .withEndingDate(endingDate)
                     .withContractJsonData(contractVariationVO.getContractJsonData())
+                    .withContractScheduleJsonData(contractVariationVO.getContractScheduleJsonData())
                     .build();
             initialContractDTOList.add(initialContractDTO);
         }
@@ -255,6 +258,7 @@ public class ApplicationMainManager {
 //                    .withModificationDate(initialContractVO.getModificationDate().toLocalDate())
 //                    .withEndingDate(initialContractVO.getEndingDate().toLocalDate())
                     .withContractJsonData(initialContractVO.getContractJsonData())
+                    .withContractScheduleJsonData(initialContractVO.getContractScheduleJsonData())
                     .build();
 
             contractNewVersionDTOList.add(contractNewVersionDTO);
@@ -274,6 +278,7 @@ public class ApplicationMainManager {
 //                    .withModificationDate(contractVariationVO.getModificationDate().toLocalDate())
 //                    .withEndingDate(contractVariationVO.getEndingDate().toLocalDate())
                     .withContractJsonData(contractVariationVO.getContractJsonData())
+                    .withContractScheduleJsonData(contractVariationVO.getContractScheduleJsonData())
                     .build();
 
             contractNewVersionDTOList.add(contractNewVersionDTO);

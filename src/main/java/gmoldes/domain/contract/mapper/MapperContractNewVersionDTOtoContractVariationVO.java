@@ -22,6 +22,7 @@ public class MapperContractNewVersionDTOtoContractVariationVO {
         Date endingDate = contractNewVersionDTO.getEndingDate() != null ? Date.valueOf(contractNewVersionDTO.getEndingDate()) : null;
         contractVariationVO.setEndingDate(endingDate);
         contractVariationVO.setContractJsonData(contractNewVersionDTO.getContractJsonData());
+        contractVariationVO.setContractScheduleJsonData(contractNewVersionDTO.getContractScheduleJsonData());
 
         return contractVariationVO;
     }

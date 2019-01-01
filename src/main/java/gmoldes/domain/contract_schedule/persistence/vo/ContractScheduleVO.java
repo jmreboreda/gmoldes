@@ -36,16 +36,9 @@ public class ContractScheduleVO implements Serializable {
     @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
     private Integer contractNumber;
-    private Integer variationType;
-    private Date startDate;
-    private Date expectedEndDate;
-    private Date modificationDate;
-    private Date endingDate;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private ContractScheduleJsonData contractScheduleJsonData;
-    private Boolean isInitialContract;
-    private Integer variationId;
 
     public Integer getId() {
         return id;
@@ -63,67 +56,11 @@ public class ContractScheduleVO implements Serializable {
         this.contractNumber = contractNumber;
     }
 
-    public Integer getVariationType() {
-        return variationType;
-    }
-
-    public void setVariationType(Integer variationType) {
-        this.variationType = variationType;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getExpectedEndDate() {
-        return expectedEndDate;
-    }
-
-    public void setExpectedEndDate(Date expectedEndDate) {
-        this.expectedEndDate = expectedEndDate;
-    }
-
-    public Date getModificationDate() {
-        return modificationDate;
-    }
-
-    public void setModificationDate(Date modificationDate) {
-        this.modificationDate = modificationDate;
-    }
-
-    public Date getEndingDate() {
-        return endingDate;
-    }
-
-    public void setEndingDate(Date endingDate) {
-        this.endingDate = endingDate;
-    }
-
     public ContractScheduleJsonData getContractScheduleJsonData() {
         return contractScheduleJsonData;
     }
 
     public void setContractScheduleJsonData(ContractScheduleJsonData contractScheduleJsonData) {
         this.contractScheduleJsonData = contractScheduleJsonData;
-    }
-
-    public Boolean getInitialContract() {
-        return isInitialContract;
-    }
-
-    public void setInitialContract(Boolean initialContract) {
-        isInitialContract = initialContract;
-    }
-
-    public Integer getVariationId() {
-        return variationId;
-    }
-
-    public void setVariationId(Integer variationId) {
-        this.variationId = variationId;
     }
 }
