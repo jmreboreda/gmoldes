@@ -196,7 +196,7 @@ public class NewContractMainController extends VBox {
 
             pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(initialContractDataToContractAgent);
 
-            String attachedFileName = initialContractDataToContractAgent.toFileName().concat(".pdf");
+            String attachedFileName = initialContractDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION);
 
             AgentNotificator agentNotificator = new AgentNotificator();
 
