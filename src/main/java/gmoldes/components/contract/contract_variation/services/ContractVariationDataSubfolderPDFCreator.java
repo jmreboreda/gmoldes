@@ -31,6 +31,8 @@ public class ContractVariationDataSubfolderPDFCreator {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
 
+        String durationDays = !contractVariationDataSubfolder.getDurationDays().isEmpty() ? contractVariationDataSubfolder.getDurationDays().concat(" días") : contractVariationDataSubfolder.getDurationDays();
+
         AcroFields contractExtinctionDataSubfolderPDFFields = stamp.getAcroFields();
         contractExtinctionDataSubfolderPDFFields.setField("notificationType",contractVariationDataSubfolder.getNotificationType());
         contractExtinctionDataSubfolderPDFFields.setField("officialContractNumber",contractVariationDataSubfolder.getOfficialContractNumber());
@@ -70,7 +72,7 @@ public class ContractVariationDataSubfolderPDFCreator {
         contractExtinctionDataSubfolderPDFFields.setField("contractType",contractVariationDataSubfolder.getContractTypeDescription());
         contractExtinctionDataSubfolderPDFFields.setField("startDate", contractVariationDataSubfolder.getStartDate());
         contractExtinctionDataSubfolderPDFFields.setField("endDate", contractVariationDataSubfolder.getEndDate());
-        contractExtinctionDataSubfolderPDFFields.setField("durationDays", contractVariationDataSubfolder.getDurationDays());
+        contractExtinctionDataSubfolderPDFFields.setField("durationDays", durationDays);
 
 
         /* Start of the form fill loop*/

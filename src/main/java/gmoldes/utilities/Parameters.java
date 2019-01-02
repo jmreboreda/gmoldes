@@ -30,5 +30,6 @@ public class Parameters {
     /** Various */
     public static final String PDF_EXTENSION = ".pdf";
     public static final Integer MAXIMUM_VALUE_MINUTES_IN_HOUR = 59;
+    public static final Integer NUMBER_OF_SECONDS_IN_ONE_HOUR = 3600;
 
 }

@@ -508,45 +508,45 @@ public class NewContractMainController extends VBox {
 
     }
 
-    private Set<WorkDaySchedule> retrieveContractSchedule(){
-//        JsonObjectBuilder jsonScheduleBuilder = Json.createObjectBuilder();
+//    private Set<WorkDaySchedule> retrieveContractSchedule(){
+////        JsonObjectBuilder jsonScheduleBuilder = Json.createObjectBuilder();
+////
+////        for(WorkDaySchedule workDaySchedule : workDayScheduleSet){
+////
+////            if(!workDaySchedule.getDayOfWeek().isEmpty()) {
+////
+////                String dayOfWeek = workDaySchedule.getDayOfWeek() != null ? workDaySchedule.getDayOfWeek() : "";
+////                String date = workDaySchedule.getDate() != null ? workDaySchedule.getDate().toString() : "";
+////                String amFrom = workDaySchedule.getAmFrom() != null ? workDaySchedule.getAmFrom().toString() : "";
+////                String amTo = workDaySchedule.getAmTo() != null ? workDaySchedule.getAmTo().toString() : "";
+////                String pmFrom = workDaySchedule.getPmFrom() != null ? workDaySchedule.getPmFrom().toString() : "";
+////                String pmTo = workDaySchedule.getPmTo() != null ? workDaySchedule.getPmTo().toString() : "";
+////                String durationHours = workDaySchedule.getDurationHours() != null ? Long.toString(workDaySchedule.getDurationHours().toHours()) : "";
+////
+////                JsonObjectBuilder jsonDayBuilder = Json.createObjectBuilder();
+////
+////                jsonDayBuilder.add("dayOfWeek", dayOfWeek)
+////                        .add("date", date)
+////                        .add("amFrom", amFrom)
+////                        .add("amTo", amTo)
+////                        .add("pmFrom", pmFrom)
+////                        .add("pmTo", pmTo)
+////                        .add("durationHours", durationHours);
+////
+////                JsonObject scheduleDay = jsonDayBuilder.build();
+////
+////                System.out.println(jsonDayBuilder);
+////
+////               scheduleSet.add(scheduleDay);
+////            }
+////        }
 //
-//        for(WorkDaySchedule workDaySchedule : workDayScheduleSet){
+////        JsonObject scheduleJson = jsonScheduleBuilder.build();
+////
+////        System.out.println(scheduleJson);
 //
-//            if(!workDaySchedule.getDayOfWeek().isEmpty()) {
-//
-//                String dayOfWeek = workDaySchedule.getDayOfWeek() != null ? workDaySchedule.getDayOfWeek() : "";
-//                String date = workDaySchedule.getDate() != null ? workDaySchedule.getDate().toString() : "";
-//                String amFrom = workDaySchedule.getAmFrom() != null ? workDaySchedule.getAmFrom().toString() : "";
-//                String amTo = workDaySchedule.getAmTo() != null ? workDaySchedule.getAmTo().toString() : "";
-//                String pmFrom = workDaySchedule.getPmFrom() != null ? workDaySchedule.getPmFrom().toString() : "";
-//                String pmTo = workDaySchedule.getPmTo() != null ? workDaySchedule.getPmTo().toString() : "";
-//                String durationHours = workDaySchedule.getDurationHours() != null ? Long.toString(workDaySchedule.getDurationHours().toHours()) : "";
-//
-//                JsonObjectBuilder jsonDayBuilder = Json.createObjectBuilder();
-//
-//                jsonDayBuilder.add("dayOfWeek", dayOfWeek)
-//                        .add("date", date)
-//                        .add("amFrom", amFrom)
-//                        .add("amTo", amTo)
-//                        .add("pmFrom", pmFrom)
-//                        .add("pmTo", pmTo)
-//                        .add("durationHours", durationHours);
-//
-//                JsonObject scheduleDay = jsonDayBuilder.build();
-//
-//                System.out.println(jsonDayBuilder);
-//
-//               scheduleSet.add(scheduleDay);
-//            }
-//        }
-
-//        JsonObject scheduleJson = jsonScheduleBuilder.build();
-//
-//        System.out.println(scheduleJson);
-
-        return contractSchedule.retrieveScheduleWithScheduleDays();
-    }
+//        return contractSchedule.retrieveScheduleWithScheduleDays();
+//    }
 
     private ContractFullDataDTO retrieveContractFullData(){
 
@@ -623,7 +623,7 @@ public class NewContractMainController extends VBox {
                 String amTo = workDaySchedule.getAmTo() != null ? workDaySchedule.getAmTo().toString() : "";
                 String pmFrom = workDaySchedule.getPmFrom() != null ? workDaySchedule.getPmFrom().toString() : "";
                 String pmTo = workDaySchedule.getPmTo() != null ? workDaySchedule.getPmTo().toString() : "";
-                Long durationHours = workDaySchedule.getDurationHours() != null ? workDaySchedule.getDurationHours().toHours() : 0;
+                Double durationHours = workDaySchedule.getDurationHours() != null ? (double) workDaySchedule.getDurationHours().getSeconds()/Parameters.NUMBER_OF_SECONDS_IN_ONE_HOUR : 0;
 
                 ContractDayScheduleJsonData contractDayScheduleJson = ContractDayScheduleJsonData.create()
                         .withDayOfWeek(dayOfWeek)
