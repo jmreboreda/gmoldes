@@ -271,7 +271,7 @@ public class NewContractMainController extends VBox {
         provisionalContractData.refreshData(dataDTO);
         if (statusText.equals(ContractConstants.REVISION_WITHOUT_ERRORS)) {
             if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
-                persistOldContractToSave();
+//                persistOldContractToSave();
                 Integer contractNumber = persistInitialContract();
                 persistTraceabilityControlData(contractNumber);
                 contractActionComponents.enablePDFButton(true);
@@ -406,42 +406,42 @@ public class NewContractMainController extends VBox {
         contractParts.refreshEmployerCCC(clientCCCDTOList);
     }
 
-    private void persistOldContractToSave() {
-
-        LocalDate endOfContractNotice = contractData.getDateTo() == null ? LocalDate.of(9999, 12, 31) : null;
-
-        String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
-
-        OldContractToSaveDTO oldContractToSaveDTO = OldContractToSaveDTO.create()
-                .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
-                .withVariationNumber(0)
-                .withClientGMId(contractParts.getSelectedEmployer().getId())
-                .withClientGMName(contractParts.getSelectedEmployer().toString())
-                .withQuoteAccountCode(quoteAccountCode)
-                .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
-                .withWorkerName(contractParts.getSelectedEmployee().toString())
-                .withLaborCategory(contractData.getLaborCategory())
-                .withWeeklyWorkHours(contractData.getHoursWorkWeek())
-                .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork())
-                .withFullPartialWorkday(contractData.getFullPartialWorkDay())
-                .withContractType(contractData.getContractType().getColloquial())
-                .withDateFrom(contractData.getDateFrom())
-                .withDateTo(contractData.getDateTo())
-                .withContractInForce(contractData.isContractInForceAtDate(LocalDate.now()))
-                .withNotesForManager(contractPublicNotes.getPublicNotes())
-                .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
-                .withQuoteDataReportIDC(null)
-                .withEndOfContractNotice(endOfContractNotice)
-                .build();
-
-        ContractManager contractManager = new ContractManager();
-        Integer contractNumber = contractManager.saveOldContract(oldContractToSaveDTO);
-
-        if(contractNumber == null) {
-
-            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);
-        }
-    }
+//    private void persistOldContractToSave() {
+//
+//        LocalDate endOfContractNotice = contractData.getDateTo() == null ? LocalDate.of(9999, 12, 31) : null;
+//
+//        String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
+//
+//        OldContractToSaveDTO oldContractToSaveDTO = OldContractToSaveDTO.create()
+//                .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
+//                .withVariationNumber(0)
+//                .withClientGMId(contractParts.getSelectedEmployer().getId())
+//                .withClientGMName(contractParts.getSelectedEmployer().toString())
+//                .withQuoteAccountCode(quoteAccountCode)
+//                .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
+//                .withWorkerName(contractParts.getSelectedEmployee().toString())
+//                .withLaborCategory(contractData.getLaborCategory())
+//                .withWeeklyWorkHours(contractData.getHoursWorkWeek())
+//                .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork())
+//                .withFullPartialWorkday(contractData.getFullPartialWorkDay())
+//                .withContractType(contractData.getContractType().getColloquial())
+//                .withDateFrom(contractData.getDateFrom())
+//                .withDateTo(contractData.getDateTo())
+//                .withContractInForce(contractData.isContractInForceAtDate(LocalDate.now()))
+//                .withNotesForManager(contractPublicNotes.getPublicNotes())
+//                .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
+//                .withQuoteDataReportIDC(null)
+//                .withEndOfContractNotice(endOfContractNotice)
+//                .build();
+//
+//        ContractManager contractManager = new ContractManager();
+//        Integer contractNumber = contractManager.saveOldContract(oldContractToSaveDTO);
+//
+//        if(contractNumber == null) {
+//
+//            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);
+//        }
+//    }
 
     private Integer persistInitialContract(){
 
@@ -507,46 +507,6 @@ public class NewContractMainController extends VBox {
         contractActionComponents.enableSendMailButton(true);
 
     }
-
-//    private Set<WorkDaySchedule> retrieveContractSchedule(){
-////        JsonObjectBuilder jsonScheduleBuilder = Json.createObjectBuilder();
-////
-////        for(WorkDaySchedule workDaySchedule : workDayScheduleSet){
-////
-////            if(!workDaySchedule.getDayOfWeek().isEmpty()) {
-////
-////                String dayOfWeek = workDaySchedule.getDayOfWeek() != null ? workDaySchedule.getDayOfWeek() : "";
-////                String date = workDaySchedule.getDate() != null ? workDaySchedule.getDate().toString() : "";
-////                String amFrom = workDaySchedule.getAmFrom() != null ? workDaySchedule.getAmFrom().toString() : "";
-////                String amTo = workDaySchedule.getAmTo() != null ? workDaySchedule.getAmTo().toString() : "";
-////                String pmFrom = workDaySchedule.getPmFrom() != null ? workDaySchedule.getPmFrom().toString() : "";
-////                String pmTo = workDaySchedule.getPmTo() != null ? workDaySchedule.getPmTo().toString() : "";
-////                String durationHours = workDaySchedule.getDurationHours() != null ? Long.toString(workDaySchedule.getDurationHours().toHours()) : "";
-////
-////                JsonObjectBuilder jsonDayBuilder = Json.createObjectBuilder();
-////
-////                jsonDayBuilder.add("dayOfWeek", dayOfWeek)
-////                        .add("date", date)
-////                        .add("amFrom", amFrom)
-////                        .add("amTo", amTo)
-////                        .add("pmFrom", pmFrom)
-////                        .add("pmTo", pmTo)
-////                        .add("durationHours", durationHours);
-////
-////                JsonObject scheduleDay = jsonDayBuilder.build();
-////
-////                System.out.println(jsonDayBuilder);
-////
-////               scheduleSet.add(scheduleDay);
-////            }
-////        }
-//
-////        JsonObject scheduleJson = jsonScheduleBuilder.build();
-////
-////        System.out.println(scheduleJson);
-//
-//        return contractSchedule.retrieveScheduleWithScheduleDays();
-//    }
 
     private ContractFullDataDTO retrieveContractFullData(){
 
