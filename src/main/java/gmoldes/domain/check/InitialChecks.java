@@ -37,30 +37,34 @@ public class InitialChecks {
         List<TraceabilityContractDocumentationDTO>  traceabilityContractDocumentationDTOList = applicationMainController.findTraceabilityForAllContractWithPendingContractEndNotice();
         if(!traceabilityContractDocumentationDTOList.isEmpty()) {
             for (TraceabilityContractDocumentationDTO traceabilityDTO : traceabilityContractDocumentationDTOList) {
-                Long daysToEndDate = ChronoUnit.DAYS.between(LocalDate.now(), traceabilityDTO.getExpectedEndDate());
-                if(daysToEndDate <= CheckConstants.END_OF_CONTRACT_NOTICE_DAYS){
+                Long contractDurationDays = ChronoUnit.DAYS.between(traceabilityDTO.getStartDate(), traceabilityDTO.getExpectedEndDate()) + 1;
+                if(contractDurationDays >= Parameters.MINIMUM_NUMBER_DAYS_NOTICE_END_CONTRACT) {
+                    Long daysToEndDate = ChronoUnit.DAYS.between(LocalDate.now(), traceabilityDTO.getExpectedEndDate());
+                    if (daysToEndDate <= CheckConstants.END_OF_CONTRACT_NOTICE_DAYS) {
 
-                    Integer contractNumber = traceabilityDTO.getContractNumber();
-                    InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
+                        Integer contractNumber = traceabilityDTO.getContractNumber();
+                        InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
 
-                    Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
-                    ClientDTO clientDTO = applicationMainController.findClientById(clientGMId);
+                        Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
+                        ClientDTO clientDTO = applicationMainController.findClientById(clientGMId);
 
-                    Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
-                    PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
+                        Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
+                        PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
 
-                    if(daysToEndDate >= 0){
-                        missingExceededText = "Faltan ";
-                    }else{
-                        missingExceededText = "Excedido en ";
+                        if (daysToEndDate >= 0) {
+                            missingExceededText = "Faltan ";
+                        } else {
+                            missingExceededText = "Excedido en ";
+                        }
+
+                        alertMessage.append(counter).append(") ")
+                                .append(clientDTO.toNaturalName()).append(" con ")
+                                .append(workerDTO.toNaturalName())
+                                .append(": vencimiento el día ").append(traceabilityDTO.getExpectedEndDate().format(dateFormatter)).append(".\n")
+                                .append(missingExceededText).append(Math.abs(daysToEndDate)).append(" días.").append("\n\n");
+                        counter++;
                     }
 
-                    alertMessage.append(counter).append(") ")
-                            .append(clientDTO.toNaturalName()).append(" con ")
-                            .append(workerDTO.toNaturalName())
-                            .append(": vencimiento el día ").append(traceabilityDTO.getExpectedEndDate().format(dateFormatter)).append(".\n")
-                            .append(missingExceededText).append(Math.abs(daysToEndDate)).append(" días.").append("\n\n");
-                    counter++;
                 }
             }
 
