@@ -1,4 +1,4 @@
-package gmoldes.domain.person.manager;
+package gmoldes.domain.person;
 
 
 import gmoldes.domain.person.dto.PersonDTO;

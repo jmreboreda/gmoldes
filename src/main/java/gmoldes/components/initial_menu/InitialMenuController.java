@@ -8,7 +8,7 @@ import gmoldes.components.contract.new_contract.controllers.NewContractMainContr
 import gmoldes.components.payroll_check_list.controllers.PayrollCheckListMainController;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
 import gmoldes.domain.client.manager.ClientManager;
-import gmoldes.domain.person.manager.PersonManager;
+import gmoldes.domain.person.PersonManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
