@@ -9,9 +9,13 @@ import gmoldes.components.contract.contract_variation.forms.ContractVariationDat
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
+import gmoldes.components.contract.new_contract.components.ContractSchedule;
+import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.*;
+import gmoldes.domain.contract.mapper.MapperJsonScheduleToWorkDaySchedule;
+import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
@@ -468,6 +472,12 @@ public class ContractExtensionController{
 
         String durationDays = Long.toString(ChronoUnit.DAYS.between(dateFrom, dateTo) + 1L);
 
+        Map<String, ContractDayScheduleJsonData> schedule = allContractData.getContractNewVersion().getContractScheduleJsonData().getSchedule();
+        Set<WorkDaySchedule> scheduleSet = new HashSet<>();
+        for (Map.Entry<String, ContractDayScheduleJsonData> entry : schedule.entrySet()) {
+            scheduleSet.add(MapperJsonScheduleToWorkDaySchedule.map(entry.getValue()));
+        }
+
         String gmContractNumber = allContractData.getContractNewVersion().getContractNumber() != null ? allContractData.getContractNewVersion().getContractNumber().toString() : null;
 
         return ContractVariationDataSubfolder.create()
@@ -493,7 +503,7 @@ public class ContractExtensionController{
                 .withEndDate(endDate)
                 .withDayOfWeekSet(dayOfWeekSet)
                 .withDurationDays(durationDays)
-                .withSchedule(new HashSet<>())
+                .withSchedule(scheduleSet)
                 .withAdditionalData(additionalData)
                 .withLaborCategory(allContractData.getContractNewVersion().getContractJsonData().getLaborCategory())
                 .withGmContractNumber(gmContractNumber)

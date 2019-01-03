@@ -583,7 +583,7 @@ public class NewContractMainController extends VBox {
                 String amTo = workDaySchedule.getAmTo() != null ? workDaySchedule.getAmTo().toString() : "";
                 String pmFrom = workDaySchedule.getPmFrom() != null ? workDaySchedule.getPmFrom().toString() : "";
                 String pmTo = workDaySchedule.getPmTo() != null ? workDaySchedule.getPmTo().toString() : "";
-                Double durationHours = workDaySchedule.getDurationHours() != null ? (double) workDaySchedule.getDurationHours().getSeconds()/Parameters.NUMBER_OF_SECONDS_IN_ONE_HOUR : 0;
+                String durationHours = Utilities.converterDurationToTimeString(workDaySchedule.getDurationHours());
 
                 ContractDayScheduleJsonData contractDayScheduleJson = ContractDayScheduleJsonData.create()
                         .withDayOfWeek(dayOfWeek)
