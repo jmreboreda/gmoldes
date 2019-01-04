@@ -3,6 +3,7 @@ package gmoldes.components.contract.new_contract.components;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
 import gmoldes.components.contract.ContractConstants;
+import gmoldes.components.generic_components.DaysOfWeekSelector;
 import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
 import gmoldes.utilities.*;
@@ -21,6 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.StringConverter;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -48,7 +50,7 @@ public class ContractSchedule extends AnchorPane {
     @FXML
     private TableView <ContractScheduleDayDTO> contract_schedule_table;
     @FXML
-    private TableColumn<ContractScheduleDayDTO, String> dayOfWeek;
+    private TableColumn<ContractScheduleDayDTO, DayOfWeek> dayOfWeek;
     @FXML
     private TableColumn<ContractScheduleDayDTO, LocalDate> date;
     @FXML
@@ -83,21 +85,40 @@ public class ContractSchedule extends AnchorPane {
 
         contract_schedule_table.setEditable(true);
 
-        final ObservableList<String> daysOfWeek = FXCollections.observableArrayList();
-        daysOfWeek.add(DayOfWeek.MONDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
-        daysOfWeek.add(DayOfWeek.TUESDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
-        daysOfWeek.add(DayOfWeek.WEDNESDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
-        daysOfWeek.add(DayOfWeek.THURSDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
-        daysOfWeek.add(DayOfWeek.FRIDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
-        daysOfWeek.add(DayOfWeek.SATURDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
-        daysOfWeek.add(DayOfWeek.SUNDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()));
+        final ObservableList<DayOfWeek> daysOfWeek = FXCollections.observableArrayList();
+        daysOfWeek.add(DayOfWeek.MONDAY);
+        daysOfWeek.add(DayOfWeek.TUESDAY);
+        daysOfWeek.add(DayOfWeek.WEDNESDAY);
+        daysOfWeek.add(DayOfWeek.THURSDAY);
+        daysOfWeek.add(DayOfWeek.FRIDAY);
+        daysOfWeek.add(DayOfWeek.SATURDAY);
+        daysOfWeek.add(DayOfWeek.SUNDAY);
 
         dayOfWeek.setCellFactory(param -> {
-                    ComboBoxTableCell<ContractScheduleDayDTO, String> comboBoxTableCell = new ComboBoxTableCell<>(daysOfWeek);
+                    ComboBoxTableCell<ContractScheduleDayDTO, DayOfWeek> comboBoxTableCell = new ComboBoxTableCell<>(daysOfWeek);
                     comboBoxTableCell.setPickOnBounds(true);
                     comboBoxTableCell.updateSelected(true);
+                    comboBoxTableCell.setConverter(new StringConverter<DayOfWeek>() {
+                        @Override
+                        public String toString(DayOfWeek object) {
+
+                            if(object != null) {
+                                return object.getDisplayName(TextStyle.FULL, Locale.getDefault());
+                            }
+                            return null;
+                        }
+
+                        @Override
+                        public DayOfWeek fromString(String string) {
+                            return null;
+                        }
+                    });
+
                     return comboBoxTableCell;
                 });
+
+
+
         date.setCellFactory(param -> new DateCell());
         amFrom.setCellFactory(param -> new TimeCell());
         amTo.setCellFactory(param -> new TimeCell());
@@ -139,7 +160,7 @@ public class ContractSchedule extends AnchorPane {
         refreshTable(data);
     }
 
-    public TableColumn<ContractScheduleDayDTO, String> getDayOfWeek() {
+    public TableColumn<ContractScheduleDayDTO, DayOfWeek> getDayOfWeek() {
         return dayOfWeek;
     }
 
@@ -324,7 +345,7 @@ public class ContractSchedule extends AnchorPane {
         Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
         for(Integer i = ContractConstants.FIRST_ROW_SCHEDULE_TABLE; i<= ContractConstants.LAST_ROW_SCHEDULE_TABLE; i++) {
             if(dayOfWeek.getCellData(i) != null) {
-                dayOfWeekSet.add(Utilities.converterStringToDayOfWeek(dayOfWeek.getCellData(i)));
+                dayOfWeekSet.add(dayOfWeek.getCellData(i));
             }
         }
 
