@@ -8,7 +8,7 @@ public class Parameters {
     public static final String NO_PRINTER_FOR_THESE_ATTRIBUTES = "No hay impresora para imprimir con los atributos indicados.";
 
     /** System */
-    public static final String OPERATING_SYSTEM = System.getProperty("os.name");
+    public static final String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
     public static final String USER_HOME = System.getProperty("user.home");
     public static final String OS_LINUX = "linux";
     public static final String OS_WINDOWS = "windows";

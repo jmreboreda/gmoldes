@@ -197,12 +197,16 @@ public class NewContractMainController extends VBox {
 
             String attachedFileName = initialContractDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION);
 
-//            if(Parameters.OPERATING_SYSTEM.contains(Parameters.OS_LINUX)) {
+            System.out.println("Parameters.OPERATING_SYSTEM:" + Parameters.OPERATING_SYSTEM);
+            System.out.println("Parameters.OS_LINUX: " + Parameters.OS_LINUX);
 
-                Boolean IsBeingViewedFilePDF = SystemProcesses.isRunningInLinuxAndContains(attachedFileName.substring(0, 30), attachedFileName.substring(30, 50));
 
-                System.out.println("initialFileNameContent: " + attachedFileName.substring(0, 30));
-                System.out.println("finalFileNameContent: " + attachedFileName.substring(30, 50));
+            if(Parameters.OPERATING_SYSTEM.contains(Parameters.OS_LINUX)) {
+
+                Boolean IsBeingViewedFilePDF = SystemProcesses.isRunningInLinuxAndContains(attachedFileName.substring(0, 40), attachedFileName.substring(41, 60));
+
+                System.out.println("initialFileNameContent: " + attachedFileName.substring(0, 40));
+                System.out.println("finalFileNameContent: " + attachedFileName.substring(41, 60));
 
                 if (IsBeingViewedFilePDF) {
 
@@ -210,7 +214,7 @@ public class NewContractMainController extends VBox {
 
                     return;
                 }
-//            }
+            }
 
 
             AgentNotificator agentNotificator = new AgentNotificator();
