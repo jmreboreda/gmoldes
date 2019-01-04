@@ -101,7 +101,6 @@ public class ContractSchedule extends AnchorPane {
                     comboBoxTableCell.setConverter(new StringConverter<DayOfWeek>() {
                         @Override
                         public String toString(DayOfWeek object) {
-
                             if(object != null) {
                                 return object.getDisplayName(TextStyle.FULL, Locale.getDefault());
                             }
@@ -116,8 +115,6 @@ public class ContractSchedule extends AnchorPane {
 
                     return comboBoxTableCell;
                 });
-
-
 
         date.setCellFactory(param -> new DateCell());
         amFrom.setCellFactory(param -> new TimeCell());
@@ -297,10 +294,19 @@ public class ContractSchedule extends AnchorPane {
         Integer firstEmptyRow = findFirstEmptyRow();
         if(firstEmptyRow != null) {
             ContractScheduleDayDTO selectedItemRow = contract_schedule_table.getItems().get(selectedRow);
+
             ContractScheduleDayDTO firstEmptyRowTarget = contract_schedule_table.getItems().get(firstEmptyRow);
+            ContractScheduleDayDTO previousRowToTargetRow = contract_schedule_table.getItems().get(firstEmptyRow - 1) != null ?
+                    contract_schedule_table.getItems().get(firstEmptyRow - 1) : selectedItemRow;
 
-            if(selectedItemRow.getDayOfWeek() != null){
-
+            if(previousRowToTargetRow != null) {
+                if (!selectedItemRow.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
+                    firstEmptyRowTarget.setDayOfWeek(previousRowToTargetRow.getDayOfWeek().plus(1));
+                } else {
+                    firstEmptyRowTarget.setDayOfWeek(DayOfWeek.MONDAY);
+                }
+            }else{
+                firstEmptyRowTarget.setDayOfWeek(selectedItemRow.getDayOfWeek().plus(1));
             }
 
             firstEmptyRowTarget.setAmFrom(selectedItemRow.getAmFrom());
@@ -365,7 +371,7 @@ public class ContractSchedule extends AnchorPane {
             Duration durationHours = null;
             ContractScheduleDayDTO selectedItemRow = tableItemList.get(i);
             if (selectedItemRow.getDayOfWeek() != null) {
-                dayOfWeek = selectedItemRow.getDayOfWeek();
+                dayOfWeek = selectedItemRow.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
             }
             if (selectedItemRow.getDate() != null) {
                 date = selectedItemRow.getDate();

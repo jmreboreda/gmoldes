@@ -2,13 +2,14 @@ package gmoldes.domain.contract.dto;
 
 import javafx.beans.property.SimpleObjectProperty;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class ContractScheduleDayDTO {
 
-    private final SimpleObjectProperty<String> dayOfWeek;
+    private final SimpleObjectProperty<DayOfWeek> dayOfWeek;
     private final SimpleObjectProperty<LocalDate> date;
     private final SimpleObjectProperty<LocalTime> amFrom;
     private final SimpleObjectProperty<LocalTime> amTo;
@@ -16,7 +17,7 @@ public class ContractScheduleDayDTO {
     private final SimpleObjectProperty<LocalTime> pmTo;
     private final SimpleObjectProperty<Duration> totalDayHours;
 
-    public ContractScheduleDayDTO(String dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, Duration totalDayHours) {
+    public ContractScheduleDayDTO(DayOfWeek dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, Duration totalDayHours) {
         this.dayOfWeek = new SimpleObjectProperty<>(dayOfWeek);
         this.date = new SimpleObjectProperty<>(date);
         this.amFrom = new SimpleObjectProperty<>(amFrom);
@@ -26,7 +27,7 @@ public class ContractScheduleDayDTO {
         this.totalDayHours = new SimpleObjectProperty<>(totalDayHours);
     }
 
-    public String getDayOfWeek() {
+    public DayOfWeek getDayOfWeek() {
         return dayOfWeek.get();
     }
 
@@ -34,7 +35,7 @@ public class ContractScheduleDayDTO {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(String dayOfWeek) {
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek.set(dayOfWeek);
     }
 
@@ -116,7 +117,7 @@ public class ContractScheduleDayDTO {
 
     public static class ContractScheduleDayDTOBuilder {
 
-        private String dayOfWeek;
+        private DayOfWeek dayOfWeek;
         private LocalDate date;
         private LocalTime amFrom;
         private LocalTime amTo;
@@ -124,7 +125,7 @@ public class ContractScheduleDayDTO {
         private LocalTime pmTo;
         private Duration totalDayHours;
 
-        public ContractScheduleDayDTOBuilder withDayOfWeek(String dayOfWeek) {
+        public ContractScheduleDayDTOBuilder withDayOfWeek(DayOfWeek dayOfWeek) {
             this.dayOfWeek = dayOfWeek;
             return this;
         }
