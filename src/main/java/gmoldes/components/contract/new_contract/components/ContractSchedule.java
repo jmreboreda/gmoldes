@@ -292,6 +292,8 @@ public class ContractSchedule extends AnchorPane {
 
     private void duplicateDataInFirstEmptyRow(Integer selectedRow){
 
+        final Integer LAST_ROW_IN_TABLE = 6;
+
         ContractScheduleDayDTO previousRowToTargetRow = null;
 
         Integer firstEmptyRow = findFirstEmptyRow();
@@ -303,6 +305,14 @@ public class ContractSchedule extends AnchorPane {
 
         ContractScheduleDayDTO selectedItemRow = contract_schedule_table.getItems().get(selectedRow);
         ContractScheduleDayDTO firstEmptyRowTarget = contract_schedule_table.getItems().get(firstEmptyRow);
+
+        if(firstEmptyRow == 0 && contract_schedule_table.getItems().get(LAST_ROW_IN_TABLE).getDayOfWeek() != null){
+            previousRowToTargetRow = contract_schedule_table.getItems().get(LAST_ROW_IN_TABLE);
+            previousRowToTargetRow.setDayOfWeek(contract_schedule_table.getItems().get(LAST_ROW_IN_TABLE).getDayOfWeek().plus(1));
+        }else{
+            previousRowToTargetRow.setDayOfWeek(selectedItemRow.getDayOfWeek().minus(1));
+        }
+
         if(firstEmptyRow > 0) {
             previousRowToTargetRow = contract_schedule_table.getItems().get(firstEmptyRow - 1);
         }
