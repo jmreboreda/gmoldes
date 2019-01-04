@@ -32,16 +32,13 @@ public class SystemProcesses {
         initialFileNameContent = initialFileNameContent.replaceAll("[^\\dA-Za-z]", "");
         finalFileNameContent = finalFileNameContent.replaceAll("[^\\dA-Za-z]", "");
 
-        System.out.println("initialFileNameContent: " + initialFileNameContent);
-        System.out.println("finalFileNameContent: " + finalFileNameContent);
-
         String line;
+
         try {
             Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe /V");
             BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream(),  "Cp1252"));
             while ((line = input.readLine()) != null) {
                 line = line.replaceAll("[^\\dA-Za-z]", "");
-                System.out.println(line);
                 if (line.contains(initialFileNameContent) && line.contains(finalFileNameContent)) {
                     return true;
                 }
