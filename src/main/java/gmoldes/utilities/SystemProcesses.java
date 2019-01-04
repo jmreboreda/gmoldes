@@ -2,6 +2,7 @@ package gmoldes.utilities;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Locale;
 
 public class SystemProcesses {
 
@@ -28,19 +29,24 @@ public class SystemProcesses {
 
     public static Boolean isRunningInWindowsAndContains(String initialFileNameContent, String finalFileNameContent) {
 
+        System.out.println("initialFileNameContent: " + initialFileNameContent);
+        System.out.println("finalFileNameContent: " + finalFileNameContent);
+
+        String line;
         try {
-            String line;
-            Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe");
-            BufferedReader input =
-                    new BufferedReader(new InputStreamReader(p.getInputStream()));
+            Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe /V");
+            BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream(),  "Cp1252"));
             while ((line = input.readLine()) != null) {
-                System.out.println(line); //<-- Parse data here.
+                System.out.println(line);
+                if (line.contains(initialFileNameContent) && line.contains(finalFileNameContent)) {
+                    return true;
+                }
             }
             input.close();
         } catch (Exception err) {
             err.printStackTrace();
         }
 
-        return Boolean.TRUE;
+        return false;
     }
 }

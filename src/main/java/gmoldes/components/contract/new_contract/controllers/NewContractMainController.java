@@ -197,25 +197,11 @@ public class NewContractMainController extends VBox {
 
             String attachedFileName = initialContractDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION);
 
-            System.out.println("Parameters.OPERATING_SYSTEM:" + Parameters.OPERATING_SYSTEM);
-            System.out.println("Parameters.OS_LINUX: " + Parameters.OS_LINUX);
-
-
-            if(Parameters.OPERATING_SYSTEM.contains(Parameters.OS_LINUX)) {
-
-                Boolean IsBeingViewedFilePDF = SystemProcesses.isRunningInLinuxAndContains(attachedFileName.substring(0, 40), attachedFileName.substring(41, 60));
-
-                System.out.println("initialFileNameContent: " + attachedFileName.substring(0, 40));
-                System.out.println("finalFileNameContent: " + attachedFileName.substring(41, 60));
-
-                if (IsBeingViewedFilePDF) {
-
-                    System.out.println("Cierra el puto archivo PDF.");
-
-                    return;
-                }
+            Boolean documentToSendIsOpen = verifyDocumentStatus(attachedFileName);
+            if(documentToSendIsOpen){
+                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.CLOSE_DOCUMENT_TO_SEND);
+                return;
             }
-
 
             AgentNotificator agentNotificator = new AgentNotificator();
 
@@ -674,6 +660,16 @@ public class NewContractMainController extends VBox {
                 Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }
         }
+    }
+
+    private Boolean verifyDocumentStatus(String attachedFileName) {
+
+        if (Parameters.OPERATING_SYSTEM.contains(Parameters.OS_LINUX)) {
+
+            return SystemProcesses.isRunningInLinuxAndContains(attachedFileName.substring(0, 40), attachedFileName.substring(41, 60));
+        }
+
+        else return SystemProcesses.isRunningInWindowsAndContains(attachedFileName.substring(0, 40), attachedFileName.substring(41, 60));
     }
 
     private EmailDataCreationDTO retrieveDateForEmailCreation(Path path, String attachedFileName){

@@ -278,6 +278,10 @@ public class ContractSchedule extends AnchorPane {
             ContractScheduleDayDTO selectedItemRow = contract_schedule_table.getItems().get(selectedRow);
             ContractScheduleDayDTO firstEmptyRowTarget = contract_schedule_table.getItems().get(firstEmptyRow);
 
+            if(selectedItemRow.getDayOfWeek() != null){
+
+            }
+
             firstEmptyRowTarget.setAmFrom(selectedItemRow.getAmFrom());
             firstEmptyRowTarget.setAmTo(selectedItemRow.getAmTo());
             firstEmptyRowTarget.setPmFrom(selectedItemRow.getPmFrom());
