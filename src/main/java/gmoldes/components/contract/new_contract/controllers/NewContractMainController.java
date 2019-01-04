@@ -1,6 +1,5 @@
 package gmoldes.components.contract.new_contract.controllers;
 
-import com.google.gson.Gson;
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
@@ -11,12 +10,11 @@ import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.components.timerecord.components.TimeRecordConstants;
-import gmoldes.components.timerecord.forms.TimeRecord;
+import gmoldes.components.timerecord.TimeRecord;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.vo.ClientCCCVO;
 import gmoldes.domain.contract.dto.*;
-import gmoldes.domain.contract_schedule.dto.ContractScheduleDTO;
 import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
@@ -30,6 +28,7 @@ import gmoldes.services.AgentNotificator;
 import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
+import gmoldes.utilities.SystemProcesses;
 import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -197,6 +196,22 @@ public class NewContractMainController extends VBox {
             pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(initialContractDataToContractAgent);
 
             String attachedFileName = initialContractDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION);
+
+//            if(Parameters.OPERATING_SYSTEM.contains(Parameters.OS_LINUX)) {
+
+                Boolean IsBeingViewedFilePDF = SystemProcesses.isRunningInLinuxAndContains(attachedFileName.substring(0, 30), attachedFileName.substring(30, 50));
+
+                System.out.println("initialFileNameContent: " + attachedFileName.substring(0, 30));
+                System.out.println("finalFileNameContent: " + attachedFileName.substring(30, 50));
+
+                if (IsBeingViewedFilePDF) {
+
+                    System.out.println("Cierra el puto archivo PDF.");
+
+                    return;
+                }
+//            }
+
 
             AgentNotificator agentNotificator = new AgentNotificator();
 

@@ -4,7 +4,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
-import gmoldes.components.timerecord.forms.TimeRecord;
+import gmoldes.components.timerecord.TimeRecord;
 import gmoldes.services.Printer;
 import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;

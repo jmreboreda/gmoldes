@@ -5,7 +5,7 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
-import gmoldes.components.timerecord.forms.TimeRecord;
+import gmoldes.components.timerecord.TimeRecord;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
