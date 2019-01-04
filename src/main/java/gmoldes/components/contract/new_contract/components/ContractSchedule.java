@@ -3,7 +3,6 @@ package gmoldes.components.contract.new_contract.components;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
 import gmoldes.components.contract.ContractConstants;
-import gmoldes.components.generic_components.DaysOfWeekSelector;
 import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
 import gmoldes.utilities.*;
@@ -296,37 +295,29 @@ public class ContractSchedule extends AnchorPane {
 
         ContractScheduleDayDTO previousRowToTargetRow = null;
 
-        Integer firstEmptyRow = findFirstEmptyRow();
+        Integer firstEmptyRowNumber = findFirstEmptyRowNumber();
 
-        if(firstEmptyRow == null){
+        if(firstEmptyRowNumber == null){
 
             return;
         }
 
         ContractScheduleDayDTO selectedItemRow = contract_schedule_table.getItems().get(selectedRow);
-        ContractScheduleDayDTO firstEmptyRowTarget = contract_schedule_table.getItems().get(firstEmptyRow);
+        ContractScheduleDayDTO firstEmptyRowTarget = contract_schedule_table.getItems().get(firstEmptyRowNumber);
 
-        if(firstEmptyRow == 0 && contract_schedule_table.getItems().get(LAST_ROW_IN_TABLE).getDayOfWeek() != null){
-            previousRowToTargetRow = contract_schedule_table.getItems().get(LAST_ROW_IN_TABLE);
-            previousRowToTargetRow.setDayOfWeek(contract_schedule_table.getItems().get(LAST_ROW_IN_TABLE).getDayOfWeek().plus(1));
-        }else{
-            previousRowToTargetRow.setDayOfWeek(selectedItemRow.getDayOfWeek().minus(1));
+        if(firstEmptyRowNumber == 0 && contract_schedule_table.getItems().get(LAST_ROW_IN_TABLE).getDayOfWeek() != null){
+            firstEmptyRowTarget.setDayOfWeek(contract_schedule_table.getItems().get(LAST_ROW_IN_TABLE).getDayOfWeek().plus(1));
         }
 
-        if(firstEmptyRow > 0) {
-            previousRowToTargetRow = contract_schedule_table.getItems().get(firstEmptyRow - 1);
-        }
-        else{
-            previousRowToTargetRow = selectedItemRow;
+        if(firstEmptyRowNumber == 0 && contract_schedule_table.getItems().get(LAST_ROW_IN_TABLE).getDayOfWeek() == null){
+            firstEmptyRowTarget.setDayOfWeek(selectedItemRow.getDayOfWeek().minus(1));
         }
 
-        if(previousRowToTargetRow != null) {
-            if (!selectedItemRow.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
-                firstEmptyRowTarget.setDayOfWeek(previousRowToTargetRow.getDayOfWeek().plus(1));
-            } else {
-                firstEmptyRowTarget.setDayOfWeek(DayOfWeek.MONDAY);
-            }
-        }else{
+        if(firstEmptyRowNumber > 0 && contract_schedule_table.getItems().get(firstEmptyRowNumber -1 ).getDayOfWeek() != null) {
+            firstEmptyRowTarget.setDayOfWeek(contract_schedule_table.getItems().get(firstEmptyRowNumber -1 ).getDayOfWeek().plus(1));
+        }
+
+        if(firstEmptyRowNumber > 0 && contract_schedule_table.getItems().get(firstEmptyRowNumber -1 ).getDayOfWeek() == null) {
             firstEmptyRowTarget.setDayOfWeek(selectedItemRow.getDayOfWeek().plus(1));
         }
 
@@ -338,7 +329,7 @@ public class ContractSchedule extends AnchorPane {
         refreshTable(contract_schedule_table.getItems());
     }
 
-    private Integer findFirstEmptyRow(){
+    private Integer findFirstEmptyRowNumber(){
         ObservableList<ContractScheduleDayDTO> tableItemList = contract_schedule_table.getItems();
         for(ContractScheduleDayDTO contractScheduleDayDTO : tableItemList){
             if(contractScheduleDayDTO.getTotalDayHours().equals(Duration.ZERO)){
