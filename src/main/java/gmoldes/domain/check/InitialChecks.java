@@ -28,6 +28,7 @@ public class InitialChecks {
 
     public static void alertByContractNewVersionExpiration(Stage primaryStage){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(gmoldes.utilities.Parameters.DEFAULT_DATE_FORMAT);
+        StringBuilder bodyMessage = new StringBuilder();
         StringBuilder alertMessage = new StringBuilder();
         alertMessage.append("Preavisos de fin de contrato:\n\n");
         Integer counter = 1;
@@ -38,7 +39,7 @@ public class InitialChecks {
         if(!traceabilityContractDocumentationDTOList.isEmpty()) {
             for (TraceabilityContractDocumentationDTO traceabilityDTO : traceabilityContractDocumentationDTOList) {
                 Long contractDurationDays = ChronoUnit.DAYS.between(traceabilityDTO.getStartDate(), traceabilityDTO.getExpectedEndDate()) + 1;
-                if(contractDurationDays >= Parameters.MINIMUM_NUMBER_DAYS_NOTICE_END_CONTRACT) {
+                if(contractDurationDays >= Parameters.MINIMUM_NUMBER_DAYS_CONTRACT_DURATION_TO_SEND_NOTICE_END_CONTRACT) {
                     Long daysToEndDate = ChronoUnit.DAYS.between(LocalDate.now(), traceabilityDTO.getExpectedEndDate());
                     if (daysToEndDate <= CheckConstants.END_OF_CONTRACT_NOTICE_DAYS) {
 
@@ -57,7 +58,7 @@ public class InitialChecks {
                             missingExceededText = "Excedido en ";
                         }
 
-                        alertMessage.append(counter).append(") ")
+                        bodyMessage.append(counter).append(") ")
                                 .append(clientDTO.toNaturalName()).append(" con ")
                                 .append(workerDTO.toNaturalName())
                                 .append(": vencimiento el día ").append(traceabilityDTO.getExpectedEndDate().format(dateFormatter)).append(".\n")
@@ -68,7 +69,9 @@ public class InitialChecks {
                 }
             }
 
-            if(alertMessage.length() > 0) {
+            alertMessage.append(bodyMessage);
+
+            if(bodyMessage.length() > 0) {
                 Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Preavisos de fin de contrato pendientes de recepción"), alertMessage.toString());
             }
         }
