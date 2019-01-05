@@ -200,6 +200,7 @@ public class NewContractMainController extends VBox {
             Boolean documentToSendIsOpen = verifyDocumentStatus(attachedFileName);
             if(documentToSendIsOpen){
                 Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.CLOSE_DOCUMENT_TO_SEND);
+
                 return;
             }
 

@@ -8,7 +8,7 @@
  
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://192.168.10.200/patata</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost/patata</property>
         <property name="hibernate.connection.username">patata</property>
         <property name="hibernate.connection.password">patata</property>
 
@@ -40,7 +40,7 @@
         <mapping class="gmoldes.components.contract.new_contract.persistence.vo.TypesContractVariationsVO"/>
         <mapping class="gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO"/>
         <mapping class="gmoldes.domain.client.persistence.vo.ClientCCCVO"/>
-        <mapping class="gmoldes.domain.person.persistence.vo.StudyVO"/>
+        <mapping class="gmoldes.domain.study.persistence.vo.StudyVO"/>
         <mapping class="gmoldes.domain.servicegm.persistence.vo.ServiceGMVO"/>
 
     </session-factory>
