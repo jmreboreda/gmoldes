@@ -8,7 +8,7 @@ public class Parameters {
     public static final String NO_PRINTER_FOR_THESE_ATTRIBUTES = "No hay impresora para imprimir con los atributos indicados.";
 
     /** System */
-    public static final String OPERATING_SYSTEM = System.getProperty("os.name");
+    public static final String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
     public static final String USER_HOME = System.getProperty("user.home");
     public static final String OS_LINUX = "linux";
     public static final String OS_WINDOWS = "windows";
@@ -29,6 +29,8 @@ public class Parameters {
 
     /** Various */
     public static final String PDF_EXTENSION = ".pdf";
+    public static final Long MINIMUM_NUMBER_DAYS_NOTICE_END_CONTRACT = 15L;
     public static final Integer MAXIMUM_VALUE_MINUTES_IN_HOUR = 59;
+    public static final Integer NUMBER_OF_SECONDS_IN_ONE_HOUR = 3600;
 
 }

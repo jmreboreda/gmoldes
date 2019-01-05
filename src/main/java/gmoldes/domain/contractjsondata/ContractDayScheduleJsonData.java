@@ -8,9 +8,9 @@ public class ContractDayScheduleJsonData {
     private String amTo;
     private String pmFrom;
     private String pmTo;
-    private Long durationHours;
+    private String durationHours;
 
-    public ContractDayScheduleJsonData(String dayOfWeek, String date, String amFrom, String amTo, String pmFrom, String pmTo, Long durationHours) {
+    public ContractDayScheduleJsonData(String dayOfWeek, String date, String amFrom, String amTo, String pmFrom, String pmTo, String durationHours) {
         this.dayOfWeek = dayOfWeek;
         this.date = date;
         this.amFrom = amFrom;
@@ -47,7 +47,7 @@ public class ContractDayScheduleJsonData {
         return pmTo;
     }
 
-    public Long getDurationHours() {
+    public String getDurationHours() {
         return durationHours;
     }
 
@@ -63,7 +63,7 @@ public class ContractDayScheduleJsonData {
         private String amTo;
         private String pmFrom;
         private String pmTo;
-        private Long durationHours;
+        private String durationHours;
 
         public ContractDayScheduleJsonData.WorkDayBuilder withDayOfWeek(String dayOfWeek) {
             this.dayOfWeek = dayOfWeek;
@@ -95,7 +95,7 @@ public class ContractDayScheduleJsonData {
             return this;
         }
 
-        public ContractDayScheduleJsonData.WorkDayBuilder withDurationHours(Long durationHours) {
+        public ContractDayScheduleJsonData.WorkDayBuilder withDurationHours(String durationHours) {
             this.durationHours = durationHours;
             return this;
         }

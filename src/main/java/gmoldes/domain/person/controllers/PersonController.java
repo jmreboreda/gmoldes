@@ -1,7 +1,7 @@
 package gmoldes.domain.person.controllers;
 
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.person.manager.PersonManager;
+import gmoldes.domain.person.PersonManager;
 
 import java.util.List;
 

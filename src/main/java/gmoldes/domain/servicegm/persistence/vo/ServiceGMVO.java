@@ -1,6 +1,5 @@
 package gmoldes.domain.servicegm.persistence.vo;
 
-import gmoldes.domain.client.Client;
 import gmoldes.domain.client.persistence.vo.ClientVO;
 
 import javax.persistence.*;

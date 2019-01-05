@@ -100,13 +100,13 @@ public class ContractDataToContractAgentPDFCreator {
         contractDataSToContractAgentPDFFields.setField("endDate", endDate);
         contractDataSToContractAgentPDFFields.setField("durationDays", durationDaysText);
 
-        // List of pdf document field names------------------------------------
-        Map acroFieldsMap = contractDataSToContractAgentPDFFields.getFields();
-        Iterator<String> acroFieldsIt = acroFieldsMap.keySet().iterator();
-        while( acroFieldsIt.hasNext() ) {
-            System.out.println( acroFieldsIt.next() );
-        }
-        //---------------------------------------------------------------------
+//        // List of pdf document field names------------------------------------
+//        Map acroFieldsMap = contractDataSToContractAgentPDFFields.getFields();
+//        Iterator<String> acroFieldsIt = acroFieldsMap.keySet().iterator();
+//        while( acroFieldsIt.hasNext() ) {
+//            System.out.println( acroFieldsIt.next() );
+//        }
+//        //---------------------------------------------------------------------
 
 
         if (contractDataToContractsAgent.getSchedule() != null) {

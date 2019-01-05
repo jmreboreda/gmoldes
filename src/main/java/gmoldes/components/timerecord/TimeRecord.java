@@ -1,4 +1,4 @@
-package gmoldes.components.timerecord.forms;
+package gmoldes.components.timerecord;
 
 import gmoldes.utilities.Utilities;
 
