@@ -293,7 +293,7 @@ public class ContractSchedule extends AnchorPane {
 
         final Integer LAST_ROW_IN_TABLE = 6;
 
-        ContractScheduleDayDTO previousRowToTargetRow = null;
+        ContractScheduleDayDTO previousRowToFirstEmptyRow = null;
 
         Integer firstEmptyRowNumber = findFirstEmptyRowNumber();
 
@@ -313,13 +313,22 @@ public class ContractSchedule extends AnchorPane {
             firstEmptyRowTarget.setDayOfWeek(selectedItemRow.getDayOfWeek().minus(1));
         }
 
-        if(firstEmptyRowNumber > 0 && contract_schedule_table.getItems().get(firstEmptyRowNumber -1 ).getDayOfWeek() != null) {
-            firstEmptyRowTarget.setDayOfWeek(contract_schedule_table.getItems().get(firstEmptyRowNumber -1 ).getDayOfWeek().plus(1));
+        if(firstEmptyRowNumber > 0){
+            previousRowToFirstEmptyRow =  contract_schedule_table.getItems().get(firstEmptyRowNumber -1);
+
+            if(contract_schedule_table.getItems().get(firstEmptyRowNumber -1 ).getDayOfWeek() != null) {
+                firstEmptyRowTarget.setDayOfWeek(previousRowToFirstEmptyRow.getDayOfWeek().plus(1));
+            }
+
+            if(contract_schedule_table.getItems().get(firstEmptyRowNumber -1 ).getDayOfWeek() == null) {
+                firstEmptyRowTarget.setDayOfWeek(selectedItemRow.getDayOfWeek().plus(1));
+            }
         }
 
-        if(firstEmptyRowNumber > 0 && contract_schedule_table.getItems().get(firstEmptyRowNumber -1 ).getDayOfWeek() == null) {
-            firstEmptyRowTarget.setDayOfWeek(selectedItemRow.getDayOfWeek().plus(1));
-        }
+
+
+
+
 
         firstEmptyRowTarget.setAmFrom(selectedItemRow.getAmFrom());
         firstEmptyRowTarget.setAmTo(selectedItemRow.getAmTo());
