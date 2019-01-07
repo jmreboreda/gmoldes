@@ -438,7 +438,7 @@ public class ContractExtensionController{
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
 
 
-        ContractFullDataDTO allContractData = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem();
+        ContractFullDataDTO allContractData = contractVariationMainController.getContractVariationParts().getContractSelector().getValue();
 
         String notificationType = ContractConstants.STANDARD_CONTRACT_EXTENSION_TEXT;
 
@@ -472,9 +472,9 @@ public class ContractExtensionController{
 
         String durationDays = Long.toString(ChronoUnit.DAYS.between(dateFrom, dateTo) + 1L);
 
+        Map<String, ContractDayScheduleJsonData> schedule = allContractData.getContractNewVersion().getContractScheduleJsonData().getSchedule();
         Set<WorkDaySchedule> scheduleSet = new HashSet<>();
-        if(allContractData.getContractNewVersion().getContractScheduleJsonData().getSchedule() != null) {
-            Map<String, ContractDayScheduleJsonData>  schedule = allContractData.getContractNewVersion().getContractScheduleJsonData().getSchedule();
+        if(schedule != null) {
             for (Map.Entry<String, ContractDayScheduleJsonData> entry : schedule.entrySet()) {
                 scheduleSet.add(MapperJsonScheduleToWorkDaySchedule.map(entry.getValue()));
             }
