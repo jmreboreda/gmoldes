@@ -6,15 +6,16 @@ import gmoldes.utilities.Parameters;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class ContractVariationContractData extends VBox {
+public class ContractVariationContractData extends TitledPane {
 
-    private static final String CONTRACT_VARIATION_CONTRACT_DATA_FXML = "/fxml/contract_variations/contractvariation_data.fxml";
+    private static final String CONTRACT_VARIATION_CONTRACT_DATA_FXML = "/fxml/contract_variations/contractvariation_data_alternative.fxml";
 
     private Parent parent;
 
