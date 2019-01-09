@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import gmoldes.components.contract.contract_variation.components.*?>
-<?import javafx.scene.layout.VBox?>
+<?import gmoldes.components.contract.contract_variation.components.ContractVariationActionComponents?>
+<?import gmoldes.components.contract.contract_variation.components.ContractVariationContractData?>
+<?import gmoldes.components.contract.contract_variation.components.ContractVariationContractVariations?>
+<?import gmoldes.components.contract.contract_variation.components.ContractVariationHeader?>
+<?import gmoldes.components.contract.contract_variation.components.ContractVariationParts?>
+<?import gmoldes.components.contract.contract_variation.components.ContractVariationTypes?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.VBox?>
 
-<fx:root type="VBox" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
-      <RadioButton>
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+      <RadioButton visible="false" maxHeight="1.0" maxWidth="1.0" minHeight="1.0" minWidth="1.0">
             <toggleGroup>
-                  <ToggleGroup fx:id="contractVariationToggleGroup"/>
+                  <ToggleGroup fx:id="contractVariationToggleGroup" />
             </toggleGroup>
       </RadioButton>
-      <RadioButton>
+      <RadioButton visible="false" maxHeight="1.0" maxWidth="1.0" minHeight="1.0" minWidth="1.0">
             <toggleGroup>
-                  <ToggleGroup fx:id="holidaysToggleGroup"/>
+                  <ToggleGroup fx:id="holidaysToggleGroup" />
             </toggleGroup>
       </RadioButton>
-      <ContractVariationHeader fx:id="contractVariationHeader"/>
-      <ContractVariationParts fx:id="contractVariationParts"/>
-      <ContractVariationContractData fx:id="contractVariationContractData"/>
-      <ContractVariationTypes fx:id="contractVariationTypes"/>
-      <ContractVariationContractVariations fx:id="contractVariationContractVariations"/>
-      <ContractVariationActionComponents fx:id="contractVariationActionComponents"/>
+      <ContractVariationHeader fx:id="contractVariationHeader">
+      <VBox.margin>
+         <Insets top="5.0" />
+      </VBox.margin></ContractVariationHeader>
+      <ContractVariationParts fx:id="contractVariationParts" />
+      <ContractVariationContractData fx:id="contractVariationContractData" />
+      <ContractVariationTypes fx:id="contractVariationTypes" />
+      <ContractVariationContractVariations fx:id="contractVariationContractVariations" />
+      <ContractVariationActionComponents fx:id="contractVariationActionComponents" />
 </fx:root>
