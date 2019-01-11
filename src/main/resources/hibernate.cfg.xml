@@ -8,7 +8,7 @@
  
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost/gmoldes_prb</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost/gmoldes</property>
         <property name="hibernate.connection.username">jmrb</property>
         <property name="hibernate.connection.password">L100mhdSL</property>
 

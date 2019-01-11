@@ -23,4 +23,7 @@
          <Insets left="10.0" />
       </VBox.margin>
    </StackPane>
+   <padding>
+      <Insets top="10.0" />
+   </padding>
 </fx:root>

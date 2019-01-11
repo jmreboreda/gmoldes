@@ -9,14 +9,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-public class ContractVariationTypes extends VBox {
+public class ContractVariationTypes extends TitledPane {
 
-    private static final String CONTRACT_VARIATION_TYPES_FXML = "/fxml/contract_variations/contractvariation_types.fxml";
+    private static final String CONTRACT_VARIATION_TYPES_FXML = "/fxml/contract_variations/contractvariation_types_alternative.fxml";
 
     private Parent parent;
 
