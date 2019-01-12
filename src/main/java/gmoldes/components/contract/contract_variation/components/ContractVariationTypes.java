@@ -42,6 +42,8 @@ public class ContractVariationTypes extends TitledPane {
     private RadioButton rbContractConversion;
     @FXML
     private RadioButton rbOtherVariations;
+    @FXML
+    private ContractVariationContractVariations contractVariations;
 
 
 
@@ -115,6 +117,14 @@ public class ContractVariationTypes extends TitledPane {
 
     public void setRbOtherVariations(RadioButton rbOtherVariations) {
         this.rbOtherVariations = rbOtherVariations;
+    }
+
+    public ContractVariationContractVariations getContractVariations() {
+        return contractVariations;
+    }
+
+    public void setContractVariations(ContractVariationContractVariations contractVariations) {
+        this.contractVariations = contractVariations;
     }
 
     private void onContractExtinction(MouseEvent event){

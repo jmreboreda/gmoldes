@@ -129,7 +129,6 @@ public class ContractVariationMainController extends VBox {
         contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysNo().setToggleGroup(holidaysToggleGroup);
         contractVariationContractVariations.getContractVariationContractExtinction().getRbHolidaysCalculate().setToggleGroup(holidaysToggleGroup);
 
-
         //Binding
         contractVariationTypes.disableProperty().bind(this.contractVariationParts.getContractSelector().valueProperty().isNull());
 
