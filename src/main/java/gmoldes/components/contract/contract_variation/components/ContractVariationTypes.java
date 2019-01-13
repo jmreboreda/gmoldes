@@ -17,9 +17,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-public class ContractVariationTypes extends VBox {
+public class ContractVariationTypes extends TitledPane {
 
-    private static final String CONTRACT_VARIATION_TYPES_FXML = "/fxml/contract_variations/contractvariation_types.fxml";
+    private static final String CONTRACT_VARIATION_TYPES_FXML = "/fxml/contract_variations/contractvariation_types_alternative.fxml";
 
     private Parent parent;
 
