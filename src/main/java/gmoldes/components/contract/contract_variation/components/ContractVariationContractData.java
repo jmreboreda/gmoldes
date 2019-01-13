@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 public class ContractVariationContractData extends TitledPane {
 
-    private static final String CONTRACT_VARIATION_CONTRACT_DATA_FXML = "/fxml/contract_variations/contractvariation_data.fxml";
+    private static final String CONTRACT_VARIATION_CONTRACT_DATA_FXML = "/fxml/contract_variations/contractvariation_data_alternative.fxml";
 
     private Parent parent;
 
