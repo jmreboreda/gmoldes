@@ -1,5 +1,6 @@
 package gmoldes.components.contract.contract_variation.components;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.utilities.Parameters;
@@ -121,7 +122,7 @@ public class ContractVariationContractData extends TitledPane {
     }
 
     public void setAllContractData(ContractFullDataDTO contractFullDataDTO){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
         this.getContractNumber().setText(contractFullDataDTO.getContractNewVersion().getContractNumber().toString());
 

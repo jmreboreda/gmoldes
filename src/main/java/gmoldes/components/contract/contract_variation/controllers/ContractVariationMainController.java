@@ -1,10 +1,12 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
+import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
 import gmoldes.components.contract.contract_variation.events.MessageContractVariationEvent;
 import gmoldes.components.contract.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
@@ -17,7 +19,6 @@ import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
 import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
-import gmoldes.domain.document_for_print.NewContractDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.services.email.EmailConstants;
@@ -101,6 +102,7 @@ public class ContractVariationMainController extends VBox {
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
 
+        contractVariationTypes.setOnDateNotification(this::onDateNotification);
         contractVariationTypes.setOnContractExtinction(this::onContractExtinctionSelected);
         contractVariationTypes.setOnContractExtension(this::onContractExtensionSelected);
         contractVariationTypes.setOnContractConversion(this::onContractConversionSelected);
@@ -185,6 +187,12 @@ public class ContractVariationMainController extends VBox {
         ObservableList<ClientDTO> clientDTOS = FXCollections.observableArrayList(clientDTOListSorted);
         contractVariationParts.loadDataInClientSelector(clientDTOS);
         contractVariationParts.getClientSelector().setItems(clientDTOS);
+    }
+
+    private void onDateNotification(DateChangeEvent event){
+        LocalDate dateNotification = event.getDate();
+        Long difference = ChronoUnit.DAYS.between(contractVariationParts.getInForceDate().getValue(), dateNotification);
+        System.out.println("ContractVariations: Ha cambiado la fecha de notificación. La diferencia con hoy es de " + difference + " días.");
     }
 
     private void onChangeEmployer(ClientChangeEvent event){
@@ -344,20 +352,20 @@ public class ContractVariationMainController extends VBox {
 
             pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
 
-            if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)) {
+            if (ApplicationConstants.OPERATING_SYSTEM.toLowerCase().contains(ApplicationConstants.OS_LINUX)) {
                 try {
                     String[] command = {"sh", "-c", "xdg-open " + pathOut};
                     pdfViewerProcess = Runtime.getRuntime().exec(command);
                 } catch (IOException e) {
-                    System.out.println("No se ha podido abrir el documento \"" + contractExtinctionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+                    System.out.println("No se ha podido abrir el documento \"" + contractExtinctionDataToContractAgent.toFileName().concat(ApplicationConstants.PDF_EXTENSION) + "\"");
                     e.printStackTrace();
                 }
-            } else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)) {
+            } else if (ApplicationConstants.OPERATING_SYSTEM.toLowerCase().contains(ApplicationConstants.OS_WINDOWS)) {
                 String[] command = {"cmd", "/c", "start", "\"visor\"", "\"" + pathOut + "\""};
                 try {
                     pdfViewerProcess = Runtime.getRuntime().exec(command);
                 } catch (IOException e) {
-                    System.out.println("No se ha podido abrir el documento \"" + contractExtinctionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+                    System.out.println("No se ha podido abrir el documento \"" + contractExtinctionDataToContractAgent.toFileName().concat(ApplicationConstants.PDF_EXTENSION) + "\"");
                     e.printStackTrace();
                 }
             }
@@ -375,20 +383,20 @@ public class ContractVariationMainController extends VBox {
 
             pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtensionDataToContractAgent);
 
-            if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)) {
+            if (ApplicationConstants.OPERATING_SYSTEM.toLowerCase().contains(ApplicationConstants.OS_LINUX)) {
                 try {
                     String[] command = {"sh", "-c", "xdg-open " + pathOut};
                     pdfViewerProcess = Runtime.getRuntime().exec(command);
                 } catch (IOException e) {
-                    System.out.println("No se ha podido abrir el documento \"" + contractExtensionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+                    System.out.println("No se ha podido abrir el documento \"" + contractExtensionDataToContractAgent.toFileName().concat(ApplicationConstants.PDF_EXTENSION) + "\"");
                     e.printStackTrace();
                 }
-            } else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)) {
+            } else if (ApplicationConstants.OPERATING_SYSTEM.toLowerCase().contains(ApplicationConstants.OS_WINDOWS)) {
                 String[] command = {"cmd", "/c", "start", "\"visor\"", "\"" + pathOut + "\""};
                 try {
                     pdfViewerProcess = Runtime.getRuntime().exec(command);
                 } catch (IOException e) {
-                    System.out.println("No se ha podido abrir el documento \"" + contractExtensionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+                    System.out.println("No se ha podido abrir el documento \"" + contractExtensionDataToContractAgent.toFileName().concat(ApplicationConstants.PDF_EXTENSION) + "\"");
                     e.printStackTrace();
                 }
             }
@@ -406,20 +414,20 @@ public class ContractVariationMainController extends VBox {
 //
 //            pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtensionDataToContractAgent);
 //
-//            if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)) {
+//            if (ApplicationConstants.OPERATING_SYSTEM.toLowerCase().contains(ApplicationConstants.OS_LINUX)) {
 //                try {
 //                    String[] command = {"sh", "-c", "xdg-open " + pathOut};
 //                    pdfViewerProcess = Runtime.getRuntime().exec(command);
 //                } catch (IOException e) {
-//                    System.out.println("No se ha podido abrir el documento \"" + contractExtensionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+//                    System.out.println("No se ha podido abrir el documento \"" + contractExtensionDataToContractAgent.toFileName().concat(ApplicationConstants.PDF_EXTENSION) + "\"");
 //                    e.printStackTrace();
 //                }
-//            } else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)) {
+//            } else if (ApplicationConstants.OPERATING_SYSTEM.toLowerCase().contains(ApplicationConstants.OS_WINDOWS)) {
 //                String[] command = {"cmd", "/c", "start", "\"visor\"", "\"" + pathOut + "\""};
 //                try {
 //                    pdfViewerProcess = Runtime.getRuntime().exec(command);
 //                } catch (IOException e) {
-//                    System.out.println("No se ha podido abrir el documento \"" + contractExtensionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+//                    System.out.println("No se ha podido abrir el documento \"" + contractExtensionDataToContractAgent.toFileName().concat(ApplicationConstants.PDF_EXTENSION) + "\"");
 //                    e.printStackTrace();
 //                }
 //            }

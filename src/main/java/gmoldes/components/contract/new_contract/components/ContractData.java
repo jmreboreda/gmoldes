@@ -1,5 +1,6 @@
 package gmoldes.components.contract.new_contract.components;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
@@ -36,8 +37,8 @@ public class ContractData extends AnchorPane {
 
     private EventHandler<ChangeContractTypeEvent> changeContractTypeEventHandler;
 
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
-    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
+    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_TIME_FORMAT);
 
     private Parent parent;
 

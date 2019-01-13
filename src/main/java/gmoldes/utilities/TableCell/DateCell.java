@@ -1,5 +1,6 @@
 package gmoldes.utilities.TableCell;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
 import gmoldes.utilities.Parameters;
 import javafx.scene.control.ContentDisplay;
@@ -68,7 +69,7 @@ public class DateCell extends TableCell<ContractScheduleDayDTO, LocalDate> {
 
     private void createTextField() {
         Pattern datePattern = Pattern.compile("\\d{2}[-/]\\d{2}[-/]\\d{4}");
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         textField = new TextField(getString());
         textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
         textField.setOnKeyPressed(t -> {
@@ -95,7 +96,7 @@ public class DateCell extends TableCell<ContractScheduleDayDTO, LocalDate> {
     }
 
     private String getString() {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
         return getItem() == null ? null : dateFormatter.format(getItem());
     }

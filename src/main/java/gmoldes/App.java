@@ -30,10 +30,6 @@ import java.text.ParseException;
 
 
 public class App extends Application {
-    public static final String APPLICATION_ICON =
-            "/pics/GMapp_PNG_64x64.png";
-    public static final String SPLASH_IMAGE =
-            "/pics/GMapp_PNG_64x64.png";
 
     private Pane splashLayout;
     private ProgressBar loadProgress;
@@ -45,7 +41,7 @@ public class App extends Application {
     @Override
     public void init() {
         ImageView splash = new ImageView(new Image(
-                SPLASH_IMAGE
+                ApplicationConstants.SPLASH_IMAGE
         ));
         loadProgress = new ProgressBar();
         loadProgress.setPrefWidth(SPLASH_WIDTH - 20);
@@ -99,7 +95,7 @@ public class App extends Application {
         mainStage = new Stage(StageStyle.DECORATED);
         mainStage.setTitle("My Friends");
         mainStage.getIcons().add(new Image(
-                APPLICATION_ICON
+                ApplicationConstants.APPLICATION_ICON
         ));
 
         final ListView<String> peopleView = new ListView<>();
@@ -138,7 +134,7 @@ public class App extends Application {
                 InitialMenuController controller = new InitialMenuController();
                 mainStage = new Stage(StageStyle.DECORATED);
                 mainStage.getIcons().add(new Image(
-                        APPLICATION_ICON));
+                        ApplicationConstants.APPLICATION_ICON));
                 mainStage.setResizable(false);
                 mainStage.setTitle("Menú principal");
                 Scene scene = new Scene(controller);

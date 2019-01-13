@@ -4,6 +4,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
+import gmoldes.ApplicationConstants;
 import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
@@ -33,8 +34,8 @@ public class ContractDataToContractAgentPDFCreator {
 
         PdfReader reader = new PdfReader(PATH_TO_PDF_TEMPLATE);
         PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(pathOut.toString()));
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_TIME_FORMAT);
 
         String officialContractNumber = contractDataToContractsAgent.getOfficialContractNumber() != null ? contractDataToContractsAgent.getOfficialContractNumber() : "";
 

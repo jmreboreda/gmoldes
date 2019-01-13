@@ -1,5 +1,6 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
 import gmoldes.components.contract.contract_variation.events.MessageContractVariationEvent;
@@ -369,8 +370,8 @@ public class ContractExtinctionController{
 
     private ContractVariationDataSubfolder createContractExtinctionDataSubfolder(String additionalData, Duration duration){
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_TIME_FORMAT);
 
 
         ContractFullDataDTO allContractData = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem();
@@ -471,7 +472,7 @@ public class ContractExtinctionController{
 
         pathOut = contractVariationDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
 
-        String attachedFileName = contractExtinctionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION);
+        String attachedFileName = contractExtinctionDataToContractAgent.toFileName().concat(ApplicationConstants.PDF_EXTENSION);
 
         Boolean documentToSendIsOpen = verifyDocumentStatus(attachedFileName);
         if(documentToSendIsOpen){
@@ -545,7 +546,7 @@ public class ContractExtinctionController{
 
     private Boolean verifyDocumentStatus(String attachedFileName) {
 
-        if (Parameters.OPERATING_SYSTEM.contains(Parameters.OS_LINUX)) {
+        if (ApplicationConstants.OPERATING_SYSTEM.contains(ApplicationConstants.OS_LINUX)) {
 
             return SystemProcesses.isRunningInLinuxAndContains(attachedFileName.substring(0, 40), attachedFileName.substring(41, 60));
         }

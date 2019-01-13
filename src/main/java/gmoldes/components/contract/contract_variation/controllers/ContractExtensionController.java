@@ -1,5 +1,6 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
@@ -434,8 +435,8 @@ public class ContractExtensionController{
 
     private ContractVariationDataSubfolder createContractExtensionDataSubfolder(String additionalData){
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_TIME_FORMAT);
 
 
         ContractFullDataDTO allContractData = contractVariationMainController.getContractVariationParts().getContractSelector().getValue();
@@ -547,7 +548,7 @@ public class ContractExtensionController{
 
         pathOut = contractExtensionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtensionDataToContractAgent);
 
-        String attachedFileName = contractExtensionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION);
+        String attachedFileName = contractExtensionDataToContractAgent.toFileName().concat(ApplicationConstants.PDF_EXTENSION);
 
         Boolean documentToSendIsOpen = verifyDocumentStatus(attachedFileName);
         if(documentToSendIsOpen){
@@ -621,7 +622,7 @@ public class ContractExtensionController{
 
     private Boolean verifyDocumentStatus(String attachedFileName) {
 
-        if (Parameters.OPERATING_SYSTEM.contains(Parameters.OS_LINUX)) {
+        if (ApplicationConstants.OPERATING_SYSTEM.contains(ApplicationConstants.OS_LINUX)) {
 
             return SystemProcesses.isRunningInLinuxAndContains(attachedFileName.substring(0, 40), attachedFileName.substring(41, 60));
         }
