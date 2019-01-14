@@ -27,6 +27,7 @@ import gmoldes.services.Printer;
 import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
+import gmoldes.utilities.SystemProcesses;
 import gmoldes.utilities.Utilities;
 
 import javax.mail.internet.AddressException;
@@ -112,7 +113,7 @@ public class ContractExtensionController{
         String publicNotes = retrievePublicNotes();
         sb.append(publicNotes);
 
-        ContractVariationDataSubfolder contractExtensionDataSubfolder = createContractVariationDataSubfolder(sb.toString());
+        ContractVariationDataSubfolder contractExtensionDataSubfolder = createContractExtensionDataSubfolder(sb.toString());
 
         printContractExtensionDataSubfolder(contractExtensionDataSubfolder);
 
@@ -431,13 +432,13 @@ public class ContractExtensionController{
         return sb.toString();
     }
 
-    private ContractVariationDataSubfolder createContractVariationDataSubfolder(String additionalData){
+    private ContractVariationDataSubfolder createContractExtensionDataSubfolder(String additionalData){
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
 
 
-        ContractFullDataDTO allContractData = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem();
+        ContractFullDataDTO allContractData = contractVariationMainController.getContractVariationParts().getContractSelector().getValue();
 
         String notificationType = ContractConstants.STANDARD_CONTRACT_EXTENSION_TEXT;
 
@@ -473,8 +474,10 @@ public class ContractExtensionController{
 
         Map<String, ContractDayScheduleJsonData> schedule = allContractData.getContractNewVersion().getContractScheduleJsonData().getSchedule();
         Set<WorkDaySchedule> scheduleSet = new HashSet<>();
-        for (Map.Entry<String, ContractDayScheduleJsonData> entry : schedule.entrySet()) {
-            scheduleSet.add(MapperJsonScheduleToWorkDaySchedule.map(entry.getValue()));
+        if(schedule != null) {
+            for (Map.Entry<String, ContractDayScheduleJsonData> entry : schedule.entrySet()) {
+                scheduleSet.add(MapperJsonScheduleToWorkDaySchedule.map(entry.getValue()));
+            }
         }
 
         String gmContractNumber = allContractData.getContractNewVersion().getContractNumber() != null ? allContractData.getContractNewVersion().getContractNumber().toString() : null;
@@ -544,8 +547,14 @@ public class ContractExtensionController{
 
         pathOut = contractExtensionDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtensionDataToContractAgent);
 
-
         String attachedFileName = contractExtensionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION);
+
+        Boolean documentToSendIsOpen = verifyDocumentStatus(attachedFileName);
+        if(documentToSendIsOpen){
+            Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.CLOSE_DOCUMENT_TO_SEND);
+
+            return isSendOk;
+        }
 
         AgentNotificator agentNotificator = new AgentNotificator();
 
@@ -608,5 +617,15 @@ public class ContractExtensionController{
         }
 
         return dayOfWeekSet;
+    }
+
+    private Boolean verifyDocumentStatus(String attachedFileName) {
+
+        if (Parameters.OPERATING_SYSTEM.contains(Parameters.OS_LINUX)) {
+
+            return SystemProcesses.isRunningInLinuxAndContains(attachedFileName.substring(0, 40), attachedFileName.substring(41, 60));
+        }
+
+        else return SystemProcesses.isRunningInWindowsAndContains(attachedFileName.substring(0, 40), attachedFileName.substring(41, 60));
     }
 }

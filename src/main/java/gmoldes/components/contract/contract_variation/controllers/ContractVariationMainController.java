@@ -11,10 +11,13 @@ import gmoldes.components.contract.controllers.TypesContractVariationsController
 import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
-import gmoldes.components.contract.new_contract.forms.ContractDataSubfolder;
+import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
+import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
+import gmoldes.domain.document_for_print.NewContractDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.services.email.EmailConstants;
@@ -36,6 +39,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.text.Collator;
 import java.time.DayOfWeek;
@@ -54,6 +58,8 @@ public class ContractVariationMainController extends VBox {
 
     private static final String myColorRED = "-fx-text-fill: #971E11";
     private static final String myColorBLACK = "-fx-text-fill: #000000";
+
+    private Process pdfViewerProcess = null;
 
 
     private Parent parent;
@@ -136,6 +142,7 @@ public class ContractVariationMainController extends VBox {
         // Button actions
         contractVariationActionComponents.setOnOkButton(this::onOkButton);
         contractVariationActionComponents.setOnExitButton(this::onExitButton);
+        contractVariationActionComponents.setOnViewPDFButton(this::onViewPDFButton);
         contractVariationActionComponents.setOnSendMailButton(this::onSendMailButton);
 
         clientSelectorLoadData();
@@ -264,6 +271,7 @@ public class ContractVariationMainController extends VBox {
             }
 
             this.contractVariationDataSubfolder = messageContractVariationEvent.getContractVariationDataSubfolder();
+            contractVariationActionComponents.enablePDFButton(true);
             setDataEditionBlockedAndEnableSendMail();
 
             return;
@@ -282,6 +290,7 @@ public class ContractVariationMainController extends VBox {
                 return;
             }
 
+            contractVariationActionComponents.enablePDFButton(true);
             setDataEditionBlockedAndEnableSendMail();
 
             return;
@@ -317,6 +326,109 @@ public class ContractVariationMainController extends VBox {
 
         Stage stage = (Stage) contractVariationParts.getScene().getWindow();
         stage.close();
+    }
+
+
+
+
+    private void onViewPDFButton(MouseEvent event){
+
+        Path pathOut;
+
+        // Contract extinction
+        RadioButton rbContractExtinction = contractVariationTypes.getRbContractExtinction();
+        if(rbContractExtinction.isSelected()) {
+
+            String publicNotes = retrievePublicNotes();
+            ContractExtinctionDataDocumentCreator contractDocumentCreator = new ContractExtinctionDataDocumentCreator(this);
+            ContractDataToContractsAgent contractExtinctionDataToContractAgent = contractDocumentCreator.createContractExtinctionDataDocumentForContractsAgent(publicNotes);
+
+            pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
+
+            if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)) {
+                try {
+                    String[] command = {"sh", "-c", "xdg-open " + pathOut};
+                    pdfViewerProcess = Runtime.getRuntime().exec(command);
+                } catch (IOException e) {
+                    System.out.println("No se ha podido abrir el documento \"" + contractExtinctionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+                    e.printStackTrace();
+                }
+            } else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)) {
+                String[] command = {"cmd", "/c", "start", "\"visor\"", "\"" + pathOut + "\""};
+                try {
+                    pdfViewerProcess = Runtime.getRuntime().exec(command);
+                } catch (IOException e) {
+                    System.out.println("No se ha podido abrir el documento \"" + contractExtinctionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+                    e.printStackTrace();
+                }
+            }
+
+            return;
+        }
+
+        // Contract extension
+        RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
+        if(rbContractExtension.isSelected()) {
+
+            String publicNotes = retrievePublicNotes();
+            ContractExtensionDataDocumentCreator contractDocumentCreator = new ContractExtensionDataDocumentCreator(this);
+            ContractDataToContractsAgent contractExtensionDataToContractAgent = contractDocumentCreator.createContractExtensionDataDocumentForContractsAgent(publicNotes);
+
+            pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtensionDataToContractAgent);
+
+            if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)) {
+                try {
+                    String[] command = {"sh", "-c", "xdg-open " + pathOut};
+                    pdfViewerProcess = Runtime.getRuntime().exec(command);
+                } catch (IOException e) {
+                    System.out.println("No se ha podido abrir el documento \"" + contractExtensionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+                    e.printStackTrace();
+                }
+            } else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)) {
+                String[] command = {"cmd", "/c", "start", "\"visor\"", "\"" + pathOut + "\""};
+                try {
+                    pdfViewerProcess = Runtime.getRuntime().exec(command);
+                } catch (IOException e) {
+                    System.out.println("No se ha podido abrir el documento \"" + contractExtensionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+                    e.printStackTrace();
+                }
+            }
+
+            return;
+        }
+
+        // Contract conversion
+        RadioButton rbContractConversion = contractVariationTypes.getRbContractConversion();
+//        if(rbContractConversion.isSelected()) {
+//
+//            String publicNotes = retrievePublicNotes();
+//            ContractConversionExtensionDataDocumentCreator contractDocumentCreator = new ContractExtensionDataDocumentCreator(this);
+//            ContractDataToContractsAgent contractExtensionDataToContractAgent = contractDocumentCreator.createContractExtensionDataDocumentForContractsAgent(publicNotes);
+//
+//            pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtensionDataToContractAgent);
+//
+//            if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)) {
+//                try {
+//                    String[] command = {"sh", "-c", "xdg-open " + pathOut};
+//                    pdfViewerProcess = Runtime.getRuntime().exec(command);
+//                } catch (IOException e) {
+//                    System.out.println("No se ha podido abrir el documento \"" + contractExtensionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+//                    e.printStackTrace();
+//                }
+//            } else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)) {
+//                String[] command = {"cmd", "/c", "start", "\"visor\"", "\"" + pathOut + "\""};
+//                try {
+//                    pdfViewerProcess = Runtime.getRuntime().exec(command);
+//                } catch (IOException e) {
+//                    System.out.println("No se ha podido abrir el documento \"" + contractExtensionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            return;
+//        }
+
+
     }
 
     private void onSendMailButton(MouseEvent event){
@@ -499,5 +611,51 @@ public class ContractVariationMainController extends VBox {
         }
 
         return dayOfWeekSet;
+    }
+
+    private String retrievePublicNotes(){
+
+        // Contract extinction
+        RadioButton rbContractExtinction = contractVariationTypes.getRbContractExtinction();
+        if(rbContractExtinction.isSelected()) {
+            String extinctionContractCause = this.getContractVariationContractVariations().getContractVariationContractExtinction()
+                    .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getVariation_description();
+
+            String holidaysUsedText;
+            if (this.getContractVariationContractVariations().getContractVariationContractExtinction()
+                    .getRbHolidaysYes().isSelected()) {
+                holidaysUsedText = "disfrutadas.";
+            } else if (this.getContractVariationContractVariations().getContractVariationContractExtinction()
+                    .getRbHolidaysNo().isSelected()) {
+                holidaysUsedText = "no disfrutadas.";
+            } else {
+                holidaysUsedText = "a calcular.";
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(extinctionContractCause);
+            sb.append(". Vacaciones ");
+            sb.append(holidaysUsedText);
+            sb.append("\n");
+            sb.append(this.getContractVariationContractVariations().getContractVariationContractExtinction().getPublicNotes().getText());
+
+            return sb.toString();
+        }
+
+        // Contract extension
+        RadioButton rbContractExtension = contractVariationTypes.getRbContractExtension();
+        if(rbContractExtension.isSelected()) {
+
+            return this.getContractVariationContractVariations().getContractVariationContractExtension().getPublicNotes().getText();
+        }
+
+        // Contract conversion
+        RadioButton rbContractConversion = contractVariationTypes.getRbContractConversion();
+        if(rbContractConversion.isSelected()) {
+
+            return this.getContractVariationContractVariations().getContractVariationContractConversion().getPublicNotes().getText();
+        }
+
+        return null;
     }
 }

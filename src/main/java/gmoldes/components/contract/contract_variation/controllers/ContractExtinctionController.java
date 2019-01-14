@@ -23,6 +23,7 @@ import gmoldes.services.Printer;
 import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
+import gmoldes.utilities.SystemProcesses;
 import gmoldes.utilities.Utilities;
 
 import javax.mail.internet.AddressException;
@@ -470,8 +471,14 @@ public class ContractExtinctionController{
 
         pathOut = contractVariationDocumentCreator.retrievePathToContractDataToContractAgentPDF(contractExtinctionDataToContractAgent);
 
-
         String attachedFileName = contractExtinctionDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION);
+
+        Boolean documentToSendIsOpen = verifyDocumentStatus(attachedFileName);
+        if(documentToSendIsOpen){
+            Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.CLOSE_DOCUMENT_TO_SEND);
+
+            return isSendOk;
+        }
 
         AgentNotificator agentNotificator = new AgentNotificator();
 
@@ -534,5 +541,15 @@ public class ContractExtinctionController{
         }
 
         return dayOfWeekSet;
+    }
+
+    private Boolean verifyDocumentStatus(String attachedFileName) {
+
+        if (Parameters.OPERATING_SYSTEM.contains(Parameters.OS_LINUX)) {
+
+            return SystemProcesses.isRunningInLinuxAndContains(attachedFileName.substring(0, 40), attachedFileName.substring(41, 60));
+        }
+
+        else return SystemProcesses.isRunningInWindowsAndContains(attachedFileName.substring(0, 40), attachedFileName.substring(41, 60));
     }
 }
