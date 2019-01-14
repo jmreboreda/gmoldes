@@ -1,6 +1,7 @@
 package gmoldes.domain.document_for_print;
 
 import com.lowagie.text.DocumentException;
+import gmoldes.ApplicationConstants;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.ContractConstants;
@@ -41,7 +42,7 @@ import java.util.Set;
 public class NewContractDataDocumentCreator {
 
     private NewContractMainController newContractMainController;
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
     public NewContractDataDocumentCreator(NewContractMainController newContractMainController) {
         this.newContractMainController = newContractMainController;
@@ -173,7 +174,7 @@ public class NewContractDataDocumentCreator {
         ContractFullDataDTO contractFullDataDTO = retrieveContractFullData();
 
         Integer contractNumber = Integer.parseInt(this.newContractMainController.getProvisionalContractData().getContractNumber());
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
         String quoteAccountCode = !contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode().isEmpty() ?
                 contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode() : "";
@@ -289,7 +290,7 @@ public class NewContractDataDocumentCreator {
         final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
         String temporalDir = maybePath.get().toString();
 
-        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
+        Path pathToContractDataSubfolder = Paths.get(ApplicationConstants.USER_HOME, temporalDir, contractDataSubfolder.toFileName().concat(ApplicationConstants.PDF_EXTENSION));
         try {
             Files.createDirectories(pathToContractDataSubfolder.getParent());
             pathOut = NewContractDataSubfolderPDFCreator.createContractDataSubfolderPDF(contractDataSubfolder, pathToContractDataSubfolder);
@@ -308,7 +309,7 @@ public class NewContractDataDocumentCreator {
 
         String fileName = Utilities.replaceWithUnderscore(ContractConstants.STANDARD_CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT.concat("_").concat(contractDataSubfolder.getEmployeeFullName()));
 
-        Path pathToContractRecordHistorySubfolder = Paths.get(Parameters.USER_HOME, temporalDir, fileName.concat(Parameters.PDF_EXTENSION));
+        Path pathToContractRecordHistorySubfolder = Paths.get(ApplicationConstants.USER_HOME, temporalDir, fileName.concat(ApplicationConstants.PDF_EXTENSION));
         try {
             Files.createDirectories(pathToContractRecordHistorySubfolder.getParent());
             pathOut = NewContractRecordHistorySubfolderPDFCreator.createContractRecordHistorySubfolderPDF(contractDataSubfolder, pathToContractRecordHistorySubfolder);
@@ -325,7 +326,7 @@ public class NewContractDataDocumentCreator {
         final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
         String temporalDir = maybePath.get().toString();
 
-        Path pathToContractDataToContractAgent = Paths.get(Parameters.USER_HOME, temporalDir, contractDataToContractsAgent.toFileName().concat("_gst.pdf"));
+        Path pathToContractDataToContractAgent = Paths.get(ApplicationConstants.USER_HOME, temporalDir, contractDataToContractsAgent.toFileName().concat("_gst.pdf"));
         try {
             Files.createDirectories(pathToContractDataToContractAgent.getParent());
             pathOut = ContractDataToContractAgentPDFCreator.createContractDataToContractAgentPDF(contractDataToContractsAgent, pathToContractDataToContractAgent);

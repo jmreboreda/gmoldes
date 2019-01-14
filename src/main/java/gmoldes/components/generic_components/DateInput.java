@@ -1,5 +1,6 @@
 package gmoldes.components.generic_components;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
@@ -38,8 +39,7 @@ public class DateInput extends HBox {
 
         this.dateInput.setMaxWidth(130);
         setMargin(dateInput, new Insets(0, 0, 0, 5));
-
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         dateInput.setConverter(new LocalDateStringConverter(dateFormatter, null));
         dateInput.showWeekNumbersProperty().set(false);
         dateInput.setEditable(false);

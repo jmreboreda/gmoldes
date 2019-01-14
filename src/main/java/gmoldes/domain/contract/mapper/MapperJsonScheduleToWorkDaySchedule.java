@@ -1,5 +1,6 @@
 package gmoldes.domain.contract.mapper;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.domain.contract_schedule.dto.ContractScheduleDTO;
 import gmoldes.domain.contract_schedule.persistence.vo.ContractScheduleVO;
@@ -18,8 +19,8 @@ public class MapperJsonScheduleToWorkDaySchedule {
 
     public static WorkDaySchedule map(ContractDayScheduleJsonData contractDayScheduleJsonData) {
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_TIME_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_TIME_FORMAT);
 
         LocalDate date = !contractDayScheduleJsonData.getDate().isEmpty() ? LocalDate.parse(contractDayScheduleJsonData.getDate(), dateFormatter) : null;
         LocalTime amFrom = !contractDayScheduleJsonData.getAmFrom().isEmpty() ? LocalTime.parse(contractDayScheduleJsonData.getAmFrom(), timeFormatter) :null;

@@ -4,10 +4,10 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
+import gmoldes.ApplicationConstants;
 import gmoldes.components.timerecord.TimeRecord;
 import gmoldes.services.Printer;
 import gmoldes.utilities.OSUtils;
-import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 
 import java.awt.print.PrinterException;
@@ -33,7 +33,7 @@ public class TimeRecordPDFCreator {
         final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
         String temporalDir = maybePath.get().toString();
 
-        Path pathToTimeRecordPDF = Paths.get(Parameters.USER_HOME, temporalDir, timeRecord.toFileName().concat(".pdf"));
+        Path pathToTimeRecordPDF = Paths.get(ApplicationConstants.USER_HOME, temporalDir, timeRecord.toFileName().concat(".pdf"));
         Path directoriesTree = Files.createDirectories(pathToTimeRecordPDF.getParent());
         if(directoriesTree == null){
             return null;

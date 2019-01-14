@@ -1,5 +1,6 @@
 package gmoldes.services;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.utilities.Parameters;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
@@ -86,7 +87,7 @@ public class Printer {
         else {
             for (PrintService printService : printServicesForAttributes) {
                 DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
-                if (printService.getName().contains(Parameters.DEFAULT_PRINTER)) {
+                if (printService.getName().contains(ApplicationConstants.DEFAULT_PRINTER)) {
                     serviceForPrint = printService;
                     break;
                 } else {

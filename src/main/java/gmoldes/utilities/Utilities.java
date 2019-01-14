@@ -1,5 +1,6 @@
 package gmoldes.utilities;
 
+import gmoldes.ApplicationConstants;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class Utilities {
 
 //    public static StringConverter dateConverter = new StringConverter<LocalDate>() {
 //        DateTimeFormatter dateFormatter =
-//                DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+//                DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 //        @Override
 //        public String toString(LocalDate date) {
 //            if (date != null) {
@@ -117,7 +118,7 @@ public class Utilities {
 
     public static Date validateStringAsTime(String time){
         Date hour;
-        DateFormat hourFormatter = new SimpleDateFormat(Parameters.DEFAULT_TIME_FORMAT);
+        DateFormat hourFormatter = new SimpleDateFormat(ApplicationConstants.DEFAULT_TIME_FORMAT);
         hourFormatter.setLenient(false);
         try{
             hour = hourFormatter.parse(time);
@@ -142,7 +143,7 @@ public class Utilities {
 
     public static boolean validateDate(String date) {
         try {
-            DateFormat dateFormat = new SimpleDateFormat(Parameters.DEFAULT_DATE_FORMAT);
+            DateFormat dateFormat = new SimpleDateFormat(ApplicationConstants.DEFAULT_DATE_FORMAT);
             dateFormat.setLenient(false);
             dateFormat.parse(date);
         } catch (ParseException e) {

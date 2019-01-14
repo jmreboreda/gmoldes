@@ -1,5 +1,6 @@
 package gmoldes.domain.check;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.controllers.ContractController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
@@ -27,7 +28,7 @@ public class InitialChecks {
     private static final String CONTRACT_IN_FORCE_UPDATE_TO = "Contract in force update to ";
 
     public static void alertByContractNewVersionExpiration(Stage primaryStage){
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(gmoldes.utilities.Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         StringBuilder bodyMessage = new StringBuilder();
         StringBuilder alertMessage = new StringBuilder();
         alertMessage.append("Preavisos de fin de contrato:\n\n");
@@ -78,7 +79,7 @@ public class InitialChecks {
     }
 
     public static void alertByContractNewVersionWithPendingIDC(Stage primaryStage) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         List<IDCControlDTO> idcControlDTOList = new ArrayList<>();
 
         ApplicationMainController applicationMainController = new ApplicationMainController();

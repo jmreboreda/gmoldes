@@ -1,6 +1,7 @@
 package gmoldes.components.contract.new_contract.controllers;
 
 import com.lowagie.text.DocumentException;
+import gmoldes.ApplicationConstants;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.ContractConstants;
@@ -195,7 +196,7 @@ public class NewContractMainController extends VBox {
 
             pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(initialContractDataToContractAgent);
 
-            String attachedFileName = initialContractDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION);
+            String attachedFileName = initialContractDataToContractAgent.toFileName().concat(ApplicationConstants.PDF_EXTENSION);
 
             Boolean documentToSendIsOpen = verifyDocumentStatus(attachedFileName);
             if(documentToSendIsOpen){
@@ -252,20 +253,20 @@ public class NewContractMainController extends VBox {
 
         pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(initialContractDataToContractAgent);
 
-        if(Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_LINUX)) {
+        if(ApplicationConstants.OPERATING_SYSTEM.toLowerCase().contains(ApplicationConstants.OS_LINUX)) {
             try {
                 String[] command = {"sh", "-c", "xdg-open " + pathOut};
                 pdfViewerProcess = Runtime.getRuntime().exec(command);
             } catch (IOException e) {
-                System.out.println("No se ha podido abrir el documento \"" + initialContractDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+                System.out.println("No se ha podido abrir el documento \"" + initialContractDataToContractAgent.toFileName().concat(ApplicationConstants.PDF_EXTENSION) + "\"");
                 e.printStackTrace();
             }
-        }else if (Parameters.OPERATING_SYSTEM.toLowerCase().contains(Parameters.OS_WINDOWS)){
+        }else if (ApplicationConstants.OPERATING_SYSTEM.toLowerCase().contains(ApplicationConstants.OS_WINDOWS)){
             String[] command = {"cmd","/c","start","\"visor\"","\"" + pathOut + "\""};
             try {
                 pdfViewerProcess = Runtime.getRuntime().exec(command);
             } catch (IOException e) {
-                System.out.println("No se ha podido abrir el documento \"" + initialContractDataToContractAgent.toFileName().concat(Parameters.PDF_EXTENSION) + "\"");
+                System.out.println("No se ha podido abrir el documento \"" + initialContractDataToContractAgent.toFileName().concat(ApplicationConstants.PDF_EXTENSION) + "\"");
                 e.printStackTrace();
             }
         }
@@ -665,7 +666,7 @@ public class NewContractMainController extends VBox {
 
     private Boolean verifyDocumentStatus(String attachedFileName) {
 
-        if (Parameters.OPERATING_SYSTEM.contains(Parameters.OS_LINUX)) {
+        if (ApplicationConstants.OPERATING_SYSTEM.contains(ApplicationConstants.OS_LINUX)) {
 
             return SystemProcesses.isRunningInLinuxAndContains(attachedFileName.substring(0, 40), attachedFileName.substring(41, 60));
         }
