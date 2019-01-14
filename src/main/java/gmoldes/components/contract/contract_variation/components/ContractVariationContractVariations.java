@@ -16,12 +16,6 @@ public class ContractVariationContractVariations extends VBox {
 
     private Parent parent;
 
-//    String cssLayout = "-fx-border-color: lightgray;\n" +
-//            "-fx-border-width: 0.5;\n" +
-//            "-fx-border-insets: 5;\n" +
-//            "-fx-border-width: 3;\n";
-
-
     @FXML
     private ToggleGroup contractVariationToggleGroup;
     @FXML
@@ -43,8 +37,6 @@ public class ContractVariationContractVariations extends VBox {
 
     @FXML
     private void initialize(){
-
-//        this.setStyle(cssLayout);
 
     }
 
