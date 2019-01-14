@@ -98,7 +98,7 @@ public class ContractVariationMainController extends VBox {
 
     @FXML
     private void initialize() {
-
+        
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
 

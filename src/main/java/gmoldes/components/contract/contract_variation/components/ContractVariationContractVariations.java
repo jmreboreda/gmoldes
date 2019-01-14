@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -13,6 +15,12 @@ public class ContractVariationContractVariations extends VBox {
     private static final String CONTRACT_VARIATION_CONTRACT_VARIATIONS_FXML = "/fxml/contract_variations/contractvariation_contractvariations.fxml";
 
     private Parent parent;
+
+//    String cssLayout = "-fx-border-color: lightgray;\n" +
+//            "-fx-border-width: 0.5;\n" +
+//            "-fx-border-insets: 5;\n" +
+//            "-fx-border-width: 3;\n";
+
 
     @FXML
     private ToggleGroup contractVariationToggleGroup;
@@ -35,6 +43,8 @@ public class ContractVariationContractVariations extends VBox {
 
     @FXML
     private void initialize(){
+
+//        this.setStyle(cssLayout);
 
     }
 

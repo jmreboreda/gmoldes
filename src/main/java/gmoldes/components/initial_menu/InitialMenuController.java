@@ -70,6 +70,7 @@ public class InitialMenuController extends AnchorPane {
         Scene scene = new Scene(newContractController);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage newContractStage = new Stage();
+        newContractStage.setResizable(false);
         newContractStage.setTitle("Nuevo contrato de trabajo");
         newContractStage.setScene(scene);
         newContractStage.initOwner(primaryStage);
@@ -82,6 +83,7 @@ public class InitialMenuController extends AnchorPane {
         Scene scene = new Scene(timeRecordController);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage timeRecordStage = new Stage();
+        timeRecordStage.setResizable(false);
         timeRecordStage.setTitle("Registro horario");
         timeRecordStage.setScene(scene);
         timeRecordStage.initOwner(primaryStage);
@@ -94,6 +96,7 @@ public class InitialMenuController extends AnchorPane {
         Scene scene = new Scene(contractVariationMainController);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage contractVariationStage = new Stage();
+        contractVariationStage.setResizable(false);
         contractVariationStage.setTitle("Variaciones de contratos de trabajo");
         contractVariationStage.setScene(scene);
         contractVariationStage.initOwner(primaryStage);
@@ -106,6 +109,7 @@ public class InitialMenuController extends AnchorPane {
         Scene scene = new Scene(clientInvoiceCheckListMainController);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage contractVariationStage = new Stage();
+        contractVariationStage.setResizable(false);
         contractVariationStage.setTitle("Relación de empresas y empresarios para control de envío de facturas de la actividad");
         contractVariationStage.setScene(scene);
         contractVariationStage.initOwner(primaryStage);
@@ -118,6 +122,7 @@ public class InitialMenuController extends AnchorPane {
         Scene scene = new Scene(payrollCheckListMainController);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage contractVariationStage = new Stage();
+        contractVariationStage.setResizable(false);
         contractVariationStage.setTitle("Relación de personas para control de nóminas");
         contractVariationStage.setScene(scene);
         contractVariationStage.initOwner(primaryStage);

@@ -8,8 +8,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
-   <StackPane>
+   <StackPane style="-fx-border-color: #D3D3D3;">
       <children>
          <Group fx:id="contractVariationsGroup">
             <children>
@@ -17,13 +18,16 @@
                 <ContractVariationContractConversion fx:id="contractVariationContractConversion" />
                 <ContractVariationContractExtinction fx:id="contractVariationContractExtinction" />
             </children>
+            <StackPane.margin>
+               <Insets bottom="10.0" top="10.0" />
+            </StackPane.margin>
          </Group>
       </children>
       <VBox.margin>
-         <Insets left="10.0" />
+         <Insets left="5.0" right="7.0" top="5.0" />
       </VBox.margin>
    </StackPane>
-   <padding>
-      <Insets top="10.0" />
-   </padding>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </fx:root>
