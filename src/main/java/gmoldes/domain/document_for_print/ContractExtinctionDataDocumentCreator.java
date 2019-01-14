@@ -1,6 +1,7 @@
 package gmoldes.domain.document_for_print;
 
 import com.lowagie.text.DocumentException;
+import gmoldes.ApplicationConstants;
 import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.contract_variation.controllers.ContractVariationMainController;
 import gmoldes.components.contract.contract_variation.forms.ContractVariationDataSubfolder;
@@ -45,7 +46,7 @@ public class ContractExtinctionDataDocumentCreator {
 
     public ContractDataToContractsAgent createContractExtinctionDataDocumentForContractsAgent(String publicNotes){
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
         ContractFullDataDTO contractFullDataDTO = retrieveContractFullData();
 
@@ -237,7 +238,7 @@ public class ContractExtinctionDataDocumentCreator {
         final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
         String temporalDir = maybePath.get().toString();
 
-        Path pathToContractDataSubfolder = Paths.get(Parameters.USER_HOME, temporalDir, contractExtinctionDataSubfolder.toFileName().concat(Parameters.PDF_EXTENSION));
+        Path pathToContractDataSubfolder = Paths.get(ApplicationConstants.USER_HOME, temporalDir, contractExtinctionDataSubfolder.toFileName().concat(ApplicationConstants.PDF_EXTENSION));
         try {
             Files.createDirectories(pathToContractDataSubfolder.getParent());
             pathOut = ContractVariationDataSubfolderPDFCreator.createContractVariationDataSubfolderPDF(contractExtinctionDataSubfolder, pathToContractDataSubfolder);
@@ -254,7 +255,7 @@ public class ContractExtinctionDataDocumentCreator {
         final Optional<Path> maybePath = OSUtils.TemporalFolderUtils.tempFolder();
         String temporalDir = maybePath.get().toString();
 
-        Path pathToContractDataToContractAgent = Paths.get(Parameters.USER_HOME, temporalDir, contractDataToContractsAgent.toFileName().concat("_gst.pdf"));
+        Path pathToContractDataToContractAgent = Paths.get(ApplicationConstants.USER_HOME, temporalDir, contractDataToContractsAgent.toFileName().concat("_gst.pdf"));
         try {
             Files.createDirectories(pathToContractDataToContractAgent.getParent());
             pathOut = ContractDataToContractAgentPDFCreator.createContractDataToContractAgentPDF(contractDataToContractsAgent, pathToContractDataToContractAgent);

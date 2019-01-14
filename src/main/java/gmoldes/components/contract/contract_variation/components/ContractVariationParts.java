@@ -1,5 +1,6 @@
 package gmoldes.components.contract.contract_variation.components;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
@@ -44,7 +45,7 @@ public class ContractVariationParts extends VBox {
     @FXML
     public void initialize() {
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         inForceDate.setConverter(new LocalDateStringConverter(dateFormatter, null));
         inForceDate.setValue(LocalDate.now());
         inForceDate.setMouseTransparent(true);

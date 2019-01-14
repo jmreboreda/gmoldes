@@ -1,5 +1,6 @@
 package gmoldes.utilities.TableCell;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
 import gmoldes.utilities.Parameters;
 import javafx.application.Platform;
@@ -45,7 +46,7 @@ public class DatePickerCell<S, T> extends TableCell<ContractScheduleDayDTO, Loca
 
         super.updateItem(item, empty);
 
-        DateTimeFormatter smp = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter smp = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
         if (null == this.datePicker) {
             System.out.println("datePicker is NULL");
@@ -127,7 +128,7 @@ public class DatePickerCell<S, T> extends TableCell<ContractScheduleDayDTO, Loca
         LocalDate date = datePicker.getValue();
         int index = getIndex();
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         setText(dateFormatter.format(date));
         commitEdit(date);
 

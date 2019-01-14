@@ -28,7 +28,10 @@
       </VBox.margin></ContractVariationHeader>
       <ContractVariationParts fx:id="contractVariationParts" />
       <ContractVariationContractData fx:id="contractVariationContractData" />
-      <ContractVariationTypes fx:id="contractVariationTypes" />
+      <ContractVariationTypes fx:id="contractVariationTypes">
+      <VBox.margin>
+         <Insets top="5.0" />
+      </VBox.margin></ContractVariationTypes>
       <ContractVariationContractVariations fx:id="contractVariationContractVariations" />
       <ContractVariationActionComponents fx:id="contractVariationActionComponents" />
 </fx:root>

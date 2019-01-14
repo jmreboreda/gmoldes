@@ -1,20 +1,19 @@
 package gmoldes.components.contract.contract_variation.components;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
-import gmoldes.utilities.Parameters;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TitledPane;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
-public class ContractVariationContractData extends VBox {
+public class ContractVariationContractData extends TitledPane {
 
-    private static final String CONTRACT_VARIATION_CONTRACT_DATA_FXML = "/fxml/contract_variations/contractvariation_data.fxml";
+    private static final String CONTRACT_VARIATION_CONTRACT_DATA_FXML = "/fxml/contract_variations/contractvariation_data_alternative.fxml";
 
     private Parent parent;
 
@@ -120,7 +119,7 @@ public class ContractVariationContractData extends VBox {
     }
 
     public void setAllContractData(ContractFullDataDTO contractFullDataDTO){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
         this.getContractNumber().setText(contractFullDataDTO.getContractNewVersion().getContractNumber().toString());
 

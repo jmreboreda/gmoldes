@@ -1,6 +1,7 @@
 package gmoldes.components.timerecord.components;
 
 import com.lowagie.text.DocumentException;
+import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.ContractConstants;
@@ -45,7 +46,7 @@ public class TimeRecordData extends VBox {
     private static final String TIME_RECORD_FXML = "/fxml/time_record/timerecord_data.fxml";
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
     private static final Integer LAST_MONTH_INDEX_IN_MONTHNAME = 11;
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
     private Parent parent;
 

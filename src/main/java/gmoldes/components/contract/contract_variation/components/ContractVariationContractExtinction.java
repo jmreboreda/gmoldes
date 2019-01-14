@@ -1,5 +1,6 @@
 package gmoldes.components.contract.contract_variation.components;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
@@ -49,7 +50,7 @@ public class ContractVariationContractExtinction extends VBox {
     @FXML
     private void initialize(){
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         dateFrom.setConverter(new LocalDateStringConverter(dateFormatter, null));
 
         dateFrom.disableProperty().bind(this.extinctionCauseSelector.valueProperty().isNull());

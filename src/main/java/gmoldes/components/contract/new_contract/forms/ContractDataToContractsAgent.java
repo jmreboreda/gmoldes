@@ -1,5 +1,6 @@
 package gmoldes.components.contract.new_contract.forms;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
@@ -156,7 +157,7 @@ public class ContractDataToContractsAgent {
 
     public String toFileName(){
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Parameters.DEFAULT_DATE_FORMAT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
         LocalDate dateInFileName = getStartDate() != null ? getStartDate() : getEndDate();
 
