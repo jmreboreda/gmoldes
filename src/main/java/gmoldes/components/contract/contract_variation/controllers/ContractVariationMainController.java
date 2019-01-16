@@ -5,14 +5,12 @@ import gmoldes.ApplicationConstants;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.components.*;
-import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
-import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
-import gmoldes.components.contract.contract_variation.events.MessageContractVariationEvent;
+import gmoldes.components.contract.contract_variation.events.*;
 import gmoldes.components.contract.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
+import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
@@ -260,6 +258,7 @@ public class ContractVariationMainController extends VBox {
 
     private void onVariationWorkingDaySelected(MouseEvent event){
         ContractVariationWorkingDay contractVariationWorkingDay =new ContractVariationWorkingDay();
+        contractVariationWorkingDay.setOnOkButton(this::onChangeWorkingDay);
         Scene scene = new Scene(contractVariationWorkingDay);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage contractVariationStage = new Stage();
@@ -279,6 +278,7 @@ public class ContractVariationMainController extends VBox {
 
         contractVariationActionComponents.getOkButton().setDisable(false);
     }
+
     private void onOkButton(MouseEvent evet){
 
         // Contract extinction
@@ -483,6 +483,21 @@ public class ContractVariationMainController extends VBox {
                 Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_NOT_SEND_OK);
             }
         }
+    }
+
+    private void onChangeWorkingDay(WorkScheduleEvent workScheduleEvent){
+
+        Set<WorkDaySchedule> schedule;
+
+        if(workScheduleEvent.getSchedule() != null){
+            schedule = workScheduleEvent.getSchedule();
+            System.out.println("Hay cambios en la jornada de trabajo");
+            return;
+
+            // TODO Important things are missing here!
+        }
+
+        System.out.println("Nihil novum sub sole!");
     }
 
     private void loadContractExtinctionCauseSelector(){

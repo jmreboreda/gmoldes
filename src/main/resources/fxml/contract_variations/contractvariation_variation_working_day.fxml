@@ -67,12 +67,12 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button minHeight="70.0" minWidth="80.0" mnemonicParsing="false" text="Aceptar" textFill="#02430e">
+                  <Button fx:id="okButton" minHeight="70.0" minWidth="80.0" mnemonicParsing="false" text="Aceptar" textFill="#02430e">
                      <HBox.margin>
                         <Insets left="600.0" top="15.0" />
                      </HBox.margin>
                   </Button>
-                  <Button minHeight="70.0" minWidth="80.0" mnemonicParsing="false" text="Salir" textFill="#640000">
+                  <Button fx:id="exitButton" minHeight="70.0" minWidth="80.0" mnemonicParsing="false" text="Salir" textFill="#640000">
                      <HBox.margin>
                         <Insets left="20.0" top="15.0" />
                      </HBox.margin>

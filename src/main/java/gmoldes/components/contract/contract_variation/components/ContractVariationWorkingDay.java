@@ -2,6 +2,7 @@ package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.ContractConstants;
+import gmoldes.components.contract.contract_variation.events.WorkScheduleEvent;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
@@ -12,14 +13,17 @@ import gmoldes.utilities.TableCell.TimeCell;
 import gmoldes.utilities.Utilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 
@@ -45,6 +49,8 @@ public class ContractVariationWorkingDay extends AnchorPane {
 
     private Parent parent;
 
+    private EventHandler<WorkScheduleEvent> workScheduleEventEventHandler;
+
     @FXML
     private TableView<ContractScheduleDayDTO> contract_schedule_table;
     @FXML
@@ -63,6 +69,10 @@ public class ContractVariationWorkingDay extends AnchorPane {
     private TableColumn<ContractScheduleDayDTO, Duration> totalDayHours;
     @FXML
     private TextInput hoursWorkWeek;
+    @FXML
+    private Button okButton;
+    @FXML
+    private Button exitButton;
 
 
     public ContractVariationWorkingDay() {
@@ -154,6 +164,8 @@ public class ContractVariationWorkingDay extends AnchorPane {
         }
         ObservableList<ContractScheduleDayDTO> data = FXCollections.observableArrayList(contractScheduleDayDTOList);
         refreshTable(data);
+
+        okButton.setOnMouseClicked(this::onOkButton);
     }
 
     public TableColumn<ContractScheduleDayDTO, DayOfWeek> getDayOfWeek() {
@@ -178,6 +190,11 @@ public class ContractVariationWorkingDay extends AnchorPane {
 
     public TableColumn<ContractScheduleDayDTO, LocalTime> getPmTo() {
         return pmTo;
+    }
+
+    private void onOkButton(MouseEvent event){
+        Set<WorkDaySchedule> schedule = retrieveScheduleWithScheduleDays();
+        this.workScheduleEventEventHandler.handle(new WorkScheduleEvent(schedule));
     }
 
     private void updateTotalWeekHours(TableColumn.CellEditEvent event){
@@ -429,5 +446,10 @@ public class ContractVariationWorkingDay extends AnchorPane {
         }
 
         return schedule;
+    }
+
+    public void setOnOkButton(EventHandler<WorkScheduleEvent> workScheduleEventEventHandler){
+        this.workScheduleEventEventHandler = workScheduleEventEventHandler;
+
     }
 }
