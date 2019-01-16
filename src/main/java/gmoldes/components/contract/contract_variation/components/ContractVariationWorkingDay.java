@@ -2,8 +2,6 @@ package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.ContractConstants;
-import gmoldes.components.contract.contract_variation.controllers.ContractVariationMainController;
-import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
@@ -323,7 +321,11 @@ public class ContractVariationWorkingDay extends AnchorPane {
             }
 
             if(contract_schedule_table.getItems().get(firstEmptyRowNumber -1 ).getDayOfWeek() == null) {
-                firstEmptyRowTarget.setDayOfWeek(selectedItemRow.getDayOfWeek().plus(1));
+                if(selectedItemRow.getDayOfWeek() != null){
+                    firstEmptyRowTarget.setDayOfWeek(selectedItemRow.getDayOfWeek().plus(1));
+                }else{
+                    firstEmptyRowTarget.setDayOfWeek(null);
+                }
             }
         }
 

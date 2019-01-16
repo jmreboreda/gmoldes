@@ -321,7 +321,11 @@ public class ContractSchedule extends AnchorPane {
             }
 
             if(contract_schedule_table.getItems().get(firstEmptyRowNumber -1 ).getDayOfWeek() == null) {
-                firstEmptyRowTarget.setDayOfWeek(selectedItemRow.getDayOfWeek().plus(1));
+                if(selectedItemRow.getDayOfWeek() != null){
+                    firstEmptyRowTarget.setDayOfWeek(selectedItemRow.getDayOfWeek().plus(1));
+                }else{
+                    firstEmptyRowTarget.setDayOfWeek(null);
+                }
             }
         }
 
