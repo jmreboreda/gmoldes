@@ -64,6 +64,10 @@ public class DateInput extends HBox {
         this.labelDate.setText(text);
     }
 
+    public DatePicker getDateInput() {
+        return dateInput;
+    }
+
     public void setOnAction(EventHandler<ActionEvent> eventHandler){
         this.actionEventHandler = eventHandler;
     }

@@ -1,5 +1,6 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
+import gmoldes.App;
 import gmoldes.ApplicationConstants;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
@@ -32,12 +33,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -105,6 +108,7 @@ public class ContractVariationMainController extends VBox {
         contractVariationTypes.setOnDateNotification(this::onDateNotification);
         contractVariationTypes.setOnContractExtinction(this::onContractExtinctionSelected);
         contractVariationTypes.setOnContractExtension(this::onContractExtensionSelected);
+        contractVariationTypes.setOnContractVariationWorkingDay(this::onVariationWorkingDaySelected);
         contractVariationTypes.setOnContractConversion(this::onContractConversionSelected);
 
         // Contract variations types toggleGroup
@@ -252,6 +256,19 @@ public class ContractVariationMainController extends VBox {
         contractVariationContractVariations.getContractVariationContractExtension().getPublicNotes().setText(ContractConstants.NOT_VARIATION_OTHER_CONDITIONS_OF_CONTRACT);
 
         contractVariationActionComponents.getOkButton().setDisable(false);
+    }
+
+    private void onVariationWorkingDaySelected(MouseEvent event){
+        ContractVariationWorkingDay contractVariationWorkingDay =new ContractVariationWorkingDay();
+        Scene scene = new Scene(contractVariationWorkingDay);
+        scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
+        Stage contractVariationStage = new Stage();
+        contractVariationStage.setResizable(false);
+        contractVariationStage.setTitle("Variación de la jornada de trabajo");
+        contractVariationStage.setScene(scene);
+        contractVariationStage.initOwner(this.getScene().getWindow());
+        contractVariationStage.initModality(Modality.APPLICATION_MODAL);
+        contractVariationStage.show();
     }
 
     private void onContractConversionSelected(MouseEvent event){
@@ -561,18 +578,18 @@ public class ContractVariationMainController extends VBox {
         contractVariationContractVariations.getContractVariationContractConversion().getDateTo().setValue(null);
     }
 
-    private EmailDataCreationDTO retrieveDateForEmailCreation(Path path, String attachedFileName, String variationTypeText){
-
-        ClientDTO employerDTO = this.contractVariationParts.getClientSelector().getValue();
-        PersonDTO employeeDTO = this.contractVariationParts.getContractSelector().getValue().getEmployee();
-        return EmailDataCreationDTO.create()
-                .withPath(path)
-                .withFileName(attachedFileName)
-                .withEmployer(employerDTO)
-                .withEmployee(employeeDTO)
-                .withVariationTypeText(variationTypeText)
-                .build();
-    }
+//    private EmailDataCreationDTO retrieveDataForEmailCreation(Path path, String attachedFileName, String variationTypeText){
+//
+//        ClientDTO employerDTO = this.contractVariationParts.getClientSelector().getValue();
+//        PersonDTO employeeDTO = this.contractVariationParts.getContractSelector().getValue().getEmployee();
+//        return EmailDataCreationDTO.create()
+//                .withPath(path)
+//                .withFileName(attachedFileName)
+//                .withEmployer(employerDTO)
+//                .withEmployee(employeeDTO)
+//                .withVariationTypeText(variationTypeText)
+//                .build();
+//    }
 
     private void setDataEditionBlockedAndEnableSendMail() {
 
