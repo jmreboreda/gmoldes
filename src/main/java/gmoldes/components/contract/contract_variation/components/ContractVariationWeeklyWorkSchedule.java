@@ -26,6 +26,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.time.DayOfWeek;
@@ -35,9 +36,9 @@ import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.*;
 
-public class ContractVariationWorkingDay extends AnchorPane {
+public class ContractVariationWeeklyWorkSchedule extends AnchorPane {
 
-    private static final String CONTRACT_VARIATION_WORKING_DAY_FXML = "/fxml/contract_variations/contractvariation_variation_working_day.fxml";
+    private static final String CONTRACT_VARIATION_WORKING_DAY_FXML = "/fxml/contract_variations/contractvariation_weeklyworkschedulevariation.fxml";
 
     private static final String ZERO_HOURS = "00:00";
     private static final Integer DAY_OF_WEEK_COLUMN = 0;
@@ -77,7 +78,7 @@ public class ContractVariationWorkingDay extends AnchorPane {
     private Button exitButton;
 
 
-    public ContractVariationWorkingDay() {
+    public ContractVariationWeeklyWorkSchedule() {
 
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_WORKING_DAY_FXML);
     }
@@ -168,6 +169,7 @@ public class ContractVariationWorkingDay extends AnchorPane {
         refreshTable(data);
 
         okButton.setOnMouseClicked(this::onOkButton);
+        exitButton.setOnMouseClicked(this::onExitButton);
     }
 
     public TableColumn<ContractScheduleDayDTO, DayOfWeek> getDayOfWeek() {
@@ -203,6 +205,12 @@ public class ContractVariationWorkingDay extends AnchorPane {
 
         Set<WorkDaySchedule> schedule = retrieveScheduleWithScheduleDays();
         this.workScheduleEventEventHandler.handle(new WorkScheduleEvent(schedule));
+    }
+
+    private void onExitButton(MouseEvent event){
+        Stage stage = (Stage) this.getScene().getWindow();
+        stage.close();
+        this.workScheduleEventEventHandler.handle(new WorkScheduleEvent(null));
     }
 
     private void updateTotalWeekHours(TableColumn.CellEditEvent event){

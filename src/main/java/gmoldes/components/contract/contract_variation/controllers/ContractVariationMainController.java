@@ -18,8 +18,6 @@ import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
 import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
-import gmoldes.domain.email.EmailDataCreationDTO;
-import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
@@ -94,6 +92,8 @@ public class ContractVariationMainController extends VBox {
     @FXML
     private ContractVariationContractVariations contractVariationContractVariations;
     @FXML
+    private ContractVariationWeeklyWorkScheduleDuration contractVariationWeeklyWorkScheduleDuration;
+    @FXML
     private ContractVariationActionComponents contractVariationActionComponents;
 
 
@@ -138,6 +138,7 @@ public class ContractVariationMainController extends VBox {
 
         contractVariationContractVariations.getContractVariationContractExtinction().getContractExtinctionGroup().visibleProperty().bind(this.contractVariationTypes.getRbContractExtinction().selectedProperty());
         contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionGroup().visibleProperty().bind(this.contractVariationTypes.getRbContractExtension().selectedProperty());
+        contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkScheduleGroup().visibleProperty().bind(this.contractVariationTypes.getRbWeeklyWorkHoursVariation().selectedProperty());
         contractVariationContractVariations.getContractVariationContractConversion().getContractConversionGroup().visibleProperty().bind(this.contractVariationTypes.getRbContractConversion().selectedProperty());
 
         contractVariationContractVariations.getContractVariationContractExtension().getDateTo().valueProperty().addListener((ov, oldValue, newValue) -> setContractExtensionDuration(newValue));
@@ -257,9 +258,9 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onVariationWorkingDaySelected(MouseEvent event){
-        ContractVariationWorkingDay contractVariationWorkingDay =new ContractVariationWorkingDay();
-        contractVariationWorkingDay.setOnOkButton(this::onChangeWorkingDay);
-        Scene scene = new Scene(contractVariationWorkingDay);
+        ContractVariationWeeklyWorkSchedule contractVariationWeeklyWorkSchedule =new ContractVariationWeeklyWorkSchedule();
+        contractVariationWeeklyWorkSchedule.setOnOkButton(this::onChangeWorkingDay);
+        Scene scene = new Scene(contractVariationWeeklyWorkSchedule);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage contractVariationStage = new Stage();
         contractVariationStage.setResizable(false);
@@ -488,6 +489,10 @@ public class ContractVariationMainController extends VBox {
     private void onChangeWorkingDay(WorkScheduleEvent workScheduleEvent){
 
         Set<WorkDaySchedule> schedule;
+
+        if(workScheduleEvent.getSchedule() == null){
+            this.contractVariationTypes.getRbWeeklyWorkHoursVariation().setSelected(false);
+        }
 
         if(workScheduleEvent.getSchedule() != null){
             schedule = workScheduleEvent.getSchedule();
