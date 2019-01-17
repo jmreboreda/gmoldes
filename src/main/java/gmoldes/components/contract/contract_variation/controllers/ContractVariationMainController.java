@@ -516,13 +516,12 @@ public class ContractVariationMainController extends VBox {
 
         String weeklyWorkHoursVariationText;
         if(subsequentWeeklyWorkDuration.compareTo(previousWeeklyWorkDuration) > 0 ){
-            weeklyWorkHoursVariationText = "Ampliación de jornada semanal a ";
+            weeklyWorkHoursVariationText = "Ampliación";
         }else{
-            weeklyWorkHoursVariationText = "Reducción  de jornada semanal a ";
-
+            weeklyWorkHoursVariationText = "Reducción";
         }
 
-        String publicNotes = weeklyWorkHoursVariationText + Utilities.converterDurationToTimeString(subsequentWeeklyWorkDuration) + " horas de trabajo por semana [desde " +
+        String publicNotes = weeklyWorkHoursVariationText + " de jornada de trabajo semanal a " + Utilities.converterDurationToTimeString(subsequentWeeklyWorkDuration) + " horas de trabajo por semana [desde " +
                 Utilities.converterDurationToTimeString(previousWeeklyWorkDuration) + " horas de trabajo por semana]." ;
 
         contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getPublicNotes().setText(publicNotes);
