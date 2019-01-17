@@ -53,7 +53,7 @@ public class ContractConstants {
     public static final String ERROR_INSERTING_NEW_EXTENSION_RECORD_IN_CONTRACT_VARIATION = "Error creando nuevo registro de prórroga de contrato en \"contractvariation\" en la base de datos.";
     public static final String ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT = "Error actualizando la fecha de extinción del contrato en \"initialcontract\" en la base de datos.";
     public static final String ERROR_UPDATING_MODIFICATION_DATE_IN_INITIAL_CONTRACT = "Error actualizando la fecha de modificación del contrato en \"initialcontract\" en la base de datos.";
-    public static final String NO_DATA_HAVE_BEEN_INSERTED = "No se han introducido datos.";
+    public static final String NO_VALID_DATA_HAVE_BEEN_INSERTED = "No se han introducido datos válidos.";
 
     // Extinciones de contratos
     public static final String CONTRACT_EXTINCTION_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT = "Se ha registrado la variación del contrato pero no enviado al gestor.\n ¿Es correcto?";

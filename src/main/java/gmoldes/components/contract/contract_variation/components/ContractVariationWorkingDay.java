@@ -196,7 +196,7 @@ public class ContractVariationWorkingDay extends AnchorPane {
 
     private void onOkButton(MouseEvent event){
         if(hoursWorkWeek.getText().equals(ZERO_HOURS)) {
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.NO_DATA_HAVE_BEEN_INSERTED);
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.NO_VALID_DATA_HAVE_BEEN_INSERTED);
 
             return;
         }
