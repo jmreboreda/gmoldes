@@ -6,6 +6,7 @@ import gmoldes.components.contract.contract_variation.events.WorkScheduleEvent;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
+import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.TableCell.DateCell;
 import gmoldes.utilities.TableCell.DurationCell;
@@ -38,6 +39,7 @@ public class ContractVariationWorkingDay extends AnchorPane {
 
     private static final String CONTRACT_VARIATION_WORKING_DAY_FXML = "/fxml/contract_variations/contractvariation_variation_working_day.fxml";
 
+    private static final String ZERO_HOURS = "00:00";
     private static final Integer DAY_OF_WEEK_COLUMN = 0;
     private static final Integer DATE_COLUMN = 1;
     private static final Integer AM_FROM_COLUMN = 2;
@@ -193,6 +195,12 @@ public class ContractVariationWorkingDay extends AnchorPane {
     }
 
     private void onOkButton(MouseEvent event){
+        if(hoursWorkWeek.getText().equals(ZERO_HOURS)) {
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.NO_DATA_HAVE_BEEN_INSERTED);
+
+            return;
+        }
+
         Set<WorkDaySchedule> schedule = retrieveScheduleWithScheduleDays();
         this.workScheduleEventEventHandler.handle(new WorkScheduleEvent(schedule));
     }
