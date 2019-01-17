@@ -21,6 +21,7 @@ import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
 import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
+import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -43,6 +44,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.text.Collator;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -67,6 +69,7 @@ public class ContractVariationMainController extends VBox {
     private ApplicationMainController applicationMainController = new ApplicationMainController();
     private ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
     private ContractExtensionController contractExtensionController = new ContractExtensionController(this);
+    private WeeklyWorkScheduleVariationControllerOfContract weeklyWorkScheduleVariationControllerOfContract = new WeeklyWorkScheduleVariationControllerOfContract(this);
     private ContractVariationDataSubfolder contractVariationDataSubfolder;
 
 
@@ -494,11 +497,38 @@ public class ContractVariationMainController extends VBox {
 
         if(workScheduleEvent.getSchedule() == null){
             this.contractVariationTypes.getRbWeeklyWorkHoursVariation().setSelected(false);
+
+            return;
         }
 
         if(workScheduleEvent.getSchedule() != null){
             schedule = workScheduleEvent.getSchedule();
-            System.out.println("Hay cambios en la jornada de trabajo");
+
+            ContractFullDataDTO contractFullDataDTO = contractVariationParts.getContractSelector().getValue();
+            String previousWeeklyWorkHours = contractFullDataDTO.getContractNewVersion().getContractJsonData().getWeeklyWorkHours();
+            Duration previousWeeklyWorkDuration = Utilities.converterTimeStringToDuration(previousWeeklyWorkHours);
+
+            Duration subsequentWeeklyWorkDuration = Duration.ZERO;
+            for (WorkDaySchedule workDaySchedule : schedule) {
+                if(workDaySchedule.getDurationHours() != null) {
+                    subsequentWeeklyWorkDuration = subsequentWeeklyWorkDuration.plus(workDaySchedule.getDurationHours());
+                }
+            }
+
+            String weeklyWorkHoursVariationText;
+            if(subsequentWeeklyWorkDuration.compareTo(previousWeeklyWorkDuration) > 0 ){
+                weeklyWorkHoursVariationText = "Ampliación de jornada semanal a ";
+            }else{
+                weeklyWorkHoursVariationText = "Reducción  de jornada semanal a ";
+
+            }
+
+            String publicNotes = weeklyWorkHoursVariationText + Utilities.converterDurationToTimeString(subsequentWeeklyWorkDuration) + " horas de trabajo por semana [desde " +
+                    Utilities.converterDurationToTimeString(previousWeeklyWorkDuration) + " horas de trabajo por semana]." ;
+
+            contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getPublicNotes().setText(publicNotes);
+
+
             return;
 
             // TODO Important things are missing here!
