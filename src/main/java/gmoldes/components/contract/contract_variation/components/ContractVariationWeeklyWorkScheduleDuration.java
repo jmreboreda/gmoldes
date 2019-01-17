@@ -71,7 +71,7 @@ public class ContractVariationWeeklyWorkScheduleDuration extends VBox {
         this.dateTo = dateTo;
     }
 
-    public TextField getContractExtensionDuration() {
+    public TextField getWeeklyWorkSchduleDuration() {
         return weeklyWorkScheduleDuration;
     }
 
@@ -91,7 +91,7 @@ public class ContractVariationWeeklyWorkScheduleDuration extends VBox {
 
         getDateFrom().setValue(null);
         getDateTo().setValue(null);
-        getContractExtensionDuration().setText(null);
+        getWeeklyWorkSchduleDuration().setText(null);
         getPublicNotes().setText("");
     }
 }

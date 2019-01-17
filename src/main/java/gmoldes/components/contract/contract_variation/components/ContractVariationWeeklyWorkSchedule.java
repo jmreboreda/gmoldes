@@ -205,6 +205,9 @@ public class ContractVariationWeeklyWorkSchedule extends AnchorPane {
 
         Set<WorkDaySchedule> schedule = retrieveScheduleWithScheduleDays();
         this.workScheduleEventEventHandler.handle(new WorkScheduleEvent(schedule));
+
+        Stage stage = (Stage) this.getScene().getWindow();
+        stage.close();
     }
 
     private void onExitButton(MouseEvent event){

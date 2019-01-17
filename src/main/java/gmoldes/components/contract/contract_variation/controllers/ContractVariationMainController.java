@@ -142,6 +142,8 @@ public class ContractVariationMainController extends VBox {
         contractVariationContractVariations.getContractVariationContractConversion().getContractConversionGroup().visibleProperty().bind(this.contractVariationTypes.getRbContractConversion().selectedProperty());
 
         contractVariationContractVariations.getContractVariationContractExtension().getDateTo().valueProperty().addListener((ov, oldValue, newValue) -> setContractExtensionDuration(newValue));
+        contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getDateTo().valueProperty().addListener((ov, oldValue, newValue) -> setContractWeeklyWorkScheduleDuration(newValue));
+
 
         // Button actions
         contractVariationActionComponents.setOnOkButton(this::onOkButton);
@@ -532,6 +534,21 @@ public class ContractVariationMainController extends VBox {
                 contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(myColorRED);
             }else{
                 contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(myColorBLACK);
+            }
+        }
+    }
+
+    private void setContractWeeklyWorkScheduleDuration(LocalDate newValueDateTo){
+        if(contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getDateFrom().getValue() != null &&
+                newValueDateTo != null) {
+
+            Long contractWeeklyWorkScheduleDuration = DAYS.between(contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getDateFrom().getValue(), newValueDateTo) + 1L;
+
+            contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkSchduleDuration().setText(contractWeeklyWorkScheduleDuration.toString());
+            if(contractWeeklyWorkScheduleDuration <= 0){
+                contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkSchduleDuration().setStyle(myColorRED);
+            }else{
+                contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkSchduleDuration().setStyle(myColorBLACK);
             }
         }
     }
