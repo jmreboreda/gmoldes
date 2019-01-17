@@ -501,40 +501,34 @@ public class ContractVariationMainController extends VBox {
             return;
         }
 
-        if(workScheduleEvent.getSchedule() != null){
-            schedule = workScheduleEvent.getSchedule();
+        schedule = workScheduleEvent.getSchedule();
 
-            ContractFullDataDTO contractFullDataDTO = contractVariationParts.getContractSelector().getValue();
-            String previousWeeklyWorkHours = contractFullDataDTO.getContractNewVersion().getContractJsonData().getWeeklyWorkHours();
-            Duration previousWeeklyWorkDuration = Utilities.converterTimeStringToDuration(previousWeeklyWorkHours);
+        ContractFullDataDTO contractFullDataDTO = contractVariationParts.getContractSelector().getValue();
+        String previousWeeklyWorkHours = contractFullDataDTO.getContractNewVersion().getContractJsonData().getWeeklyWorkHours();
+        Duration previousWeeklyWorkDuration = Utilities.converterTimeStringToDuration(previousWeeklyWorkHours);
 
-            Duration subsequentWeeklyWorkDuration = Duration.ZERO;
-            for (WorkDaySchedule workDaySchedule : schedule) {
-                if(workDaySchedule.getDurationHours() != null) {
-                    subsequentWeeklyWorkDuration = subsequentWeeklyWorkDuration.plus(workDaySchedule.getDurationHours());
-                }
+        Duration subsequentWeeklyWorkDuration = Duration.ZERO;
+        for (WorkDaySchedule workDaySchedule : schedule) {
+            if(workDaySchedule.getDurationHours() != null) {
+                subsequentWeeklyWorkDuration = subsequentWeeklyWorkDuration.plus(workDaySchedule.getDurationHours());
             }
-
-            String weeklyWorkHoursVariationText;
-            if(subsequentWeeklyWorkDuration.compareTo(previousWeeklyWorkDuration) > 0 ){
-                weeklyWorkHoursVariationText = "Ampliación de jornada semanal a ";
-            }else{
-                weeklyWorkHoursVariationText = "Reducción  de jornada semanal a ";
-
-            }
-
-            String publicNotes = weeklyWorkHoursVariationText + Utilities.converterDurationToTimeString(subsequentWeeklyWorkDuration) + " horas de trabajo por semana [desde " +
-                    Utilities.converterDurationToTimeString(previousWeeklyWorkDuration) + " horas de trabajo por semana]." ;
-
-            contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getPublicNotes().setText(publicNotes);
-
-
-            return;
-
-            // TODO Important things are missing here!
         }
 
-        System.out.println("Nihil novum sub sole!");
+        String weeklyWorkHoursVariationText;
+        if(subsequentWeeklyWorkDuration.compareTo(previousWeeklyWorkDuration) > 0 ){
+            weeklyWorkHoursVariationText = "Ampliación de jornada semanal a ";
+        }else{
+            weeklyWorkHoursVariationText = "Reducción  de jornada semanal a ";
+
+        }
+
+        String publicNotes = weeklyWorkHoursVariationText + Utilities.converterDurationToTimeString(subsequentWeeklyWorkDuration) + " horas de trabajo por semana [desde " +
+                Utilities.converterDurationToTimeString(previousWeeklyWorkDuration) + " horas de trabajo por semana]." ;
+
+        contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getPublicNotes().setText(publicNotes);
+
+        // TODO Important things are missing here!
+
     }
 
     private void loadContractExtinctionCauseSelector(){
