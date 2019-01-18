@@ -4,6 +4,7 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.contract_variation.events.WorkScheduleEvent;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
+import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
 import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
 import gmoldes.utilities.Message;
@@ -199,6 +200,14 @@ public class ContractVariationWeeklyWorkSchedule extends AnchorPane {
     private void onOkButton(MouseEvent event){
         if(hoursWorkWeek.getText().equals(ZERO_HOURS)) {
             Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.NO_VALID_DATA_HAVE_BEEN_INSERTED);
+
+            return;
+        }
+
+        Duration totalWeekWorkHours = Utilities.converterTimeStringToDuration(hoursWorkWeek.getText());
+        if(totalWeekWorkHours.compareTo(ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0) {
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+                    ContractMainControllerConstants.EXCEEDED_MAXIMUM_LEGAL_WEEKLY_HOURS);
 
             return;
         }
@@ -403,16 +412,18 @@ public class ContractVariationWeeklyWorkSchedule extends AnchorPane {
     }
 
     private void refreshTotalWeekHours(){
+
         Duration totalHours = Duration.ZERO;
         for(ContractScheduleDayDTO contractScheduleDayDTO : contract_schedule_table.getItems()){
             totalHours = totalHours.plus(contractScheduleDayDTO.getTotalDayHours());
         }
+
         hoursWorkWeek.setText(Utilities.converterDurationToTimeString(totalHours));
 
-//        if(totalHours != Duration.ZERO) {
-//            final ChangeScheduleDurationEvent changeScheduleDurationEvent = new ChangeScheduleDurationEvent(totalHours);
-//            onChangeScheduleDurationEventHandler.handle(changeScheduleDurationEvent);
-//        }
+        if(totalHours.compareTo(ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0) {
+            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+                    ContractMainControllerConstants.EXCEEDED_MAXIMUM_LEGAL_WEEKLY_HOURS);
+        }
     }
 
     public String getHoursWorkWeek(){
