@@ -264,7 +264,7 @@ public class ContractVariationMainController extends VBox {
 
     private void onVariationWorkingDaySelected(MouseEvent event){
         ContractVariationWeeklyWorkSchedule contractVariationWeeklyWorkSchedule =new ContractVariationWeeklyWorkSchedule();
-        contractVariationWeeklyWorkSchedule.setOnOkButton(this::onChangeWorkingDay);
+        contractVariationWeeklyWorkSchedule.setOnOkButton(this::onChangeWeeklyWorkDuration);
         Scene scene = new Scene(contractVariationWeeklyWorkSchedule);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage contractVariationStage = new Stage();
@@ -328,6 +328,25 @@ public class ContractVariationMainController extends VBox {
         }
 
 
+        // Change of weekly work duration
+        RadioButton rbWeeklyWorkHoursVariation = contractVariationTypes.getRbWeeklyWorkHoursVariation();
+        if(rbWeeklyWorkHoursVariation.isSelected()){
+            WeeklyWorkScheduleVariationControllerOfContract weeklyWorkScheduleVariationControllerOfContract = new WeeklyWorkScheduleVariationControllerOfContract(this);
+            MessageContractVariationEvent messageContractVariationEvent = weeklyWorkScheduleVariationControllerOfContract.executeWeeklyWorkDurationVariationOperations();
+            if (!messageContractVariationEvent.getMessageText().equals(ContractConstants.WEEKLY_WORK_DURATION_VARIATION_PERSISTENCE_OK) &&
+                    !messageContractVariationEvent.getMessageText().isEmpty()) {
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageContractVariationEvent.getMessageText());
+
+                return;
+            }
+
+
+
+            System.out.println("Variación de jornada de trabajo.");
+        }
+
+
+
 //        // Contract conversion
 //        RadioButton rbContractConversion = contractVariationTypes.getRbContractConversion();
 //        if(rbContractConversion.isSelected()) {
@@ -357,9 +376,6 @@ public class ContractVariationMainController extends VBox {
         Stage stage = (Stage) contractVariationParts.getScene().getWindow();
         stage.close();
     }
-
-
-
 
     private void onViewPDFButton(MouseEvent event){
 
@@ -491,12 +507,13 @@ public class ContractVariationMainController extends VBox {
         }
     }
 
-    private void onChangeWorkingDay(WorkScheduleEvent workScheduleEvent){
+    private void onChangeWeeklyWorkDuration(WorkScheduleEvent workScheduleEvent){
 
         Set<WorkDaySchedule> schedule;
 
         if(workScheduleEvent.getSchedule() == null){
             this.contractVariationTypes.getRbWeeklyWorkHoursVariation().setSelected(false);
+            contractVariationActionComponents.getOkButton().setDisable(true);
 
             return;
         }
@@ -526,8 +543,7 @@ public class ContractVariationMainController extends VBox {
 
         contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getPublicNotes().setText(publicNotes);
 
-        // TODO Important things are missing here!
-
+        contractVariationActionComponents.getOkButton().setDisable(false);
     }
 
     private void loadContractExtinctionCauseSelector(){

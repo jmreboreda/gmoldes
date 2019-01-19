@@ -55,10 +55,10 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
     }
 
 
-    public MessageContractVariationEvent executeContractExtensionOperations(){
+    public MessageContractVariationEvent executeWeeklyWorkDurationVariationOperations(){
 
         // 1. Verify correct contract extension data
-        MessageContractVariationEvent messageContractVariationEvent = verifyIsCorrectContractExtensionData();
+        MessageContractVariationEvent messageContractVariationEvent = verifyIsCorrectWeeklyWorkDurationVariationData();
         if(!messageContractVariationEvent.getMessageText().equals(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED)){
 
             return messageContractVariationEvent;
@@ -66,7 +66,7 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
 
         // 2.Verify the notification period to the Labor Administration
         LocalDate effectDateRequestedForContractVariation = contractVariationMainController.getContractVariationContractVariations()
-                .getContractVariationContractExtension().getDateFrom().getValue();
+                .getContractVariationWeeklyWorkScheduleDuration().getDateFrom().getValue();
 
         CompatibleVariationEvent dateAdministrationCompatibleEvent = dateToNotifyContractVariationToAdministrationIsCorrect(effectDateRequestedForContractVariation);
         if(dateAdministrationCompatibleEvent.getErrorContractVariationMessage().equals(ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION)){
@@ -79,7 +79,7 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
         }
 
         // 3. Check exist incompatible operations
-        CompatibleVariationEvent compatibleVariationEvent = checkExistenceIncompatibleVariationsForContractExtension();
+        CompatibleVariationEvent compatibleVariationEvent = checkExistenceIncompatibleVariationsForWeeklyWorkDurationVariation();
         if(compatibleVariationEvent.getErrorContractVariationMessage() != null){
 
             return new MessageContractVariationEvent(compatibleVariationEvent.getErrorContractVariationMessage(),null);
@@ -121,7 +121,7 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
         return new MessageContractVariationEvent(ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK,null);
     }
 
-    private MessageContractVariationEvent verifyIsCorrectContractExtensionData(){
+    private MessageContractVariationEvent verifyIsCorrectWeeklyWorkDurationVariationData(){
 
         if(contractVariationMainController.getContractVariationTypes().getDateNotification().getDate() == null){
 
@@ -133,20 +133,22 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
             return new MessageContractVariationEvent(ContractConstants.HOUR_NOTIFICATION_NOT_ESTABLISHED, null);
         }
 
-        if(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue() == null){
+        if(contractVariationMainController.getContractVariationContractVariations().getContractVariationWeeklyWorkScheduleDuration().getDateFrom().getValue() == null){
 
-            return new MessageContractVariationEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_FROM, null);
+            return new MessageContractVariationEvent(ContractConstants.ERROR_WEEKLY_WORK_DURATION_VARIATION_DATE_FROM, null);
         }
 
-        if(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue() == null){
+//        if(contractVariationMainController.getContractVariationContractVariations().getContractVariationWeeklyWorkScheduleDuration().getDateTo().getValue() == null){
+//
+//            return new MessageContractVariationEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_TO, null);
+//        }
 
-            return new MessageContractVariationEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_DATE_TO, null);
-        }
+        if(contractVariationMainController.getContractVariationContractVariations().getContractVariationWeeklyWorkScheduleDuration().getDateTo().getValue() != null) {
+            if (ChronoUnit.DAYS.between(contractVariationMainController.getContractVariationContractVariations().getContractVariationWeeklyWorkScheduleDuration().getDateFrom().getValue(),
+                    contractVariationMainController.getContractVariationContractVariations().getContractVariationWeeklyWorkScheduleDuration().getDateTo().getValue()) <= 0) {
 
-        if(ChronoUnit.DAYS.between(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue(),
-                contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue()) <= 0){
-
-            return new MessageContractVariationEvent(ContractConstants.ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES, null);
+                return new MessageContractVariationEvent(ContractConstants.ERROR_WEEKLY_WORK_DURATION_VARIATION_INCOHERENT_DATES, null);
+            }
         }
 
         return new MessageContractVariationEvent(ContractConstants.NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED,null);
@@ -173,31 +175,31 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
                 ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION);
     }
 
-    public CompatibleVariationEvent checkExistenceIncompatibleVariationsForContractExtension() {
+    public CompatibleVariationEvent checkExistenceIncompatibleVariationsForWeeklyWorkDurationVariation() {
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
         Integer contractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
-        LocalDate contractExtensionDateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue();
-        LocalDate contractExtensionDateTo = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue();
+        LocalDate weeklyWorkDurationVariationDateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationWeeklyWorkScheduleDuration().getDateFrom().getValue();
+        LocalDate weeklyWorkDurationVariationDateTo = contractVariationMainController.getContractVariationContractVariations().getContractVariationWeeklyWorkScheduleDuration().getDateTo().getValue();
 
-        // 1. The maximum number of legally permitted extensions is already registered
-        Integer counter = 0;
-        List<ContractVariationDTO> contractVariationDTOList =  applicationMainController.findAllContractVariationByContractNumber(contractNumber);
-        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList){
-            if(contractVariationDTO.getVariationType().equals(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)){
-                counter++;
-            }
-
-            if(counter >= ContractParameters.MAXIMUM_NUMBER_OF_EXTENSIONS_OF_A_CONTRACT) {
-
-                return new CompatibleVariationEvent(
-                        false,
-                        true,
-                        false,
-                        ContractConstants.MAXIMUM_NUMBER_LEGALLY_PERMITTED_EXTENSIONS_IS_ALREADY_REGISTERED);
-            }
-        }
+//        // 1. The maximum number of legally permitted extensions is already registered
+//        Integer counter = 0;
+//        List<ContractVariationDTO> contractVariationDTOList =  applicationMainController.findAllContractVariationByContractNumber(contractNumber);
+//        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList){
+//            if(contractVariationDTO.getVariationType().equals(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)){
+//                counter++;
+//            }
+//
+//            if(counter >= ContractParameters.MAXIMUM_NUMBER_OF_EXTENSIONS_OF_A_CONTRACT) {
+//
+//                return new CompatibleVariationEvent(
+//                        false,
+//                        true,
+//                        false,
+//                        ContractConstants.MAXIMUM_NUMBER_LEGALLY_PERMITTED_EXTENSIONS_IS_ALREADY_REGISTERED);
+//            }
+//        }
 
         // 2. Exceeded the number of months of maximum duration of the initial contract plus its extensions
         List<ContractNewVersionDTO> contractNewVersionDTOList = applicationMainController.findHistoryOfContractByContractNumber(contractNumber);
@@ -206,7 +208,7 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
 
         if(contractNewVersionDTOList.size() == 1){
             numberDaysOfContractDuration = ChronoUnit.DAYS.between(contractNewVersionDTOList.get(0).getStartDate(), contractNewVersionDTOList.get(0).getExpectedEndDate()) + 1;
-            numberDaysOfContractDuration = numberDaysOfContractDuration + ChronoUnit.DAYS.between(contractExtensionDateFrom, contractExtensionDateTo) + 1;
+            numberDaysOfContractDuration = numberDaysOfContractDuration + ChronoUnit.DAYS.between(weeklyWorkDurationVariationDateFrom, weeklyWorkDurationVariationDateTo) + 1;
         }
         else {
 
@@ -237,8 +239,8 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
 
         // 3. The initial date of the extension of a contract can not be earlier than the end date established for it
         LocalDate contractExpectedEndDate = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate();
-        if(contractExtensionDateFrom.isBefore(contractExpectedEndDate) ||
-                contractExtensionDateFrom.equals(contractExpectedEndDate)){
+        if(weeklyWorkDurationVariationDateFrom.isBefore(contractExpectedEndDate) ||
+                weeklyWorkDurationVariationDateFrom.equals(contractExpectedEndDate)){
 
             return new CompatibleVariationEvent(
                     false,
@@ -254,8 +256,8 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
             for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
                 if (typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
                         typesContractVariationsDTO.getExtension() &&
-                        (contractExtensionDateFrom.isBefore(contractVariationDTO.getExpectedEndDate())) ||
-                        contractExtensionDateFrom.equals(contractVariationDTO.getExpectedEndDate())){
+                        (weeklyWorkDurationVariationDateFrom.isBefore(contractVariationDTO.getExpectedEndDate())) ||
+                        weeklyWorkDurationVariationDateFrom.equals(contractVariationDTO.getExpectedEndDate())){
 
                     return new CompatibleVariationEvent(
                             false,

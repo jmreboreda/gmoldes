@@ -204,8 +204,7 @@ public class ContractVariationWeeklyWorkSchedule extends AnchorPane {
             return;
         }
 
-        Duration totalWeekWorkHours = Utilities.converterTimeStringToDuration(hoursWorkWeek.getText());
-        if(totalWeekWorkHours.compareTo(ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0) {
+        if(verifyExceededMaximumLegalWeeklyHours()){
             Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractMainControllerConstants.EXCEEDED_MAXIMUM_LEGAL_WEEKLY_HOURS);
 
@@ -420,7 +419,7 @@ public class ContractVariationWeeklyWorkSchedule extends AnchorPane {
 
         hoursWorkWeek.setText(Utilities.converterDurationToTimeString(totalHours));
 
-        if(totalHours.compareTo(ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0) {
+        if(verifyExceededMaximumLegalWeeklyHours()){
             Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractMainControllerConstants.EXCEEDED_MAXIMUM_LEGAL_WEEKLY_HOURS);
         }
@@ -489,6 +488,17 @@ public class ContractVariationWeeklyWorkSchedule extends AnchorPane {
         }
 
         return schedule;
+    }
+
+    private Boolean verifyExceededMaximumLegalWeeklyHours(){
+
+        Duration totalWeekWorkHours = Utilities.converterTimeStringToDuration(hoursWorkWeek.getText());
+        if(totalWeekWorkHours.compareTo(ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0) {
+
+            return true;
+        }
+
+        return false;
     }
 
     public void setOnOkButton(EventHandler<WorkScheduleEvent> workScheduleEventEventHandler){
