@@ -78,6 +78,13 @@ public class InitialChecks {
         }
     }
 
+    public static void alertOfVariationsOfWorkingDayScheduleWithEndDate(){
+
+        ApplicationMainController applicationMainController = new ApplicationMainController();
+        List<TraceabilityContractDocumentationDTO>  traceabilityContractDocumentationDTOList = applicationMainController.findTraceabilityForAllContractWithWorkingDayScheduleWithEndDate();
+
+    }
+
     public static void alertByContractNewVersionWithPendingIDC(Stage primaryStage) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         List<IDCControlDTO> idcControlDTOList = new ArrayList<>();
