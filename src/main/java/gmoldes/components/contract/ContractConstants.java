@@ -89,4 +89,9 @@ public class ContractConstants {
     public static final String CONTRACT_EXTENSION_OPERATION_ABANDONED = "Se ha abandonado la operación de prórroga del contrato.";
     public static final String ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA = "Ha ocurrido un error al pesistir la trazabilidad del contrato en \"traceability_contract_documentation\".";
 
+    // Variaciones de jornada
+    public static final String ERROR_EXCEEDED_DURATION_CONTRACT = "La fecha final de la variación de jornada sobrepasa la duración del contrato.";
+    public static final String CONTRACT_WEEKLY_WORK_SCHEDULE_VARIATION_ABANDONED ="Se ha abandonado la operación de variación de jornada de trabajo.";
+    public static final String ERROR_INSERTING_NEW_WEEKLY_WORK_SCHEDULE_VARIATION = "Error creando nuevo registro de variación de jornada de trabajo en \"contractvariation\" en la base de datos.";
+
 }

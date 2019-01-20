@@ -24,7 +24,7 @@
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin>
                               </Label>
-                              <DatePicker fx:id="dateFrom" prefHeight="30.0" prefWidth="140.0">
+                              <DatePicker fx:id="dateFrom" editable="false" prefHeight="30.0" prefWidth="140.0">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin>
@@ -34,7 +34,7 @@
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin>
                               </Label>
-                              <DatePicker fx:id="dateTo" prefHeight="30.0" prefWidth="140.0">
+                              <DatePicker fx:id="dateTo" editable="false" prefHeight="30.0" prefWidth="140.0">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin>
@@ -44,7 +44,7 @@
                                     <Insets left="10.0" right="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="weeklyWorkScheduleDuration" alignment="CENTER" maxWidth="70.0" prefHeight="30.0" />
+                              <TextField fx:id="weeklyWorkScheduleDuration" alignment="CENTER" editable="false" maxWidth="70.0" prefHeight="30.0" />
                               <Label prefHeight="31.0" text="días">
                                  <HBox.margin>
                                     <Insets left="10.0" />

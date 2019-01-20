@@ -163,12 +163,14 @@ public class ContractExtensionController{
                     false,
                     true,
                     false,
+                    false,
                     "");
         }
 
         return new CompatibleVariationEvent(
                 false,
                 true,
+                false,
                 false,
                 ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION);
     }
@@ -194,6 +196,7 @@ public class ContractExtensionController{
                 return new CompatibleVariationEvent(
                         false,
                         true,
+                        false,
                         false,
                         ContractConstants.MAXIMUM_NUMBER_LEGALLY_PERMITTED_EXTENSIONS_IS_ALREADY_REGISTERED);
             }
@@ -230,6 +233,7 @@ public class ContractExtensionController{
                     false,
                     true,
                     false,
+                    false,
                     ContractConstants.MAXIMUM_LEGAL_NUMBER_OF_MONTHS_OF_CONTRACT_IS_EXCEEDED);
         }
 
@@ -243,6 +247,7 @@ public class ContractExtensionController{
             return new CompatibleVariationEvent(
                     false,
                     true,
+                    false,
                     false,
                     ContractConstants.INITIAL_DATE_EXTENSION_MUST_BE_IMMEDIATELY_AFTER_CONTRACT_EXPECTED_END_DATE);
         }
@@ -261,12 +266,13 @@ public class ContractExtensionController{
                             false,
                             true,
                             false,
+                            false,
                             ContractConstants.EXIST_PREVIOUS_INCOMPATIBLE_CONTRACT_VARIATION_EXTENSION);
                 }
             }
         }
 
-        return new CompatibleVariationEvent(false, true, false, null);
+        return new CompatibleVariationEvent(false, true, false,false, null);
     }
 
 

@@ -160,10 +160,12 @@ public class ContractExtinctionController{
                     null,
                     null,
                     null,
+                    null,
                     "");
         }
 
         return new CompatibleVariationEvent(
+                null,
                 null,
                 null,
                 null,
@@ -186,6 +188,7 @@ public class ContractExtinctionController{
                     true,
                     null,
                     null,
+                    null,
                     ContractConstants.EXTINCTION_DATE_EXCEEDED_BY_DATE_REQUESTED);
         }
 
@@ -201,6 +204,7 @@ public class ContractExtinctionController{
                             true,
                             null,
                             null,
+                            null,
                             ContractConstants.EXIST_PREVIOUS_CONTRACT_VARIATION_EXTINCTION);
                 }
             }
@@ -212,6 +216,7 @@ public class ContractExtinctionController{
 
             return new CompatibleVariationEvent(
                     true,
+                    null,
                     null,
                     null,
                     ContractConstants.EXTINCTION_DATE_PRIOR_CONTRACT_START_DATE);
@@ -227,12 +232,13 @@ public class ContractExtinctionController{
                     true,
                     null,
                     null,
+                    null,
                     ContractConstants.CONTRACT_VARIATIONS_IN_THE_FUTURE_NOT_ALLOW_EXTINCTION_ON_REQUESTED_DATE);
             }
 
         }
 
-        return new CompatibleVariationEvent(true, false, false, null);
+        return new CompatibleVariationEvent(true, false, false,false, null);
     }
 
     public ContractVariationPersistenceEvent persistContractExtinction(){

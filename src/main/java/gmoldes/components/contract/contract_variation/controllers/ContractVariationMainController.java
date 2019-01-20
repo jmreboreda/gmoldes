@@ -63,6 +63,8 @@ public class ContractVariationMainController extends VBox {
 
     private Process pdfViewerProcess = null;
 
+    private Set<WorkDaySchedule> weeklyWorkScheduleVariation;
+
 
     private Parent parent;
 
@@ -332,7 +334,7 @@ public class ContractVariationMainController extends VBox {
         RadioButton rbWeeklyWorkHoursVariation = contractVariationTypes.getRbWeeklyWorkHoursVariation();
         if(rbWeeklyWorkHoursVariation.isSelected()){
             WeeklyWorkScheduleVariationControllerOfContract weeklyWorkScheduleVariationControllerOfContract = new WeeklyWorkScheduleVariationControllerOfContract(this);
-            MessageContractVariationEvent messageContractVariationEvent = weeklyWorkScheduleVariationControllerOfContract.executeWeeklyWorkDurationVariationOperations();
+            MessageContractVariationEvent messageContractVariationEvent = weeklyWorkScheduleVariationControllerOfContract.executeWeeklyWorkDurationVariationOperations(weeklyWorkScheduleVariation);
             if (!messageContractVariationEvent.getMessageText().equals(ContractConstants.WEEKLY_WORK_DURATION_VARIATION_PERSISTENCE_OK) &&
                     !messageContractVariationEvent.getMessageText().isEmpty()) {
                 Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageContractVariationEvent.getMessageText());
@@ -519,6 +521,7 @@ public class ContractVariationMainController extends VBox {
         }
 
         schedule = workScheduleEvent.getSchedule();
+        weeklyWorkScheduleVariation = schedule;
 
         ContractFullDataDTO contractFullDataDTO = contractVariationParts.getContractSelector().getValue();
         String previousWeeklyWorkHours = contractFullDataDTO.getContractNewVersion().getContractJsonData().getWeeklyWorkHours();
@@ -623,10 +626,12 @@ public class ContractVariationMainController extends VBox {
                     null,
                     null,
                     null,
+                    null,
                     "");
         }
 
         return new CompatibleVariationEvent(
+                null,
                 null,
                 null,
                 null,
