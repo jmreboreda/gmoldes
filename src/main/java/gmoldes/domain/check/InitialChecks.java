@@ -26,6 +26,7 @@ public class InitialChecks {
 
     private static final Logger logger = LoggerFactory.getLogger(InitialChecks.class.getSimpleName());
     private static final String CONTRACT_IN_FORCE_UPDATE_TO = "Contract in force update to ";
+    private static final Integer DAYS_OF_NOTICE_FOR_END_OF_WEEKLY_WORK_DAY = 10;
 
     public static void alertByContractNewVersionExpiration(Stage primaryStage){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
@@ -78,11 +79,17 @@ public class InitialChecks {
         }
     }
 
-    public static void alertOfVariationsOfWorkingDayScheduleWithEndDate(){
+    public static void alertOfWeeklyOfWorkingDayScheduleWithEndDate(){
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
         List<TraceabilityContractDocumentationDTO>  traceabilityContractDocumentationDTOList = applicationMainController.findTraceabilityForAllContractWithWorkingDayScheduleWithEndDate();
-
+        for(TraceabilityContractDocumentationDTO trace : traceabilityContractDocumentationDTOList){
+            if(trace.getExpectedEndDate() != null) {
+                if (ChronoUnit.DAYS.between(LocalDate.now(), trace.getExpectedEndDate()) <= DAYS_OF_NOTICE_FOR_END_OF_WEEKLY_WORK_DAY) {
+                    System.out.println("Contrato " + trace.getContractNumber() + ": variación de jornada a " + ChronoUnit.DAYS.between(LocalDate.now(), trace.getExpectedEndDate()) + " días de extinguirse ...");
+                }
+            }
+        }
     }
 
     public static void alertByContractNewVersionWithPendingIDC(Stage primaryStage) {
