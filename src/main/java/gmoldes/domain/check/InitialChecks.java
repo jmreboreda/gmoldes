@@ -26,7 +26,7 @@ public class InitialChecks {
 
     private static final Logger logger = LoggerFactory.getLogger(InitialChecks.class.getSimpleName());
     private static final String CONTRACT_IN_FORCE_UPDATE_TO = "Contract in force update to ";
-    private static final Integer DAYS_OF_NOTICE_FOR_END_OF_WEEKLY_WORK_DAY = 10;
+    private static final Integer DAYS_OF_NOTICE_FOR_END_OF_WEEKLY_WORK_DAY = 500;
 
     public static void alertByContractNewVersionExpiration(Stage primaryStage){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
@@ -79,16 +79,51 @@ public class InitialChecks {
         }
     }
 
-    public static void alertOfWeeklyOfWorkingDayScheduleWithEndDate(){
+    public static void alertOfWeeklyOfWorkingDayScheduleWithEndDate(Stage primaryStage){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
+        StringBuilder bodyMessage = new StringBuilder();
+        StringBuilder alertMessage = new StringBuilder();
+        alertMessage.append("Variaciones de jornada de trabajo con fecha de finalización:\n\n");
+        Integer counter = 1;
+        String missingExceededText;
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
         List<TraceabilityContractDocumentationDTO>  traceabilityContractDocumentationDTOList = applicationMainController.findTraceabilityForAllContractWithWorkingDayScheduleWithEndDate();
         for(TraceabilityContractDocumentationDTO trace : traceabilityContractDocumentationDTOList){
             if(trace.getExpectedEndDate() != null) {
-                if (ChronoUnit.DAYS.between(LocalDate.now(), trace.getExpectedEndDate()) <= DAYS_OF_NOTICE_FOR_END_OF_WEEKLY_WORK_DAY) {
+                Long daysFromTodayToExpiration = ChronoUnit.DAYS.between(LocalDate.now(), trace.getExpectedEndDate());
+                if (daysFromTodayToExpiration <= DAYS_OF_NOTICE_FOR_END_OF_WEEKLY_WORK_DAY) {
+                    Integer contractNumber = trace.getContractNumber();
+                    InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
+
+                    Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
+                    ClientDTO clientDTO = applicationMainController.findClientById(clientGMId);
+
+                    Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
+                    PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
+
+                    if(daysFromTodayToExpiration >= 0){
+                       missingExceededText = "Faltan ";
+                    }else{
+                        missingExceededText = "Excedido en ";
+                    }
+
+                    bodyMessage.append(counter).append(") ")
+                            .append(clientDTO.toNaturalName()).append(" con ")
+                            .append(workerDTO.toNaturalName())
+                            .append(": vencimiento el día ").append(trace.getExpectedEndDate().format(dateFormatter)).append(".\n")
+                            .append(missingExceededText).append(Math.abs(daysFromTodayToExpiration)).append(" días.").append("\n\n");
+                    counter++;
+
                     System.out.println("Contrato " + trace.getContractNumber() + ": variación de jornada a " + ChronoUnit.DAYS.between(LocalDate.now(), trace.getExpectedEndDate()) + " días de extinguirse ...");
                 }
             }
+        }
+
+        alertMessage.append(bodyMessage);
+
+        if(bodyMessage.length() > 0) {
+            Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Variaciones de jornada de trabajo con fecha de finalización"), alertMessage.toString());
         }
     }
 

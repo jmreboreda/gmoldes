@@ -164,7 +164,7 @@ public class App extends Application {
     private void initialControlProcesses(Stage primaryStage) throws ParseException {
 
         InitialChecks.alertByContractNewVersionWithPendingIDC(primaryStage);
-        InitialChecks.alertOfWeeklyOfWorkingDayScheduleWithEndDate();
+        InitialChecks.alertOfWeeklyOfWorkingDayScheduleWithEndDate(primaryStage);
         InitialChecks.alertByContractNewVersionExpiration(primaryStage);
         InitialChecks.alertByDelaySendingLaborDocumentationToClients(primaryStage);
         InitialChecks.UpdateOldContractVersionInForce();
