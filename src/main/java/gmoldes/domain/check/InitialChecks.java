@@ -5,8 +5,11 @@ import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.controllers.ContractController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.check.dto.IDCControlDTO;
+import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.InitialContractDTO;
+import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.utilities.Message;
@@ -46,13 +49,13 @@ public class InitialChecks {
                     if (daysToEndDate <= CheckConstants.END_OF_CONTRACT_NOTICE_DAYS) {
 
                         Integer contractNumber = traceabilityDTO.getContractNumber();
-                        InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
+                        InitialContractDTO initialContractDTO = ContractService.findInitialContractByContractNumber(contractNumber);
 
                         Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
-                        ClientDTO clientDTO = applicationMainController.findClientById(clientGMId);
+                        ClientDTO clientDTO = ClientService.findClientById(clientGMId);
 
                         Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
-                        PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
+                        PersonDTO workerDTO = PersonService.findPersonById(workerId);
 
                         if (daysToEndDate >= 0) {
                             missingExceededText = "Faltan ";

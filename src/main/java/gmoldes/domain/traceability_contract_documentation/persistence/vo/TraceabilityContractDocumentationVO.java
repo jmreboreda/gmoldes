@@ -28,7 +28,6 @@ import java.sql.Date;
 
 public class TraceabilityContractDocumentationVO implements Serializable{
 
-
         public static final String FIND_ALL_CONTRACT_WITH_PENDING_IDC = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_IDC";
         public static final String FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_END_NOTICE = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_END_NOTICE";
         public static final String FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_DOCUMENTATION_TO_CLIENT = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_DOCUMENTATION_TO_CLIENT";

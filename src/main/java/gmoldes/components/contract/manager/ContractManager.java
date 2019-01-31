@@ -5,7 +5,6 @@ import gmoldes.components.contract.contract_variation.persistence.dao.ContractVa
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
-import gmoldes.components.contract.new_contract.components.ContractSchedule;
 import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDTOVO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
@@ -19,6 +18,7 @@ import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContra
 import gmoldes.domain.traceability_contract_documentation.mapper.MapperTraceabilityContractDocumentationDTOVO;
 import gmoldes.domain.traceability_contract_documentation.persistence.dao.TraceabilityContractDocumentationDAO;
 import gmoldes.domain.traceability_contract_documentation.persistence.vo.TraceabilityContractDocumentationVO;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -353,22 +353,10 @@ public class ContractManager {
         List<ContractVariationDTO> contractVariationDTOList = new ArrayList<>();
         ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
         List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationByContractNumber(contractNumber);
-        MapperContractVariationVODTO mapper = new MapperContractVariationVODTO();
 
         for(ContractVariationVO contractVariationVO : contractVariationVOList) {
 
             ContractVariationDTO contractVariationDTO = MapperContractVariationVODTO.map(contractVariationVO);
-
-//            ContractVariationDTO contractVariationDTO = ContractVariationDTO.create()
-//                    .withContractNumber(contractVariationVO.getContractNumber())
-//                    .withVariationType(contractVariationVO.getVariationType())
-//                    .withStartDate(contractVariationVO.getStartDate().toLocalDate())
-//                    .withExpectedEndDate(contractVariationVO.getExpectedEndDate().toLocalDate())
-//                    .withModificationDate(contractVariationVO.getModificationDate().toLocalDate())
-//                    .withEndingDate(contractVariationVO.getEndingDate().toLocalDate())
-//                    .withContractJsonData(contractVariationVO.getContractJsonData())
-//
-//                    .build();
 
             contractVariationDTOList.add(contractVariationDTO);
         }

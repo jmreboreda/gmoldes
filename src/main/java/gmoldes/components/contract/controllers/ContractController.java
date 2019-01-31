@@ -1,8 +1,12 @@
 package gmoldes.components.contract.controllers;
 
+import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
+import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.domain.contract.dto.ContractDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.contract.dto.InitialContractDTO;
+import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
 
 import java.util.List;
 
@@ -33,5 +37,13 @@ public class ContractController {
     public List<ContractNewVersionDTO> findAllContractsInForceNow(){
 
         return contractManager.findAllContractsInForceNow();
+    }
+
+    public InitialContractDTO findInitialContractByContractNumber(Integer selectedContractNumber){
+
+        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
+        InitialContractVO initialContractVO = initialContractDAO.findInitialContractByContractNumber(selectedContractNumber);
+
+        return MapperInitialContractVODTO.map(initialContractVO);
     }
 }
