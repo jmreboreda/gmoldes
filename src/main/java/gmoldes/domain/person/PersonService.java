@@ -5,11 +5,10 @@ import gmoldes.domain.person.dto.PersonDTO;
 
 public class PersonService {
 
-    public PersonService() {
+    private PersonService() {
     }
 
     private static PersonController personController = new PersonController();
-
 
     public static PersonDTO findPersonById(Integer clientId){
 

@@ -46,4 +46,9 @@ public class ContractController {
 
         return MapperInitialContractVODTO.map(initialContractVO);
     }
+
+    public List<ContractNewVersionDTO> findHistoryOfContractByContractNumber(Integer contractNumber){
+
+        return contractManager.findHistoryOfContractByContractNumber(contractNumber);
+    }
 }

@@ -9,9 +9,7 @@ import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.MapperContractVariationVODTO;
-import gmoldes.domain.contract.mapper.MapperContractVariationVOtoContractNewVersionDTO;
 import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
-import gmoldes.domain.contract.mapper.MapperInitialContractVOtoContractNewVersionDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
@@ -27,23 +25,23 @@ public class ApplicationMainController {
 
     private ApplicationMainManager applicationMainManager = new ApplicationMainManager();
 
-    public List<ContractNewVersionDTO> findHistoryOfContractByContractNumber(Integer contractNumber){
-
-        List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
-
-        InitialContractDAO initialContractDAO =  InitialContractDAO.InitialContractDAOFactory.getInstance();
-        InitialContractVO initialContractVO = initialContractDAO.findInitialContractByContractNumber(contractNumber);
-
-        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
-        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationByContractNumber(contractNumber);
-
-        contractNewVersionDTOList.add(MapperInitialContractVOtoContractNewVersionDTO.map(initialContractVO));
-        for(ContractVariationVO contractVariationVO : contractVariationVOList){
-            contractNewVersionDTOList.add(MapperContractVariationVOtoContractNewVersionDTO.map(contractVariationVO));
-        }
-
-        return contractNewVersionDTOList;
-    }
+//    public List<ContractNewVersionDTO> findHistoryOfContractByContractNumber(Integer contractNumber){
+//
+//        List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
+//
+//        InitialContractDAO initialContractDAO =  InitialContractDAO.InitialContractDAOFactory.getInstance();
+//        InitialContractVO initialContractVO = initialContractDAO.findInitialContractByContractNumber(contractNumber);
+//
+//        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+//        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationByContractNumber(contractNumber);
+//
+//        contractNewVersionDTOList.add(MapperInitialContractVOtoContractNewVersionDTO.map(initialContractVO));
+//        for(ContractVariationVO contractVariationVO : contractVariationVOList){
+//            contractNewVersionDTOList.add(MapperContractVariationVOtoContractNewVersionDTO.map(contractVariationVO));
+//        }
+//
+//        return contractNewVersionDTOList;
+//    }
 
     public List<ClientDTO> findAllActiveClientWithAdvisoryServicesByNamePatternInAlphabeticalOrder(String pattern){
 

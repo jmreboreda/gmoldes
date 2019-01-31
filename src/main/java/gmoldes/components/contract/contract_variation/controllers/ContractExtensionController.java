@@ -13,6 +13,7 @@ import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.MapperJsonScheduleToWorkDaySchedule;
 import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
@@ -203,7 +204,7 @@ public class ContractExtensionController{
         }
 
         // 2. Exceeded the number of months of maximum duration of the initial contract plus its extensions
-        List<ContractNewVersionDTO> contractNewVersionDTOList = applicationMainController.findHistoryOfContractByContractNumber(contractNumber);
+        List<ContractNewVersionDTO> contractNewVersionDTOList = ContractService.findHistoryOfContractByContractNumber(contractNumber);
 
         Long numberDaysOfContractDuration = 0L;
 

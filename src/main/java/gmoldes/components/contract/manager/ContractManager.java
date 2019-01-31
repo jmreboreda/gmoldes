@@ -85,6 +85,24 @@ public class ContractManager {
         return contractScheduleDAO.create(contractScheduleVO);
     }
 
+    public List<ContractNewVersionDTO> findHistoryOfContractByContractNumber(Integer contractNumber){
+
+        List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
+
+        InitialContractDAO initialContractDAO =  InitialContractDAO.InitialContractDAOFactory.getInstance();
+        InitialContractVO initialContractVO = initialContractDAO.findInitialContractByContractNumber(contractNumber);
+
+        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationByContractNumber(contractNumber);
+
+        contractNewVersionDTOList.add(MapperInitialContractVOtoContractNewVersionDTO.map(initialContractVO));
+        for(ContractVariationVO contractVariationVO : contractVariationVOList){
+            contractNewVersionDTOList.add(MapperContractVariationVOtoContractNewVersionDTO.map(contractVariationVO));
+        }
+
+        return contractNewVersionDTOList;
+    }
+
     public List<ContractDTO> findAllContractsOrderedByContractNumberAndVariation(){
         List<ContractDTO> contractDTOList = new ArrayList<>();
         MapperContractVODTO mapper = new MapperContractVODTO();
