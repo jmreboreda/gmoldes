@@ -65,4 +65,9 @@ public class ContractService {
 
         return contractController.findAllDataForContractInForceAtDateByClientId(clientId, date);
     }
+
+    public static List<ContractVariationDTO> findAllContractVariationsAfterDateByContractNumber(Integer contractNumber, LocalDate date){
+
+        return contractController.findAllContractVariationsAfterDateByContractNumber(contractNumber, date);
+    }
 }

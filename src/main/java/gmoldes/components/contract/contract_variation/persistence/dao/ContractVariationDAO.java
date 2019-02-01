@@ -9,7 +9,6 @@ import org.hibernate.SessionFactory;
 import javax.persistence.TypedQuery;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 
 public class ContractVariationDAO {

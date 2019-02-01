@@ -5,8 +5,6 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
-import gmoldes.utilities.Parameters;
-import gmoldes.utilities.Utilities;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,6 +26,7 @@ public class ContractVariationParts extends VBox {
 
     private EventHandler<ClientChangeEvent> actionEventEventHandlerClientSelectorAction;
     private EventHandler<ActionEvent> actionEventEventHandlerContractSelectorAction;
+    private EventHandler<ActionEvent> actionEventEventHandlerDateChange;
 
 
     @FXML
@@ -48,7 +47,8 @@ public class ContractVariationParts extends VBox {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         inForceDate.setConverter(new LocalDateStringConverter(dateFormatter, null));
         inForceDate.setValue(LocalDate.now());
-        inForceDate.setMouseTransparent(true);
+        //inForceDate.setMouseTransparent(true);
+        inForceDate.setOnAction(this::onDateChange);
         client.setOnAction(this::onChangeEmployer);
         contract.setOnAction(this::onChangeEmployee);
     }
@@ -83,7 +83,13 @@ public class ContractVariationParts extends VBox {
     }
 
     private void onChangeEmployee(ActionEvent event){
+
         this.actionEventEventHandlerContractSelectorAction.handle(event);
+    }
+
+    private void onDateChange(ActionEvent event){
+
+        this.actionEventEventHandlerDateChange.handle(event);
     }
 
     public void loadDataInClientSelector(ObservableList clientOS) {
@@ -92,10 +98,17 @@ public class ContractVariationParts extends VBox {
     }
 
     public void setOnClientSelectorAction(EventHandler<ClientChangeEvent> actionEventHandlerClientSelectorAction){
+
         this.actionEventEventHandlerClientSelectorAction = actionEventHandlerClientSelectorAction;
     }
 
     public void setOnContractSelectorAction(EventHandler<ActionEvent> actionEventEventHandlerContractSelectorAction){
+
         this.actionEventEventHandlerContractSelectorAction = actionEventEventHandlerContractSelectorAction;
+    }
+
+    public void setOnDateChange(EventHandler<ActionEvent> actionEventEventHandlerDateChange){
+
+        this.actionEventEventHandlerDateChange = actionEventEventHandlerDateChange;
     }
 }

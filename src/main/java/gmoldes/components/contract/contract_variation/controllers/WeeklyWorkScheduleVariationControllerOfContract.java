@@ -258,8 +258,6 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
 
     private Integer updateLastContractVariation(Integer contractNumber){
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-
         List<ContractVariationDTO> contractVariationDTOList = ContractService.findAllContractVariationByContractNumber(contractNumber);
         if(contractVariationDTOList.isEmpty())
         {

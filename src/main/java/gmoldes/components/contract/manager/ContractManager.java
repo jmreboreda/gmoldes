@@ -594,4 +594,35 @@ public class ContractManager {
 
         return MapperInitialContractDTOToContractNewVersionDTO.mapInitialContractDTOToContractNewVersionDTO(initialContractDTOList);
     }
+
+//    public List<ContractVariationDTO> findContractVariationsWithDateAfterTheCurrentOne(LocalDate date){
+//
+//        List<ContractVariationDTO> contractVariationDTOList = new ArrayList<>();
+//
+//        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+//        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findContractVariationsWithDateAfterTheCurrentOne(date);
+//
+//        for(ContractVariationVO contractVariationVO : contractVariationVOList){
+//
+//            LocalDate expectedEndDate = contractVariationVO.getExpectedEndDate() != null ? contractVariationVO.getExpectedEndDate().toLocalDate() : null;
+//            LocalDate modificationDate = contractVariationVO.getModificationDate() != null ? contractVariationVO.getModificationDate().toLocalDate() : null;
+//            LocalDate endingDate = contractVariationVO.getEndingDate() != null ? contractVariationVO.getEndingDate().toLocalDate() : null;
+//
+//            ContractVariationDTO contractVariationDTO = ContractVariationDTO.create()
+//                    .withId(contractVariationVO.getId())
+//                    .withContractNumber(contractVariationVO.getContractNumber())
+//                    .withVariationType(contractVariationVO.getVariationType())
+//                    .withStartDate(contractVariationVO.getStartDate().toLocalDate())
+//                    .withExpectedEndDate(expectedEndDate)
+//                    .withModificationDate(modificationDate)
+//                    .withEndingDate(endingDate)
+//                    .withContractJsonData(contractVariationVO.getContractJsonData())
+//                    .withContractScheduleJsonData(contractVariationVO.getContractScheduleJsonData())
+//                    .build();
+//
+//            contractVariationDTOList.add(contractVariationDTO);
+//        }
+//
+//        return contractVariationDTOList;
+//    }
 }

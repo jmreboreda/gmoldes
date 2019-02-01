@@ -4,11 +4,11 @@ import gmoldes.App;
 import gmoldes.ApplicationConstants;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.*;
 import gmoldes.components.contract.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
-import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
@@ -109,6 +109,7 @@ public class ContractVariationMainController extends VBox {
         
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
+        contractVariationParts.setOnDateChange(this::clientSelectorLoadData);
 
         contractVariationTypes.setOnDateNotification(this::onDateNotification);
         contractVariationTypes.setOnContractExtinction(this::onContractExtinctionSelected);
@@ -158,7 +159,7 @@ public class ContractVariationMainController extends VBox {
         contractVariationActionComponents.setOnViewPDFButton(this::onViewPDFButton);
         contractVariationActionComponents.setOnSendMailButton(this::onSendMailButton);
 
-        clientSelectorLoadData();
+        clientSelectorLoadData(new ActionEvent());
     }
 
     public ContractVariationParts getContractVariationParts() {
@@ -182,7 +183,7 @@ public class ContractVariationMainController extends VBox {
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_MAIN_FXML);
     }
 
-    private void clientSelectorLoadData() {
+    private void clientSelectorLoadData(ActionEvent event) {
         contractVariationParts.getClientSelector().getItems().clear();
         contractVariationParts.getContractSelector().getItems().clear();
         LocalDate workDate = contractVariationParts.getInForceDate().getValue();

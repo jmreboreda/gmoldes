@@ -63,4 +63,9 @@ public class ContractController {
         return contractManager.findAllContractVariationByContractNumber(contractNumber);
 
     }
+
+    public List<ContractVariationDTO> findAllContractVariationsAfterDateByContractNumber(Integer contractNumber, LocalDate date){
+
+        return contractManager.findAllContractVariationsAfterDateByContractNumber(contractNumber, date);
+    }
 }
