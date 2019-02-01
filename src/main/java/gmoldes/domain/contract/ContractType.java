@@ -1,6 +1,6 @@
-package gmoldes.domain.contract.dto;
+package gmoldes.domain.contract;
 
-public class ContractTypeDTO {
+public class ContractType {
 
     private Integer id;
     private Integer contractCode;
@@ -17,20 +17,20 @@ public class ContractTypeDTO {
     private Boolean isAdminPartnerSimilar;
     private Boolean isInterim;
 
-    public ContractTypeDTO(Integer id,
-                           Integer contractCode,
-                           String contractDescription,
-                           String colloquial,
-                           Boolean isInitialContract,
-                           Boolean isTemporal,
-                           Boolean isUndefined,
-                           Boolean isPartialTime,
-                           Boolean isFullTime,
-                           Boolean isMenuSelectable,
-                           Boolean isDeterminedDuration,
-                           Boolean isSurrogate,
-                           Boolean isAdminPartnerSimilar,
-                           Boolean isInterim) {
+    public ContractType(Integer id,
+                        Integer contractCode,
+                        String contractDescription,
+                        String colloquial,
+                        Boolean isInitialContract,
+                        Boolean isTemporal,
+                        Boolean isUndefined,
+                        Boolean isPartialTime,
+                        Boolean isFullTime,
+                        Boolean isMenuSelectable,
+                        Boolean isDeterminedDuration,
+                        Boolean isSurrogate,
+                        Boolean isAdminPartnerSimilar,
+                        Boolean isInterim) {
         this.id = id;
         this.contractCode = contractCode;
         this.contractDescription = contractDescription;
@@ -156,10 +156,6 @@ public class ContractTypeDTO {
         return isInterim;
     }
 
-    public void setInterim(Boolean interim) {
-        isInterim = interim;
-    }
-
     public String toString(){
         return  getColloquial() + " [ " + getContractDescription() + " ] ";
     }
@@ -184,7 +180,6 @@ public class ContractTypeDTO {
         private Boolean isSurrogate;
         private Boolean isAdminPartnerSimilar;
         private Boolean isInterim;
-
 
         public ContractTypeDTOBuilder withId(Integer id) {
             this.id = id;
@@ -256,9 +251,8 @@ public class ContractTypeDTO {
             return this;
         }
 
-
-        public ContractTypeDTO build() {
-            return new ContractTypeDTO(this.id, this.contractCode, this.contractDescription, this.colloquial, this.isInitialContract, this.isTemporal,
+        public ContractType build() {
+            return new ContractType(this.id, this.contractCode, this.contractDescription, this.colloquial, this.isInitialContract, this.isTemporal,
             this.isUndefined, this.isPartialTime, this.isFullTime, this.isMenuSelectable, this.isDeterminedDuration, this.isSurrogate, this.isAdminPartnerSimilar, this.isInterim);
         }
     }

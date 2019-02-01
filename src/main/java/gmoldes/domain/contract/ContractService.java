@@ -1,15 +1,13 @@
 package gmoldes.domain.contract;
 
-import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
-import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.components.contract.controllers.ContractController;
-import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
-import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
+import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.contract.dto.ContractVariationDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
-import gmoldes.domain.contract.mapper.MapperContractVariationVOtoContractNewVersionDTO;
-import gmoldes.domain.contract.mapper.MapperInitialContractVOtoContractNewVersionDTO;
+import gmoldes.domain.contract.mapper.MapperContractVariationDTOtoContractNewVersionDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ContractService {
@@ -28,17 +26,39 @@ public class ContractService {
 
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractController.findHistoryOfContractByContractNumber(contractNumber);
 
-        InitialContractDAO initialContractDAO =  InitialContractDAO.InitialContractDAOFactory.getInstance();
-        InitialContractVO initialContractVO = initialContractDAO.findInitialContractByContractNumber(contractNumber);
+        InitialContractDTO initialContractDTO = contractController.findInitialContractByContractNumber(contractNumber);
 
-        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
-        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationByContractNumber(contractNumber);
+        List<ContractVariationDTO> contractVariationDTOList = contractController.findAllContractVariationByContractNumber(contractNumber);
 
-        contractNewVersionDTOList.add(MapperInitialContractVOtoContractNewVersionDTO.map(initialContractVO));
-        for(ContractVariationVO contractVariationVO : contractVariationVOList){
-            contractNewVersionDTOList.add(MapperContractVariationVOtoContractNewVersionDTO.map(contractVariationVO));
+        ContractNewVersionDTO initialContractNewVersionDTO = ContractNewVersionDTO.create()
+                .withId(initialContractDTO.getId())
+                .withContractNumber(initialContractDTO.getContractNumber())
+                .withVariationType(initialContractDTO.getVariationType())
+                .withStartDate(initialContractDTO.getStartDate())
+                .withExpectedEndDate(initialContractDTO.getExpectedEndDate())
+                .withModificationDate(initialContractDTO.getModificationDate())
+                .withEndingDate(initialContractDTO.getEndingDate())
+                .withContractJsonData(initialContractDTO.getContractJsonData())
+                .withContractScheduleJsonData(initialContractDTO.getContractScheduleJsonData())
+                .build();
+
+        contractNewVersionDTOList.add(initialContractNewVersionDTO);
+
+        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList){
+            contractNewVersionDTOList.add(MapperContractVariationDTOtoContractNewVersionDTO.map(contractVariationDTO));
         }
 
         return contractNewVersionDTOList;
+    }
+
+    public static List<ContractNewVersionDTO> findAllContractInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+
+        return contractController.findAllContractInForceInPeriod(initialDate, finalDate);
+
+    }
+
+    public static List<ContractFullDataDTO> findAllDataForContractInForceAtDateByClientId(Integer clientId, LocalDate date){
+
+        return contractController.findAllDataForContractInForceAtDateByClientId(clientId, date);
     }
 }

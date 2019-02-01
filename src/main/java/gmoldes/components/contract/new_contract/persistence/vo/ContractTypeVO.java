@@ -38,6 +38,7 @@ public class ContractTypeVO implements Serializable{
     private Boolean isDeterminedDuration;
     private Boolean isSurrogate;
     private Boolean isAdminPartnerSimilar;
+    private Boolean isInterim;
 
     public ContractTypeVO() {
     }
@@ -144,5 +145,13 @@ public class ContractTypeVO implements Serializable{
 
     public void setAdminPartnerSimilar(Boolean adminPartnerSimilar) {
         isAdminPartnerSimilar = adminPartnerSimilar;
+    }
+
+    public Boolean getInterim() {
+        return isInterim;
+    }
+
+    public void setInterim(Boolean interim) {
+        isInterim = interim;
     }
 }

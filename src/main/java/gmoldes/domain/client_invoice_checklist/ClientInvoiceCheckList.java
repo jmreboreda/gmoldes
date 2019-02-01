@@ -1,10 +1,10 @@
 package gmoldes.domain.client_invoice_checklist;
 
 import gmoldes.ApplicationMainController;
+import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client_invoice_checklist.dto.ClientInvoiceCheckListDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.servicegm.dto.ServiceGMDTO;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -108,7 +108,7 @@ public class ClientInvoiceCheckList {
         LocalDate periodInitialDate = LocalDate.of(yearReceived, monthReceived, dayReceived);
         LocalDate periodFinalDate =  LocalDate.of(yearReceived, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        List<ClientDTO> clientDTOList = applicationMainController.findAllClientGMWithInvoicesToClaimInPeriod(periodInitialDate, periodFinalDate);
+        List<ClientDTO> clientDTOList = ClientService.findAllClientGMWithInvoicesToClaimInPeriod(periodInitialDate, periodFinalDate);
         for(ClientDTO clientDTO : clientDTOList){
             String clientFullName = clientDTO.toString();
             String clientSg21Code = clientDTO.getSg21Code();

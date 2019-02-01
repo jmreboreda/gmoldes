@@ -94,7 +94,34 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefHeight="26.0" text="Última variación en este contrato">
+                        <Label prefHeight="26.0" prefWidth="225.0" text="Última variación al dia de la fecha">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="lastVariationAtDateDescription" minWidth="652.0" style="-fx-text-fill: #971e11;">
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Label maxHeight="26.0" text="Fecha">
+                           <HBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="lastVariationAtDateDate" alignment="CENTER" maxWidth="105.0" style="-fx-text-fill: #971e11;">
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label prefHeight="26.0" prefWidth="225.0" text="Última variación en este contrato">
                            <HBox.margin>
                               <Insets top="5.0" />
                            </HBox.margin>
@@ -115,9 +142,6 @@
                            </HBox.margin>
                         </TextField>
                      </children>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>

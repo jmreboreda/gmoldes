@@ -13,7 +13,9 @@ import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
+import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
@@ -185,7 +187,7 @@ public class ContractVariationMainController extends VBox {
         contractVariationParts.getContractSelector().getItems().clear();
         LocalDate workDate = contractVariationParts.getInForceDate().getValue();
         contractVariationContractData.clearAllContractData();
-        List<ClientDTO> clientDTOList = applicationMainController.findAllClientWithContractInForceAtDate(workDate);
+        List<ClientDTO> clientDTOList = ClientService.findAllClientWithContractInForceAtDate(workDate);
 
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
         primaryCollator.setStrength(Collator.PRIMARY);
@@ -265,7 +267,7 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onVariationWorkingDaySelected(MouseEvent event){
-        ContractVariationWeeklyWorkSchedule contractVariationWeeklyWorkSchedule =new ContractVariationWeeklyWorkSchedule();
+        ContractVariationWeeklyWorkSchedule contractVariationWeeklyWorkSchedule = new ContractVariationWeeklyWorkSchedule();
         contractVariationWeeklyWorkSchedule.setOnOkButton(this::onChangeWeeklyWorkDuration);
         Scene scene = new Scene(contractVariationWeeklyWorkSchedule);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
@@ -328,7 +330,6 @@ public class ContractVariationMainController extends VBox {
             return;
 
         }
-
 
         // Change of weekly work duration
         RadioButton rbWeeklyWorkHoursVariation = contractVariationTypes.getRbWeeklyWorkHoursVariation();
@@ -511,8 +512,6 @@ public class ContractVariationMainController extends VBox {
 
     private void onChangeWeeklyWorkDuration(WorkScheduleEvent workScheduleEvent){
 
-        Set<WorkDaySchedule> schedule;
-
         if(workScheduleEvent.getSchedule() == null){
             this.contractVariationTypes.getRbWeeklyWorkHoursVariation().setSelected(false);
             contractVariationActionComponents.getOkButton().setDisable(true);
@@ -520,7 +519,7 @@ public class ContractVariationMainController extends VBox {
             return;
         }
 
-        schedule = workScheduleEvent.getSchedule();
+        Set<WorkDaySchedule> schedule = workScheduleEvent.getSchedule();
         weeklyWorkScheduleVariation = schedule;
 
         ContractFullDataDTO contractFullDataDTO = contractVariationParts.getContractSelector().getValue();
@@ -606,7 +605,7 @@ public class ContractVariationMainController extends VBox {
         }
         contractVariationContractData.clearAllContractData();
 
-        List<ContractFullDataDTO> contractFullDataDTOList = applicationMainController.findAllDataForContractInForceAtDateByClientId(client.getClientId(), selectedDate);
+        List<ContractFullDataDTO> contractFullDataDTOList = ContractService.findAllDataForContractInForceAtDateByClientId(client.getClientId(), selectedDate);
 
         ObservableList<ContractFullDataDTO> contractFullDataDTOS = FXCollections.observableArrayList(contractFullDataDTOList);
         contractVariationParts.getContractSelector().setItems(contractFullDataDTOS);

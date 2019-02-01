@@ -100,10 +100,10 @@ public class InitialChecks {
                     InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
 
                     Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
-                    ClientDTO clientDTO = applicationMainController.findClientById(clientGMId);
+                    ClientDTO clientDTO = ClientService.findClientById(clientGMId);
 
                     Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
-                    PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
+                    PersonDTO workerDTO = PersonService.findPersonById(workerId);
 
                     if(daysFromTodayToExpiration >= 0){
                        missingExceededText = "Faltan ";
@@ -143,10 +143,10 @@ public class InitialChecks {
             InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
 
             Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
-            ClientDTO clientDTO = applicationMainController.findClientById(clientGMId);
+            ClientDTO clientDTO = ClientService.findClientById(clientGMId);
 
             Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
-            PersonDTO workerDTO = applicationMainController.findPersonById(workerId);
+            PersonDTO workerDTO = PersonService.findPersonById(workerId);
 
             idcControlDTO.setWorkerFullName(workerDTO.toNaturalName());
             idcControlDTO.setClientGMFullName(clientDTO.toNaturalName());
@@ -198,8 +198,8 @@ public class InitialChecks {
                 Integer contractNumber = traceabilityContractDocumentationDTO.getContractNumber();
                 if(daysOfDocumentationDelay >= CheckConstants.LIMIT_DAYS_DELAY_RECEIPT_CONTRACT_LABOR_DOCUMENTATION){
                     InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
-                    ClientDTO clientDTO = applicationMainController.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
-                    PersonDTO workerDTO = applicationMainController.findPersonById(initialContractDTO.getContractJsonData().getWorkerId());
+                    ClientDTO clientDTO = ClientService.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
+                    PersonDTO workerDTO = PersonService.findPersonById(initialContractDTO.getContractJsonData().getWorkerId());
                     String variation_description = retrieveVariationDescriptionById(traceabilityContractDocumentationDTO.getVariationType());
                     alertMessage.append("Contrato número: ").append(contractNumber).append("\n");
                     alertMessage.append("Entre  ").append(clientDTO.toNaturalName());

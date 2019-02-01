@@ -1,13 +1,10 @@
 package gmoldes.components.contract.controllers;
 
-import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
-import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.InitialContractDTO;
-import gmoldes.domain.contract.mapper.MapperInitialContractVODTO;
+import gmoldes.domain.contract.dto.*;
+import gmoldes.domain.contract.mapper.MapperContractNewVersionDTOtoInitialContractDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ContractController {
@@ -41,14 +38,29 @@ public class ContractController {
 
     public InitialContractDTO findInitialContractByContractNumber(Integer selectedContractNumber){
 
-        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
-        InitialContractVO initialContractVO = initialContractDAO.findInitialContractByContractNumber(selectedContractNumber);
+        ContractNewVersionDTO initialContractDTO = contractManager.findInitialContractByContractNumber(selectedContractNumber);
 
-        return MapperInitialContractVODTO.map(initialContractVO);
+        return MapperContractNewVersionDTOtoInitialContractDTO.map(initialContractDTO);
     }
 
     public List<ContractNewVersionDTO> findHistoryOfContractByContractNumber(Integer contractNumber){
 
         return contractManager.findHistoryOfContractByContractNumber(contractNumber);
+    }
+
+    public List<ContractFullDataDTO> findAllDataForContractInForceAtDateByClientId(Integer clientId, LocalDate date){
+
+        return contractManager.findAllDataForContractInForceAtDateByClientId(clientId, date);
+    }
+
+    public List<ContractNewVersionDTO> findAllContractInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+
+        return contractManager.findAllContractInForceInPeriod(initialDate, finalDate);
+    }
+
+    public List<ContractVariationDTO> findAllContractVariationByContractNumber(Integer contractNumber){
+
+        return contractManager.findAllContractVariationByContractNumber(contractNumber);
+
     }
 }

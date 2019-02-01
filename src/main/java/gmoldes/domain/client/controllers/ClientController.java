@@ -21,6 +21,11 @@ public class ClientController {
         return clientManager.findAllClientWithContractNewVersionInMonth(date);
     }
 
+    public List<ClientDTO> findAllClientWithContractInForceAtDate(LocalDate date){
+
+        return clientManager.findAllClientWithContractInForceAtDate(date);
+    }
+
     public ClientDTO findClientById(Integer clientId){
 
         ClientVO clientVO = clientManager.findClientById(clientId);
@@ -34,6 +39,8 @@ public class ClientController {
                 .withName(clientVO.getName())
                 .withRzSocial(clientVO.getRzSocial())
                 .withNieNIF(clientVO.getNieNif())
+                .withSg21Code(clientVO.getSg21Code())
+                .withServicesGM(clientVO.getServicesGM())
                 .build();
     }
 }

@@ -2,7 +2,6 @@ package gmoldes.components.contract.new_contract.controllers;
 
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationConstants;
-import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
@@ -10,8 +9,9 @@ import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
-import gmoldes.components.timerecord.components.TimeRecordConstants;
 import gmoldes.components.timerecord.TimeRecord;
+import gmoldes.components.timerecord.components.TimeRecordConstants;
+import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.vo.ClientCCCVO;
@@ -389,9 +389,8 @@ public class NewContractMainController extends VBox {
     }
 
     private List<ClientDTO> findClientsWithAdvisoryServicesByNamePattern(String pattern) {
-        ApplicationMainController applicationMainController = new ApplicationMainController();
 
-        return applicationMainController.findAllActiveClientWithAdvisoryServicesByNamePatternInAlphabeticalOrder(pattern);
+        return ClientService.findAllActiveClientWithAdvisoryServicesByNamePatternInAlphabeticalOrder(pattern);
     }
 
     private List<PersonDTO> findPersonsByNamePatternInAlphabeticalOrder(String pattern) {
