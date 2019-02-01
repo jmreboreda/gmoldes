@@ -97,7 +97,7 @@ public class InitialChecks {
                 Long daysFromTodayToExpiration = ChronoUnit.DAYS.between(LocalDate.now(), trace.getExpectedEndDate());
                 if (daysFromTodayToExpiration <= DAYS_OF_NOTICE_FOR_END_OF_WEEKLY_WORK_DAY) {
                     Integer contractNumber = trace.getContractNumber();
-                    InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
+                    InitialContractDTO initialContractDTO = ContractService.findInitialContractByContractNumber(contractNumber);
 
                     Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
                     ClientDTO clientDTO = ClientService.findClientById(clientGMId);
@@ -140,7 +140,7 @@ public class InitialChecks {
             IDCControlDTO idcControlDTO = new IDCControlDTO();
 
             Integer contractNumber = traceabilityDTO.getContractNumber();
-            InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
+            InitialContractDTO initialContractDTO = ContractService.findInitialContractByContractNumber(contractNumber);
 
             Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
             ClientDTO clientDTO = ClientService.findClientById(clientGMId);
@@ -197,7 +197,7 @@ public class InitialChecks {
                 Long daysOfDocumentationDelay = ChronoUnit.DAYS.between(traceabilityContractDocumentationDTO.getStartDate(), LocalDate.now());
                 Integer contractNumber = traceabilityContractDocumentationDTO.getContractNumber();
                 if(daysOfDocumentationDelay >= CheckConstants.LIMIT_DAYS_DELAY_RECEIPT_CONTRACT_LABOR_DOCUMENTATION){
-                    InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(contractNumber);
+                    InitialContractDTO initialContractDTO = ContractService.findInitialContractByContractNumber(contractNumber);
                     ClientDTO clientDTO = ClientService.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
                     PersonDTO workerDTO = PersonService.findPersonById(initialContractDTO.getContractJsonData().getWorkerId());
                     String variation_description = retrieveVariationDescriptionById(traceabilityContractDocumentationDTO.getVariationType());

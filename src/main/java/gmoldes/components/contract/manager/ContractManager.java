@@ -489,16 +489,18 @@ public class ContractManager {
     public ContractNewVersionDTO findInitialContractByContractNumber(Integer contractNumber){
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         InitialContractVO initialContractVO = initialContractDAO.findInitialContractByContractNumber(contractNumber);
-        MapperInitialContractVODTO mapper = new MapperInitialContractVODTO();
 
+        LocalDate expectedEndDate = initialContractVO.getExpectedEndDate() != null ? initialContractVO.getExpectedEndDate().toLocalDate() : null;
+        LocalDate modificationDate = initialContractVO.getModificationDate() != null ? initialContractVO.getModificationDate().toLocalDate() : null;
+        LocalDate endingDate = initialContractVO.getEndingDate()!= null ? initialContractVO.getEndingDate().toLocalDate() : null;
 
         ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                 .withContractNumber(initialContractVO.getContractNumber())
                 .withVariationType(initialContractVO.getVariationType())
                 .withStartDate(initialContractVO.getStartDate().toLocalDate())
-                .withExpectedEndDate(initialContractVO.getExpectedEndDate().toLocalDate())
-                .withModificationDate(initialContractVO.getModificationDate().toLocalDate())
-                .withEndingDate(initialContractVO.getEndingDate().toLocalDate())
+                .withExpectedEndDate(expectedEndDate)
+                .withModificationDate(modificationDate)
+                .withEndingDate(endingDate)
                 .withContractJsonData(initialContractVO.getContractJsonData())
                 .build();
 

@@ -22,6 +22,11 @@ public class ContractService {
         return contractController.findInitialContractByContractNumber(contractNumber);
     }
 
+    public static List<ContractVariationDTO> findAllContractVariationByContractNumber(Integer contractNumber){
+
+        return contractController.findAllContractVariationByContractNumber(contractNumber);
+    }
+
     public static List<ContractNewVersionDTO> findHistoryOfContractByContractNumber(Integer contractNumber){
 
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractController.findHistoryOfContractByContractNumber(contractNumber);
@@ -54,7 +59,6 @@ public class ContractService {
     public static List<ContractNewVersionDTO> findAllContractInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
 
         return contractController.findAllContractInForceInPeriod(initialDate, finalDate);
-
     }
 
     public static List<ContractFullDataDTO> findAllDataForContractInForceAtDateByClientId(Integer clientId, LocalDate date){

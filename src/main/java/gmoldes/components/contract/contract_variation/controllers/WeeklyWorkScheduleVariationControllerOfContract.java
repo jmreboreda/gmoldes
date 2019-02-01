@@ -13,6 +13,7 @@ import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.MapperJsonScheduleToWorkDaySchedule;
 import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
@@ -259,7 +260,7 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
-        List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(contractNumber);
+        List<ContractVariationDTO> contractVariationDTOList = ContractService.findAllContractVariationByContractNumber(contractNumber);
         if(contractVariationDTOList.isEmpty())
         {
             return 0;

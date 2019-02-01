@@ -12,6 +12,7 @@ import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.document_for_print.ContractVariationDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
@@ -193,7 +194,7 @@ public class ContractExtinctionController{
         }
 
         // 2. The extinction of the contract already exists and is not by prior subrogation of the contract
-        List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
+        List<ContractVariationDTO> contractVariationDTOList = ContractService.findAllContractVariationByContractNumber(selectedContractNumber);
         List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
         for (ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
             for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
@@ -211,7 +212,7 @@ public class ContractExtinctionController{
         }
 
         // 3. The termination date is prior to the contract start date
-        InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(selectedContractNumber);
+        InitialContractDTO initialContractDTO = ContractService.findInitialContractByContractNumber(selectedContractNumber);
         if(initialContractDTO.getStartDate().isAfter(extinctionDate)){
 
             return new CompatibleVariationEvent(
@@ -223,7 +224,7 @@ public class ContractExtinctionController{
         }
 
         // 4. Registered transactions with date after the requested start date do not allow the termination of the contract on the requested date
-        List<ContractVariationDTO> contractVariationDTOList1 = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
+        List<ContractVariationDTO> contractVariationDTOList1 = ContractService.findAllContractVariationByContractNumber(selectedContractNumber);
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList1) {
             if(contractVariationDTO.getStartDate().isAfter(extinctionDate) ||
                     (contractVariationDTO.getModificationDate() != null && contractVariationDTO.getModificationDate().isAfter(extinctionDate))){
@@ -294,7 +295,7 @@ public class ContractExtinctionController{
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
         Integer contractNumber = contractNewVersionExtinctedDTO.getContractNumber();
-        List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(contractNumber);
+        List<ContractVariationDTO> contractVariationDTOList = ContractService.findAllContractVariationByContractNumber(contractNumber);
         if(contractVariationDTOList.isEmpty())
         {
             return 0;

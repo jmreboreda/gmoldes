@@ -1,8 +1,8 @@
 package gmoldes.domain.payroll_checklist;
 
-import gmoldes.ApplicationMainController;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.payroll_checklist.dto.PayrollCheckListDTO;
 import gmoldes.domain.person.PersonService;
@@ -121,9 +121,7 @@ public class PayrollCheckList {
         LocalDate initialDate = LocalDate.of(year, monthReceived, firstDayOfMonth);
         LocalDate finalDate =  LocalDate.of(year, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-
-        return applicationMainController.findAllContractInForceInPeriod(initialDate, finalDate);
+        return ContractService.findAllContractInForceInPeriod(initialDate, finalDate);
 
     }
 }

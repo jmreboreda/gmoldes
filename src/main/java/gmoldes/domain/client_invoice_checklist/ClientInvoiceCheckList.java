@@ -4,6 +4,7 @@ import gmoldes.ApplicationMainController;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client_invoice_checklist.dto.ClientInvoiceCheckListDTO;
+import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 
 import java.awt.*;
@@ -137,9 +138,7 @@ public class ClientInvoiceCheckList {
         LocalDate initialDate = LocalDate.of(year, monthReceived, firstDayOfMonth);
         LocalDate finalDate =  LocalDate.of(year, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-
-        return applicationMainController.findAllContractInForceInPeriod(initialDate, finalDate);
+        return ContractService.findAllContractInForceInPeriod(initialDate, finalDate);
 
     }
 }
