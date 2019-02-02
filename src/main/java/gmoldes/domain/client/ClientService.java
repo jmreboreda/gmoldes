@@ -16,27 +16,39 @@ public class ClientService {
     private ClientService() {
     }
 
+    public static class ClientServiceFactory {
+
+        private static ClientService clientService;
+
+        public static ClientService getInstance() {
+            if(clientService == null) {
+                clientService = new ClientService();
+            }
+            return clientService;
+        }
+    }
+
     private static final String SERVICE_FOR_WORK_CONTRACTS = "Asesoría";
 
-    private static ClientController clientController = new ClientController();
+    private ClientController clientController = new ClientController();
 
-    public static ClientDTO findClientById(Integer clientId){
+    public ClientDTO findClientById(Integer clientId){
 
         return clientController.findClientById(clientId);
     }
 
-    public static List<ClientDTO> findAllClientWithContractInForceAtDate(LocalDate date){
+    public  List<ClientDTO> findAllClientWithContractInForceAtDate(LocalDate date){
 
         return clientController.findAllClientWithContractInForceAtDate(date);
     }
 
-    public static  List<ClientDTO> findAllClientGMWithInvoicesToClaimInPeriod(LocalDate periodInitialDate, LocalDate periodFinalDate){
+    public List<ClientDTO> findAllClientGMWithInvoicesToClaimInPeriod(LocalDate periodInitialDate, LocalDate periodFinalDate){
         List<ServiceGMDTO> serviceGMDTOList = ServiceGMService.findAllClientGMWithInvoicesToClaimInPeriod(periodInitialDate, periodFinalDate);
 
         List<ClientDTO> clientDTOList = new ArrayList<>();
         for(ServiceGMDTO serviceGMDTO : serviceGMDTOList){
             Integer clientId = serviceGMDTO.getClientId();
-            ClientDTO clientDTO = ClientService.findClientById(clientId);
+            ClientDTO clientDTO = findClientById(clientId);
             if(clientDTO.getWithoutActivity() == null){
                 clientDTOList.add(clientDTO);
             }
@@ -45,7 +57,7 @@ public class ClientService {
         return clientDTOList;
     }
 
-    public static List<ClientDTO> findAllActiveClientWithAdvisoryServicesByNamePatternInAlphabeticalOrder(String pattern){
+    public List<ClientDTO> findAllActiveClientWithAdvisoryServicesByNamePatternInAlphabeticalOrder(String pattern){
 
         List<ClientDTO> clientDTOListWithAdvisoryServicesByNamePattern = new ArrayList<>();
 

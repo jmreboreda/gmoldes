@@ -390,7 +390,8 @@ public class NewContractMainController extends VBox {
 
     private List<ClientDTO> findClientsWithAdvisoryServicesByNamePattern(String pattern) {
 
-        return ClientService.findAllActiveClientWithAdvisoryServicesByNamePatternInAlphabeticalOrder(pattern);
+        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+        return clientService.findAllActiveClientWithAdvisoryServicesByNamePatternInAlphabeticalOrder(pattern);
     }
 
     private List<PersonDTO> findPersonsByNamePatternInAlphabeticalOrder(String pattern) {

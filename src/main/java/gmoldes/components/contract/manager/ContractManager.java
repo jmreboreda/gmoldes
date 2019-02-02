@@ -1,6 +1,7 @@
 package gmoldes.components.contract.manager;
 
 
+import com.sun.security.ntlm.Client;
 import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
@@ -305,7 +306,9 @@ public class ContractManager {
 
         List<ContractFullDataDTO> contractFullDataDTOList = new ArrayList<>();
 
-        ClientDTO clientDTO = ClientService.findClientById(clientId);
+        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+
+        ClientDTO clientDTO = clientService.findClientById(clientId);
 
         // Initial contract
         List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractsInForceAtDate(date);

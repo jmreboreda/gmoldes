@@ -8,9 +8,21 @@ public class PersonService {
     private PersonService() {
     }
 
-    private static PersonController personController = new PersonController();
+    public static class PersonServiceFactory {
 
-    public static PersonDTO findPersonById(Integer clientId){
+        private static PersonService personService;
+
+        public static PersonService getInstance() {
+            if(personService == null) {
+                personService = new PersonService();
+            }
+            return personService;
+        }
+    }
+
+    private PersonController personController = new PersonController();
+
+    public PersonDTO findPersonById(Integer clientId){
 
         return personController.findPersonById(clientId);
     }

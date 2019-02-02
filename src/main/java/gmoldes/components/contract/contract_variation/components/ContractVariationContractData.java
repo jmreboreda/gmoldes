@@ -147,7 +147,7 @@ public class ContractVariationContractData extends TitledPane {
 
         this.getDateFrom().setText(contractFullDataDTO.getInitialContractDate().format(formatter));
 
-        String dateTo = null;
+        String dateTo;
         if(contractFullDataDTO.getContractNewVersion().getEndingDate() != null &&
                 (contractFullDataDTO.getContractNewVersion().getEndingDate().isBefore(LocalDate.now()) ||
                 contractFullDataDTO.getContractNewVersion().getEndingDate().equals(LocalDate.now()))){

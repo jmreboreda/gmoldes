@@ -15,19 +15,31 @@ public class ContractService {
     private ContractService() {
     }
 
+    public static class ContractServiceFactory {
+
+        private static ContractService contractService;
+
+        public static ContractService getInstance() {
+            if(contractService == null) {
+                contractService = new ContractService();
+            }
+            return contractService;
+        }
+    }
+
     private static ContractController contractController = new ContractController();
 
-    public static InitialContractDTO findInitialContractByContractNumber(Integer contractNumber){
+    public InitialContractDTO findInitialContractByContractNumber(Integer contractNumber){
 
         return contractController.findInitialContractByContractNumber(contractNumber);
     }
 
-    public static List<ContractVariationDTO> findAllContractVariationByContractNumber(Integer contractNumber){
+    public List<ContractVariationDTO> findAllContractVariationByContractNumber(Integer contractNumber){
 
         return contractController.findAllContractVariationByContractNumber(contractNumber);
     }
 
-    public static List<ContractNewVersionDTO> findHistoryOfContractByContractNumber(Integer contractNumber){
+    public List<ContractNewVersionDTO> findHistoryOfContractByContractNumber(Integer contractNumber){
 
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractController.findHistoryOfContractByContractNumber(contractNumber);
 
@@ -56,12 +68,12 @@ public class ContractService {
         return contractNewVersionDTOList;
     }
 
-    public static List<ContractNewVersionDTO> findAllContractInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
+    public List<ContractNewVersionDTO> findAllContractInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
 
         return contractController.findAllContractInForceInPeriod(initialDate, finalDate);
     }
 
-    public static List<ContractFullDataDTO> findAllDataForContractInForceAtDateByClientId(Integer clientId, LocalDate date){
+    public List<ContractFullDataDTO> findAllDataForContractInForceAtDateByClientId(Integer clientId, LocalDate date){
 
         return contractController.findAllDataForContractInForceAtDateByClientId(clientId, date);
     }

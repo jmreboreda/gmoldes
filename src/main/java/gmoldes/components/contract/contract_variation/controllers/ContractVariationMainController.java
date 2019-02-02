@@ -188,7 +188,8 @@ public class ContractVariationMainController extends VBox {
         contractVariationParts.getContractSelector().getItems().clear();
         LocalDate workDate = contractVariationParts.getInForceDate().getValue();
         contractVariationContractData.clearAllContractData();
-        List<ClientDTO> clientDTOList = ClientService.findAllClientWithContractInForceAtDate(workDate);
+        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+        List<ClientDTO> clientDTOList = clientService.findAllClientWithContractInForceAtDate(workDate);
 
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
         primaryCollator.setStrength(Collator.PRIMARY);
@@ -606,7 +607,8 @@ public class ContractVariationMainController extends VBox {
         }
         contractVariationContractData.clearAllContractData();
 
-        List<ContractFullDataDTO> contractFullDataDTOList = ContractService.findAllDataForContractInForceAtDateByClientId(client.getClientId(), selectedDate);
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        List<ContractFullDataDTO> contractFullDataDTOList = contractService.findAllDataForContractInForceAtDateByClientId(client.getClientId(), selectedDate);
 
         ObservableList<ContractFullDataDTO> contractFullDataDTOS = FXCollections.observableArrayList(contractFullDataDTOList);
         contractVariationParts.getContractSelector().setItems(contractFullDataDTOS);

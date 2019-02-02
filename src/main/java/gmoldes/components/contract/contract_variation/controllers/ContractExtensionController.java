@@ -186,7 +186,8 @@ public class ContractExtensionController{
 
         // 1. The maximum number of legally permitted extensions is already registered
         Integer counter = 0;
-        List<ContractVariationDTO> contractVariationDTOList =  ContractService.findAllContractVariationByContractNumber(contractNumber);
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        List<ContractVariationDTO> contractVariationDTOList =  contractService.findAllContractVariationByContractNumber(contractNumber);
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList){
             if(contractVariationDTO.getVariationType().equals(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)){
                 counter++;
@@ -204,7 +205,7 @@ public class ContractExtensionController{
         }
 
         // 2. Exceeded the number of months of maximum duration of the initial contract plus its extensions
-        List<ContractNewVersionDTO> contractNewVersionDTOList = ContractService.findHistoryOfContractByContractNumber(contractNumber);
+        List<ContractNewVersionDTO> contractNewVersionDTOList = contractService.findHistoryOfContractByContractNumber(contractNumber);
 
         Long numberDaysOfContractDuration = 0L;
 
@@ -254,7 +255,7 @@ public class ContractExtensionController{
         }
 
         // 4. An extension of the contract incompatible with the requested one is already registered
-        List<ContractVariationDTO> contractVariationDTOList_2 =  ContractService.findAllContractVariationByContractNumber(contractNumber);
+        List<ContractVariationDTO> contractVariationDTOList_2 =  contractService.findAllContractVariationByContractNumber(contractNumber);
         List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList_2) {
             for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
@@ -302,9 +303,8 @@ public class ContractExtensionController{
 
     private Integer updateLastContractVariation(Integer contractNumber){
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-
-        List<ContractVariationDTO> contractVariationDTOList = ContractService.findAllContractVariationByContractNumber(contractNumber);
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        List<ContractVariationDTO> contractVariationDTOList = contractService.findAllContractVariationByContractNumber(contractNumber);
         if(contractVariationDTOList.isEmpty())
         {
             return 0;

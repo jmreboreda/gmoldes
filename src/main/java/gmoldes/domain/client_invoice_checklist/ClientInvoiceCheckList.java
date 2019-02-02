@@ -109,7 +109,8 @@ public class ClientInvoiceCheckList {
         LocalDate periodInitialDate = LocalDate.of(yearReceived, monthReceived, dayReceived);
         LocalDate periodFinalDate =  LocalDate.of(yearReceived, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        List<ClientDTO> clientDTOList = ClientService.findAllClientGMWithInvoicesToClaimInPeriod(periodInitialDate, periodFinalDate);
+        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+        List<ClientDTO> clientDTOList = clientService.findAllClientGMWithInvoicesToClaimInPeriod(periodInitialDate, periodFinalDate);
         for(ClientDTO clientDTO : clientDTOList){
             String clientFullName = clientDTO.toString();
             String clientSg21Code = clientDTO.getSg21Code();
@@ -138,7 +139,9 @@ public class ClientInvoiceCheckList {
         LocalDate initialDate = LocalDate.of(year, monthReceived, firstDayOfMonth);
         LocalDate finalDate =  LocalDate.of(year, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        return ContractService.findAllContractInForceInPeriod(initialDate, finalDate);
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+
+        return contractService.findAllContractInForceInPeriod(initialDate, finalDate);
 
     }
 }

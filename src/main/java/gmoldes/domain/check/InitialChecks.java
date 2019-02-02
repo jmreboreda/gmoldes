@@ -49,13 +49,16 @@ public class InitialChecks {
                     if (daysToEndDate <= CheckConstants.END_OF_CONTRACT_NOTICE_DAYS) {
 
                         Integer contractNumber = traceabilityDTO.getContractNumber();
-                        InitialContractDTO initialContractDTO = ContractService.findInitialContractByContractNumber(contractNumber);
+                        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+                        InitialContractDTO initialContractDTO = contractService.findInitialContractByContractNumber(contractNumber);
 
                         Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
-                        ClientDTO clientDTO = ClientService.findClientById(clientGMId);
+                        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+                        ClientDTO clientDTO = clientService.findClientById(clientGMId);
 
                         Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
-                        PersonDTO workerDTO = PersonService.findPersonById(workerId);
+                        PersonService personService = PersonService.PersonServiceFactory.getInstance();
+                        PersonDTO workerDTO = personService.findPersonById(workerId);
 
                         if (daysToEndDate >= 0) {
                             missingExceededText = "Faltan ";
@@ -97,13 +100,16 @@ public class InitialChecks {
                 Long daysFromTodayToExpiration = ChronoUnit.DAYS.between(LocalDate.now(), trace.getExpectedEndDate());
                 if (daysFromTodayToExpiration <= DAYS_OF_NOTICE_FOR_END_OF_WEEKLY_WORK_DAY) {
                     Integer contractNumber = trace.getContractNumber();
-                    InitialContractDTO initialContractDTO = ContractService.findInitialContractByContractNumber(contractNumber);
+                    ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+                    InitialContractDTO initialContractDTO = contractService.findInitialContractByContractNumber(contractNumber);
 
                     Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
-                    ClientDTO clientDTO = ClientService.findClientById(clientGMId);
+                    ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+                    ClientDTO clientDTO = clientService.findClientById(clientGMId);
 
                     Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
-                    PersonDTO workerDTO = PersonService.findPersonById(workerId);
+                    PersonService personService = PersonService.PersonServiceFactory.getInstance();
+                    PersonDTO workerDTO = personService.findPersonById(workerId);
 
                     if(daysFromTodayToExpiration >= 0){
                        missingExceededText = "Faltan ";
@@ -140,13 +146,16 @@ public class InitialChecks {
             IDCControlDTO idcControlDTO = new IDCControlDTO();
 
             Integer contractNumber = traceabilityDTO.getContractNumber();
-            InitialContractDTO initialContractDTO = ContractService.findInitialContractByContractNumber(contractNumber);
+            ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+            InitialContractDTO initialContractDTO = contractService.findInitialContractByContractNumber(contractNumber);
 
             Integer clientGMId = initialContractDTO.getContractJsonData().getClientGMId();
-            ClientDTO clientDTO = ClientService.findClientById(clientGMId);
+            ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+            ClientDTO clientDTO = clientService.findClientById(clientGMId);
 
             Integer workerId = initialContractDTO.getContractJsonData().getWorkerId();
-            PersonDTO workerDTO = PersonService.findPersonById(workerId);
+            PersonService personService = PersonService.PersonServiceFactory.getInstance();
+            PersonDTO workerDTO = personService.findPersonById(workerId);
 
             idcControlDTO.setWorkerFullName(workerDTO.toNaturalName());
             idcControlDTO.setClientGMFullName(clientDTO.toNaturalName());
@@ -197,9 +206,15 @@ public class InitialChecks {
                 Long daysOfDocumentationDelay = ChronoUnit.DAYS.between(traceabilityContractDocumentationDTO.getStartDate(), LocalDate.now());
                 Integer contractNumber = traceabilityContractDocumentationDTO.getContractNumber();
                 if(daysOfDocumentationDelay >= CheckConstants.LIMIT_DAYS_DELAY_RECEIPT_CONTRACT_LABOR_DOCUMENTATION){
-                    InitialContractDTO initialContractDTO = ContractService.findInitialContractByContractNumber(contractNumber);
-                    ClientDTO clientDTO = ClientService.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
-                    PersonDTO workerDTO = PersonService.findPersonById(initialContractDTO.getContractJsonData().getWorkerId());
+                    ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+                    InitialContractDTO initialContractDTO = contractService.findInitialContractByContractNumber(contractNumber);
+
+                    ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+                    ClientDTO clientDTO = clientService.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
+
+                    PersonService personService = PersonService.PersonServiceFactory.getInstance();
+                    PersonDTO workerDTO = personService.findPersonById(initialContractDTO.getContractJsonData().getWorkerId());
+
                     String variation_description = retrieveVariationDescriptionById(traceabilityContractDocumentationDTO.getVariationType());
                     alertMessage.append("Contrato número: ").append(contractNumber).append("\n");
                     alertMessage.append("Entre  ").append(clientDTO.toNaturalName());

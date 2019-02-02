@@ -92,9 +92,11 @@ public class PayrollCheckList {
         List<PayrollCheckListDTO> payrollCheckListDTOList = new ArrayList<>();
         List<ContractNewVersionDTO> contractNewVersionDTOList = findAllContractInForceInPeriod(month, year);
         for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
-            ClientDTO employer = ClientService.findClientById(contractNewVersionDTO.getContractJsonData().getClientGMId());
+            ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+            ClientDTO employer = clientService.findClientById(contractNewVersionDTO.getContractJsonData().getClientGMId());
             String employerName = employer.toString();
-            PersonDTO worker = PersonService.findPersonById(contractNewVersionDTO.getContractJsonData().getWorkerId());
+            PersonService personService = PersonService.PersonServiceFactory.getInstance();
+            PersonDTO worker = personService.findPersonById(contractNewVersionDTO.getContractJsonData().getWorkerId());
             String workerName = worker.getApellidos() + ", " + worker.getNom_rzsoc();
 
             PayrollCheckListDTO payrollCheckListDTO = new PayrollCheckListDTO(employerName, workerName);
@@ -121,7 +123,9 @@ public class PayrollCheckList {
         LocalDate initialDate = LocalDate.of(year, monthReceived, firstDayOfMonth);
         LocalDate finalDate =  LocalDate.of(year, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        return ContractService.findAllContractInForceInPeriod(initialDate, finalDate);
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+
+        return contractService.findAllContractInForceInPeriod(initialDate, finalDate);
 
     }
 }
