@@ -23,6 +23,7 @@ public class ContractService {
             if(contractService == null) {
                 contractService = new ContractService();
             }
+
             return contractService;
         }
     }

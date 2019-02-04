@@ -33,6 +33,7 @@ public class ContractConstants {
     public static final String STANDARD_CONTRACT_CONVERSION_TEXT = "Conversión de contrato";
     public static final String STANDARD_CONTRACT_EXTENSION_TEXT = "Prórroga de contrato";
     public static final String STANDARD_CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT = "Expediente contrato trabajo";
+    public static final String STANDARD_CONTRACT_WEEKLY_WORK_SCHEDULE_VARIATION_TEXT = "Variación de jornada de trabajo";
 
     /** Contract variation **/
     public static final String VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION = "La fecha establecida de variación del contrato aparentemente excede el plazo máximo" +
@@ -86,6 +87,7 @@ public class ContractConstants {
     public static final String WEEKLY_WORK_DURATION_VARIATION_PERSISTENCE_OK = "Variación de la jornada de trabajo registrada correctamente.";
     public static final String CONTRACT_VARIATIONS_IN_THE_FUTURE_NOT_ALLOW_EXTINCTION_ON_REQUESTED_DATE = "Operaciones registradas con posterioridad a la fecha solicitada" +
             " no permiten la extinción del contrato en dicha fecha.";
+    public static final String COMPATIBILITY_FUTURE_VARIATIONS_NOT_AUTOMATICALLY_VERIFIABLES = "Existen variaciones futuras del contrato que no son verificables automáticamente.";
     public static final String CONTRACT_EXTENSION_OPERATION_ABANDONED = "Se ha abandonado la operación de prórroga del contrato.";
     public static final String ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA = "Ha ocurrido un error al pesistir la trazabilidad del contrato en \"traceability_contract_documentation\".";
 

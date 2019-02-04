@@ -44,7 +44,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-public class WeeklyWorkScheduleVariationControllerOfContract {
+public class WeeklyWorkScheduleVariationController {
 
 
     private ContractManager contractManager = new ContractManager();
@@ -53,11 +53,10 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
     private static final Integer VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION = 220;
     private static final Integer VARIATION_TYPE_ID_FOR_WEEKLY_WORK_SCHEDULE_VARIATION = 230;
 
-    public WeeklyWorkScheduleVariationControllerOfContract(ContractVariationMainController contractVariationMainController){
+    public WeeklyWorkScheduleVariationController(ContractVariationMainController contractVariationMainController){
 
         this.contractVariationMainController = contractVariationMainController;
     }
-
 
     public MessageContractVariationEvent executeWeeklyWorkDurationVariationOperations(Set<WorkDaySchedule> weeklyWorkScheduleVariation){
 
@@ -118,9 +117,9 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
         String publicNotes = retrievePublicNotes();
         sb.append(publicNotes);
 
-        ContractVariationDataSubfolder contractExtensionDataSubfolder = createContractExtensionDataSubfolder(sb.toString());
+        ContractVariationDataSubfolder weeklyWorkScheduleVariationDataSubfolder = createWeeklyWorkScheduleVariationDataSubfolder(sb.toString(), weeklyWorkScheduleVariation);
 
-        printContractExtensionDataSubfolder(contractExtensionDataSubfolder);
+        printWeeklyWorkScheduleVariationDataSubfolder(weeklyWorkScheduleVariationDataSubfolder);
 
         return new MessageContractVariationEvent(ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK,null);
     }
@@ -203,31 +202,25 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
 
     public CompatibleVariationEvent checkExistenceIncompatibleVariationsForWeeklyWorkDurationVariation() {
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-
         Integer contractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
         LocalDate weeklyWorkDurationVariationDateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationWeeklyWorkScheduleDuration().getDateFrom().getValue();
         LocalDate weeklyWorkDurationVariationDateTo = contractVariationMainController.getContractVariationContractVariations().getContractVariationWeeklyWorkScheduleDuration().getDateTo().getValue();
 
-//        // 4. An extension of the contract incompatible with the requested one is already registered
-//        List<ContractVariationDTO> contractVariationDTOList_2 =  applicationMainController.findAllContractVariationByContractNumber(contractNumber);
-//        List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
-//        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList_2) {
-//            for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
-//                if (typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
-//                        typesContractVariationsDTO.getExtension() &&
-//                        (weeklyWorkDurationVariationDateFrom.isBefore(contractVariationDTO.getExpectedEndDate())) ||
-//                        weeklyWorkDurationVariationDateFrom.equals(contractVariationDTO.getExpectedEndDate())){
-//
-//                    return new CompatibleVariationEvent(
-//                            false,
-//                            false,
-//                            true,
-//                            false,
-//                            ContractConstants.EXIST_PREVIOUS_INCOMPATIBLE_CONTRACT_VARIATION_EXTENSION);
-//                }
-//            }
-//        }
+        // 1. There are future variations of the contract that are not automatically verifiable
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        List<ContractVariationDTO> contractVariationDTOList =  contractService.findAllContractVariationByContractNumber(contractNumber);
+        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
+            if(weeklyWorkDurationVariationDateFrom.compareTo(contractVariationDTO.getStartDate()) >= 0 ||
+                    weeklyWorkDurationVariationDateTo.compareTo(contractVariationDTO.getStartDate()) >= 0) {
+
+                return new CompatibleVariationEvent(
+                        false,
+                        false,
+                        true,
+                        false,
+                        ContractConstants.COMPATIBILITY_FUTURE_VARIATIONS_NOT_AUTOMATICALLY_VERIFIABLES);
+            }
+        }
 
         return new CompatibleVariationEvent(false, false, true, false, null);
     }
@@ -434,7 +427,7 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
         return sb.toString();
     }
 
-    private ContractVariationDataSubfolder createContractExtensionDataSubfolder(String additionalData){
+    private ContractVariationDataSubfolder createWeeklyWorkScheduleVariationDataSubfolder(String additionalData, Set<WorkDaySchedule> weeklyWorkScheduleVariation){
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_TIME_FORMAT);
@@ -442,21 +435,20 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
 
         ContractFullDataDTO allContractData = contractVariationMainController.getContractVariationParts().getContractSelector().getValue();
 
-        String notificationType = ContractConstants.STANDARD_CONTRACT_EXTENSION_TEXT;
+        String notificationType = ContractConstants.STANDARD_CONTRACT_WEEKLY_WORK_SCHEDULE_VARIATION_TEXT;
 
         String clientNotificationDate = dateFormatter.format(contractVariationMainController.getContractVariationTypes().getDateNotification().getDate());
         String clientNotificationHour = contractVariationMainController.getContractVariationTypes().getHourNotification().getTime().format(timeFormatter);
 
         String birthDate = allContractData.getEmployee().getFechanacim() != null ? dateFormatter.format(allContractData.getEmployee().getFechanacim()) : null;
 
-        LocalDate dateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue();
-        LocalDate dateTo = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateTo().getValue();
+        LocalDate dateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationWeeklyWorkScheduleDuration().getDateFrom().getValue();
+        LocalDate dateTo = contractVariationMainController.getContractVariationContractVariations().getContractVariationWeeklyWorkScheduleDuration().getDateTo().getValue();
 
-        String startDate = dateFormatter.format(dateFrom);
-        String endDate = dateFormatter.format(dateTo);
+        String startDate = dateFrom != null ? dateFormatter.format(dateFrom) : null;
+        String endDate = dateTo != null ? dateFormatter.format(dateTo) : null;
 
-        String daysOfWeek = allContractData.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork();
-        Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(daysOfWeek);
+        Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(weeklyWorkScheduleVariation);
 
         String address = allContractData.getEmployee().getDireccion() != null ?  allContractData.getEmployee().getDireccion() : "";
         String codPostal = allContractData.getEmployee().getCodpostal() != null ? allContractData.getEmployee().getCodpostal().toString() : "";
@@ -514,10 +506,10 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
                 .build();
     }
 
-    private void printContractExtensionDataSubfolder(ContractVariationDataSubfolder contractExtensionDataSubfolder){
+    private void printWeeklyWorkScheduleVariationDataSubfolder(ContractVariationDataSubfolder contractWeeklyWorkVariationDataSubfolder){
 
         ContractExtensionDataDocumentCreator contractExtensionDataDocumentCreator = new ContractExtensionDataDocumentCreator(contractVariationMainController);
-        Path pathToContractExtensionDataSubfolder = contractExtensionDataDocumentCreator.retrievePathToContractExtensionDataSubfolderPDF(contractExtensionDataSubfolder);
+        Path pathToContractExtensionDataSubfolder = contractExtensionDataDocumentCreator.retrievePathToContractExtensionDataSubfolderPDF(contractWeeklyWorkVariationDataSubfolder);
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("papersize","A3");
@@ -584,39 +576,44 @@ public class WeeklyWorkScheduleVariationControllerOfContract {
                 .build();
     }
 
-    private Set<DayOfWeek> retrieveDayOfWeekSet(String daysOfWeek){
+    private Set<DayOfWeek> retrieveDayOfWeekSet(Set<WorkDaySchedule> weeklyWorkScheduleVariation) {
 
         Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
 
-        if(daysOfWeek.contains("MONDAY")){
-            dayOfWeekSet.add(DayOfWeek.MONDAY);
-        }
 
-        if(daysOfWeek.contains("TUESDAY")){
-            dayOfWeekSet.add(DayOfWeek.TUESDAY);
-        }
+        for (WorkDaySchedule workDaySchedule : weeklyWorkScheduleVariation) {
 
-        if(daysOfWeek.contains("WEDNESDAY")){
-            dayOfWeekSet.add(DayOfWeek.WEDNESDAY);
-        }
+            if (workDaySchedule.getDayOfWeek().contains("MONDAY")) {
+                dayOfWeekSet.add(DayOfWeek.MONDAY);
+            }
 
+            if (workDaySchedule.getDayOfWeek().contains("TUESDAY")) {
+                dayOfWeekSet.add(DayOfWeek.TUESDAY);
+            }
 
-        if(daysOfWeek.contains("THURSDAY")){
-            dayOfWeekSet.add(DayOfWeek.THURSDAY);
-        }
+            if (workDaySchedule.getDayOfWeek().contains("WEDNESDAY")) {
+                dayOfWeekSet.add(DayOfWeek.WEDNESDAY);
+            }
 
 
-        if(daysOfWeek.contains("FRIDAY")){
-            dayOfWeekSet.add(DayOfWeek.FRIDAY);
-        }
+            if (workDaySchedule.getDayOfWeek().contains("THURSDAY")) {
+                dayOfWeekSet.add(DayOfWeek.THURSDAY);
+            }
 
-        if(daysOfWeek.contains("SATURDAY")){
-            dayOfWeekSet.add(DayOfWeek.SATURDAY);
-        }
 
-        if(daysOfWeek.contains("SUNDAY")){
-            dayOfWeekSet.add(DayOfWeek.SUNDAY);
-        }
+            if (workDaySchedule.getDayOfWeek().contains("FRIDAY")) {
+                dayOfWeekSet.add(DayOfWeek.FRIDAY);
+            }
+
+            if (workDaySchedule.getDayOfWeek().contains("SATURDAY")) {
+                dayOfWeekSet.add(DayOfWeek.SATURDAY);
+            }
+
+            if (workDaySchedule.getDayOfWeek().contains("SUNDAY")) {
+                dayOfWeekSet.add(DayOfWeek.SUNDAY);
+            }
+
+    }
 
         return dayOfWeekSet;
     }

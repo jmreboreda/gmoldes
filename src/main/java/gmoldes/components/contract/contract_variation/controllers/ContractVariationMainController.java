@@ -73,7 +73,7 @@ public class ContractVariationMainController extends VBox {
     private ApplicationMainController applicationMainController = new ApplicationMainController();
     private ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
     private ContractExtensionController contractExtensionController = new ContractExtensionController(this);
-    private WeeklyWorkScheduleVariationControllerOfContract weeklyWorkScheduleVariationControllerOfContract = new WeeklyWorkScheduleVariationControllerOfContract(this);
+    private WeeklyWorkScheduleVariationController weeklyWorkScheduleVariationController = new WeeklyWorkScheduleVariationController(this);
     private ContractVariationDataSubfolder contractVariationDataSubfolder;
 
 
@@ -336,8 +336,8 @@ public class ContractVariationMainController extends VBox {
         // Change of weekly work duration
         RadioButton rbWeeklyWorkHoursVariation = contractVariationTypes.getRbWeeklyWorkHoursVariation();
         if(rbWeeklyWorkHoursVariation.isSelected()){
-            WeeklyWorkScheduleVariationControllerOfContract weeklyWorkScheduleVariationControllerOfContract = new WeeklyWorkScheduleVariationControllerOfContract(this);
-            MessageContractVariationEvent messageContractVariationEvent = weeklyWorkScheduleVariationControllerOfContract.executeWeeklyWorkDurationVariationOperations(weeklyWorkScheduleVariation);
+            WeeklyWorkScheduleVariationController weeklyWorkScheduleVariationController = new WeeklyWorkScheduleVariationController(this);
+            MessageContractVariationEvent messageContractVariationEvent = weeklyWorkScheduleVariationController.executeWeeklyWorkDurationVariationOperations(weeklyWorkScheduleVariation);
             if (!messageContractVariationEvent.getMessageText().equals(ContractConstants.WEEKLY_WORK_DURATION_VARIATION_PERSISTENCE_OK) &&
                     !messageContractVariationEvent.getMessageText().isEmpty()) {
                 Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageContractVariationEvent.getMessageText());
