@@ -21,8 +21,8 @@ import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.study.StudyManager;
+import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
@@ -37,6 +37,7 @@ import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -477,6 +478,13 @@ public class ContractExtensionController{
         ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractTypeId);
 
         String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription();
+
+        String weeklyWorkHours = allContractData.getContractNewVersion().getContractJsonData().getWeeklyWorkHours();
+        Duration weeklyWorkDuration = Utilities.converterTimeStringToDuration(weeklyWorkHours);
+        if(weeklyWorkDuration != ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK){
+
+            contractDescription = contractDescription.concat(" [").concat(weeklyWorkHours).concat(" horas de trabajo por semana]");
+        }
 
         String durationDays = Long.toString(ChronoUnit.DAYS.between(dateFrom, dateTo) + 1L);
 
