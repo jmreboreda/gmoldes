@@ -30,6 +30,8 @@ public class ClientController {
 
         ClientVO clientVO = clientManager.findClientById(clientId);
 
+        LocalDate withOutActivityDate = clientVO.getWithoutActivity() != null ? clientVO.getWithoutActivity().toLocalDate() : null;
+
         return ClientDTO.create()
                 .withId(clientVO.getId())
                 .withClientId(clientVO.getClientId())
@@ -41,6 +43,7 @@ public class ClientController {
                 .withNieNIF(clientVO.getNieNif())
                 .withSg21Code(clientVO.getSg21Code())
                 .withServicesGM(clientVO.getServicesGM())
+                .withWithOutActivity(withOutActivityDate)
                 .build();
     }
 }
