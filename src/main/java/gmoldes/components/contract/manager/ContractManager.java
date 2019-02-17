@@ -14,6 +14,8 @@ import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.*;
+import gmoldes.domain.contract.persistence.dao.ContractDAO;
+import gmoldes.domain.contract.persistence.vo.ContractVO;
 import gmoldes.domain.contract_schedule.dto.ContractScheduleDTO;
 import gmoldes.domain.contract_schedule.mappers.MapperContractScheduleDTOVO;
 import gmoldes.domain.contract_schedule.persistence.dao.ContractScheduleDAO;
@@ -43,6 +45,18 @@ public class ContractManager {
 
         return initialContractDAO.create(initialContractVO);
     }
+
+    public Integer saveContract(ContractDTO contractDTO){
+        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
+        Integer newContractNumber = contractDAO.findHighestContractNumber() + 1;
+        contractDTO.setGmContractNumber(newContractNumber);
+        ContractVO contractVO = MapperContractDTOVO.map(contractDTO);
+
+        return contractDAO.create(contractVO);
+    }
+
+
+
 
     public Integer saveContractTraceability(TraceabilityContractDocumentationDTO traceabilityDTO){
         TraceabilityContractDocumentationDAO traceabilityContractDocumentationDAO = TraceabilityContractDocumentationDAO.TraceabilityContractDocumentationDAOFactory.getInstance();

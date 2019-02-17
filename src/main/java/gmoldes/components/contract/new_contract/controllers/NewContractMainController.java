@@ -278,8 +278,9 @@ public class NewContractMainController extends VBox {
         provisionalContractData.refreshData(dataDTO);
         if (statusText.equals(ContractConstants.REVISION_WITHOUT_ERRORS)) {
             if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
-                Integer contractNumber = persistInitialContract();
-                persistTraceabilityControlData(contractNumber);
+                Integer initialContractNumber = persistInitialContract();
+                Integer contractNumber = persistContract();
+                persistTraceabilityControlData(initialContractNumber);
                 contractActionComponents.enablePDFButton(true);
                 }
         }
@@ -431,6 +432,41 @@ public class NewContractMainController extends VBox {
         }
 
         return contractNumber;
+    }
+
+    private Integer persistContract(){
+
+        Integer variationType;
+        if(contractData.getContractType().getAdminPartnerSimilar()){
+            variationType = 101;
+        } else if(contractData.getContractType().getSurrogate()){
+            variationType = 109;
+        }else{
+            variationType = 100;
+        }
+
+        ContractDTO contractDTO = ContractDTO.create()
+                .withEmployer(contractParts.getSelectedEmployer().getClientId())
+                .withEmployee(contractParts.getSelectedEmployee().getIdpersona())
+                .withContractType(contractData.getContractType().getContractCode().toString())
+                .withGMContractNumber(null)
+                .withVariationType(variationType)
+                .withStartDate(contractData.getDateFrom())
+                .withExpectedEndDate(contractData.getDateTo())
+                .withModificationDate(null)
+                .withEndingDate(null)
+                .withContractScheduleJsonData(retrieveContractScheduleJsonData())
+                .withLaborCategory(contractData.getLaborCategory())
+                .withQuoteAccountCode(contractParts.getSelectedCCC().getCccInss())
+                .withIdentificationContractNumberINEM(null)
+                .withPublicNotes(contractPublicNotes.getPublicNotes())
+                .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
+                .build();
+
+        ContractManager contractManager = new ContractManager();
+        return contractManager.saveContract(contractDTO);
+
+
     }
 
     private void persistTraceabilityControlData(Integer contractNumber){

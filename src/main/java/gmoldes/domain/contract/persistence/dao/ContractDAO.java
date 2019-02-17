@@ -8,12 +8,11 @@ import org.hibernate.SessionFactory;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.Date;
 import java.util.List;
 
 public class ContractDAO {
 
-    private static final String FIND_HIGHEST_CONTRACT_NUMBER = "select max(numcontrato) from ContractVO";
+    private static final String FIND_HIGHEST_CONTRACT_NUMBER = "select max(gmContractNumber) from ContractVO";
 
     private SessionFactory sessionFactory;
     private Session session;
@@ -57,57 +56,17 @@ public class ContractDAO {
         return (Integer) query.getSingleResult();
     }
 
-    public List<ContractVO> findAllContractsOrderedByContractNumberAndVariation(){
-        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_VARIATION, ContractVO.class);
+    public List<ContractVO> findAllContractsOrderedByContractNumber(){
+        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACT_NUMBER, ContractVO.class);
 
         return query.getResultList();
     }
     
-    public List<ContractVO> findAllClientWithActiveContractSorted(){
-        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED, ContractVO.class);
 
-        return query.getResultList();
-    }
-
-    public List<ContractVO> findAllClientWithActiveContractWithTimeRecordSorted(){
-        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED, ContractVO.class);
-
-        return query.getResultList();
-    }
-
-    public List<ContractVO> findAllClientWithContractWithTimeRecordInPeriodSorted(String yearMonth){
-        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CLIENT_WITH_CONTRACT_WITH_TIMERECORD_IN_PERIOD_SORTED, ContractVO.class);
-        query.setParameter("yearMonth", yearMonth);
-
-        return query.getResultList();
-    }
 
     public List<ContractVO> findAllContractsByClientId(Integer clientId){
 
         TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID, ContractVO.class);
-        query.setParameter("code", clientId);
-
-        return query.getResultList();
-    }
-
-    public List<ContractVO> findAllContractsWithTimeRecordByClientIdInPeriod(Integer clientId, String yearMonth){
-        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD, ContractVO.class);
-        query.setParameter("code", clientId);
-        query.setParameter("initialperiod", yearMonth);
-
-        return query.getResultList();
-    }
-
-    public List<ContractVO> findAllContractsByClientIdInPeriod(Integer clientId, Date referenceDate){
-        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD, ContractVO.class);
-        query.setParameter("code", clientId);
-        query.setParameter("initialperiod", referenceDate);
-
-        return query.getResultList();
-    }
-
-    public List<ContractVO> findAllActiveContractsByClientId(Integer clientId){
-        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID, ContractVO.class);
         query.setParameter("code", clientId);
 
         return query.getResultList();

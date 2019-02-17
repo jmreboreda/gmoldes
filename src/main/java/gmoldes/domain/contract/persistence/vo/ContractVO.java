@@ -6,7 +6,7 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
+import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -14,58 +14,17 @@ import org.hibernate.annotations.TypeDefs;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Set;
 
 @NamedQueries(value = {
         @NamedQuery(
-                name = ContractVO.FIND_CONTRACTS_EXPIRATION,
-                query = "select p from ContractVO p where p.preavisofin is null AND p.f_hasta is not null and date(p.f_hasta) - date(NOW()) <= 20"
-        ),
-        @NamedQuery(
-                name = ContractVO.IDC_CONTROL,
-                query = "select p from ContractVO p where p.idc is null and date(p.f_desde) - date (now()) <= 3"
-        ),
-        @NamedQuery(
-                name = ContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_VARIATION,
-                query = "select p from ContractVO p order by p.numcontrato, p.numvariacion"
+                name = ContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACT_NUMBER,
+                query = "select p from ContractVO p order by p.gmContractNumber"
         ),
         @NamedQuery(
                 name = ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID,
-                query = "select p from ContractVO p where p.idcliente_gm = :code order by p.trabajador_name"
-        ),
-        @NamedQuery(
-                name = ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD,
-                query = "select p from ContractVO p where p.idcliente_gm = :code and p.f_desde <= :initialperiod and (p.f_hasta >= :initialperiod or p.f_hasta is null) order by p.trabajador_name"
-        ),
-        @NamedQuery(
-                name = ContractVO.FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD,
-                query = "select p from ContractVO p where p.idcliente_gm = :code " +
-                        "and tipovariacion < 800 " +
-                        "and concat(trim(to_char(extract(year from p.f_desde),'9999')), trim(to_char(extract(month from p.f_desde),'09'))) <= :initialperiod " +
-                        "and (concat(trim(to_char(extract(year from p.f_hasta),'9999')), trim(to_char(extract(month from p.f_hasta),'09'))) >= :initialperiod " +
-                        "or p.f_hasta is null) and (jor_tipo = 'A tiempo parcial' or tipoctto = 'Formación') order by p.trabajador_name, p.f_desde"
-        ),
-        @NamedQuery(
-                name = ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID,
-                query = "select p from ContractVO p where p.envigor = true and p.idcliente_gm = :code order by p.trabajador_name"
-        ),
-        @NamedQuery(
-                name = ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED,
-                query = "select p from ContractVO p where p.envigor = true order by p.clientegm_name"
-        ),
-        @NamedQuery(
-                name = ContractVO.FIND_ALL_CLIENT_WITH_CONTRACT_WITH_TIMERECORD_IN_PERIOD_SORTED,
-                query = "select p from ContractVO p where tipovariacion < 800" +
-                        "and concat(trim(to_char(extract(year from p.f_desde),'9999')), trim(to_char(extract(month from p.f_desde),'09'))) <= :yearMonth " +
-                        "and (concat(trim(to_char(extract(year from p.f_hasta),'9999')), trim(to_char(extract(month from p.f_hasta),'09'))) >= :yearMonth " +
-                        "or p.f_hasta is null) and (jor_tipo = 'A tiempo parcial' or tipoctto = 'Formación') order by p.clientegm_name"
-        ),
-        @NamedQuery(
-                name = ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED,
-                query = "select p from ContractVO p where p.envigor = true and (p.jor_tipo = 'A tiempo parcial' or tipoctto = 'Formación') order by p.clientegm_name"
+                query = "select p from ContractVO p where p.clientId = :code"
         )
 })
-
 @Entity
 @Table(name = "contract")
 @TypeDefs({
@@ -78,34 +37,26 @@ import java.util.Set;
 })
 
 public class ContractVO implements Serializable {
-    public static final String FIND_CONTRACTS_EXPIRATION = "ContractVO.FIND_CONTRACTS_EXPIRATION";
-    public static final String IDC_CONTROL = "ContractVO.IDC_CONTROL";
-    public static final String FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_VARIATION = "ContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE";
+    public static final String FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACT_NUMBER = "ContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACT_NUMBER";
     public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID";
-    public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD = "ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID_IN_PERIOD";
-    public static final String FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_ACTIVE_CONTRACTS_BY_CLIENT_ID";
-    public static final String FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED = "ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_SORTED";
-    public static final String FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED = "ContractVO.FIND_ALL_CLIENT_WITH_ACTIVE_CONTRACT_WITH_TIMERECORD_SORTED";
-    public static final String FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD = "ContractVO.FIND_ALL_CONTRACTS_WITH_TIMERECORD_BY_CLIENT_ID_IN_PERIOD";
-    public static final String FIND_ALL_CLIENT_WITH_CONTRACT_WITH_TIMERECORD_IN_PERIOD_SORTED = "ContractVO.FIND_ALL_CLIENT_WITH_CONTRACT_WITH_TIMERECORD_IN_PERIOD_SORTED";
 
     @Id
     @SequenceGenerator(name = "contract_id_seq", sequenceName = "contract_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contract_id_seq")
     @Column(name = "id", updatable = false)
     private Integer id;
-    private Integer employer;
-    private Integer employee;
+    private Integer clientId;
+    private Integer workerId;
     private String contractType;
     private Integer gmContractNumber;
-    private String variationType;
+    private Integer variationType;
     private Date startDate;
     private Date expectedEndDate;
     private Date modificationDate;
     private Date endingDate;
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private Set<WorkDaySchedule> weeklyWorkSchedule;
+    private ContractScheduleJsonData contractScheduleJsonData;
     private String laborCategory;
     private String quoteAccountCode;
     private String identificationContractNumberINEM;
@@ -120,20 +71,20 @@ public class ContractVO implements Serializable {
         this.id = id;
     }
 
-    public Integer getEmployer() {
-        return employer;
+    public Integer getClientId() {
+        return clientId;
     }
 
-    public void setEmployer(Integer employer) {
-        this.employer = employer;
+    public void setEmployer(Integer clientId) {
+        this.clientId = clientId;
     }
 
-    public Integer getEmployee() {
-        return employee;
+    public Integer getWorkerId() {
+        return workerId;
     }
 
-    public void setEmployee(Integer employee) {
-        this.employee = employee;
+    public void setEmployee(Integer workerId) {
+        this.workerId = workerId;
     }
 
     public String getContractType() {
@@ -152,11 +103,11 @@ public class ContractVO implements Serializable {
         this.gmContractNumber = gmContractNumber;
     }
 
-    public String getVariationType() {
+    public Integer getVariationType() {
         return variationType;
     }
 
-    public void setVariationType(String variationType) {
+    public void setVariationType(Integer variationType) {
         this.variationType = variationType;
     }
 
@@ -192,12 +143,12 @@ public class ContractVO implements Serializable {
         this.endingDate = endingDate;
     }
 
-    public Set<WorkDaySchedule> getWeeklyWorkSchedule() {
-        return weeklyWorkSchedule;
+    public ContractScheduleJsonData getContractScheduleJsonData() {
+        return contractScheduleJsonData;
     }
 
-    public void setWeeklyWorkSchedule(Set<WorkDaySchedule> weeklyWorkSchedule) {
-        this.weeklyWorkSchedule = weeklyWorkSchedule;
+    public void setContractScheduleJsonData(ContractScheduleJsonData contractScheduleJsonData) {
+        this.contractScheduleJsonData = contractScheduleJsonData;
     }
 
     public String getLaborCategory() {
