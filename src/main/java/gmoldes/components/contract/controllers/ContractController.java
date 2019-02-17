@@ -11,9 +11,9 @@ public class ContractController {
 
     private ContractManager contractManager = new ContractManager();
 
-    public List<ContractNewVersionDTO> findAllContractsInForceNow(){
+    public Integer saveContract(ContractDTO contractDTO){
 
-        return contractManager.findAllContractsInForceNow();
+        return contractManager.saveContract(contractDTO);
     }
 
     public InitialContractDTO findInitialContractByContractNumber(Integer selectedContractNumber){

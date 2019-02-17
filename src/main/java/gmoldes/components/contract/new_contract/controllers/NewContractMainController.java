@@ -4,6 +4,7 @@ import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.ContractConstants;
+import gmoldes.components.contract.controllers.ContractController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
@@ -463,10 +464,8 @@ public class NewContractMainController extends VBox {
                 .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
                 .build();
 
-        ContractManager contractManager = new ContractManager();
-        return contractManager.saveContract(contractDTO);
-
-
+        ContractController contractController = new ContractController();
+        return contractController.saveContract(contractDTO);
     }
 
     private void persistTraceabilityControlData(Integer contractNumber){
