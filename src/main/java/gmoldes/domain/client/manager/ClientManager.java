@@ -37,6 +37,7 @@ public class ClientManager {
 
             ClientDTO clientDTO = ClientDTO.create()
                     .withId(clientVO.getId())
+                    .withClientId(clientVO.getClientId())
                     .withIsNaturalPerson(clientVO.getNaturalPerson())
                     .withSg21Code(clientVO.getSg21Code())
                     .withDateFrom(dateFrom)

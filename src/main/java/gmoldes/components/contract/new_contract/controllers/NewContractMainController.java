@@ -528,7 +528,7 @@ public class NewContractMainController extends VBox {
                 .withFullPartialWorkDay(contractData.getFullPartialWorkDay())
                 .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
                 .withQuoteAccountCode(quoteAccountCode)
-                .withClientGMId(contractParts.getSelectedEmployer().getId())
+                .withClientGMId(contractParts.getSelectedEmployer().getClientId())
                 .build();
 
         ContractScheduleJsonData schedule = retrieveContractScheduleJsonData();

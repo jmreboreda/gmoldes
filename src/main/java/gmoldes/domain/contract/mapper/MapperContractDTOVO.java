@@ -16,6 +16,9 @@ public class MapperContractDTOVO {
 
         ContractVO contractVO = new ContractVO();
         contractVO.setId(null);
+        contractVO.setEmployer(contractDTO.getEmployer());
+        contractVO.setEmployee(contractDTO.getEmployee());
+        contractVO.setContractType(contractDTO.getContractType());
         contractVO.setGmContractNumber(contractDTO.getGmContractNumber());
         contractVO.setVariationType(contractDTO.getVariationType());
         contractVO.setStartDate(Date.valueOf(contractDTO.getStartDate()));
@@ -23,6 +26,11 @@ public class MapperContractDTOVO {
         contractVO.setModificationDate(modificationDate);
         contractVO.setEndingDate(endingDate);
         contractVO.setContractScheduleJsonData(contractDTO.getContractScheduleJsonData());
+        contractVO.setLaborCategory(contractDTO.getLaborCategory());
+        contractVO.setQuoteAccountCode(contractDTO.getQuoteAccountCode());
+        contractVO.setIdentificationContractNumberINEM(contractDTO.getIdentificationContractNumberINEM());
+        contractVO.setPublicNotes(contractDTO.getPublicNotes());
+        contractVO.setPrivateNotes(contractDTO.getPrivateNotes());
 
         return contractVO;
     }
