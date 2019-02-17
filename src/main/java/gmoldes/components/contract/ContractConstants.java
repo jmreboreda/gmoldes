@@ -7,6 +7,7 @@ public class ContractConstants {
     /** Contract data */
     public static final String FULL_WORKDAY = "A tiempo completo";
     public static final String PARTIAL_WORKDAY = "A tiempo parcial";
+    public static final String DETERMINED_DURATION_TEXT = "Duración determinada";
     public static final String UNDEFINED_DURATION_TEXT = "Indefinido";
     public static final String TEMPORAL_DURATION_TEXT = "Temporal";
     public static final String HOURS_WORK_WEEK_TEXT = " Horas de trabajo por semana";

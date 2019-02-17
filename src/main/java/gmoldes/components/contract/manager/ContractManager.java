@@ -1,18 +1,14 @@
 package gmoldes.components.contract.manager;
 
 
-import com.sun.security.ntlm.Client;
 import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.new_contract.mapper.MapperContractTypeVODTO;
-import gmoldes.components.contract.new_contract.mapper.MapperOldContractToSaveDTOVO;
-import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.components.contract.new_contract.persistence.dao.ContractTypeDAO;
 import gmoldes.components.contract.new_contract.persistence.dao.TypesContractVariationsDAO;
 import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO;
-import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
 import gmoldes.components.contract.new_contract.persistence.vo.TypesContractVariationsVO;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
@@ -31,23 +27,12 @@ import gmoldes.domain.traceability_contract_documentation.mapper.MapperTraceabil
 import gmoldes.domain.traceability_contract_documentation.persistence.dao.TraceabilityContractDocumentationDAO;
 import gmoldes.domain.traceability_contract_documentation.persistence.vo.TraceabilityContractDocumentationVO;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
 public class ContractManager {
 
     public ContractManager() {
-    }
-
-    public Integer saveOldContract(OldContractToSaveDTO oldContractToSaveDTO){
-        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        MapperOldContractToSaveDTOVO mapperOldContractToSaveDTOVO = new MapperOldContractToSaveDTOVO();
-        Integer newContractNumber = contractDAO.findHighestContractNumber() + 1;
-        oldContractToSaveDTO.setContractNumber(newContractNumber);
-        ContractVO contractVO = mapperOldContractToSaveDTOVO.mapOldContractToSaveDTOVO((oldContractToSaveDTO));
-
-        return contractDAO.create(contractVO);
     }
 
     public Integer saveInitialContract(ContractNewVersionDTO contractNewVersionDTO){
@@ -110,47 +95,6 @@ public class ContractManager {
         }
 
         return contractNewVersionDTOList;
-    }
-
-    public List<ContractDTO> findAllContractsOrderedByContractNumberAndVariation(){
-        List<ContractDTO> contractDTOList = new ArrayList<>();
-        MapperContractVODTO mapper = new MapperContractVODTO();
-
-        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        List<ContractVO> contractVOList = contractDAO.findAllContractsOrderedByContractNumberAndVariation();
-        for (ContractVO contractVO : contractVOList) {
-            LocalDate dateTo = (contractVO.getF_hasta() != null) ? contractVO.getF_hasta().toLocalDate() : null;
-            Set<DayOfWeek> daysOfWeekToWork = mapper.mapDaysOfWeekToWorkVODTO(contractVO);
-
-            ContractDTO contractDTO = ContractDTO.create()
-                    .withLaborCategory(contractVO.getCategoria())
-                    .withClientGMName(contractVO.getClientegm_name())
-                    .withQuoteAccountCode(contractVO.getContrato_ccc())
-                    .withIndefiniteOrTemporalContract(contractVO.getDuracion())
-                    .withContractInForce(contractVO.getEnvigor())
-                    .withDateFrom(contractVO.getF_desde().toLocalDate())
-                    .withDateTo(dateTo)
-                    .withId(contractVO.getId())
-                    .withIdentificationContractNumberINEM(contractVO.getId_ctto_inem())
-                    .withClientGMId(contractVO.getIdcliente_gm())
-                    .withWorkerId(contractVO.getIdtrabajador())
-                    .withFullPartialWorkday(contractVO.getJor_tipo())
-                    .withWeeklyWorkHours(contractVO.getJor_trab())
-                    .withDaysOfWeekToWork(daysOfWeekToWork)
-                    .withContractType(contractVO.getTipoctto())
-                    .withNotesForManager(contractVO.getNotas_gestor())
-                    .withPrivateNotes(contractVO.getNotas_privadas())
-                    .withContractNumber(contractVO.getNumcontrato())
-                    .withVariationNumber(contractVO.getNumvariacion())
-                    .withSurrogateContract(contractVO.getSubrogacion())
-                    .withContractType(contractVO.getTipoctto())
-                    .withVariationType(contractVO.getTipovariacion())
-                    .withWorkerName(contractVO.getTrabajador_name())
-                    .build();
-
-            contractDTOList.add(contractDTO);
-        }
-        return contractDTOList;
     }
 
     public List<ContractNewVersionDTO> findAllContractNewVersionByClientIdInMonthOfDate(Integer clientId, LocalDate dateReceived){
@@ -424,45 +368,6 @@ public class ContractManager {
         return MapperTypesContractVariationsVODTO.mapTypesContractVariationsVODTO(typesContractVariationsDTO);
     }
 
-    public int establishContractInForce(){
-
-        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        return contractDAO.establishContractInForce();
-
-    }
-
-    public int establishContractNotInForce(){
-
-        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        return contractDAO.establishContractNotInForce();
-    }
-
-    public List<ContractDTO> findContractsExpiration(){
-        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        List<ContractVO> contractVOList = contractDAO.findContractsExpiration();
-        MapperContractVODTO mapper = new MapperContractVODTO();
-        List<ContractDTO> contractDTOList = new ArrayList<>();
-        for(ContractVO contractVO : contractVOList){
-            ContractDTO contractDTO = mapper.mapContractVODTO(contractVO);
-            contractDTOList.add(contractDTO);
-        }
-
-        return contractDTOList;
-    }
-
-    public List<ContractDTO> findPendingIDC(){
-        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
-        List<ContractVO> contractVOList = contractDAO.findPendingIDC();
-        MapperContractVODTO mapper = new MapperContractVODTO();
-        List<ContractDTO> contractDTOList = new ArrayList<>();
-        for(ContractVO contractVO : contractVOList){
-            ContractDTO contractDTO = mapper.mapContractVODTO(contractVO);
-            contractDTOList.add(contractDTO);
-        }
-
-        return contractDTOList;
-    }
-
     public List<ContractNewVersionDTO> findAllInitialContractSorted(){
         List<ContractNewVersionDTO> initialContractDTOList = new ArrayList<>();
         MapperInitialContractVODTO mapper = new MapperInitialContractVODTO();
@@ -597,35 +502,4 @@ public class ContractManager {
 
         return MapperInitialContractDTOToContractNewVersionDTO.mapInitialContractDTOToContractNewVersionDTO(initialContractDTOList);
     }
-
-//    public List<ContractVariationDTO> findContractVariationsWithDateAfterTheCurrentOne(LocalDate date){
-//
-//        List<ContractVariationDTO> contractVariationDTOList = new ArrayList<>();
-//
-//        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
-//        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findContractVariationsWithDateAfterTheCurrentOne(date);
-//
-//        for(ContractVariationVO contractVariationVO : contractVariationVOList){
-//
-//            LocalDate expectedEndDate = contractVariationVO.getExpectedEndDate() != null ? contractVariationVO.getExpectedEndDate().toLocalDate() : null;
-//            LocalDate modificationDate = contractVariationVO.getModificationDate() != null ? contractVariationVO.getModificationDate().toLocalDate() : null;
-//            LocalDate endingDate = contractVariationVO.getEndingDate() != null ? contractVariationVO.getEndingDate().toLocalDate() : null;
-//
-//            ContractVariationDTO contractVariationDTO = ContractVariationDTO.create()
-//                    .withId(contractVariationVO.getId())
-//                    .withContractNumber(contractVariationVO.getContractNumber())
-//                    .withVariationType(contractVariationVO.getVariationType())
-//                    .withStartDate(contractVariationVO.getStartDate().toLocalDate())
-//                    .withExpectedEndDate(expectedEndDate)
-//                    .withModificationDate(modificationDate)
-//                    .withEndingDate(endingDate)
-//                    .withContractJsonData(contractVariationVO.getContractJsonData())
-//                    .withContractScheduleJsonData(contractVariationVO.getContractScheduleJsonData())
-//                    .build();
-//
-//            contractVariationDTOList.add(contractVariationDTO);
-//        }
-//
-//        return contractVariationDTOList;
-//    }
 }

@@ -6,11 +6,11 @@ import gmoldes.components.contract.contract_variation.persistence.vo.ContractVar
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.contract.persistence.dao.ContractDAO;
 
 import java.text.Collator;
 import java.time.LocalDate;

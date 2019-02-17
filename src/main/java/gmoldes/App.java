@@ -167,6 +167,5 @@ public class App extends Application {
         InitialChecks.alertOfWeeklyOfWorkingDayScheduleWithEndDate(primaryStage);
         InitialChecks.alertByContractNewVersionExpiration(primaryStage);
         InitialChecks.alertByDelaySendingLaborDocumentationToClients(primaryStage);
-        InitialChecks.UpdateOldContractVersionInForce();
     }
 }

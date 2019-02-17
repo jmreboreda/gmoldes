@@ -278,7 +278,6 @@ public class NewContractMainController extends VBox {
         provisionalContractData.refreshData(dataDTO);
         if (statusText.equals(ContractConstants.REVISION_WITHOUT_ERRORS)) {
             if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
-//                persistOldContractToSave();
                 Integer contractNumber = persistInitialContract();
                 persistTraceabilityControlData(contractNumber);
                 contractActionComponents.enablePDFButton(true);
@@ -412,43 +411,6 @@ public class NewContractMainController extends VBox {
         }
         contractParts.refreshEmployerCCC(clientCCCDTOList);
     }
-
-//    private void persistOldContractToSave() {
-//
-//        LocalDate endOfContractNotice = contractData.getDateTo() == null ? LocalDate.of(9999, 12, 31) : null;
-//
-//        String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
-//
-//        OldContractToSaveDTO oldContractToSaveDTO = OldContractToSaveDTO.create()
-//                .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
-//                .withVariationNumber(0)
-//                .withClientGMId(contractParts.getSelectedEmployer().getId())
-//                .withClientGMName(contractParts.getSelectedEmployer().toString())
-//                .withQuoteAccountCode(quoteAccountCode)
-//                .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
-//                .withWorkerName(contractParts.getSelectedEmployee().toString())
-//                .withLaborCategory(contractData.getLaborCategory())
-//                .withWeeklyWorkHours(contractData.getHoursWorkWeek())
-//                .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork())
-//                .withFullPartialWorkday(contractData.getFullPartialWorkDay())
-//                .withContractType(contractData.getContractType().getColloquial())
-//                .withDateFrom(contractData.getDateFrom())
-//                .withDateTo(contractData.getDateTo())
-//                .withContractInForce(contractData.isContractInForceAtDate(LocalDate.now()))
-//                .withNotesForManager(contractPublicNotes.getPublicNotes())
-//                .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
-//                .withQuoteDataReportIDC(null)
-//                .withEndOfContractNotice(endOfContractNotice)
-//                .build();
-//
-//        ContractManager contractManager = new ContractManager();
-//        Integer contractNumber = contractManager.saveOldContract(oldContractToSaveDTO);
-//
-//        if(contractNumber == null) {
-//
-//            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);
-//        }
-//    }
 
     private Integer persistInitialContract(){
 

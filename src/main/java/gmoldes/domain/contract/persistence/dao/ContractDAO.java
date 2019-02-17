@@ -1,7 +1,7 @@
-package gmoldes.components.contract.new_contract.persistence.dao;
+package gmoldes.domain.contract.persistence.dao;
 
 
-import gmoldes.components.contract.new_contract.persistence.vo.ContractVO;
+import gmoldes.domain.contract.persistence.vo.ContractVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,10 +13,6 @@ import java.util.List;
 
 public class ContractDAO {
 
-    private static final String ESTABLISH_CONTRACT_IN_FORCE =
-            "update ContractVO as p set p.envigor = TRUE where p.envigor = FALSE and (p.f_desde <= date(now()) and (p.f_hasta > date(now()) or p.f_hasta is null))";
-    private static final String ESTABLISH_CONTRACT_NOT_IN_FORCE =
-            "update ContractVO as p set p.envigor = FALSE where p.envigor = TRUE and (p.f_desde > date(now()) or p.f_hasta < date(now()))";
     private static final String FIND_HIGHEST_CONTRACT_NUMBER = "select max(numcontrato) from ContractVO";
 
     private SessionFactory sessionFactory;
@@ -52,47 +48,7 @@ public class ContractDAO {
             System.err.println("No se ha podido guardar el contrato: " + e.getMessage());
         }
 
-        return contractVO.getNumcontrato();
-    }
-
-    public int establishContractInForce(){
-        int result = 0;
-        try {
-            session.beginTransaction();
-            Query query = session.createQuery(ESTABLISH_CONTRACT_IN_FORCE);
-            result = query.executeUpdate();
-            session.getTransaction().commit();
-        }catch(Exception e){
-
-        }
-
-        return result;
-    }
-
-    public int establishContractNotInForce(){
-        int result = 0;
-        try {
-            session.beginTransaction();
-            Query query = session.createQuery(ESTABLISH_CONTRACT_NOT_IN_FORCE);
-            result = query.executeUpdate();
-            session.getTransaction().commit();
-        }catch(Exception e){
-
-        }
-
-        return result;
-    }
-
-    public List<ContractVO> findContractsExpiration(){
-        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.FIND_CONTRACTS_EXPIRATION, ContractVO.class);
-
-        return query.getResultList();
-    }
-
-    public List<ContractVO> findPendingIDC(){
-        TypedQuery<ContractVO> query = session.createNamedQuery(ContractVO.IDC_CONTROL, ContractVO.class);
-
-        return query.getResultList();
+        return contractVO.getGmContractNumber();
     }
 
     public Integer findHighestContractNumber(){

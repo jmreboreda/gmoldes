@@ -2,7 +2,6 @@ package gmoldes.domain.check;
 
 import gmoldes.ApplicationConstants;
 import gmoldes.ApplicationMainController;
-import gmoldes.components.contract.controllers.ContractController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.domain.client.ClientService;
@@ -230,15 +229,6 @@ public class InitialChecks {
                 Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Documentación de contratos pendiente de recepción"), alertMessage.toString());
             }
         }
-    }
-
-    public static void UpdateOldContractVersionInForce(){
-        ContractController controller = new ContractController();
-
-        int result = controller.establishContractsInForce();
-        logger.info(CONTRACT_IN_FORCE_UPDATE_TO + "TRUE: " + result);
-        int result1 = controller.establishContractsNotInForce();
-        logger.info(CONTRACT_IN_FORCE_UPDATE_TO + "FALSE: " + result1);
     }
 
     private static String retrieveVariationDescriptionById(int idVariation){

@@ -11,26 +11,6 @@ public class ContractController {
 
     private ContractManager contractManager = new ContractManager();
 
-    public int establishContractsInForce(){
-
-        return contractManager.establishContractInForce();
-    }
-
-    public int establishContractsNotInForce(){
-
-        return contractManager.establishContractNotInForce();
-    }
-
-    public List<ContractDTO> findContractsExpiration(){
-
-        return contractManager.findContractsExpiration();
-    }
-
-    public List<ContractDTO> findPendingIDC(){
-
-        return contractManager.findPendingIDC();
-    }
-
     public List<ContractNewVersionDTO> findAllContractsInForceNow(){
 
         return contractManager.findAllContractsInForceNow();
