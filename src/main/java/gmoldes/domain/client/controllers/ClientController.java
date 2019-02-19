@@ -43,6 +43,7 @@ public class ClientController {
                 .withNieNIF(clientVO.getNieNif())
                 .withSg21Code(clientVO.getSg21Code())
                 .withServicesGM(clientVO.getServicesGM())
+                .withClientCCC(clientVO.getClientCCC())
                 .withWithOutActivity(withOutActivityDate)
                 .build();
     }

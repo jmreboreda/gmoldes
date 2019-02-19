@@ -178,11 +178,11 @@ public class ContractDTO {
         this.privateNotes = privateNotes;
     }
 
-    public static ContractBuilder create() {
-        return new ContractBuilder();
+    public static ContractDTOBuilder create() {
+        return new ContractDTOBuilder();
     }
 
-    public static class ContractBuilder {
+    public static class ContractDTOBuilder {
 
         private Integer employer;
         private Integer employee;
@@ -200,78 +200,78 @@ public class ContractDTO {
         private String publicNotes;
         private String privateNotes;
 
-        public ContractBuilder withEmployer(Integer employer) {
+        public ContractDTOBuilder withEmployer(Integer employer) {
             this.employer = employer;
             return this;
         }
 
-        public ContractBuilder withEmployee(Integer employee) {
+        public ContractDTOBuilder withEmployee(Integer employee) {
             this.employee = employee;
             return this;
         }
 
-        public ContractBuilder withContractType(String contractType) {
+        public ContractDTOBuilder withContractType(String contractType) {
             this.contractType = contractType;
             return this;
         }
 
 
-        public ContractBuilder withGMContractNumber(Integer gmContractNumber) {
+        public ContractDTOBuilder withGMContractNumber(Integer gmContractNumber) {
             this.gmContractNumber = gmContractNumber;
             return this;
         }
 
-        public ContractBuilder withVariationType(Integer variationType) {
+        public ContractDTOBuilder withVariationType(Integer variationType) {
             this.variationType = variationType;
             return this;
         }
 
-        public ContractBuilder withStartDate(LocalDate startDate) {
+        public ContractDTOBuilder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public ContractBuilder withExpectedEndDate(LocalDate expectedEndDate) {
+        public ContractDTOBuilder withExpectedEndDate(LocalDate expectedEndDate) {
             this.expectedEndDate = expectedEndDate;
             return this;
         }
 
-        public ContractBuilder withModificationDate(LocalDate modificationDate) {
+        public ContractDTOBuilder withModificationDate(LocalDate modificationDate) {
             this.modificationDate = modificationDate;
             return this;
         }
 
-        public ContractBuilder withEndingDate(LocalDate endingDate) {
+        public ContractDTOBuilder withEndingDate(LocalDate endingDate) {
             this.endingDate = endingDate;
             return this;
         }
 
-        public ContractBuilder withContractScheduleJsonData(ContractScheduleJsonData weeklyWorkSchedule) {
+        public ContractDTOBuilder withContractScheduleJsonData(ContractScheduleJsonData weeklyWorkSchedule) {
             this.weeklyWorkSchedule = weeklyWorkSchedule;
             return this;
         }
 
-        public ContractBuilder withLaborCategory(String laborCategory) {
+        public ContractDTOBuilder withLaborCategory(String laborCategory) {
             this.laborCategory = laborCategory;
             return this;
         }
 
-        public ContractBuilder withQuoteAccountCode(String quoteAccountCode) {
+        public ContractDTOBuilder withQuoteAccountCode(String quoteAccountCode) {
             this.quoteAccountCode = quoteAccountCode;
             return this;
         }
 
-        public ContractBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
+        public ContractDTOBuilder withIdentificationContractNumberINEM(String identificationContractNumberINEM) {
             this.identificationContractNumberINEM = identificationContractNumberINEM;
             return this;
         }
 
-        public ContractBuilder withPublicNotes(String publicNotes) {
+        public ContractDTOBuilder withPublicNotes(String publicNotes) {
             this.publicNotes = publicNotes;
             return this;
         }
 
-        public ContractBuilder withPrivateNotes(String privateNotes) {
+        public ContractDTOBuilder withPrivateNotes(String privateNotes) {
             this.privateNotes = privateNotes;
             return this;
         }
