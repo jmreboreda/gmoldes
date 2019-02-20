@@ -46,7 +46,7 @@ public class InitialContractDAO {
             session.getTransaction().commit();
         }
         catch (Exception e){
-            System.err.println("INITIAL_CONTRACT_DA0 - No se ha podido guardar el nuevo contrato inicial: " + e.getMessage());
+            System.err.println("INITIAL_CONTRACT_DA0 - No se ha podido guardar el nuevo contrato inicial en \"initial_contract\": " + e.getMessage());
         }
 
         return initialContractVO.getContractNumber();
@@ -69,7 +69,7 @@ public class InitialContractDAO {
             session.getTransaction().commit();
         }
         catch (Exception e){
-            System.err.println("No se ha podido actualizar el contrato inicial: " + e.getMessage());
+            System.err.println("No se ha podido actualizar el contrato inicial en \"initial_contract\": " + e.getMessage());
         }
 
         return initialContractVO.getId();

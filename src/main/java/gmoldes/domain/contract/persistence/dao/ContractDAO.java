@@ -44,7 +44,7 @@ public class ContractDAO {
             session.getTransaction().commit();
         }
         catch (Exception e){
-            System.err.println("No se ha podido guardar el contrato: " + e.getMessage());
+            System.err.println("No se ha podido guardar el contrato en \"contract\": " + e.getMessage());
         }
 
         return contractVO.getGmContractNumber();
@@ -75,7 +75,7 @@ public class ContractDAO {
             session.getTransaction().commit();
         }
         catch (Exception e){
-            System.err.println("No se ha podido actualizar el contrato inicial en \"Contract\": " + e.getMessage());
+            System.err.println("No se ha podido actualizar el contrato en \"contract\": " + e.getMessage());
         }
 
         return contractReadVO.getId();

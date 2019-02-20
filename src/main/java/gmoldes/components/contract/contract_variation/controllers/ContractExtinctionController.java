@@ -258,7 +258,7 @@ public class ContractExtinctionController{
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION);
         }
 
-        if(updateInitialContractOfContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
+        if(updateInitialContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
 
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT);
         }
@@ -357,7 +357,7 @@ public class ContractExtinctionController{
         return contractManager.saveContractVariation(contractNewVersionExtinctedDTO);
     }
 
-    private Integer updateInitialContractOfContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){
+    private Integer updateInitialContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
         LocalDate dateOfExtinction = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
                 .getDateFrom().getValue();
