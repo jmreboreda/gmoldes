@@ -36,7 +36,7 @@ public class ContractDAO {
         this.session = session;
     }
 
-    public Integer create(ContractVO contractVO) {
+    public Integer createContract(ContractVO contractVO) {
 
         try {
             session.beginTransaction();

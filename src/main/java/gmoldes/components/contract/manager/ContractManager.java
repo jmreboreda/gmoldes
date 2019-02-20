@@ -52,11 +52,8 @@ public class ContractManager {
         contractDTO.setGmContractNumber(newContractNumber);
         ContractVO contractVO = MapperContractDTOVO.map(contractDTO);
 
-        return contractDAO.create(contractVO);
+        return contractDAO.createContract(contractVO);
     }
-
-
-
 
     public Integer saveContractTraceability(TraceabilityContractDocumentationDTO traceabilityDTO){
         TraceabilityContractDocumentationDAO traceabilityContractDocumentationDAO = TraceabilityContractDocumentationDAO.TraceabilityContractDocumentationDAOFactory.getInstance();
