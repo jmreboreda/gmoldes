@@ -15,20 +15,22 @@ public class ContractTypeDTO {
     private Boolean isDeterminedDuration;
     private Boolean isSurrogate;
     private Boolean isAdminPartnerSimilar;
+    private Boolean isInterim;
 
     public ContractTypeDTO(Integer id,
-                              Integer contractCode,
-                              String contractDescription,
-                              String colloquial,
-                              Boolean isInitialContract,
-                              Boolean isTemporal,
-                              Boolean isUndefined,
-                              Boolean isPartialTime,
-                              Boolean isFullTime,
-                              Boolean isMenuSelectable,
-                              Boolean isDeterminedDuration,
-                              Boolean isSurrogate,
-                              Boolean isAdminPartnerSimilar) {
+                           Integer contractCode,
+                           String contractDescription,
+                           String colloquial,
+                           Boolean isInitialContract,
+                           Boolean isTemporal,
+                           Boolean isUndefined,
+                           Boolean isPartialTime,
+                           Boolean isFullTime,
+                           Boolean isMenuSelectable,
+                           Boolean isDeterminedDuration,
+                           Boolean isSurrogate,
+                           Boolean isAdminPartnerSimilar,
+                           Boolean isInterim) {
         this.id = id;
         this.contractCode = contractCode;
         this.contractDescription = contractDescription;
@@ -42,6 +44,7 @@ public class ContractTypeDTO {
         this.isDeterminedDuration = isDeterminedDuration;
         this.isSurrogate = isSurrogate;
         this.isAdminPartnerSimilar = isAdminPartnerSimilar;
+        this.isInterim = isInterim;
 
     }
 
@@ -149,6 +152,14 @@ public class ContractTypeDTO {
         isAdminPartnerSimilar = adminPartnerSimilar;
     }
 
+    public Boolean getInterim() {
+        return isInterim;
+    }
+
+    public void setInterim(Boolean interim) {
+        isInterim = interim;
+    }
+
     public String toString(){
         return  getColloquial() + " [ " + getContractDescription() + " ] ";
     }
@@ -172,6 +183,8 @@ public class ContractTypeDTO {
         private Boolean isDeterminedDuration;
         private Boolean isSurrogate;
         private Boolean isAdminPartnerSimilar;
+        private Boolean isInterim;
+
 
         public ContractTypeDTOBuilder withId(Integer id) {
             this.id = id;
@@ -238,10 +251,15 @@ public class ContractTypeDTO {
             return this;
         }
 
+        public ContractTypeDTOBuilder withIsInterim(Boolean isInterim) {
+            this.isInterim = isInterim;
+            return this;
+        }
+
 
         public ContractTypeDTO build() {
             return new ContractTypeDTO(this.id, this.contractCode, this.contractDescription, this.colloquial, this.isInitialContract, this.isTemporal,
-            this.isUndefined, this.isPartialTime, this.isFullTime, this.isMenuSelectable, this.isDeterminedDuration, this.isSurrogate, this.isAdminPartnerSimilar);
+            this.isUndefined, this.isPartialTime, this.isFullTime, this.isMenuSelectable, this.isDeterminedDuration, this.isSurrogate, this.isAdminPartnerSimilar, this.isInterim);
         }
     }
 }

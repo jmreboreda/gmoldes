@@ -215,11 +215,25 @@ public class ContractSchedule extends AnchorPane {
         Duration durationPM = Duration.ZERO;
 
         if(selectedItemRow.getAmFrom() != null && selectedItemRow.getAmTo() != null){
+            if(Duration.between(selectedItemRow.getAmFrom(), selectedItemRow.getAmTo()).toHours() <= 0){
+                deleteAllDataForSelectedRow();
+
+                return Duration.ZERO;
+            }
+
             durationAM = Duration.between(selectedItemRow.getAmFrom(), selectedItemRow.getAmTo());
         }
+
         if(selectedItemRow.getPmFrom() != null && selectedItemRow.getPmTo() != null){
             LocalTime pmFrom = selectedItemRow.getPmFrom();
             LocalTime pmTo =  selectedItemRow.getPmTo();
+
+            if(Duration.between(pmFrom, pmTo).toHours() <= 0){
+                deleteAllDataForSelectedRow();
+
+                return Duration.ZERO;
+            }
+
             if(pmTo == LocalTime.parse("00:00"))
             {
                 durationPM = Duration.between(pmFrom, LocalTime.MIDNIGHT).plus(Duration.ofDays(1));
@@ -321,7 +335,11 @@ public class ContractSchedule extends AnchorPane {
             }
 
             if(contract_schedule_table.getItems().get(firstEmptyRowNumber -1 ).getDayOfWeek() == null) {
-                firstEmptyRowTarget.setDayOfWeek(selectedItemRow.getDayOfWeek().plus(1));
+                if(selectedItemRow.getDayOfWeek() != null){
+                    firstEmptyRowTarget.setDayOfWeek(selectedItemRow.getDayOfWeek().plus(1));
+                }else{
+                    firstEmptyRowTarget.setDayOfWeek(null);
+                }
             }
         }
 

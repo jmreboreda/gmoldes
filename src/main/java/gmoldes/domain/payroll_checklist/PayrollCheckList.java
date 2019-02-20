@@ -1,10 +1,13 @@
 package gmoldes.domain.payroll_checklist;
 
-import gmoldes.ApplicationMainController;
+import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.payroll_checklist.dto.PayrollCheckListDTO;
+import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -12,8 +15,8 @@ import java.text.Collator;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PayrollCheckList {
@@ -87,12 +90,13 @@ public class PayrollCheckList {
     public List<PayrollCheckListDTO> retrieveAllContractInForceInPeriod(Month month, Integer year){
 
         List<PayrollCheckListDTO> payrollCheckListDTOList = new ArrayList<>();
-        ApplicationMainController applicationMainController = new ApplicationMainController();
         List<ContractNewVersionDTO> contractNewVersionDTOList = findAllContractInForceInPeriod(month, year);
         for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
-            ClientDTO employer = applicationMainController.findClientById(contractNewVersionDTO.getContractJsonData().getClientGMId());
+            ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+            ClientDTO employer = clientService.findClientById(contractNewVersionDTO.getContractJsonData().getClientGMId());
             String employerName = employer.toString();
-            PersonDTO worker = applicationMainController.findPersonById(contractNewVersionDTO.getContractJsonData().getWorkerId());
+            PersonService personService = PersonService.PersonServiceFactory.getInstance();
+            PersonDTO worker = personService.findPersonById(contractNewVersionDTO.getContractJsonData().getWorkerId());
             String workerName = worker.getApellidos() + ", " + worker.getNom_rzsoc();
 
             PayrollCheckListDTO payrollCheckListDTO = new PayrollCheckListDTO(employerName, workerName);
@@ -119,9 +123,9 @@ public class PayrollCheckList {
         LocalDate initialDate = LocalDate.of(year, monthReceived, firstDayOfMonth);
         LocalDate finalDate =  LocalDate.of(year, monthReceived, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
 
-        return applicationMainController.findAllContractInForceInPeriod(initialDate, finalDate);
+        return contractService.findAllContractInForceInPeriod(initialDate, finalDate);
 
     }
 }

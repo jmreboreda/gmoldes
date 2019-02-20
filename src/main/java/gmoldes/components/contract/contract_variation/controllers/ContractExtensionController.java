@@ -13,6 +13,7 @@ import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.MapperJsonScheduleToWorkDaySchedule;
 import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
@@ -20,8 +21,8 @@ import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.study.StudyManager;
+import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
@@ -36,6 +37,7 @@ import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -163,12 +165,14 @@ public class ContractExtensionController{
                     false,
                     true,
                     false,
+                    false,
                     "");
         }
 
         return new CompatibleVariationEvent(
                 false,
                 true,
+                false,
                 false,
                 ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION);
     }
@@ -183,7 +187,8 @@ public class ContractExtensionController{
 
         // 1. The maximum number of legally permitted extensions is already registered
         Integer counter = 0;
-        List<ContractVariationDTO> contractVariationDTOList =  applicationMainController.findAllContractVariationByContractNumber(contractNumber);
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        List<ContractVariationDTO> contractVariationDTOList =  contractService.findAllContractVariationByContractNumber(contractNumber);
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList){
             if(contractVariationDTO.getVariationType().equals(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION)){
                 counter++;
@@ -195,12 +200,13 @@ public class ContractExtensionController{
                         false,
                         true,
                         false,
+                        false,
                         ContractConstants.MAXIMUM_NUMBER_LEGALLY_PERMITTED_EXTENSIONS_IS_ALREADY_REGISTERED);
             }
         }
 
         // 2. Exceeded the number of months of maximum duration of the initial contract plus its extensions
-        List<ContractNewVersionDTO> contractNewVersionDTOList = applicationMainController.findHistoryOfContractByContractNumber(contractNumber);
+        List<ContractNewVersionDTO> contractNewVersionDTOList = contractService.findHistoryOfContractByContractNumber(contractNumber);
 
         Long numberDaysOfContractDuration = 0L;
 
@@ -230,6 +236,7 @@ public class ContractExtensionController{
                     false,
                     true,
                     false,
+                    false,
                     ContractConstants.MAXIMUM_LEGAL_NUMBER_OF_MONTHS_OF_CONTRACT_IS_EXCEEDED);
         }
 
@@ -244,11 +251,12 @@ public class ContractExtensionController{
                     false,
                     true,
                     false,
+                    false,
                     ContractConstants.INITIAL_DATE_EXTENSION_MUST_BE_IMMEDIATELY_AFTER_CONTRACT_EXPECTED_END_DATE);
         }
 
         // 4. An extension of the contract incompatible with the requested one is already registered
-        List<ContractVariationDTO> contractVariationDTOList_2 =  applicationMainController.findAllContractVariationByContractNumber(contractNumber);
+        List<ContractVariationDTO> contractVariationDTOList_2 =  contractService.findAllContractVariationByContractNumber(contractNumber);
         List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList_2) {
             for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
@@ -261,12 +269,13 @@ public class ContractExtensionController{
                             false,
                             true,
                             false,
+                            false,
                             ContractConstants.EXIST_PREVIOUS_INCOMPATIBLE_CONTRACT_VARIATION_EXTENSION);
                 }
             }
         }
 
-        return new CompatibleVariationEvent(false, true, false, null);
+        return new CompatibleVariationEvent(false, true, false,false, null);
     }
 
 
@@ -295,9 +304,8 @@ public class ContractExtensionController{
 
     private Integer updateLastContractVariation(Integer contractNumber){
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-
-        List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(contractNumber);
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        List<ContractVariationDTO> contractVariationDTOList = contractService.findAllContractVariationByContractNumber(contractNumber);
         if(contractVariationDTOList.isEmpty())
         {
             return 0;
@@ -316,7 +324,7 @@ public class ContractExtensionController{
                         .withVariationType(contractVariationDTO.getVariationType())
                         .withStartDate(contractVariationDTO.getStartDate())
                         .withExpectedEndDate(contractVariationDTO.getExpectedEndDate())
-                        .withModificationDate(initialDateOfExtension)
+                        .withModificationDate(initialDateOfExtension.minusDays(1))
                         .withEndingDate(initialDateOfExtension)
                         .withContractJsonData(contractVariationDTO.getContractJsonData())
                         .withContractScheduleJsonData(contractVariationDTO.getContractScheduleJsonData())
@@ -385,7 +393,7 @@ public class ContractExtensionController{
                 .withVariationType(initialContractToUpdateDTO.getVariationType())
                 .withStartDate(initialContractToUpdateDTO.getStartDate())
                 .withExpectedEndDate(initialContractToUpdateDTO.getExpectedEndDate())
-                .withModificationDate(initialDateOfExtension)
+                .withModificationDate(initialDateOfExtension.minusDays(1))
                 .withEndingDate(initialContractToUpdateDTO.getEndingDate())
                 .withContractJsonData(initialContractToUpdateDTO.getContractJsonData())
                 .withContractScheduleJsonData(initialContractToUpdateDTO.getContractScheduleJsonData())
@@ -470,6 +478,13 @@ public class ContractExtensionController{
         ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractTypeId);
 
         String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription();
+
+        String weeklyWorkHours = allContractData.getContractNewVersion().getContractJsonData().getWeeklyWorkHours();
+        Duration weeklyWorkDuration = Utilities.converterTimeStringToDuration(weeklyWorkHours);
+        if(weeklyWorkDuration != ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK){
+
+            contractDescription = contractDescription.concat(" [").concat(weeklyWorkHours).concat(" horas de trabajo por semana]");
+        }
 
         String durationDays = Long.toString(ChronoUnit.DAYS.between(dateFrom, dateTo) + 1L);
 

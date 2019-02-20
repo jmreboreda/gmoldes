@@ -1,19 +1,20 @@
 package gmoldes.domain.client.manager;
 
 
+import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
+import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
+import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
+import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.components.contract.new_contract.persistence.dao.ContractDAO;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.contract.persistence.dao.ContractDAO;
 
 import java.text.Collator;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ClientManager {
@@ -36,6 +37,7 @@ public class ClientManager {
 
             ClientDTO clientDTO = ClientDTO.create()
                     .withId(clientVO.getId())
+                    .withClientId(clientVO.getClientId())
                     .withIsNaturalPerson(clientVO.getNaturalPerson())
                     .withSg21Code(clientVO.getSg21Code())
                     .withDateFrom(dateFrom)
@@ -83,6 +85,44 @@ public class ClientManager {
             }
         }
         return clientDTOList;
+    }
+
+    public List<ClientDTO> findAllClientWithContractInForceAtDate(LocalDate date){
+
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+
+        // Initial contract
+        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractsInForceAtDate(date);
+
+        // Contract variation
+        ContractVariationDAO contractVariationDAO = ContractVariationDAO.ContractVariationDAOFactory.getInstance();
+        List<ContractVariationVO> contractVariationVOList = contractVariationDAO.findAllContractVariationsInForceAtDate(date);
+
+        Map<Integer, String> clientIdMap = new HashMap();
+        for (InitialContractVO initialContractVO : initialContractVOList){
+            clientIdMap.put(initialContractVO.getContractJsonData().getClientGMId(), "");
+        }
+
+        for(ContractVariationVO contractVariationVO : contractVariationVOList){
+            clientIdMap.put(contractVariationVO.getContractJsonData().getClientGMId(), "");
+        }
+
+        ClientManager clientManager = new ClientManager();
+        for (Map.Entry<Integer, String> entry : clientIdMap.entrySet()) {
+            ClientVO clientVO = clientManager.findClientById(entry.getKey());
+            ClientDTO clientDTO = ClientDTO.create()
+                    .withClientId(clientVO.getClientId())
+                    .withIsNaturalPerson(clientVO.getNaturalPerson())
+                    .withSurnames(clientVO.getSurNames())
+                    .withName(clientVO.getName())
+                    .withRzSocial(clientVO.getRzSocial())
+                    .build();
+            clientDTOList.add(clientDTO);
+        }
+
+        return clientDTOList;
+
     }
 
     public ClientVO findClientById(Integer id){

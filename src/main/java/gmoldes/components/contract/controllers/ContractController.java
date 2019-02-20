@@ -1,37 +1,51 @@
 package gmoldes.components.contract.controllers;
 
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.domain.contract.dto.ContractDTO;
-import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.contract.dto.*;
+import gmoldes.domain.contract.mapper.MapperContractNewVersionDTOtoInitialContractDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ContractController {
 
     private ContractManager contractManager = new ContractManager();
 
-    public int establishContractsInForce(){
+    public Integer saveContract(ContractDTO contractDTO){
 
-        return contractManager.establishContractInForce();
+        return contractManager.saveContract(contractDTO);
     }
 
-    public int establishContractsNotInForce(){
+    public InitialContractDTO findInitialContractByContractNumber(Integer selectedContractNumber){
 
-        return contractManager.establishContractNotInForce();
+        ContractNewVersionDTO initialContractDTO = contractManager.findInitialContractByContractNumber(selectedContractNumber);
+
+        return MapperContractNewVersionDTOtoInitialContractDTO.map(initialContractDTO);
     }
 
-    public List<ContractDTO> findContractsExpiration(){
+    public List<ContractNewVersionDTO> findHistoryOfContractByContractNumber(Integer contractNumber){
 
-        return contractManager.findContractsExpiration();
+        return contractManager.findHistoryOfContractByContractNumber(contractNumber);
     }
 
-    public List<ContractDTO> findPendingIDC(){
+    public List<ContractFullDataDTO> findAllDataForContractInForceAtDateByClientId(Integer clientId, LocalDate date){
 
-        return contractManager.findPendingIDC();
+        return contractManager.findAllDataForContractInForceAtDateByClientId(clientId, date);
     }
 
-    public List<ContractNewVersionDTO> findAllContractsInForceNow(){
+    public List<ContractNewVersionDTO> findAllContractInForceInPeriod(LocalDate initialDate, LocalDate finalDate){
 
-        return contractManager.findAllContractsInForceNow();
+        return contractManager.findAllContractInForceInPeriod(initialDate, finalDate);
+    }
+
+    public List<ContractVariationDTO> findAllContractVariationByContractNumber(Integer contractNumber){
+
+        return contractManager.findAllContractVariationByContractNumber(contractNumber);
+
+    }
+
+    public List<ContractVariationDTO> findAllContractVariationsAfterDateByContractNumber(Integer contractNumber, LocalDate date){
+
+        return contractManager.findAllContractVariationsAfterDateByContractNumber(contractNumber, date);
     }
 }

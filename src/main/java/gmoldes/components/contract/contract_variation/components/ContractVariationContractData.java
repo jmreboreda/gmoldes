@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 public class ContractVariationContractData extends TitledPane {
 
-    private static final String CONTRACT_VARIATION_CONTRACT_DATA_FXML = "/fxml/contract_variations/contractvariation_data_alternative.fxml";
+    private static final String CONTRACT_VARIATION_CONTRACT_DATA_FXML = "/fxml/contract_variations/contractvariation_data.fxml";
 
     private Parent parent;
 
@@ -29,6 +29,10 @@ public class ContractVariationContractData extends TitledPane {
     private TextField contractDuration;
     @FXML
     private TextField contractPartialFullTime;
+    @FXML
+    private TextField lastVariationAtDateDescription;
+    @FXML
+    private TextField lastVariationAtDateDate;
     @FXML
     private TextField lastVariationDescription;
     @FXML
@@ -90,6 +94,22 @@ public class ContractVariationContractData extends TitledPane {
         this.contractPartialFullTime = contractPartialFullTime;
     }
 
+    public TextField getLastVariationAtDateDescription() {
+        return lastVariationAtDateDescription;
+    }
+
+    public void setLastVariationAtDateDescription(TextField lastVariationAtDateDescription) {
+        this.lastVariationAtDateDescription = lastVariationAtDateDescription;
+    }
+
+    public TextField getLastVariationAtDateDate() {
+        return lastVariationAtDateDate;
+    }
+
+    public void setLastVariationAtDateDate(TextField lastVariationAtDateDate) {
+        this.lastVariationAtDateDate = lastVariationAtDateDate;
+    }
+
     public TextField getLastVariationDescription() {
         return lastVariationDescription;
     }
@@ -103,7 +123,7 @@ public class ContractVariationContractData extends TitledPane {
     }
 
     public void setLastVariationDate(TextField lastVariationDate) {
-        this.lastVariationDate = lastVariationDate;
+        this.lastVariationAtDateDate = lastVariationDate;
     }
 
     public void clearAllContractData(){
@@ -114,6 +134,8 @@ public class ContractVariationContractData extends TitledPane {
         getContractType().setText("");
         getContractDuration().setText("");
         getContractPartialFullTime().setText("");
+        getLastVariationAtDateDescription().setText("");
+        getLastVariationAtDateDate().setText("");
         getLastVariationDescription().setText("");
         getLastVariationDate().setText("");
     }
@@ -125,7 +147,7 @@ public class ContractVariationContractData extends TitledPane {
 
         this.getDateFrom().setText(contractFullDataDTO.getInitialContractDate().format(formatter));
 
-        String dateTo = null;
+        String dateTo;
         if(contractFullDataDTO.getContractNewVersion().getEndingDate() != null &&
                 (contractFullDataDTO.getContractNewVersion().getEndingDate().isBefore(LocalDate.now()) ||
                 contractFullDataDTO.getContractNewVersion().getEndingDate().equals(LocalDate.now()))){
@@ -144,8 +166,8 @@ public class ContractVariationContractData extends TitledPane {
                 contractFullDataDTO.getContractNewVersion().getContractJsonData().getWeeklyWorkHours() + "]";
         this.getContractPartialFullTime().setText(partialFull);
 
-        this.getLastVariationDescription().setText(contractFullDataDTO.getTypesContractVariationsDTO().getVariation_description());
+        this.getLastVariationAtDateDescription().setText(contractFullDataDTO.getTypesContractVariationsDTO().getVariation_description());
 
-        this.getLastVariationDate().setText(contractFullDataDTO.getContractNewVersion().getStartDate().format(formatter));
+        this.getLastVariationAtDateDate().setText(contractFullDataDTO.getContractNewVersion().getStartDate().format(formatter));
     }
 }

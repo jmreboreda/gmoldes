@@ -12,6 +12,7 @@ import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.document_for_print.ContractVariationDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
@@ -160,10 +161,12 @@ public class ContractExtinctionController{
                     null,
                     null,
                     null,
+                    null,
                     "");
         }
 
         return new CompatibleVariationEvent(
+                null,
                 null,
                 null,
                 null,
@@ -186,11 +189,13 @@ public class ContractExtinctionController{
                     true,
                     null,
                     null,
+                    null,
                     ContractConstants.EXTINCTION_DATE_EXCEEDED_BY_DATE_REQUESTED);
         }
 
         // 2. The extinction of the contract already exists and is not by prior subrogation of the contract
-        List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        List<ContractVariationDTO> contractVariationDTOList = contractService.findAllContractVariationByContractNumber(selectedContractNumber);
         List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
         for (ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
             for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
@@ -201,24 +206,26 @@ public class ContractExtinctionController{
                             true,
                             null,
                             null,
+                            null,
                             ContractConstants.EXIST_PREVIOUS_CONTRACT_VARIATION_EXTINCTION);
                 }
             }
         }
 
         // 3. The termination date is prior to the contract start date
-        InitialContractDTO initialContractDTO = applicationMainController.findInitialContractByContractNumber(selectedContractNumber);
+        InitialContractDTO initialContractDTO = contractService.findInitialContractByContractNumber(selectedContractNumber);
         if(initialContractDTO.getStartDate().isAfter(extinctionDate)){
 
             return new CompatibleVariationEvent(
                     true,
                     null,
                     null,
+                    null,
                     ContractConstants.EXTINCTION_DATE_PRIOR_CONTRACT_START_DATE);
         }
 
         // 4. Registered transactions with date after the requested start date do not allow the termination of the contract on the requested date
-        List<ContractVariationDTO> contractVariationDTOList1 = applicationMainController.findAllContractVariationByContractNumber(selectedContractNumber);
+        List<ContractVariationDTO> contractVariationDTOList1 = contractService.findAllContractVariationByContractNumber(selectedContractNumber);
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList1) {
             if(contractVariationDTO.getStartDate().isAfter(extinctionDate) ||
                     (contractVariationDTO.getModificationDate() != null && contractVariationDTO.getModificationDate().isAfter(extinctionDate))){
@@ -227,12 +234,13 @@ public class ContractExtinctionController{
                     true,
                     null,
                     null,
+                    null,
                     ContractConstants.CONTRACT_VARIATIONS_IN_THE_FUTURE_NOT_ALLOW_EXTINCTION_ON_REQUESTED_DATE);
             }
 
         }
 
-        return new CompatibleVariationEvent(true, false, false, null);
+        return new CompatibleVariationEvent(true, false, false,false, null);
     }
 
     public ContractVariationPersistenceEvent persistContractExtinction(){
@@ -250,9 +258,37 @@ public class ContractExtinctionController{
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION);
         }
 
-        if(updateInitialContractOfContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
+        if(updateInitialContractToBeExtinguished(contractNewVersionToBeExtinguished) == null) {
 
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT);
+        }
+
+        // Update ending date in table "contract" in database
+        ContractFullDataDTO contractFullDataDTO = contractVariationMainController.getContractVariationParts()
+                .getContractSelector().getSelectionModel().getSelectedItem();
+
+        ContractDTO contractDTO = ContractDTO.create()
+                .withId(contractFullDataDTO.getContractNewVersion().getId())
+                .withEmployer(contractFullDataDTO.getEmployer().getClientId())
+                .withEmployee(contractFullDataDTO.getEmployee().getIdpersona())
+                .withContractType(contractFullDataDTO.getContractType().getContractCode().toString())
+                .withGmContractNumber(contractFullDataDTO.getContractNewVersion().getContractNumber())
+                .withVariationType(contractFullDataDTO.getContractNewVersion().getVariationType())
+                .withStartDate(contractFullDataDTO.getContractNewVersion().getStartDate())
+                .withExpectedEndDate(contractFullDataDTO.getContractNewVersion().getExpectedEndDate())
+                .withModificationDate(contractFullDataDTO.getContractNewVersion().getModificationDate())
+                .withEndingDate(contractFullDataDTO.getContractNewVersion().getEndingDate())
+                .withContractScheduleJsonData(contractFullDataDTO.getContractNewVersion().getContractScheduleJsonData())
+                .withLaborCategory(contractFullDataDTO.getContractNewVersion().getContractJsonData().getLaborCategory())
+                .withQuoteAccountCode(contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
+                .withIdentificationContractNumberINEM(contractFullDataDTO.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
+                .withPublicNotes(contractFullDataDTO.getContractNewVersion().getContractJsonData().getNotesForContractManager())
+                .withPrivateNotes(contractFullDataDTO.getContractNewVersion().getContractJsonData().getPrivateNotes())
+                .build();
+
+        if(updateContractToBeExtinguished(contractDTO) == null){
+
+            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_CONTRACT);
         }
 
         return new ContractVariationPersistenceEvent(true, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
@@ -260,7 +296,7 @@ public class ContractExtinctionController{
 
     private Integer persistTraceabilityControlData(){
 
-        // In a contract extinction the date for the notice of termination of contract is set at 31-12-9999
+        // In a contract extinction the date for the notice of termination of contract is with at 31-12-9999
         LocalDate contractEndNoticeToSave = LocalDate.of(9999, 12, 31);
 
         Integer contractVariationType = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
@@ -288,7 +324,8 @@ public class ContractExtinctionController{
         ApplicationMainController applicationMainController = new ApplicationMainController();
 
         Integer contractNumber = contractNewVersionExtinctedDTO.getContractNumber();
-        List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationByContractNumber(contractNumber);
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        List<ContractVariationDTO> contractVariationDTOList = contractService.findAllContractVariationByContractNumber(contractNumber);
         if(contractVariationDTOList.isEmpty())
         {
             return 0;
@@ -320,7 +357,7 @@ public class ContractExtinctionController{
         return contractManager.saveContractVariation(contractNewVersionExtinctedDTO);
     }
 
-    private Integer updateInitialContractOfContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){
+    private Integer updateInitialContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){
 
         LocalDate dateOfExtinction = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
                 .getDateFrom().getValue();
@@ -340,6 +377,36 @@ public class ContractExtinctionController{
                 .build();
 
         return contractManager.updateInitialContract(contractNewVersionToUpdateDTO);
+    }
+
+    private Integer updateContractToBeExtinguished(ContractDTO contractExtinctedDTO){
+
+        LocalDate dateOfExtinction = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
+                .getDateFrom().getValue();
+
+        ContractDTO contractToUpdateDTO = contractManager.findLastTuplaOfContractByContractNumber(contractExtinctedDTO.getGmContractNumber());
+        contractToUpdateDTO.setEndingDate(dateOfExtinction);
+
+        ContractDTO contractUpdatedDTO = ContractDTO.create()
+                .withId(contractToUpdateDTO.getId())
+                .withEmployer(contractToUpdateDTO.getEmployer())
+                .withEmployee(contractToUpdateDTO.getEmployee())
+                .withContractType(contractToUpdateDTO.getContractType())
+                .withGmContractNumber(contractToUpdateDTO.getGmContractNumber())
+                .withVariationType(contractToUpdateDTO.getVariationType())
+                .withStartDate(contractToUpdateDTO.getStartDate())
+                .withExpectedEndDate(contractToUpdateDTO.getExpectedEndDate())
+                .withModificationDate(contractToUpdateDTO.getModificationDate())
+                .withEndingDate(contractToUpdateDTO.getEndingDate())
+                .withContractScheduleJsonData(contractToUpdateDTO.getContractScheduleJsonData())
+                .withLaborCategory(contractToUpdateDTO.getLaborCategory())
+                .withQuoteAccountCode(contractToUpdateDTO.getQuoteAccountCode())
+                .withIdentificationContractNumberINEM(contractToUpdateDTO.getIdentificationContractNumberINEM())
+                .withPublicNotes(contractToUpdateDTO.getPublicNotes())
+                .withPrivateNotes(contractToUpdateDTO.getPrivateNotes())
+                .build();
+
+        return contractManager.updateContract(contractUpdatedDTO);
     }
 
     private String retrievePublicNotes(){

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TypesContractVariationsManager {
 
-    TypesContractVariationsDAO typesContractVariationsDAO = TypesContractVariationsDAO.TypesContractVariationsDAOFactory.getInstance();
+    private TypesContractVariationsDAO typesContractVariationsDAO = TypesContractVariationsDAO.TypesContractVariationsDAOFactory.getInstance();
 
 
     public TypesContractVariationsManager() {

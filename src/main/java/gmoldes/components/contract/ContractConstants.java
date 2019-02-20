@@ -7,6 +7,7 @@ public class ContractConstants {
     /** Contract data */
     public static final String FULL_WORKDAY = "A tiempo completo";
     public static final String PARTIAL_WORKDAY = "A tiempo parcial";
+    public static final String DETERMINED_DURATION_TEXT = "Duración determinada";
     public static final String UNDEFINED_DURATION_TEXT = "Indefinido";
     public static final String TEMPORAL_DURATION_TEXT = "Temporal";
     public static final String HOURS_WORK_WEEK_TEXT = " Horas de trabajo por semana";
@@ -33,6 +34,7 @@ public class ContractConstants {
     public static final String STANDARD_CONTRACT_CONVERSION_TEXT = "Conversión de contrato";
     public static final String STANDARD_CONTRACT_EXTENSION_TEXT = "Prórroga de contrato";
     public static final String STANDARD_CONTRACT_SUBFOLDER_RECORD_HISTORY_TEXT = "Expediente contrato trabajo";
+    public static final String STANDARD_CONTRACT_WEEKLY_WORK_SCHEDULE_VARIATION_TEXT = "Variación de jornada de trabajo";
 
     /** Contract variation **/
     public static final String VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION = "La fecha establecida de variación del contrato aparentemente excede el plazo máximo" +
@@ -51,8 +53,10 @@ public class ContractConstants {
     public static final String ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD = "Error actualizando el último registro de \"contractvariation\" en la base de datos.";
     public static final String ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION = "Error creando nuevo registro de extinción de contrato en \"contractvariation\" en la base de datos.";
     public static final String ERROR_INSERTING_NEW_EXTENSION_RECORD_IN_CONTRACT_VARIATION = "Error creando nuevo registro de prórroga de contrato en \"contractvariation\" en la base de datos.";
-    public static final String ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT = "Error actualizando la fecha de extinción del contrato en \"initialcontract\" en la base de datos.";
+    public static final String ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT = "Error actualizando la fecha de extinción del contrato en \"initial_contract\" en la base de datos.";
+    public static final String ERROR_UPDATING_EXTINCTION_DATE_IN_CONTRACT = "Error actualizando la fecha de extinción del contrato en \"contract\" en la base de datos.";
     public static final String ERROR_UPDATING_MODIFICATION_DATE_IN_INITIAL_CONTRACT = "Error actualizando la fecha de modificación del contrato en \"initialcontract\" en la base de datos.";
+    public static final String NO_VALID_DATA_HAVE_BEEN_INSERTED = "No se han introducido datos válidos.";
 
     // Extinciones de contratos
     public static final String CONTRACT_EXTINCTION_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT = "Se ha registrado la variación del contrato pero no enviado al gestor.\n ¿Es correcto?";
@@ -67,11 +71,14 @@ public class ContractConstants {
     public static final String NOT_VARIATION_OTHER_CONDITIONS_OF_CONTRACT = "Permanecerán sin cambios las restantes condiciones del contrato.";
     public static final String ERROR_EXTENSION_CONTRACT_DATE_FROM = "La fecha de inicio de la prórroga es errónea.";
     public static final String ERROR_EXTENSION_CONTRACT_DATE_TO = "La fecha de finalización de la prórroga es errónea.";
+    public static final String ERROR_WEEKLY_WORK_DURATION_VARIATION_DATE_FROM = "La fecha de inicio de la variación de jornada es errónea.";
     public static final String EXTENSION_DATE_EXCEEDED = "No se puede prorrogar un contrato desde una fecha posterior a su fecha de extinción prevista anteriormente.";
     public static final String INCORRECT_CONTRACT_EXTENSION_DATE_FROM = "La fecha de inicio de la prórroga es errónea.";
     public static final String CONTRACT_EXTENSION_PERSISTENCE_NOT_OK = "No se ha registrado correctamente la prórroga del contrato.\n" +
             "Debe revisarse la base de datos para garantizar la consistencia de los datos.";
     public static final String ERROR_EXTENSION_CONTRACT_INCOHERENT_DATES = "Las fechas de inicio y finalización de la prórroga no son coherentes.";
+    public static final String ERROR_WEEKLY_WORK_DURATION_VARIATION_INCOHERENT_DATES = "Las fechas de inicio y finalización de la variación de jornada no son coherentes.";
+
     public static final String NECESSARY_DATA_FOR_VARIATION_CONTRACT_HAVE_BEEN_INTRODUCED = "Se han introducido los datos de necesarios para la variación del contrato.";
     public static final String PERSIST_CONTRACT_VARIATION_QUESTION = "La variación de contrato está lista para ser registrada.\n ¿Desea proceder a su registro en la base de datos?";
     public static final String EXIST_PREVIOUS_CONTRACT_VARIATION_EXTINCTION = "Ya está registrada una extinción de contrato para este contrato.";
@@ -79,9 +86,16 @@ public class ContractConstants {
             " tiene que  ser la inmediatamente posterior a la de finalización establecida para el contrato.";
     public static final String EXIST_PREVIOUS_INCOMPATIBLE_CONTRACT_VARIATION_EXTENSION = "Está registrada una prórroga del contrato que es incompatible con la solicitada.";
     public static final String CONTRACT_EXTENSION_PERSISTENCE_OK = "Prórroga del contrato registrada correctamente.";
+    public static final String WEEKLY_WORK_DURATION_VARIATION_PERSISTENCE_OK = "Variación de la jornada de trabajo registrada correctamente.";
     public static final String CONTRACT_VARIATIONS_IN_THE_FUTURE_NOT_ALLOW_EXTINCTION_ON_REQUESTED_DATE = "Operaciones registradas con posterioridad a la fecha solicitada" +
             " no permiten la extinción del contrato en dicha fecha.";
+    public static final String COMPATIBILITY_FUTURE_VARIATIONS_NOT_AUTOMATICALLY_VERIFIABLES = "Existen variaciones futuras del contrato que no son verificables automáticamente.";
     public static final String CONTRACT_EXTENSION_OPERATION_ABANDONED = "Se ha abandonado la operación de prórroga del contrato.";
     public static final String ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA = "Ha ocurrido un error al pesistir la trazabilidad del contrato en \"traceability_contract_documentation\".";
+
+    // Variaciones de jornada
+    public static final String ERROR_EXCEEDED_DURATION_CONTRACT = "La fecha final de la variación de jornada sobrepasa la duración del contrato.";
+    public static final String CONTRACT_WEEKLY_WORK_SCHEDULE_VARIATION_ABANDONED ="Se ha abandonado la operación de variación de jornada de trabajo.";
+    public static final String ERROR_INSERTING_NEW_WEEKLY_WORK_SCHEDULE_VARIATION = "Error creando nuevo registro de variación de jornada de trabajo en \"contractvariation\" en la base de datos.";
 
 }

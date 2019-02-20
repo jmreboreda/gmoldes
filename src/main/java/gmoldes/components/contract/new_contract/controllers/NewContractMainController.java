@@ -2,16 +2,17 @@ package gmoldes.components.contract.new_contract.controllers;
 
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationConstants;
-import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.ContractConstants;
+import gmoldes.components.contract.controllers.ContractController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
-import gmoldes.components.timerecord.components.TimeRecordConstants;
 import gmoldes.components.timerecord.TimeRecord;
+import gmoldes.components.timerecord.components.TimeRecordConstants;
+import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.vo.ClientCCCVO;
@@ -278,9 +279,9 @@ public class NewContractMainController extends VBox {
         provisionalContractData.refreshData(dataDTO);
         if (statusText.equals(ContractConstants.REVISION_WITHOUT_ERRORS)) {
             if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
-//                persistOldContractToSave();
-                Integer contractNumber = persistInitialContract();
-                persistTraceabilityControlData(contractNumber);
+                Integer initialContractNumber = persistInitialContract();
+                Integer contractNumber = persistContract();
+                persistTraceabilityControlData(initialContractNumber);
                 contractActionComponents.enablePDFButton(true);
                 }
         }
@@ -389,9 +390,9 @@ public class NewContractMainController extends VBox {
     }
 
     private List<ClientDTO> findClientsWithAdvisoryServicesByNamePattern(String pattern) {
-        ApplicationMainController applicationMainController = new ApplicationMainController();
 
-        return applicationMainController.findAllActiveClientWithAdvisoryServicesByNamePatternInAlphabeticalOrder(pattern);
+        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+        return clientService.findAllActiveClientWithAdvisoryServicesByNamePatternInAlphabeticalOrder(pattern);
     }
 
     private List<PersonDTO> findPersonsByNamePatternInAlphabeticalOrder(String pattern) {
@@ -413,43 +414,6 @@ public class NewContractMainController extends VBox {
         contractParts.refreshEmployerCCC(clientCCCDTOList);
     }
 
-//    private void persistOldContractToSave() {
-//
-//        LocalDate endOfContractNotice = contractData.getDateTo() == null ? LocalDate.of(9999, 12, 31) : null;
-//
-//        String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
-//
-//        OldContractToSaveDTO oldContractToSaveDTO = OldContractToSaveDTO.create()
-//                .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
-//                .withVariationNumber(0)
-//                .withClientGMId(contractParts.getSelectedEmployer().getId())
-//                .withClientGMName(contractParts.getSelectedEmployer().toString())
-//                .withQuoteAccountCode(quoteAccountCode)
-//                .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
-//                .withWorkerName(contractParts.getSelectedEmployee().toString())
-//                .withLaborCategory(contractData.getLaborCategory())
-//                .withWeeklyWorkHours(contractData.getHoursWorkWeek())
-//                .withDaysOfWeekToWork(contractData.getDaysOfWeekToWork())
-//                .withFullPartialWorkday(contractData.getFullPartialWorkDay())
-//                .withContractType(contractData.getContractType().getColloquial())
-//                .withDateFrom(contractData.getDateFrom())
-//                .withDateTo(contractData.getDateTo())
-//                .withContractInForce(contractData.isContractInForceAtDate(LocalDate.now()))
-//                .withNotesForManager(contractPublicNotes.getPublicNotes())
-//                .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
-//                .withQuoteDataReportIDC(null)
-//                .withEndOfContractNotice(endOfContractNotice)
-//                .build();
-//
-//        ContractManager contractManager = new ContractManager();
-//        Integer contractNumber = contractManager.saveOldContract(oldContractToSaveDTO);
-//
-//        if(contractNumber == null) {
-//
-//            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);
-//        }
-//    }
-
     private Integer persistInitialContract(){
 
         ContractFullDataDTO contractFullDataDTO = retrieveContractFullData();
@@ -469,6 +433,39 @@ public class NewContractMainController extends VBox {
         }
 
         return contractNumber;
+    }
+
+    private Integer persistContract(){
+
+        Integer variationType;
+        if(contractData.getContractType().getAdminPartnerSimilar()){
+            variationType = 101;
+        } else if(contractData.getContractType().getSurrogate()){
+            variationType = 109;
+        }else{
+            variationType = 100;
+        }
+
+        ContractDTO contractDTO = ContractDTO.create()
+                .withEmployer(contractParts.getSelectedEmployer().getClientId())
+                .withEmployee(contractParts.getSelectedEmployee().getIdpersona())
+                .withContractType(contractData.getContractType().getContractCode().toString())
+                .withGmContractNumber(null)
+                .withVariationType(variationType)
+                .withStartDate(contractData.getDateFrom())
+                .withExpectedEndDate(contractData.getDateTo())
+                .withModificationDate(null)
+                .withEndingDate(null)
+                .withContractScheduleJsonData(retrieveContractScheduleJsonData())
+                .withLaborCategory(contractData.getLaborCategory())
+                .withQuoteAccountCode(contractParts.getSelectedCCC().getCccInss())
+                .withIdentificationContractNumberINEM(null)
+                .withPublicNotes(contractPublicNotes.getPublicNotes())
+                .withPrivateNotes(contractPrivateNotes.getPrivateNotes())
+                .build();
+
+        ContractController contractController = new ContractController();
+        return contractController.saveContract(contractDTO);
     }
 
     private void persistTraceabilityControlData(Integer contractNumber){
@@ -530,7 +527,7 @@ public class NewContractMainController extends VBox {
                 .withFullPartialWorkDay(contractData.getFullPartialWorkDay())
                 .withWorkerId(contractParts.getSelectedEmployee().getIdpersona())
                 .withQuoteAccountCode(quoteAccountCode)
-                .withClientGMId(contractParts.getSelectedEmployer().getId())
+                .withClientGMId(contractParts.getSelectedEmployer().getClientId())
                 .build();
 
         ContractScheduleJsonData schedule = retrieveContractScheduleJsonData();

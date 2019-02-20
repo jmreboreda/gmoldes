@@ -1,29 +1,29 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
+import gmoldes.App;
 import gmoldes.ApplicationConstants;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.contract_variation.components.*;
-import gmoldes.components.contract.contract_variation.events.ClientChangeEvent;
-import gmoldes.components.contract.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract.contract_variation.events.DateChangeEvent;
-import gmoldes.components.contract.contract_variation.events.MessageContractVariationEvent;
+import gmoldes.components.contract.contract_variation.events.*;
 import gmoldes.components.contract.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
-import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
+import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
+import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
 import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
-import gmoldes.domain.email.EmailDataCreationDTO;
-import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
+import gmoldes.utilities.Utilities;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -32,18 +32,21 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.text.Collator;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -62,12 +65,15 @@ public class ContractVariationMainController extends VBox {
 
     private Process pdfViewerProcess = null;
 
+    private Set<WorkDaySchedule> weeklyWorkScheduleVariation;
+
 
     private Parent parent;
 
     private ApplicationMainController applicationMainController = new ApplicationMainController();
     private ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
     private ContractExtensionController contractExtensionController = new ContractExtensionController(this);
+    private WeeklyWorkScheduleVariationController weeklyWorkScheduleVariationController = new WeeklyWorkScheduleVariationController(this);
     private ContractVariationDataSubfolder contractVariationDataSubfolder;
 
 
@@ -93,6 +99,8 @@ public class ContractVariationMainController extends VBox {
     @FXML
     private ContractVariationContractVariations contractVariationContractVariations;
     @FXML
+    private ContractVariationWeeklyWorkScheduleDuration contractVariationWeeklyWorkScheduleDuration;
+    @FXML
     private ContractVariationActionComponents contractVariationActionComponents;
 
 
@@ -101,10 +109,12 @@ public class ContractVariationMainController extends VBox {
         
         contractVariationParts.setOnClientSelectorAction(this::onChangeEmployer);
         contractVariationParts.setOnContractSelectorAction(this::onContractSelectorAction);
+        contractVariationParts.setOnDateChange(this::clientSelectorLoadData);
 
         contractVariationTypes.setOnDateNotification(this::onDateNotification);
         contractVariationTypes.setOnContractExtinction(this::onContractExtinctionSelected);
         contractVariationTypes.setOnContractExtension(this::onContractExtensionSelected);
+        contractVariationTypes.setOnContractVariationWorkingDay(this::onVariationWorkingDaySelected);
         contractVariationTypes.setOnContractConversion(this::onContractConversionSelected);
 
         // Contract variations types toggleGroup
@@ -136,9 +146,12 @@ public class ContractVariationMainController extends VBox {
 
         contractVariationContractVariations.getContractVariationContractExtinction().getContractExtinctionGroup().visibleProperty().bind(this.contractVariationTypes.getRbContractExtinction().selectedProperty());
         contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionGroup().visibleProperty().bind(this.contractVariationTypes.getRbContractExtension().selectedProperty());
+        contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkScheduleGroup().visibleProperty().bind(this.contractVariationTypes.getRbWeeklyWorkHoursVariation().selectedProperty());
         contractVariationContractVariations.getContractVariationContractConversion().getContractConversionGroup().visibleProperty().bind(this.contractVariationTypes.getRbContractConversion().selectedProperty());
 
         contractVariationContractVariations.getContractVariationContractExtension().getDateTo().valueProperty().addListener((ov, oldValue, newValue) -> setContractExtensionDuration(newValue));
+        contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getDateTo().valueProperty().addListener((ov, oldValue, newValue) -> setContractWeeklyWorkScheduleDuration(newValue));
+
 
         // Button actions
         contractVariationActionComponents.setOnOkButton(this::onOkButton);
@@ -146,7 +159,7 @@ public class ContractVariationMainController extends VBox {
         contractVariationActionComponents.setOnViewPDFButton(this::onViewPDFButton);
         contractVariationActionComponents.setOnSendMailButton(this::onSendMailButton);
 
-        clientSelectorLoadData();
+        clientSelectorLoadData(new ActionEvent());
     }
 
     public ContractVariationParts getContractVariationParts() {
@@ -170,12 +183,13 @@ public class ContractVariationMainController extends VBox {
         this.parent = ViewLoader.load(this, CONTRACT_VARIATION_MAIN_FXML);
     }
 
-    private void clientSelectorLoadData() {
+    private void clientSelectorLoadData(ActionEvent event) {
         contractVariationParts.getClientSelector().getItems().clear();
         contractVariationParts.getContractSelector().getItems().clear();
         LocalDate workDate = contractVariationParts.getInForceDate().getValue();
         contractVariationContractData.clearAllContractData();
-        List<ClientDTO> clientDTOList = applicationMainController.findAllClientWithContractInForceAtDate(workDate);
+        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+        List<ClientDTO> clientDTOList = clientService.findAllClientWithContractInForceAtDate(workDate);
 
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
         primaryCollator.setStrength(Collator.PRIMARY);
@@ -254,6 +268,22 @@ public class ContractVariationMainController extends VBox {
         contractVariationActionComponents.getOkButton().setDisable(false);
     }
 
+    private void onVariationWorkingDaySelected(MouseEvent event){
+        // TODO uncomment1
+
+/**        ContractVariationWeeklyWorkSchedule contractVariationWeeklyWorkSchedule = new ContractVariationWeeklyWorkSchedule();
+        contractVariationWeeklyWorkSchedule.setOnOkButton(this::onChangeWeeklyWorkDuration);
+        Scene scene = new Scene(contractVariationWeeklyWorkSchedule);
+        scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
+        Stage contractVariationStage = new Stage();
+        contractVariationStage.setResizable(false);
+        contractVariationStage.setTitle("Variación de la jornada de trabajo");
+        contractVariationStage.setScene(scene);
+        contractVariationStage.initOwner(this.getScene().getWindow());
+        contractVariationStage.initModality(Modality.APPLICATION_MODAL);
+        contractVariationStage.show(); */
+    }
+
     private void onContractConversionSelected(MouseEvent event){
 
         contractVariationContractVariations.getContractVariationContractConversion().cleanComponents();
@@ -262,6 +292,7 @@ public class ContractVariationMainController extends VBox {
 
         contractVariationActionComponents.getOkButton().setDisable(false);
     }
+
     private void onOkButton(MouseEvent evet){
 
         // Contract extinction
@@ -304,6 +335,26 @@ public class ContractVariationMainController extends VBox {
 
         }
 
+        // Change of weekly work duration
+        RadioButton rbWeeklyWorkHoursVariation = contractVariationTypes.getRbWeeklyWorkHoursVariation();
+
+        // TODO uncomment2
+/**        if(rbWeeklyWorkHoursVariation.isSelected()){
+            WeeklyWorkScheduleVariationController weeklyWorkScheduleVariationController = new WeeklyWorkScheduleVariationController(this);
+            MessageContractVariationEvent messageContractVariationEvent = weeklyWorkScheduleVariationController.executeWeeklyWorkDurationVariationOperations(weeklyWorkScheduleVariation);
+            if (!messageContractVariationEvent.getMessageText().equals(ContractConstants.WEEKLY_WORK_DURATION_VARIATION_PERSISTENCE_OK) &&
+                    !messageContractVariationEvent.getMessageText().isEmpty()) {
+                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageContractVariationEvent.getMessageText());
+
+                return;
+            }
+
+
+
+            System.out.println("Variación de jornada de trabajo.");
+        } */
+
+
 
 //        // Contract conversion
 //        RadioButton rbContractConversion = contractVariationTypes.getRbContractConversion();
@@ -334,9 +385,6 @@ public class ContractVariationMainController extends VBox {
         Stage stage = (Stage) contractVariationParts.getScene().getWindow();
         stage.close();
     }
-
-
-
 
     private void onViewPDFButton(MouseEvent event){
 
@@ -468,6 +516,44 @@ public class ContractVariationMainController extends VBox {
         }
     }
 
+    private void onChangeWeeklyWorkDuration(WorkScheduleEvent workScheduleEvent){
+
+        if(workScheduleEvent.getSchedule() == null){
+            this.contractVariationTypes.getRbWeeklyWorkHoursVariation().setSelected(false);
+            contractVariationActionComponents.getOkButton().setDisable(true);
+
+            return;
+        }
+
+        Set<WorkDaySchedule> schedule = workScheduleEvent.getSchedule();
+        weeklyWorkScheduleVariation = schedule;
+
+        ContractFullDataDTO contractFullDataDTO = contractVariationParts.getContractSelector().getValue();
+        String previousWeeklyWorkHours = contractFullDataDTO.getContractNewVersion().getContractJsonData().getWeeklyWorkHours();
+        Duration previousWeeklyWorkDuration = Utilities.converterTimeStringToDuration(previousWeeklyWorkHours);
+
+        Duration subsequentWeeklyWorkDuration = Duration.ZERO;
+        for (WorkDaySchedule workDaySchedule : schedule) {
+            if(workDaySchedule.getDurationHours() != null) {
+                subsequentWeeklyWorkDuration = subsequentWeeklyWorkDuration.plus(workDaySchedule.getDurationHours());
+            }
+        }
+
+        String weeklyWorkHoursVariationText;
+        if(subsequentWeeklyWorkDuration.compareTo(previousWeeklyWorkDuration) > 0 ){
+            weeklyWorkHoursVariationText = "Ampliación";
+        }else{
+            weeklyWorkHoursVariationText = "Reducción";
+        }
+
+        String publicNotes = weeklyWorkHoursVariationText + " de jornada de trabajo semanal a " + Utilities.converterDurationToTimeString(subsequentWeeklyWorkDuration) + " horas de trabajo por semana [desde " +
+                Utilities.converterDurationToTimeString(previousWeeklyWorkDuration) + " horas de trabajo por semana]." ;
+
+        contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getPublicNotes().setText(publicNotes);
+
+        contractVariationActionComponents.getOkButton().setDisable(false);
+    }
+
     private void loadContractExtinctionCauseSelector(){
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
         List<TypesContractVariationsDTO> typesContractVariationsDTOList = typesContractVariationsController.findAllTypesContractVariations();
@@ -499,6 +585,21 @@ public class ContractVariationMainController extends VBox {
         }
     }
 
+    private void setContractWeeklyWorkScheduleDuration(LocalDate newValueDateTo){
+        if(contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getDateFrom().getValue() != null &&
+                newValueDateTo != null) {
+
+            Long contractWeeklyWorkScheduleDuration = DAYS.between(contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getDateFrom().getValue(), newValueDateTo) + 1L;
+
+            contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkSchduleDuration().setText(contractWeeklyWorkScheduleDuration.toString());
+            if(contractWeeklyWorkScheduleDuration <= 0){
+                contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkSchduleDuration().setStyle(myColorRED);
+            }else{
+                contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkSchduleDuration().setStyle(myColorBLACK);
+            }
+        }
+    }
+
     private void refreshContractSelectorData(ClientDTO client, LocalDate selectedDate){
 
         if(client == null){
@@ -510,7 +611,8 @@ public class ContractVariationMainController extends VBox {
         }
         contractVariationContractData.clearAllContractData();
 
-        List<ContractFullDataDTO> contractFullDataDTOList = applicationMainController.findAllDataForContractInForceAtDateByClientId(client.getClientId(), selectedDate);
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        List<ContractFullDataDTO> contractFullDataDTOList = contractService.findAllDataForContractInForceAtDateByClientId(client.getClientId(), selectedDate);
 
         ObservableList<ContractFullDataDTO> contractFullDataDTOS = FXCollections.observableArrayList(contractFullDataDTOList);
         contractVariationParts.getContractSelector().setItems(contractFullDataDTOS);
@@ -530,10 +632,12 @@ public class ContractVariationMainController extends VBox {
                     null,
                     null,
                     null,
+                    null,
                     "");
         }
 
         return new CompatibleVariationEvent(
+                null,
                 null,
                 null,
                 null,
@@ -561,18 +665,18 @@ public class ContractVariationMainController extends VBox {
         contractVariationContractVariations.getContractVariationContractConversion().getDateTo().setValue(null);
     }
 
-    private EmailDataCreationDTO retrieveDateForEmailCreation(Path path, String attachedFileName, String variationTypeText){
-
-        ClientDTO employerDTO = this.contractVariationParts.getClientSelector().getValue();
-        PersonDTO employeeDTO = this.contractVariationParts.getContractSelector().getValue().getEmployee();
-        return EmailDataCreationDTO.create()
-                .withPath(path)
-                .withFileName(attachedFileName)
-                .withEmployer(employerDTO)
-                .withEmployee(employeeDTO)
-                .withVariationTypeText(variationTypeText)
-                .build();
-    }
+//    private EmailDataCreationDTO retrieveDataForEmailCreation(Path path, String attachedFileName, String variationTypeText){
+//
+//        ClientDTO employerDTO = this.contractVariationParts.getClientSelector().getValue();
+//        PersonDTO employeeDTO = this.contractVariationParts.getContractSelector().getValue().getEmployee();
+//        return EmailDataCreationDTO.create()
+//                .withPath(path)
+//                .withFileName(attachedFileName)
+//                .withEmployer(employerDTO)
+//                .withEmployee(employeeDTO)
+//                .withVariationTypeText(variationTypeText)
+//                .build();
+//    }
 
     private void setDataEditionBlockedAndEnableSendMail() {
 

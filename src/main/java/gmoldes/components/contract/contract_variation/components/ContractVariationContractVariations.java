@@ -27,6 +27,8 @@ public class ContractVariationContractVariations extends VBox {
     @FXML
     private ContractVariationContractExtension contractVariationContractExtension;
     @FXML
+    private ContractVariationWeeklyWorkScheduleDuration contractVariationWeeklyWorkScheduleDuration;
+    @FXML
     private ContractVariationContractConversion contractVariationContractConversion;
 
 
@@ -70,6 +72,14 @@ public class ContractVariationContractVariations extends VBox {
 
     public void setContractVariationContractExtension(ContractVariationContractExtension contractVariationContractExtension) {
         this.contractVariationContractExtension = contractVariationContractExtension;
+    }
+
+    public ContractVariationWeeklyWorkScheduleDuration getContractVariationWeeklyWorkScheduleDuration() {
+        return contractVariationWeeklyWorkScheduleDuration;
+    }
+
+    public void setContractVariationWeeklyWorkScheduleDuration(ContractVariationWeeklyWorkScheduleDuration contractVariationWeeklyWorkScheduleDuration) {
+        this.contractVariationWeeklyWorkScheduleDuration = contractVariationWeeklyWorkScheduleDuration;
     }
 
     public ContractVariationContractConversion getContractVariationContractConversion() {
