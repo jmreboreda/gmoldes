@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 public class ContractDTO {
 
+    private Integer id;
     private Integer employer;
     private Integer employee;
     private String contractType;
@@ -25,7 +26,8 @@ public class ContractDTO {
     public ContractDTO() {
     }
 
-    public ContractDTO(Integer employer,
+    public ContractDTO(Integer id,
+                       Integer employer,
                        Integer employee,
                        String contractType,
                        Integer gmContractNumber,
@@ -41,6 +43,7 @@ public class ContractDTO {
                        String publicNotes,
                        String privateNotes) {
 
+        this.id = id;
         this.employer = employer;
         this.employee = employee;
         this.contractType = contractType;
@@ -56,6 +59,14 @@ public class ContractDTO {
         this.identificationContractNumberINEM = identificationContractNumberINEM;
         this.publicNotes = publicNotes;
         this.privateNotes = privateNotes;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getEmployer() {
@@ -184,6 +195,7 @@ public class ContractDTO {
 
     public static class ContractDTOBuilder {
 
+        private Integer id;
         private Integer employer;
         private Integer employee;
         private String contractType;
@@ -199,6 +211,11 @@ public class ContractDTO {
         private String identificationContractNumberINEM;
         private String publicNotes;
         private String privateNotes;
+
+        public ContractDTOBuilder withId(Integer id) {
+            this.id = id;
+            return this;
+        }
 
         public ContractDTOBuilder withEmployer(Integer employer) {
             this.employer = employer;
@@ -277,7 +294,7 @@ public class ContractDTO {
         }
 
         public ContractDTO build() {
-            return new ContractDTO(this.employer, this.employee, this.contractType, this.gmContractNumber, this.variationType, this.startDate, this.expectedEndDate, this.modificationDate,
+            return new ContractDTO(this.id, this.employer, this.employee, this.contractType, this.gmContractNumber, this.variationType, this.startDate, this.expectedEndDate, this.modificationDate,
             this.endingDate, this.weeklyWorkSchedule, this.laborCategory, this.quoteAccountCode, this.identificationContractNumberINEM, this.publicNotes, this.privateNotes);
         }
     }

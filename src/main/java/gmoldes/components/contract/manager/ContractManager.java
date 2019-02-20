@@ -43,7 +43,7 @@ public class ContractManager {
         contractNewVersionDTO.setContractNumber(newContractNumber);
         InitialContractVO initialContractVO = MapperInitialContractDTOVO.map(contractNewVersionDTO);
 
-        return initialContractDAO.create(initialContractVO);
+        return initialContractDAO.createInitialContract(initialContractVO);
     }
 
     public Integer saveContract(ContractDTO contractDTO){
@@ -69,7 +69,14 @@ public class ContractManager {
         InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
         InitialContractVO initialContractVO = MapperInitialContractDTOVO.map(contractNewVersionDTO);
 
-        return initialContractDAO.update(initialContractVO);
+        return initialContractDAO.updateInitialContract(initialContractVO);
+    }
+
+    public Integer updateContract(ContractDTO contractToUpdateDTO ){
+        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
+        ContractVO contractVO = MapperContractDTOVO.map(contractToUpdateDTO);
+
+        return contractDAO.updateContract(contractVO);
     }
 
     public Integer saveContractVariation(ContractNewVersionDTO contractNewVersionDTO){
@@ -235,6 +242,14 @@ public class ContractManager {
         InitialContractVO initialContractVO = initialContractDAO.findLastTuplaOfInitialContractByContractNumber(contractNumber);
 
         return MapperInitialContractVODTO.map(initialContractVO);
+    }
+
+    public ContractDTO findLastTuplaOfContractByContractNumber(Integer contractNumber){
+
+        ContractDAO contractDAO = ContractDAO.ContractDAOFactory.getInstance();
+        ContractVO contractVO = contractDAO.findLastTuplaOfContractByContractNumber(contractNumber);
+
+        return MapperContractVODTO.map(contractVO);
     }
 
     public List<ContractVariationDTO> findAllContractVariationsAfterDateByContractNumber(Integer contractNumber, LocalDate dateFromSearch){

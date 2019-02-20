@@ -23,6 +23,10 @@ import java.sql.Date;
         @NamedQuery(
                 name = ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID,
                 query = "select p from ContractVO p where p.clientId = :code"
+        ),
+        @NamedQuery(
+                name = ContractVO.FIND_LAST_TUPLA_CONTRACT_BY_CONTRACT_NUMBER,
+                query = "select p from ContractVO p where contractNumber = :contractNumber order by startDate desc"
         )
 })
 @Entity
@@ -39,6 +43,7 @@ import java.sql.Date;
 public class ContractVO implements Serializable {
     public static final String FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACT_NUMBER = "ContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACT_NUMBER";
     public static final String FIND_ALL_CONTRACTS_BY_CLIENT_ID = "ContractVO.FIND_ALL_CONTRACTS_BY_CLIENT_ID";
+    public static final String FIND_LAST_TUPLA_CONTRACT_BY_CONTRACT_NUMBER = "ContractVO.FIND_LAST_TUPLA_INITIAL_CONTRACT_BY_CONTRACT_NUMBER";
 
     @Id
     @SequenceGenerator(name = "contract_id_seq", sequenceName = "contract_id_seq", allocationSize = 1)

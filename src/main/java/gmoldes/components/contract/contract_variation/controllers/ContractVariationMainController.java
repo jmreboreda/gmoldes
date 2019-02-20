@@ -269,7 +269,9 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onVariationWorkingDaySelected(MouseEvent event){
-        ContractVariationWeeklyWorkSchedule contractVariationWeeklyWorkSchedule = new ContractVariationWeeklyWorkSchedule();
+        // TODO uncomment1
+
+/**        ContractVariationWeeklyWorkSchedule contractVariationWeeklyWorkSchedule = new ContractVariationWeeklyWorkSchedule();
         contractVariationWeeklyWorkSchedule.setOnOkButton(this::onChangeWeeklyWorkDuration);
         Scene scene = new Scene(contractVariationWeeklyWorkSchedule);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
@@ -279,7 +281,7 @@ public class ContractVariationMainController extends VBox {
         contractVariationStage.setScene(scene);
         contractVariationStage.initOwner(this.getScene().getWindow());
         contractVariationStage.initModality(Modality.APPLICATION_MODAL);
-        contractVariationStage.show();
+        contractVariationStage.show(); */
     }
 
     private void onContractConversionSelected(MouseEvent event){
@@ -335,7 +337,9 @@ public class ContractVariationMainController extends VBox {
 
         // Change of weekly work duration
         RadioButton rbWeeklyWorkHoursVariation = contractVariationTypes.getRbWeeklyWorkHoursVariation();
-        if(rbWeeklyWorkHoursVariation.isSelected()){
+
+        // TODO uncomment2
+/**        if(rbWeeklyWorkHoursVariation.isSelected()){
             WeeklyWorkScheduleVariationController weeklyWorkScheduleVariationController = new WeeklyWorkScheduleVariationController(this);
             MessageContractVariationEvent messageContractVariationEvent = weeklyWorkScheduleVariationController.executeWeeklyWorkDurationVariationOperations(weeklyWorkScheduleVariation);
             if (!messageContractVariationEvent.getMessageText().equals(ContractConstants.WEEKLY_WORK_DURATION_VARIATION_PERSISTENCE_OK) &&
@@ -348,7 +352,7 @@ public class ContractVariationMainController extends VBox {
 
 
             System.out.println("Variación de jornada de trabajo.");
-        }
+        } */
 
 
 

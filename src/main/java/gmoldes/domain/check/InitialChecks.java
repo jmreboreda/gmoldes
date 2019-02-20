@@ -28,7 +28,7 @@ public class InitialChecks {
 
     private static final Logger logger = LoggerFactory.getLogger(InitialChecks.class.getSimpleName());
     private static final String CONTRACT_IN_FORCE_UPDATE_TO = "Contract in force update to ";
-    private static final Integer DAYS_OF_NOTICE_FOR_END_OF_WEEKLY_WORK_DAY = 500;
+    private static final Integer DAYS_OF_NOTICE_FOR_END_OF_WEEKLY_WORK_DAY = 10;
 
     public static void alertByContractNewVersionExpiration(Stage primaryStage){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);

@@ -2,6 +2,11 @@ package gmoldes;
 
 import gmoldes.components.initial_menu.InitialMenuController;
 import gmoldes.domain.check.InitialChecks;
+import gmoldes.domain.client.Client;
+import gmoldes.domain.client.ClientService;
+import gmoldes.domain.client.dto.ClientCCCDTO;
+import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.client.persistence.vo.ClientCCCVO;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -167,5 +172,11 @@ public class App extends Application {
         InitialChecks.alertOfWeeklyOfWorkingDayScheduleWithEndDate(primaryStage);
         InitialChecks.alertByContractNewVersionExpiration(primaryStage);
         InitialChecks.alertByDelaySendingLaborDocumentationToClients(primaryStage);
+
+//        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+//        ClientDTO clientDTO = clientService.findClientById(10);
+//        for(ClientCCCVO clientCCCVO : clientDTO.getClientCCC()){
+//            System.out.println(clientCCCVO.getCcc_inss());
+//        }
     }
 }

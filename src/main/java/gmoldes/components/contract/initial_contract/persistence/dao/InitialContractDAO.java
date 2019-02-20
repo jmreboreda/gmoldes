@@ -38,7 +38,7 @@ public class InitialContractDAO {
         this.session = session;
     }
 
-    public Integer create(InitialContractVO initialContractVO) {
+    public Integer createInitialContract(InitialContractVO initialContractVO) {
 
         try {
             session.beginTransaction();
@@ -52,7 +52,7 @@ public class InitialContractDAO {
         return initialContractVO.getContractNumber();
     }
 
-    public Integer update(InitialContractVO initialContractVO){
+    public Integer updateInitialContract(InitialContractVO initialContractVO){
         InitialContractVO initialContractReadVO = null;
         try {
             session.beginTransaction();
