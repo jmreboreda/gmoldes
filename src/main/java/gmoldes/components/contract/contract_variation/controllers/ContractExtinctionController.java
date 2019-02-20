@@ -454,7 +454,7 @@ public class ContractExtinctionController{
         String endDate = dateFormatter.format(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue());
 
         String daysOfWeek = allContractData.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork();
-        Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekwith(daysOfWeek);
+        Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(daysOfWeek);
 
         String address = allContractData.getEmployee().getDireccion() != null ?  allContractData.getEmployee().getDireccion() : "";
         String codPostal = allContractData.getEmployee().getCodpostal() != null ? allContractData.getEmployee().getCodpostal().toString() : "";
@@ -574,7 +574,7 @@ public class ContractExtinctionController{
                 .build();
     }
 
-    private Set<DayOfWeek> retrieveDayOfWeekwith(String daysOfWeek){
+    private Set<DayOfWeek> retrieveDayOfWeekSet(String daysOfWeek){
 
         Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
 
