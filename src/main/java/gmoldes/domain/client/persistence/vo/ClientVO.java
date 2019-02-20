@@ -1,5 +1,6 @@
 package gmoldes.domain.client.persistence.vo;
 
+import gmoldes.domain.contract.persistence.vo.ContractVO;
 import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
 
 import javax.persistence.*;
@@ -66,6 +67,8 @@ public class ClientVO implements Serializable {
     private Set<ServiceGMVO> servicesGM;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientVO", cascade = CascadeType.ALL)
     private Set<ClientCCCVO> clientCCC;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientVO", cascade = CascadeType.ALL)
+    private Set<ContractVO> contracts;
 
     public Integer getId() {
         return id;
@@ -169,6 +172,14 @@ public class ClientVO implements Serializable {
 
     public void setClientCCC(Set<ClientCCCVO> clientCCC) {
         this.clientCCC = clientCCC;
+    }
+
+    public Set<ContractVO> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(Set<ContractVO> contracts) {
+        this.contracts = contracts;
     }
 
     public String toString(){

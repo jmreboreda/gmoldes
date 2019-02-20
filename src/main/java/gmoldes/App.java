@@ -7,6 +7,7 @@ import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.vo.ClientCCCVO;
+import gmoldes.domain.contract.persistence.vo.ContractVO;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -177,6 +178,10 @@ public class App extends Application {
 //        ClientDTO clientDTO = clientService.findClientById(10);
 //        for(ClientCCCVO clientCCCVO : clientDTO.getClientCCC()){
 //            System.out.println(clientCCCVO.getCcc_inss());
+//        }
+//
+//        for(ContractVO contractVO : clientDTO.getContracts()){
+//            System.out.println("Contract number: " + contractVO.getGmContractNumber() + " ::  laborCategory: " + contractVO.getLaborCategory());
 //        }
     }
 }

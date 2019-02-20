@@ -6,6 +6,7 @@
 package gmoldes.domain.client.dto;
 
 import gmoldes.domain.client.persistence.vo.ClientCCCVO;
+import gmoldes.domain.contract.persistence.vo.ContractVO;
 import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
 
 import java.time.LocalDate;
@@ -28,6 +29,7 @@ public class ClientDTO {
     private LocalDate withoutActivity;
     private Set<ServiceGMVO> servicesGM;
     private Set<ClientCCCVO> clientCCC;
+    private Set<ContractVO> contracts;
 
     public ClientDTO() {
     }
@@ -46,7 +48,8 @@ public class ClientDTO {
             Boolean activeClient,
             LocalDate withoutActivity,
             Set<ServiceGMVO> servicesGM,
-            Set<ClientCCCVO> clientCCC) {
+            Set<ClientCCCVO> clientCCC,
+            Set<ContractVO> contracts) {
         this.id = id;
         this.clientId = clientId;
         this.isNaturalPerson = isNaturalPerson;
@@ -61,6 +64,7 @@ public class ClientDTO {
         this.withoutActivity = withoutActivity;
         this.servicesGM = servicesGM;
         this.clientCCC = clientCCC;
+        this.contracts = contracts;
     }
 
     public Integer getId() {
@@ -175,6 +179,14 @@ public class ClientDTO {
         this.clientCCC = clientCCC;
     }
 
+    public Set<ContractVO> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(Set<ContractVO> contracts) {
+        this.contracts = contracts;
+    }
+
     public String toString() {
         if(isNaturalPerson){
             return getSurNames() + ", " + getName();
@@ -211,6 +223,7 @@ public class ClientDTO {
         private LocalDate withoutActivity;
         private Set<ServiceGMVO> servicesGM;
         private Set<ClientCCCVO> clientCCC;
+        private Set<ContractVO> contracts;
 
         public ClientDTOOkBuilder withId(Integer id) {
             this.id = id;
@@ -283,9 +296,14 @@ public class ClientDTO {
             return this;
         }
 
+        public ClientDTOOkBuilder withContracts(Set<ContractVO> contracts){
+            this.contracts = contracts;
+            return this;
+        }
+
         public ClientDTO build() {
             return new ClientDTO(this.id, this.clientId, this.isNaturalPerson, this.nieNif, this.surNames, this.name,this.rzSocial, this.dateFrom, this.dateTo,
-                    this.sg21Code, this.activeClient, this.withoutActivity, this.servicesGM, this.clientCCC);
+                    this.sg21Code, this.activeClient, this.withoutActivity, this.servicesGM, this.clientCCC, this.contracts);
         }
     }
 }
