@@ -263,14 +263,32 @@ public class ContractExtinctionController{
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT);
         }
 
+        // Update ending date in table "contract" in database
+        ContractFullDataDTO contractFullDataDTO = contractVariationMainController.getContractVariationParts()
+                .getContractSelector().getSelectionModel().getSelectedItem();
+
         ContractDTO contractDTO = ContractDTO.create()
-
-
+                .withId(contractFullDataDTO.getContractNewVersion().getId())
+                .withEmployer(contractFullDataDTO.getEmployer().getClientId())
+                .withEmployee(contractFullDataDTO.getEmployee().getIdpersona())
+                .withContractType(contractFullDataDTO.getContractType().getContractCode().toString())
+                .withGmContractNumber(contractFullDataDTO.getContractNewVersion().getContractNumber())
+                .withVariationType(contractFullDataDTO.getContractNewVersion().getVariationType())
+                .withStartDate(contractFullDataDTO.getContractNewVersion().getStartDate())
+                .withExpectedEndDate(contractFullDataDTO.getContractNewVersion().getExpectedEndDate())
+                .withModificationDate(contractFullDataDTO.getContractNewVersion().getModificationDate())
+                .withEndingDate(contractFullDataDTO.getContractNewVersion().getEndingDate())
+                .withContractScheduleJsonData(contractFullDataDTO.getContractNewVersion().getContractScheduleJsonData())
+                .withLaborCategory(contractFullDataDTO.getContractNewVersion().getContractJsonData().getLaborCategory())
+                .withQuoteAccountCode(contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
+                .withIdentificationContractNumberINEM(contractFullDataDTO.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
+                .withPublicNotes(contractFullDataDTO.getContractNewVersion().getContractJsonData().getNotesForContractManager())
+                .withPrivateNotes(contractFullDataDTO.getContractNewVersion().getContractJsonData().getPrivateNotes())
                 .build();
 
         if(updateContractToBeExtinguished(contractDTO) == null){
 
-            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT);
+            return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_CONTRACT);
         }
 
         return new ContractVariationPersistenceEvent(true, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
@@ -278,7 +296,7 @@ public class ContractExtinctionController{
 
     private Integer persistTraceabilityControlData(){
 
-        // In a contract extinction the date for the notice of termination of contract is set at 31-12-9999
+        // In a contract extinction the date for the notice of termination of contract is with at 31-12-9999
         LocalDate contractEndNoticeToSave = LocalDate.of(9999, 12, 31);
 
         Integer contractVariationType = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
@@ -374,7 +392,7 @@ public class ContractExtinctionController{
                 .withEmployer(contractToUpdateDTO.getEmployer())
                 .withEmployee(contractToUpdateDTO.getEmployee())
                 .withContractType(contractToUpdateDTO.getContractType())
-                .withGMContractNumber(contractToUpdateDTO.getGmContractNumber())
+                .withGmContractNumber(contractToUpdateDTO.getGmContractNumber())
                 .withVariationType(contractToUpdateDTO.getVariationType())
                 .withStartDate(contractToUpdateDTO.getStartDate())
                 .withExpectedEndDate(contractToUpdateDTO.getExpectedEndDate())
@@ -436,7 +454,7 @@ public class ContractExtinctionController{
         String endDate = dateFormatter.format(contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue());
 
         String daysOfWeek = allContractData.getContractNewVersion().getContractJsonData().getDaysOfWeekToWork();
-        Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekSet(daysOfWeek);
+        Set<DayOfWeek> dayOfWeekSet = retrieveDayOfWeekwith(daysOfWeek);
 
         String address = allContractData.getEmployee().getDireccion() != null ?  allContractData.getEmployee().getDireccion() : "";
         String codPostal = allContractData.getEmployee().getCodpostal() != null ? allContractData.getEmployee().getCodpostal().toString() : "";
@@ -556,7 +574,7 @@ public class ContractExtinctionController{
                 .build();
     }
 
-    private Set<DayOfWeek> retrieveDayOfWeekSet(String daysOfWeek){
+    private Set<DayOfWeek> retrieveDayOfWeekwith(String daysOfWeek){
 
         Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
 

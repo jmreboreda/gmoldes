@@ -450,7 +450,7 @@ public class NewContractMainController extends VBox {
                 .withEmployer(contractParts.getSelectedEmployer().getClientId())
                 .withEmployee(contractParts.getSelectedEmployee().getIdpersona())
                 .withContractType(contractData.getContractType().getContractCode().toString())
-                .withGMContractNumber(null)
+                .withGmContractNumber(null)
                 .withVariationType(variationType)
                 .withStartDate(contractData.getDateFrom())
                 .withExpectedEndDate(contractData.getDateTo())

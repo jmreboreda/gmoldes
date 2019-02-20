@@ -233,7 +233,7 @@ public class ContractDTO {
         }
 
 
-        public ContractDTOBuilder withGMContractNumber(Integer gmContractNumber) {
+        public ContractDTOBuilder withGmContractNumber(Integer gmContractNumber) {
             this.gmContractNumber = gmContractNumber;
             return this;
         }

@@ -53,7 +53,8 @@ public class ContractConstants {
     public static final String ERROR_UPDATING_LAST_CONTRACT_VARIATION_RECORD = "Error actualizando el último registro de \"contractvariation\" en la base de datos.";
     public static final String ERROR_INSERTING_NEW_EXTINCTION_RECORD_IN_CONTRACT_VARIATION = "Error creando nuevo registro de extinción de contrato en \"contractvariation\" en la base de datos.";
     public static final String ERROR_INSERTING_NEW_EXTENSION_RECORD_IN_CONTRACT_VARIATION = "Error creando nuevo registro de prórroga de contrato en \"contractvariation\" en la base de datos.";
-    public static final String ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT = "Error actualizando la fecha de extinción del contrato en \"initialcontract\" en la base de datos.";
+    public static final String ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT = "Error actualizando la fecha de extinción del contrato en \"initial_contract\" en la base de datos.";
+    public static final String ERROR_UPDATING_EXTINCTION_DATE_IN_CONTRACT = "Error actualizando la fecha de extinción del contrato en \"contract\" en la base de datos.";
     public static final String ERROR_UPDATING_MODIFICATION_DATE_IN_INITIAL_CONTRACT = "Error actualizando la fecha de modificación del contrato en \"initialcontract\" en la base de datos.";
     public static final String NO_VALID_DATA_HAVE_BEEN_INSERTED = "No se han introducido datos válidos.";
 
