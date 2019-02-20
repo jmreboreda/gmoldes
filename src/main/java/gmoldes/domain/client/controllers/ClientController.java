@@ -44,6 +44,7 @@ public class ClientController {
                 .withSg21Code(clientVO.getSg21Code())
                 .withServicesGM(clientVO.getServicesGM())
                 .withClientCCC(clientVO.getClientCCC())
+                .withContracts(clientVO.getContracts())
                 .withWithOutActivity(withOutActivityDate)
                 .build();
     }

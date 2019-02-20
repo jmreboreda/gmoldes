@@ -6,6 +6,7 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonNodeStringType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -50,6 +51,9 @@ public class ContractVO implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contract_id_seq")
     @Column(name = "id", updatable = false)
     private Integer id;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="clientid")
+    private ClientVO clientVO;
     private Integer clientId;
     private Integer workerId;
     private String contractType;
@@ -74,6 +78,14 @@ public class ContractVO implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public ClientVO getClientVO() {
+        return clientVO;
+    }
+
+    public void setClientVO(ClientVO clientVO) {
+        this.clientVO = clientVO;
     }
 
     public Integer getClientId() {
