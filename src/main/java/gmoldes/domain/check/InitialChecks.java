@@ -7,6 +7,7 @@ import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
+import gmoldes.domain.contract.dto.ContractVariationDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
@@ -93,12 +94,14 @@ public class InitialChecks {
         String missingExceededText;
 
         ApplicationMainController applicationMainController = new ApplicationMainController();
-        List<TraceabilityContractDocumentationDTO>  traceabilityContractDocumentationDTOList = applicationMainController.findTraceabilityForAllContractWithWorkingDayScheduleWithEndDate();
-        for(TraceabilityContractDocumentationDTO trace : traceabilityContractDocumentationDTOList){
-            if(trace.getExpectedEndDate() != null) {
-                Long daysFromTodayToExpiration = ChronoUnit.DAYS.between(LocalDate.now(), trace.getExpectedEndDate());
+        Integer contractVariationId = 230;
+        List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationById(contractVariationId);
+
+        for(ContractVariationDTO contractVariationDTO : contractVariationDTOList){
+            if(contractVariationDTO.getExpectedEndDate() != null && contractVariationDTO.getModificationDate() == null) {
+                Long daysFromTodayToExpiration = ChronoUnit.DAYS.between(LocalDate.now(), contractVariationDTO.getExpectedEndDate());
                 if (daysFromTodayToExpiration <= DAYS_OF_NOTICE_FOR_END_OF_WEEKLY_WORK_DAY) {
-                    Integer contractNumber = trace.getContractNumber();
+                    Integer contractNumber = contractVariationDTO.getContractNumber();
                     ContractService contractService = ContractService.ContractServiceFactory.getInstance();
                     InitialContractDTO initialContractDTO = contractService.findInitialContractByContractNumber(contractNumber);
 
@@ -119,11 +122,11 @@ public class InitialChecks {
                     bodyMessage.append(counter).append(") ")
                             .append(clientDTO.toNaturalName()).append(" con ")
                             .append(workerDTO.toNaturalName())
-                            .append(": vencimiento el día ").append(trace.getExpectedEndDate().format(dateFormatter)).append(".\n")
+                            .append(": vencimiento el día ").append(contractVariationDTO.getExpectedEndDate().format(dateFormatter)).append(".\n")
                             .append(missingExceededText).append(Math.abs(daysFromTodayToExpiration)).append(" días.").append("\n\n");
                     counter++;
 
-                    System.out.println("Contrato " + trace.getContractNumber() + ": variación de jornada a " + ChronoUnit.DAYS.between(LocalDate.now(), trace.getExpectedEndDate()) + " días de extinguirse ...");
+                    System.out.println("Contrato " + contractVariationDTO.getContractNumber() + ": variación de jornada a " + ChronoUnit.DAYS.between(LocalDate.now(), contractVariationDTO.getExpectedEndDate()) + " días de extinguirse ...");
                 }
             }
         }
