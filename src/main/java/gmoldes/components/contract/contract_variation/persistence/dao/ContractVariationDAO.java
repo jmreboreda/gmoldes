@@ -81,6 +81,13 @@ public class ContractVariationDAO {
         return  query.getResultList();
     }
 
+    public List<ContractVariationVO> findAllContractVariationById(Integer contractVariationId){
+        TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_ID, ContractVariationVO.class);
+        query.setParameter("code", contractVariationId);
+
+        return  query.getResultList();
+    }
+
     public List<ContractVariationVO> findAllContractVariationInPeriod(LocalDate initialDate, LocalDate finalDate){
         TypedQuery<ContractVariationVO> query = session.createNamedQuery(ContractVariationVO.FIND_ALL_ACTIVE_CONTRACT_VARIATION_IN_PERIOD, ContractVariationVO.class);
 
