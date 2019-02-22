@@ -27,7 +27,7 @@ import java.sql.Date;
         ),
         @NamedQuery(
                 name = ContractVO.FIND_LAST_TUPLA_CONTRACT_BY_CONTRACT_NUMBER,
-                query = "select p from ContractVO p where contractNumber = :contractNumber order by startDate desc"
+                query = "select p from ContractVO p where gmContractNumber = :contractNumber order by startDate desc"
         )
 })
 @Entity

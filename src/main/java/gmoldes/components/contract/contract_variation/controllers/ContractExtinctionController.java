@@ -387,7 +387,7 @@ public class ContractExtinctionController{
         ContractDTO contractToUpdateDTO = contractManager.findLastTuplaOfContractByContractNumber(contractExtinctedDTO.getGmContractNumber());
         contractToUpdateDTO.setEndingDate(dateOfExtinction);
 
-        ContractDTO contractUpdatedDTO = ContractDTO.create()
+        ContractDTO contractExtinctToUpdateDTO = ContractDTO.create()
                 .withId(contractToUpdateDTO.getId())
                 .withEmployer(contractToUpdateDTO.getEmployer())
                 .withEmployee(contractToUpdateDTO.getEmployee())
@@ -406,7 +406,7 @@ public class ContractExtinctionController{
                 .withPrivateNotes(contractToUpdateDTO.getPrivateNotes())
                 .build();
 
-        return contractManager.updateContract(contractUpdatedDTO);
+        return contractManager.updateContract(contractExtinctToUpdateDTO);
     }
 
     private String retrievePublicNotes(){

@@ -16,7 +16,7 @@ public class MapperContractVODTO {
         LocalDate endingDate = contractVO.getEndingDate() != null ? contractVO.getEndingDate().toLocalDate() : null;
 
         ContractDTO contractDTO = new ContractDTO();
-        contractDTO.setId(null);
+        contractDTO.setId(contractVO.getId());
         contractDTO.setEmployer(contractDTO.getEmployer());
         contractDTO.setEmployee(contractDTO.getEmployee());
         contractDTO.setContractType(contractDTO.getContractType());
