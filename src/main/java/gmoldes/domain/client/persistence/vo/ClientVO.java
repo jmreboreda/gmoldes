@@ -67,8 +67,8 @@ public class ClientVO implements Serializable {
     private Set<ServiceGMVO> servicesGM;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientVO", cascade = CascadeType.ALL)
     private Set<ClientCCCVO> clientCCC;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientVO", cascade = CascadeType.ALL)
-    private Set<ContractVO> contracts;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientVO", cascade = CascadeType.ALL)
+//    private Set<ContractVO> contracts;
 
     public Integer getId() {
         return id;
@@ -174,13 +174,13 @@ public class ClientVO implements Serializable {
         this.clientCCC = clientCCC;
     }
 
-    public Set<ContractVO> getContracts() {
-        return contracts;
-    }
-
-    public void setContracts(Set<ContractVO> contracts) {
-        this.contracts = contracts;
-    }
+//    public Set<ContractVO> getContracts() {
+//        return contracts;
+//    }
+//
+//    public void setContracts(Set<ContractVO> contracts) {
+//        this.contracts = contracts;
+//    }
 
     public String toString(){
         if(isNaturalPerson){

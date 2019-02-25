@@ -110,26 +110,33 @@ public class ClientManager {
 
         ClientManager clientManager = new ClientManager();
         for (Map.Entry<Integer, String> entry : clientIdMap.entrySet()) {
-            ClientVO clientVO = clientManager.findClientById(entry.getKey());
-            ClientDTO clientDTO = ClientDTO.create()
-                    .withClientId(clientVO.getClientId())
-                    .withIsNaturalPerson(clientVO.getNaturalPerson())
-                    .withSurnames(clientVO.getSurNames())
-                    .withName(clientVO.getName())
-                    .withRzSocial(clientVO.getRzSocial())
-                    .build();
+            ClientDTO clientDTO = clientManager.findClientById(entry.getKey());
             clientDTOList.add(clientDTO);
         }
 
         return clientDTOList;
-
     }
 
-    public ClientVO findClientById(Integer id){
+    public ClientDTO findClientById(Integer id){
         ClientDAO clientDAO = ClientDAO.ClientDAOFactory.getInstance();
         ClientVO clientVO = clientDAO.findClientById(id);
 
-        return clientVO;
+        LocalDate withOutActivityDate = clientVO.getWithoutActivity() != null ? clientVO.getWithoutActivity().toLocalDate() : null;
 
+        return ClientDTO.create()
+                .withId(clientVO.getId())
+                .withClientId(clientVO.getClientId())
+                .withIsNaturalPerson(clientVO.getNaturalPerson())
+                .withIsNaturalPerson(clientVO.getNaturalPerson())
+                .withSurnames(clientVO.getSurNames())
+                .withName(clientVO.getName())
+                .withRzSocial(clientVO.getRzSocial())
+                .withNieNIF(clientVO.getNieNif())
+                .withSg21Code(clientVO.getSg21Code())
+                .withServicesGM(clientVO.getServicesGM())
+                .withClientCCC(clientVO.getClientCCC())
+//                .withContracts(clientVO.getContracts())
+                .withWithOutActivity(withOutActivityDate)
+                .build();
     }
 }

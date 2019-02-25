@@ -263,30 +263,30 @@ public class ContractExtinctionController{
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_INITIAL_CONTRACT);
         }
 
+//        ContractFullDataDTO contractFullDataDTO = contractVariationMainController.getContractVariationParts()
+//                .getContractSelector().getSelectionModel().getSelectedItem();
+
+//        ContractDTO contractDTO = ContractDTO.create()
+//                .withId(contractFullDataDTO.getContractNewVersion().getId())
+//                .withEmployer(contractFullDataDTO.getEmployer().getClientId())
+//                .withEmployee(contractFullDataDTO.getEmployee().getIdpersona())
+//                .withContractType(contractFullDataDTO.getContractType().getContractCode().toString())
+//                .withGmContractNumber(contractFullDataDTO.getContractNewVersion().getContractNumber())
+//                .withVariationType(contractFullDataDTO.getContractNewVersion().getVariationType())
+//                .withStartDate(contractFullDataDTO.getContractNewVersion().getStartDate())
+//                .withExpectedEndDate(contractFullDataDTO.getContractNewVersion().getExpectedEndDate())
+//                .withModificationDate(contractFullDataDTO.getContractNewVersion().getModificationDate())
+//                .withEndingDate(contractFullDataDTO.getContractNewVersion().getEndingDate())
+//                .withContractScheduleJsonData(contractFullDataDTO.getContractNewVersion().getContractScheduleJsonData())
+//                .withLaborCategory(contractFullDataDTO.getContractNewVersion().getContractJsonData().getLaborCategory())
+//                .withQuoteAccountCode(contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
+//                .withIdentificationContractNumberINEM(contractFullDataDTO.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
+//                .withPublicNotes(contractFullDataDTO.getContractNewVersion().getContractJsonData().getNotesForContractManager())
+//                .withPrivateNotes(contractFullDataDTO.getContractNewVersion().getContractJsonData().getPrivateNotes())
+//                .build();
+
         // Update ending date in table "contract" in database
-        ContractFullDataDTO contractFullDataDTO = contractVariationMainController.getContractVariationParts()
-                .getContractSelector().getSelectionModel().getSelectedItem();
-
-        ContractDTO contractDTO = ContractDTO.create()
-                .withId(contractFullDataDTO.getContractNewVersion().getId())
-                .withEmployer(contractFullDataDTO.getEmployer().getClientId())
-                .withEmployee(contractFullDataDTO.getEmployee().getIdpersona())
-                .withContractType(contractFullDataDTO.getContractType().getContractCode().toString())
-                .withGmContractNumber(contractFullDataDTO.getContractNewVersion().getContractNumber())
-                .withVariationType(contractFullDataDTO.getContractNewVersion().getVariationType())
-                .withStartDate(contractFullDataDTO.getContractNewVersion().getStartDate())
-                .withExpectedEndDate(contractFullDataDTO.getContractNewVersion().getExpectedEndDate())
-                .withModificationDate(contractFullDataDTO.getContractNewVersion().getModificationDate())
-                .withEndingDate(contractFullDataDTO.getContractNewVersion().getEndingDate())
-                .withContractScheduleJsonData(contractFullDataDTO.getContractNewVersion().getContractScheduleJsonData())
-                .withLaborCategory(contractFullDataDTO.getContractNewVersion().getContractJsonData().getLaborCategory())
-                .withQuoteAccountCode(contractFullDataDTO.getContractNewVersion().getContractJsonData().getQuoteAccountCode())
-                .withIdentificationContractNumberINEM(contractFullDataDTO.getContractNewVersion().getContractJsonData().getIdentificationContractNumberINEM())
-                .withPublicNotes(contractFullDataDTO.getContractNewVersion().getContractJsonData().getNotesForContractManager())
-                .withPrivateNotes(contractFullDataDTO.getContractNewVersion().getContractJsonData().getPrivateNotes())
-                .build();
-
-        if(updateContractToBeExtinguished(contractDTO) == null){
+        if(updateContractToBeExtinguished(contractNewVersionToBeExtinguished) == null){
 
             return new ContractVariationPersistenceEvent(false, ContractConstants.ERROR_UPDATING_EXTINCTION_DATE_IN_CONTRACT);
         }
@@ -379,13 +379,12 @@ public class ContractExtinctionController{
         return contractManager.updateInitialContract(contractNewVersionToUpdateDTO);
     }
 
-    private Integer updateContractToBeExtinguished(ContractDTO contractExtinctedDTO){
+    private Integer updateContractToBeExtinguished(ContractNewVersionDTO contractExtinctedDTO){
 
         LocalDate dateOfExtinction = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
                 .getDateFrom().getValue();
 
-        ContractDTO contractToUpdateDTO = contractManager.findLastTuplaOfContractByContractNumber(contractExtinctedDTO.getGmContractNumber());
-        contractToUpdateDTO.setEndingDate(dateOfExtinction);
+        ContractDTO contractToUpdateDTO = contractManager.findLastTuplaOfContractByContractNumber(contractExtinctedDTO.getContractNumber());
 
         ContractDTO contractExtinctToUpdateDTO = ContractDTO.create()
                 .withId(contractToUpdateDTO.getId())
@@ -397,7 +396,7 @@ public class ContractExtinctionController{
                 .withStartDate(contractToUpdateDTO.getStartDate())
                 .withExpectedEndDate(contractToUpdateDTO.getExpectedEndDate())
                 .withModificationDate(contractToUpdateDTO.getModificationDate())
-                .withEndingDate(contractToUpdateDTO.getEndingDate())
+                .withEndingDate(dateOfExtinction)
                 .withContractScheduleJsonData(contractToUpdateDTO.getContractScheduleJsonData())
                 .withLaborCategory(contractToUpdateDTO.getLaborCategory())
                 .withQuoteAccountCode(contractToUpdateDTO.getQuoteAccountCode())
