@@ -302,15 +302,18 @@ public class ContractExtinctionController{
         Integer contractVariationType = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction()
                 .getExtinctionCauseSelector().getSelectionModel().getSelectedItem().getId_variation();
         Integer contractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
+
         LocalDate dateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtinction().getDateFrom().getValue();
+        LocalDate idcReceptionDate = contractVariationType >= 990 ? contractEndNoticeToSave : null;
+        LocalDate dateDeliveryContractDocumentationToClient = contractVariationType >= 990 ? contractEndNoticeToSave : null;
 
         TraceabilityContractDocumentationDTO traceabilityContractExtinctionDTO = TraceabilityContractDocumentationDTO.create()
                 .withContractNumber(contractNumber)
                 .withVariationType(contractVariationType)
                 .withStartDate(dateFrom)
                 .withExpectedEndDate(dateFrom)
-                .withIDCReceptionDate(null)
-                .withDateDeliveryContractDocumentationToClient(null)
+                .withIDCReceptionDate(idcReceptionDate)
+                .withDateDeliveryContractDocumentationToClient(dateDeliveryContractDocumentationToClient)
                 .withContractEndNoticeReceptionDate(contractEndNoticeToSave)
                 .build();
 
