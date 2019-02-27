@@ -16,22 +16,22 @@ public class MapperContractVODTO {
         LocalDate endingDate = contractVO.getEndingDate() != null ? contractVO.getEndingDate().toLocalDate() : null;
 
         ContractDTO contractDTO = new ContractDTO();
-        contractDTO.setId(null);
-        contractDTO.setEmployer(contractDTO.getEmployer());
-        contractDTO.setEmployee(contractDTO.getEmployee());
-        contractDTO.setContractType(contractDTO.getContractType());
-        contractDTO.setGmContractNumber(contractDTO.getGmContractNumber());
-        contractDTO.setVariationType(contractDTO.getVariationType());
+        contractDTO.setId(contractVO.getId());
+        contractDTO.setEmployer(contractVO.getClientId());
+        contractDTO.setEmployee(contractVO.getWorkerId());
+        contractDTO.setContractType(contractVO.getContractType());
+        contractDTO.setGmContractNumber(contractVO.getGmContractNumber());
+        contractDTO.setVariationType(contractVO.getVariationType());
         contractDTO.setStartDate(contractVO.getStartDate().toLocalDate());
         contractDTO.setExpectedEndDate(expectedEndDate);
         contractDTO.setModificationDate(modificationDate);
         contractDTO.setEndingDate(endingDate);
-        contractDTO.setContractScheduleJsonData(contractDTO.getContractScheduleJsonData());
-        contractDTO.setLaborCategory(contractDTO.getLaborCategory());
-        contractDTO.setQuoteAccountCode(contractDTO.getQuoteAccountCode());
-        contractDTO.setIdentificationContractNumberINEM(contractDTO.getIdentificationContractNumberINEM());
-        contractDTO.setPublicNotes(contractDTO.getPublicNotes());
-        contractDTO.setPrivateNotes(contractDTO.getPrivateNotes());
+        contractDTO.setContractScheduleJsonData(contractVO.getContractScheduleJsonData());
+        contractDTO.setLaborCategory(contractVO.getLaborCategory());
+        contractDTO.setQuoteAccountCode(contractVO.getQuoteAccountCode());
+        contractDTO.setIdentificationContractNumberINEM(contractVO.getIdentificationContractNumberINEM());
+        contractDTO.setPublicNotes(contractVO.getPublicNotes());
+        contractDTO.setPrivateNotes(contractVO.getPrivateNotes());
 
         return contractDTO;
     }

@@ -41,6 +41,10 @@ import java.sql.Date;
                 query = "select p from ContractVariationVO p where p.contractNumber = :code order by p.modificationDate, p.endingDate"
         ),
         @NamedQuery(
+                name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_ID,
+                query = "select p from ContractVariationVO p where p.variationType = :code order by p.modificationDate, p.endingDate"
+        ),
+        @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE,
                 query = "select p from ContractVariationVO p where p.startDate <= :date and (p.endingDate is null or p.endingDate >= :date)" +
                         " and (p.modificationDate is null or p.modificationDate >= :date) and (p.expectedEndDate is null or p.expectedEndDate >= :date) order by p.modificationDate," +
@@ -75,6 +79,7 @@ import java.sql.Date;
 public class ContractVariationVO implements Serializable {
 
     public static final String FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_CONTRACT_NUMBER";
+    public static final String FIND_ALL_CONTRACT_VARIATION_BY_ID = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_ID";
     public static final String FIND_ALL_ACTIVE_CONTRACT_VARIATION_IN_PERIOD = "ContractVariationVO.FIND_ALL_ACTIVE_CONTRACT_VARIATION_IN_PERIOD";
     public static final String FIND_ALL_CONTRACT_VARIATION_TEMPORAL_IN_FORCE_NOW = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_TEMPORAL_IN_FORCE_NOW";
     public static final String FIND_ALL_CONTRACT_VARIATION_IN_FORCE_IN_PERIOD = "ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_IN_FORCE_IN_PERIOD";

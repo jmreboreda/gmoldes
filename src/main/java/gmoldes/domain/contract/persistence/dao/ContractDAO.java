@@ -78,7 +78,7 @@ public class ContractDAO {
             System.err.println("No se ha podido actualizar el contrato en \"contract\": " + e.getMessage());
         }
 
-        return contractReadVO.getId();
+        return contractVO.getId();
     }
 
     public Integer findHighestContractNumber(){

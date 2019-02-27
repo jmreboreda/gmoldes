@@ -27,7 +27,7 @@ import java.sql.Date;
         ),
         @NamedQuery(
                 name = ContractVO.FIND_LAST_TUPLA_CONTRACT_BY_CONTRACT_NUMBER,
-                query = "select p from ContractVO p where contractNumber = :contractNumber order by startDate desc"
+                query = "select p from ContractVO p where gmContractNumber = :contractNumber order by startDate desc"
         )
 })
 @Entity
@@ -51,9 +51,9 @@ public class ContractVO implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contract_id_seq")
     @Column(name = "id", updatable = false)
     private Integer id;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="clientid")
-    private ClientVO clientVO;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name="clientid")
+//    private ClientVO clientVO;
     private Integer clientId;
     private Integer workerId;
     private String contractType;
@@ -80,13 +80,13 @@ public class ContractVO implements Serializable {
         this.id = id;
     }
 
-    public ClientVO getClientVO() {
-        return clientVO;
-    }
-
-    public void setClientVO(ClientVO clientVO) {
-        this.clientVO = clientVO;
-    }
+//    public ClientVO getClientVO() {
+//        return clientVO;
+//    }
+//
+//    public void setClientVO(ClientVO clientVO) {
+//        this.clientVO = clientVO;
+//    }
 
     public Integer getClientId() {
         return clientId;
