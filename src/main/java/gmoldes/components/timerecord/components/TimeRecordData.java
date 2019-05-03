@@ -221,39 +221,41 @@ public class TimeRecordData extends VBox {
         List<TimeRecordCandidateDataDTO> candidates = new ArrayList<>();
         if(!contractNewVersionDTOList.isEmpty()) {
             for (ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList) {
-                if(!contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours().equals("40:00")) {
-                    Integer employeeId = contractNewVersionDTO.getContractJsonData().getWorkerId();
-                    PersonDTO employee = retrievePersonByPersonId(employeeId);
-                    String employeeNIF = Utilities.formatAsNIF(employee.getNifcif());
-                    String employeeName = employee.getApellidos() + ", " + employee.getNom_rzsoc();
+//                if(!contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours().equals("40:00")) {
+                if(contractNewVersionDTO.getVariationType() != 101){
+                Integer employeeId = contractNewVersionDTO.getContractJsonData().getWorkerId();
+                PersonDTO employee = retrievePersonByPersonId(employeeId);
+                String employeeNIF = Utilities.formatAsNIF(employee.getNifcif());
+                String employeeName = employee.getApellidos() + ", " + employee.getNom_rzsoc();
 
-                    String dateTo;
-                    if(contractNewVersionDTO.getModificationDate() == null &&
-                            contractNewVersionDTO.getExpectedEndDate() == null){
-                        dateTo = null;
+                String dateTo;
+                if (contractNewVersionDTO.getModificationDate() == null &&
+                        contractNewVersionDTO.getExpectedEndDate() == null) {
+                    dateTo = null;
 
-                    }else{
-                        dateTo = contractNewVersionDTO.getModificationDate() == null ? dateFormatter.format(contractNewVersionDTO.getExpectedEndDate()) : dateFormatter.format(contractNewVersionDTO.getModificationDate());
-                    }
-
-                    String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
-
-                    ContractTypeController contractTypeController = new ContractTypeController();
-                    ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
-
-                    TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
-                            employeeName,
-                            employeeNIF,
-                            contractNewVersionDTO.getContractJsonData().getQuoteAccountCode(),
-                            contractNewVersionDTO.getContractJsonData().getFullPartialWorkDay(),
-                            contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours(),
-                            contractTypeDTO.getColloquial(),
-                            dateFrom,
-                            dateTo
-                    );
-
-                    candidates.add(dataCandidates);
+                } else {
+                    dateTo = contractNewVersionDTO.getModificationDate() == null ? dateFormatter.format(contractNewVersionDTO.getExpectedEndDate()) : dateFormatter.format(contractNewVersionDTO.getModificationDate());
                 }
+
+                String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
+
+                ContractTypeController contractTypeController = new ContractTypeController();
+                ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
+
+                TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
+                        employeeName,
+                        employeeNIF,
+                        contractNewVersionDTO.getContractJsonData().getQuoteAccountCode(),
+                        contractNewVersionDTO.getContractJsonData().getFullPartialWorkDay(),
+                        contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours(),
+                        contractTypeDTO.getColloquial(),
+                        dateFrom,
+                        dateTo
+                );
+
+                candidates.add(dataCandidates);
+            }
+//                }
             }
         }
 

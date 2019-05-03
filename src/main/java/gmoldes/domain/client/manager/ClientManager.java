@@ -69,7 +69,7 @@ public class ClientManager {
         contractDAO = ContractDAO.ContractDAOFactory.getInstance();
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractManager.findAllContractNewVersionInMonthOfDate(dateReceived);
         for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
-            if(!contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours().equals("40:00")) {
+//            if(!contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours().equals("40:00")) {
                 Integer clientId = contractNewVersionDTO.getContractJsonData().getClientGMId();
                 clientDAO = ClientDAO.ClientDAOFactory.getInstance();
                 ClientVO clientVO = clientDAO.findClientById(clientId);
@@ -82,7 +82,7 @@ public class ClientManager {
                         .build();
 
                 clientDTOList.add(clientDTO);
-            }
+//            }
         }
         return clientDTOList;
     }
