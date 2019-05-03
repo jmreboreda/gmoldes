@@ -141,6 +141,7 @@ public class ContractManager {
             if(initialContractVO.getContractJsonData().getClientGMId().equals(clientId)) {
                 ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                         .withId(initialContractVO.getId())
+                        .withVariationType(initialContractVO.getVariationType())
                         .withContractNumber(initialContractVO.getContractNumber())
                         .withStartDate(initialContractVO.getStartDate().toLocalDate())
                         .withExpectedEndDate(notNullExpectedEndDate)
@@ -162,6 +163,7 @@ public class ContractManager {
             if(contractVariationVO.getContractJsonData().getClientGMId().equals(clientId)) {
                 ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                         .withId(contractVariationVO.getId())
+                        .withVariationType(contractVariationVO.getVariationType())
                         .withContractNumber(contractVariationVO.getContractNumber())
                         .withStartDate(contractVariationVO.getStartDate().toLocalDate())
                         .withExpectedEndDate(notNullExpectedEndDate)
