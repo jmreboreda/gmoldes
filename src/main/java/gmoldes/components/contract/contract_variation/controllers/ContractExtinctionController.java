@@ -19,6 +19,7 @@ import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.study.StudyManager;
+import gmoldes.domain.traceability_contract_documentation.controllers.TraceabilityContractDocumentationController;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
@@ -103,9 +104,17 @@ public class ContractExtinctionController{
             return new MessageContractVariationEvent(ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA, null);
         }
 
+        // 7. Update traceability
+        // Update the date of receipt of the notice of end of contract in the initial record of traceability of the contract
+        Integer idTraceabilityRecordOfInitialContract = updateTraceabilityRecordOfInitialContract();
+        if(idTraceabilityRecordOfInitialContract == null){
+
+            return new MessageContractVariationEvent(ContractConstants.ERROR_UPDATING_TRACEABILITY_OF_INITIAL_CONTRACT, null);
+        }
+
         Message.warningMessage(this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
 
-        // 7. Print documentation
+        // 8. Print documentation
         StringBuilder sb = new StringBuilder();
 
         String publicNotes = retrievePublicNotes();
@@ -321,6 +330,37 @@ public class ContractExtinctionController{
         ContractManager contractManager = new ContractManager();
 
         return contractManager.saveContractTraceability(traceabilityContractExtinctionDTO);
+    }
+
+    private Integer updateTraceabilityRecordOfInitialContract(){
+
+        TraceabilityContractDocumentationController traceabilityController = new TraceabilityContractDocumentationController();
+
+        ContractNewVersionDTO contractNewVersionToBeExtinguished = contractVariationMainController.getContractVariationParts()
+                .getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion();
+
+        Integer contractNumber = contractNewVersionToBeExtinguished.getContractNumber();
+
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityController.findAllTraceabilityRecordByContractNumber(contractNumber);
+        if(!traceabilityContractDocumentationDTOList.isEmpty()) {
+            for (TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList) {
+                if(traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate() == null){
+                    TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTOToBeUpdated = TraceabilityContractDocumentationDTO.create()
+                            .withId(traceabilityContractDocumentationDTO.getId())
+                            .withContractNumber(traceabilityContractDocumentationDTO.getContractNumber())
+                            .withVariationType(traceabilityContractDocumentationDTO.getVariationType())
+                            .withStartDate(traceabilityContractDocumentationDTO.getStartDate())
+                            .withIDCReceptionDate(traceabilityContractDocumentationDTO.getIDCReceptionDate())
+                            .withDateDeliveryContractDocumentationToClient(traceabilityContractDocumentationDTO.getDateDeliveryContractDocumentationToClient())
+                            .withContractEndNoticeReceptionDate(LocalDate.of(9999,12,31))
+                            .build();
+
+                    contractNumber = traceabilityController.updateTraceabilityRecord(traceabilityContractDocumentationDTOToBeUpdated);
+                }
+            }
+        }
+
+        return contractNumber;
     }
 
     private Integer updateLastVariationOfContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){

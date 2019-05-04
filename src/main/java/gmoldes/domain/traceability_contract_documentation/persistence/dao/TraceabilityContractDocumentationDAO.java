@@ -46,8 +46,32 @@ public class TraceabilityContractDocumentationDAO {
         return traceabilityContractDocumentationVO.getId();
     }
 
-    public List<TraceabilityContractDocumentationVO> findTraceabilityForAllContractWithPendingContractDocumentationToClient(){
-        TypedQuery<TraceabilityContractDocumentationVO> query = session.createNamedQuery(TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_DOCUMENTATION_TO_CLIENT, TraceabilityContractDocumentationVO.class);
+    public Integer updateTraceabilityRecord(TraceabilityContractDocumentationVO traceabilityContractDocumentationVO){
+        TraceabilityContractDocumentationVO traceabilityContractDocumentationReadVO = null;
+        try {
+            session.beginTransaction();
+            traceabilityContractDocumentationReadVO = session.get(TraceabilityContractDocumentationVO.class, traceabilityContractDocumentationVO.getId());
+            traceabilityContractDocumentationReadVO.setId(traceabilityContractDocumentationVO.getId());
+            traceabilityContractDocumentationReadVO.setContractNumber(traceabilityContractDocumentationVO.getContractNumber());
+            traceabilityContractDocumentationReadVO.setVariationType(traceabilityContractDocumentationVO.getVariationType());
+            traceabilityContractDocumentationReadVO.setStartDate(traceabilityContractDocumentationVO.getStartDate());
+            traceabilityContractDocumentationReadVO.setExpectedEndDate(traceabilityContractDocumentationVO.getExpectedEndDate());
+            traceabilityContractDocumentationReadVO.setIDCReceptionDate(traceabilityContractDocumentationVO.getIDCReceptionDate());
+            traceabilityContractDocumentationReadVO.setDateDeliveryContractDocumentationToClient(traceabilityContractDocumentationVO.getDateDeliveryContractDocumentationToClient());
+            traceabilityContractDocumentationReadVO.setContractEndNoticeReceptionDate(traceabilityContractDocumentationVO.getContractEndNoticeReceptionDate());
+            session.update(traceabilityContractDocumentationReadVO);
+            session.getTransaction().commit();
+        }
+        catch (Exception e){
+            System.err.println("No se ha podido actualizar \"contractEndNoticeReceptionDate\" en la trazabilidad del contrato inicial en \"traceability_contract_documentation\": " + e.getMessage());
+        }
+
+        return traceabilityContractDocumentationVO.getId();
+    }
+
+    public List<TraceabilityContractDocumentationVO> findAllTraceabilityRecordByContractNumber(Integer contractNumber){
+        TypedQuery<TraceabilityContractDocumentationVO> query = session.createNamedQuery(TraceabilityContractDocumentationVO.FIND_ALL_RECORD_BY_CONTRACT_NUMBER, TraceabilityContractDocumentationVO.class);
+        query.setParameter("contractNumber", contractNumber);
 
         return query.getResultList();
     }
