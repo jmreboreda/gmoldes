@@ -2,6 +2,7 @@ package gmoldes.domain.traceability_contract_documentation.manager;
 
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.domain.traceability_contract_documentation.mapper.MapperTraceabilityContractDocumentationDTOVO;
+import gmoldes.domain.traceability_contract_documentation.mapper.MapperTraceabilityContractDocumentationVODTO;
 import gmoldes.domain.traceability_contract_documentation.persistence.dao.TraceabilityContractDocumentationDAO;
 import gmoldes.domain.traceability_contract_documentation.persistence.vo.TraceabilityContractDocumentationVO;
 
@@ -10,6 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TraceabilityContractDocumentationManager {
+
+    public Integer saveContractTraceability(TraceabilityContractDocumentationDTO traceabilityDTO){
+        TraceabilityContractDocumentationDAO traceabilityContractDocumentationDAO = TraceabilityContractDocumentationDAO.TraceabilityContractDocumentationDAOFactory.getInstance();
+        TraceabilityContractDocumentationVO traceabilityVO = MapperTraceabilityContractDocumentationDTOVO.map(traceabilityDTO);
+
+        return traceabilityContractDocumentationDAO.create(traceabilityVO);
+    }
 
     public Integer updateTraceabilityRecord (TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO){
 
@@ -44,6 +52,46 @@ public class TraceabilityContractDocumentationManager {
                     .build();
 
             traceabilityContractDocumentationDTOList.add(traceabilityContractDocumentationDTO);
+        }
+
+        return traceabilityContractDocumentationDTOList;
+    }
+
+    public List<TraceabilityContractDocumentationDTO> findTraceabilityForAllContractWithPendingIDC(){
+
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = new ArrayList<>();
+
+        TraceabilityContractDocumentationDAO traceabilityContractDocumentationDAO = TraceabilityContractDocumentationDAO.TraceabilityContractDocumentationDAOFactory.getInstance();
+        List<TraceabilityContractDocumentationVO> traceabilityContractDocumentationVOList = traceabilityContractDocumentationDAO.findTraceabilityForAllContractWithPendingIDC();
+        for(TraceabilityContractDocumentationVO traceabilityContractDocumentationVO : traceabilityContractDocumentationVOList){
+            traceabilityContractDocumentationDTOList.add(MapperTraceabilityContractDocumentationVODTO.map(traceabilityContractDocumentationVO));
+        }
+
+        return traceabilityContractDocumentationDTOList;
+    }
+
+    public List<TraceabilityContractDocumentationDTO> findTraceabilityForAllContractWithPendingLaborDocumentation(){
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = new ArrayList<>();
+
+        TraceabilityContractDocumentationDAO traceabilityContractDocumentationDAO = TraceabilityContractDocumentationDAO.TraceabilityContractDocumentationDAOFactory.getInstance();
+        List<TraceabilityContractDocumentationVO> traceabilityContractDocumentationVOList = traceabilityContractDocumentationDAO.findTraceabilityForAllContractWithPendingLaborDocumentation();
+
+        for(TraceabilityContractDocumentationVO traceabilityContractDocumentationVO : traceabilityContractDocumentationVOList){
+            TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO = MapperTraceabilityContractDocumentationVODTO.map(traceabilityContractDocumentationVO);
+            traceabilityContractDocumentationDTOList.add(traceabilityContractDocumentationDTO)
+            ;        }
+
+        return traceabilityContractDocumentationDTOList;
+    }
+
+    public List<TraceabilityContractDocumentationDTO> findTraceabilityForAllContractWithPendingContractEndNotice(){
+
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = new ArrayList<>();
+
+        TraceabilityContractDocumentationDAO traceabilityContractDocumentationDAO = TraceabilityContractDocumentationDAO.TraceabilityContractDocumentationDAOFactory.getInstance();
+        List<TraceabilityContractDocumentationVO> traceabilityContractDocumentationVOList = traceabilityContractDocumentationDAO.findTraceabilityForAllContractWithPendingContractEndNotice();
+        for(TraceabilityContractDocumentationVO traceabilityContractDocumentationVO : traceabilityContractDocumentationVOList){
+            traceabilityContractDocumentationDTOList.add(MapperTraceabilityContractDocumentationVODTO.map(traceabilityContractDocumentationVO));
         }
 
         return traceabilityContractDocumentationDTOList;

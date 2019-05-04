@@ -11,6 +11,7 @@ import gmoldes.domain.contract.dto.ContractVariationDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
+import gmoldes.domain.traceability_contract_documentation.controllers.TraceabilityContractDocumentationController;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
@@ -39,8 +40,8 @@ public class InitialChecks {
         Integer counter = 1;
         String missingExceededText;
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-        List<TraceabilityContractDocumentationDTO>  traceabilityContractDocumentationDTOList = applicationMainController.findTraceabilityForAllContractWithPendingContractEndNotice();
+        TraceabilityContractDocumentationController traceabilityController = new TraceabilityContractDocumentationController();
+        List<TraceabilityContractDocumentationDTO>  traceabilityContractDocumentationDTOList = traceabilityController.findTraceabilityForAllContractWithPendingContractEndNotice();
         if(!traceabilityContractDocumentationDTOList.isEmpty()) {
             for (TraceabilityContractDocumentationDTO traceabilityDTO : traceabilityContractDocumentationDTOList) {
                 Long contractDurationDays = ChronoUnit.DAYS.between(traceabilityDTO.getStartDate(), traceabilityDTO.getExpectedEndDate()) + 1;
@@ -142,8 +143,8 @@ public class InitialChecks {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         List<IDCControlDTO> idcControlDTOList = new ArrayList<>();
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = applicationMainController.findTraceabilityForAllContractWithPendingIDC();
+        TraceabilityContractDocumentationController traceabilityController = new TraceabilityContractDocumentationController();
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityController.findTraceabilityForAllContractWithPendingIDC();
         for(TraceabilityContractDocumentationDTO traceabilityDTO : traceabilityContractDocumentationDTOList) {
             IDCControlDTO idcControlDTO = new IDCControlDTO();
 
@@ -199,10 +200,10 @@ public class InitialChecks {
     }
 
     public static void alertByDelaySendingLaborDocumentationToClients(Stage primaryStage){
-        ApplicationMainController applicationMainController = new ApplicationMainController();
+        TraceabilityContractDocumentationController traceabilityController = new TraceabilityContractDocumentationController();
         StringBuilder alertMessage = new StringBuilder();
 
-        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = applicationMainController.findTraceabilityForAllContractWithPendingLaborDocumentation();
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityController.findTraceabilityForAllContractWithPendingLaborDocumentation();
         if(!traceabilityContractDocumentationDTOList.isEmpty()){
             for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
                 Long daysOfDocumentationDelay = ChronoUnit.DAYS.between(traceabilityContractDocumentationDTO.getStartDate(), LocalDate.now());
