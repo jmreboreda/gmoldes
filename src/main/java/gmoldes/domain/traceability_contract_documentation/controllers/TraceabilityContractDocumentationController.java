@@ -20,4 +20,26 @@ public class TraceabilityContractDocumentationController {
 
         return traceabilityManger.findAllTraceabilityRecordByContractNumber(contractNumber);
     }
+
+    public List<TraceabilityContractDocumentationDTO> findTraceabilityForAllContractWithPendingIDC(){
+
+        TraceabilityContractDocumentationManager traceabilityManager = new TraceabilityContractDocumentationManager();
+
+        return traceabilityManager.findTraceabilityForAllContractWithPendingIDC();
+    }
+
+    public List<TraceabilityContractDocumentationDTO> findTraceabilityForAllContractWithPendingLaborDocumentation(){
+
+        TraceabilityContractDocumentationManager traceabilityManager = new TraceabilityContractDocumentationManager();
+
+        return traceabilityManager.findTraceabilityForAllContractWithPendingLaborDocumentation();
+
+    }
+
+    public List<TraceabilityContractDocumentationDTO> findTraceabilityForAllContractWithPendingContractEndNotice(){
+
+        TraceabilityContractDocumentationManager traceabilityManager = new TraceabilityContractDocumentationManager();
+
+        return traceabilityManager.findTraceabilityForAllContractWithPendingContractEndNotice();
+    }
 }

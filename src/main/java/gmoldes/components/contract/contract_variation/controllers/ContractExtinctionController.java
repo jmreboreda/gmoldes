@@ -21,6 +21,7 @@ import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.study.StudyManager;
 import gmoldes.domain.traceability_contract_documentation.controllers.TraceabilityContractDocumentationController;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.domain.traceability_contract_documentation.manager.TraceabilityContractDocumentationManager;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
 import gmoldes.services.email.EmailConstants;
@@ -327,9 +328,9 @@ public class ContractExtinctionController{
                 .withContractEndNoticeReceptionDate(contractEndNoticeToSave)
                 .build();
 
-        ContractManager contractManager = new ContractManager();
+        TraceabilityContractDocumentationManager traceabilityManager = new TraceabilityContractDocumentationManager();
 
-        return contractManager.saveContractTraceability(traceabilityContractExtinctionDTO);
+        return traceabilityManager.saveContractTraceability(traceabilityContractExtinctionDTO);
     }
 
     private Integer updateTraceabilityRecordOfInitialContract(){

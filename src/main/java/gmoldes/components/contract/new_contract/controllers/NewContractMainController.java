@@ -26,6 +26,7 @@ import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.domain.traceability_contract_documentation.manager.TraceabilityContractDocumentationManager;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
@@ -484,8 +485,8 @@ public class NewContractMainController extends VBox {
                 .withContractEndNoticeReceptionDate(contractEndNoticeToSave)
                 .build();
 
-        ContractManager contractManager = new ContractManager();
-        Integer id = contractManager.saveContractTraceability(traceabilityDTO);
+        TraceabilityContractDocumentationManager traceabilityManager = new TraceabilityContractDocumentationManager();
+        Integer id = traceabilityManager.saveContractTraceability(traceabilityDTO);
 
         if(id == null){
 

@@ -24,6 +24,7 @@ import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.study.StudyManager;
 import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.domain.traceability_contract_documentation.manager.TraceabilityContractDocumentationManager;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
 import gmoldes.services.email.EmailConstants;
@@ -420,10 +421,10 @@ public class ContractExtensionController{
                 .withIDCReceptionDate(IDCReceptionDate)
                 .build();
 
-        ContractManager contractManager = new ContractManager();
+        TraceabilityContractDocumentationManager traceabilityManager = new TraceabilityContractDocumentationManager();
 
         System.out.println("Contract extension traceability Ok.");
-        return contractManager.saveContractTraceability(traceabilityDTO);
+        return traceabilityManager.saveContractTraceability(traceabilityDTO);
     }
 
     private String retrievePublicNotes(){
