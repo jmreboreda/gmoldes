@@ -92,6 +92,7 @@ public class ContractConstants {
     public static final String COMPATIBILITY_FUTURE_VARIATIONS_NOT_AUTOMATICALLY_VERIFIABLES = "Existen variaciones futuras del contrato que no son verificables automáticamente.";
     public static final String CONTRACT_EXTENSION_OPERATION_ABANDONED = "Se ha abandonado la operación de prórroga del contrato.";
     public static final String ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA = "Ha ocurrido un error al pesistir la trazabilidad del contrato en \"traceability_contract_documentation\".";
+    public static final String ERROR_UPDATING_TRACEABILITY_OF_INITIAL_CONTRACT = "Ha ocurrido un error al actualizar la fecha de recepción del preaviso de fin de contrato en el registro de trazabilidad del contrato inicial en \"traceability_contract_documentation\".";
 
     // Variaciones de jornada
     public static final String ERROR_EXCEEDED_DURATION_CONTRACT = "La fecha final de la variación de jornada sobrepasa la duración del contrato.";

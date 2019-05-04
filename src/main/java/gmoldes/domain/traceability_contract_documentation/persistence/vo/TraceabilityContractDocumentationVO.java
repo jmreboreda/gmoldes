@@ -8,6 +8,10 @@ import java.sql.Date;
 @Table(name = "traceability_contract_documentation")
 @NamedQueries(value = {
         @NamedQuery(
+                name = gmoldes.domain.traceability_contract_documentation.persistence.vo.TraceabilityContractDocumentationVO.FIND_ALL_RECORD_BY_CONTRACT_NUMBER,
+                query = "select p from TraceabilityContractDocumentationVO p where contractNumber = :contractNumber"
+        ),
+        @NamedQuery(
                 name = gmoldes.domain.traceability_contract_documentation.persistence.vo.TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_IDC,
                 query = "select p from TraceabilityContractDocumentationVO p where IDCReceptionDate is null order by contractNumber, variationType"
         ),
@@ -28,24 +32,24 @@ import java.sql.Date;
 
 public class TraceabilityContractDocumentationVO implements Serializable{
 
-        public static final String FIND_ALL_CONTRACT_WITH_PENDING_IDC = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_IDC";
-        public static final String FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_END_NOTICE = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_END_NOTICE";
-        public static final String FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_DOCUMENTATION_TO_CLIENT = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_DOCUMENTATION_TO_CLIENT";
-        public static final String FIND_ALL_CONTRACT_WITH_WORKING_DAY_SCHEDULE_WITH_END_DATE = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_WORKING_DAY_SCHEDULE_WITH_END_DATE";
+    public static final String FIND_ALL_RECORD_BY_CONTRACT_NUMBER = "TraceabilityContractDocumentationVO.FIND_ALL_RECORD_BY_CONTRACT_NUMBER";
+    public static final String FIND_ALL_CONTRACT_WITH_PENDING_IDC = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_IDC";
+    public static final String FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_END_NOTICE = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_END_NOTICE";
+    public static final String FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_DOCUMENTATION_TO_CLIENT = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_DOCUMENTATION_TO_CLIENT";
+    public static final String FIND_ALL_CONTRACT_WITH_WORKING_DAY_SCHEDULE_WITH_END_DATE = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_WORKING_DAY_SCHEDULE_WITH_END_DATE";
 
-
-        @Id
-        @SequenceGenerator(name = "traceability_contract_documentation_id_seq", sequenceName = "traceability_contract_documentation_id_seq", allocationSize = 1)
-        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "traceability_contract_documentation_id_seq")
-        @Column(name = "id", updatable = false)
-        private Integer id;
-        private Integer contractNumber;
-        private Integer variationType;
-        private Date startDate;
-        private Date expectedEndDate;
-        private Date IDCReceptionDate;
-        private Date dateDeliveryContractDocumentationToClient;
-        private Date contractEndNoticeReceptionDate;
+    @Id
+    @SequenceGenerator(name = "traceability_contract_documentation_id_seq", sequenceName = "traceability_contract_documentation_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "traceability_contract_documentation_id_seq")
+    @Column(name = "id", updatable = false)
+    private Integer id;
+    private Integer contractNumber;
+    private Integer variationType;
+    private Date startDate;
+    private Date expectedEndDate;
+    private Date IDCReceptionDate;
+    private Date dateDeliveryContractDocumentationToClient;
+    private Date contractEndNoticeReceptionDate;
 
     public Integer getId() {
         return id;

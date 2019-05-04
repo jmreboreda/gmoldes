@@ -15,6 +15,7 @@ public class MapperTraceabilityContractDocumentationDTOVO {
         Date dateContractEndNoticeReception = traceabilityDTO.getContractEndNoticeReceptionDate() != null ? Date.valueOf(traceabilityDTO.getContractEndNoticeReceptionDate()) : null;
 
         TraceabilityContractDocumentationVO traceabilityVO = new TraceabilityContractDocumentationVO();
+        traceabilityVO.setId(traceabilityDTO.getId());
         traceabilityVO.setContractNumber(traceabilityDTO.getContractNumber());
         traceabilityVO.setVariationType(traceabilityDTO.getVariationType());
         traceabilityVO.setStartDate(Date.valueOf(traceabilityDTO.getStartDate()));
