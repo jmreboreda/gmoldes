@@ -1,7 +1,7 @@
 package gmoldes.domain.check;
 
 import gmoldes.ApplicationConstants;
-import gmoldes.ApplicationMainController;
+import gmoldes.components.contract.contract_variation.controllers.ContractVariationController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.domain.client.ClientService;
@@ -94,9 +94,9 @@ public class InitialChecks {
         Integer counter = 1;
         String missingExceededText;
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
+        ContractVariationController contractVariationController = new ContractVariationController();
         Integer contractVariationId = 230;
-        List<ContractVariationDTO> contractVariationDTOList = applicationMainController.findAllContractVariationById(contractVariationId);
+        List<ContractVariationDTO> contractVariationDTOList = contractVariationController.findAllContractVariationById(contractVariationId);
 
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList){
             if(contractVariationDTO.getExpectedEndDate() != null && contractVariationDTO.getModificationDate() == null) {
