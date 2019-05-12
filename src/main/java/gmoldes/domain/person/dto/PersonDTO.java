@@ -7,7 +7,6 @@ package gmoldes.domain.person.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 
 
 public class PersonDTO {
@@ -150,12 +149,17 @@ public class PersonDTO {
 
     @Override
     public String toString() {
-        return getApellidos() + ", " + getNom_rzsoc();
+        return toAlphabeticalName();
     }
 
     public String toNaturalName(){
 
         return getNom_rzsoc() + " " + getApellidos();
+    }
+
+    public String toAlphabeticalName(){
+
+        return getApellidos() + ", " + getNom_rzsoc();
     }
 
     public static PersonDTO.PersonBuilder create() {

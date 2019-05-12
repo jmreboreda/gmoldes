@@ -97,7 +97,7 @@ public class PayrollCheckList {
             String employerName = employer.toString();
             PersonService personService = PersonService.PersonServiceFactory.getInstance();
             PersonDTO worker = personService.findPersonById(contractNewVersionDTO.getContractJsonData().getWorkerId());
-            String workerName = worker.getApellidos() + ", " + worker.getNom_rzsoc();
+            String workerName = worker.toString();
 
             PayrollCheckListDTO payrollCheckListDTO = new PayrollCheckListDTO(employerName, workerName);
             payrollCheckListDTOList.add(payrollCheckListDTO);

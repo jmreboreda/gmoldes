@@ -17,7 +17,6 @@ public class InitialContractDTO {
     private Integer id;
     private Integer contractNumber;
     private Integer variationType;
-    private Integer clientGMId;
     private LocalDate startDate;
     private LocalDate expectedEndDate;
     private LocalDate modificationDate;
@@ -41,15 +40,12 @@ public class InitialContractDTO {
         this.id = id;
         this.contractNumber = contractNumber;
         this.variationType = variationType;
-        this.clientGMId = clientGMId;
         this.startDate = startDate;
         this.expectedEndDate = expectedEndDate;
         this.modificationDate = modificationDate;
         this.endingDate = endingDate;
         this.contractJsonData = contractJsonData;
         this.contractScheduleJsonData = contractScheduleJsonData;
-
-
     }
 
     public Integer getId() {
@@ -74,14 +70,6 @@ public class InitialContractDTO {
 
     public void setVariationType(Integer variationType) {
         this.variationType = variationType;
-    }
-
-    public Integer getClientGMId() {
-        return clientGMId;
-    }
-
-    public void setClientGMId(Integer clientGMId) {
-        this.clientGMId = clientGMId;
     }
 
     public LocalDate getStartDate() {
@@ -130,22 +118,6 @@ public class InitialContractDTO {
 
     public void setContractScheduleJsonData(ContractScheduleJsonData contractScheduleJsonData) {
         this.contractScheduleJsonData = contractScheduleJsonData;
-    }
-
-    //@Override
-    public String toMyString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("-----------------------------------------------------" + "\n");
-        sb.append("ContractNumber: " + getContractNumber() + " -> INEM contrac number: " + getContractJsonData().getIdentificationContractNumberINEM() + "\n");
-        sb.append("ClientGMId: " + getClientGMId() + " -> WorkerId: " + getContractJsonData().getWorkerId() + "\n");
-        sb.append("DaysOfWeekToWork: " + getContractJsonData().getDaysOfWeekToWork() + "\n");
-        sb.append("StartDate: " + getStartDate() + "\t");
-        sb.append("ExpectedEndDate: " + getExpectedEndDate() + "\t");
-        sb.append("EndingDate: " + getEndingDate() + "\n");
-        sb.append("ContractType: " + getContractJsonData().getContractType() + "\n");
-
-
-        return sb.toString();
     }
 
     public static InitialContractDTOBuilder create() {

@@ -184,13 +184,13 @@ public class Contract {
             contractDuration = ContractConstants.UNDEFINED_DURATION_TEXT;
         }
 
-        String partialFullTime = getPartialOrFullWorkDay();
-        if(partialFullTime.equals(ContractConstants.PARTIAL_WORKDAY)){
+        String partialFullTimeString = getPartialOrFullWorkDayString();
+        if(isPartialWorkDay()){
             String weeklyWorkHours = Utilities.converterDurationToTimeString(getWeeklyWorkHours());
-            partialFullTime = partialFullTime.concat(" [").concat(weeklyWorkHours).concat(" " + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase()).concat("]");
+            partialFullTimeString = partialFullTimeString.concat(" [").concat(weeklyWorkHours).concat(" " + ContractConstants.HOURS_WORK_WEEK_TEXT.toLowerCase()).concat("]");
         }
 
-        return getContractType().getColloquial().concat(", ").concat(contractDuration).concat(", ").concat(partialFullTime);
+        return getContractType().getColloquial().concat(", ").concat(contractDuration).concat(", ").concat(partialFullTimeString);
     }
 
     public Duration getWeeklyWorkHours(){
@@ -206,7 +206,27 @@ public class Contract {
         return weeklyWorkDuration;
     }
 
-    public String getPartialOrFullWorkDay(){
+    public Boolean isPartialWorkDay(){
+
+        if(getContractType().getIsPartialTime()){
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public Boolean isFullWorkDay(){
+
+        if(getContractType().getIsFullTime()){
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public String getPartialOrFullWorkDayString(){
 
         if(getContractType().getIsFullTime()){
 

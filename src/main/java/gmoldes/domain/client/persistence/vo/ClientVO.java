@@ -1,6 +1,5 @@
 package gmoldes.domain.client.persistence.vo;
 
-import gmoldes.domain.contract.persistence.vo.ContractVO;
 import gmoldes.domain.servicegm.persistence.vo.ServiceGMVO;
 
 import javax.persistence.*;
@@ -188,6 +187,22 @@ public class ClientVO implements Serializable {
         }
 
         return rzSocial;
+    }
+
+    public Boolean isActiveClient(){
+        if(dateTo == null){
+            return true;
+        }
+
+        return false;
+    }
+
+    public Boolean isActiveContributor(){
+        if(withoutActivity == null){
+            return true;
+        }
+
+        return false;
     }
 }
 
