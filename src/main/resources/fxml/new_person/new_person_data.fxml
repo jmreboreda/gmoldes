@@ -4,36 +4,14 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root prefHeight="246.0" prefWidth="816.0" type="VBox" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="246.0" prefWidth="816.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox>
-         <children>
-            <RadioButton mnemonicParsing="false" text="Alta de persona">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-               <toggleGroup>
-                  <ToggleGroup fx:id="Person_Activity" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton mnemonicParsing="false" text="Modificación de persona" toggleGroup="$Person_Activity">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-            </RadioButton>
-         </children>
-         <VBox.margin>
-            <Insets top="10.0" />
-         </VBox.margin>
-      </HBox>
       <TitledPane animated="false" collapsible="false" text="Datos de la persona" textFill="#000fff">
         <content>
           <AnchorPane>
@@ -168,12 +146,12 @@
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Label text="Nivel de estudios">
+                              <Label text="Nivel estudios">
                                  <HBox.margin>
                                     <Insets left="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <ChoiceBox prefWidth="145.0">
+                              <ChoiceBox prefWidth="165.0">
                                  <HBox.margin>
                                     <Insets left="5.0" top="10.0" />
                                  </HBox.margin>

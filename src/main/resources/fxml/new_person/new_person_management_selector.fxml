@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Separator prefWidth="200.0">
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin></Separator>
+      <HBox>
+         <children>
+            <Label text="Gestión de personas:">
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" top="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <RadioButton fx:id="newPerson" mnemonicParsing="false" text="Alta de persona" textFill="#02430e">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <toggleGroup>
+                  <ToggleGroup fx:id="personManagementGroup" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="modificationPerson" mnemonicParsing="false" text="Modificación de persona" textFill="#000fff" toggleGroup="$personManagementGroup">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="deletePerson" mnemonicParsing="false" text="Baja de persona" textFill="#640000" toggleGroup="$personManagementGroup">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </RadioButton>
+         </children>
+      </HBox>
+      <Separator prefWidth="200.0">
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin></Separator>
+   </children>
+</fx:root>

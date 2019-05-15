@@ -429,6 +429,8 @@ public class NewContractMainController extends VBox {
             NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator(this);
             contractDocumentCreator.printSubfoldersOfTheInitialContract();
 
+            contractActionComponents.enableSendMailButton(true);
+
         }else{
             Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);
         }
@@ -509,8 +511,6 @@ public class NewContractMainController extends VBox {
         Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_SAVED_OK + contractNumber);
 
         contractActionComponents.enableOkButton(false);
-        contractActionComponents.enableSendMailButton(true);
-
     }
 
     private ContractFullDataDTO retrieveContractFullData(){

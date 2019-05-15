@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox>
@@ -63,7 +62,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label alignment="CENTER" text="Alta y modificación de personas" textFill="#640000" GridPane.columnSpan="3" GridPane.rowIndex="1">
+                  <Label alignment="CENTER" text="Alta, modificación y baja de personas" textFill="#640000" GridPane.columnSpan="3" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>

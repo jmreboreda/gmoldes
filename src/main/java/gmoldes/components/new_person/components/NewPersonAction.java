@@ -13,12 +13,12 @@ public class NewPersonAction extends HBox {
     private static final String NEW_PERSON_ACTION_FXML = "/fxml/new_person/new_person_action_components.fxml";
 
     private EventHandler<MouseEvent> mouseEventEventHandlerOnExitButton;
-    private EventHandler<MouseEvent> mouseEventEventHandlerOnClipboardButton;
+    private EventHandler<MouseEvent> mouseEventEventHandlerOnOkButton;
 
     private Parent parent;
 
     @FXML
-    private Button clipboardCopyButton;
+    private Button okButton;
     @FXML
     private Button exitButton;
 
@@ -29,36 +29,20 @@ public class NewPersonAction extends HBox {
     @FXML
     public void initialize(){
 
-        clipboardCopyButton.setOnMouseClicked(this::onClipboardButton);
+        okButton.setOnMouseClicked(this::onOkButton);
         exitButton.setOnMouseClicked(this::onExitButton);
-    }
-
-    public Button getClipboardCopyButton() {
-        return clipboardCopyButton;
-    }
-
-    public void setClipboardCopyButton(Button clipboardCopyButton) {
-        this.clipboardCopyButton = clipboardCopyButton;
-    }
-
-    public Button getExitButton() {
-        return exitButton;
-    }
-
-    public void setExitButton(Button exitButton) {
-        this.exitButton = exitButton;
     }
 
     private void onExitButton(MouseEvent event){
         this.mouseEventEventHandlerOnExitButton.handle(event);
     }
 
-    private void onClipboardButton(MouseEvent event){
-        this.mouseEventEventHandlerOnClipboardButton.handle(event);
+    private void onOkButton(MouseEvent event){
+        this.mouseEventEventHandlerOnOkButton.handle(event);
     }
 
-    public void setOnClipboardButton(EventHandler<MouseEvent> mouseEventEventHandlerOnClipboardButton){
-        this.mouseEventEventHandlerOnClipboardButton = mouseEventEventHandlerOnClipboardButton;
+    public void setOnOkButton(EventHandler<MouseEvent> mouseEventEventHandlerOnOkButton){
+        this.mouseEventEventHandlerOnOkButton = mouseEventEventHandlerOnOkButton;
     }
 
     public void setOnExitButton(EventHandler<MouseEvent> mouseEventEventHandlerOnExitButton){

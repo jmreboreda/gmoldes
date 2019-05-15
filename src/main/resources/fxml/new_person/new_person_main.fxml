@@ -5,12 +5,15 @@
 <?import gmoldes.components.new_person.components.NewPersonHeader?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.VBox?>
+<?import gmoldes.components.new_person.components.NewPersonManagementSelector?>
 
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
     <NewPersonHeader fx:id="newPersonHeader" />
+    <NewPersonManagementSelector fx:id="newPersonManagementSelector"/>
     <NewPersonData fx:id="newPersonData" />
     <NewPersonAction fx:id="newPersonAction">
       <VBox.margin>
          <Insets left="225.0" />
-      </VBox.margin></NewPersonAction>
+      </VBox.margin>
+    </NewPersonAction>
 </fx:root>
