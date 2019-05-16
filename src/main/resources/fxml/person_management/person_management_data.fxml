@@ -25,7 +25,7 @@
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField minWidth="300.0" style="-fx-text-inner-color: #00FF;">
+                              <TextField fx:id="personSurName" minWidth="300.0" style="-fx-text-inner-color: #00FF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
@@ -35,7 +35,7 @@
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField minWidth="180.0" style="-fx-text-inner-color: #00FF;">
+                              <TextField fx:id="personName" minWidth="180.0" style="-fx-text-inner-color: #00FF;">
                                  <HBox.margin>
                                     <Insets top="5.0" />
                                  </HBox.margin>
@@ -49,7 +49,7 @@
                                     <Insets left="5.0" right="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField alignment="CENTER" maxWidth="135.0" minWidth="140.0" style="-fx-text-inner-color: #00FF;">
+                              <TextField fx:id="personNIF" alignment="CENTER" maxWidth="135.0" minWidth="140.0" style="-fx-text-inner-color: #00FF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -59,7 +59,7 @@
                                     <Insets left="5.0" right="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField alignment="CENTER" minWidth="140.0" style="-fx-text-inner-color: #00FF;">
+                              <TextField fx:id="personNASS" alignment="CENTER" minWidth="140.0" style="-fx-text-inner-color: #00FF;">
                                  <HBox.margin>
                                     <Insets right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -73,7 +73,7 @@
                                     <Insets left="5.0" right="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <DatePicker maxWidth="125.0" style="-fx-text-inner-color: #000FFF;">
+                              <DatePicker fx:id="personBirthDate" maxWidth="125.0" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -83,7 +83,7 @@
                                     <Insets left="5.0" right="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField style="-fx-text-inner-color: #000FFF;">
+                              <TextField fx:id="personCivilStatus" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -93,7 +93,7 @@
                                     <Insets left="5.0" right="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField maxWidth="125.0" style="-fx-text-inner-color: #000FFF;" text="Española">
+                              <TextField fx:id="personNationality" maxWidth="125.0" style="-fx-text-inner-color: #000FFF;" text="Española">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -107,7 +107,7 @@
                                     <Insets left="5.0" right="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefHeight="26.0" prefWidth="390.0" style="-fx-text-inner-color: #000FFF;">
+                              <TextField fx:id="personExtendDirection" prefHeight="26.0" prefWidth="390.0" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -117,7 +117,7 @@
                                     <Insets left="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField maxWidth="65.0" style="-fx-text-inner-color: #000FFF;">
+                              <TextField fx:id="personPostalCode" maxWidth="65.0" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -131,7 +131,7 @@
                                     <Insets left="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField maxWidth="150.0" minWidth="175.0" prefWidth="175.0" style="-fx-text-inner-color: #000FFF;">
+                              <TextField fx:id="personLocation" maxWidth="150.0" minWidth="175.0" prefWidth="175.0" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -141,7 +141,7 @@
                                     <Insets left="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField maxWidth="150.0" minWidth="175.0" style="-fx-text-inner-color: #000FFF;">
+                              <TextField fx:id="personMunicipality" maxWidth="150.0" minWidth="175.0" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -151,7 +151,7 @@
                                     <Insets left="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <ChoiceBox prefWidth="165.0">
+                              <ChoiceBox fx:id="personStudy" prefWidth="165.0">
                                  <HBox.margin>
                                     <Insets left="5.0" top="10.0" />
                                  </HBox.margin>
