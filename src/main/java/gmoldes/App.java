@@ -130,7 +130,7 @@ public class App extends Application {
                     e.printStackTrace();
                 }
 
-//                NewPersonMainController personController = new NewPersonMainController();
+//                PersonManagementMainController personController = new PersonManagementMainController();
 //                personController.initialize();
 
                 /* Initial menu */

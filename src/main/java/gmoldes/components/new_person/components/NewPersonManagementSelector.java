@@ -42,10 +42,16 @@ public class NewPersonManagementSelector extends VBox {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle old_toggle, Toggle new_toggle) {
                 if(personManagementGroup.getSelectedToggle() == newPerson){
-                   onNewPerson(new ActionEvent());
+                    modificationPerson.setDisable(true);
+                    deletePerson.setDisable(true);
+                    onNewPerson(new ActionEvent());
                 }else if (personManagementGroup.getSelectedToggle() == modificationPerson){
+                    newPerson.setDisable(true);
+                    deletePerson.setDisable(true);
                     onModificationPerson(new ActionEvent());
                 }else if(personManagementGroup.getSelectedToggle() == deletePerson){
+                    newPerson.setDisable(true);
+                    modificationPerson.setDisable(true);
                     onDeletePerson(new ActionEvent());
                 }
             }

@@ -5,6 +5,7 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.client_invoice_check_list.controllers.ClientInvoiceCheckListMainController;
 import gmoldes.components.contract.contract_variation.controllers.ContractVariationMainController;
 import gmoldes.components.contract.new_contract.controllers.NewContractMainController;
+import gmoldes.components.new_person.controllers.PersonManagementMainController;
 import gmoldes.components.payroll_check_list.controllers.PayrollCheckListMainController;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
 import gmoldes.domain.client.manager.ClientManager;
@@ -44,6 +45,8 @@ public class InitialMenuController extends AnchorPane {
     @FXML
     private Button payrollCheckListButton;
     @FXML
+    private Button personManagementButton;
+    @FXML
     private Button exitButton;
 
 
@@ -62,6 +65,7 @@ public class InitialMenuController extends AnchorPane {
         contractVariationButton.setOnMouseClicked(this::onContractVariation);
         clientInvoiceCheckListButton.setOnMouseClicked(this::onClientInvoiceCheckList);
         payrollCheckListButton.setOnMouseClicked(this::onPayrollCheckList);
+        personManagementButton.setOnMouseClicked(this::onPersonManagementButton);
         exitButton.setOnMouseClicked(this::onExit);
     }
 
@@ -128,6 +132,19 @@ public class InitialMenuController extends AnchorPane {
         contractVariationStage.initOwner(primaryStage);
         contractVariationStage.initModality(Modality.APPLICATION_MODAL);
         contractVariationStage.show();
+    }
+
+    private void onPersonManagementButton(MouseEvent event){
+        PersonManagementMainController personManagementMainController = new PersonManagementMainController();
+        Scene scene = new Scene(personManagementMainController);
+        scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
+        Stage personManagementStage = new Stage();
+        personManagementStage.setResizable(false);
+        personManagementStage.setTitle("Manteniminto de personas");
+        personManagementStage.setScene(scene);
+        personManagementStage.initOwner(primaryStage);
+        personManagementStage.initModality(Modality.APPLICATION_MODAL);
+        personManagementStage.show();
     }
 
     private void onExit(MouseEvent event) {

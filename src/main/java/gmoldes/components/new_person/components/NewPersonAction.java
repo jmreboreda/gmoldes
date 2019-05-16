@@ -33,6 +33,14 @@ public class NewPersonAction extends HBox {
         exitButton.setOnMouseClicked(this::onExitButton);
     }
 
+    public Button getOkButton() {
+        return okButton;
+    }
+
+    public Button getExitButton() {
+        return exitButton;
+    }
+
     private void onExitButton(MouseEvent event){
         this.mouseEventEventHandlerOnExitButton.handle(event);
     }
