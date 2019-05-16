@@ -1,4 +1,4 @@
-package gmoldes.components.new_person.components;
+package gmoldes.components.person_management.components;
 
 import gmoldes.components.ViewLoader;
 import javafx.beans.value.ChangeListener;
@@ -12,9 +12,9 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 
-public class NewPersonManagementSelector extends VBox {
+public class PersonManagementSelector extends VBox {
 
-    private static final String NEW_PERSON_MANAGEMENT_SELECTOR_FXML = "/fxml/new_person/new_person_management_selector.fxml";
+    private static final String NEW_PERSON_MANAGEMENT_SELECTOR_FXML = "/fxml/person_management/person_management_selector.fxml";
 
     private Parent parent;
 
@@ -31,7 +31,7 @@ public class NewPersonManagementSelector extends VBox {
     @FXML
     private RadioButton deletePerson;
 
-    public NewPersonManagementSelector() {
+    public PersonManagementSelector() {
         this.parent = ViewLoader.load(this, NEW_PERSON_MANAGEMENT_SELECTOR_FXML);
     }
 

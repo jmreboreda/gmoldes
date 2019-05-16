@@ -1,4 +1,4 @@
-package gmoldes.components.new_person.components;
+package gmoldes.components.person_management.components;
 
 import gmoldes.components.ViewLoader;
 import javafx.event.EventHandler;
@@ -8,9 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
-public class NewPersonAction extends HBox {
+public class PersonManagementAction extends HBox {
 
-    private static final String NEW_PERSON_ACTION_FXML = "/fxml/new_person/new_person_action_components.fxml";
+    private static final String NEW_PERSON_ACTION_FXML = "/fxml/person_management/person_management_action_components.fxml";
 
     private EventHandler<MouseEvent> mouseEventEventHandlerOnExitButton;
     private EventHandler<MouseEvent> mouseEventEventHandlerOnOkButton;
@@ -22,7 +22,7 @@ public class NewPersonAction extends HBox {
     @FXML
     private Button exitButton;
 
-    public NewPersonAction() {
+    public PersonManagementAction() {
         this.parent = ViewLoader.load(this, NEW_PERSON_ACTION_FXML);
     }
 

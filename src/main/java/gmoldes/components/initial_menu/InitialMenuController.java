@@ -5,7 +5,7 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.client_invoice_check_list.controllers.ClientInvoiceCheckListMainController;
 import gmoldes.components.contract.contract_variation.controllers.ContractVariationMainController;
 import gmoldes.components.contract.new_contract.controllers.NewContractMainController;
-import gmoldes.components.new_person.controllers.PersonManagementMainController;
+import gmoldes.components.person_management.controllers.PersonManagementMainController;
 import gmoldes.components.payroll_check_list.controllers.PayrollCheckListMainController;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
 import gmoldes.domain.client.manager.ClientManager;
