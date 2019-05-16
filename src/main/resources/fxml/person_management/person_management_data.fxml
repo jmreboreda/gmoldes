@@ -107,7 +107,7 @@
                                     <Insets left="5.0" right="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="personExtendDirection" prefHeight="26.0" prefWidth="390.0" style="-fx-text-inner-color: #000FFF;">
+                              <TextField fx:id="personExtendedDirection" prefHeight="26.0" prefWidth="390.0" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
