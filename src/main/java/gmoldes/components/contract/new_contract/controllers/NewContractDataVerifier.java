@@ -79,7 +79,7 @@ public class NewContractDataVerifier {
             return false;
         }
 
-        if(!contractData.getHoursWorkWeek().equals(contractSchedule.getHoursWorkWeek())){
+        if(contractData.isPartialWorkDay() && !contractData.getHoursWorkWeek().equals(contractSchedule.getHoursWorkWeek())){
             Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractVerifierConstants.DIFFERENT_NUMBER_HOURS_CONTRACT_DATA_AND_CONTRACT_SCHEDULE);
             return false;
