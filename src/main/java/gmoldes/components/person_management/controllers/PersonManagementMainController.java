@@ -32,19 +32,13 @@ public class PersonManagementMainController extends VBox {
 
     @FXML
     public void initialize() {
-
         personManagementData.setDisable(true);
         personManagementAction.getOkButton().setDisable(true);
 
-        personManagementSelector.setOnNewPerson(this::onNewPerson);
-        personManagementSelector.setOnModificationPerson(this::onModificationPerson);
-        personManagementSelector.setOnDeletePerson(this::onDeletePerson);
-
-
+        personManagementSelector.setOnSelectorAction(this::onSelectorAction);
 
         personManagementAction.setOnOkButton(this::onOkButton);
         personManagementAction.setOnExitButton(this::onExitButton);
-
     }
 
     public PersonManagementMainController() {
@@ -52,30 +46,69 @@ public class PersonManagementMainController extends VBox {
         this.parent = ViewLoader.load(this, NEW_PERSON_MAIN_FXML);
     }
 
-    private void onNewPerson(ActionEvent event){
+    private void onSelectorAction(ActionEvent event){
         personManagementData.setDisable(false);
         personManagementAction.getOkButton().setDisable(false);
-        System.out.println("New Person");
-    }
-
-    private void onModificationPerson(ActionEvent event){
-        personManagementData.setDisable(false);
-        personManagementAction.getOkButton().setDisable(false);
-        System.out.println("Modification Person");
-    }
-
-    private void onDeletePerson(ActionEvent event){
-        personManagementData.setDisable(false);
-        personManagementAction.getOkButton().setDisable(false);
-        System.out.println("Delete Person");
     }
 
     private void onOkButton(MouseEvent event){
-        System.out.println("Ok Button");
+
+        if(!validateEntryAllData()){
+            System.out.println("Datos incompletos.");
+
+            return;
+        }
+
+        if(!verifyNieNifIsCorrect(personManagementData.getPersonNIF().getText())){
+            System.out.println("NIE / NIF incorrecto.");
+
+            return;
+        }
+
+        if(personManagementSelector.getNewPerson().isSelected()){
+
+
+        }else if(personManagementSelector.getModificationPerson().isSelected()){
+
+
+        }else{
+
+
+        }
     }
 
     private void onExitButton(MouseEvent event){
         Stage stage = (Stage) personManagementHeader.getScene().getWindow();
         stage.close();
+    }
+
+    private Boolean validateEntryAllData(){
+
+        if(personManagementData.getPersonSurName().getText().isEmpty() ||
+                personManagementData.getPersonName().getText().isEmpty() ||
+                personManagementData.getPersonNIF().getText().isEmpty() ||
+                personManagementData.getPersonNASS().getText().isEmpty() ||
+                personManagementData.getPersonBirthDate().getValue() == null ||
+                personManagementData.getCivilStatus().getText().isEmpty() ||
+                personManagementData.getNationality().getText().isEmpty() ||
+                personManagementData.getPersonExtendedDirection().getText().isEmpty() ||
+                personManagementData.getPersonPostalCode().getText().isEmpty() ||
+                personManagementData.getPersonLocation().getText().isEmpty() ||
+                personManagementData.getPersonMunicipality().getText().isEmpty() ||
+                personManagementData.getPersonStudy().getSelectionModel().getSelectedItem() == null){
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private Boolean verifyNieNifIsCorrect(String nieNif){
+        if(false){
+
+            return false;
+        }
+
+        return true;
     }
 }

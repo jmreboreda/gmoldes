@@ -18,9 +18,7 @@ public class PersonManagementSelector extends VBox {
 
     private Parent parent;
 
-    private EventHandler<ActionEvent> newPersonEventHandler;
-    private EventHandler<ActionEvent> modificationPersonEventHandler;
-    private EventHandler<ActionEvent> deletePersonEventHandler;
+    private EventHandler<ActionEvent> selectorActionEventHandler;
 
     @FXML
     private ToggleGroup personManagementGroup;
@@ -44,41 +42,37 @@ public class PersonManagementSelector extends VBox {
                 if(personManagementGroup.getSelectedToggle() == newPerson){
                     modificationPerson.setDisable(true);
                     deletePerson.setDisable(true);
-                    onNewPerson(new ActionEvent());
+                    onSelectorAction(new ActionEvent());
                 }else if (personManagementGroup.getSelectedToggle() == modificationPerson){
                     newPerson.setDisable(true);
                     deletePerson.setDisable(true);
-                    onModificationPerson(new ActionEvent());
+                    onSelectorAction(new ActionEvent());
                 }else if(personManagementGroup.getSelectedToggle() == deletePerson){
                     newPerson.setDisable(true);
                     modificationPerson.setDisable(true);
-                    onDeletePerson(new ActionEvent());
+                    onSelectorAction(new ActionEvent());
                 }
             }
         });
     }
 
-    private void onNewPerson(ActionEvent event){
-        newPersonEventHandler.handle(event);
+    public RadioButton getNewPerson() {
+        return newPerson;
     }
 
-    private void onModificationPerson(ActionEvent event){
-        modificationPersonEventHandler.handle(event);
+    public RadioButton getModificationPerson() {
+        return modificationPerson;
     }
 
-    private void onDeletePerson(ActionEvent event){
-        deletePersonEventHandler.handle(event);
+    public RadioButton getDeletePerson() {
+        return deletePerson;
     }
 
-    public void setOnNewPerson(EventHandler<ActionEvent> newPersonEventHandler){
-        this.newPersonEventHandler = newPersonEventHandler;
+    private void onSelectorAction(ActionEvent event){
+        selectorActionEventHandler.handle(event);
     }
 
-    public void setOnModificationPerson(EventHandler<ActionEvent> modificationPersonEventHandler){
-        this.modificationPersonEventHandler = modificationPersonEventHandler;
-    }
-
-    public void setOnDeletePerson(EventHandler<ActionEvent> deletePersonEventHandler){
-        this.deletePersonEventHandler = deletePersonEventHandler;
+    public void setOnSelectorAction(EventHandler<ActionEvent> selectorActionEventHandler){
+        this.selectorActionEventHandler = selectorActionEventHandler;
     }
 }
