@@ -611,8 +611,7 @@ public class NewContractMainController extends VBox {
     }
 
     private void verifyPrintTimeRecord(){
-        if(this.contractData.getFullPartialWorkDay().equals(ContractConstants.PARTIAL_WORKDAY)){
-
+//        if(this.contractData.getFullPartialWorkDay().equals(ContractConstants.PARTIAL_WORKDAY)){
             String quoteAccountCode = contractParts.getSelectedCCC() == null ? "" : contractParts.getSelectedCCC().getCccInss();
 
             String yearMonthReceiptCopyText;
@@ -659,7 +658,7 @@ public class NewContractMainController extends VBox {
             }else{
                 Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }
-        }
+//        }
     }
 
     private Boolean verifyDocumentStatus(String attachedFileName) {
