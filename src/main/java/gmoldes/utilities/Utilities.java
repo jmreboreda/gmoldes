@@ -1,7 +1,6 @@
 package gmoldes.utilities;
 
 import gmoldes.ApplicationConstants;
-import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -12,8 +11,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Date;
 import java.util.Locale;
@@ -157,8 +154,8 @@ public class Utilities {
         String nifFormatted = null;
         int i;
 
-        String initialSingleLetter[] = {"A","B","C","D","E","F","G","H","J","V"};
-        String initialAndFinalLetter[] = {"X","Y","Z","N","P","Q","R","S","W"};
+        String[] initialSingleLetter = {"A", "B", "C", "D", "E", "F", "G", "H", "J", "V"};
+        String[] initialAndFinalLetter = {"X", "Y", "Z", "N", "P", "Q", "R", "S", "W"};
 
         for (i = 0; i < initialSingleLetter.length - 1; i++)
         {
@@ -189,10 +186,11 @@ public class Utilities {
         return nifFormatted;
     }
 
-    private Character calculateNIF_DNILetter(String digitsNIF){
-        String lettertable[] = {"T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E"};
+    public static Character calculateNIF_DNILetter(String digitsNIF){
+        String[] letterTable = {"T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"};
         Integer numberNIF = Integer.parseInt(digitsNIF);
-        return lettertable[numberNIF % 23].charAt(0);
+
+        return letterTable[numberNIF % 23].charAt(0);
 
     }
 
@@ -242,9 +240,11 @@ public class Utilities {
                             ||
                             // Character control is valid as a digit?
                             (ONLY_LETTERS_CONTROL.indexOf(initialLetter) < 0 && digitD == Character.digit(finalCharacter, 10));
+
             return isValidControl;
 
         } catch (Exception e) {
+
             return false;
         }
     }

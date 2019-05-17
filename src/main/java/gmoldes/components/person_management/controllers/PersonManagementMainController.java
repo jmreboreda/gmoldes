@@ -5,6 +5,7 @@ import gmoldes.components.person_management.components.PersonManagementAction;
 import gmoldes.components.person_management.components.PersonManagementData;
 import gmoldes.components.person_management.components.PersonManagementHeader;
 import gmoldes.components.person_management.components.PersonManagementSelector;
+import gmoldes.utilities.Utilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -13,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class PersonManagementMainController extends VBox {
 
@@ -53,11 +55,11 @@ public class PersonManagementMainController extends VBox {
 
     private void onOkButton(MouseEvent event){
 
-        if(!validateEntryAllData()){
-            System.out.println("Datos incompletos.");
-
-            return;
-        }
+//        if(!validateEntryAllData()){
+//            System.out.println("Datos incompletos.");
+//
+//            return;
+//        }
 
         if(!verifyNieNifIsCorrect(personManagementData.getPersonNIF().getText())){
             System.out.println("NIE / NIF incorrecto.");
@@ -104,11 +106,27 @@ public class PersonManagementMainController extends VBox {
     }
 
     private Boolean verifyNieNifIsCorrect(String nieNif){
-        if(false){
+        Pattern digits = Pattern.compile("[0-9]");
+        Pattern nifLetterPattern = Pattern.compile("[[A-H][J-N][P-T]V[X-Z]]");
 
-            return false;
+        String digitsNif = "";
+        for(int i = 0; i < nieNif.length() - 1; i++){
+            String digit = nieNif.substring(i, i + 1);
+            if(digits.matcher(digit).matches()){
+                digitsNif = digitsNif.concat(digit);
+                System.out.println(i + " :: " + digitsNif);
+            }
         }
 
-        return true;
+        Character letterNieNif = nieNif.toUpperCase().charAt(nieNif.length() - 1);
+        if(nifLetterPattern.matcher(letterNieNif.toString()).matches()){
+            Character calculateLetterNieNif = Utilities.calculateNIF_DNILetter(digitsNif);
+            if(letterNieNif.equals(calculateLetterNieNif)){
+
+                return true;
+                }
+        }
+
+        return false;
     }
 }
