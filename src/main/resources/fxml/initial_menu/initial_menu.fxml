@@ -101,6 +101,24 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets left="23.5" right="23.5" top="20.0" />
+               </VBox.margin>
+            </Separator>
+            <Label disable="true" text="Mantenimiento">
+               <VBox.margin>
+                  <Insets left="23.5" />
+               </VBox.margin>
+            </Label>
+            <Button fx:id="personManagementButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Mantenimiento de personas">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets left="23.5" right="23.5" top="10.0" />
+               </VBox.margin>
+            </Button>
             <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="100.0" text="Salir" textAlignment="CENTER" textFill="#640000">
                <VBox.margin>
                   <Insets bottom="25.0" left="320.0" top="350.0" />

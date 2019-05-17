@@ -153,6 +153,15 @@ public class PersonVO implements Serializable {
 
     @Override
     public String toString(){
+        return toAlphabeticalName();
+    }
+
+    public String toAlphabeticalName(){
         return getApellidos() + ", " + getNom_rzsoc();
+    }
+
+    public String toNaturalName(){
+
+        return getNom_rzsoc().concat(" ").concat(getApellidos());
     }
 }

@@ -92,7 +92,11 @@ public class Person {
 
     @Override
     public String toString() {
-        return getSurnames() + ", " + getName();
+        return toAlphabeticalName();
+    }
+
+    public String toAlphabeticalName(){
+            return getSurnames() + ", " + getName();
     }
 
     public String toNaturalName(){

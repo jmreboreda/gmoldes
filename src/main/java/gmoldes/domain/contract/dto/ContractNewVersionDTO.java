@@ -1,5 +1,6 @@
 package gmoldes.domain.contract.dto;
 
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
 
@@ -123,16 +124,21 @@ public class ContractNewVersionDTO {
         this.contractScheduleJsonData = contractScheduleJsonData;
     }
 
-    //    public String toMyString(){
-//
-//        return "------------------------------------" + "\n" +
-//                "Contrato: "+ getContractNumber() + " - VariationType: " + getVariationType() + "\n" +
-//                "Fecha inicio: " + getStartDate();
-//    }
-//
-//    public String toClipboardString(){
-//        return getContractNumber() + ";" + getStartDate() + ";" + getExpectedEndDate() + ";" + getModificationDate() + ";" + getEndingDate() + "\n";
-//    }
+    public Boolean isFullWorkday(){
+        if(contractJsonData.getFullPartialWorkDay().equals(ContractConstants.FULL_WORKDAY)){
+            return true;
+        }
+
+        return false;
+    }
+
+    public Boolean isPartialWorkday(){
+        if(contractJsonData.getFullPartialWorkDay().equals(ContractConstants.PARTIAL_WORKDAY)){
+            return true;
+        }
+
+        return false;
+    }
 
     public static ContractNewVersionDTOBuilder create() {
         return new ContractNewVersionDTOBuilder();

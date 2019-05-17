@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import gmoldes.components.person_management.components.PersonManagementAction?>
+<?import gmoldes.components.person_management.components.PersonManagementData?>
+<?import gmoldes.components.person_management.components.PersonManagementHeader?>
+<?import gmoldes.components.person_management.components.PersonManagementSelector?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+    <PersonManagementHeader fx:id="personManagementHeader" />
+    <PersonManagementSelector fx:id="personManagementSelector" />
+    <PersonManagementData fx:id="personManagementData" />
+    <PersonManagementAction fx:id="personManagementAction">
+      <VBox.margin>
+         <Insets left="225.0" />
+      </VBox.margin>
+    </PersonManagementAction>
+</fx:root>

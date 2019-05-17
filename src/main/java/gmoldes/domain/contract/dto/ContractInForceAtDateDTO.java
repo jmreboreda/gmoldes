@@ -8,9 +8,7 @@ package gmoldes.domain.contract.dto;
 
 import gmoldes.domain.contractjsondata.ContractJsonData;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Set;
 
 
 public class ContractInForceAtDateDTO {
@@ -95,22 +93,6 @@ public class ContractInForceAtDateDTO {
 
     public void setContractJsonData(ContractJsonData contractJsonData) {
         this.contractJsonData = contractJsonData;
-    }
-
-    //@Override
-    public String toMyString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("-----------------------------------------------------" + "\n");
-        sb.append("ContractNumber: " + getContractNumber() + " -> INEM contrac number: " + getContractJsonData().getIdentificationContractNumberINEM() + "\n");
-        sb.append("ClientGMId: " + getContractJsonData().getClientGMId() + " -> WorkerId: " + getContractJsonData().getWorkerId() + "\n");
-        sb.append("DaysOfWeekToWork: " + getContractJsonData().getDaysOfWeekToWork() + "\n");
-        sb.append("StartDate: " + getStartDate() + "\t");
-        sb.append("ExpectedEndDate: " + getExpectedEndDate() + "\t");
-        sb.append("EndingDate: " + getEndingDate() + "\n");
-        sb.append("ContractType: " + getContractJsonData().getContractType() + "\n");
-
-
-        return sb.toString();
     }
 
     public static InitialContracDTOBuilder create() {

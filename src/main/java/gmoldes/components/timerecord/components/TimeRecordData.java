@@ -221,12 +221,12 @@ public class TimeRecordData extends VBox {
         List<TimeRecordCandidateDataDTO> candidates = new ArrayList<>();
         if(!contractNewVersionDTOList.isEmpty()) {
             for (ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList) {
-//                if(!contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours().equals("40:00")) {
+//                if(contractNewVersionDTO.isPartialWorkday()) {
                 if(contractNewVersionDTO.getVariationType() != 101){
                 Integer employeeId = contractNewVersionDTO.getContractJsonData().getWorkerId();
                 PersonDTO employee = retrievePersonByPersonId(employeeId);
                 String employeeNIF = Utilities.formatAsNIF(employee.getNifcif());
-                String employeeName = employee.getApellidos() + ", " + employee.getNom_rzsoc();
+                String employeeName = employee.toAlphabeticalName();
 
                 String dateTo;
                 if (contractNewVersionDTO.getModificationDate() == null &&
