@@ -2,12 +2,13 @@ package gmoldes.components.person_management.components;
 
 import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
-import gmoldes.domain.person.controllers.PersonController;
+import gmoldes.components.person_management.events.PersonSurNamesPatternChangedEvent;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.study.StudyController;
 import gmoldes.domain.study.dto.StudyDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
@@ -26,6 +27,8 @@ public class PersonManagementData extends VBox {
     private static final String NEW_PERSON_DATA_FXML = "/fxml/person_management/person_management_data.fxml";
 
     private Parent parent;
+
+    private EventHandler<PersonSurNamesPatternChangedEvent> surNamesPatternChangedEventHandler;
 
     @FXML
     private TextField personSurName;
@@ -57,16 +60,11 @@ public class PersonManagementData extends VBox {
     public PersonManagementData() {
         this.parent = ViewLoader.load(this, NEW_PERSON_DATA_FXML);
 
-        loadPerson();
         loadStudy();
     }
 
     public void initialize(){
-
         personSurNames.setOnKeyReleased(this::onSurNamesPatternChanged);
-
-//        personSurNames.getSelectionModel().selectedItemProperty()
-//                .addListener((observable, oldValue, newEmployerSelected) -> onSelectEmployer(newEmployerSelected));
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         personBirthDate.setConverter(new LocalDateStringConverter(dateFormatter, null));
@@ -176,14 +174,6 @@ public class PersonManagementData extends VBox {
         this.personStudy = personStudy;
     }
 
-    private void loadPerson(){
-        PersonController personController = new PersonController();
-
-        List<PersonDTO> personDTOList = personController.findAllPersonInAlphabeticalOrder();
-        ObservableList<PersonDTO> personDTOObservableList = FXCollections.observableList(personDTOList);
-        personSurNames.setItems(personDTOObservableList);
-    }
-
     private void loadStudy(){
         StudyController studyController = new StudyController();
 
@@ -192,15 +182,20 @@ public class PersonManagementData extends VBox {
         personStudy.setItems(studyDTOObservableList);
     }
 
-    private void onSurNamesPatternChanged(KeyEvent keyEvent){
-        String personSurNamesPattern = personSurNames.getEditor().getText();
-        PersonController personController = new PersonController();
-
-        List<PersonDTO> personDTOList = personController.findAllPersonsByNamePatternInAlphabeticalOrder(personSurNamesPattern);
-        ObservableList<PersonDTO> personDTOObservableList = FXCollections.observableList(personDTOList);
+    public void refreshSurNames(ObservableList<PersonDTO> personDTOObservableList){
         personSurNames.setItems(personDTOObservableList);
         if(personDTOObservableList.size() > 0){
             personSurNames.show();
         }
+    }
+
+    private void onSurNamesPatternChanged(KeyEvent keyEvent){
+        String pattern = personSurNames.getEditor().getText();
+        PersonSurNamesPatternChangedEvent personSurNamesPatternChangedEvent = new PersonSurNamesPatternChangedEvent(pattern);
+        surNamesPatternChangedEventHandler.handle(personSurNamesPatternChangedEvent);
+    }
+
+    public void setOnSurNamesPatternChanged(EventHandler<PersonSurNamesPatternChangedEvent> surNamesPatternChangedEventHandler){
+        this.surNamesPatternChangedEventHandler = surNamesPatternChangedEventHandler;
     }
 }

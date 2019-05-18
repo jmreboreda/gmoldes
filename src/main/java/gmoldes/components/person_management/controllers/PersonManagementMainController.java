@@ -5,7 +5,12 @@ import gmoldes.components.person_management.components.PersonManagementAction;
 import gmoldes.components.person_management.components.PersonManagementData;
 import gmoldes.components.person_management.components.PersonManagementHeader;
 import gmoldes.components.person_management.components.PersonManagementSelector;
+import gmoldes.components.person_management.events.PersonSurNamesPatternChangedEvent;
 import gmoldes.domain.nie_nif.NieNif;
+import gmoldes.domain.person.controllers.PersonController;
+import gmoldes.domain.person.dto.PersonDTO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -13,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 public class PersonManagementMainController extends VBox {
@@ -38,6 +44,8 @@ public class PersonManagementMainController extends VBox {
 
         personManagementSelector.setOnSelectorAction(this::onSelectorAction);
 
+        personManagementData.setOnSurNamesPatternChanged(this::onSurNamesPatternChanged);
+
         personManagementAction.setOnOkButton(this::onOkButton);
         personManagementAction.setOnExitButton(this::onExitButton);
     }
@@ -46,6 +54,14 @@ public class PersonManagementMainController extends VBox {
         logger.info("Initializing new person main fxml");
         this.parent = ViewLoader.load(this, NEW_PERSON_MAIN_FXML);
 
+    }
+
+    private void onSurNamesPatternChanged(PersonSurNamesPatternChangedEvent personSurNamesPattern){
+        PersonController personController = new PersonController();
+
+        List<PersonDTO> personDTOList = personController.findAllPersonsByNamePatternInAlphabeticalOrder(personSurNamesPattern.getPattern());
+        ObservableList<PersonDTO> personDTOObservableList = FXCollections.observableList(personDTOList);
+        personManagementData.refreshSurNames(personDTOObservableList);
     }
 
     private void onSelectorAction(ActionEvent event){
