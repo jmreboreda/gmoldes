@@ -18,7 +18,7 @@ public class NieNif {
     private final Pattern otherNifPatternFinalNumber = Pattern.compile("[[A-H]JUV]\\d{8}");
     private final Pattern otherNifPatternFinalLetter = Pattern.compile( 	"[N[P-S]UV]\\d{7}[A-J]");
 
-    private final String finalLetterOfNIFDNI[] = {"T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E"};
+    private final String[] finalLetterOfNIFDNI = {"T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"};
 
     private final String ONLY_NUMBERS_CONTROL = "ABEH";
     private final String ONLY_LETTERS_CONTROL = "KPQS";

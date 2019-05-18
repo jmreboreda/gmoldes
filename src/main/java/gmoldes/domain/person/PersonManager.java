@@ -23,6 +23,7 @@ public class PersonManager {
         PersonDAO personDAO = PersonDAO.PersonDAOFactory.getInstance();
         List<PersonVO> personVOList = personDAO.findAllPersonInAlphabeticalOrder();
         for (PersonVO personVO : personVOList) {
+            LocalDate birthDate = personVO.getFechanacim() != null ? personVO.getFechanacim().toLocalDate() : null;
             PersonDTO personDTO = PersonDTO.create()
                     .withIdpersona(personVO.getIdpersona())
                     .withApellidos(personVO.getApellidos())
@@ -31,7 +32,7 @@ public class PersonManager {
                     .withDireccion(personVO.getDireccion())
                     .withEstciv(personVO.getEstciv())
                     .withNumafss(personVO.getNumafss())
-                    .withFechanacim(personVO.getFechanacim().toLocalDate())
+                    .withFechanacim(birthDate)
                     .withLocalidad(personVO.getLocalidad())
                     .withNacionalidad(personVO.getNacionalidad())
                     .withNifcif(personVO.getNifcif())

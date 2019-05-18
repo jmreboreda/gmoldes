@@ -5,7 +5,7 @@ import gmoldes.components.person_management.components.PersonManagementAction;
 import gmoldes.components.person_management.components.PersonManagementData;
 import gmoldes.components.person_management.components.PersonManagementHeader;
 import gmoldes.components.person_management.components.PersonManagementSelector;
-import gmoldes.utilities.Utilities;
+import gmoldes.domain.nie_nif.NieNif;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -14,7 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 public class PersonManagementMainController extends VBox {
 
@@ -46,6 +45,7 @@ public class PersonManagementMainController extends VBox {
     public PersonManagementMainController() {
         logger.info("Initializing new person main fxml");
         this.parent = ViewLoader.load(this, NEW_PERSON_MAIN_FXML);
+
     }
 
     private void onSelectorAction(ActionEvent event){
@@ -55,13 +55,17 @@ public class PersonManagementMainController extends VBox {
 
     private void onOkButton(MouseEvent event){
 
+        personManagementData.getPersonNIF().setText(personManagementData.getPersonNIF().getText().toUpperCase());
+        personManagementData.getPersonPostalCode().setText(personManagementData.getPersonPostalCode().getText().replace(".", ""));
+
 //        if(!validateEntryAllData()){
 //            System.out.println("Datos incompletos.");
 //
 //            return;
 //        }
 
-        if(!verifyNieNifIsCorrect(personManagementData.getPersonNIF().getText())){
+        NieNif introducedNieNif = new NieNif(personManagementData.getPersonNIF().getText());
+        if(!introducedNieNif.validateNieNif()){
             System.out.println("NIE / NIF incorrecto.");
 
             return;
@@ -103,30 +107,5 @@ public class PersonManagementMainController extends VBox {
         }
 
         return true;
-    }
-
-    private Boolean verifyNieNifIsCorrect(String nieNif){
-        Pattern digits = Pattern.compile("[0-9]");
-        Pattern nifLetterPattern = Pattern.compile("[[A-H][J-N][P-T]V[X-Z]]");
-
-        String digitsNif = "";
-        for(int i = 0; i < nieNif.length() - 1; i++){
-            String digit = nieNif.substring(i, i + 1);
-            if(digits.matcher(digit).matches()){
-                digitsNif = digitsNif.concat(digit);
-                System.out.println(i + " :: " + digitsNif);
-            }
-        }
-
-        Character letterNieNif = nieNif.toUpperCase().charAt(nieNif.length() - 1);
-        if(nifLetterPattern.matcher(letterNieNif.toString()).matches()){
-            Character calculateLetterNieNif = Utilities.calculateNIF_DNILetter(digitsNif);
-            if(letterNieNif.equals(calculateLetterNieNif)){
-
-                return true;
-                }
-        }
-
-        return false;
     }
 }

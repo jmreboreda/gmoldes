@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -16,7 +17,7 @@
         <content>
           <AnchorPane>
                <children>
-                  <VBox prefHeight="160.0" prefWidth="799.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox>
                      <children>
                         <HBox>
                            <children>
@@ -25,11 +26,11 @@
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="personSurName" minWidth="300.0" style="-fx-text-inner-color: #00FF;">
+                              <ComboBox fx:id="personSurNames" editable="true" minWidth="300.0" prefWidth="300.0" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
-                              </TextField>
+                              </ComboBox>
                               <Label minWidth="65.0" text="Nombre">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
@@ -73,7 +74,7 @@
                                     <Insets left="5.0" right="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <DatePicker fx:id="personBirthDate" maxWidth="125.0" style="-fx-text-inner-color: #000FFF;">
+                              <DatePicker fx:id="personBirthDate" maxWidth="125.0" promptText="dd-mm-aaaa" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -107,7 +108,7 @@
                                     <Insets left="5.0" right="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="personExtendedDirection" prefHeight="26.0" prefWidth="390.0" style="-fx-text-inner-color: #000FFF;">
+                              <TextField fx:id="personExtendedDirection" prefHeight="26.0" prefWidth="440.0" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -117,21 +118,21 @@
                                     <Insets left="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="personPostalCode" maxWidth="65.0" style="-fx-text-inner-color: #000FFF;">
+                              <TextField fx:id="personPostalCode" alignment="CENTER" maxWidth="65.0" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
                               </TextField>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox>
                            <children>
                               <Label text="Localidad">
                                  <HBox.margin>
                                     <Insets left="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="personLocation" maxWidth="150.0" minWidth="175.0" prefWidth="175.0" style="-fx-text-inner-color: #000FFF;">
+                              <TextField fx:id="personLocation" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -141,7 +142,7 @@
                                     <Insets left="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="personMunicipality" maxWidth="150.0" minWidth="175.0" style="-fx-text-inner-color: #000FFF;">
+                              <TextField fx:id="personMunicipality" maxWidth="175.0" minWidth="175.0" style="-fx-text-inner-color: #000FFF;">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" top="10.0" />
                                  </HBox.margin>
@@ -151,7 +152,7 @@
                                     <Insets left="5.0" top="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <ChoiceBox fx:id="personStudy" prefWidth="165.0">
+                              <ChoiceBox fx:id="personStudy" prefWidth="215.0">
                                  <HBox.margin>
                                     <Insets left="5.0" top="10.0" />
                                  </HBox.margin>
