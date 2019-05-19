@@ -5,6 +5,8 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.person_management.events.PersonSurNamesPatternChangedEvent;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.study.dto.StudyDTO;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -55,23 +57,42 @@ public class PersonManagementData extends VBox {
     @FXML
     private ChoiceBox<StudyDTO> personStudyLevel;
 
-    private final Pattern letterPattern = Pattern.compile("[[A-Z][a-z]]");
+    private final Pattern letterPattern = Pattern.compile("[A-Za-zÑñÁÉÍÓÚáéíóú]");
     private final Pattern numberPattern = Pattern.compile("[0-9]");
 
 
     public PersonManagementData() {
         this.parent = ViewLoader.load(this, NEW_PERSON_DATA_FXML);
+
+//        this.personPostalCode.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+//                if(personPostalCode.getText().length() > 5){
+//                    personPostalCode.setText(null);
+//                }
+//            }
+//        });
     }
 
     public void initialize(){
         personSurNames.setOnKeyReleased(this::onPersonSurNamesPatternChanged);
-        personNIF.setOnKeyReleased(this::onPersonNIFVerifyOnlyNormalLetterAndNumber);
+        personNIF.setOnKeyReleased(this::onPersonNIFVerifyOnlyLetterAndNumber);
         personNASS.setOnKeyReleased(this::onPersonNASSVerifyOnlyNumber);
-        personCivilStatus.setOnKeyReleased(this::onPersonCivilStatusVerifyOnlyNormalLetter);
+        personCivilStatus.setOnKeyReleased(this::onPersonCivilStatusVerifyOnlyLetter);
         personPostalCode.setOnKeyReleased(this::onPersonPostalCodeVerifyOnlyNumber);
+        personPostalCode.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if(t1.length() > 5){
+                    personPostalCode.setText(t);
+                }
+            }
+        });
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         personBirthDate.setConverter(new LocalDateStringConverter(dateFormatter, null));
+
+
     }
 
     public ComboBox getPersonSurNames() {
@@ -142,7 +163,7 @@ public class PersonManagementData extends VBox {
         surNamesPatternChangedEventHandler.handle(personSurNamesPatternChangedEvent);
     }
 
-    private void onPersonNIFVerifyOnlyNormalLetterAndNumber(KeyEvent keyEvent){
+    private void onPersonNIFVerifyOnlyLetterAndNumber(KeyEvent keyEvent){
         if(keyEvent.getCode() == KeyCode.TAB){
 
             return;
@@ -165,7 +186,7 @@ public class PersonManagementData extends VBox {
         }
     }
 
-    private void onPersonCivilStatusVerifyOnlyNormalLetter(KeyEvent keyEvent){
+    private void onPersonCivilStatusVerifyOnlyLetter(KeyEvent keyEvent){
         if(keyEvent.getCode() == KeyCode.TAB){
 
             return;

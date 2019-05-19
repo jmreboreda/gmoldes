@@ -64,24 +64,29 @@ public class PersonManagementMainController extends VBox {
 
     private void loadInitialInterfaceStatus(){
         personManagementSelector.getNewPerson().setDisable(false);
+        personManagementSelector.getNewPerson().setSelected(false);
         personManagementSelector.getModificationPerson().setDisable(false);
+        personManagementSelector.getModificationPerson().setSelected(false);
         personManagementSelector.getDeletePerson().setDisable(false);
+        personManagementSelector.getDeletePerson().setSelected(false);
+
         personManagementData.setDisable(true);
         personManagementData.setMouseTransparent(false);
+
         personManagementAction.getSaveButton().setDisable(true);
         personManagementAction.getOkButton().setDisable(true);
 
-        personManagementData.getPersonSurNames().getEditor().setText(null);
-        personManagementData.getPersonName().setText(null);
-        personManagementData.getPersonNIF().setText(null);
-        personManagementData.getPersonNASS().setText(null);
+        personManagementData.getPersonSurNames().getEditor().setText("");
+        personManagementData.getPersonName().setText("");
+        personManagementData.getPersonNIF().setText("");
+        personManagementData.getPersonNASS().setText("");
         personManagementData.getPersonBirthDate().setValue(null);
-        personManagementData.getPersonCivilStatus().setText(null);
+        personManagementData.getPersonCivilStatus().setText("");
         personManagementData.getPersonNationality().setText("Española");
-        personManagementData.getPersonExtendedDirection().setText(null);
-        personManagementData.getPersonPostalCode().setText(null);
-        personManagementData.getPersonLocation().setText(null);
-        personManagementData.getPersonMunicipality().setText(null);
+        personManagementData.getPersonExtendedDirection().setText("");
+        personManagementData.getPersonPostalCode().setText("");
+        personManagementData.getPersonLocation().setText("");
+        personManagementData.getPersonMunicipality().setText("");
         personManagementData.getPersonStudyLevel().getSelectionModel().select(null);
     }
 
@@ -128,8 +133,13 @@ public class PersonManagementMainController extends VBox {
 
         if(personManagementSelector.getNewPerson().isSelected()){
             Integer personId = personCreate();
-
-
+            if(personId != null){
+                Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_SAVED_OK);
+            }else{
+                Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_NOT_SAVED_OK);
+                personManagementData.setMouseTransparent(false);
+                return;
+            }
         }else if(personManagementSelector.getModificationPerson().isSelected()){
             Integer personId = personUpdate();
 
@@ -148,17 +158,17 @@ public class PersonManagementMainController extends VBox {
 
     private Boolean validateEntryAllData(){
 
-        if(personManagementData.getPersonSurNames().getEditor().getText() == null ||
-                personManagementData.getPersonName().getText() == null ||
-                personManagementData.getPersonNIF().getText() == null||
-                personManagementData.getPersonNASS().getText() == null ||
+        if(personManagementData.getPersonSurNames().getEditor().getText().equals("") ||
+                personManagementData.getPersonName().getText().equals("") ||
+                personManagementData.getPersonNIF().getText().equals("") ||
+                personManagementData.getPersonNASS().getText().equals("") ||
                 personManagementData.getPersonBirthDate().getValue() == null ||
-                personManagementData.getPersonCivilStatus().getText() == null ||
-                personManagementData.getPersonNationality().getText() == null ||
-                personManagementData.getPersonExtendedDirection().getText() == null ||
-                personManagementData.getPersonPostalCode().getText() == null ||
-                personManagementData.getPersonLocation().getText() == null ||
-                personManagementData.getPersonMunicipality().getText() == null ||
+                personManagementData.getPersonCivilStatus().getText().equals("") ||
+                personManagementData.getPersonNationality().getText().equals("")||
+                personManagementData.getPersonExtendedDirection().getText().equals("") ||
+                personManagementData.getPersonPostalCode().getText().equals("") ||
+                personManagementData.getPersonLocation().getText().equals("") ||
+                personManagementData.getPersonMunicipality().getText().equals("") ||
                 personManagementData.getPersonStudyLevel().getSelectionModel().getSelectedItem() == null){
 
             return false;
