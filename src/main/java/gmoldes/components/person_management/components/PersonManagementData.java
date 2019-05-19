@@ -4,23 +4,21 @@ import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.person_management.events.PersonSurNamesPatternChangedEvent;
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.study.StudyController;
 import gmoldes.domain.study.dto.StudyDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.converter.LocalDateStringConverter;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class PersonManagementData extends VBox {
 
@@ -31,11 +29,11 @@ public class PersonManagementData extends VBox {
     private EventHandler<PersonSurNamesPatternChangedEvent> surNamesPatternChangedEventHandler;
 
     @FXML
-    private TextField personSurName;
-    @FXML
     private ComboBox <PersonDTO> personSurNames;
     @FXML
     private TextField personName;
+    @FXML
+    private CheckBox normalizeText;
     @FXML
     private TextField personNIF;
     @FXML
@@ -43,9 +41,9 @@ public class PersonManagementData extends VBox {
     @FXML
     private DatePicker personBirthDate;
     @FXML
-    private TextField civilStatus;
+    private TextField personCivilStatus;
     @FXML
-    private TextField Nationality;
+    private TextField personNationality;
     @FXML
     private TextField personExtendedDirection;
     @FXML
@@ -55,23 +53,25 @@ public class PersonManagementData extends VBox {
     @FXML
     private TextField personMunicipality;
     @FXML
-    private ChoiceBox<StudyDTO> personStudy;
+    private ChoiceBox<StudyDTO> personStudyLevel;
+
+    private final Pattern letterPattern = Pattern.compile("[[A-Z][a-z]]");
+    private final Pattern numberPattern = Pattern.compile("[0-9]");
+
 
     public PersonManagementData() {
         this.parent = ViewLoader.load(this, NEW_PERSON_DATA_FXML);
-
-        loadStudy();
     }
 
     public void initialize(){
-        personSurNames.setOnKeyReleased(this::onSurNamesPatternChanged);
+        personSurNames.setOnKeyReleased(this::onPersonSurNamesPatternChanged);
+        personNIF.setOnKeyReleased(this::onPersonNIFVerifyOnlyNormalLetterAndNumber);
+        personNASS.setOnKeyReleased(this::onPersonNASSVerifyOnlyNumber);
+        personCivilStatus.setOnKeyReleased(this::onPersonCivilStatusVerifyOnlyNormalLetter);
+        personPostalCode.setOnKeyReleased(this::onPersonPostalCodeVerifyOnlyNumber);
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         personBirthDate.setConverter(new LocalDateStringConverter(dateFormatter, null));
-    }
-
-    public TextField getPersonSurName() {
-        return personSurName;
     }
 
     public ComboBox getPersonSurNames() {
@@ -80,6 +80,10 @@ public class PersonManagementData extends VBox {
 
     public TextField getPersonName() {
         return personName;
+    }
+
+    public CheckBox getNormalizeText() {
+        return normalizeText;
     }
 
     public TextField getPersonNIF() {
@@ -94,12 +98,10 @@ public class PersonManagementData extends VBox {
         return personBirthDate;
     }
 
-    public TextField getCivilStatus() {
-        return civilStatus;
-    }
+    public TextField getPersonCivilStatus() {return personCivilStatus;}
 
-    public TextField getNationality() {
-        return Nationality;
+    public TextField getPersonNationality() {
+        return personNationality;
     }
 
     public TextField getPersonExtendedDirection() {
@@ -118,31 +120,72 @@ public class PersonManagementData extends VBox {
         return personMunicipality;
     }
 
-    public ChoiceBox getPersonStudy() {
-        return personStudy;
+    public ChoiceBox getPersonStudyLevel() {
+        return personStudyLevel;
     }
 
-    private void loadStudy(){
-        StudyController studyController = new StudyController();
-
-        List<StudyDTO> studyDTOList = studyController.findAllStudy();
+    public void loadPersonStudyLevel(List<StudyDTO> studyDTOList) {
         ObservableList<StudyDTO> studyDTOObservableList = FXCollections.observableArrayList(studyDTOList);
-        personStudy.setItems(studyDTOObservableList);
+        personStudyLevel.setItems(studyDTOObservableList);
     }
 
-    public void refreshSurNames(ObservableList<PersonDTO> personDTOObservableList){
+    public void refreshPersonSurNames(ObservableList<PersonDTO> personDTOObservableList){
         personSurNames.setItems(personDTOObservableList);
         if(personDTOObservableList.size() > 0){
             personSurNames.show();
         }
     }
 
-    private void onSurNamesPatternChanged(KeyEvent keyEvent){
+    private void onPersonSurNamesPatternChanged(KeyEvent keyEvent){
         String pattern = personSurNames.getEditor().getText();
         PersonSurNamesPatternChangedEvent personSurNamesPatternChangedEvent = new PersonSurNamesPatternChangedEvent(pattern);
         surNamesPatternChangedEventHandler.handle(personSurNamesPatternChangedEvent);
     }
 
+    private void onPersonNIFVerifyOnlyNormalLetterAndNumber(KeyEvent keyEvent){
+        if(keyEvent.getCode() == KeyCode.TAB){
+
+            return;
+        }
+
+        if(!numberPattern.matcher(keyEvent.getText()).matches() &&
+        !letterPattern.matcher(keyEvent.getText()).matches()){
+            getPersonNIF().setText(getPersonNIF().getText().replace(keyEvent.getText(), ""));
+        }
+    }
+
+    private void onPersonNASSVerifyOnlyNumber(KeyEvent keyEvent){
+        if(keyEvent.getCode() == KeyCode.TAB){
+
+            return;
+        }
+
+        if(!numberPattern.matcher(keyEvent.getText()).matches()){
+            getPersonNASS().setText(getPersonNASS().getText().replace(keyEvent.getText(), ""));
+        }
+    }
+
+    private void onPersonCivilStatusVerifyOnlyNormalLetter(KeyEvent keyEvent){
+        if(keyEvent.getCode() == KeyCode.TAB){
+
+            return;
+        }
+
+        if(!letterPattern.matcher(keyEvent.getText()).matches()){
+            getPersonCivilStatus().setText(getPersonCivilStatus().getText().replace(keyEvent.getText(), ""));
+        }
+    }
+
+    private void onPersonPostalCodeVerifyOnlyNumber(KeyEvent keyEvent){
+        if(keyEvent.getCode() == KeyCode.TAB){
+
+            return;
+        }
+
+        if(!numberPattern.matcher(keyEvent.getText()).matches()){
+            getPersonPostalCode().setText(getPersonPostalCode().getText().replace(keyEvent.getText(), ""));
+        }
+    }
     public void setOnSurNamesPatternChanged(EventHandler<PersonSurNamesPatternChangedEvent> surNamesPatternChangedEventHandler){
         this.surNamesPatternChangedEventHandler = surNamesPatternChangedEventHandler;
     }

@@ -140,7 +140,7 @@ public class InitialMenuController extends AnchorPane {
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage personManagementStage = new Stage();
         personManagementStage.setResizable(false);
-        personManagementStage.setTitle("Manteniminto de personas");
+        personManagementStage.setTitle("Mantenimiento de personas");
         personManagementStage.setScene(scene);
         personManagementStage.initOwner(primaryStage);
         personManagementStage.initModality(Modality.APPLICATION_MODAL);
