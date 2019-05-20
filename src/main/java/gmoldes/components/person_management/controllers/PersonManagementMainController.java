@@ -121,12 +121,19 @@ public class PersonManagementMainController extends VBox {
         personManagementData.getPersonNIF().setText(personManagementData.getPersonNIF().getText().toUpperCase());
         NieNif introducedNieNif = new NieNif(personManagementData.getPersonNIF().getText());
         if(!introducedNieNif.validateNieNif()){
-            Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NIE_NIF_IS_NOT_VALID);
+            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NIE_NIF_IS_NOT_VALID);
+
+            return;
+        }
+
+        if(personManagementData.getPersonNASS().getText().length() != 12){
+            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
 
             return;
         }
 
         normalizeDataEntry();
+        personManagementAction.getSaveButton().setDisable(false);
     }
 
     private void onSaveButton(MouseEvent event){
@@ -175,7 +182,6 @@ public class PersonManagementMainController extends VBox {
             return false;
         }
 
-        personManagementAction.getSaveButton().setDisable(false);
         return true;
     }
 
@@ -207,7 +213,7 @@ public class PersonManagementMainController extends VBox {
                 .withFechanacim(personManagementData.getPersonBirthDate().getValue())
                 .withEstciv(personManagementData.getPersonCivilStatus().getText())
                 .withDireccion(direction)
-                .withLocalidad(personManagementData.getPersonLocation().getText())
+                .withLocalidad(personManagementData.getPersonMunicipality().getText())
                 .withCodpostal(BigDecimal.valueOf(Long.parseLong(personManagementData.getPersonPostalCode().getText())))
                 .withNivestud(personManagementData.getPersonStudyLevel().getValue().getStudyId())
                 .withNacionalidad(personManagementData.getPersonNationality().getText())
