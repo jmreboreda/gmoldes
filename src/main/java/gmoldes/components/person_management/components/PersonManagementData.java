@@ -130,7 +130,7 @@ public class PersonManagementData extends VBox {
         return personMunicipality;
     }
 
-    public ChoiceBox getPersonStudyLevel() {
+    public ChoiceBox<StudyDTO> getPersonStudyLevel() {
         return personStudyLevel;
     }
 

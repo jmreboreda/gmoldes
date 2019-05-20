@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.apache.commons.lang.WordUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -192,8 +193,30 @@ public class PersonManagementMainController extends VBox {
 
     private Integer personCreate(){
         Integer personId = null;
+        Short zeroShort = 0;
+        String direction = personManagementData.getPersonLocation().getText().equals(personManagementData.getPersonNationality().getText()) ?
+                personManagementData.getPersonExtendedDirection().getText() :
+                personManagementData.getPersonExtendedDirection().getText() + "   " + personManagementData.getPersonLocation().getText();
 
-        return personId;
+        PersonDTO newPersonDTO = PersonDTO.create()
+                .withIdpersona(null)
+                .withApellidos(personManagementData.getPersonSurNames().getEditor().getText())
+                .withNom_rzsoc(personManagementData.getPersonName().getText())
+                .withNifcif(personManagementData.getPersonNIF().getText())
+                .withNifcifdup(zeroShort)
+                .withNumafss(personManagementData.getPersonNASS().getText())
+                .withFechanacim(personManagementData.getPersonBirthDate().getValue())
+                .withEstciv(personManagementData.getPersonCivilStatus().getText())
+                .withDireccion(direction)
+                .withLocalidad(personManagementData.getPersonLocation().getText())
+                .withCodpostal(BigDecimal.valueOf(Long.parseLong(personManagementData.getPersonPostalCode().getText())))
+                .withNivestud(personManagementData.getPersonStudyLevel().getValue().getStudyId())
+                .withNacionalidad(personManagementData.getPersonNationality().getText())
+                .build();
+
+        PersonController personController = new PersonController();
+
+        return personController.createPerson(newPersonDTO);
     }
 
     private Integer personUpdate(){

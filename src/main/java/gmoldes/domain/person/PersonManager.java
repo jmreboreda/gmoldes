@@ -2,6 +2,7 @@ package gmoldes.domain.person;
 
 
 import gmoldes.domain.person.dto.PersonDTO;
+import gmoldes.domain.person.mapper.MapperPersonDTOVO;
 import gmoldes.domain.person.persistence.dao.PersonDAO;
 import gmoldes.domain.person.persistence.vo.PersonVO;
 
@@ -16,6 +17,14 @@ import java.util.stream.Collectors;
 public class PersonManager {
 
     public PersonManager() {
+    }
+
+    public Integer createPerson(PersonDTO personDTO){
+        PersonDAO personDAO = PersonDAO.PersonDAOFactory.getInstance();
+
+        PersonVO personVO = MapperPersonDTOVO.map(personDTO);
+
+        return personDAO.createPerson(personVO);
     }
 
     public List<PersonDTO> findAllPersonInAlphabeticalOrder(){
