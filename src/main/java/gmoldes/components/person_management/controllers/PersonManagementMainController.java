@@ -199,7 +199,7 @@ public class PersonManagementMainController extends VBox {
 
     private Integer personCreate(){
         Short zeroShort = 0;
-        String direction = personManagementData.getPersonLocation().getText().equals(personManagementData.getPersonNationality().getText()) ?
+        String direction = personManagementData.getPersonLocation().getText().equals(personManagementData.getPersonMunicipality().getText()) ?
                 personManagementData.getPersonExtendedDirection().getText() :
                 personManagementData.getPersonExtendedDirection().getText() + "   " + personManagementData.getPersonLocation().getText();
 
