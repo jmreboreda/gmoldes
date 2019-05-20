@@ -13,6 +13,10 @@ public class PersonController {
         return personManager.createPerson(personDTO);
     }
 
+    public Integer updatePerson(PersonDTO personDTO){
+        return personManager.updatePerson(personDTO);
+    }
+
     public List<PersonDTO> findAllPersonInAlphabeticalOrder(){
         return personManager.findAllPersonInAlphabeticalOrder();
     }

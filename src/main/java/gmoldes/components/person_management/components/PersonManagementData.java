@@ -2,6 +2,7 @@ package gmoldes.components.person_management.components;
 
 import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
+import gmoldes.components.person_management.events.PersonSurNamesItemSelectedEvent;
 import gmoldes.components.person_management.events.PersonSurNamesPatternChangedEvent;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.study.dto.StudyDTO;
@@ -15,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.converter.LocalDateStringConverter;
 
@@ -29,6 +31,7 @@ public class PersonManagementData extends VBox {
     private Parent parent;
 
     private EventHandler<PersonSurNamesPatternChangedEvent> surNamesPatternChangedEventHandler;
+    private EventHandler<PersonSurNamesItemSelectedEvent> surNamesItemSelectedEventHandler;
 
     @FXML
     private ComboBox <PersonDTO> personSurNames;
@@ -67,6 +70,8 @@ public class PersonManagementData extends VBox {
 
     public void initialize(){
         personSurNames.setOnKeyReleased(this::onPersonSurNamesPatternChanged);
+        personSurNames.setOnMouseClicked(this::onPersonSurNamesItemSelected);
+
         personNIF.setOnKeyReleased(this::onPersonNIFVerifyOnlyLetterAndNumber);
         personNASS.setOnKeyReleased(this::onPersonNASSVerifyOnlyNumber);
         personNASS.textProperty().addListener(new ChangeListener<String>() {
@@ -93,7 +98,7 @@ public class PersonManagementData extends VBox {
         personBirthDate.setConverter(new LocalDateStringConverter(dateFormatter, null));
     }
 
-    public ComboBox getPersonSurNames() {
+    public ComboBox<PersonDTO> getPersonSurNames() {
         return personSurNames;
     }
 
@@ -155,10 +160,23 @@ public class PersonManagementData extends VBox {
         }
     }
 
+//    public void refreshPersonData(PersonDTO personDTO){
+//        //personSurNames.getEditor().setText(personDTO.getApellidos());
+//        personName.setText(personDTO.getNom_rzsoc());
+//        personNIF.setText(personDTO.getNifcif());
+//        personNASS.setText(personDTO.getNumafss());
+//    }
+
     private void onPersonSurNamesPatternChanged(KeyEvent keyEvent){
         String pattern = personSurNames.getEditor().getText();
+
         PersonSurNamesPatternChangedEvent personSurNamesPatternChangedEvent = new PersonSurNamesPatternChangedEvent(pattern);
         surNamesPatternChangedEventHandler.handle(personSurNamesPatternChangedEvent);
+    }
+
+    private void onPersonSurNamesItemSelected(MouseEvent event){
+        PersonSurNamesItemSelectedEvent personSurNamesItemSelectedEvent = new PersonSurNamesItemSelectedEvent(getPersonSurNames().getValue());
+        surNamesItemSelectedEventHandler.handle(personSurNamesItemSelectedEvent);
     }
 
     private void onPersonNIFVerifyOnlyLetterAndNumber(KeyEvent keyEvent){
@@ -205,7 +223,12 @@ public class PersonManagementData extends VBox {
             getPersonPostalCode().setText(getPersonPostalCode().getText().replace(keyEvent.getText(), ""));
         }
     }
+
     public void setOnSurNamesPatternChanged(EventHandler<PersonSurNamesPatternChangedEvent> surNamesPatternChangedEventHandler){
         this.surNamesPatternChangedEventHandler = surNamesPatternChangedEventHandler;
+    }
+
+    public void setOnSurNamesItemSelected(EventHandler<PersonSurNamesItemSelectedEvent> surNamesItemSelectedEventHandler){
+        this.surNamesItemSelectedEventHandler = surNamesItemSelectedEventHandler;
     }
 }

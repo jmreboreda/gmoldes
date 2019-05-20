@@ -27,6 +27,14 @@ public class PersonManager {
         return personDAO.createPerson(personVO);
     }
 
+    public Integer updatePerson(PersonDTO personDTO){
+        PersonDAO personDAO = PersonDAO.PersonDAOFactory.getInstance();
+
+        PersonVO personVO = MapperPersonDTOVO.map(personDTO);
+
+        return personDAO.updatePerson(personVO);
+    }
+
     public List<PersonDTO> findAllPersonInAlphabeticalOrder(){
         List<PersonDTO> personDTOList = new ArrayList<>();
         PersonDAO personDAO = PersonDAO.PersonDAOFactory.getInstance();

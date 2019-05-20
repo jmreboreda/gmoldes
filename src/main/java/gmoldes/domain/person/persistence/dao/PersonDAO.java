@@ -54,6 +54,34 @@ public class PersonDAO {
             return personVO.getIdpersona();
     }
 
+    public Integer updatePerson(PersonVO personVO){
+        PersonVO personReadVO = null;
+        try {
+            session.beginTransaction();
+            personReadVO = session.get(PersonVO.class, personVO.getIdpersona());
+            personReadVO.setIdpersona(personVO.getIdpersona());
+            personReadVO.setApellidos(personVO.getApellidos());
+            personReadVO.setNom_rzsoc(personVO.getNom_rzsoc());
+            personReadVO.setNifcif(personVO.getNifcif());
+            personReadVO.setNifcifdup(personVO.getNifcifdup());
+            personReadVO.setNumafss(personVO.getNumafss());
+            personReadVO.setFechanacim(personVO.getFechanacim());
+            personReadVO.setEstciv(personVO.getEstciv());
+            personReadVO.setDireccion(personVO.getDireccion());
+            personReadVO.setLocalidad(personVO.getLocalidad());
+            personReadVO.setCodpostal(personVO.getCodpostal());
+            personReadVO.setNivestud(personVO.getNivestud());
+            personReadVO.setNacionalidad(personVO.getNacionalidad());
+            session.update(personReadVO);
+            session.getTransaction().commit();
+        }
+        catch (Exception e){
+            System.err.println("No se han podido actualizar las modificaciones de la persona en \"person\": " + e.getMessage());
+        }
+
+        return personVO.getIdpersona();
+    }
+
     public PersonVO findPersonById(Integer id){
 
         TypedQuery<PersonVO> query = session.createNamedQuery(PersonVO.FIND_PERSON_BY_ID, PersonVO.class);

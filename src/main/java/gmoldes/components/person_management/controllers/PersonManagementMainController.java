@@ -35,6 +35,10 @@ public class PersonManagementMainController extends VBox {
 
     private Parent parent;
 
+    private PersonDTO personDTO;
+    private PersonController personController = new PersonController();
+
+
     @FXML
     PersonManagementHeader personManagementHeader;
     @FXML
@@ -48,7 +52,10 @@ public class PersonManagementMainController extends VBox {
     public void initialize() {
         personManagementSelector.setOnSelectorAction(this::onSelectorAction);
 
-        personManagementData.setOnSurNamesPatternChanged(this::onSurNamesPatternChanged);
+        personManagementData.setOnSurNamesPatternChanged(this::onPersonSurNamesPatternChanged);
+
+//        personManagementData.getPersonSurNames().getSelectionModel().selectedItemProperty()
+//                .addListener((observable, oldValue, personDTOItemSelected) -> onPersonSurNamesItemSelected(personDTOItemSelected));
 
         personManagementAction.setOnOkButton(this::onOkButton);
         personManagementAction.setOnSaveButton(this::onSaveButton);
@@ -71,6 +78,7 @@ public class PersonManagementMainController extends VBox {
         personManagementSelector.getDeletePerson().setDisable(false);
         personManagementSelector.getDeletePerson().setSelected(false);
 
+        personManagementData.getNormalizeText().setSelected(true);
         personManagementData.setDisable(true);
         personManagementData.setMouseTransparent(false);
 
@@ -98,13 +106,25 @@ public class PersonManagementMainController extends VBox {
         personManagementData.loadPersonStudyLevel(studyDTOList);
     }
 
-    private void onSurNamesPatternChanged(PersonSurNamesPatternChangedEvent personSurNamesPattern){
+    private void onPersonSurNamesPatternChanged(PersonSurNamesPatternChangedEvent personSurNamesPattern){
+        if(personSurNamesPattern == null){
+
+            return;
+        }
+
         PersonController personController = new PersonController();
 
         List<PersonDTO> personDTOList = personController.findAllPersonsByNamePatternInAlphabeticalOrder(personSurNamesPattern.getPattern());
         ObservableList<PersonDTO> personDTOObservableList = FXCollections.observableList(personDTOList);
         personManagementData.refreshPersonSurNames(personDTOObservableList);
     }
+
+//    private void onPersonSurNamesItemSelected(PersonDTO personDTOItemSelected){
+//        if(personManagementSelector.getModificationPerson().isSelected()){
+//
+//            personManagementData.refreshPersonData(personDTOItemSelected);;
+//        }
+//    }
 
     private void onSelectorAction(ActionEvent event){
         personManagementData.setDisable(false);
@@ -139,19 +159,53 @@ public class PersonManagementMainController extends VBox {
     private void onSaveButton(MouseEvent event){
         personManagementData.setMouseTransparent(true);
 
+        Short zeroShort = 0;
+        String direction = personManagementData.getPersonLocation().getText().equals(personManagementData.getPersonMunicipality().getText()) ?
+                personManagementData.getPersonExtendedDirection().getText() :
+                personManagementData.getPersonExtendedDirection().getText() + "   " + personManagementData.getPersonLocation().getText();
+
+        personDTO = PersonDTO.create()
+                .withIdpersona(null)
+                .withApellidos(personManagementData.getPersonSurNames().getEditor().getText())
+                .withNom_rzsoc(personManagementData.getPersonName().getText())
+                .withNifcif(personManagementData.getPersonNIF().getText())
+                .withNifcifdup(zeroShort)
+                .withNumafss(personManagementData.getPersonNASS().getText())
+                .withFechanacim(personManagementData.getPersonBirthDate().getValue())
+                .withEstciv(personManagementData.getPersonCivilStatus().getText())
+                .withDireccion(direction)
+                .withLocalidad(personManagementData.getPersonMunicipality().getText())
+                .withCodpostal(BigDecimal.valueOf(Long.parseLong(personManagementData.getPersonPostalCode().getText())))
+                .withNivestud(personManagementData.getPersonStudyLevel().getValue().getStudyId())
+                .withNacionalidad(personManagementData.getPersonNationality().getText())
+                .build();
+
+        // Create person
         if(personManagementSelector.getNewPerson().isSelected()){
             Integer personId = personCreate();
+
             if(personId != null){
                 Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_SAVED_OK);
             }else{
                 Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_NOT_SAVED_OK);
                 personManagementData.setMouseTransparent(false);
+
                 return;
             }
+        // Update person
         }else if(personManagementSelector.getModificationPerson().isSelected()){
             Integer personId = personUpdate();
 
+            if(personId != null){
+                Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_SAVED_OK);
+            }else{
+                Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_NOT_SAVED_OK);
+                personManagementData.setMouseTransparent(false);
 
+                return;
+            }
+
+        // Delete person
         }else{
             Integer personId = personDelete();
         }
@@ -165,7 +219,6 @@ public class PersonManagementMainController extends VBox {
     }
 
     private Boolean validateEntryAllData(){
-
         if(personManagementData.getPersonSurNames().getEditor().getText().equals("") ||
                 personManagementData.getPersonName().getText().equals("") ||
                 personManagementData.getPersonNIF().getText().equals("") ||
@@ -198,36 +251,13 @@ public class PersonManagementMainController extends VBox {
     }
 
     private Integer personCreate(){
-        Short zeroShort = 0;
-        String direction = personManagementData.getPersonLocation().getText().equals(personManagementData.getPersonMunicipality().getText()) ?
-                personManagementData.getPersonExtendedDirection().getText() :
-                personManagementData.getPersonExtendedDirection().getText() + "   " + personManagementData.getPersonLocation().getText();
 
-        PersonDTO newPersonDTO = PersonDTO.create()
-                .withIdpersona(null)
-                .withApellidos(personManagementData.getPersonSurNames().getEditor().getText())
-                .withNom_rzsoc(personManagementData.getPersonName().getText())
-                .withNifcif(personManagementData.getPersonNIF().getText())
-                .withNifcifdup(zeroShort)
-                .withNumafss(personManagementData.getPersonNASS().getText())
-                .withFechanacim(personManagementData.getPersonBirthDate().getValue())
-                .withEstciv(personManagementData.getPersonCivilStatus().getText())
-                .withDireccion(direction)
-                .withLocalidad(personManagementData.getPersonMunicipality().getText())
-                .withCodpostal(BigDecimal.valueOf(Long.parseLong(personManagementData.getPersonPostalCode().getText())))
-                .withNivestud(personManagementData.getPersonStudyLevel().getValue().getStudyId())
-                .withNacionalidad(personManagementData.getPersonNationality().getText())
-                .build();
-
-        PersonController personController = new PersonController();
-
-        return personController.createPerson(newPersonDTO);
+        return personController.createPerson(personDTO);
     }
 
     private Integer personUpdate(){
-        Integer personId = null;
 
-        return personId;
+        return personController.updatePerson(personDTO);
     }
 
     private Integer personDelete(){
