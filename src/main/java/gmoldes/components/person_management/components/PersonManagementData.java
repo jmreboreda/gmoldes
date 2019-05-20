@@ -63,15 +63,6 @@ public class PersonManagementData extends VBox {
 
     public PersonManagementData() {
         this.parent = ViewLoader.load(this, NEW_PERSON_DATA_FXML);
-
-//        this.personPostalCode.textProperty().addListener(new ChangeListener<String>() {
-//            @Override
-//            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-//                if(personPostalCode.getText().length() > 5){
-//                    personPostalCode.setText(null);
-//                }
-//            }
-//        });
     }
 
     public void initialize(){
@@ -91,8 +82,6 @@ public class PersonManagementData extends VBox {
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         personBirthDate.setConverter(new LocalDateStringConverter(dateFormatter, null));
-
-
     }
 
     public ComboBox getPersonSurNames() {

@@ -1,6 +1,7 @@
 package gmoldes.components.contract.new_contract.controllers;
 
 import com.lowagie.text.DocumentException;
+import gmoldes.App;
 import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.ContractConstants;
@@ -10,6 +11,7 @@ import gmoldes.components.contract.events.*;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
+import gmoldes.components.person_management.controllers.PersonManagementMainController;
 import gmoldes.components.timerecord.TimeRecord;
 import gmoldes.components.timerecord.components.TimeRecordConstants;
 import gmoldes.domain.client.ClientService;
@@ -37,12 +39,14 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javax.mail.internet.AddressException;
@@ -110,6 +114,7 @@ public class NewContractMainController extends VBox {
             }
         });
 
+        contractParts.setOnNewPerson(this::onNewPerson);
         contractParts.setOnSearchEmployers(this::onSearchEmployers);
         contractParts.setOnSearchEmployees(this::onSearchEmployees);
         contractParts.setOnSelectEmployer(this::onSelectEmployer);
@@ -272,6 +277,19 @@ public class NewContractMainController extends VBox {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void onNewPerson(MouseEvent event){
+        PersonManagementMainController personManagementMainController = new PersonManagementMainController();
+        Scene scene = new Scene(personManagementMainController);
+        scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
+        Stage personManagementStage = new Stage();
+        personManagementStage.setResizable(false);
+        personManagementStage.setTitle("Mantenimiento de personas");
+        personManagementStage.setScene(scene);
+        personManagementStage.initOwner(tabPane.getScene().getWindow());
+        personManagementStage.initModality(Modality.APPLICATION_MODAL);
+        personManagementStage.show();
     }
 
     private void setStatusRevisionErrors(String statusText) {
