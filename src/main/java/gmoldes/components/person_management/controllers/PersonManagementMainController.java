@@ -192,7 +192,6 @@ public class PersonManagementMainController extends VBox {
     }
 
     private Integer personCreate(){
-        Integer personId = null;
         Short zeroShort = 0;
         String direction = personManagementData.getPersonLocation().getText().equals(personManagementData.getPersonNationality().getText()) ?
                 personManagementData.getPersonExtendedDirection().getText() :

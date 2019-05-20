@@ -69,6 +69,15 @@ public class PersonManagementData extends VBox {
         personSurNames.setOnKeyReleased(this::onPersonSurNamesPatternChanged);
         personNIF.setOnKeyReleased(this::onPersonNIFVerifyOnlyLetterAndNumber);
         personNASS.setOnKeyReleased(this::onPersonNASSVerifyOnlyNumber);
+        personNASS.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if(t1.length() > 12){
+                    personNASS.setText(t);
+                }
+            }
+        });
+
         personCivilStatus.setOnKeyReleased(this::onPersonCivilStatusVerifyOnlyLetter);
         personPostalCode.setOnKeyReleased(this::onPersonPostalCodeVerifyOnlyNumber);
         personPostalCode.textProperty().addListener(new ChangeListener<String>() {
