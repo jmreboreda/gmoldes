@@ -12,15 +12,15 @@ import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.components.contract.new_contract.services.ContractDataToContractAgentPDFCreator;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.client.persistence.vo.ClientCCCVO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.study.StudyManager;
+import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.utilities.OSUtils;
-import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 
 import java.io.IOException;
@@ -33,6 +33,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
 
@@ -103,7 +104,20 @@ public class ContractExtensionDataDocumentCreator {
 
     private ContractFullDataDTO retrieveContractFullData(){
 
-        String quoteAccountCode = this.contractVariationMainController.getContractVariationParts().getClientSelector().getValue().getClientCCC() == null ? "" : this.contractVariationMainController.getContractVariationParts().getClientSelector().getValue().getClientCCC().toString();
+        //String quoteAccountCode = this.contractVariationMainController.getContractVariationParts().getClientSelector().getValue().getClientCCC() == null ? "" : this.contractVariationMainController.getContractVariationParts().getClientSelector().getValue().getClientCCC().toString();
+
+        //***********************************************************
+        Set<ClientCCCVO> quoteAccountCodeSet = this.contractVariationMainController.getContractVariationParts().getClientSelector().getValue().getClientCCC();
+        String quoteAccountCode = null;
+        if(!quoteAccountCodeSet.isEmpty()){
+            Iterator<ClientCCCVO> it = quoteAccountCodeSet.iterator();
+            while(it.hasNext()){
+                quoteAccountCode = it.next().getCcc_inss();
+            }
+        }
+        //***********************************************************
+
+
 
         String identificationContractNumberINEM =
                 this.contractVariationMainController.getContractVariationParts().getContractSelector().getValue().getContractNewVersion()
