@@ -63,6 +63,8 @@ public class PersonManagementData extends VBox {
     private final Pattern letterPattern = Pattern.compile("[A-Za-zÑñÁÉÍÓÚáéíóú]");
     private final Pattern numberPattern = Pattern.compile("[0-9]");
 
+    private final String TOOLTIP_NORMALIZE_TEXT = "Cuando está activado, pone en mayúsculas las letras iniciales de las palabras contenidas en los campos del formulario.";
+
 
     public PersonManagementData() {
         this.parent = ViewLoader.load(this, NEW_PERSON_DATA_FXML);
@@ -71,6 +73,11 @@ public class PersonManagementData extends VBox {
     public void initialize(){
         personSurNames.setOnKeyReleased(this::onPersonSurNamesPatternChanged);
         personSurNames.setOnMouseClicked(this::onPersonSurNamesItemSelected);
+
+        Tooltip tooltipNormalizeText = new Tooltip();
+        tooltipNormalizeText.setText(TOOLTIP_NORMALIZE_TEXT);
+
+        normalizeText.setTooltip(tooltipNormalizeText);
 
         personNIF.setOnKeyReleased(this::onPersonNIFVerifyOnlyLetterAndNumber);
         personNASS.setOnKeyReleased(this::onPersonNASSVerifyOnlyNumber);
