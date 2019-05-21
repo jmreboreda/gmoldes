@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -35,11 +36,21 @@ public class PersonManagementData extends VBox {
     private EventHandler<PersonSurNamesItemSelectedEvent> surNamesItemSelectedEventHandler;
 
     @FXML
+    private Group newPersonGroup;
+    @FXML
     private ComboBox <PersonDTO> personSurNames;
+    @FXML
+    private Label personNameLabel;
     @FXML
     private TextField personName;
     @FXML
     private CheckBox normalizeText;
+    @FXML
+    private Group modificationPersonGroup;
+    @FXML
+    private TextField personNewSurnames;
+    @FXML
+    private TextField personNewName;
     @FXML
     private TextField personNIF;
     @FXML
@@ -102,8 +113,16 @@ public class PersonManagementData extends VBox {
         personBirthDate.setConverter(new LocalDateStringConverter(dateFormatter, null));
     }
 
+    public Group getNewPersonGroup() {
+        return newPersonGroup;
+    }
+
     public ComboBox<PersonDTO> getPersonSurNames() {
         return personSurNames;
+    }
+
+    public Label getPersonNameLabel() {
+        return personNameLabel;
     }
 
     public TextField getPersonName() {
@@ -112,6 +131,18 @@ public class PersonManagementData extends VBox {
 
     public CheckBox getNormalizeText() {
         return normalizeText;
+    }
+
+    public Group getModificationPersonGroup() {
+        return modificationPersonGroup;
+    }
+
+    public TextField getPersonNewSurnames() {
+        return personNewSurnames;
+    }
+
+    public TextField getPersonNewName() {
+        return personNewName;
     }
 
     public TextField getPersonNIF() {
@@ -163,13 +194,6 @@ public class PersonManagementData extends VBox {
             personSurNames.show();
         }
     }
-
-//    public void refreshPersonData(PersonDTO personDTO){
-//        //personSurNames.getEditor().setText(personDTO.getApellidos());
-//        personName.setText(personDTO.getNom_rzsoc());
-//        personNIF.setText(personDTO.getNifcif());
-//        personNASS.setText(personDTO.getNumafss());
-//    }
 
     private void onPersonSurNamesPatternChanged(KeyEvent keyEvent){
         String pattern = personSurNames.getEditor().getText();

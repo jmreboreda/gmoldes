@@ -128,6 +128,22 @@ public class PersonManagementMainController extends VBox {
 
     private void onSelectorAction(ActionEvent event){
         personManagementData.setDisable(false);
+
+        if(personManagementSelector.getNewPerson().isSelected()){
+            personManagementData.getPersonNameLabel().setVisible(true);
+            personManagementData.getPersonName().setVisible(true);
+            personManagementData.getNewPersonGroup().setVisible(true);
+            personManagementData.getModificationPersonGroup().setVisible(false);
+        }
+
+        if(personManagementSelector.getModificationPerson().isSelected()){
+            personManagementData.getPersonNameLabel().setVisible(false);
+            personManagementData.getPersonName().setVisible(false);
+            personManagementData.getPersonName().setVisible(false);
+            personManagementData.getNewPersonGroup().setVisible(true);
+            personManagementData.getModificationPersonGroup().setVisible(true);
+        }
+
         personManagementAction.getOkButton().setDisable(false);
     }
 
