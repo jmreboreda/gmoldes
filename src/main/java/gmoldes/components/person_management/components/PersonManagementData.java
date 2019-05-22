@@ -18,7 +18,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.converter.LocalDateStringConverter;
@@ -86,7 +85,9 @@ public class PersonManagementData extends VBox {
 
     public void initialize(){
         personSurNames.setOnKeyReleased(this::onPersonSurNamesPatternChanged);
-        personSurNames.setOnMouseClicked(this::onPersonSurNamesItemSelected);
+
+        personSurNames.getSelectionModel().selectedItemProperty()
+                .addListener((observable, oldValue, personDTOItemSelected) -> onPersonSurNamesItemSelected(personDTOItemSelected));
 
         Tooltip tooltipNormalizeText = new Tooltip();
         tooltipNormalizeText.setText(PersonManagementConstants.TOOLTIP_NORMALIZE_TEXT);
@@ -215,8 +216,8 @@ public class PersonManagementData extends VBox {
         surNamesPatternChangedEventHandler.handle(personSurNamesPatternChangedEvent);
     }
 
-    private void onPersonSurNamesItemSelected(MouseEvent event){
-        PersonSurNamesItemSelectedEvent personSurNamesItemSelectedEvent = new PersonSurNamesItemSelectedEvent(getPersonSurNames().getValue());
+    private void onPersonSurNamesItemSelected(PersonDTO personDTOItemSelected){
+        PersonSurNamesItemSelectedEvent personSurNamesItemSelectedEvent = new PersonSurNamesItemSelectedEvent(personDTOItemSelected);
         surNamesItemSelectedEventHandler.handle(personSurNamesItemSelectedEvent);
     }
 

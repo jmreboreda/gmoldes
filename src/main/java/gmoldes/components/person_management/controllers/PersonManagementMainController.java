@@ -6,6 +6,7 @@ import gmoldes.components.person_management.components.PersonManagementAction;
 import gmoldes.components.person_management.components.PersonManagementData;
 import gmoldes.components.person_management.components.PersonManagementHeader;
 import gmoldes.components.person_management.components.PersonManagementSelector;
+import gmoldes.components.person_management.events.PersonSurNamesItemSelectedEvent;
 import gmoldes.components.person_management.events.PersonSurNamesPatternChangedEvent;
 import gmoldes.domain.nie_nif.NieNif;
 import gmoldes.domain.person.controllers.PersonController;
@@ -53,9 +54,7 @@ public class PersonManagementMainController extends VBox {
         personManagementSelector.setOnSelectorAction(this::onSelectorAction);
 
         personManagementData.setOnSurNamesPatternChanged(this::onPersonSurNamesPatternChanged);
-
-        personManagementData.getPersonSurNames().getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, personDTOItemSelected) -> onPersonSurNamesItemSelected(personDTOItemSelected));
+        personManagementData.setOnSurNamesItemSelected(this::onPersonSurNamesItemSelected);
 
         personManagementAction.setOnOkButton(this::onOkButton);
         personManagementAction.setOnSaveButton(this::onSaveButton);
@@ -119,15 +118,20 @@ public class PersonManagementMainController extends VBox {
         personManagementData.refreshPersonSurNames(personDTOObservableList);
     }
 
-    private void onPersonSurNamesItemSelected(PersonDTO personDTOItemSelected){
+    private void onPersonSurNamesItemSelected(PersonSurNamesItemSelectedEvent personSurNamesItemSelectedEvent){
+        if(personSurNamesItemSelectedEvent.getPersonDTO() == null){
+
+            return;
+        }
+
         if(personManagementSelector.getModificationPerson().isSelected()){
 
             //personManagementData.refreshPersonData(personDTOItemSelected);;
         }else{
-            personManagementData.getPersonSurNames().setItems(null);
-            personManagementData.getPersonSurNames().getEditor().setText(null);
-        }
 
+            personManagementData.getPersonSurNames().getSelectionModel().clearSelection();
+            personManagementData.getPersonSurNames().setItems(null);
+        }
     }
 
     private void onSelectorAction(ActionEvent event){
