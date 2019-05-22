@@ -19,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.converter.LocalDateStringConverter;
 
@@ -38,6 +39,8 @@ public class PersonManagementData extends VBox {
     @FXML
     private Group newPersonGroup;
     @FXML
+    private HBox newPersonHbox;
+    @FXML
     private ComboBox <PersonDTO> personSurNames;
     @FXML
     private Label personNameLabel;
@@ -47,6 +50,8 @@ public class PersonManagementData extends VBox {
     private CheckBox normalizeText;
     @FXML
     private Group modificationPersonGroup;
+    @FXML
+    private HBox modificationPersonHbox;
     @FXML
     private TextField personNewSurnames;
     @FXML
@@ -117,6 +122,10 @@ public class PersonManagementData extends VBox {
         return newPersonGroup;
     }
 
+    public HBox getNewPersonHbox() {
+        return newPersonHbox;
+    }
+
     public ComboBox<PersonDTO> getPersonSurNames() {
         return personSurNames;
     }
@@ -135,6 +144,10 @@ public class PersonManagementData extends VBox {
 
     public Group getModificationPersonGroup() {
         return modificationPersonGroup;
+    }
+
+    public HBox getModificationPersonHbox() {
+        return modificationPersonHbox;
     }
 
     public TextField getPersonNewSurnames() {

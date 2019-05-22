@@ -28,7 +28,7 @@
                                  <children>
                                     <Group fx:id="newPersonGroup">
                                        <children>
-                                          <HBox>
+                                          <HBox fx:id="newPersonHbox">
                                              <children>
                                                 <Label minWidth="65.0" text="Apellidos">
                                                    <HBox.margin>
@@ -61,7 +61,7 @@
                                     </Group>
                                     <Group fx:id="modificationPersonGroup">
                                        <children>
-                                          <HBox>
+                                          <HBox fx:id="modificationPersonHbox">
                                              <children>
                                                 <Label text="Apellidos [nuevos]">
                                                    <HBox.margin>
