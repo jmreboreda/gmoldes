@@ -84,7 +84,7 @@ public class PersonManagementMainController extends VBox {
         personManagementAction.getSaveButton().setDisable(true);
         personManagementAction.getOkButton().setDisable(true);
 
-        personManagementData.getPersonSurNames().getEditor().setText("");
+        personManagementData.getPersonSurNames().getSelectionModel().clearSelection();
         personManagementData.getPersonName().setText("");
         personManagementData.getPersonNIF().setText("");
         personManagementData.getPersonNASS().setText("");
