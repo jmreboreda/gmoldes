@@ -54,8 +54,8 @@ public class PersonManagementMainController extends VBox {
 
         personManagementData.setOnSurNamesPatternChanged(this::onPersonSurNamesPatternChanged);
 
-//        personManagementData.getPersonSurNames().getSelectionModel().selectedItemProperty()
-//                .addListener((observable, oldValue, personDTOItemSelected) -> onPersonSurNamesItemSelected(personDTOItemSelected));
+        personManagementData.getPersonSurNames().getSelectionModel().selectedItemProperty()
+                .addListener((observable, oldValue, personDTOItemSelected) -> onPersonSurNamesItemSelected(personDTOItemSelected));
 
         personManagementAction.setOnOkButton(this::onOkButton);
         personManagementAction.setOnSaveButton(this::onSaveButton);
@@ -119,12 +119,16 @@ public class PersonManagementMainController extends VBox {
         personManagementData.refreshPersonSurNames(personDTOObservableList);
     }
 
-//    private void onPersonSurNamesItemSelected(PersonDTO personDTOItemSelected){
-//        if(personManagementSelector.getModificationPerson().isSelected()){
-//
-//            personManagementData.refreshPersonData(personDTOItemSelected);;
-//        }
-//    }
+    private void onPersonSurNamesItemSelected(PersonDTO personDTOItemSelected){
+        if(personManagementSelector.getModificationPerson().isSelected()){
+
+            //personManagementData.refreshPersonData(personDTOItemSelected);;
+        }else{
+            personManagementData.getPersonSurNames().setItems(null);
+            personManagementData.getPersonSurNames().getEditor().setText(null);
+        }
+
+    }
 
     private void onSelectorAction(ActionEvent event){
 
@@ -184,21 +188,40 @@ public class PersonManagementMainController extends VBox {
                 personManagementData.getPersonExtendedDirection().getText() :
                 personManagementData.getPersonExtendedDirection().getText() + "   " + personManagementData.getPersonLocation().getText();
 
-        personDTO = PersonDTO.create()
-                .withIdpersona(null)
-                .withApellidos(personManagementData.getPersonSurNames().getEditor().getText())
-                .withNom_rzsoc(personManagementData.getPersonName().getText())
-                .withNifcif(personManagementData.getPersonNIF().getText())
-                .withNifcifdup(zeroShort)
-                .withNumafss(personManagementData.getPersonNASS().getText())
-                .withFechanacim(personManagementData.getPersonBirthDate().getValue())
-                .withEstciv(personManagementData.getPersonCivilStatus().getText())
-                .withDireccion(direction)
-                .withLocalidad(personManagementData.getPersonMunicipality().getText())
-                .withCodpostal(BigDecimal.valueOf(Long.parseLong(personManagementData.getPersonPostalCode().getText())))
-                .withNivestud(personManagementData.getPersonStudyLevel().getValue().getStudyId())
-                .withNacionalidad(personManagementData.getPersonNationality().getText())
-                .build();
+        if(personManagementSelector.getNewPerson().isSelected()) {
+            personDTO = PersonDTO.create()
+                    .withIdpersona(null)
+                    .withApellidos(personManagementData.getPersonSurNames().getEditor().getText())
+                    .withNom_rzsoc(personManagementData.getPersonName().getText())
+                    .withNifcif(personManagementData.getPersonNIF().getText())
+                    .withNifcifdup(zeroShort)
+                    .withNumafss(personManagementData.getPersonNASS().getText())
+                    .withFechanacim(personManagementData.getPersonBirthDate().getValue())
+                    .withEstciv(personManagementData.getPersonCivilStatus().getText())
+                    .withDireccion(direction)
+                    .withLocalidad(personManagementData.getPersonMunicipality().getText())
+                    .withCodpostal(BigDecimal.valueOf(Long.parseLong(personManagementData.getPersonPostalCode().getText())))
+                    .withNivestud(personManagementData.getPersonStudyLevel().getValue().getStudyId())
+                    .withNacionalidad(personManagementData.getPersonNationality().getText())
+                    .build();
+
+        }else if(personManagementSelector.getModificationPerson().isSelected()){
+            personDTO = PersonDTO.create()
+                    .withIdpersona(null)
+                    .withApellidos(personManagementData.getPersonNewSurnames().getText())
+                    .withNom_rzsoc(personManagementData.getPersonNewName().getText())
+                    .withNifcif(personManagementData.getPersonNIF().getText())
+                    .withNifcifdup(zeroShort)
+                    .withNumafss(personManagementData.getPersonNASS().getText())
+                    .withFechanacim(personManagementData.getPersonBirthDate().getValue())
+                    .withEstciv(personManagementData.getPersonCivilStatus().getText())
+                    .withDireccion(direction)
+                    .withLocalidad(personManagementData.getPersonMunicipality().getText())
+                    .withCodpostal(BigDecimal.valueOf(Long.parseLong(personManagementData.getPersonPostalCode().getText())))
+                    .withNivestud(personManagementData.getPersonStudyLevel().getValue().getStudyId())
+                    .withNacionalidad(personManagementData.getPersonNationality().getText())
+                    .build();
+        }
 
         // Create person
         if(personManagementSelector.getNewPerson().isSelected()){
