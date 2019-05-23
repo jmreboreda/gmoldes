@@ -20,6 +20,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
 import java.time.format.DateTimeFormatter;
@@ -52,7 +53,7 @@ public class PersonManagementData extends VBox {
     @FXML
     private HBox modificationPersonHbox;
     @FXML
-    private TextField personNewSurnames;
+    private TextField personNewSurNames;
     @FXML
     private TextField personNewName;
     @FXML
@@ -85,6 +86,25 @@ public class PersonManagementData extends VBox {
 
     public void initialize(){
         personSurNames.setOnKeyReleased(this::onPersonSurNamesPatternChanged);
+
+        personSurNames.setConverter(new StringConverter<PersonDTO>() {
+
+            PersonDTO copyPersonDTO;
+            @Override
+            public String toString(PersonDTO personDTO) {
+                if (personDTO == null){
+                    return null;
+                }
+                copyPersonDTO = personDTO;
+                return personDTO.toString();
+            }
+
+            @Override
+            public PersonDTO fromString(String string) {
+
+                return copyPersonDTO;
+            }
+        });
 
         personSurNames.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, personDTOItemSelected) -> onPersonSurNamesItemSelected(personDTOItemSelected));
@@ -151,8 +171,8 @@ public class PersonManagementData extends VBox {
         return modificationPersonHbox;
     }
 
-    public TextField getPersonNewSurnames() {
-        return personNewSurnames;
+    public TextField getPersonNewSurNames() {
+        return personNewSurNames;
     }
 
     public TextField getPersonNewName() {
@@ -207,6 +227,21 @@ public class PersonManagementData extends VBox {
         if(personDTOObservableList.size() > 0){
             personSurNames.show();
         }
+    }
+
+    public void completePersonData(PersonDTO personDTO){
+        personName.setText("patata");
+        personNewSurNames.setText(personDTO.getApellidos());
+        personNewName.setText(personDTO.getNom_rzsoc());
+        personNIF.setText(personDTO.getNifcif());
+        personNASS.setText(personDTO.getNumafss());
+        personBirthDate.setValue(personDTO.getFechanacim());
+        personCivilStatus.setText(personDTO.getEstciv());
+        personNationality.setText(personDTO.getNacionalidad());
+        personExtendedDirection.setText(personDTO.getDireccion());
+        personPostalCode.setText(personDTO.getCodpostal().toString());
+        personMunicipality.setText(personDTO.getLocalidad());
+
     }
 
     private void onPersonSurNamesPatternChanged(KeyEvent keyEvent){

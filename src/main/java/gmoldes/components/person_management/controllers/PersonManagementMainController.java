@@ -126,7 +126,9 @@ public class PersonManagementMainController extends VBox {
 
         if(personManagementSelector.getModificationPerson().isSelected()){
 
-            //personManagementData.refreshPersonData(personDTOItemSelected);;
+            personManagementData.getPersonSurNames().setStyle("-fx-text-inner-color: #640000;");
+            personManagementData.getPersonSurNames().setMouseTransparent(true);
+            personManagementData.completePersonData(personSurNamesItemSelectedEvent.getPersonDTO());
         }else{
 
             personManagementData.getPersonSurNames().getSelectionModel().clearSelection();
@@ -210,9 +212,13 @@ public class PersonManagementMainController extends VBox {
                     .build();
 
         }else if(personManagementSelector.getModificationPerson().isSelected()){
+            System.out.println("personId: " + personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getIdpersona());
+
+            Integer personId = personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getIdpersona();
+
             personDTO = PersonDTO.create()
-                    .withIdpersona(null)
-                    .withApellidos(personManagementData.getPersonNewSurnames().getText())
+                    .withIdpersona(personId)
+                    .withApellidos(personManagementData.getPersonNewSurNames().getText())
                     .withNom_rzsoc(personManagementData.getPersonNewName().getText())
                     .withNifcif(personManagementData.getPersonNIF().getText())
                     .withNifcifdup(zeroShort)

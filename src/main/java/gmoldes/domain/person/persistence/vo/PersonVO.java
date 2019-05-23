@@ -11,7 +11,6 @@ import java.sql.Date;
 @NamedQueries(value = {
         @NamedQuery(
                 name = PersonVO.FIND_ALL_PERSONS_BY_NAME_PATTERN,
-                //query = " select p from PersonVO as p where lower(p.apellidos) like lower(:code) or lower(p.nom_rzsoc) like lower(:code) order by p.apellidos, p.nom_rzsoc"
                 query = "select p from PersonVO as p where concat(lower(p.apellidos), ', ', lower(p.nom_rzsoc)) like lower(:code)"
         ),
         @NamedQuery(
