@@ -2,14 +2,11 @@ package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
-import gmoldes.utilities.Parameters;
-import gmoldes.utilities.Utilities;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -43,8 +40,8 @@ public class ContractVariationContractExtension extends VBox {
 
     @FXML
     private void initialize(){
-
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
+
         dateFrom.setConverter(new LocalDateStringConverter(dateFormatter, null));
         dateTo.setConverter(new LocalDateStringConverter(dateFormatter, null));
 

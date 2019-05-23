@@ -2,6 +2,7 @@ package gmoldes.domain.person;
 
 
 import gmoldes.domain.person.dto.PersonDTO;
+import gmoldes.domain.person.mapper.MapperPersonDTOVO;
 import gmoldes.domain.person.persistence.dao.PersonDAO;
 import gmoldes.domain.person.persistence.vo.PersonVO;
 
@@ -18,11 +19,28 @@ public class PersonManager {
     public PersonManager() {
     }
 
+    public Integer createPerson(PersonDTO personDTO){
+        PersonDAO personDAO = PersonDAO.PersonDAOFactory.getInstance();
+
+        PersonVO personVO = MapperPersonDTOVO.map(personDTO);
+
+        return personDAO.createPerson(personVO);
+    }
+
+    public Integer updatePerson(PersonDTO personDTO){
+        PersonDAO personDAO = PersonDAO.PersonDAOFactory.getInstance();
+
+        PersonVO personVO = MapperPersonDTOVO.map(personDTO);
+
+        return personDAO.updatePerson(personVO);
+    }
+
     public List<PersonDTO> findAllPersonInAlphabeticalOrder(){
         List<PersonDTO> personDTOList = new ArrayList<>();
         PersonDAO personDAO = PersonDAO.PersonDAOFactory.getInstance();
         List<PersonVO> personVOList = personDAO.findAllPersonInAlphabeticalOrder();
         for (PersonVO personVO : personVOList) {
+            LocalDate birthDate = personVO.getFechanacim() != null ? personVO.getFechanacim().toLocalDate() : null;
             PersonDTO personDTO = PersonDTO.create()
                     .withIdpersona(personVO.getIdpersona())
                     .withApellidos(personVO.getApellidos())
@@ -31,7 +49,7 @@ public class PersonManager {
                     .withDireccion(personVO.getDireccion())
                     .withEstciv(personVO.getEstciv())
                     .withNumafss(personVO.getNumafss())
-                    .withFechanacim(personVO.getFechanacim().toLocalDate())
+                    .withFechanacim(birthDate)
                     .withLocalidad(personVO.getLocalidad())
                     .withNacionalidad(personVO.getNacionalidad())
                     .withNifcif(personVO.getNifcif())

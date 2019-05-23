@@ -21,6 +21,14 @@
             <Font size="13.0" />
          </font>
       </Button>
+      <Button fx:id="saveButton" alignment="CENTER" contentDisplay="CENTER" disable="true" maxHeight="70.0" maxWidth="80.0" minHeight="70.0" minWidth="110.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Guardar" textAlignment="CENTER" textFill="#000fff" wrapText="true">
+         <font>
+            <Font size="13.0" />
+         </font>
+         <HBox.margin>
+            <Insets bottom="15.0" right="20.0" top="15.0" />
+         </HBox.margin>
+      </Button>
       <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="70.0" maxWidth="80.0" minHeight="70.0" minWidth="110.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Salir" textAlignment="CENTER" textFill="#640000">
          <HBox.margin>
             <Insets bottom="15.0" right="20.0" top="15.0" />

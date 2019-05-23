@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import javax.persistence.Query;
+import java.util.List;
 
 public class StudyDAO {
 
@@ -34,8 +35,13 @@ public class StudyDAO {
         this.session = session;
     }
 
-    public StudyVO findStudyById(Integer id){
+    public List findAllStudy(){
+        Query query = session.createNamedQuery(StudyVO.FIND_ALL_STUDY, StudyVO.class);
 
+        return query.getResultList();
+    }
+
+    public StudyVO findStudyById(Integer id){
         Query query = session.createNamedQuery(StudyVO.FIND_STUDY_BY_ID, StudyVO.class);
         query.setParameter("code", id);
 

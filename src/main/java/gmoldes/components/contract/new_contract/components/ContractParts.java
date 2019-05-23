@@ -19,6 +19,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 import java.util.List;
@@ -27,6 +28,8 @@ import java.util.List;
 public class ContractParts extends HBox {
 
     private static final String CONTRACT_PARTS_FXML = "/fxml/new_contract/contract_parts.fxml";
+
+    private EventHandler<MouseEvent> onNewPersonEventHandler;
     private EventHandler<SearchEmployersEvent> onEmployerNamePatternChangedEventHandler;
     private EventHandler<SearchEmployeesEvent> onEmployeeNamePatternChangedEventHandler;
     private EventHandler<SelectEmployerEvent> onSelectEmployerEventHandler;
@@ -59,6 +62,8 @@ public class ContractParts extends HBox {
     @FXML
     public void initialize() {
 
+        newEmployee.setOnMouseClicked(this::onNewPerson);
+
         employerName.setOnKeyReleased(this::onEmployerNamePatternChanged);
 
         employeeName.setOnKeyReleased(this::onEmployeeNamePatternChanged);
@@ -68,6 +73,10 @@ public class ContractParts extends HBox {
 
         employeesNames.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newPersonValue) -> onSelectEmployee(newPersonValue));
+    }
+
+    private void onNewPerson(MouseEvent event){
+        this.onNewPersonEventHandler.handle(event);
     }
 
     private void onEmployerNamePatternChanged(KeyEvent keyEvent) {
@@ -209,6 +218,10 @@ public class ContractParts extends HBox {
         if (clientCCCDTOL.size() == 1) {
             cotizationCode.getSelectionModel().selectFirst();
         }
+    }
+
+    public void setOnNewPerson(EventHandler<MouseEvent> handler){
+        this.onNewPersonEventHandler = handler;
     }
 
     public void setOnSearchEmployers(EventHandler<SearchEmployersEvent> handler) {

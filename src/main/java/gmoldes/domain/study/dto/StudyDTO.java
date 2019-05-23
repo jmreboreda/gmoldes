@@ -24,6 +24,11 @@ public class StudyDTO {
         return studyDescription;
     }
 
+    public String toString(){
+
+        return studyDescription;
+    }
+
     public static StudyDTO.StudyDTOBuilder create() {
         return new StudyDTO.StudyDTOBuilder();
     }

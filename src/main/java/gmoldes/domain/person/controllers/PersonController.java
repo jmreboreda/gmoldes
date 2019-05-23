@@ -9,12 +9,19 @@ public class PersonController {
 
     private PersonManager personManager = new PersonManager();
 
+    public Integer createPerson(PersonDTO personDTO){
+        return personManager.createPerson(personDTO);
+    }
+
+    public Integer updatePerson(PersonDTO personDTO){
+        return personManager.updatePerson(personDTO);
+    }
+
     public List<PersonDTO> findAllPersonInAlphabeticalOrder(){
         return personManager.findAllPersonInAlphabeticalOrder();
     }
 
     public PersonDTO findPersonById(Integer id){
-
         return personManager.findPersonById(id);
     }
 

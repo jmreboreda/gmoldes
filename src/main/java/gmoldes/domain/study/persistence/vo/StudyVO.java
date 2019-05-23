@@ -7,6 +7,10 @@ import java.io.Serializable;
 @Table(name = "study")
 @NamedQueries(value = {
         @NamedQuery(
+                name = StudyVO.FIND_ALL_STUDY,
+                query = "select p from StudyVO p order by study_id"
+        ),
+        @NamedQuery(
                 name = StudyVO.FIND_STUDY_BY_ID,
                 query = "select p from StudyVO p where p.study_id = :code"
         )
@@ -14,6 +18,7 @@ import java.io.Serializable;
 
 public class StudyVO implements Serializable {
 
+    public static final String FIND_ALL_STUDY = "StudyVO.FIND_ALL_STUDY";
     public static final String FIND_STUDY_BY_ID = "StudyVO.FIND_STUDY_BY_ID";
 
     @Id
