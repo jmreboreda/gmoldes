@@ -246,9 +246,12 @@ public class PersonManagementData extends VBox {
         personExtendedDirection.setText(personDTO.getDireccion());
         personPostalCode.setText(personDTO.getCodpostal().toString());
         personMunicipality.setText(personDTO.getLocalidad());
-        personStudyLevel.getItems().set(0,studyDTO);
-        personStudyLevel.getSelectionModel().select(0);
-
+        for (StudyDTO studyDTOItem : personStudyLevel.getItems()) {
+            if (studyDTO.getStudyDescription().equals(studyDTOItem.getStudyDescription())) {
+                personStudyLevel.getSelectionModel().select(studyDTOItem);
+                break ;
+            }
+        }
     }
 
     private void onPersonSurNamesPatternChanged(KeyEvent keyEvent){
