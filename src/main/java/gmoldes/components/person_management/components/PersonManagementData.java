@@ -2,6 +2,7 @@ package gmoldes.components.person_management.components;
 
 import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
+import gmoldes.components.person_management.PersonManagementConstants;
 import gmoldes.components.person_management.events.PersonSurNamesItemSelectedEvent;
 import gmoldes.components.person_management.events.PersonSurNamesPatternChangedEvent;
 import gmoldes.domain.person.dto.PersonDTO;
@@ -12,12 +13,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
 import java.time.format.DateTimeFormatter;
@@ -34,11 +37,25 @@ public class PersonManagementData extends VBox {
     private EventHandler<PersonSurNamesItemSelectedEvent> surNamesItemSelectedEventHandler;
 
     @FXML
+    private Group newPersonGroup;
+    @FXML
+    private HBox newPersonHbox;
+    @FXML
     private ComboBox <PersonDTO> personSurNames;
+    @FXML
+    private Label personNameLabel;
     @FXML
     private TextField personName;
     @FXML
     private CheckBox normalizeText;
+    @FXML
+    private Group modificationPersonGroup;
+    @FXML
+    private HBox modificationPersonHbox;
+    @FXML
+    private TextField personNewSurNames;
+    @FXML
+    private TextField personNewName;
     @FXML
     private TextField personNIF;
     @FXML
@@ -63,14 +80,38 @@ public class PersonManagementData extends VBox {
     private final Pattern letterPattern = Pattern.compile("[A-Za-zÑñÁÉÍÓÚáéíóú]");
     private final Pattern numberPattern = Pattern.compile("[0-9]");
 
-
     public PersonManagementData() {
         this.parent = ViewLoader.load(this, NEW_PERSON_DATA_FXML);
     }
 
     public void initialize(){
         personSurNames.setOnKeyReleased(this::onPersonSurNamesPatternChanged);
-        personSurNames.setOnMouseClicked(this::onPersonSurNamesItemSelected);
+
+        personSurNames.setConverter(new StringConverter<PersonDTO>() {
+
+            PersonDTO copyPersonDTO;
+            @Override
+            public String toString(PersonDTO personDTO) {
+                if (personDTO == null){
+                    return null;
+                }
+                copyPersonDTO = personDTO;
+                return personDTO.toString();
+            }
+
+            @Override
+            public PersonDTO fromString(String string) {
+
+                return copyPersonDTO;
+            }
+        });
+
+        personSurNames.getSelectionModel().selectedItemProperty()
+                .addListener((observable, oldValue, personDTOItemSelected) -> onPersonSurNamesItemSelected(personDTOItemSelected));
+
+        Tooltip tooltipNormalizeText = new Tooltip();
+        tooltipNormalizeText.setText(PersonManagementConstants.TOOLTIP_NORMALIZE_TEXT);
+        normalizeText.setTooltip(tooltipNormalizeText);
 
         personNIF.setOnKeyReleased(this::onPersonNIFVerifyOnlyLetterAndNumber);
         personNASS.setOnKeyReleased(this::onPersonNASSVerifyOnlyNumber);
@@ -98,8 +139,20 @@ public class PersonManagementData extends VBox {
         personBirthDate.setConverter(new LocalDateStringConverter(dateFormatter, null));
     }
 
+    public Group getNewPersonGroup() {
+        return newPersonGroup;
+    }
+
+    public HBox getNewPersonHbox() {
+        return newPersonHbox;
+    }
+
     public ComboBox<PersonDTO> getPersonSurNames() {
         return personSurNames;
+    }
+
+    public Label getPersonNameLabel() {
+        return personNameLabel;
     }
 
     public TextField getPersonName() {
@@ -108,6 +161,22 @@ public class PersonManagementData extends VBox {
 
     public CheckBox getNormalizeText() {
         return normalizeText;
+    }
+
+    public Group getModificationPersonGroup() {
+        return modificationPersonGroup;
+    }
+
+    public HBox getModificationPersonHbox() {
+        return modificationPersonHbox;
+    }
+
+    public TextField getPersonNewSurNames() {
+        return personNewSurNames;
+    }
+
+    public TextField getPersonNewName() {
+        return personNewName;
     }
 
     public TextField getPersonNIF() {
@@ -160,12 +229,20 @@ public class PersonManagementData extends VBox {
         }
     }
 
-//    public void refreshPersonData(PersonDTO personDTO){
-//        //personSurNames.getEditor().setText(personDTO.getApellidos());
-//        personName.setText(personDTO.getNom_rzsoc());
-//        personNIF.setText(personDTO.getNifcif());
-//        personNASS.setText(personDTO.getNumafss());
-//    }
+    public void completePersonData(PersonDTO personDTO){
+        personName.setText("patata");
+        personNewSurNames.setText(personDTO.getApellidos());
+        personNewName.setText(personDTO.getNom_rzsoc());
+        personNIF.setText(personDTO.getNifcif());
+        personNASS.setText(personDTO.getNumafss());
+        personBirthDate.setValue(personDTO.getFechanacim());
+        personCivilStatus.setText(personDTO.getEstciv());
+        personNationality.setText(personDTO.getNacionalidad());
+        personExtendedDirection.setText(personDTO.getDireccion());
+        personPostalCode.setText(personDTO.getCodpostal().toString());
+        personMunicipality.setText(personDTO.getLocalidad());
+
+    }
 
     private void onPersonSurNamesPatternChanged(KeyEvent keyEvent){
         String pattern = personSurNames.getEditor().getText();
@@ -174,8 +251,8 @@ public class PersonManagementData extends VBox {
         surNamesPatternChangedEventHandler.handle(personSurNamesPatternChangedEvent);
     }
 
-    private void onPersonSurNamesItemSelected(MouseEvent event){
-        PersonSurNamesItemSelectedEvent personSurNamesItemSelectedEvent = new PersonSurNamesItemSelectedEvent(getPersonSurNames().getValue());
+    private void onPersonSurNamesItemSelected(PersonDTO personDTOItemSelected){
+        PersonSurNamesItemSelectedEvent personSurNamesItemSelectedEvent = new PersonSurNamesItemSelectedEvent(personDTOItemSelected);
         surNamesItemSelectedEventHandler.handle(personSurNamesItemSelectedEvent);
     }
 
