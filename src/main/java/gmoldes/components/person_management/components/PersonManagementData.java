@@ -88,8 +88,8 @@ public class PersonManagementData extends VBox {
         personSurNames.setOnKeyReleased(this::onPersonSurNamesPatternChanged);
 
         personSurNames.setConverter(new StringConverter<PersonDTO>() {
+        PersonDTO copyPersonDTO;
 
-            PersonDTO copyPersonDTO;
             @Override
             public String toString(PersonDTO personDTO) {
                 if (personDTO == null){
@@ -101,6 +101,13 @@ public class PersonManagementData extends VBox {
 
             @Override
             public PersonDTO fromString(String string) {
+                if(!string.equals(copyPersonDTO.getApellidos().concat(", ").concat(copyPersonDTO.getNom_rzsoc()))){
+
+                    return PersonDTO.create()
+                            .withApellidos(string)
+                            .withNom_rzsoc("")
+                            .build();
+                }
 
                 return copyPersonDTO;
             }
@@ -229,8 +236,8 @@ public class PersonManagementData extends VBox {
         }
     }
 
-    public void completePersonData(PersonDTO personDTO){
-        personName.setText("patata");
+    public void completePersonData(PersonDTO personDTO, StudyDTO studyDTO){
+        personName.setText("$");
         personNewSurNames.setText(personDTO.getApellidos());
         personNewName.setText(personDTO.getNom_rzsoc());
         personNIF.setText(personDTO.getNifcif());
@@ -241,7 +248,9 @@ public class PersonManagementData extends VBox {
         personExtendedDirection.setText(personDTO.getDireccion());
         personPostalCode.setText(personDTO.getCodpostal().toString());
         personMunicipality.setText(personDTO.getLocalidad());
-
+        ObservableList<StudyDTO> studyDTOObservableList = FXCollections.observableArrayList(studyDTO);
+        personStudyLevel.setItems(studyDTOObservableList);
+        personStudyLevel.getSelectionModel().select(0);
     }
 
     private void onPersonSurNamesPatternChanged(KeyEvent keyEvent){

@@ -87,7 +87,8 @@ public class PersonManagementMainController extends VBox {
         personManagementData.getPersonSurNames().getSelectionModel().clearSelection();
         personManagementData.getPersonName().setText("");
         personManagementData.getPersonNIF().setText("");
-        personManagementData.getPersonNASS().setText("");
+        String spaces = "            ";
+        personManagementData.getPersonNASS().setText(spaces);
         personManagementData.getPersonBirthDate().setValue(null);
         personManagementData.getPersonCivilStatus().setText("");
         personManagementData.getPersonNationality().setText("Española");
@@ -128,7 +129,10 @@ public class PersonManagementMainController extends VBox {
 
             personManagementData.getPersonSurNames().setStyle("-fx-text-inner-color: #640000;");
             personManagementData.getPersonSurNames().setMouseTransparent(true);
-            personManagementData.completePersonData(personSurNamesItemSelectedEvent.getPersonDTO());
+
+            StudyController studyController = new StudyController();
+            StudyDTO studyDTO = studyController.findStudyById(personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getNivestud());
+            personManagementData.completePersonData(personSurNamesItemSelectedEvent.getPersonDTO(), studyDTO);
         }else{
 
             personManagementData.getPersonSurNames().getSelectionModel().clearSelection();
@@ -197,7 +201,7 @@ public class PersonManagementMainController extends VBox {
         if(personManagementSelector.getNewPerson().isSelected()) {
             personDTO = PersonDTO.create()
                     .withIdpersona(null)
-                    .withApellidos(personManagementData.getPersonSurNames().getEditor().getText())
+                    .withApellidos(personManagementData.getPersonSurNames().getEditor().getText().replace(",", ""))
                     .withNom_rzsoc(personManagementData.getPersonName().getText())
                     .withNifcif(personManagementData.getPersonNIF().getText())
                     .withNifcifdup(zeroShort)
@@ -212,7 +216,6 @@ public class PersonManagementMainController extends VBox {
                     .build();
 
         }else if(personManagementSelector.getModificationPerson().isSelected()){
-            System.out.println("personId: " + personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getIdpersona());
 
             Integer personId = personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getIdpersona();
 

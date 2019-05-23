@@ -10,9 +10,15 @@ public class StudyController {
 
     }
 
-    public List<StudyDTO> findAllStudy(){
-
+    public StudyDTO findStudyById(Integer studyId){
         StudyManager studyManager = new StudyManager();
+
+        return studyManager.findStudyById(studyId);
+    }
+
+    public List<StudyDTO> findAllStudy(){
+        StudyManager studyManager = new StudyManager();
+
         return studyManager.findAllStudy();
     }
 }
