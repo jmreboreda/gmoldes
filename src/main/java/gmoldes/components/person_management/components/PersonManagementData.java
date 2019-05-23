@@ -116,9 +116,7 @@ public class PersonManagementData extends VBox {
         personSurNames.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, personDTOItemSelected) -> onPersonSurNamesItemSelected(personDTOItemSelected));
 
-        Tooltip tooltipNormalizeText = new Tooltip();
-        tooltipNormalizeText.setText(PersonManagementConstants.TOOLTIP_NORMALIZE_TEXT);
-        normalizeText.setTooltip(tooltipNormalizeText);
+        normalizeText.setTooltip(new Tooltip(PersonManagementConstants.TOOLTIP_NORMALIZE_TEXT));
 
         personNIF.setOnKeyReleased(this::onPersonNIFVerifyOnlyLetterAndNumber);
         personNASS.setOnKeyReleased(this::onPersonNASSVerifyOnlyNumber);
@@ -248,9 +246,9 @@ public class PersonManagementData extends VBox {
         personExtendedDirection.setText(personDTO.getDireccion());
         personPostalCode.setText(personDTO.getCodpostal().toString());
         personMunicipality.setText(personDTO.getLocalidad());
-        ObservableList<StudyDTO> studyDTOObservableList = FXCollections.observableArrayList(studyDTO);
-        personStudyLevel.setItems(studyDTOObservableList);
+        personStudyLevel.getItems().set(0,studyDTO);
         personStudyLevel.getSelectionModel().select(0);
+
     }
 
     private void onPersonSurNamesPatternChanged(KeyEvent keyEvent){
