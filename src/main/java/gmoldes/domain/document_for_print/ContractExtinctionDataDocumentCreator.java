@@ -16,10 +16,9 @@ import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.study.StudyManager;
+import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.utilities.OSUtils;
-import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 
 import java.io.IOException;
@@ -96,7 +95,7 @@ public class ContractExtinctionDataDocumentCreator {
 
     private ContractFullDataDTO retrieveContractFullData(){
 
-        String quoteAccountCode = this.contractVariationMainController.getContractVariationParts().getClientSelector().getValue().getClientCCC() == null ? "" : this.contractVariationMainController.getContractVariationParts().getClientSelector().getValue().getClientCCC().toString();
+        String quoteAccountCode = this.contractVariationMainController.getContractVariationParts().getClientSelector().getValue().getClientCCC() == null ? "" : this.contractVariationMainController.getContractVariationParts().getContractSelector().getValue().getContractNewVersion().getContractJsonData().getQuoteAccountCode();
 
         String identificationContractNumberINEM =
                 this.contractVariationMainController.getContractVariationParts().getContractSelector().getValue().getContractNewVersion()

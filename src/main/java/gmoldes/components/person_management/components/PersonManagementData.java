@@ -235,6 +235,7 @@ public class PersonManagementData extends VBox {
     }
 
     public void completePersonData(PersonDTO personDTO, StudyDTO studyDTO){
+
         personName.setText("$");
         personNewSurNames.setText(personDTO.getApellidos());
         personNewName.setText(personDTO.getNom_rzsoc());
