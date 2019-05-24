@@ -85,10 +85,13 @@ public class PersonManagementMainController extends VBox {
         personManagementAction.getOkButton().setDisable(true);
 
         personManagementData.getPersonSurNames().getSelectionModel().clearSelection();
+        personManagementData.getPersonSurNames().setMouseTransparent(false);
         personManagementData.getPersonName().setText("");
+        personManagementData.getPersonNewSurNames().setText("");
+        personManagementData.getPersonNewName().setText("");
         personManagementData.getPersonNIF().setText("");
-        String spaces = "            ";
-        personManagementData.getPersonNASS().setText(spaces);
+//        String spaces = "            ";
+        personManagementData.getPersonNASS().setText("");
         personManagementData.getPersonBirthDate().setValue(null);
         personManagementData.getPersonCivilStatus().setText("");
         personManagementData.getPersonNationality().setText("Española");
