@@ -171,6 +171,7 @@ public class PersonManagementMainController extends VBox {
     private void onOkButton(MouseEvent event){
         if(!validateEntryAllData()){
             Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.INCOMPLETE_DATA_ENTRY);
+            personManagementAction.getSaveButton().setDisable(true);
 
             return;
         }
@@ -181,6 +182,23 @@ public class PersonManagementMainController extends VBox {
             Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NIE_NIF_IS_NOT_VALID);
 
             return;
+        }else {
+            List<PersonDTO> repeatedNieNifList = verifyIsRepeatedNieNif(personManagementData.getPersonNIF().getText());
+            String detailedMessage = PersonManagementConstants.QUESTION_IS_CORRECT_REPEATED_NIE_NIF;
+            if (!repeatedNieNifList.isEmpty()) {
+                for(PersonDTO personDTO : repeatedNieNifList){
+                    detailedMessage = detailedMessage + "\t- " + personDTO.toAlphabeticalName() + "\n\n";
+                }
+
+                detailedMessage = detailedMessage + "¿ Desea mantener el NIE/NIF introducido ?" + "\n\n";
+
+                if (!Message.confirmationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, detailedMessage)) {
+                    personManagementData.getPersonNIF().setText(null);
+                    personManagementAction.getSaveButton().setDisable(true);
+
+                    return;
+                }
+            }
         }
 
         if(personManagementData.getPersonNASS().getText().length() != 12){
@@ -194,6 +212,13 @@ public class PersonManagementMainController extends VBox {
     }
 
     private void onSaveButton(MouseEvent event){
+        if(!validateEntryAllData()){
+            Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.INCOMPLETE_DATA_ENTRY);
+            personManagementAction.getSaveButton().setDisable(true);
+
+            return;
+        }
+
         personManagementData.setMouseTransparent(true);
 
         Short zeroShort = 0;
@@ -244,7 +269,7 @@ public class PersonManagementMainController extends VBox {
             Integer personId = personCreate();
 
             if(personId != null){
-                Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_SAVED_OK);
+                Message.informationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_SAVED_OK);
             }else{
                 Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_NOT_SAVED_OK);
                 personManagementData.setMouseTransparent(false);
@@ -256,7 +281,7 @@ public class PersonManagementMainController extends VBox {
             Integer personId = personUpdate();
 
             if(personId != null){
-                Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_SAVED_OK);
+                Message.informationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_SAVED_OK);
             }else{
                 Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_NOT_SAVED_OK);
                 personManagementData.setMouseTransparent(false);
@@ -295,6 +320,10 @@ public class PersonManagementMainController extends VBox {
         }
 
         return true;
+    }
+
+    private List<PersonDTO> verifyIsRepeatedNieNif(String nieNif){
+        return personController.findPersonByNieNif(nieNif);
     }
 
     private void normalizeDataEntry(){

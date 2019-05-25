@@ -9,7 +9,9 @@ public class PersonManagementConstants {
     public static final String PERSON_NOT_SAVED_OK = "ERROR!\n\nNo se ha podido guardar la persona en la base de datos.";
     public static final String PERSON_MODIFICATION_SAVED_OK = "Las modificaciones de la persona se han guardado correctamente en la base de datos.";
     public static final String PERSON_MODIFICATION_NOT_SAVED_OK = "ERROR!\n\nNo se han podido guardar las modificaciones de la persona en la base de datos.";
+    public static final String QUESTION_IS_CORRECT_REPEATED_NIE_NIF = "El NIE/NIF introducido ya existe en la tabla de personas para:\n\n";
 
-    public static final String TOOLTIP_NORMALIZE_TEXT = "Cuando está activado, pone en mayúsculas las letras iniciales de las palabras contenidas en los campos del formulario.";
+    public static final String TOOLTIP_NORMALIZE_TEXT = "Cuando está activado, pone en mayúsculas las letras iniciales de las palabras contenidas en los campos del formulario al" +
+            "pulsar el botón \"Aceptar\"";
 
 }

@@ -91,6 +91,32 @@ public class Message {
 
     }
 
+    public static void informationMessage(Window window, String title, String message){
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.initStyle(StageStyle.DECORATED);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setResizable(true);
+        if(title.contains(CheckConstants.INITIAL_CHECK_HEADER_TEXT)){
+            Double minimumWidth = title.length() < 74 ? 74*9.5 : title.length() * 9.5;      // Yea!, magic numbers!
+            alert.getDialogPane().setMinWidth(minimumWidth);
+            alert.getDialogPane().setCursor(Cursor.WAIT);
+        }else{
+            alert.initModality(Modality.WINDOW_MODAL);
+            alert.initOwner(window);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.getDialogPane().setCursor(Cursor.DEFAULT);
+        }
+
+        alert.setContentText(message);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(icon);
+        alert.showAndWait();
+
+    }
+
     public static void errorMessage(Window window, String title, String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.initStyle(StageStyle.UTILITY);
