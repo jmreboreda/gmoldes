@@ -65,17 +65,18 @@ public class PersonManagementMainController extends VBox {
         logger.info("Initializing new person main fxml");
         this.parent = ViewLoader.load(this, NEW_PERSON_MAIN_FXML);
 
-        loadInitialInterfaceStatus();
+        loadInitialStateDataInterface();
         loadStudy();
     }
 
-    private void loadInitialInterfaceStatus(){
+    private void loadInitialStateDataInterface(){
         personManagementSelector.getNewPerson().setDisable(false);
         personManagementSelector.getNewPerson().setSelected(false);
         personManagementSelector.getModificationPerson().setDisable(false);
         personManagementSelector.getModificationPerson().setSelected(false);
         personManagementSelector.getDeletePerson().setDisable(false);
         personManagementSelector.getDeletePerson().setSelected(false);
+//        personManagementSelector.getPersonManagementGroup().
 
         personManagementData.getNormalizeText().setSelected(true);
         personManagementData.setDisable(true);
@@ -88,9 +89,9 @@ public class PersonManagementMainController extends VBox {
         personManagementData.getPersonSurNames().setMouseTransparent(false);
         personManagementData.getPersonName().setText("");
         personManagementData.getPersonNewSurNames().setText("");
+        personManagementData.getPersonSurNames().setStyle(PersonManagementConstants.BLUE_COLOR);
         personManagementData.getPersonNewName().setText("");
         personManagementData.getPersonNIF().setText("");
-//        String spaces = "            ";
         personManagementData.getPersonNASS().setText("");
         personManagementData.getPersonBirthDate().setValue(null);
         personManagementData.getPersonCivilStatus().setText("");
@@ -130,7 +131,7 @@ public class PersonManagementMainController extends VBox {
 
         if(personManagementSelector.getModificationPerson().isSelected()){
 
-            personManagementData.getPersonSurNames().setStyle("-fx-text-inner-color: #640000;");
+            personManagementData.getPersonSurNames().setStyle(PersonManagementConstants.RED_COLOR);
             personManagementData.getPersonSurNames().setMouseTransparent(true);
 
             StudyController studyController = new StudyController();
@@ -162,6 +163,12 @@ public class PersonManagementMainController extends VBox {
             personManagementData.getModificationPersonGroup().setVisible(true);
             personManagementData.getNewPersonHbox().setVisible(true);
             personManagementData.getModificationPersonHbox().setVisible(true);
+        }
+        if(personManagementSelector.getDeletePerson().isSelected()){
+            Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.OPTION_NOT_IMPLEMENTED_STILL);
+            personManagementSelector.setInitialState();
+
+            return;
         }
 
         personManagementData.setDisable(false);
@@ -294,7 +301,8 @@ public class PersonManagementMainController extends VBox {
             Integer personId = personDelete();
         }
 
-        loadInitialInterfaceStatus();
+        loadInitialStateDataInterface();
+//        personManagementSelector.setInitialState();
     }
 
     private void onExitButton(MouseEvent event){
