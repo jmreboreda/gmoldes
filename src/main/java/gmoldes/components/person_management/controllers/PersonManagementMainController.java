@@ -63,7 +63,7 @@ public class PersonManagementMainController extends VBox {
     }
 
     public PersonManagementMainController() {
-        logger.info("Initializing new person main fxml");
+        logger.info("Initializing person management main fxml");
         this.parent = ViewLoader.load(this, NEW_PERSON_MAIN_FXML);
 
         loadInitialStateDataInterface();
@@ -277,9 +277,13 @@ public class PersonManagementMainController extends VBox {
 
             if(personId != null){
                 Message.informationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_SAVED_OK);
+                logger.info("Person management: new person saved ok.");
+
             }else{
                 Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_NOT_SAVED_OK);
                 personManagementData.setMouseTransparent(false);
+                logger.info("Person management: new person failed.");
+
 
                 return;
             }
@@ -289,9 +293,12 @@ public class PersonManagementMainController extends VBox {
 
             if(personId != null){
                 Message.informationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_SAVED_OK);
+                logger.info("Person management: person updated ok.");
+
             }else{
                 Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_NOT_SAVED_OK);
                 personManagementData.setMouseTransparent(false);
+                logger.info("Person management: person updated failed.");
 
                 return;
             }
@@ -305,6 +312,8 @@ public class PersonManagementMainController extends VBox {
     }
 
     private void onExitButton(MouseEvent event){
+        logger.info("Person management: exiting program.");
+
         Stage stage = (Stage) personManagementHeader.getScene().getWindow();
         stage.close();
     }
