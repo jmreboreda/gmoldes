@@ -23,6 +23,8 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -236,21 +238,30 @@ public class PersonManagementData extends VBox {
 
     public void completePersonData(PersonDTO personDTO, StudyDTO studyDTO){
 
+        LocalDate birthDate = personDTO.getFechanacim() != null ? personDTO.getFechanacim() : LocalDate.of(9999, 12, 31);
+        String civilState = personDTO.getEstciv() != null ? personDTO.getEstciv() : "No disponible";
+        String nationality = personDTO.getNacionalidad() != null ? personDTO.getNacionalidad() : "No disponible";
+        String address = personDTO.getDireccion() != null ? personDTO.getDireccion() : "No disponible";
+        BigDecimal postalCode = personDTO.getCodpostal() != null ? personDTO.getCodpostal() : new BigDecimal(99999);
+        String location = personDTO.getLocalidad() != null ? personDTO.getLocalidad() : "No disponible";
+
         personName.setText("$");
         personNewSurNames.setText(personDTO.getApellidos());
         personNewName.setText(personDTO.getNom_rzsoc());
         personNIF.setText(personDTO.getNifcif());
         personNASS.setText(personDTO.getNumafss());
-        personBirthDate.setValue(personDTO.getFechanacim());
-        personCivilStatus.setText(personDTO.getEstciv());
-        personNationality.setText(personDTO.getNacionalidad());
-        personExtendedDirection.setText(personDTO.getDireccion());
-        personPostalCode.setText(personDTO.getCodpostal().toString());
-        personMunicipality.setText(personDTO.getLocalidad());
+        personBirthDate.setValue(birthDate);
+        personCivilStatus.setText(civilState);
+        personNationality.setText(nationality);
+        personExtendedDirection.setText(address);
+        personPostalCode.setText(postalCode.toString());
+        personMunicipality.setText(location);
         for (StudyDTO studyDTOItem : personStudyLevel.getItems()) {
             if (studyDTO.getStudyDescription().equals(studyDTOItem.getStudyDescription())) {
                 personStudyLevel.getSelectionModel().select(studyDTOItem);
                 break ;
+            }else{
+                personStudyLevel.getSelectionModel().select(0);
             }
         }
     }

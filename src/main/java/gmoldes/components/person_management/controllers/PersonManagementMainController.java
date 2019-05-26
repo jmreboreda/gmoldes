@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 public class PersonManagementMainController extends VBox {
 
     private static final Logger logger = Logger.getLogger(PersonManagementMainController.class.getSimpleName());
+    private static final String SPANISH_NATIONALITY = "Española";
     private static final String NEW_PERSON_MAIN_FXML = "/fxml/person_management/person_management_main.fxml";
 
     private Parent parent;
@@ -94,7 +95,7 @@ public class PersonManagementMainController extends VBox {
         personManagementData.getPersonNASS().setText("");
         personManagementData.getPersonBirthDate().setValue(null);
         personManagementData.getPersonCivilStatus().setText("");
-        personManagementData.getPersonNationality().setText("Española");
+        personManagementData.getPersonNationality().setText(SPANISH_NATIONALITY);
         personManagementData.getPersonExtendedDirection().setText("");
         personManagementData.getPersonPostalCode().setText("");
         personManagementData.getPersonLocation().setText("");
