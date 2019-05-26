@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 public class PersonManagementData extends VBox {
 
     private static final String NEW_PERSON_DATA_FXML = "/fxml/person_management/person_management_data.fxml";
+    private static final String NOT_AVAILABLE_TEXT = "No disponible";
 
     private Parent parent;
 
@@ -239,11 +240,11 @@ public class PersonManagementData extends VBox {
     public void completePersonData(PersonDTO personDTO, StudyDTO studyDTO){
 
         LocalDate birthDate = personDTO.getFechanacim() != null ? personDTO.getFechanacim() : LocalDate.of(9999, 12, 31);
-        String civilState = personDTO.getEstciv() != null ? personDTO.getEstciv() : "No disponible";
-        String nationality = personDTO.getNacionalidad() != null ? personDTO.getNacionalidad() : "No disponible";
-        String address = personDTO.getDireccion() != null ? personDTO.getDireccion() : "No disponible";
+        String civilState = personDTO.getEstciv() != null ? personDTO.getEstciv() : NOT_AVAILABLE_TEXT;
+        String nationality = personDTO.getNacionalidad() != null ? personDTO.getNacionalidad() : NOT_AVAILABLE_TEXT;
+        String address = personDTO.getDireccion() != null ? personDTO.getDireccion() : NOT_AVAILABLE_TEXT;
         BigDecimal postalCode = personDTO.getCodpostal() != null ? personDTO.getCodpostal() : new BigDecimal(99999);
-        String location = personDTO.getLocalidad() != null ? personDTO.getLocalidad() : "No disponible";
+        String location = personDTO.getLocalidad() != null ? personDTO.getLocalidad() : NOT_AVAILABLE_TEXT;
 
         personName.setText("$");
         personNewSurNames.setText(personDTO.getApellidos());
