@@ -118,30 +118,32 @@ public class PersonManager {
                 .build();
     }
 
-    public List<PersonDTO> findPersonByNieNif(String nieNif){
+    public List<PersonDTO> findPersonByNieNif(String nieNif, Integer personId){
         List<PersonDTO> personDTOList = new ArrayList<>();
         PersonDAO personDAO = PersonDAO.PersonDAOFactory.getInstance();
         List<PersonVO> personVOList = personDAO.findPersonByNieNif(nieNif);
 
-        for(PersonVO personVO : personVOList){
-            LocalDate fechaNacim = personVO.getFechanacim() != null ? personVO.getFechanacim().toLocalDate() : null;
-            PersonDTO personDTO = PersonDTO.create()
-                    .withIdpersona(personVO.getIdpersona())
-                    .withApellidos(personVO.getApellidos())
-                    .withNom_rzsoc(personVO.getNom_rzsoc())
-                    .withCodpostal(personVO.getCodpostal())
-                    .withDireccion(personVO.getDireccion())
-                    .withNumafss(personVO.getNumafss())
-                    .withEstciv(personVO.getEstciv())
-                    .withFechanacim(fechaNacim)
-                    .withLocalidad(personVO.getLocalidad())
-                    .withNacionalidad(personVO.getNacionalidad())
-                    .withNifcif(personVO.getNifcif())
-                    .withNifcifdup(personVO.getNifcifdup())
-                    .withNivestud(personVO.getNivestud())
-                    .build();
+        for(PersonVO personVO : personVOList) {
+            if (!personVO.getIdpersona().equals(personId)) {
+                    LocalDate fechaNacim = personVO.getFechanacim() != null ? personVO.getFechanacim().toLocalDate() : null;
+                    PersonDTO personDTO = PersonDTO.create()
+                            .withIdpersona(personVO.getIdpersona())
+                            .withApellidos(personVO.getApellidos())
+                            .withNom_rzsoc(personVO.getNom_rzsoc())
+                            .withCodpostal(personVO.getCodpostal())
+                            .withDireccion(personVO.getDireccion())
+                            .withNumafss(personVO.getNumafss())
+                            .withEstciv(personVO.getEstciv())
+                            .withFechanacim(fechaNacim)
+                            .withLocalidad(personVO.getLocalidad())
+                            .withNacionalidad(personVO.getNacionalidad())
+                            .withNifcif(personVO.getNifcif())
+                            .withNifcifdup(personVO.getNifcifdup())
+                            .withNivestud(personVO.getNivestud())
+                            .build();
 
-            personDTOList.add(personDTO);
+                    personDTOList.add(personDTO);
+            }
         }
 
         return personDTOList;

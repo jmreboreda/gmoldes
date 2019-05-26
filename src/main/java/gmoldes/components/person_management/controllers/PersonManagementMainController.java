@@ -76,7 +76,6 @@ public class PersonManagementMainController extends VBox {
         personManagementSelector.getModificationPerson().setSelected(false);
         personManagementSelector.getDeletePerson().setDisable(false);
         personManagementSelector.getDeletePerson().setSelected(false);
-//        personManagementSelector.getPersonManagementGroup().
 
         personManagementData.getNormalizeText().setSelected(true);
         personManagementData.setDisable(true);
@@ -166,7 +165,7 @@ public class PersonManagementMainController extends VBox {
         }
         if(personManagementSelector.getDeletePerson().isSelected()){
             Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.OPTION_NOT_IMPLEMENTED_STILL);
-            personManagementSelector.setInitialState();
+            loadInitialStateDataInterface();
 
             return;
         }
@@ -190,7 +189,7 @@ public class PersonManagementMainController extends VBox {
 
             return;
         }else {
-            List<PersonDTO> repeatedNieNifList = verifyIsRepeatedNieNif(personManagementData.getPersonNIF().getText());
+            List<PersonDTO> repeatedNieNifList = verifyIsRepeatedNieNif(personManagementData.getPersonNIF().getText(), personManagementData.getPersonSurNames().getValue().getIdpersona());
             String detailedMessage = PersonManagementConstants.QUESTION_IS_CORRECT_REPEATED_NIE_NIF;
             if (!repeatedNieNifList.isEmpty()) {
                 for(PersonDTO personDTO : repeatedNieNifList){
@@ -302,7 +301,6 @@ public class PersonManagementMainController extends VBox {
         }
 
         loadInitialStateDataInterface();
-//        personManagementSelector.setInitialState();
     }
 
     private void onExitButton(MouseEvent event){
@@ -330,8 +328,8 @@ public class PersonManagementMainController extends VBox {
         return true;
     }
 
-    private List<PersonDTO> verifyIsRepeatedNieNif(String nieNif){
-        return personController.findPersonByNieNif(nieNif);
+    private List<PersonDTO> verifyIsRepeatedNieNif(String nieNif, Integer personId){
+        return personController.findPersonByNieNif(nieNif, personId);
     }
 
     private void normalizeDataEntry(){

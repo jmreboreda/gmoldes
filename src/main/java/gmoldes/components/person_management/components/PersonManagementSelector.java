@@ -72,13 +72,6 @@ public class PersonManagementSelector extends VBox {
         return personManagementGroup;
     }
 
-    public void setInitialState(){
-        getNewPerson().setSelected(false);
-        getModificationPerson().setSelected(false);
-        getDeletePerson().setSelected(false);
-        this.setDisable(false);
-    }
-
     private void onSelectorAction(ActionEvent event){
         selectorActionEventHandler.handle(event);
     }

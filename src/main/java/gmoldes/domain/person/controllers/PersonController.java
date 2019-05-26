@@ -29,8 +29,8 @@ public class PersonController {
         return personManager.findAllPersonsByNamePatternInAlphabeticalOrder(pattern);
     }
 
-    public List<PersonDTO> findPersonByNieNif(String nieNif){
+    public List<PersonDTO> findPersonByNieNif(String nieNif, Integer personId){
 
-        return personManager.findPersonByNieNif(nieNif);
+        return personManager.findPersonByNieNif(nieNif, personId);
     }
 }
