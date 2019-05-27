@@ -177,42 +177,27 @@ public class PersonManagementMainController extends VBox {
 
     private void onOkButton(MouseEvent event){
         if(!validateEntryAllData()){
-            Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.INCOMPLETE_DATA_ENTRY);
-            personManagementAction.getSaveButton().setDisable(true);
 
             return;
         }
 
         personManagementData.getPersonNIF().setText(personManagementData.getPersonNIF().getText().toUpperCase());
-        NieNif introducedNieNif = new NieNif(personManagementData.getPersonNIF().getText());
-        if(!introducedNieNif.validateNieNif()){
-            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NIE_NIF_IS_NOT_VALID);
 
-            return;
-        }else {
-            List<PersonDTO> repeatedNieNifList = verifyIsRepeatedNieNif(personManagementData.getPersonNIF().getText(), personManagementData.getPersonSurNames().getValue().getIdpersona());
-            String detailedMessage = PersonManagementConstants.QUESTION_IS_CORRECT_REPEATED_NIE_NIF;
-            if (!repeatedNieNifList.isEmpty()) {
-                for(PersonDTO personDTO : repeatedNieNifList){
-                    detailedMessage = detailedMessage + "\t- " + personDTO.toAlphabeticalName() + "\n\n";
-                }
+            if(!validateNieNif(personManagementData.getPersonNIF().getText())){
 
-                detailedMessage = detailedMessage + "¿ Desea mantener el NIE/NIF introducido ?" + "\n\n";
-
-                if (!Message.confirmationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, detailedMessage)) {
-                    personManagementData.getPersonNIF().setText(null);
-                    personManagementAction.getSaveButton().setDisable(true);
-
-                    return;
-                }
+                return;
             }
-        }
 
-        if(personManagementData.getPersonNASS().getText().length() != 12){
-            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
+        if(!validateNASS(personManagementData.getPersonNASS().getText())){
 
             return;
         }
+
+//        if(personManagementData.getPersonNASS().getText().length() != 12){
+//            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
+//
+//            return;
+//        }
 
         normalizeDataEntry();
         personManagementAction.getSaveButton().setDisable(false);
@@ -221,6 +206,18 @@ public class PersonManagementMainController extends VBox {
     private void onSaveButton(MouseEvent event){
         if(!validateEntryAllData()){
             Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.INCOMPLETE_DATA_ENTRY);
+            personManagementAction.getSaveButton().setDisable(true);
+
+            return;
+        }
+
+        if(!validateNieNif(personManagementData.getPersonNIF().getText())){
+            personManagementAction.getSaveButton().setDisable(true);
+
+            return;
+        }
+
+        if(!validateNASS(personManagementData.getPersonNASS().getText())){
             personManagementAction.getSaveButton().setDisable(true);
 
             return;
@@ -332,13 +329,80 @@ public class PersonManagementMainController extends VBox {
                 personManagementData.getPersonMunicipality().getText().equals("") ||
                 personManagementData.getPersonStudyLevel().getSelectionModel().getSelectedItem() == null){
 
+            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.INCOMPLETE_DATA_ENTRY);
+            personManagementAction.getSaveButton().setDisable(true);
+
             return false;
         }
 
         return true;
     }
 
+    private Boolean validateNieNif(String nienif){
+        NieNif introducedNieNif = new NieNif(personManagementData.getPersonNIF().getText());
+        if(!introducedNieNif.validateNieNif()){
+            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NIE_NIF_IS_NOT_VALID);
+            personManagementAction.getSaveButton().setDisable(true);
+
+            return false;
+        }
+        else {
+            List<PersonDTO> repeatedNieNifList = verifyIsRepeatedNieNif(personManagementData.getPersonNIF().getText(), personManagementData.getPersonSurNames().getValue().getIdpersona());
+            String detailedMessage = PersonManagementConstants.QUESTION_IS_CORRECT_REPEATED_NIE_NIF;
+            if (!repeatedNieNifList.isEmpty()) {
+                for(PersonDTO personDTO : repeatedNieNifList){
+                    detailedMessage = detailedMessage + "\t- " + personDTO.toAlphabeticalName() + "\n\n";
+                }
+
+                detailedMessage = detailedMessage + "¿ Desea mantener el NIE/NIF introducido ?" + "\n\n";
+
+                if (!Message.confirmationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, detailedMessage)) {
+                    personManagementData.getPersonNIF().setText(null);
+                    personManagementAction.getSaveButton().setDisable(true);
+
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private Boolean validateNASS(String numberASS){
+        Boolean isValidNASS = true;
+
+        if(numberASS.length() != 12){
+            isValidNASS = false;
+        }
+
+        Integer firstTwoNASSNumbers = Integer.parseInt(numberASS.substring(0, 2));
+        if(firstTwoNASSNumbers < 1 || (firstTwoNASSNumbers > 53 && firstTwoNASSNumbers != 66)){
+            isValidNASS = false;
+        }
+
+        Long lastTwoNASSNumbers = Long.parseLong(numberASS.substring(10, 12));
+
+        Long numberNASSWithoutControlDigit = Long.parseLong(numberASS.substring(0, 10));
+
+        Long nassControlDigit = numberNASSWithoutControlDigit % 97;
+        if(lastTwoNASSNumbers != nassControlDigit){
+            isValidNASS = false;
+        }
+
+//        System.out.println("NASS dos primeros números: " + firstTwoNASSNumbers + "\n" +
+//                "NASS dos últimos números: " + lastTwoNASSNumbers + "\n" +
+//                "NASS primeros diez números: " + numberNASSWithoutControlDigit);
+
+        if(!isValidNASS){
+            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
+
+        }
+
+        return isValidNASS;
+    }
+
     private List<PersonDTO> verifyIsRepeatedNieNif(String nieNif, Integer personId){
+
         return personController.findPersonByNieNif(nieNif, personId);
     }
 
