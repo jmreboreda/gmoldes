@@ -305,6 +305,14 @@ public class PersonManagementMainController extends VBox {
     }
 
     private void onExitButton(MouseEvent event){
+        if(personManagementSelector.getNewPerson().isSelected() ||
+        personManagementSelector.getModificationPerson().isSelected() ||
+        personManagementSelector.getDeletePerson().isSelected()){
+            loadInitialStateDataInterface();
+
+            return;
+        }
+
         logger.info("Person management: exiting program.");
 
         Stage stage = (Stage) personManagementHeader.getScene().getWindow();
