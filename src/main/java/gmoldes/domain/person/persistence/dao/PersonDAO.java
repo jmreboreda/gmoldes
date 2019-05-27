@@ -90,6 +90,13 @@ public class PersonDAO {
         return (PersonVO) query.getSingleResult();
     }
 
+    public List<PersonVO> findPersonByNieNif(String nieNif){
+        TypedQuery<PersonVO> query = session.createNamedQuery(PersonVO.FIND_PERSON_BY_NIE_NIF, PersonVO.class);
+        query.setParameter("nieNif", nieNif);
+
+        return query.getResultList();
+    }
+
     public PersonVO findClientById(Integer id){
 
         Query query = session.createQuery(FIND_PERSON_BY_ID);

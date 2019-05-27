@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 public class PersonManagementMainController extends VBox {
 
     private static final Logger logger = Logger.getLogger(PersonManagementMainController.class.getSimpleName());
+    private static final String SPANISH_NATIONALITY = "Española";
     private static final String NEW_PERSON_MAIN_FXML = "/fxml/person_management/person_management_main.fxml";
 
     private Parent parent;
@@ -62,14 +63,14 @@ public class PersonManagementMainController extends VBox {
     }
 
     public PersonManagementMainController() {
-        logger.info("Initializing new person main fxml");
+        logger.info("Initializing person management main fxml");
         this.parent = ViewLoader.load(this, NEW_PERSON_MAIN_FXML);
 
-        loadInitialInterfaceStatus();
+        loadInitialStateDataInterface();
         loadStudy();
     }
 
-    private void loadInitialInterfaceStatus(){
+    private void loadInitialStateDataInterface(){
         personManagementSelector.getNewPerson().setDisable(false);
         personManagementSelector.getNewPerson().setSelected(false);
         personManagementSelector.getModificationPerson().setDisable(false);
@@ -88,13 +89,13 @@ public class PersonManagementMainController extends VBox {
         personManagementData.getPersonSurNames().setMouseTransparent(false);
         personManagementData.getPersonName().setText("");
         personManagementData.getPersonNewSurNames().setText("");
+        personManagementData.getPersonSurNames().setStyle(PersonManagementConstants.BLUE_COLOR);
         personManagementData.getPersonNewName().setText("");
         personManagementData.getPersonNIF().setText("");
-//        String spaces = "            ";
         personManagementData.getPersonNASS().setText("");
         personManagementData.getPersonBirthDate().setValue(null);
         personManagementData.getPersonCivilStatus().setText("");
-        personManagementData.getPersonNationality().setText("Española");
+        personManagementData.getPersonNationality().setText(SPANISH_NATIONALITY);
         personManagementData.getPersonExtendedDirection().setText("");
         personManagementData.getPersonPostalCode().setText("");
         personManagementData.getPersonLocation().setText("");
@@ -130,12 +131,15 @@ public class PersonManagementMainController extends VBox {
 
         if(personManagementSelector.getModificationPerson().isSelected()){
 
-            personManagementData.getPersonSurNames().setStyle("-fx-text-inner-color: #640000;");
+            personManagementData.getPersonSurNames().setStyle(PersonManagementConstants.RED_COLOR);
             personManagementData.getPersonSurNames().setMouseTransparent(true);
 
             StudyController studyController = new StudyController();
-            StudyDTO studyDTO = studyController.findStudyById(personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getNivestud());
-            personManagementData.completePersonData(personSurNamesItemSelectedEvent.getPersonDTO(), studyDTO);
+            Integer studyLevel = personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem() != null ?  personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getNivestud() : null;
+            if(studyLevel != null) {
+                StudyDTO studyDTO = studyController.findStudyById(personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getNivestud());
+                personManagementData.completePersonData(personSurNamesItemSelectedEvent.getPersonDTO(), studyDTO);
+            }
         }else{
 
             personManagementData.getPersonSurNames().getSelectionModel().clearSelection();
@@ -163,6 +167,12 @@ public class PersonManagementMainController extends VBox {
             personManagementData.getNewPersonHbox().setVisible(true);
             personManagementData.getModificationPersonHbox().setVisible(true);
         }
+        if(personManagementSelector.getDeletePerson().isSelected()){
+            Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.OPTION_NOT_IMPLEMENTED_STILL);
+            loadInitialStateDataInterface();
+
+            return;
+        }
 
         personManagementData.setDisable(false);
         personManagementAction.getOkButton().setDisable(false);
@@ -170,21 +180,18 @@ public class PersonManagementMainController extends VBox {
 
     private void onOkButton(MouseEvent event){
         if(!validateEntryAllData()){
-            Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.INCOMPLETE_DATA_ENTRY);
 
             return;
         }
 
         personManagementData.getPersonNIF().setText(personManagementData.getPersonNIF().getText().toUpperCase());
-        NieNif introducedNieNif = new NieNif(personManagementData.getPersonNIF().getText());
-        if(!introducedNieNif.validateNieNif()){
-            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NIE_NIF_IS_NOT_VALID);
 
-            return;
-        }
+            if(!validateNieNif(personManagementData.getPersonNIF().getText())){
 
-        if(personManagementData.getPersonNASS().getText().length() != 12){
-            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
+                return;
+            }
+
+        if(!validateNASS(personManagementData.getPersonNASS().getText())){
 
             return;
         }
@@ -194,9 +201,27 @@ public class PersonManagementMainController extends VBox {
     }
 
     private void onSaveButton(MouseEvent event){
+        if(!validateEntryAllData()){
+            Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.INCOMPLETE_DATA_ENTRY);
+            personManagementAction.getSaveButton().setDisable(true);
+
+            return;
+        }
+
+        if(!validateNieNif(personManagementData.getPersonNIF().getText())){
+            personManagementAction.getSaveButton().setDisable(true);
+
+            return;
+        }
+
+        if(!validateNASS(personManagementData.getPersonNASS().getText())){
+            personManagementAction.getSaveButton().setDisable(true);
+
+            return;
+        }
+
         personManagementData.setMouseTransparent(true);
 
-        Short zeroShort = 0;
         String direction = personManagementData.getPersonLocation().getText().equals(personManagementData.getPersonMunicipality().getText()) ?
                 personManagementData.getPersonExtendedDirection().getText() :
                 personManagementData.getPersonExtendedDirection().getText() + "   " + personManagementData.getPersonLocation().getText();
@@ -207,7 +232,7 @@ public class PersonManagementMainController extends VBox {
                     .withApellidos(personManagementData.getPersonSurNames().getEditor().getText().replace(",", ""))
                     .withNom_rzsoc(personManagementData.getPersonName().getText())
                     .withNifcif(personManagementData.getPersonNIF().getText())
-                    .withNifcifdup(zeroShort)
+                    .withNifcifdup((short) 0)
                     .withNumafss(personManagementData.getPersonNASS().getText())
                     .withFechanacim(personManagementData.getPersonBirthDate().getValue())
                     .withEstciv(personManagementData.getPersonCivilStatus().getText())
@@ -227,7 +252,7 @@ public class PersonManagementMainController extends VBox {
                     .withApellidos(personManagementData.getPersonNewSurNames().getText())
                     .withNom_rzsoc(personManagementData.getPersonNewName().getText())
                     .withNifcif(personManagementData.getPersonNIF().getText())
-                    .withNifcifdup(zeroShort)
+                    .withNifcifdup((short) 0)
                     .withNumafss(personManagementData.getPersonNASS().getText())
                     .withFechanacim(personManagementData.getPersonBirthDate().getValue())
                     .withEstciv(personManagementData.getPersonCivilStatus().getText())
@@ -244,10 +269,14 @@ public class PersonManagementMainController extends VBox {
             Integer personId = personCreate();
 
             if(personId != null){
-                Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_SAVED_OK);
+                Message.informationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_SAVED_OK);
+                logger.info("Person management: new person saved ok.");
+
             }else{
                 Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_NOT_SAVED_OK);
                 personManagementData.setMouseTransparent(false);
+                logger.info("Person management: new person failed.");
+
 
                 return;
             }
@@ -256,10 +285,13 @@ public class PersonManagementMainController extends VBox {
             Integer personId = personUpdate();
 
             if(personId != null){
-                Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_SAVED_OK);
+                Message.informationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_SAVED_OK);
+                logger.info("Person management: person updated ok.");
+
             }else{
                 Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_NOT_SAVED_OK);
                 personManagementData.setMouseTransparent(false);
+                logger.info("Person management: person updated failed.");
 
                 return;
             }
@@ -269,10 +301,20 @@ public class PersonManagementMainController extends VBox {
             Integer personId = personDelete();
         }
 
-        loadInitialInterfaceStatus();
+        loadInitialStateDataInterface();
     }
 
     private void onExitButton(MouseEvent event){
+        if(personManagementSelector.getNewPerson().isSelected() ||
+        personManagementSelector.getModificationPerson().isSelected() ||
+        personManagementSelector.getDeletePerson().isSelected()){
+            loadInitialStateDataInterface();
+
+            return;
+        }
+
+        logger.info("Person management: exiting program.");
+
         Stage stage = (Stage) personManagementHeader.getScene().getWindow();
         stage.close();
     }
@@ -291,10 +333,80 @@ public class PersonManagementMainController extends VBox {
                 personManagementData.getPersonMunicipality().getText().equals("") ||
                 personManagementData.getPersonStudyLevel().getSelectionModel().getSelectedItem() == null){
 
+            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.INCOMPLETE_DATA_ENTRY);
+            personManagementAction.getSaveButton().setDisable(true);
+
             return false;
         }
 
         return true;
+    }
+
+    private Boolean validateNieNif(String nienif){
+        NieNif introducedNieNif = new NieNif(personManagementData.getPersonNIF().getText());
+        if(!introducedNieNif.validateNieNif()){
+            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NIE_NIF_IS_NOT_VALID);
+            personManagementAction.getSaveButton().setDisable(true);
+
+            return false;
+        }
+        else {
+            List<PersonDTO> repeatedNieNifList = verifyIsRepeatedNieNif(personManagementData.getPersonNIF().getText(), personManagementData.getPersonSurNames().getValue().getIdpersona());
+            String detailedMessage = PersonManagementConstants.QUESTION_IS_CORRECT_REPEATED_NIE_NIF;
+            if (!repeatedNieNifList.isEmpty()) {
+                for(PersonDTO personDTO : repeatedNieNifList){
+                    detailedMessage = detailedMessage + "\t- " + personDTO.toAlphabeticalName() + "\n\n";
+                }
+
+                detailedMessage = detailedMessage + "¿ Desea mantener el NIE/NIF introducido ?" + "\n\n";
+
+                if (!Message.confirmationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, detailedMessage)) {
+                    personManagementData.getPersonNIF().setText(null);
+                    personManagementAction.getSaveButton().setDisable(true);
+
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private Boolean validateNASS(String numberASS){
+        Boolean isValidNASS = true;
+
+        if(numberASS.length() != 12){
+            isValidNASS = false;
+        }
+
+        Integer firstTwoNASSNumbers = Integer.parseInt(numberASS.substring(0, 2));
+        if(firstTwoNASSNumbers < 1 || (firstTwoNASSNumbers > 53 && firstTwoNASSNumbers != 66)){
+            isValidNASS = false;
+        }
+
+        Long lastTwoNASSNumbers = Long.parseLong(numberASS.substring(10, 12));
+
+        Long numberNASSWithoutControlDigit = Long.parseLong(numberASS.substring(0, 10));
+
+        Long nassControlDigit = numberNASSWithoutControlDigit % 97;
+        if(lastTwoNASSNumbers != nassControlDigit){
+            isValidNASS = false;
+        }
+//
+//        System.out.println("NASS dos primeros números: " + firstTwoNASSNumbers + "\n" +
+//                "NASS dos últimos números: " + lastTwoNASSNumbers + "\n" +
+//                "NASS primeros diez números: " + numberNASSWithoutControlDigit);
+//
+        if(!isValidNASS){
+            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
+        }
+
+        return isValidNASS;
+    }
+
+    private List<PersonDTO> verifyIsRepeatedNieNif(String nieNif, Integer personId){
+
+        return personController.findPersonByNieNif(nieNif, personId);
     }
 
     private void normalizeDataEntry(){

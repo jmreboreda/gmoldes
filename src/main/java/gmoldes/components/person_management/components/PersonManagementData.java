@@ -23,6 +23,8 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -30,6 +32,7 @@ import java.util.regex.Pattern;
 public class PersonManagementData extends VBox {
 
     private static final String NEW_PERSON_DATA_FXML = "/fxml/person_management/person_management_data.fxml";
+    private static final String NOT_AVAILABLE_TEXT = "No disponible";
 
     private Parent parent;
 
@@ -236,21 +239,30 @@ public class PersonManagementData extends VBox {
 
     public void completePersonData(PersonDTO personDTO, StudyDTO studyDTO){
 
+        LocalDate birthDate = personDTO.getFechanacim() != null ? personDTO.getFechanacim() : LocalDate.of(9999, 12, 31);
+        String civilState = personDTO.getEstciv() != null ? personDTO.getEstciv() : NOT_AVAILABLE_TEXT;
+        String nationality = personDTO.getNacionalidad() != null ? personDTO.getNacionalidad() : NOT_AVAILABLE_TEXT;
+        String address = personDTO.getDireccion() != null ? personDTO.getDireccion() : NOT_AVAILABLE_TEXT;
+        BigDecimal postalCode = personDTO.getCodpostal() != null ? personDTO.getCodpostal() : new BigDecimal(99999);
+        String location = personDTO.getLocalidad() != null ? personDTO.getLocalidad() : NOT_AVAILABLE_TEXT;
+
         personName.setText("$");
         personNewSurNames.setText(personDTO.getApellidos());
         personNewName.setText(personDTO.getNom_rzsoc());
         personNIF.setText(personDTO.getNifcif());
         personNASS.setText(personDTO.getNumafss());
-        personBirthDate.setValue(personDTO.getFechanacim());
-        personCivilStatus.setText(personDTO.getEstciv());
-        personNationality.setText(personDTO.getNacionalidad());
-        personExtendedDirection.setText(personDTO.getDireccion());
-        personPostalCode.setText(personDTO.getCodpostal().toString());
-        personMunicipality.setText(personDTO.getLocalidad());
+        personBirthDate.setValue(birthDate);
+        personCivilStatus.setText(civilState);
+        personNationality.setText(nationality);
+        personExtendedDirection.setText(address);
+        personPostalCode.setText(postalCode.toString());
+        personMunicipality.setText(location);
         for (StudyDTO studyDTOItem : personStudyLevel.getItems()) {
             if (studyDTO.getStudyDescription().equals(studyDTOItem.getStudyDescription())) {
                 personStudyLevel.getSelectionModel().select(studyDTOItem);
                 break ;
+            }else{
+                personStudyLevel.getSelectionModel().select(0);
             }
         }
     }

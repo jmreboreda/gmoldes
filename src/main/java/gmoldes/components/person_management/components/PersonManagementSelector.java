@@ -68,6 +68,10 @@ public class PersonManagementSelector extends VBox {
         return deletePerson;
     }
 
+    public ToggleGroup getPersonManagementGroup() {
+        return personManagementGroup;
+    }
+
     private void onSelectorAction(ActionEvent event){
         selectorActionEventHandler.handle(event);
     }
