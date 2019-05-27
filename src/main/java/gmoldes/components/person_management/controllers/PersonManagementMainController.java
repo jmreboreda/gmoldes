@@ -135,8 +135,11 @@ public class PersonManagementMainController extends VBox {
             personManagementData.getPersonSurNames().setMouseTransparent(true);
 
             StudyController studyController = new StudyController();
-            StudyDTO studyDTO = studyController.findStudyById(personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getNivestud());
-            personManagementData.completePersonData(personSurNamesItemSelectedEvent.getPersonDTO(), studyDTO);
+            Integer studyLevel = personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem() != null ?  personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getNivestud() : null;
+            if(studyLevel != null) {
+                StudyDTO studyDTO = studyController.findStudyById(personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getNivestud());
+                personManagementData.completePersonData(personSurNamesItemSelectedEvent.getPersonDTO(), studyDTO);
+            }
         }else{
 
             personManagementData.getPersonSurNames().getSelectionModel().clearSelection();
@@ -193,12 +196,6 @@ public class PersonManagementMainController extends VBox {
             return;
         }
 
-//        if(personManagementData.getPersonNASS().getText().length() != 12){
-//            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
-//
-//            return;
-//        }
-
         normalizeDataEntry();
         personManagementAction.getSaveButton().setDisable(false);
     }
@@ -225,7 +222,6 @@ public class PersonManagementMainController extends VBox {
 
         personManagementData.setMouseTransparent(true);
 
-        Short zeroShort = 0;
         String direction = personManagementData.getPersonLocation().getText().equals(personManagementData.getPersonMunicipality().getText()) ?
                 personManagementData.getPersonExtendedDirection().getText() :
                 personManagementData.getPersonExtendedDirection().getText() + "   " + personManagementData.getPersonLocation().getText();
@@ -236,7 +232,7 @@ public class PersonManagementMainController extends VBox {
                     .withApellidos(personManagementData.getPersonSurNames().getEditor().getText().replace(",", ""))
                     .withNom_rzsoc(personManagementData.getPersonName().getText())
                     .withNifcif(personManagementData.getPersonNIF().getText())
-                    .withNifcifdup(zeroShort)
+                    .withNifcifdup((short) 0)
                     .withNumafss(personManagementData.getPersonNASS().getText())
                     .withFechanacim(personManagementData.getPersonBirthDate().getValue())
                     .withEstciv(personManagementData.getPersonCivilStatus().getText())
@@ -256,7 +252,7 @@ public class PersonManagementMainController extends VBox {
                     .withApellidos(personManagementData.getPersonNewSurNames().getText())
                     .withNom_rzsoc(personManagementData.getPersonNewName().getText())
                     .withNifcif(personManagementData.getPersonNIF().getText())
-                    .withNifcifdup(zeroShort)
+                    .withNifcifdup((short) 0)
                     .withNumafss(personManagementData.getPersonNASS().getText())
                     .withFechanacim(personManagementData.getPersonBirthDate().getValue())
                     .withEstciv(personManagementData.getPersonCivilStatus().getText())
@@ -388,14 +384,13 @@ public class PersonManagementMainController extends VBox {
         if(lastTwoNASSNumbers != nassControlDigit){
             isValidNASS = false;
         }
-
+//
 //        System.out.println("NASS dos primeros números: " + firstTwoNASSNumbers + "\n" +
 //                "NASS dos últimos números: " + lastTwoNASSNumbers + "\n" +
 //                "NASS primeros diez números: " + numberNASSWithoutControlDigit);
-
+//
         if(!isValidNASS){
             Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
-
         }
 
         return isValidNASS;
