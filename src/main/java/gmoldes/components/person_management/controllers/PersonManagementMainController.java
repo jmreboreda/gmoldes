@@ -392,11 +392,7 @@ public class PersonManagementMainController extends VBox {
         if(lastTwoNASSNumbers != nassControlDigit){
             isValidNASS = false;
         }
-//
-//        System.out.println("NASS dos primeros números: " + firstTwoNASSNumbers + "\n" +
-//                "NASS dos últimos números: " + lastTwoNASSNumbers + "\n" +
-//                "NASS primeros diez números: " + numberNASSWithoutControlDigit);
-//
+
         if(!isValidNASS){
             Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
         }

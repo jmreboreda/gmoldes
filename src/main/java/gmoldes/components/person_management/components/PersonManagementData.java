@@ -80,7 +80,7 @@ public class PersonManagementData extends VBox {
     @FXML
     private ChoiceBox<StudyDTO> personStudyLevel;
 
-    private final Pattern letterPattern = Pattern.compile("[A-Za-zÑñÁÉÍÓÚáéíóú]");
+    private final Pattern letterPattern = Pattern.compile("[A-Za-zÑñÁÉÍÓÚáéíóú ]");
     private final Pattern numberPattern = Pattern.compile("[0-9]");
 
     public PersonManagementData() {
