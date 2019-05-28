@@ -62,8 +62,6 @@ public class PersonManagementAction extends HBox {
         this.onExitButtonEventEventHandler.handle(event);
     }
 
-
-
     public void setOnOkButton(EventHandler<MouseEvent> mouseEventEventHandlerOnOkButton){
         this.onOkButtonEventHandler = mouseEventEventHandlerOnOkButton;
     }

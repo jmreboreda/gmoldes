@@ -13,6 +13,7 @@ import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.study.StudyController;
 import gmoldes.domain.study.dto.StudyDTO;
+import gmoldes.services.StudyService;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import javafx.collections.FXCollections;
@@ -134,16 +135,16 @@ public class PersonManagementMainController extends VBox {
             personManagementData.getPersonSurNames().setStyle(PersonManagementConstants.RED_COLOR);
             personManagementData.getPersonSurNames().setMouseTransparent(true);
 
-            StudyController studyController = new StudyController();
+            StudyService studyService = new StudyService();
             Integer studyLevel = personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem() != null ?  personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getNivestud() : null;
             if(studyLevel != null) {
-                StudyDTO studyDTO = studyController.findStudyById(personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getNivestud());
+                StudyDTO studyDTO = studyService.findStudyByStudyId(personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getNivestud());
                 personManagementData.completePersonData(personSurNamesItemSelectedEvent.getPersonDTO(), studyDTO);
             }
-        }else{
+        }else if(personManagementSelector.getNewPerson().isSelected()){
 
             personManagementData.getPersonSurNames().getSelectionModel().clearSelection();
-            personManagementData.getPersonSurNames().setItems(null);
+            personManagementData.getPersonSurNames().getItems().clear();
         }
     }
 
@@ -375,28 +376,34 @@ public class PersonManagementMainController extends VBox {
     private Boolean validateNASS(String numberASS){
         Boolean isValidNASS = true;
 
+        Integer introducedProvinceCodeNASS = Integer.parseInt(numberASS.substring(0, 2));
+        Long introducedAffiliateNumberNASS = Long.parseLong(numberASS.substring(2, 10));
+        Long introducedControlDigitNASS = Long.parseLong(numberASS.substring(10, 12));
+
+        Long calculatedControlDigitNASS;
+
         if(numberASS.length() != 12){
             isValidNASS = false;
         }
 
-        Integer firstTwoNASSNumbers = Integer.parseInt(numberASS.substring(0, 2));
-        if(firstTwoNASSNumbers < 1 || (firstTwoNASSNumbers > 53 && firstTwoNASSNumbers != 66)){
+        if(introducedProvinceCodeNASS < 1 || (introducedProvinceCodeNASS > 53 && introducedProvinceCodeNASS != 66)){
             isValidNASS = false;
         }
 
-        Long lastTwoNASSNumbers = Long.parseLong(numberASS.substring(10, 12));
+        if(introducedAffiliateNumberNASS < 10000000){
+            calculatedControlDigitNASS = (introducedAffiliateNumberNASS + introducedProvinceCodeNASS * 10000000 ) % 97;
 
-        Long numberNASSWithoutControlDigit = Long.parseLong(numberASS.substring(0, 10));
+        }else{
+            Long numberNASSWithoutControlDigit = Long.parseLong(introducedProvinceCodeNASS.toString().concat(introducedAffiliateNumberNASS.toString()));
 
-        Long nassControlDigit = numberNASSWithoutControlDigit % 97;
-        if(lastTwoNASSNumbers != nassControlDigit){
+            calculatedControlDigitNASS = numberNASSWithoutControlDigit % 97;
+        }
+
+
+        if(!introducedControlDigitNASS.equals(calculatedControlDigitNASS)){
             isValidNASS = false;
         }
-//
-//        System.out.println("NASS dos primeros números: " + firstTwoNASSNumbers + "\n" +
-//                "NASS dos últimos números: " + lastTwoNASSNumbers + "\n" +
-//                "NASS primeros diez números: " + numberNASSWithoutControlDigit);
-//
+
         if(!isValidNASS){
             Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
         }
