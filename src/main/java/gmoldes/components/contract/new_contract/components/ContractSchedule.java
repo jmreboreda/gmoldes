@@ -228,7 +228,7 @@ public class ContractSchedule extends AnchorPane {
             LocalTime pmFrom = selectedItemRow.getPmFrom();
             LocalTime pmTo =  selectedItemRow.getPmTo();
 
-            if(Duration.between(pmFrom, pmTo).toHours() <= 0){
+            if(pmTo != LocalTime.parse("00:00") && Duration.between(pmFrom, pmTo).toHours() <= 0){
                 deleteAllDataForSelectedRow();
 
                 return Duration.ZERO;
