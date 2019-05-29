@@ -135,7 +135,7 @@ public class PersonManagementMainController extends VBox {
             personManagementData.getPersonSurNames().setStyle(PersonManagementConstants.RED_COLOR);
             personManagementData.getPersonSurNames().setMouseTransparent(true);
 
-            StudyService studyService = new StudyService();
+            StudyService studyService = StudyService.StudyServiceFactory.getInstance();
             Integer studyLevel = personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem() != null ?  personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getNivestud() : null;
             if(studyLevel != null) {
                 StudyDTO studyDTO = studyService.findStudyByStudyId(personManagementData.getPersonSurNames().getSelectionModel().getSelectedItem().getNivestud());
@@ -185,12 +185,10 @@ public class PersonManagementMainController extends VBox {
             return;
         }
 
-        personManagementData.getPersonNIF().setText(personManagementData.getPersonNIF().getText().toUpperCase());
+        if(!validateNieNif(personManagementData.getPersonNIF().getText().toUpperCase())){
 
-            if(!validateNieNif(personManagementData.getPersonNIF().getText())){
-
-                return;
-            }
+            return;
+        }
 
         if(!validateNASS(personManagementData.getPersonNASS().getText())){
 
@@ -420,6 +418,7 @@ public class PersonManagementMainController extends VBox {
         if(personManagementData.getNormalizeText().isSelected()) {
             personManagementData.getPersonSurNames().getEditor().setText(WordUtils.capitalizeFully(personManagementData.getPersonSurNames().getEditor().getText()));
             personManagementData.getPersonName().setText(WordUtils.capitalizeFully(personManagementData.getPersonName().getText()));
+            personManagementData.getPersonNIF().setText(personManagementData.getPersonNIF().getText().toUpperCase());
             personManagementData.getPersonExtendedDirection().setText(WordUtils.capitalizeFully(personManagementData.getPersonExtendedDirection().getText()));
             personManagementData.getPersonCivilStatus().setText(WordUtils.capitalizeFully(personManagementData.getPersonCivilStatus().getText()));
             personManagementData.getPersonNationality().setText(WordUtils.capitalizeFully(personManagementData.getPersonNationality().getText()));

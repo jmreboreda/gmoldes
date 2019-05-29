@@ -1,10 +1,10 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
-import gmoldes.App;
 import gmoldes.ApplicationConstants;
 import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.ContractConstants;
+import gmoldes.components.contract.contract_variation.ContractVariationConstants;
 import gmoldes.components.contract.contract_variation.components.*;
 import gmoldes.components.contract.contract_variation.events.*;
 import gmoldes.components.contract.contract_variation.forms.ContractVariationDataSubfolder;
@@ -32,14 +32,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -60,13 +58,9 @@ public class ContractVariationMainController extends VBox {
     private static final Logger logger = Logger.getLogger(ContractVariationMainController.class.getSimpleName());
     private static final String CONTRACT_VARIATION_MAIN_FXML = "/fxml/contract_variations/contractvariation_main.fxml";
 
-    private static final String myColorRED = "-fx-text-fill: #971E11";
-    private static final String myColorBLACK = "-fx-text-fill: #000000";
-
     private Process pdfViewerProcess = null;
 
     private Set<WorkDaySchedule> weeklyWorkScheduleVariation;
-
 
     private Parent parent;
 
@@ -75,7 +69,6 @@ public class ContractVariationMainController extends VBox {
     private ContractExtensionController contractExtensionController = new ContractExtensionController(this);
     private WeeklyWorkScheduleVariationController weeklyWorkScheduleVariationController = new WeeklyWorkScheduleVariationController(this);
     private ContractVariationDataSubfolder contractVariationDataSubfolder;
-
 
     private Boolean contractHasBeenSavedInDatabase = false;
     private Boolean contractHasBeenSentToContractAgent = false;
@@ -102,7 +95,6 @@ public class ContractVariationMainController extends VBox {
     private ContractVariationWeeklyWorkScheduleDuration contractVariationWeeklyWorkScheduleDuration;
     @FXML
     private ContractVariationActionComponents contractVariationActionComponents;
-
 
     @FXML
     private void initialize() {
@@ -210,18 +202,16 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onChangeEmployer(ClientChangeEvent event){
-
         LocalDate selectedDate = event.getDate();
         ClientDTO selectedClient = event.getClient();
         refreshContractSelectorData(selectedClient, selectedDate);
 
         cleanDataForAllSelectableComponents();
-
     }
 
     private void onContractSelectorAction(ActionEvent event){
-
         if(contractVariationParts.getContractSelector().getItems().isEmpty()){
+
             return;
         }
 
@@ -232,7 +222,6 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onContractExtinctionSelected(MouseEvent event){
-
         contractVariationContractVariations.getContractVariationContractExtinction().cleanComponents();
         loadContractExtinctionCauseSelector();
         contractVariationContractVariations.getContractVariationContractExtinction().toFront();
@@ -242,7 +231,6 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onContractExtensionSelected(MouseEvent event){
-
         if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate() == null){
             Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.UNDEFINED_DURATION_CONTRACTS_ARE_NOT_EXTENDABLE);
             cleanDataForAllSelectableComponents();
@@ -285,7 +273,6 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onContractConversionSelected(MouseEvent event){
-
         contractVariationContractVariations.getContractVariationContractConversion().cleanComponents();
         contractVariationContractVariations.getContractVariationContractConversion().toFront();
         contractVariationTypes.getHourNotification().requestFocus();
@@ -294,7 +281,6 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onOkButton(MouseEvent evet){
-
         // Contract extinction
         RadioButton rbContractExtinction = contractVariationTypes.getRbContractExtinction();
         if(rbContractExtinction.isSelected()) {
@@ -332,7 +318,6 @@ public class ContractVariationMainController extends VBox {
             setDataEditionBlockedAndEnableSendMail();
 
             return;
-
         }
 
         // Change of weekly work duration
@@ -374,7 +359,6 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onExitButton(MouseEvent event){
-
         if(!contractVariationActionComponents.getSendMailButton().isDisable()){
 
             if(!Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT)){
@@ -387,7 +371,6 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onViewPDFButton(MouseEvent event){
-
         Path pathOut;
 
         // Contract extinction
@@ -517,7 +500,6 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void onChangeWeeklyWorkDuration(WorkScheduleEvent workScheduleEvent){
-
         if(workScheduleEvent.getSchedule() == null){
             this.contractVariationTypes.getRbWeeklyWorkHoursVariation().setSelected(false);
             contractVariationActionComponents.getOkButton().setDisable(true);
@@ -570,7 +552,6 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void setContractExtensionDuration(LocalDate newValueDateTo){
-
         if(contractVariationContractVariations.getContractVariationContractExtension().getDateFrom().getValue() != null &&
                 newValueDateTo != null) {
 
@@ -578,9 +559,9 @@ public class ContractVariationMainController extends VBox {
 
             contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setText(contractExtensionDuration.toString());
             if(contractExtensionDuration <= 0){
-                contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(myColorRED);
+                contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(ContractVariationConstants.COLOR_RED);
             }else{
-                contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(myColorBLACK);
+                contractVariationContractVariations.getContractVariationContractExtension().getContractExtensionDuration().setStyle(ContractVariationConstants.COLOR_BLACK);
             }
         }
     }
@@ -593,15 +574,14 @@ public class ContractVariationMainController extends VBox {
 
             contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkSchduleDuration().setText(contractWeeklyWorkScheduleDuration.toString());
             if(contractWeeklyWorkScheduleDuration <= 0){
-                contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkSchduleDuration().setStyle(myColorRED);
+                contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkSchduleDuration().setStyle(ContractVariationConstants.COLOR_RED);
             }else{
-                contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkSchduleDuration().setStyle(myColorBLACK);
+                contractVariationContractVariations.getContractVariationWeeklyWorkScheduleDuration().getWeeklyWorkSchduleDuration().setStyle(ContractVariationConstants.COLOR_BLACK);
             }
         }
     }
 
     private void refreshContractSelectorData(ClientDTO client, LocalDate selectedDate){
-
         if(client == null){
             return;
         }
@@ -623,7 +603,6 @@ public class ContractVariationMainController extends VBox {
     }
 
     private CompatibleVariationEvent dateToNotifyContractVariationToAdministrationIsCorrect(LocalDate date){
-
         LocalDate limitDatePreviousOfNotifyToAdministration = contractVariationParts.getInForceDate().getValue()
                 .minusDays(ContractParameters.MAXIMUM_NUMBER_DAYS_OF_DELAY_IN_NOTIFICATIONS_TO_THE_LABOR_ADMINISTRACION);
 
@@ -645,7 +624,6 @@ public class ContractVariationMainController extends VBox {
     }
 
     private void cleanDataForAllSelectableComponents(){
-
         contractVariationTypes.getDateNotification().setDate(LocalDate.now());
         contractVariationTypes.getHourNotification().setText(null);
 
@@ -679,7 +657,6 @@ public class ContractVariationMainController extends VBox {
 //    }
 
     private void setDataEditionBlockedAndEnableSendMail() {
-
         contractVariationParts.setMouseTransparent(true);
         contractVariationTypes.setMouseTransparent(true);
         contractVariationContractVariations.setMouseTransparent(true);
@@ -688,7 +665,6 @@ public class ContractVariationMainController extends VBox {
     }
 
     private Set<DayOfWeek> retrieveDayOfWeekSet(String daysOfWeek){
-
         Set<DayOfWeek> dayOfWeekSet = new HashSet<>();
 
         if(daysOfWeek.contains("MONDAY")){
@@ -725,7 +701,6 @@ public class ContractVariationMainController extends VBox {
     }
 
     private String retrievePublicNotes(){
-
         // Contract extinction
         RadioButton rbContractExtinction = contractVariationTypes.getRbContractExtinction();
         if(rbContractExtinction.isSelected()) {
