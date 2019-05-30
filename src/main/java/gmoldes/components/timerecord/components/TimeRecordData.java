@@ -50,6 +50,8 @@ public class TimeRecordData extends VBox {
 
     private Parent parent;
 
+    Stage stage = (Stage) this.getScene().getWindow();
+
     @FXML
     private ChoiceBox<TimeRecord> monthName;
     @FXML

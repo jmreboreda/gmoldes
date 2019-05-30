@@ -168,8 +168,9 @@ public class PersonManagementMainController extends VBox {
             personManagementData.getNewPersonHbox().setVisible(true);
             personManagementData.getModificationPersonHbox().setVisible(true);
         }
+
         if(personManagementSelector.getDeletePerson().isSelected()){
-            Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.OPTION_NOT_IMPLEMENTED_STILL);
+            Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.OPTION_NOT_IMPLEMENTED_YET);
             loadInitialStateDataInterface();
 
             return;
@@ -228,7 +229,7 @@ public class PersonManagementMainController extends VBox {
         if(personManagementSelector.getNewPerson().isSelected()) {
             personDTO = PersonDTO.create()
                     .withIdpersona(null)
-                    .withApellidos(personManagementData.getPersonSurNames().getEditor().getText().replace(",", ""))
+                    .withApellidos(personManagementData.getPersonSurNames().getEditor().getText().replace(",", "").trim())
                     .withNom_rzsoc(personManagementData.getPersonName().getText())
                     .withNifcif(personManagementData.getPersonNIF().getText())
                     .withNifcifdup((short) 0)

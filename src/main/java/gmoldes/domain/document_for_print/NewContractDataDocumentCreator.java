@@ -118,7 +118,7 @@ public class NewContractDataDocumentCreator {
 
         try {
             String printOk = Printer.printPDF(pathToContractDataSubfolder.toString(), attributes);
-            Message.warningMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
+            Message.informationMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
                 Message.warningMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }
@@ -160,7 +160,7 @@ public class NewContractDataDocumentCreator {
 
         try {
             String printOk = Printer.printPDF(pathToContractRecordHistorySubfolder.toString(), attributes);
-            Message.warningMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SUBFOLFER_RECORD_OF_CONTRACT_HISTORY_TO_PRINTER_OK);
+            Message.informationMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SUBFOLFER_RECORD_OF_CONTRACT_HISTORY_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
                 Message.warningMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }

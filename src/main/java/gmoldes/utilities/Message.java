@@ -19,6 +19,9 @@ public class Message {
 
     public static Boolean standardConfirmationMessage(Window window, String title, String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+
         alert.initStyle(StageStyle.DECORATED);
         alert.initModality(Modality.WINDOW_MODAL);
         alert.initOwner(window);
@@ -38,6 +41,9 @@ public class Message {
 
     public static Boolean confirmationMessage(Window window, String title, String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+
         alert.initStyle(StageStyle.DECORATED);
         alert.initModality(Modality.WINDOW_MODAL);
         alert.initOwner(window);
@@ -47,7 +53,6 @@ public class Message {
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setContentText(message);
 
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(icon);
 
         alert.getDialogPane().setCursor(Cursor.DEFAULT);
@@ -68,6 +73,9 @@ public class Message {
     public static void warningMessage(Window window, String title, String message){
 
         Alert alert = new Alert(Alert.AlertType.WARNING);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+
         alert.initStyle(StageStyle.DECORATED);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -85,7 +93,6 @@ public class Message {
 
         alert.setContentText(message);
 
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(icon);
         alert.showAndWait();
 
@@ -94,6 +101,9 @@ public class Message {
     public static void informationMessage(Window window, String title, String message){
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+
         alert.initStyle(StageStyle.DECORATED);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -111,7 +121,6 @@ public class Message {
 
         alert.setContentText(message);
 
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(icon);
         alert.showAndWait();
 
@@ -119,6 +128,9 @@ public class Message {
 
     public static void errorMessage(Window window, String title, String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+
         alert.initStyle(StageStyle.UTILITY);
         alert.initModality(Modality.WINDOW_MODAL);
         alert.initOwner(window);
@@ -126,7 +138,10 @@ public class Message {
         alert.setHeaderText(null);
         alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+
         alert.setContentText(message);
+
+        stage.getIcons().add(icon);
         alert.showAndWait();
     }
 }

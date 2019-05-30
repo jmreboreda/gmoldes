@@ -148,6 +148,9 @@ public class InitialMenuController extends AnchorPane {
     }
 
     private void onExit(MouseEvent event) {
+
+        logger.info("Application GMoldes: exiting program.");
+
         Platform.exit();
         System.exit(0);
     }
