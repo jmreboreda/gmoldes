@@ -9,7 +9,6 @@ import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
 import java.util.Optional;
 
@@ -17,21 +16,21 @@ public class Message {
 
     private static Image icon = new Image("/pics/GMapp_PNG_64x64.png");
 
-    public static Boolean standardConfirmationMessage(Window window, String title, String message){
+    public static Boolean standardConfirmationMessage(Stage stage, String title, String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         alert.initStyle(StageStyle.DECORATED);
         alert.initModality(Modality.WINDOW_MODAL);
-        alert.initOwner(window);
+        alert.initOwner(stage);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setContentText(message);
 
-        stage.getIcons().add(icon);
+        alertStage.getIcons().add(icon);
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
