@@ -81,7 +81,7 @@ public class InitialChecks {
             alertMessage.append(bodyMessage);
 
             if(bodyMessage.length() > 0) {
-                Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Preavisos de fin de contrato pendientes de recepción"), alertMessage.toString());
+                Message.warningMessage((Stage) primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Preavisos de fin de contrato pendientes de recepción"), alertMessage.toString());
             }
         }
     }
@@ -135,7 +135,7 @@ public class InitialChecks {
         alertMessage.append(bodyMessage);
 
         if(bodyMessage.length() > 0) {
-            Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Variaciones de jornada de trabajo con fecha de finalización"), alertMessage.toString());
+            Message.warningMessage((Stage) primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Variaciones de jornada de trabajo con fecha de finalización"), alertMessage.toString());
         }
     }
 
@@ -194,7 +194,7 @@ public class InitialChecks {
             }
 
             if(alertMessage.length() > 0) {
-                Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("IDC pendientes de recepción"), alertMessage.toString());
+                Message.warningMessage((Stage) primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("IDC pendientes de recepción"), alertMessage.toString());
             }
         }
     }
@@ -230,7 +230,7 @@ public class InitialChecks {
 
             if(alertMessage.length() > 0) {
 
-                Message.warningMessage(primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Documentación de contratos pendiente de recepción"), alertMessage.toString());
+                Message.warningMessage((Stage) primaryStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Documentación de contratos pendiente de recepción"), alertMessage.toString());
             }
         }
     }

@@ -16,6 +16,7 @@ public class ViewLoader {
 		final FXMLLoader loader = new FXMLLoader(resource);
 		loader.setController(object);
 		loader.setRoot(object);
+
 		try {
 			logger.info("Loading " + fxml +" ...");
 			return loader.load();

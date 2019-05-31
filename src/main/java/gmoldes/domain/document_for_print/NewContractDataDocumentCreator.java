@@ -2,9 +2,9 @@ package gmoldes.domain.document_for_print;
 
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationConstants;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
-import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.controllers.NewContractMainController;
@@ -18,13 +18,14 @@ import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.ContractTypeDTO;
 import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
 import gmoldes.domain.contractjsondata.ContractJsonData;
-import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.study.StudyManager;
+import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.services.Printer;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.OSUtils;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
+import javafx.stage.Stage;
 
 import java.awt.print.PrinterException;
 import java.io.IOException;
@@ -42,10 +43,14 @@ import java.util.Set;
 public class NewContractDataDocumentCreator {
 
     private NewContractMainController newContractMainController;
+    private Stage stage;
+
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
-    public NewContractDataDocumentCreator(NewContractMainController newContractMainController) {
+
+    public NewContractDataDocumentCreator(Stage stage, NewContractMainController newContractMainController) {
         this.newContractMainController = newContractMainController;
+        this.stage = stage;
     }
 
     public ContractDataToContractsAgent createInitialContractDataDocumentForContractsAgent(){
@@ -118,9 +123,9 @@ public class NewContractDataDocumentCreator {
 
         try {
             String printOk = Printer.printPDF(pathToContractDataSubfolder.toString(), attributes);
-            Message.warningMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
+            Message.informationMessage(stage, Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
-                Message.warningMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
+                Message.errorMessage((Stage) this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
@@ -160,9 +165,9 @@ public class NewContractDataDocumentCreator {
 
         try {
             String printOk = Printer.printPDF(pathToContractRecordHistorySubfolder.toString(), attributes);
-            Message.warningMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SUBFOLFER_RECORD_OF_CONTRACT_HISTORY_TO_PRINTER_OK);
+            Message.informationMessage(stage, Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.SUBFOLFER_RECORD_OF_CONTRACT_HISTORY_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
-                Message.warningMessage(this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
+                Message.errorMessage((Stage) this.newContractMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }
         } catch (IOException | PrinterException e) {
             e.printStackTrace();

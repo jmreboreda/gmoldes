@@ -49,6 +49,7 @@ public class TimeRecordData extends VBox {
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
     private Parent parent;
+    private Stage stage;
 
     @FXML
     private ChoiceBox<TimeRecord> monthName;
@@ -139,15 +140,15 @@ public class TimeRecordData extends VBox {
         try {
             pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord);
             if(pathToTimeRecordPDF == null){
-                Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
+                Message.errorMessage((Stage) this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
                 return;
             }
 
         } catch (IOException | DocumentException e) {
-            Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
+            Message.errorMessage((Stage) this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
             e.printStackTrace();
         }
-        Message.warningMessage(createPDFButton.getScene().getWindow(),"Información del sistema", "Registro horario creado en:" + "\n" + pathToTimeRecordPDF + "\n");
+        Message.warningMessage((Stage) createPDFButton.getScene().getWindow(),"Información del sistema", "Registro horario creado en:" + "\n" + pathToTimeRecordPDF + "\n");
     }
 
     private void onPrintTimeRecord(MouseEvent event){
@@ -156,19 +157,19 @@ public class TimeRecordData extends VBox {
         try {
             pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord);
             if(pathToTimeRecordPDF == null){
-                Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
+                Message.errorMessage((Stage) this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
                 return;
             }
         } catch (IOException | DocumentException e) {
-            Message.errorMessage(this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
+            Message.errorMessage((Stage) this.createPDFButton.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
             e.printStackTrace();
         }
 
         String resultPrint = TimeRecordPDFCreator.printTimeRecord(pathToTimeRecordPDF);
         if(resultPrint.equals("ok")) {
-            Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "Registro horario enviado a la impresora." + "\n");
+            Message.warningMessage((Stage) printButton.getScene().getWindow(), "Sistema", "Registro horario enviado a la impresora." + "\n");
         }else{
-            Message.warningMessage(printButton.getScene().getWindow(), "Sistema", "No existe impresora para imprimir el registro horario" +
+            Message.warningMessage((Stage) printButton.getScene().getWindow(), "Sistema", "No existe impresora para imprimir el registro horario" +
                     " con los atributos indicados." + "\n");
         }
     }

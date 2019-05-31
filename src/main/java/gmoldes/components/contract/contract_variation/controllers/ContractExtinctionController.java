@@ -29,6 +29,7 @@ import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import gmoldes.utilities.SystemProcesses;
 import gmoldes.utilities.Utilities;
+import javafx.stage.Stage;
 
 import javax.mail.internet.AddressException;
 import java.awt.print.PrinterException;
@@ -70,7 +71,7 @@ public class ContractExtinctionController{
 
         CompatibleVariationEvent dateAdministrationCompatibleEvent = dateToNotifyContractVariationToAdministrationIsCorrect(effectDateRequestedForContractVariation);
         if(dateAdministrationCompatibleEvent.getErrorContractVariationMessage().equals(ContractConstants.VERIFY_IS_VALID_DATE_TO_NOTIFY_CONTRACT_VARIATION_TO_ADMINISTRATION)){
-            Boolean isCorrectDate = Message.confirmationMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+            Boolean isCorrectDate = Message.confirmationMessage((Stage) contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
                     dateAdministrationCompatibleEvent.getErrorContractVariationMessage());
             if(!isCorrectDate){
 
@@ -86,7 +87,7 @@ public class ContractExtinctionController{
         }
 
         // 4. Persistence question
-        if (!Message.confirmationMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)) {
+        if (!Message.confirmationMessage((Stage) contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.PERSIST_CONTRACT_VARIATION_QUESTION)) {
 
             return new MessageContractVariationEvent(ContractConstants.CONTRACT_EXTINCTION_OPERATION_ABANDONED, null);
         }
@@ -113,7 +114,7 @@ public class ContractExtinctionController{
             return new MessageContractVariationEvent(ContractConstants.ERROR_UPDATING_TRACEABILITY_OF_INITIAL_CONTRACT, null);
         }
 
-        Message.warningMessage(this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
+        Message.warningMessage((Stage) this.contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK);
 
         // 8. Print documentation
         StringBuilder sb = new StringBuilder();
@@ -561,9 +562,9 @@ public class ContractExtinctionController{
 
         try {
             String printOk = Printer.printPDF(pathToContractVariationDataSubfolder.toString(), attributes);
-            Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
+            Message.warningMessage((Stage) contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_DATA_SUBFOLFER_TO_PRINTER_OK);
             if(!printOk.equals("ok")){
-                Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
+                Message.warningMessage((Stage) contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, Parameters.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }
         } catch (IOException | PrinterException e) {
             e.printStackTrace();
@@ -587,7 +588,7 @@ public class ContractExtinctionController{
 
         Boolean documentToSendIsOpen = verifyDocumentStatus(attachedFileName);
         if(documentToSendIsOpen){
-            Message.warningMessage(contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.CLOSE_DOCUMENT_TO_SEND);
+            Message.warningMessage((Stage) contractVariationMainController.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.CLOSE_DOCUMENT_TO_SEND);
 
             return isSendOk;
         }

@@ -232,7 +232,7 @@ public class ContractVariationMainController extends VBox {
 
     private void onContractExtensionSelected(MouseEvent event){
         if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getExpectedEndDate() == null){
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.UNDEFINED_DURATION_CONTRACTS_ARE_NOT_EXTENDABLE);
+            Message.warningMessage((Stage) this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.UNDEFINED_DURATION_CONTRACTS_ARE_NOT_EXTENDABLE);
             cleanDataForAllSelectableComponents();
             contractVariationActionComponents.getOkButton().setDisable(true);
 
@@ -240,7 +240,7 @@ public class ContractVariationMainController extends VBox {
         }
 
         if(contractVariationParts.getContractSelector().getSelectionModel().getSelectedItem().getContractType().getIsDeterminedDuration()){
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.THIS_TYPE_OF_DETERMINED_DURATION_CONTRACT_IS_NOT_EXTENDABLE);
+            Message.warningMessage((Stage) this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.THIS_TYPE_OF_DETERMINED_DURATION_CONTRACT_IS_NOT_EXTENDABLE);
             cleanDataForAllSelectableComponents();
             contractVariationActionComponents.getOkButton().setDisable(true);
 
@@ -289,7 +289,7 @@ public class ContractVariationMainController extends VBox {
             MessageContractVariationEvent messageContractVariationEvent = contractExtinctionController.executeContractExtinctionOperations();
             if (!messageContractVariationEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTINCTION_PERSISTENCE_OK) &&
                     !messageContractVariationEvent.getMessageText().isEmpty()) {
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageContractVariationEvent.getMessageText());
+                Message.warningMessage((Stage) this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageContractVariationEvent.getMessageText());
 
                 return;
             }
@@ -309,7 +309,7 @@ public class ContractVariationMainController extends VBox {
             MessageContractVariationEvent messageContractVariationEvent = contractExtensionController.executeContractExtensionOperations();
             if (!messageContractVariationEvent.getMessageText().equals(ContractConstants.CONTRACT_EXTENSION_PERSISTENCE_OK) &&
                     !messageContractVariationEvent.getMessageText().isEmpty()) {
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageContractVariationEvent.getMessageText());
+                Message.warningMessage((Stage) this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, messageContractVariationEvent.getMessageText());
 
                 return;
             }
@@ -361,7 +361,7 @@ public class ContractVariationMainController extends VBox {
     private void onExitButton(MouseEvent event){
         if(!contractVariationActionComponents.getSendMailButton().isDisable()){
 
-            if(!Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT)){
+            if(!Message.confirmationMessage((Stage) this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.CONTRACT_EXTINCTION_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT)){
                 return;
             }
         }
@@ -472,7 +472,7 @@ public class ContractVariationMainController extends VBox {
     private void onSendMailButton(MouseEvent event){
         Boolean isSendOk = false;
 
-        if (Message.confirmationMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
+        if (Message.confirmationMessage((Stage) this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
 
             // Contract extinction
             RadioButton rbContractExtinction = contractVariationTypes.getRbContractExtinction();
@@ -489,12 +489,12 @@ public class ContractVariationMainController extends VBox {
 
             if(isSendOk){
 
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_SEND_OK);
+                Message.warningMessage((Stage) this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_SEND_OK);
                 contractHasBeenSentToContractAgent = true;
                 this.contractVariationActionComponents.enableSendMailButton(false);
 
             }else{
-                Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_NOT_SEND_OK);
+                Message.warningMessage((Stage) this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_NOT_SEND_OK);
             }
         }
     }
