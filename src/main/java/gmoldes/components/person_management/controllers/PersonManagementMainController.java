@@ -170,7 +170,7 @@ public class PersonManagementMainController extends VBox {
         }
 
         if(personManagementSelector.getDeletePerson().isSelected()){
-            Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.OPTION_NOT_IMPLEMENTED_YET);
+            Message.warningMessage((Stage) personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.OPTION_NOT_IMPLEMENTED_YET);
             loadInitialStateDataInterface();
 
             return;
@@ -202,7 +202,7 @@ public class PersonManagementMainController extends VBox {
 
     private void onSaveButton(MouseEvent event){
         if(!validateEntryAllData()){
-            Message.warningMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.INCOMPLETE_DATA_ENTRY);
+            Message.warningMessage((Stage) personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.INCOMPLETE_DATA_ENTRY);
             personManagementAction.getSaveButton().setDisable(true);
 
             return;
@@ -269,11 +269,11 @@ public class PersonManagementMainController extends VBox {
             Integer personId = personCreate();
 
             if(personId != null){
-                Message.informationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_SAVED_OK);
+                Message.informationMessage((Stage) personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_SAVED_OK);
                 logger.info("Person management: new person saved ok.");
 
             }else{
-                Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_NOT_SAVED_OK);
+                Message.errorMessage((Stage) personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_NOT_SAVED_OK);
                 personManagementData.setMouseTransparent(false);
                 logger.info("Person management: new person failed.");
 
@@ -285,11 +285,11 @@ public class PersonManagementMainController extends VBox {
             Integer personId = personUpdate();
 
             if(personId != null){
-                Message.informationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_SAVED_OK);
+                Message.informationMessage((Stage) personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_SAVED_OK);
                 logger.info("Person management: person updated ok.");
 
             }else{
-                Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_NOT_SAVED_OK);
+                Message.errorMessage((Stage) personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.PERSON_MODIFICATION_NOT_SAVED_OK);
                 personManagementData.setMouseTransparent(false);
                 logger.info("Person management: person updated failed.");
 
@@ -333,7 +333,7 @@ public class PersonManagementMainController extends VBox {
                 personManagementData.getPersonMunicipality().getText().equals("") ||
                 personManagementData.getPersonStudyLevel().getSelectionModel().getSelectedItem() == null){
 
-            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.INCOMPLETE_DATA_ENTRY);
+            Message.errorMessage((Stage) personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.INCOMPLETE_DATA_ENTRY);
             personManagementAction.getSaveButton().setDisable(true);
 
             return false;
@@ -345,7 +345,7 @@ public class PersonManagementMainController extends VBox {
     private Boolean validateNieNif(String nienif){
         NieNif introducedNieNif = new NieNif(personManagementData.getPersonNIF().getText());
         if(!introducedNieNif.validateNieNif()){
-            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NIE_NIF_IS_NOT_VALID);
+            Message.errorMessage((Stage) personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NIE_NIF_IS_NOT_VALID);
             personManagementAction.getSaveButton().setDisable(true);
 
             return false;
@@ -360,7 +360,7 @@ public class PersonManagementMainController extends VBox {
 
                 detailedMessage = detailedMessage + "¿ Desea mantener el NIE/NIF introducido ?" + "\n\n";
 
-                if (!Message.confirmationMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, detailedMessage)) {
+                if (!Message.confirmationMessage((Stage) personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, detailedMessage)) {
                     personManagementData.getPersonNIF().setText(null);
                     personManagementAction.getSaveButton().setDisable(true);
 
@@ -411,7 +411,7 @@ public class PersonManagementMainController extends VBox {
         }
 
         if(!isValidNASS){
-            Message.errorMessage(personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
+            Message.errorMessage((Stage) personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
         }
 
         return isValidNASS;

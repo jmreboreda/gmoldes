@@ -41,21 +41,21 @@ public class Message {
         }
     }
 
-    public static Boolean confirmationMessage(Window window, String title, String message){
+    public static Boolean confirmationMessage(Stage stage, String title, String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         alert.initStyle(StageStyle.DECORATED);
         alert.initModality(Modality.WINDOW_MODAL);
-        alert.initOwner(window);
+        alert.initOwner(stage);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setContentText(message);
 
-        stage.getIcons().add(icon);
+        alertStage.getIcons().add(icon);
 
         alert.getDialogPane().setCursor(Cursor.DEFAULT);
 
@@ -72,10 +72,10 @@ public class Message {
         }
     }
 
-    public static void warningMessage(Window window, String title, String message){
+    public static void warningMessage(Stage stage, String title, String message){
         Alert alert = new Alert(Alert.AlertType.WARNING);
 
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         alert.initStyle(StageStyle.DECORATED);
         alert.setTitle(title);
@@ -84,24 +84,23 @@ public class Message {
         if(title.contains(CheckConstants.INITIAL_CHECK_HEADER_TEXT)){
             Double minimumWidth = title.length() < 74 ? 74*9.5 : title.length() * 9.5;      // Yea!, magic numbers!
             alert.getDialogPane().setMinWidth(minimumWidth);
-            alert.getDialogPane().setCursor(Cursor.WAIT);
+            alert.getDialogPane().setCursor(Cursor.DEFAULT);
         }else{
             alert.initModality(Modality.WINDOW_MODAL);
-            alert.initOwner(window);
+            alert.initOwner(stage);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-            alert.getDialogPane().setCursor(Cursor.DEFAULT);
         }
 
         alert.setContentText(message);
 
-        stage.getIcons().add(icon);
+        alertStage.getIcons().add(icon);
         alert.showAndWait();
     }
 
-    public static void informationMessage(Window window, String title, String message){
+    public static void informationMessage(Stage stage, String title, String message){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         alert.initStyle(StageStyle.DECORATED);
         alert.setTitle(title);
@@ -110,28 +109,26 @@ public class Message {
         if(title.contains(CheckConstants.INITIAL_CHECK_HEADER_TEXT)){
             Double minimumWidth = title.length() < 74 ? 74*9.5 : title.length() * 9.5;      // Yea!, magic numbers!
             alert.getDialogPane().setMinWidth(minimumWidth);
-            alert.getDialogPane().setCursor(Cursor.WAIT);
         }else{
             alert.initModality(Modality.WINDOW_MODAL);
-            alert.initOwner(window);
+            alert.initOwner(stage);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-            alert.getDialogPane().setCursor(Cursor.DEFAULT);
         }
 
         alert.setContentText(message);
 
-        stage.getIcons().add(icon);
+        alertStage.getIcons().add(icon);
         alert.showAndWait();
     }
 
-    public static void errorMessage(Window window, String title, String message){
+    public static void errorMessage(Stage stage, String title, String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
 
-        alert.initStyle(StageStyle.UTILITY);
+        alert.initStyle(StageStyle.DECORATED);
         alert.initModality(Modality.WINDOW_MODAL);
-        alert.initOwner(window);
+        alert.initOwner(stage);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setResizable(true);
@@ -139,7 +136,7 @@ public class Message {
 
         alert.setContentText(message);
 
-        stage.getIcons().add(icon);
+        alertStage.getIcons().add(icon);
         alert.showAndWait();
     }
 }

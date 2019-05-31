@@ -199,13 +199,13 @@ public class ContractVariationWeeklyWorkSchedule extends AnchorPane {
 
     private void onOkButton(MouseEvent event){
         if(hoursWorkWeek.getText().equals(ZERO_HOURS)) {
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.NO_VALID_DATA_HAVE_BEEN_INSERTED);
+            Message.warningMessage((Stage) this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.NO_VALID_DATA_HAVE_BEEN_INSERTED);
 
             return;
         }
 
         if(verifyExceededMaximumLegalWeeklyHours()){
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+            Message.warningMessage((Stage) this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractMainControllerConstants.EXCEEDED_MAXIMUM_LEGAL_WEEKLY_HOURS);
 
             return;
@@ -420,7 +420,7 @@ public class ContractVariationWeeklyWorkSchedule extends AnchorPane {
         hoursWorkWeek.setText(Utilities.converterDurationToTimeString(totalHours));
 
         if(verifyExceededMaximumLegalWeeklyHours()){
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+            Message.warningMessage((Stage) this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractMainControllerConstants.EXCEEDED_MAXIMUM_LEGAL_WEEKLY_HOURS);
         }
     }

@@ -181,7 +181,7 @@ public class NewContractMainController extends VBox {
     private void onExitButton(MouseEvent event){
         if(contractHasBeenSavedInDatabase){
             if(!contractHasBeenSentToContractAgent){
-                if(!Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT)){
+                if(!Message.confirmationMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_SAVED_BUT_NOT_SENDED_TO_CONTRACT_AGENT)){
                     return;
                 }
             }
@@ -194,9 +194,9 @@ public class NewContractMainController extends VBox {
         Boolean isSendOk = false;
         Path pathOut;
 
-        if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
+        if (Message.confirmationMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.QUESTION_SEND_MAIL_TO_CONTRACT_AGENT)) {
 
-            NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator(this);
+            NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator((Stage) this.getScene().getWindow(),this);
 
             ContractDataToContractsAgent initialContractDataToContractAgent = contractDocumentCreator.createInitialContractDataDocumentForContractsAgent();
 
@@ -206,7 +206,7 @@ public class NewContractMainController extends VBox {
 
             Boolean documentToSendIsOpen = verifyDocumentStatus(attachedFileName);
             if(documentToSendIsOpen){
-                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.CLOSE_DOCUMENT_TO_SEND);
+                Message.warningMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.CLOSE_DOCUMENT_TO_SEND);
 
                 return;
             }
@@ -222,12 +222,12 @@ public class NewContractMainController extends VBox {
             }
             if(isSendOk){
 
-                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_SEND_OK);
+                Message.warningMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_SEND_OK);
                 contractHasBeenSentToContractAgent = true;
                 contractActionComponents.enableSendMailButton(false);
 
             }else{
-                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_NOT_SEND_OK);
+                Message.warningMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, EmailConstants.MAIL_NOT_SEND_OK);
             }
         }
     }
@@ -254,7 +254,7 @@ public class NewContractMainController extends VBox {
     private void onViewPDFButton(MouseEvent mouseEvent) {
         Path pathOut;
 
-        NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator(this);
+        NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator((Stage) this.getScene().getWindow(), this);
         ContractDataToContractsAgent initialContractDataToContractAgent = contractDocumentCreator.createInitialContractDataDocumentForContractsAgent();
 
         pathOut = contractDocumentCreator.retrievePathToContractDataToContractAgentPDF(initialContractDataToContractAgent);
@@ -296,7 +296,7 @@ public class NewContractMainController extends VBox {
         dataDTO.setStatus(statusText);
         provisionalContractData.refreshData(dataDTO);
         if (statusText.equals(ContractConstants.REVISION_WITHOUT_ERRORS)) {
-            if (Message.confirmationMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
+            if (Message.confirmationMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
                 Integer initialContractNumber = persistInitialContract();
                 Integer contractNumber = persistContract();
                 persistTraceabilityControlData(initialContractNumber);
@@ -386,7 +386,7 @@ public class NewContractMainController extends VBox {
         Duration contractDataWorkWeekDuration = event.getContractDataHoursWorkWeek();
         if (scheduleHoursWorkWeekDuration != Duration.ZERO) {
             if (contractDataWorkWeekDuration.compareTo(scheduleHoursWorkWeekDuration) != 0) {
-                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+                Message.warningMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
                         ContractMainControllerConstants.CONTRACT_HOURS_DIFFERENT_FROM_SCHEDULE_HOURS);
             }
         }
@@ -394,7 +394,7 @@ public class NewContractMainController extends VBox {
 
     private void onChangeScheduleDuration(ChangeScheduleDurationEvent event) {
         if (event.getContractScheduleTotalHoursDuration().compareTo(ContractConstants.LEGAL_MAXIMUM_HOURS_OF_WORK_PER_WEEK) > 0) {
-            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+            Message.warningMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractMainControllerConstants.EXCEEDED_MAXIMUM_LEGAL_WEEKLY_HOURS);
             return;
         }
@@ -402,7 +402,7 @@ public class NewContractMainController extends VBox {
         Duration duration = Utilities.converterTimeStringToDuration(contractData.getHoursWorkWeek());
         assert duration != null;
         if (event.getContractScheduleTotalHoursDuration().compareTo(duration) > 0) {
-            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
+            Message.warningMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,
                     ContractMainControllerConstants.SCHEDULE_HOURS_GREATER_THAN_CONTRACT_HOURS);
         }
     }
@@ -443,13 +443,13 @@ public class NewContractMainController extends VBox {
             blockingInterfaceAfterContractPersistence(contractFullDataDTO);
             verifyPrintTimeRecord();
 
-            NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator(this);
+            NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator((Stage) this.getScene().getWindow(), this);
             contractDocumentCreator.printSubfoldersOfTheInitialContract();
 
             contractActionComponents.enableSendMailButton(true);
 
         }else{
-            Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);
+            Message.warningMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);
         }
 
         return contractNumber;
@@ -509,7 +509,7 @@ public class NewContractMainController extends VBox {
 
         if(id == null){
 
-            Message.warningMessage(this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
+            Message.warningMessage((Stage) this.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractConstants.ERROR_PERSISTING_TRACEABILITY_CONTROL_DATA);
         }
 
     }
@@ -525,7 +525,7 @@ public class NewContractMainController extends VBox {
         contractPublicNotes.setMouseTransparent(true);
         contractPrivateNotes.setMouseTransparent(true);
 
-        Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_SAVED_OK + contractNumber);
+        Message.warningMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_SAVED_OK + contractNumber);
 
         contractActionComponents.enableOkButton(false);
     }
@@ -659,21 +659,21 @@ public class NewContractMainController extends VBox {
             try {
                 pathToTimeRecordPDF = TimeRecordPDFCreator.createTimeRecordPDF(timeRecord);
                 if(pathToTimeRecordPDF == null){
-                    Message.errorMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
+                    Message.errorMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
                     return;
                 }
             } catch (IOException | DocumentException e) {
-                Message.errorMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
+                Message.errorMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_PDF_NOT_CREATED);
                 e.printStackTrace();
             }
-            Message.warningMessage(tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_CREATED_IN + pathToTimeRecordPDF + "\n");
+            Message.warningMessage((Stage) tabPane.getScene().getWindow(),Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_CREATED_IN + pathToTimeRecordPDF + "\n");
 
             /* Print the TimeRecord */
             String resultPrint = TimeRecordPDFCreator.printTimeRecord(pathToTimeRecordPDF);
             if(resultPrint.equals("ok")) {
-                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_SENT_TO_PRINTER);
+                Message.warningMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.TIME_RECORD_SENT_TO_PRINTER);
             }else{
-                Message.warningMessage(tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.NO_PRINTER_FOR_THESE_ATTRIBUTES);
+                Message.warningMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, TimeRecordConstants.NO_PRINTER_FOR_THESE_ATTRIBUTES);
             }
 //        }
     }
