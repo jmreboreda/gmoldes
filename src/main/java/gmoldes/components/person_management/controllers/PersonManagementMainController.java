@@ -373,34 +373,41 @@ public class PersonManagementMainController extends VBox {
     }
 
     private Boolean validateNASS(String numberASS){
+
+        Integer introducedProvinceCodeNASS = null;
+        Long introducedAffiliateNumberNASS = null;
+        Long introducedControlDigitNASS = null;
+
         Boolean isValidNASS = true;
-
-        Integer introducedProvinceCodeNASS = Integer.parseInt(numberASS.substring(0, 2));
-        Long introducedAffiliateNumberNASS = Long.parseLong(numberASS.substring(2, 10));
-        Long introducedControlDigitNASS = Long.parseLong(numberASS.substring(10, 12));
-
-        Long calculatedControlDigitNASS;
 
         if(numberASS.length() != 12){
             isValidNASS = false;
         }
+        else {
 
-        if(introducedProvinceCodeNASS < 1 || (introducedProvinceCodeNASS > 53 && introducedProvinceCodeNASS != 66)){
-            isValidNASS = false;
-        }
-
-        if(introducedAffiliateNumberNASS < 10000000){
-            calculatedControlDigitNASS = (introducedAffiliateNumberNASS + introducedProvinceCodeNASS * 10000000 ) % 97;
-
-        }else{
-            Long numberNASSWithoutControlDigit = Long.parseLong(introducedProvinceCodeNASS.toString().concat(introducedAffiliateNumberNASS.toString()));
-
-            calculatedControlDigitNASS = numberNASSWithoutControlDigit % 97;
-        }
+            introducedProvinceCodeNASS = Integer.parseInt(numberASS.substring(0, 2));
+            introducedAffiliateNumberNASS = Long.parseLong(numberASS.substring(2, 10));
+            introducedControlDigitNASS = Long.parseLong(numberASS.substring(10, 12));
 
 
-        if(!introducedControlDigitNASS.equals(calculatedControlDigitNASS)){
-            isValidNASS = false;
+            Long calculatedControlDigitNASS;
+
+            if (introducedProvinceCodeNASS < 1 || (introducedProvinceCodeNASS > 53 && introducedProvinceCodeNASS != 66)) {
+                isValidNASS = false;
+            }
+
+            if (introducedAffiliateNumberNASS < 10000000) {
+                calculatedControlDigitNASS = (introducedAffiliateNumberNASS + introducedProvinceCodeNASS * 10000000) % 97;
+
+            } else {
+                Long numberNASSWithoutControlDigit = Long.parseLong(introducedProvinceCodeNASS.toString().concat(introducedAffiliateNumberNASS.toString()));
+
+                calculatedControlDigitNASS = numberNASSWithoutControlDigit % 97;
+            }
+
+            if (!introducedControlDigitNASS.equals(calculatedControlDigitNASS)) {
+                isValidNASS = false;
+            }
         }
 
         if(!isValidNASS){

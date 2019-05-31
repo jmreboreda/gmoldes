@@ -124,7 +124,6 @@ public class NewContractMainController extends VBox {
         contractSchedule.setOnChangeScheduleDuration(this::onChangeScheduleDuration);
 
         setTabPaneIcon();
-
     }
 
     public ContractParts getContractParts() {

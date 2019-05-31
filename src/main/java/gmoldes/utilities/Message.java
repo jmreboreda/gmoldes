@@ -31,6 +31,8 @@ public class Message {
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setContentText(message);
 
+        stage.getIcons().add(icon);
+
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             return true;
@@ -71,7 +73,6 @@ public class Message {
     }
 
     public static void warningMessage(Window window, String title, String message){
-
         Alert alert = new Alert(Alert.AlertType.WARNING);
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -95,11 +96,9 @@ public class Message {
 
         stage.getIcons().add(icon);
         alert.showAndWait();
-
     }
 
     public static void informationMessage(Window window, String title, String message){
-
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -123,7 +122,6 @@ public class Message {
 
         stage.getIcons().add(icon);
         alert.showAndWait();
-
     }
 
     public static void errorMessage(Window window, String title, String message){

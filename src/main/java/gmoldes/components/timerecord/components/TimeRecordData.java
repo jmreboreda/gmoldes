@@ -49,8 +49,7 @@ public class TimeRecordData extends VBox {
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
     private Parent parent;
-
-    Stage stage = (Stage) this.getScene().getWindow();
+    private Stage stage;
 
     @FXML
     private ChoiceBox<TimeRecord> monthName;
