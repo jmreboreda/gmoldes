@@ -33,4 +33,9 @@ public class PersonController {
 
         return personManager.findPersonByNieNif(nieNif, personId);
     }
+
+    public List<PersonDTO> findPersonByNass(String nieNif, Integer personId){
+
+        return personManager.findPersonByNass(nieNif, personId);
+    }
 }

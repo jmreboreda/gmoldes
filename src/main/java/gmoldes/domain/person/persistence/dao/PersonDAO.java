@@ -97,6 +97,13 @@ public class PersonDAO {
         return query.getResultList();
     }
 
+    public List<PersonVO> findPersonByNass(String nass){
+        TypedQuery<PersonVO> query = session.createNamedQuery(PersonVO.FIND_PERSON_BY_NASS, PersonVO.class);
+        query.setParameter("nass", nass);
+
+        return query.getResultList();
+    }
+
     public PersonVO findClientById(Integer id){
 
         Query query = session.createQuery(FIND_PERSON_BY_ID);

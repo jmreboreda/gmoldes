@@ -20,6 +20,10 @@ import java.sql.Date;
         @NamedQuery(
                 name = PersonVO.FIND_PERSON_BY_NIE_NIF,
                 query = " select p from PersonVO as p where p.nifcif = :nieNif"
+        ),
+        @NamedQuery(
+                name = PersonVO.FIND_PERSON_BY_NASS,
+                query = " select p from PersonVO as p where p.numafss = :nass"
         )
 })
 
@@ -28,6 +32,7 @@ public class PersonVO implements Serializable {
     public static final String FIND_ALL_PERSONS_BY_NAME_PATTERN = "PersonVO.FIND_ALL_PERSONS_BY_NAME_PATTERN";
     public static final String FIND_PERSON_BY_ID = "PersonVO.FIND_PERSON_BY_ID";
     public static final String FIND_PERSON_BY_NIE_NIF = "PersonVO.FIND_PERSON_BY_NIE_NIF";
+    public static final String FIND_PERSON_BY_NASS = "PersonVO.FIND_PERSON_BY_NASS";
 
     @Id
     @SequenceGenerator(name = "person_id_seq",

@@ -126,6 +126,11 @@ public class PersonManagementData extends VBox {
         personNASS.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                if(t1 == null){
+
+                    return;
+                }
+
                 if(t1.length() > 12){
                     personNASS.setText(t);
                 }
