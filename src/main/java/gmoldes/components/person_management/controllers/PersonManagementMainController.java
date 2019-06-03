@@ -167,6 +167,8 @@ public class PersonManagementMainController extends VBox {
             personManagementData.getModificationPersonGroup().setVisible(true);
             personManagementData.getNewPersonHbox().setVisible(true);
             personManagementData.getModificationPersonHbox().setVisible(true);
+
+            personManagementData.getNormalizeText().setSelected(false);
         }
 
         if(personManagementSelector.getDeletePerson().isSelected()){
