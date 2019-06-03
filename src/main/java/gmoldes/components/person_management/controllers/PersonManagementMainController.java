@@ -167,6 +167,8 @@ public class PersonManagementMainController extends VBox {
             personManagementData.getModificationPersonGroup().setVisible(true);
             personManagementData.getNewPersonHbox().setVisible(true);
             personManagementData.getModificationPersonHbox().setVisible(true);
+
+            personManagementData.getNormalizeText().setSelected(false);
         }
 
         if(personManagementSelector.getDeletePerson().isSelected()){
@@ -412,6 +414,21 @@ public class PersonManagementMainController extends VBox {
 
         if(!isValidNASS){
             Message.errorMessage((Stage) personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, PersonManagementConstants.NASS_IS_NOT_VALID);
+        }else {
+            List<PersonDTO> repeatedNassList = verifyIsRepeatedNass(personManagementData.getPersonNASS().getText(), personManagementData.getPersonSurNames().getValue().getIdpersona());
+            String detailedMessage = PersonManagementConstants.IS_NOT_CORRECT_REPEATED_NASS;
+            if (!repeatedNassList.isEmpty()) {
+                for(PersonDTO personDTO : repeatedNassList){
+                    detailedMessage = detailedMessage + "\t- " + personDTO.toAlphabeticalName() + "\n\n";
+                }
+
+                detailedMessage = detailedMessage + "\n\n";
+
+                Message.errorMessage((Stage) personManagementHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, detailedMessage);
+                personManagementAction.getSaveButton().setDisable(true);
+
+                isValidNASS = false;
+            }
         }
 
         return isValidNASS;
@@ -420,6 +437,11 @@ public class PersonManagementMainController extends VBox {
     private List<PersonDTO> verifyIsRepeatedNieNif(String nieNif, Integer personId){
 
         return personController.findPersonByNieNif(nieNif, personId);
+    }
+
+    private List<PersonDTO> verifyIsRepeatedNass(String nieNif, Integer personId){
+
+        return personController.findPersonByNass(nieNif, personId);
     }
 
     private void normalizeDataEntry(){
