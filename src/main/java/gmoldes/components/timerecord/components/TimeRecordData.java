@@ -48,7 +48,7 @@ public class TimeRecordData extends VBox {
     private static final Integer LAST_MONTH_INDEX_IN_MONTHNAME = 11;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
     private static final Integer ADMINISTRATOR_OR_PARTNER_CONTRACT_CODE = 101;
-    private static final String SPECIAL_REGIME_SEA = "0814";
+    private static final String SPECIAL_REGIME_SEA = "08";
 
     private Parent parent;
     private Stage stage;
@@ -220,7 +220,7 @@ public class TimeRecordData extends VBox {
         List<ContractNewVersionDTO> timeRecordCandidatesWithOutExceptions = new ArrayList<>();
         for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
             if(contractNewVersionDTO.getContractJsonData().getQuoteAccountCode() != null &&
-                    !contractNewVersionDTO.getContractJsonData().getQuoteAccountCode().contains(SPECIAL_REGIME_SEA)){
+                    !contractNewVersionDTO.getContractJsonData().getQuoteAccountCode().substring(0, 2).contains(SPECIAL_REGIME_SEA)){
                 timeRecordCandidatesWithOutExceptions.add(contractNewVersionDTO);
             }
         }
