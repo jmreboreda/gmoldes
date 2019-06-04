@@ -76,6 +76,17 @@ public class PayrollCheckListMainController extends VBox {
 
         PayrollCheckList payrollCheckList = new PayrollCheckList();
         List<PayrollCheckListDTO> payrollCheckListDTOList = payrollCheckList.retrieveAllContractInForceInPeriod(month, year);
+
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
+//        List<PayrollCheckListDTO> orderedPayrollCheckListDTO = new ArrayList<>();
+//
+//
+//                payrollCheckListDTOList
+//                .stream()
+//                .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName, primaryCollator.reversed())).collect(Collectors.toList());
+
         for(PayrollCheckListDTO payrollCheckListDTO : payrollCheckListDTOList){
             withoutPersonDuplicates.put(payrollCheckListDTO.getWorkerFullName(), payrollCheckListDTO);
         }
@@ -85,15 +96,13 @@ public class PayrollCheckListMainController extends VBox {
             withoutDuplicatesPayrollCheckListDTO.add(itemMap.getValue());
         }
 
-        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
-        primaryCollator.setStrength(Collator.PRIMARY);
-
-        List<PayrollCheckListDTO> orderedPayrollCheckListDTO = withoutDuplicatesPayrollCheckListDTO
+        List<PayrollCheckListDTO>  orderedPayrollCheckListDTO = withoutDuplicatesPayrollCheckListDTO
                 .stream()
                 .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName, primaryCollator)).collect(Collectors.toList());
 
+
         ObservableList<PayrollCheckListDTO> payrollCheckListDTOS = FXCollections.observableArrayList(orderedPayrollCheckListDTO);
-        payrollCheckListData.getPayrollTable().setItems(payrollCheckListDTOS);
+        payrollCheckListData.refreshPayRollTable(payrollCheckListDTOS);
 
         payrollCheckListAction.getClipboardCopyButton().setDisable(false);
     }
@@ -105,7 +114,6 @@ public class PayrollCheckListMainController extends VBox {
 
     private void onCopyToClipboard(MouseEvent event){
         PayrollCheckList payrollCheckList = new PayrollCheckList();
-
         payrollCheckList.loadClipboard(payrollCheckListData.getPayrollTable().getItems());
 
         payrollCheckListAction.getClipboardCopyButton().setDisable(true);
