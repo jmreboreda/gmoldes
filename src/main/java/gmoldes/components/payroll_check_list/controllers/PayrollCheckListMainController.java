@@ -76,7 +76,25 @@ public class PayrollCheckListMainController extends VBox {
 
         PayrollCheckList payrollCheckList = new PayrollCheckList();
         List<PayrollCheckListDTO> payrollCheckListDTOList = payrollCheckList.retrieveAllContractInForceInPeriod(month, year);
-        for(PayrollCheckListDTO payrollCheckListDTO : payrollCheckListDTOList){
+
+        for(PayrollCheckListDTO borrame : payrollCheckListDTOList){
+            System.out.println(borrame.getEmployerFullName() + " :: " + borrame.getWorkerFullName() + " :: " + borrame.getWithVariationsInMoutn());
+        }
+
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
+        List<PayrollCheckListDTO> orderedPayrollCheckListDTO = payrollCheckListDTOList
+                .stream()
+                .sorted(Comparator.comparing(PayrollCheckListDTO::getWithVariationsInMoutn, primaryCollator)).collect(Collectors.toList());
+
+        for(PayrollCheckListDTO borrame : orderedPayrollCheckListDTO){
+            System.out.println(borrame.getEmployerFullName() + " :: " + borrame.getWorkerFullName() + " :: " + borrame.getWithVariationsInMoutn());
+        }
+
+
+
+        for(PayrollCheckListDTO payrollCheckListDTO : orderedPayrollCheckListDTO){
             withoutPersonDuplicates.put(payrollCheckListDTO.getWorkerFullName(), payrollCheckListDTO);
         }
 
@@ -85,10 +103,10 @@ public class PayrollCheckListMainController extends VBox {
             withoutDuplicatesPayrollCheckListDTO.add(itemMap.getValue());
         }
 
-        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
-        primaryCollator.setStrength(Collator.PRIMARY);
+//        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+//        primaryCollator.setStrength(Collator.PRIMARY);
 
-        List<PayrollCheckListDTO> orderedPayrollCheckListDTO = withoutDuplicatesPayrollCheckListDTO
+        orderedPayrollCheckListDTO = withoutDuplicatesPayrollCheckListDTO
                 .stream()
                 .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName, primaryCollator)).collect(Collectors.toList());
 

@@ -47,6 +47,8 @@ public class TimeRecordData extends VBox {
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
     private static final Integer LAST_MONTH_INDEX_IN_MONTHNAME = 11;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
+    private static final Integer ADMINISTRATOR_OR_PARTNER_CONTRACT_CODE = 101;
+    private static final String SPECIAL_REGIME_SEA = "0814";
 
     private Parent parent;
     private Stage stage;
@@ -214,7 +216,15 @@ public class TimeRecordData extends VBox {
         Integer idSelectedClient = clientForTimeRecord.getSelectionModel().getSelectedItem().getIdcliente();
         LocalDate date = retrieveDateForTimeRecordFromSelector();
         List<ContractNewVersionDTO> contractNewVersionDTOList = timeRecordController.findAllContractNewVersionByClientIdInMonthOfDate(idSelectedClient, date);
-        List<TimeRecordCandidateDataDTO> candidates = loadCandidateDataForTimeRecord(contractNewVersionDTOList);
+
+        List<ContractNewVersionDTO> timeRecordCandidatesWithOutExceptions = new ArrayList<>();
+        for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
+            if(contractNewVersionDTO.getContractJsonData().getQuoteAccountCode() != null &&
+                    !contractNewVersionDTO.getContractJsonData().getQuoteAccountCode().contains(SPECIAL_REGIME_SEA)){
+                timeRecordCandidatesWithOutExceptions.add(contractNewVersionDTO);
+            }
+        }
+        List<TimeRecordCandidateDataDTO> candidates = loadCandidateDataForTimeRecord(timeRecordCandidatesWithOutExceptions);
         refreshCandidatesData(candidates);
     }
 
@@ -223,38 +233,38 @@ public class TimeRecordData extends VBox {
         if(!contractNewVersionDTOList.isEmpty()) {
             for (ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList) {
 //                if(contractNewVersionDTO.isPartialWorkday()) {
-                if(contractNewVersionDTO.getVariationType() != 101){
-                Integer employeeId = contractNewVersionDTO.getContractJsonData().getWorkerId();
-                PersonDTO employee = retrievePersonByPersonId(employeeId);
-                String employeeNIF = Utilities.formatAsNIF(employee.getNifcif());
-                String employeeName = employee.toAlphabeticalName();
+                if(contractNewVersionDTO.getVariationType() != ADMINISTRATOR_OR_PARTNER_CONTRACT_CODE){
+                    Integer employeeId = contractNewVersionDTO.getContractJsonData().getWorkerId();
+                    PersonDTO employee = retrievePersonByPersonId(employeeId);
+                    String employeeNIF = Utilities.formatAsNIF(employee.getNifcif());
+                    String employeeName = employee.toAlphabeticalName();
 
-                String dateTo;
-                if (contractNewVersionDTO.getModificationDate() == null &&
-                        contractNewVersionDTO.getExpectedEndDate() == null) {
-                    dateTo = null;
+                    String dateTo;
+                    if (contractNewVersionDTO.getModificationDate() == null &&
+                            contractNewVersionDTO.getExpectedEndDate() == null) {
+                        dateTo = null;
 
-                } else {
-                    dateTo = contractNewVersionDTO.getModificationDate() == null ? dateFormatter.format(contractNewVersionDTO.getExpectedEndDate()) : dateFormatter.format(contractNewVersionDTO.getModificationDate());
-                }
+                    } else {
+                        dateTo = contractNewVersionDTO.getModificationDate() == null ? dateFormatter.format(contractNewVersionDTO.getExpectedEndDate()) : dateFormatter.format(contractNewVersionDTO.getModificationDate());
+                    }
 
-                String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
+                    String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
 
-                ContractTypeController contractTypeController = new ContractTypeController();
-                ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
+                    ContractTypeController contractTypeController = new ContractTypeController();
+                    ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
 
-                TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
-                        employeeName,
-                        employeeNIF,
-                        contractNewVersionDTO.getContractJsonData().getQuoteAccountCode(),
-                        contractNewVersionDTO.getContractJsonData().getFullPartialWorkDay(),
-                        contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours(),
-                        contractTypeDTO.getColloquial(),
-                        dateFrom,
-                        dateTo
-                );
+                    TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
+                            employeeName,
+                            employeeNIF,
+                            contractNewVersionDTO.getContractJsonData().getQuoteAccountCode(),
+                            contractNewVersionDTO.getContractJsonData().getFullPartialWorkDay(),
+                            contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours(),
+                            contractTypeDTO.getColloquial(),
+                            dateFrom,
+                            dateTo
+                    );
 
-                candidates.add(dataCandidates);
+                    candidates.add(dataCandidates);
             }
 //                }
             }
@@ -342,7 +352,6 @@ public class TimeRecordData extends VBox {
             yearNumber.setText(String.valueOf(LocalDate.now().getYear()));
             clientForTimeRecord.getSelectionModel().clearSelection();
             return LocalDate.of(LocalDate.now().getYear(), numberOfMonth, 15);
-
         }
 
         return  LocalDate.of(numberOfYear, numberOfMonth, 15);

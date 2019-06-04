@@ -23,6 +23,7 @@ public class PayrollCheckList {
 
     private String employerFullName;
     private String  workerFullName;
+    private String withVariationsInMonth;
     private Month month;
     private Integer year;
     private Clipboard clipboard;
@@ -32,9 +33,10 @@ public class PayrollCheckList {
         clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     }
 
-    public PayrollCheckList(String employerFullNameList, String workerFullNameList) {
+    public PayrollCheckList(String employerFullNameList, String workerFullNameList, String withVariationsInMonth) {
         this.employerFullName = employerFullNameList;
         this.workerFullName = workerFullNameList;
+        this.withVariationsInMonth = withVariationsInMonth;
     }
 
     public String getEmployerFullNameList() {
@@ -80,7 +82,7 @@ public class PayrollCheckList {
         String clipboardData = "";
 
         for(PayrollCheckListDTO payrollCheckListDTO : payrollCheckListDTOList){
-            clipboardData = clipboardData + payrollCheckListDTO.getEmployerFullName() + ";" + payrollCheckListDTO.getWorkerFullName() + "\n";
+            clipboardData = clipboardData + payrollCheckListDTO.getEmployerFullName() + ";" + payrollCheckListDTO.getWorkerFullName() + payrollCheckListDTO.getWithVariationsInMoutn() + "\n";
         }
 
         StringSelection ss = new StringSelection(clipboardData);
@@ -99,16 +101,24 @@ public class PayrollCheckList {
             PersonDTO worker = personService.findPersonById(contractNewVersionDTO.getContractJsonData().getWorkerId());
             String workerName = worker.toString();
 
-            PayrollCheckListDTO payrollCheckListDTO = new PayrollCheckListDTO(employerName, workerName);
+            String variation = "";
+            if(contractNewVersionDTO.getModificationDate() != null &&
+                    contractNewVersionDTO.getModificationDate().getMonth() == month &&
+                    contractNewVersionDTO.getModificationDate().getYear() == year){
+                    variation = "**";
+            }
+
+            PayrollCheckListDTO payrollCheckListDTO = new PayrollCheckListDTO(employerName, workerName, variation);
             payrollCheckListDTOList.add(payrollCheckListDTO);
         }
 
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
         primaryCollator.setStrength(Collator.PRIMARY);
 
-        return payrollCheckListDTOList
-                .stream()
-                .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName, primaryCollator)).collect(Collectors.toList());
+        return payrollCheckListDTOList;
+//
+//                .stream()
+//                .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName, primaryCollator)).collect(Collectors.toList());
     }
 
     private List<ContractNewVersionDTO> findAllContractInForceInPeriod(Month month, Integer year){
