@@ -34,12 +34,6 @@ public class PayrollCheckList {
         clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     }
 
-//    public PayrollCheckList(String employerFullNameList, String workerFullNameList, String withVariationsInMonth) {
-//        this.employerFullName = employerFullNameList;
-//        this.workerFullName = workerFullNameList;
-//        this.withVariationsInMonth = withVariationsInMonth;
-//    }
-
     public String getEmployerFullNameList() {
         return employerFullName;
     }
