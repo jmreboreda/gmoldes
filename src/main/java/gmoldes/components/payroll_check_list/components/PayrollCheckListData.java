@@ -15,12 +15,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
-import java.time.LocalDate;
 import java.time.Month;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class PayrollCheckListData extends VBox {
 
@@ -52,9 +49,11 @@ public class PayrollCheckListData extends VBox {
     @FXML
     public void initialize() {
 
-        columnEmployer.setCellValueFactory(new PropertyValueFactory<PayrollCheckListDTO,String>("employerFullName"));
-        columnWorker.setCellValueFactory(new PropertyValueFactory<PayrollCheckListDTO,String>("workerFullName"));
-        columnChanges.setCellValueFactory(new PropertyValueFactory<PayrollCheckListDTO,String>("withVariationsInMonth"));
+        columnEmployer.setCellValueFactory(new PropertyValueFactory<>("employerFullName"));
+        columnWorker.setCellValueFactory(new PropertyValueFactory<>("workerFullName"));
+        columnChanges.setCellValueFactory(new PropertyValueFactory<>("withVariationsInMonth"));
+
+        columnChanges.setStyle( "-fx-alignment: CENTER CENTER;");
 
         this.month.setOnAction(this::onMonthChanged);
         this.year.setOnAction(this::onYearChanged);
@@ -97,7 +96,6 @@ public class PayrollCheckListData extends VBox {
 
         ObservableList monthNamesOS = FXCollections.observableArrayList(payrollCheckListDTOList);
         month.setItems(monthNamesOS);
-
     }
 
     private void onMonthChanged(ActionEvent event){
@@ -108,9 +106,11 @@ public class PayrollCheckListData extends VBox {
     }
 
     private void onYearChanged(ActionEvent event){
-
         actionEventEventHandlerYearChanged.handle(event);
+    }
 
+    public void refreshPayRollTable(ObservableList<PayrollCheckListDTO> payrollCheckListDTO){
+        getPayrollTable().setItems(payrollCheckListDTO);
     }
 
     public void setOnMonthChanged(EventHandler<ActionEvent> actionEventEventHandlerMonthChanged){

@@ -15,9 +15,10 @@ import java.text.Collator;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Locale;
 
 public class PayrollCheckList {
 
@@ -33,11 +34,11 @@ public class PayrollCheckList {
         clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     }
 
-    public PayrollCheckList(String employerFullNameList, String workerFullNameList, String withVariationsInMonth) {
-        this.employerFullName = employerFullNameList;
-        this.workerFullName = workerFullNameList;
-        this.withVariationsInMonth = withVariationsInMonth;
-    }
+//    public PayrollCheckList(String employerFullNameList, String workerFullNameList, String withVariationsInMonth) {
+//        this.employerFullName = employerFullNameList;
+//        this.workerFullName = workerFullNameList;
+//        this.withVariationsInMonth = withVariationsInMonth;
+//    }
 
     public String getEmployerFullNameList() {
         return employerFullName;
@@ -71,6 +72,14 @@ public class PayrollCheckList {
         this.year = year;
     }
 
+    public String getWithVariationsInMonth() {
+        return withVariationsInMonth;
+    }
+
+    public void setWithVariationsInMonth(String withVariationsInMonth) {
+        this.withVariationsInMonth = withVariationsInMonth;
+    }
+
     @Override
     public String toString(){
 
@@ -82,7 +91,7 @@ public class PayrollCheckList {
         String clipboardData = "";
 
         for(PayrollCheckListDTO payrollCheckListDTO : payrollCheckListDTOList){
-            clipboardData = clipboardData + payrollCheckListDTO.getEmployerFullName() + ";" + payrollCheckListDTO.getWorkerFullName() + payrollCheckListDTO.getWithVariationsInMoutn() + "\n";
+            clipboardData = clipboardData + payrollCheckListDTO.getEmployerFullName() + ";" + payrollCheckListDTO.getWorkerFullName() + ";" + payrollCheckListDTO.getWithVariationsInMonth() + "\n";
         }
 
         StringSelection ss = new StringSelection(clipboardData);
