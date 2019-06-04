@@ -112,7 +112,7 @@ public class PayrollCheckList {
 
             String variation = "";
             if(contractNewVersionDTO.getModificationDate() != null &&
-                    contractNewVersionDTO.getModificationDate().getMonth() == month &&
+                    contractNewVersionDTO.getModificationDate().getMonth().getValue() == month.getValue() &&
                     contractNewVersionDTO.getModificationDate().getYear() == year){
                     variation = "**";
             }
@@ -125,9 +125,6 @@ public class PayrollCheckList {
         primaryCollator.setStrength(Collator.PRIMARY);
 
         return payrollCheckListDTOList;
-//
-//                .stream()
-//                .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName, primaryCollator)).collect(Collectors.toList());
     }
 
     private List<ContractNewVersionDTO> findAllContractInForceInPeriod(Month month, Integer year){
