@@ -115,9 +115,6 @@ public class PayrollCheckList {
             payrollCheckListDTOList.add(payrollCheckListDTO);
         }
 
-        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
-        primaryCollator.setStrength(Collator.PRIMARY);
-
         return payrollCheckListDTOList;
     }
 

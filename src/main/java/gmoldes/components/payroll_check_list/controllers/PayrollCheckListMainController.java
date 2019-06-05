@@ -80,14 +80,11 @@ public class PayrollCheckListMainController extends VBox {
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
         primaryCollator.setStrength(Collator.PRIMARY);
 
-//        List<PayrollCheckListDTO> orderedPayrollCheckListDTO = new ArrayList<>();
-//
-//
-//                payrollCheckListDTOList
-//                .stream()
-//                .sorted(Comparator.comparing(PayrollCheckListDTO::getEmployerFullName, primaryCollator.reversed())).collect(Collectors.toList());
+        List<PayrollCheckListDTO>  orderedForVariationPayrollCheckListDTO = payrollCheckListDTOList
+                .stream()
+                .sorted(Comparator.comparing(PayrollCheckListDTO::getWithVariationsInMonth, primaryCollator)).collect(Collectors.toList());
 
-        for(PayrollCheckListDTO payrollCheckListDTO : payrollCheckListDTOList){
+        for(PayrollCheckListDTO payrollCheckListDTO : orderedForVariationPayrollCheckListDTO){
             withoutPersonDuplicates.put(payrollCheckListDTO.getWorkerFullName(), payrollCheckListDTO);
         }
 
