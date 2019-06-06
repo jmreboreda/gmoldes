@@ -8,8 +8,11 @@ import gmoldes.components.contract.new_contract.controllers.NewContractMainContr
 import gmoldes.components.person_management.controllers.PersonManagementMainController;
 import gmoldes.components.payroll_check_list.controllers.PayrollCheckListMainController;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
+import gmoldes.domain.check.CheckConstants;
+import gmoldes.domain.check.InitialChecks;
 import gmoldes.domain.client.manager.ClientManager;
 import gmoldes.domain.person.PersonManager;
+import gmoldes.utilities.Message;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -45,6 +48,8 @@ public class InitialMenuController extends AnchorPane {
     @FXML
     private Button payrollCheckListButton;
     @FXML
+    private Button applicationAgendaButton;
+    @FXML
     private Button personManagementButton;
     @FXML
     private Button exitButton;
@@ -65,6 +70,8 @@ public class InitialMenuController extends AnchorPane {
         contractVariationButton.setOnMouseClicked(this::onContractVariation);
         clientInvoiceCheckListButton.setOnMouseClicked(this::onClientInvoiceCheckList);
         payrollCheckListButton.setOnMouseClicked(this::onPayrollCheckList);
+        applicationAgendaButton.setOnMouseClicked(this::onApplicationAgenda);
+
         personManagementButton.setOnMouseClicked(this::onPersonManagementButton);
         exitButton.setOnMouseClicked(this::onExit);
     }
@@ -132,6 +139,17 @@ public class InitialMenuController extends AnchorPane {
         contractVariationStage.initOwner(primaryStage);
         contractVariationStage.initModality(Modality.APPLICATION_MODAL);
         contractVariationStage.show();
+    }
+
+    private void onApplicationAgenda(MouseEvent event){
+        Stage thisStage = (Stage) this.getScene().getWindow();
+
+        InitialChecks.alertByContractNewVersionWithPendingIDC(thisStage);
+        InitialChecks.alertOfWeeklyOfWorkingDayScheduleWithEndDate(thisStage);
+        InitialChecks.alertByContractNewVersionExpiration(thisStage);
+        InitialChecks.alertByDelaySendingLaborDocumentationToClients(thisStage);
+
+        Message.informationMessage((Stage) thisStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Agenda de la aplicación"), CheckConstants.FINALIZED_CHECK_APPLICATION_AGENDA);
     }
 
     private void onPersonManagementButton(MouseEvent event){
