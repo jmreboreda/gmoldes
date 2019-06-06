@@ -101,6 +101,11 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <Button fx:id="applicationAgendaButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Agenda de la aplicación">
+               <VBox.margin>
+                  <Insets left="23.5" right="23.5" top="10.0" />
+               </VBox.margin>
+            </Button>
             <Separator prefWidth="200.0">
                <VBox.margin>
                   <Insets left="23.5" right="23.5" top="20.0" />
@@ -121,7 +126,7 @@
             </Button>
             <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="100.0" text="Salir" textAlignment="CENTER" textFill="#640000">
                <VBox.margin>
-                  <Insets bottom="25.0" left="320.0" top="350.0" />
+                  <Insets bottom="25.0" left="320.0" top="310.0" />
                </VBox.margin>
                <cursor>
                   <Cursor fx:constant="HAND" />
