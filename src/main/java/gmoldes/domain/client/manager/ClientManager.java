@@ -127,7 +127,6 @@ public class ClientManager {
                 .withId(clientVO.getId())
                 .withClientId(clientVO.getClientId())
                 .withIsNaturalPerson(clientVO.getNaturalPerson())
-                .withIsNaturalPerson(clientVO.getNaturalPerson())
                 .withSurnames(clientVO.getSurNames())
                 .withName(clientVO.getName())
                 .withRzSocial(clientVO.getRzSocial())

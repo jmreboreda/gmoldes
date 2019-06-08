@@ -220,7 +220,7 @@ public class InitialChecks {
 
                     String variation_description = retrieveVariationDescriptionById(traceabilityContractDocumentationDTO.getVariationType());
                     alertMessage.append("Contrato número: ").append(contractNumber).append("\n");
-                    alertMessage.append("Entre  ").append(clientDTO.toNaturalName());
+                    alertMessage.append("Entre ").append(clientDTO.toNaturalName());
                     alertMessage.append(" y ").append(workerDTO.toNaturalName()).append("\n");
                     alertMessage.append("Documentación: ").append(variation_description).append(".\n");
 
