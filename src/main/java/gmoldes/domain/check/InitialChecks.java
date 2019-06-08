@@ -200,25 +200,42 @@ public class InitialChecks {
     }
 
     public static void alertByDelaySendingLaborDocumentationToClients(Stage primaryStage){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
+
         TraceabilityContractDocumentationController traceabilityController = new TraceabilityContractDocumentationController();
         StringBuilder alertMessage = new StringBuilder();
 
         List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityController.findTraceabilityForAllContractWithPendingLaborDocumentation();
         if(!traceabilityContractDocumentationDTOList.isEmpty()){
             for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
-                Long daysOfDocumentationDelay = ChronoUnit.DAYS.between(traceabilityContractDocumentationDTO.getStartDate(), LocalDate.now());
                 Integer contractNumber = traceabilityContractDocumentationDTO.getContractNumber();
+
+                ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+                InitialContractDTO initialContractDTO = contractService.findInitialContractByContractNumber(contractNumber);
+
+                ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+                ClientDTO clientDTO = clientService.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
+
+                PersonService personService = PersonService.PersonServiceFactory.getInstance();
+                PersonDTO workerDTO = personService.findPersonById(initialContractDTO.getContractJsonData().getWorkerId());
+
+                String variation_description = retrieveVariationDescriptionById(traceabilityContractDocumentationDTO.getVariationType());
+
+                if(traceabilityContractDocumentationDTO.getExpectedEndDate() != null &&
+                ChronoUnit.DAYS.between(LocalDate.now(), traceabilityContractDocumentationDTO.getExpectedEndDate()) < CheckConstants.LIMIT_DAYS_DELAY_RECEIPT_CONTRACT_LABOR_DOCUMENTATION){
+                    alertMessage.append("Contrato número: ").append(contractNumber).append("\n");
+                    alertMessage.append("Entre ").append(clientDTO.toNaturalName());
+                    alertMessage.append(" y ").append(workerDTO.toNaturalName()).append("\n");
+                    alertMessage.append("Documentación: ").append(variation_description).append(".\n");
+
+                    alertMessage.append("Fecha de finalización del contrato: ")
+                            .append(traceabilityContractDocumentationDTO.getExpectedEndDate().format(dateFormatter))
+                            .append(". Documentación pendiente.")
+                            .append("\n\n");
+                }
+
+                Long daysOfDocumentationDelay = ChronoUnit.DAYS.between(traceabilityContractDocumentationDTO.getStartDate(), LocalDate.now());
                 if(daysOfDocumentationDelay >= CheckConstants.LIMIT_DAYS_DELAY_RECEIPT_CONTRACT_LABOR_DOCUMENTATION){
-                    ContractService contractService = ContractService.ContractServiceFactory.getInstance();
-                    InitialContractDTO initialContractDTO = contractService.findInitialContractByContractNumber(contractNumber);
-
-                    ClientService clientService = ClientService.ClientServiceFactory.getInstance();
-                    ClientDTO clientDTO = clientService.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
-
-                    PersonService personService = PersonService.PersonServiceFactory.getInstance();
-                    PersonDTO workerDTO = personService.findPersonById(initialContractDTO.getContractJsonData().getWorkerId());
-
-                    String variation_description = retrieveVariationDescriptionById(traceabilityContractDocumentationDTO.getVariationType());
                     alertMessage.append("Contrato número: ").append(contractNumber).append("\n");
                     alertMessage.append("Entre ").append(clientDTO.toNaturalName());
                     alertMessage.append(" y ").append(workerDTO.toNaturalName()).append("\n");
