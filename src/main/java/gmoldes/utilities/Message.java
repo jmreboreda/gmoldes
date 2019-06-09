@@ -26,7 +26,7 @@ public class Message {
         alert.initOwner(stage);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setResizable(true);
+//        alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setContentText(message);
 
@@ -50,7 +50,7 @@ public class Message {
         alert.initOwner(stage);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setResizable(true);
+//        alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setContentText(message);
 
@@ -79,7 +79,7 @@ public class Message {
         alert.initStyle(StageStyle.DECORATED);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setResizable(true);
+//        alert.setResizable(true);
         if(title.contains(CheckConstants.INITIAL_CHECK_HEADER_TEXT)){
             Double minimumWidth = title.length() < 74 ? 74*9.5 : title.length() * 9.5;      // Yea!, magic numbers!
             alert.getDialogPane().setMinWidth(minimumWidth);
@@ -104,7 +104,7 @@ public class Message {
         alert.initStyle(StageStyle.DECORATED);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setResizable(true);
+//        alert.setResizable(true);
         if(title.contains(CheckConstants.INITIAL_CHECK_HEADER_TEXT)){
             Double minimumWidth = title.length() < 74 ? 74*9.5 : title.length() * 9.5;      // Yea!, magic numbers!
             alert.getDialogPane().setMinWidth(minimumWidth);
@@ -130,7 +130,7 @@ public class Message {
         alert.initOwner(stage);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setResizable(true);
+//        alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 
         alert.setContentText(message);
