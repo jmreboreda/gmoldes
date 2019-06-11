@@ -39,7 +39,7 @@ public class PersonManagementData extends VBox {
     private EventHandler<PersonSurNamesPatternChangedEvent> surNamesPatternChangedEventHandler;
     private EventHandler<PersonSurNamesItemSelectedEvent> surNamesItemSelectedEventHandler;
 
-    private enum CivilStatus {
+    public enum CivilStatus {
         No_disponible("No disponible"),
         Soltero("Soltero"),
         Soltera("Soltera"),
@@ -95,7 +95,7 @@ public class PersonManagementData extends VBox {
     @FXML
     private DatePicker personBirthDate;
     @FXML
-    private ComboBox<CivilStatus> personCivilStatus;
+    private ChoiceBox<CivilStatus> personCivilStatus;
     @FXML
     private TextField personNationality;
     @FXML
@@ -166,7 +166,6 @@ public class PersonManagementData extends VBox {
             }
         });
 
-//        personCivilStatus.setOnKeyReleased(this::onPersonCivilStatusVerifyOnlyLetter);
         personPostalCode.setOnKeyReleased(this::onPersonPostalCodeVerifyOnlyNumber);
         personPostalCode.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -233,7 +232,7 @@ public class PersonManagementData extends VBox {
         return personBirthDate;
     }
 
-    public ComboBox getPersonCivilStatus() {return personCivilStatus;}
+    public ChoiceBox<CivilStatus> getPersonCivilStatus() {return personCivilStatus;}
 
     public TextField getPersonNationality() {
         return personNationality;
@@ -340,17 +339,6 @@ public class PersonManagementData extends VBox {
             getPersonNASS().setText(getPersonNASS().getText().replace(keyEvent.getText(), ""));
         }
     }
-
-//    private void onPersonCivilStatusVerifyOnlyLetter(KeyEvent keyEvent){
-//        if(keyEvent.getCode() == KeyCode.TAB){
-//
-//            return;
-//        }
-//
-//        if(!letterPattern.matcher(keyEvent.getText()).matches()){
-//            getPersonCivilStatus().setText(getPersonCivilStatus().getText().replace(keyEvent.getText(), ""));
-//        }
-//    }
 
     private void onPersonPostalCodeVerifyOnlyNumber(KeyEvent keyEvent){
         if(keyEvent.getCode() == KeyCode.TAB){
