@@ -68,6 +68,7 @@ public class PersonManagementMainController extends VBox {
         this.parent = ViewLoader.load(this, NEW_PERSON_MAIN_FXML);
 
         loadInitialStateDataInterface();
+        loadCivilStatus();
         loadStudy();
     }
 
@@ -96,13 +97,18 @@ public class PersonManagementMainController extends VBox {
         personManagementData.getPersonNIF().setText("");
         personManagementData.getPersonNASS().setText("");
         personManagementData.getPersonBirthDate().setValue(null);
-        personManagementData.getPersonCivilStatus().setText("");
+        personManagementData.getPersonCivilStatus().getSelectionModel().clearSelection();
+        personManagementData.getPersonCivilStatus().setStyle(PersonManagementConstants.BLUE_COLOR);
         personManagementData.getPersonNationality().setText(SPANISH_NATIONALITY);
         personManagementData.getPersonExtendedDirection().setText("");
         personManagementData.getPersonPostalCode().setText("");
         personManagementData.getPersonLocation().setText("");
         personManagementData.getPersonMunicipality().setText("");
         personManagementData.getPersonStudyLevel().getSelectionModel().select(null);
+    }
+
+    private void loadCivilStatus(){
+        personManagementData.loadPersonCivilStatus();
     }
 
     private void loadStudy(){
@@ -238,7 +244,7 @@ public class PersonManagementMainController extends VBox {
                     .withNifcifdup((short) 0)
                     .withNumafss(personManagementData.getPersonNASS().getText())
                     .withFechanacim(personManagementData.getPersonBirthDate().getValue())
-                    .withEstciv(personManagementData.getPersonCivilStatus().getText())
+                    .withEstciv(personManagementData.getPersonCivilStatus().getValue().toString())
                     .withDireccion(direction)
                     .withLocalidad(personManagementData.getPersonMunicipality().getText())
                     .withCodpostal(BigDecimal.valueOf(Long.parseLong(personManagementData.getPersonPostalCode().getText())))
@@ -258,7 +264,7 @@ public class PersonManagementMainController extends VBox {
                     .withNifcifdup((short) 0)
                     .withNumafss(personManagementData.getPersonNASS().getText())
                     .withFechanacim(personManagementData.getPersonBirthDate().getValue())
-                    .withEstciv(personManagementData.getPersonCivilStatus().getText())
+                    .withEstciv(personManagementData.getPersonCivilStatus().getValue().toString())
                     .withDireccion(direction)
                     .withLocalidad(personManagementData.getPersonMunicipality().getText())
                     .withCodpostal(BigDecimal.valueOf(Long.parseLong(personManagementData.getPersonPostalCode().getText())))
@@ -328,7 +334,7 @@ public class PersonManagementMainController extends VBox {
                 personManagementData.getPersonNIF().getText().equals("") ||
                 personManagementData.getPersonNASS().getText().equals("") ||
                 personManagementData.getPersonBirthDate().getValue() == null ||
-                personManagementData.getPersonCivilStatus().getText().equals("") ||
+                personManagementData.getPersonCivilStatus().getSelectionModel().getSelectedItem() == null ||
                 personManagementData.getPersonNationality().getText().equals("")||
                 personManagementData.getPersonExtendedDirection().getText().equals("") ||
                 personManagementData.getPersonPostalCode().getText().equals("") ||
@@ -451,7 +457,7 @@ public class PersonManagementMainController extends VBox {
             personManagementData.getPersonName().setText(WordUtils.capitalizeFully(personManagementData.getPersonName().getText()));
             personManagementData.getPersonNIF().setText(personManagementData.getPersonNIF().getText().toUpperCase());
             personManagementData.getPersonExtendedDirection().setText(WordUtils.capitalizeFully(personManagementData.getPersonExtendedDirection().getText()));
-            personManagementData.getPersonCivilStatus().setText(WordUtils.capitalizeFully(personManagementData.getPersonCivilStatus().getText()));
+//            personManagementData.getPersonCivilStatus().setText(WordUtils.capitalizeFully(personManagementData.getPersonCivilStatus().getText()));
             personManagementData.getPersonNationality().setText(WordUtils.capitalizeFully(personManagementData.getPersonNationality().getText()));
             personManagementData.getPersonLocation().setText(WordUtils.capitalizeFully(personManagementData.getPersonLocation().getText()));
             personManagementData.getPersonMunicipality().setText(WordUtils.capitalizeFully(personManagementData.getPersonMunicipality().getText()));

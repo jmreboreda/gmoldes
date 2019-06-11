@@ -39,6 +39,35 @@ public class PersonManagementData extends VBox {
     private EventHandler<PersonSurNamesPatternChangedEvent> surNamesPatternChangedEventHandler;
     private EventHandler<PersonSurNamesItemSelectedEvent> surNamesItemSelectedEventHandler;
 
+    private enum CivilStatus {
+        No_disponible("No disponible"),
+        Soltero("Soltero"),
+        Soltera("Soltera"),
+        Casado("Casado"),
+        Casada("Casada"),
+        Separado_judicialmente("Separado judicialmente"),
+        Separada_judicialmente("Separada judicialmente"),
+        Divorciado("Divorciado"),
+        Divorciada("Divorciada"),
+        Viudo("Viudo"),
+        Viuda("Viuda"),
+        Pareja_de_hecho("Pareja de hecho");
+
+        private final String value;
+
+        CivilStatus(String value) {
+            this.value = value.replace(" ","_");
+        }
+
+        public String getValue() {
+            return value.replace(" ", "_");
+        }
+
+        public String toString(){
+            return value.replace("_"," ");
+        }
+    }
+
     @FXML
     private Group newPersonGroup;
     @FXML
@@ -66,7 +95,7 @@ public class PersonManagementData extends VBox {
     @FXML
     private DatePicker personBirthDate;
     @FXML
-    private TextField personCivilStatus;
+    private ComboBox<CivilStatus> personCivilStatus;
     @FXML
     private TextField personNationality;
     @FXML
@@ -137,7 +166,7 @@ public class PersonManagementData extends VBox {
             }
         });
 
-        personCivilStatus.setOnKeyReleased(this::onPersonCivilStatusVerifyOnlyLetter);
+//        personCivilStatus.setOnKeyReleased(this::onPersonCivilStatusVerifyOnlyLetter);
         personPostalCode.setOnKeyReleased(this::onPersonPostalCodeVerifyOnlyNumber);
         personPostalCode.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -204,7 +233,7 @@ public class PersonManagementData extends VBox {
         return personBirthDate;
     }
 
-    public TextField getPersonCivilStatus() {return personCivilStatus;}
+    public ComboBox getPersonCivilStatus() {return personCivilStatus;}
 
     public TextField getPersonNationality() {
         return personNationality;
@@ -230,6 +259,11 @@ public class PersonManagementData extends VBox {
         return personStudyLevel;
     }
 
+    public void loadPersonCivilStatus(){
+        ObservableList<CivilStatus> civilStatusOL = FXCollections.observableArrayList(CivilStatus.values());
+        personCivilStatus.setItems(civilStatusOL);
+    }
+
     public void loadPersonStudyLevel(List<StudyDTO> studyDTOList) {
         ObservableList<StudyDTO> studyDTOObservableList = FXCollections.observableArrayList(studyDTOList);
         personStudyLevel.setItems(studyDTOObservableList);
@@ -245,7 +279,7 @@ public class PersonManagementData extends VBox {
     public void completePersonData(PersonDTO personDTO, StudyDTO studyDTO){
 
         LocalDate birthDate = personDTO.getFechanacim() != null ? personDTO.getFechanacim() : LocalDate.of(9999, 12, 31);
-        String civilState = personDTO.getEstciv() != null ? personDTO.getEstciv() : NOT_AVAILABLE_TEXT;
+        String civilState = personDTO.getEstciv() != null ? personDTO.getEstciv().replace(" ", "_") : NOT_AVAILABLE_TEXT.replace(" ", "_");
         String nationality = personDTO.getNacionalidad() != null ? personDTO.getNacionalidad() : NOT_AVAILABLE_TEXT;
         String address = personDTO.getDireccion() != null ? personDTO.getDireccion() : NOT_AVAILABLE_TEXT;
         BigDecimal postalCode = personDTO.getCodpostal() != null ? personDTO.getCodpostal() : new BigDecimal(99999);
@@ -257,7 +291,7 @@ public class PersonManagementData extends VBox {
         personNIF.setText(personDTO.getNifcif());
         personNASS.setText(personDTO.getNumafss());
         personBirthDate.setValue(birthDate);
-        personCivilStatus.setText(civilState);
+        personCivilStatus.getSelectionModel().select(CivilStatus.valueOf(civilState));
         personNationality.setText(nationality);
         personExtendedDirection.setText(address);
         personPostalCode.setText(postalCode.toString());
@@ -307,16 +341,16 @@ public class PersonManagementData extends VBox {
         }
     }
 
-    private void onPersonCivilStatusVerifyOnlyLetter(KeyEvent keyEvent){
-        if(keyEvent.getCode() == KeyCode.TAB){
-
-            return;
-        }
-
-        if(!letterPattern.matcher(keyEvent.getText()).matches()){
-            getPersonCivilStatus().setText(getPersonCivilStatus().getText().replace(keyEvent.getText(), ""));
-        }
-    }
+//    private void onPersonCivilStatusVerifyOnlyLetter(KeyEvent keyEvent){
+//        if(keyEvent.getCode() == KeyCode.TAB){
+//
+//            return;
+//        }
+//
+//        if(!letterPattern.matcher(keyEvent.getText()).matches()){
+//            getPersonCivilStatus().setText(getPersonCivilStatus().getText().replace(keyEvent.getText(), ""));
+//        }
+//    }
 
     private void onPersonPostalCodeVerifyOnlyNumber(KeyEvent keyEvent){
         if(keyEvent.getCode() == KeyCode.TAB){
