@@ -5,6 +5,7 @@ import gmoldes.components.ViewLoader;
 import gmoldes.components.client_invoice_check_list.controllers.ClientInvoiceCheckListMainController;
 import gmoldes.components.contract.contract_variation.controllers.ContractVariationMainController;
 import gmoldes.components.contract.new_contract.controllers.NewContractMainController;
+import gmoldes.components.contract_documentation_control.controllers.ContractDocumentationControlMainController;
 import gmoldes.components.person_management.controllers.PersonManagementMainController;
 import gmoldes.components.payroll_check_list.controllers.PayrollCheckListMainController;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
@@ -52,6 +53,8 @@ public class InitialMenuController extends AnchorPane {
     @FXML
     private Button personManagementButton;
     @FXML
+    private Button contractDocumentationControlButton;
+    @FXML
     private Button exitButton;
 
 
@@ -72,7 +75,8 @@ public class InitialMenuController extends AnchorPane {
         payrollCheckListButton.setOnMouseClicked(this::onPayrollCheckList);
         applicationAgendaButton.setOnMouseClicked(this::onApplicationAgenda);
 
-        personManagementButton.setOnMouseClicked(this::onPersonManagementButton);
+        personManagementButton.setOnMouseClicked(this::onPersonManagement);
+        contractDocumentationControlButton.setOnMouseClicked(this::onContractDocumentationControl);
         exitButton.setOnMouseClicked(this::onExit);
     }
 
@@ -152,13 +156,26 @@ public class InitialMenuController extends AnchorPane {
         Message.informationMessage((Stage) thisStage.getOwner(), CheckConstants.INITIAL_CHECK_HEADER_TEXT.concat("Agenda de la aplicación"), CheckConstants.FINALIZED_CHECK_APPLICATION_AGENDA);
     }
 
-    private void onPersonManagementButton(MouseEvent event){
+    private void onPersonManagement(MouseEvent event){
         PersonManagementMainController personManagementMainController = new PersonManagementMainController();
         Scene scene = new Scene(personManagementMainController);
         scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
         Stage personManagementStage = new Stage();
         personManagementStage.setResizable(false);
         personManagementStage.setTitle("Mantenimiento de personas");
+        personManagementStage.setScene(scene);
+        personManagementStage.initOwner(primaryStage);
+        personManagementStage.initModality(Modality.APPLICATION_MODAL);
+        personManagementStage.show();
+    }
+
+    private void onContractDocumentationControl(MouseEvent event){
+        ContractDocumentationControlMainController contractDocumentationControlMainController = new ContractDocumentationControlMainController();
+        Scene scene = new Scene(contractDocumentationControlMainController);
+        scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
+        Stage personManagementStage = new Stage();
+        personManagementStage.setResizable(false);
+        personManagementStage.setTitle("Control de entrega y recepción de documentación");
         personManagementStage.setScene(scene);
         personManagementStage.initOwner(primaryStage);
         personManagementStage.initModality(Modality.APPLICATION_MODAL);

@@ -6,7 +6,7 @@ import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
 import gmoldes.utilities.*;
-import gmoldes.utilities.TableCell.DateCell;
+import gmoldes.utilities.TableCell.contractScheduleDayDateCell;
 import gmoldes.utilities.TableCell.DurationCell;
 import gmoldes.utilities.TableCell.TimeCell;
 import javafx.collections.FXCollections;
@@ -115,7 +115,7 @@ public class ContractSchedule extends AnchorPane {
                     return comboBoxTableCell;
                 });
 
-        date.setCellFactory(param -> new DateCell());
+        date.setCellFactory(param -> new contractScheduleDayDateCell());
         amFrom.setCellFactory(param -> new TimeCell());
         amTo.setCellFactory(param -> new TimeCell());
         pmFrom.setCellFactory(param -> new TimeCell());

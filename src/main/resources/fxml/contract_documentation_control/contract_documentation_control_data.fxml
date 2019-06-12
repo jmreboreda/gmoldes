@@ -15,8 +15,8 @@
                 <TableColumn maxWidth="-1.0" minWidth="550.0" prefWidth="-1.0" sortable="false" text="Documento" />
                   <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" sortable="false" text="Fechas de">
                   <columns>
-                    <TableColumn maxWidth="175.0" minWidth="175.0" prefWidth="175.0" sortable="false" text="Recepción del gestor" />
-                    <TableColumn maxWidth="175.0" minWidth="175.0" prefWidth="175.0" sortable="false" text="Entrega al cliente" />
+                    <TableColumn fx:id="receptionDate" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" sortable="false" text="Recepción del gestor" />
+                    <TableColumn fx:id="deliveryDate" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" sortable="false" text="Entrega al cliente" />
                   </columns>
                   </TableColumn>
               </columns>
