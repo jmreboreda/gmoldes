@@ -13,7 +13,6 @@ public class ContractDocumentationControlData extends AnchorPane {
     private Stage stage;
 
 
-
     public ContractDocumentationControlData() {
         this.parent = ViewLoader.load(this, CONTRACT_DOCUMENTATION_CONTROL_DATA_FXML);
     }
