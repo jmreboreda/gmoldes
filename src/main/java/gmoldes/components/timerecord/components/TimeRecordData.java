@@ -123,12 +123,12 @@ public class TimeRecordData extends VBox {
             yearNumber.setText(String.valueOf(localDate.getYear()));
         }
 
-        employeeFullName.setCellValueFactory(new PropertyValueFactory<TimeRecordCandidateDataDTO,String>("employeeFullName"));
-        workDayType.setCellValueFactory(new PropertyValueFactory<TimeRecordCandidateDataDTO,String>("workDayType"));
-        hoursByWeek.setCellValueFactory(new PropertyValueFactory<TimeRecordCandidateDataDTO,String>("hoursByWeek"));
-        contractType.setCellValueFactory(new PropertyValueFactory<TimeRecordCandidateDataDTO,String>("contractType"));
-        dateFrom.setCellValueFactory(new PropertyValueFactory<TimeRecordCandidateDataDTO,String>("dateFrom"));
-        dateTo.setCellValueFactory(new PropertyValueFactory<TimeRecordCandidateDataDTO,String>("dateTo"));
+        employeeFullName.setCellValueFactory(new PropertyValueFactory<>("employeeFullName"));
+        workDayType.setCellValueFactory(new PropertyValueFactory<>("workDayType"));
+        hoursByWeek.setCellValueFactory(new PropertyValueFactory<>("hoursByWeek"));
+        contractType.setCellValueFactory(new PropertyValueFactory<>("contractType"));
+        dateFrom.setCellValueFactory(new PropertyValueFactory<>("dateFrom"));
+        dateTo.setCellValueFactory(new PropertyValueFactory<>("dateTo"));
         hoursByWeek.setStyle("-fx-alignment: CENTER;");
         dateFrom.setStyle("-fx-alignment: CENTER;");
         dateTo.setStyle("-fx-alignment: CENTER;");
