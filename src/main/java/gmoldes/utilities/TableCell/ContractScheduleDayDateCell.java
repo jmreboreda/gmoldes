@@ -12,11 +12,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
-public class contractScheduleDayDateCell extends TableCell<ContractScheduleDayDTO, LocalDate> {
+public class ContractScheduleDayDateCell extends TableCell<ContractScheduleDayDTO, LocalDate> {
 
     private TextField textField;
 
-    public contractScheduleDayDateCell() {}
+    public ContractScheduleDayDateCell() {}
 
     @Override
     public void startEdit() {

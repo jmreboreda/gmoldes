@@ -66,6 +66,10 @@ public class ContractActionComponents extends AnchorPane {
         this.OkButton.setDisable(!bol);
     }
 
+    public void enableExitButton(Boolean bol){
+        this.exitButton.setDisable(!bol);
+    }
+
     public void setOnSendMailButton(EventHandler<MouseEvent> sendMailButtonEventHandler){
         this.SendMailButtonEventHandler = sendMailButtonEventHandler;
     }

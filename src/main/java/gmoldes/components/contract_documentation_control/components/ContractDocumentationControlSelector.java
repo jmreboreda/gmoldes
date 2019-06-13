@@ -2,12 +2,13 @@ package gmoldes.components.contract_documentation_control.components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.person.dto.PersonDTO;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -19,13 +20,17 @@ public class ContractDocumentationControlSelector extends AnchorPane {
     private Parent parent;
     private Stage stage;
 
-    private EventHandler<MouseEvent> onChangeContractsInForceOnlyEventHandler;
+    private EventHandler<MouseEvent> changeContractsInForceOnlyEventHandler;
 
 
     @FXML
     private CheckBox contractsInForceOnly;
     @FXML
-    private ComboBox<ClientDTO> clientSelector;
+    private ChoiceBox<ClientDTO> clientSelector;
+    @FXML
+    private ChoiceBox<PersonDTO> employeeSelector;
+    @FXML
+    private ChoiceBox<String> contractSelector;
 
     public ContractDocumentationControlSelector() {
         this.parent = ViewLoader.load(this, CONTRACT_DOCUMENTATION_CONTROL_SELECTOR_FXML);
@@ -46,23 +51,35 @@ public class ContractDocumentationControlSelector extends AnchorPane {
         this.contractsInForceOnly = contractsInForceOnly;
     }
 
-    public ComboBox<ClientDTO> getClientSelector() {
+    public ChoiceBox<ClientDTO> getClientSelector() {
         return clientSelector;
     }
 
-    public void setClientSelector(ComboBox<ClientDTO> clientSelector) {
+    public void setClientSelector(ChoiceBox<ClientDTO> clientSelector) {
         this.clientSelector = clientSelector;
     }
 
+    public ChoiceBox<PersonDTO> getEmployerSelector() {
+        return employeeSelector;
+    }
+
+    public ChoiceBox<String> getContractSelector() {
+        return contractSelector;
+    }
+
+    public void setEmployerSelector(ChoiceBox<PersonDTO> employerSelector) {
+        this.employeeSelector = employerSelector;
+    }
+
     private void onChangeContractsInForceOnly(MouseEvent event){
-        onChangeContractsInForceOnlyEventHandler.handle(event);
+        changeContractsInForceOnlyEventHandler.handle(event);
     }
 
     public void loadClientSelector(ObservableList<ClientDTO> clientDTOOL){
         clientSelector.setItems(clientDTOOL);
     }
 
-    public void setOnChangeContractsInForceOnly(EventHandler<MouseEvent> onChangeContractsInForceOnly){
-        this.onChangeContractsInForceOnlyEventHandler = onChangeContractsInForceOnly;
+    public void setOnChangeContractsInForceOnly(EventHandler<MouseEvent> changeContractsInForceOnlyEvent){
+        this.changeContractsInForceOnlyEventHandler = changeContractsInForceOnlyEvent;
     }
 }

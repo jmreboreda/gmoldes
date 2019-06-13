@@ -1,13 +1,13 @@
 package gmoldes.components.contract_documentation_control.controllers;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract_documentation_control.ContractDocumentationControlConstants;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlAction;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlData;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlHeader;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlSelector;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.person.dto.PersonDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 
 import java.text.Collator;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -48,16 +47,20 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     }
 
     public void initialize(){
-        contractDocumentationControlSelector.setOnChangeContractsInForceOnly(this::changeContractsInForceOnly);
+        contractDocumentationControlSelector.getClientSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
+        contractDocumentationControlSelector.getEmployerSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
+        contractDocumentationControlSelector.getContractSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
+
+        contractDocumentationControlSelector.setOnChangeContractsInForceOnly(this::onChangeContractsInForceOnly);
 
     }
 
-    private void changeContractsInForceOnly(MouseEvent event){
+    private void onChangeContractsInForceOnly(MouseEvent event){
         loadClientSelector();
     }
 
     private void loadClientSelector(){
-        List<ClientDTO> clientDTOList = new ArrayList<>();
+        List<ClientDTO> clientDTOList;
         ClientService clientService = ClientService.ClientServiceFactory.getInstance();
 
         if(contractDocumentationControlSelector.getContractsInForceOnly().isSelected()) {
@@ -75,7 +78,6 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         ObservableList<ClientDTO> clientDTOOL = FXCollections.observableArrayList(sortedClientDTOList);
         contractDocumentationControlSelector.loadClientSelector(clientDTOOL);
-
 
     }
 }

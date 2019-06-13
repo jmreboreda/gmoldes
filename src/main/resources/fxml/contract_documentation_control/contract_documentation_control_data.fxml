@@ -8,11 +8,11 @@
 
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TitledPane collapsible="false" layoutX="5.0" layoutY="10.0" text="Recepción y entrega de documentación" textFill="#000fff" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+      <TitledPane collapsible="false" layoutX="5.0" layoutY="10.0" text="Recepción y entrega de documentación" textFill="#000fff">
          <content>
             <TableView fx:id="contractDocumentControlTable">
               <columns>
-                <TableColumn maxWidth="-1.0" minWidth="550.0" prefWidth="-1.0" sortable="false" text="Documento" />
+                <TableColumn fx:id="documentType" maxWidth="-1.0" minWidth="325.0" prefWidth="-1.0" sortable="false" text="Documento" />
                   <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" sortable="false" text="Fechas de">
                   <columns>
                     <TableColumn fx:id="receptionDate" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" sortable="false" text="Recepción del gestor" />

@@ -107,7 +107,6 @@ public class NewContractDataDocumentCreator {
     }
 
     public void printSubfoldersOfTheInitialContract(){
-
         ContractFullDataDTO contractFullDataDTO = retrieveContractFullData();
         Integer contractNumber = contractFullDataDTO.getContractNewVersion().getContractNumber();
 

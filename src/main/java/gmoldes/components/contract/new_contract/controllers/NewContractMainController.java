@@ -150,6 +150,10 @@ public class NewContractMainController extends VBox {
         return provisionalContractData;
     }
 
+    public ContractActionComponents getContractActionComponents() {
+        return contractActionComponents;
+    }
+
     private void setTabPaneIcon(){
 
         Tab contractPartsPane = tabPane.getTabs().get(0);
@@ -297,11 +301,19 @@ public class NewContractMainController extends VBox {
         provisionalContractData.refreshData(dataDTO);
         if (statusText.equals(ContractConstants.REVISION_WITHOUT_ERRORS)) {
             if (Message.confirmationMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractVerifierConstants.QUESTION_SAVE_NEW_CONTRACT)) {
+
+                contractActionComponents.enableSendMailButton(false);
+                contractActionComponents.enablePDFButton(false);
+                contractActionComponents.enableOkButton(false);
+                contractActionComponents.enableExitButton(false);
+
                 Integer initialContractNumber = persistInitialContract();
                 Integer contractNumber = persistContract();
                 persistTraceabilityControlData(initialContractNumber);
+
+                contractActionComponents.enableSendMailButton(true);
                 contractActionComponents.enablePDFButton(true);
-                }
+                contractActionComponents.enableExitButton(true);                }
         }
     }
 
@@ -446,7 +458,7 @@ public class NewContractMainController extends VBox {
             NewContractDataDocumentCreator contractDocumentCreator = new NewContractDataDocumentCreator((Stage) this.getScene().getWindow(), this);
             contractDocumentCreator.printSubfoldersOfTheInitialContract();
 
-            contractActionComponents.enableSendMailButton(true);
+//            contractActionComponents.enableSendMailButton(true);
 
         }else{
             Message.warningMessage((Stage) tabPane.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractMainControllerConstants.CONTRACT_NOT_SAVED_OK);

@@ -62,13 +62,18 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label alignment="CENTER" text="Control de recepción y entrega de documentación" textFill="#640000" GridPane.columnSpan="3" GridPane.rowIndex="1">
+                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="299.0" text="Control de recepción" textAlignment="CENTER" textFill="#640000" GridPane.columnSpan="3" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
+                  </Label>
+                  <Label text=" y entrega de documentación" textFill="#640000" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
                   </Label>
                </children>
                <HBox.margin>

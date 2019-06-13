@@ -90,6 +90,7 @@ public class ClientManager {
     public List<ClientDTO> findAllActiveClientWithContractHistory(){
         List<ClientDTO> clientDTOList = new ArrayList<>();
 
+        clientDAO = ClientDAO.ClientDAOFactory.getInstance();
         List<ClientVO> activeClientVOList = clientDAO.findAllActiveClientsInAlphabeticalOrder();
         for(ClientVO clientVO : activeClientVOList){
             if(!clientVO.getClientCCC().isEmpty()){
