@@ -37,6 +37,11 @@ public class ClientService {
         return clientController.findClientById(clientId);
     }
 
+    public List<ClientDTO> findAllActiveClientWithContractHistory(){
+
+        return clientController.findAllActiveClientWithContractHistory();
+    }
+
     public  List<ClientDTO> findAllClientWithContractInForceAtDate(LocalDate date){
 
         return clientController.findAllClientWithContractInForceAtDate(date);

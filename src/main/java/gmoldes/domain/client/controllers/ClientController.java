@@ -21,6 +21,12 @@ public class ClientController {
         return clientManager.findAllClientWithContractNewVersionInMonth(date);
     }
 
+    public List<ClientDTO> findAllActiveClientWithContractHistory(){
+
+        return clientManager.findAllActiveClientWithContractHistory();
+
+    }
+
     public List<ClientDTO> findAllClientWithContractInForceAtDate(LocalDate date){
 
         return clientManager.findAllClientWithContractInForceAtDate(date);

@@ -5,10 +5,24 @@ import gmoldes.components.contract_documentation_control.components.ContractDocu
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlData;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlHeader;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlSelector;
+import gmoldes.domain.client.ClientService;
+import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.person.dto.PersonDTO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.text.Collator;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class ContractDocumentationControlMainController extends AnchorPane {
 
@@ -29,5 +43,39 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
     public ContractDocumentationControlMainController() {
         this.parent = ViewLoader.load(this, CONTRACT_DOCUMENTATION_CONTROL_MAIN_FXML);
+
+        loadClientSelector();
+    }
+
+    public void initialize(){
+        contractDocumentationControlSelector.setOnChangeContractsInForceOnly(this::changeContractsInForceOnly);
+
+    }
+
+    private void changeContractsInForceOnly(MouseEvent event){
+        loadClientSelector();
+    }
+
+    private void loadClientSelector(){
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+
+        if(contractDocumentationControlSelector.getContractsInForceOnly().isSelected()) {
+            clientDTOList = clientService.findAllClientWithContractInForceAtDate(LocalDate.now());
+        }else{
+            clientDTOList = clientService.findAllActiveClientWithContractHistory();
+        }
+
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
+        List<ClientDTO> sortedClientDTOList = clientDTOList
+                .stream()
+                .sorted(Comparator.comparing(ClientDTO::toString, primaryCollator)).collect(Collectors.toList());
+
+        ObservableList<ClientDTO> clientDTOOL = FXCollections.observableArrayList(sortedClientDTOList);
+        contractDocumentationControlSelector.loadClientSelector(clientDTOOL);
+
+
     }
 }

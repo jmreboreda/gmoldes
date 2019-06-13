@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TitledPane collapsible="false" layoutX="5.0" text="Datos del contrato" textFill="#000fff">
          <content>
@@ -18,7 +18,7 @@
                <children>
                   <HBox>
                      <children>
-                        <CheckBox mnemonicParsing="false" selected="true" text="Solo clientes con contratos en vigor" />
+                        <CheckBox fx:id="contractsInForceOnly" mnemonicParsing="false" selected="true" text="Solo clientes con contratos en vigor" />
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" top="5.0" />
@@ -31,7 +31,7 @@
                               <Insets bottom="10.0" left="5.0" top="10.0" />
                            </HBox.margin>
                         </Label>
-                        <ComboBox minWidth="275.0" prefWidth="150.0">
+                        <ComboBox fx:id="clientSelector" minWidth="325.0" prefWidth="150.0" visibleRowCount="20">
                            <HBox.margin>
                               <Insets bottom="5.0" left="10.0" top="5.0" />
                            </HBox.margin>
@@ -41,7 +41,7 @@
                               <Insets bottom="10.0" left="10.0" top="10.0" />
                            </HBox.margin>
                         </Label>
-                        <ComboBox minWidth="275.0" prefWidth="150.0">
+                        <ComboBox minWidth="325.0" prefWidth="150.0">
                            <HBox.margin>
                               <Insets bottom="5.0" left="10.0" top="5.0" />
                            </HBox.margin>
@@ -51,7 +51,7 @@
                               <Insets bottom="10.0" left="10.0" top="10.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox prefWidth="100.0">
+                        <ChoiceBox prefWidth="75.0">
                            <HBox.margin>
                               <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
                            </HBox.margin>
