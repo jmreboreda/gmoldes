@@ -1,51 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TitledPane collapsible="false" text="Datos del contrato" textFill="#000fff" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+      <TitledPane collapsible="false" layoutX="5.0" text="Datos del contrato" textFill="#000fff">
          <content>
-            <HBox>
+            <VBox>
                <children>
-                  <Label text="Cliente">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="5.0" top="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <ComboBox minWidth="275.0" prefWidth="150.0">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="10.0" top="5.0" />
-                     </HBox.margin>
-                  </ComboBox>
-                  <Label text="Empleado">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" top="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <ComboBox minWidth="275.0" prefWidth="150.0">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="10.0" top="5.0" />
-                     </HBox.margin>
-                  </ComboBox>
-                  <Label text="Contrato">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" top="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <ChoiceBox prefWidth="100.0">
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </ChoiceBox>
+                  <HBox>
+                     <children>
+                        <CheckBox mnemonicParsing="false" selected="true" text="Solo clientes con contratos en vigor" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label text="Cliente">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="5.0" top="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ComboBox minWidth="275.0" prefWidth="150.0">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="10.0" top="5.0" />
+                           </HBox.margin>
+                        </ComboBox>
+                        <Label text="Empleado">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" top="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ComboBox minWidth="275.0" prefWidth="150.0">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="10.0" top="5.0" />
+                           </HBox.margin>
+                        </ComboBox>
+                        <Label text="Contrato">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" top="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ChoiceBox prefWidth="100.0">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
+            </VBox>
          </content>
       </TitledPane>
    </children>
