@@ -1,6 +1,7 @@
 package gmoldes.components.contract_documentation_control.controllers;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.events.SelectEmployerEvent;
 import gmoldes.components.contract_documentation_control.ContractDocumentationControlConstants;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlAction;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlData;
@@ -8,6 +9,8 @@ import gmoldes.components.contract_documentation_control.components.ContractDocu
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlSelector;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.ContractService;
+import gmoldes.domain.person.dto.PersonDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,9 +21,7 @@ import javafx.stage.Stage;
 
 import java.text.Collator;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ContractDocumentationControlMainController extends AnchorPane {
@@ -47,8 +48,11 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     }
 
     public void initialize(){
+
+        contractDocumentationControlSelector.setOnClientSelectorChange(this::onClientSelectorChange);
+
         contractDocumentationControlSelector.getClientSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
-        contractDocumentationControlSelector.getEmployerSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
+        contractDocumentationControlSelector.getEmployeeSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
         contractDocumentationControlSelector.getContractSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
 
         contractDocumentationControlSelector.setOnChangeContractsInForceOnly(this::onChangeContractsInForceOnly);
@@ -79,5 +83,35 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         ObservableList<ClientDTO> clientDTOOL = FXCollections.observableArrayList(sortedClientDTOList);
         contractDocumentationControlSelector.loadClientSelector(clientDTOOL);
 
+    }
+
+    private void onClientSelectorChange(SelectEmployerEvent employerEvent){
+        ClientDTO clientDTO = employerEvent.getSelectedEmployer();
+
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        List<PersonDTO> employeesOfSelectedClientDTO = contractService.findAllEmployeesByClientId(clientDTO.getClientId());
+
+        List<PersonDTO> employeesOfSelectedClientDTOWithOutDuplicates = new ArrayList<>();
+
+        Map<Integer, PersonDTO> personDTOMap = new HashMap<>();
+
+        for (PersonDTO personDTO : employeesOfSelectedClientDTO) {
+            personDTOMap.put(personDTO.getIdpersona(), personDTO);
+        }
+
+        for (Map.Entry<Integer, PersonDTO> itemMap : personDTOMap.entrySet()) {
+            employeesOfSelectedClientDTOWithOutDuplicates.add(itemMap.getValue());
+        }
+
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
+        List<PersonDTO> sortedPersonDTOList = employeesOfSelectedClientDTOWithOutDuplicates
+                .stream()
+                .sorted(Comparator.comparing(PersonDTO::toString, primaryCollator)).collect(Collectors.toList());
+
+        ObservableList<PersonDTO> sortedPersonDTOOLL = FXCollections.observableArrayList(sortedPersonDTOList);
+
+        contractDocumentationControlSelector.getEmployeeSelector().setItems(sortedPersonDTOOLL);
     }
 }

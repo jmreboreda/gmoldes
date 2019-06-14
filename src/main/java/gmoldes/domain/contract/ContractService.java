@@ -6,6 +6,7 @@ import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.ContractVariationDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.contract.mapper.MapperContractVariationDTOtoContractNewVersionDTO;
+import gmoldes.domain.person.dto.PersonDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -77,6 +78,11 @@ public class ContractService {
     public List<ContractFullDataDTO> findAllDataForContractInForceAtDateByClientId(Integer clientId, LocalDate date){
 
         return contractController.findAllDataForContractInForceAtDateByClientId(clientId, date);
+    }
+
+    public List<PersonDTO> findAllEmployeesByClientId(Integer clientId){
+
+        return contractController.findAllEmployeesByClientId(clientId);
     }
 
     public static List<ContractVariationDTO> findAllContractVariationsAfterDateByContractNumber(Integer contractNumber, LocalDate date){

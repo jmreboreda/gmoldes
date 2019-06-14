@@ -20,6 +20,7 @@ import gmoldes.domain.contract_schedule.dto.ContractScheduleDTO;
 import gmoldes.domain.contract_schedule.mappers.MapperContractScheduleDTOVO;
 import gmoldes.domain.contract_schedule.persistence.dao.ContractScheduleDAO;
 import gmoldes.domain.contract_schedule.persistence.vo.ContractScheduleVO;
+import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.mapper.MapperPersonVODTO;
 import gmoldes.domain.person.persistence.dao.PersonDAO;
@@ -518,5 +519,22 @@ public class ContractManager {
         }
 
         return MapperInitialContractDTOToContractNewVersionDTO.mapInitialContractDTOToContractNewVersionDTO(initialContractDTOList);
+    }
+
+    public List<PersonDTO> findAllEmployeesByClientId(Integer clientId){
+        List<PersonDTO> personDTOList = new ArrayList<>();
+        PersonService personService = PersonService.PersonServiceFactory.getInstance();
+        InitialContractDAO initialContractDAO = InitialContractDAO.InitialContractDAOFactory.getInstance();
+
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractSorted();
+
+        for(InitialContractVO initialContractVO : initialContractVOList){
+            if(initialContractVO.getContractJsonData().getClientGMId().equals(clientId)) {
+                PersonDTO personDTO = personService.findPersonById(initialContractVO.getContractJsonData().getWorkerId());
+                personDTOList.add(personDTO);
+            }
+        }
+
+        return personDTOList;
     }
 }

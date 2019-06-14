@@ -1,9 +1,11 @@
 package gmoldes.components.contract_documentation_control.components;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.events.SelectEmployerEvent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -21,6 +23,7 @@ public class ContractDocumentationControlSelector extends AnchorPane {
     private Stage stage;
 
     private EventHandler<MouseEvent> changeContractsInForceOnlyEventHandler;
+    private EventHandler<SelectEmployerEvent> selectEmployerEventEventHandler;
 
 
     @FXML
@@ -30,7 +33,7 @@ public class ContractDocumentationControlSelector extends AnchorPane {
     @FXML
     private ChoiceBox<PersonDTO> employeeSelector;
     @FXML
-    private ChoiceBox<String> contractSelector;
+    private ChoiceBox<Integer> contractSelector;
 
     public ContractDocumentationControlSelector() {
         this.parent = ViewLoader.load(this, CONTRACT_DOCUMENTATION_CONTROL_SELECTOR_FXML);
@@ -39,6 +42,7 @@ public class ContractDocumentationControlSelector extends AnchorPane {
 
     public void initialize(){
         contractsInForceOnly.setOnMouseClicked(this::onChangeContractsInForceOnly);
+        clientSelector.setOnAction(this::onClientSelectorChange);
 
 
     }
@@ -59,11 +63,11 @@ public class ContractDocumentationControlSelector extends AnchorPane {
         this.clientSelector = clientSelector;
     }
 
-    public ChoiceBox<PersonDTO> getEmployerSelector() {
+    public ChoiceBox<PersonDTO> getEmployeeSelector() {
         return employeeSelector;
     }
 
-    public ChoiceBox<String> getContractSelector() {
+    public ChoiceBox<Integer> getContractSelector() {
         return contractSelector;
     }
 
@@ -75,11 +79,25 @@ public class ContractDocumentationControlSelector extends AnchorPane {
         changeContractsInForceOnlyEventHandler.handle(event);
     }
 
+    private void onClientSelectorChange(ActionEvent event){
+        if(getClientSelector().getValue() == null){
+
+            return;
+        }
+
+        SelectEmployerEvent employerEvent = new SelectEmployerEvent(getClientSelector().getValue());
+        selectEmployerEventEventHandler.handle(employerEvent);
+    }
+
     public void loadClientSelector(ObservableList<ClientDTO> clientDTOOL){
         clientSelector.setItems(clientDTOOL);
     }
 
     public void setOnChangeContractsInForceOnly(EventHandler<MouseEvent> changeContractsInForceOnlyEvent){
         this.changeContractsInForceOnlyEventHandler = changeContractsInForceOnlyEvent;
+    }
+
+    public void setOnClientSelectorChange(EventHandler<SelectEmployerEvent> selectEmployerEventEventHandler){
+        this.selectEmployerEventEventHandler = selectEmployerEventEventHandler;
     }
 }

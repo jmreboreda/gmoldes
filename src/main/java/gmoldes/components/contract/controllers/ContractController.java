@@ -3,6 +3,7 @@ package gmoldes.components.contract.controllers;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.MapperContractNewVersionDTOtoInitialContractDTO;
+import gmoldes.domain.person.dto.PersonDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -47,5 +48,10 @@ public class ContractController {
     public List<ContractVariationDTO> findAllContractVariationsAfterDateByContractNumber(Integer contractNumber, LocalDate date){
 
         return contractManager.findAllContractVariationsAfterDateByContractNumber(contractNumber, date);
+    }
+
+    public List<PersonDTO> findAllEmployeesByClientId(Integer clientId){
+
+        return contractManager.findAllEmployeesByClientId(clientId);
     }
 }
