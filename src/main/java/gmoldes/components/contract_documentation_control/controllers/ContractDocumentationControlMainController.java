@@ -1,15 +1,17 @@
 package gmoldes.components.contract_documentation_control.controllers;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.events.SelectEmployerEvent;
 import gmoldes.components.contract_documentation_control.ContractDocumentationControlConstants;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlAction;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlData;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlHeader;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlSelector;
+import gmoldes.components.contract_documentation_control.events.SelectClientEmployerEvent;
+import gmoldes.components.contract_documentation_control.events.SelectEmployerEmployeeEvent;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
+import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,24 +54,29 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
     public void initialize(){
 
+        contractDocumentationControlSelector.setOnChangeContractsInForceOnly(this::onChangeContractsInForceOnly);
+
         contractDocumentationControlSelector.setOnClientSelectorChange(this::onClientSelectorChange);
+        contractDocumentationControlSelector.setOnEmployeeSelectorChange(this::onEmployeeSelectorChange);
+
 
         contractDocumentationControlSelector.getClientSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
         contractDocumentationControlSelector.getEmployeeSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
         contractDocumentationControlSelector.getContractSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
 
-        contractDocumentationControlSelector.setOnChangeContractsInForceOnly(this::onChangeContractsInForceOnly);
 
         contractDocumentationControlAction.setOnExitButton(this::onExitButton);
-
-
     }
 
     private void onChangeContractsInForceOnly(MouseEvent event){
 
         loadClientSelector();
+
         contractDocumentationControlSelector.getEmployeeSelector().getSelectionModel().clearSelection();
         contractDocumentationControlSelector.getEmployeeSelector().getItems().clear();
+
+        contractDocumentationControlSelector.getContractSelector().getSelectionModel().clearSelection();
+        contractDocumentationControlSelector.getContractSelector().getItems().clear();
     }
 
     private void loadClientSelector(){
@@ -94,8 +101,12 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
     }
 
-    private void onClientSelectorChange(SelectEmployerEvent employerEvent){
-        ClientDTO clientDTO = employerEvent.getSelectedEmployer();
+    private void onClientSelectorChange(SelectClientEmployerEvent employerEvent){
+
+        contractDocumentationControlSelector.getContractSelector().getSelectionModel().clearSelection();
+        contractDocumentationControlSelector.getContractSelector().getItems().clear();
+
+        ClientDTO clientDTO = employerEvent.getSelectedClientEmployer();
 
         ContractService contractService = ContractService.ContractServiceFactory.getInstance();
         List<PersonDTO> employeesOfSelectedClientDTO = contractService.findAllEmployeesByClientId(clientDTO.getClientId());
@@ -124,15 +135,30 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         contractDocumentationControlSelector.getEmployeeSelector().setItems(sortedPersonDTOOLL);
     }
 
-    private void onExitButton(MouseEvent event){
-//        if(personManagementSelector.getNewPerson().isSelected() ||
-//                personManagementSelector.getModificationPerson().isSelected() ||
-//                personManagementSelector.getDeletePerson().isSelected()){
-//            loadInitialStateDataInterface();
-//
-//            return;
-//        }
+    private void onEmployeeSelectorChange(SelectEmployerEmployeeEvent employerEmployeeEvent){
+        ClientDTO clientDTO = employerEmployeeEvent.getSelectedClientEmployer();
+        PersonDTO personDTO = employerEmployeeEvent.getNewEmployeeSelected();
+        List<Integer> contractsList = new ArrayList<>();
 
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+
+        List<InitialContractDTO> initialContractDTOList = contractService.findAllInitialContract();
+        for(InitialContractDTO initialContractDTO : initialContractDTOList){
+            if(initialContractDTO.getContractJsonData().getClientGMId().equals(clientDTO.getClientId()) &&
+                    initialContractDTO.getContractJsonData().getWorkerId().equals(personDTO.getIdpersona())){
+                contractsList.add(initialContractDTO.getContractNumber());
+            }
+        }
+
+        ObservableList<Integer> contractsOL = FXCollections.observableArrayList(contractsList);
+        contractDocumentationControlSelector.getContractSelector().setItems(contractsOL);
+        if(contractsOL.size() == 1){
+            contractDocumentationControlSelector.getContractSelector().getSelectionModel().select(0);
+        }
+
+    }
+
+    private void onExitButton(MouseEvent event){
         logger.info("Contract documentation control: exiting program.");
 
         Stage stage = (Stage) contractDocumentationControlHeader.getScene().getWindow();

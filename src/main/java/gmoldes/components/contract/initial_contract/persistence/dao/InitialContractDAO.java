@@ -81,8 +81,6 @@ public class InitialContractDAO {
         query.setMaxResults(1);
 
         return  query.getSingleResult();
-
-
     }
 
     public List<InitialContractVO> findAllContractInForceAtDate(LocalDate date){

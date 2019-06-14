@@ -1,7 +1,8 @@
 package gmoldes.components.contract_documentation_control.components;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.events.SelectEmployerEvent;
+import gmoldes.components.contract_documentation_control.events.SelectClientEmployerEvent;
+import gmoldes.components.contract_documentation_control.events.SelectEmployerEmployeeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import javafx.collections.ObservableList;
@@ -23,7 +24,8 @@ public class ContractDocumentationControlSelector extends AnchorPane {
     private Stage stage;
 
     private EventHandler<MouseEvent> changeContractsInForceOnlyEventHandler;
-    private EventHandler<SelectEmployerEvent> selectEmployerEventEventHandler;
+    private EventHandler<SelectClientEmployerEvent> selectClientEmployerEventEventHandler;
+    private EventHandler<SelectEmployerEmployeeEvent> selectEmployerEmployeeEventEventHandler;
 
 
     @FXML
@@ -43,6 +45,8 @@ public class ContractDocumentationControlSelector extends AnchorPane {
     public void initialize(){
         contractsInForceOnly.setOnMouseClicked(this::onChangeContractsInForceOnly);
         clientSelector.setOnAction(this::onClientSelectorChange);
+        employeeSelector.setOnAction(this::onEmployeeSelectorChange);
+
 
 
     }
@@ -51,16 +55,8 @@ public class ContractDocumentationControlSelector extends AnchorPane {
         return contractsInForceOnly;
     }
 
-    public void setContractsInForceOnly(CheckBox contractsInForceOnly) {
-        this.contractsInForceOnly = contractsInForceOnly;
-    }
-
     public ChoiceBox<ClientDTO> getClientSelector() {
         return clientSelector;
-    }
-
-    public void setClientSelector(ChoiceBox<ClientDTO> clientSelector) {
-        this.clientSelector = clientSelector;
     }
 
     public ChoiceBox<PersonDTO> getEmployeeSelector() {
@@ -69,10 +65,6 @@ public class ContractDocumentationControlSelector extends AnchorPane {
 
     public ChoiceBox<Integer> getContractSelector() {
         return contractSelector;
-    }
-
-    public void setEmployerSelector(ChoiceBox<PersonDTO> employerSelector) {
-        this.employeeSelector = employerSelector;
     }
 
     private void onChangeContractsInForceOnly(MouseEvent event){
@@ -85,8 +77,18 @@ public class ContractDocumentationControlSelector extends AnchorPane {
             return;
         }
 
-        SelectEmployerEvent employerEvent = new SelectEmployerEvent(getClientSelector().getValue());
-        selectEmployerEventEventHandler.handle(employerEvent);
+        SelectClientEmployerEvent clientEmployerEvent = new SelectClientEmployerEvent(getClientSelector().getValue());
+        selectClientEmployerEventEventHandler.handle(clientEmployerEvent);
+    }
+
+    private void onEmployeeSelectorChange(ActionEvent event){
+        if(getEmployeeSelector().getValue() == null){
+
+            return;
+        }
+
+        SelectEmployerEmployeeEvent employerEmployeeEvent = new SelectEmployerEmployeeEvent(getClientSelector().getValue(), getEmployeeSelector().getValue());
+        selectEmployerEmployeeEventEventHandler.handle(employerEmployeeEvent);
     }
 
     public void loadClientSelector(ObservableList<ClientDTO> clientDTOOL){
@@ -97,7 +99,11 @@ public class ContractDocumentationControlSelector extends AnchorPane {
         this.changeContractsInForceOnlyEventHandler = changeContractsInForceOnlyEvent;
     }
 
-    public void setOnClientSelectorChange(EventHandler<SelectEmployerEvent> selectEmployerEventEventHandler){
-        this.selectEmployerEventEventHandler = selectEmployerEventEventHandler;
+    public void setOnClientSelectorChange(EventHandler<SelectClientEmployerEvent> selectClientEmployerEventEventHandler){
+        this.selectClientEmployerEventEventHandler = selectClientEmployerEventEventHandler;
+    }
+
+    public void setOnEmployeeSelectorChange(EventHandler<SelectEmployerEmployeeEvent> selectEmployerEmployeeEventEventHandler){
+        this.selectEmployerEmployeeEventEventHandler = selectEmployerEmployeeEventEventHandler;
     }
 }

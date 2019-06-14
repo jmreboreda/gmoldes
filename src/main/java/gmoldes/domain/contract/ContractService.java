@@ -31,6 +31,11 @@ public class ContractService {
 
     private static ContractController contractController = new ContractController();
 
+    public List<InitialContractDTO> findAllInitialContract(){
+
+        return contractController.findAllInitialContract();
+    }
+
     public InitialContractDTO findInitialContractByContractNumber(Integer contractNumber){
 
         return contractController.findInitialContractByContractNumber(contractNumber);
