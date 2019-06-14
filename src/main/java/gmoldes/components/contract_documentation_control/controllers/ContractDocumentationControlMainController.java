@@ -22,9 +22,12 @@ import javafx.stage.Stage;
 import java.text.Collator;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ContractDocumentationControlMainController extends AnchorPane {
+
+    private static final Logger logger = Logger.getLogger(ContractDocumentationControlMainController.class.getSimpleName());
 
     private static final String CONTRACT_DOCUMENTATION_CONTROL_MAIN_FXML = "/fxml/contract_documentation_control/contract_documentation_control_main.fxml";
 
@@ -57,10 +60,16 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         contractDocumentationControlSelector.setOnChangeContractsInForceOnly(this::onChangeContractsInForceOnly);
 
+        contractDocumentationControlAction.setOnExitButton(this::onExitButton);
+
+
     }
 
     private void onChangeContractsInForceOnly(MouseEvent event){
+
         loadClientSelector();
+        contractDocumentationControlSelector.getEmployeeSelector().getSelectionModel().clearSelection();
+        contractDocumentationControlSelector.getEmployeeSelector().getItems().clear();
     }
 
     private void loadClientSelector(){
@@ -113,5 +122,20 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         ObservableList<PersonDTO> sortedPersonDTOOLL = FXCollections.observableArrayList(sortedPersonDTOList);
 
         contractDocumentationControlSelector.getEmployeeSelector().setItems(sortedPersonDTOOLL);
+    }
+
+    private void onExitButton(MouseEvent event){
+//        if(personManagementSelector.getNewPerson().isSelected() ||
+//                personManagementSelector.getModificationPerson().isSelected() ||
+//                personManagementSelector.getDeletePerson().isSelected()){
+//            loadInitialStateDataInterface();
+//
+//            return;
+//        }
+
+        logger.info("Contract documentation control: exiting program.");
+
+        Stage stage = (Stage) contractDocumentationControlHeader.getScene().getWindow();
+        stage.close();
     }
 }
