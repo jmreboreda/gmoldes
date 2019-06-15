@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlAction?>
+<?import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlData?>
+<?import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlHeader?>
+<?import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlSelector?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <VBox>
+      <children>
+           <ContractDocumentationControlHeader fx:id="contractDocumentationControlHeader" />
+            <ContractDocumentationControlSelector fx:id="contractDocumentationControlSelector" />
+           <ContractDocumentationControlData fx:id="contractDocumentationControlData" />
+          <ContractDocumentationControlAction fx:id="contractDocumentationControlAction" />
+
+      </children>
+   </VBox>
+</fx:root>

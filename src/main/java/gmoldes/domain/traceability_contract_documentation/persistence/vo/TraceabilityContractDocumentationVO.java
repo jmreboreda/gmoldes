@@ -8,6 +8,10 @@ import java.sql.Date;
 @Table(name = "traceability_contract_documentation")
 @NamedQueries(value = {
         @NamedQuery(
+                name = gmoldes.domain.traceability_contract_documentation.persistence.vo.TraceabilityContractDocumentationVO.FIND_ALL_RECORD,
+                query = "select p from TraceabilityContractDocumentationVO p"
+        ),
+        @NamedQuery(
                 name = gmoldes.domain.traceability_contract_documentation.persistence.vo.TraceabilityContractDocumentationVO.FIND_ALL_RECORD_BY_CONTRACT_NUMBER,
                 query = "select p from TraceabilityContractDocumentationVO p where contractNumber = :contractNumber"
         ),
@@ -32,6 +36,7 @@ import java.sql.Date;
 
 public class TraceabilityContractDocumentationVO implements Serializable{
 
+    public static final String FIND_ALL_RECORD = "TraceabilityContractDocumentationVO.FIND_ALL_RECORD";
     public static final String FIND_ALL_RECORD_BY_CONTRACT_NUMBER = "TraceabilityContractDocumentationVO.FIND_ALL_RECORD_BY_CONTRACT_NUMBER";
     public static final String FIND_ALL_CONTRACT_WITH_PENDING_IDC = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_IDC";
     public static final String FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_END_NOTICE = "TraceabilityContractDocumentationVO.FIND_ALL_CONTRACT_WITH_PENDING_CONTRACT_END_NOTICE";

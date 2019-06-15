@@ -7,19 +7,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox prefHeight="100.0" prefWidth="460.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
+      <HBox AnchorPane.rightAnchor="5.0">
          <children>
-            <Label minHeight="70.0" prefWidth="500.0" wrapText="true">
+            <Label minHeight="70.0" wrapText="true">
                <HBox.margin>
                   <Insets top="15.0" />
                </HBox.margin>
             </Label>
             <Button fx:id="okButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="70.0" maxWidth="80.0" minHeight="70.0" minWidth="110.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Aceptar" textAlignment="CENTER" textFill="#02430e" wrapText="true">
                <HBox.margin>
-                  <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="5.0" />
                </HBox.margin>
                <font>
                   <Font size="13.0" />
@@ -30,12 +29,12 @@
                   <Font size="13.0" />
                </font>
                <HBox.margin>
-                  <Insets bottom="15.0" right="20.0" top="15.0" />
+                  <Insets bottom="10.0" right="20.0" top="5.0" />
                </HBox.margin>
             </Button>
             <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="70.0" maxWidth="80.0" minHeight="70.0" minWidth="110.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="80.0" text="Salir" textAlignment="CENTER" textFill="#640000">
                <HBox.margin>
-                  <Insets bottom="15.0" right="5.0" top="15.0" />
+                  <Insets bottom="10.0" right="5.0" top="5.0" />
                </HBox.margin>
                <font>
                   <Font size="13.0" />

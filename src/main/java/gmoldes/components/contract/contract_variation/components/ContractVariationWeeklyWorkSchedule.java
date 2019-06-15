@@ -9,7 +9,7 @@ import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
-import gmoldes.utilities.TableCell.DateCell;
+import gmoldes.utilities.TableCell.ContractScheduleDayDateCell;
 import gmoldes.utilities.TableCell.DurationCell;
 import gmoldes.utilities.TableCell.TimeCell;
 import gmoldes.utilities.Utilities;
@@ -129,7 +129,7 @@ public class ContractVariationWeeklyWorkSchedule extends AnchorPane {
             return comboBoxTableCell;
         });
 
-        date.setCellFactory(param -> new DateCell());
+        date.setCellFactory(param -> new ContractScheduleDayDateCell());
         amFrom.setCellFactory(param -> new TimeCell());
         amTo.setCellFactory(param -> new TimeCell());
         pmFrom.setCellFactory(param -> new TimeCell());

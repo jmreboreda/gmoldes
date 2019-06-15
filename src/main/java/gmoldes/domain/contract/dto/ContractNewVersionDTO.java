@@ -1,10 +1,13 @@
 package gmoldes.domain.contract.dto;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.components.contract.ContractConstants;
+import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ContractNewVersionDTO {
 
@@ -122,6 +125,18 @@ public class ContractNewVersionDTO {
 
     public void setContractScheduleJsonData(ContractScheduleJsonData contractScheduleJsonData) {
         this.contractScheduleJsonData = contractScheduleJsonData;
+    }
+
+    public String getStartDateToString(){
+        return getStartDate().toString();
+    }
+
+    public String toString(){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
+        TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(variationType);
+
+        return typesContractVariationsDTO.getVariation_description() + " desde " + startDate.format(dateFormatter);
     }
 
     public Boolean isFullWorkday(){

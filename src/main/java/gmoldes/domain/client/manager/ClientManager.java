@@ -87,6 +87,28 @@ public class ClientManager {
         return clientDTOList;
     }
 
+    public List<ClientDTO> findAllActiveClientWithContractHistory(){
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+
+        clientDAO = ClientDAO.ClientDAOFactory.getInstance();
+        List<ClientVO> activeClientVOList = clientDAO.findAllActiveClientsInAlphabeticalOrder();
+        for(ClientVO clientVO : activeClientVOList){
+            if(!clientVO.getClientCCC().isEmpty()){
+                ClientDTO clientDTO = ClientDTO.create()
+                        .withIsNaturalPerson(clientVO.getNaturalPerson())
+                        .withClientId(clientVO.getClientId())
+                        .withSurnames(clientVO.getSurNames())
+                        .withName(clientVO.getName())
+                        .withRzSocial(clientVO.getRzSocial())
+                        .build();
+
+                clientDTOList.add(clientDTO);
+            }
+        }
+
+        return clientDTOList;
+    }
+
     public List<ClientDTO> findAllClientWithContractInForceAtDate(LocalDate date){
 
         List<ClientDTO> clientDTOList = new ArrayList<>();

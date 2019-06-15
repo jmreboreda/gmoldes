@@ -1,4 +1,4 @@
-package gmoldes.components.person_management.components;
+package gmoldes.components.contract_documentation_control.components;
 
 import gmoldes.components.ViewLoader;
 import javafx.event.EventHandler;
@@ -8,9 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class PersonManagementAction extends AnchorPane {
+public class ContractDocumentationControlAction extends AnchorPane {
 
-    private static final String NEW_PERSON_ACTION_FXML = "/fxml/person_management/person_management_action_components.fxml";
+    private static final String CONTRACT_DOCUMENTATION_CONTROL_ACTION_FXML = "/fxml/contract_documentation_control/contract_documentation_control_action_components.fxml";
 
     private EventHandler<MouseEvent> onOkButtonEventHandler;
     private EventHandler<MouseEvent> onSaveButtonEventHandler;
@@ -26,8 +26,8 @@ public class PersonManagementAction extends AnchorPane {
     @FXML
     private Button exitButton;
 
-    public PersonManagementAction() {
-        this.parent = ViewLoader.load(this, NEW_PERSON_ACTION_FXML);
+    public ContractDocumentationControlAction() {
+        this.parent = ViewLoader.load(this, CONTRACT_DOCUMENTATION_CONTROL_ACTION_FXML);
     }
 
     @FXML

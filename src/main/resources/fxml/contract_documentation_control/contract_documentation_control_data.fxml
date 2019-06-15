@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TitledPane collapsible="false" layoutX="5.0" layoutY="10.0" text="Recepción y entrega de documentación" textFill="#000fff">
+         <content>
+            <TableView fx:id="contractDocumentControlTable">
+              <columns>
+                <TableColumn fx:id="documentType" maxWidth="-1.0" minWidth="325.0" prefWidth="-1.0" sortable="false" text="Documento" />
+                  <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" sortable="false" text="Fechas de">
+                  <columns>
+                    <TableColumn fx:id="receptionDate" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" sortable="false" text="Recepción del gestor" />
+                    <TableColumn fx:id="deliveryDate" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" sortable="false" text="Entrega al cliente" />
+                  </columns>
+                  </TableColumn>
+              </columns>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </TableView>
+         </content>
+      </TitledPane>
+   </children>
+</fx:root>
