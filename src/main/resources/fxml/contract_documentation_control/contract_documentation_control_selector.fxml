@@ -74,7 +74,7 @@
                               <Insets left="5.0" right="10.0" top="5.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox prefWidth="475.0">
+                        <ChoiceBox fx:id="contractSelectedVariations" prefWidth="475.0">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>

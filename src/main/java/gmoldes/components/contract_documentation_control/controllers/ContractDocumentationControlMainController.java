@@ -1,16 +1,19 @@
 package gmoldes.components.contract_documentation_control.controllers;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract_documentation_control.ContractDocumentationControlConstants;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlAction;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlData;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlHeader;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlSelector;
+import gmoldes.components.contract_documentation_control.events.ContractSelectedEvent;
 import gmoldes.components.contract_documentation_control.events.SelectClientEmployerEvent;
 import gmoldes.components.contract_documentation_control.events.SelectEmployerEmployeeEvent;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
@@ -26,6 +29,7 @@ import javafx.stage.Stage;
 
 import java.text.Collator;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -57,12 +61,13 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
     public void initialize(){
 
-//        contractDocumentationControlSelector.setOnContractsWithTraceabilityOnly(this::onContractsWithTraceabilityOnly);
         contractDocumentationControlSelector.setOnChangeContractsInForceOnly(this::onChangeContractsInForceOnly);
 
 
         contractDocumentationControlSelector.setOnClientSelectorChange(this::onClientSelectorChange);
         contractDocumentationControlSelector.setOnEmployeeSelectorChange(this::onEmployeeSelectorChange);
+        contractDocumentationControlSelector.setOnContractSelectorChange(this::onContractSelectorChange);
+
 
 
         contractDocumentationControlSelector.getClientSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
@@ -72,17 +77,6 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         contractDocumentationControlAction.setOnExitButton(this::onExitButton);
     }
-
-//    private void onContractsWithTraceabilityOnly(MouseEvent event){
-//
-//        loadClientSelector();
-//
-//        contractDocumentationControlSelector.getEmployeeSelector().getSelectionModel().clearSelection();
-//        contractDocumentationControlSelector.getEmployeeSelector().getItems().clear();
-//
-//        contractDocumentationControlSelector.getContractSelector().getSelectionModel().clearSelection();
-//        contractDocumentationControlSelector.getContractSelector().getItems().clear();
-//    }
 
     private void onChangeContractsInForceOnly(MouseEvent event){
 
@@ -189,6 +183,13 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     }
 
     private void onEmployeeSelectorChange(SelectEmployerEmployeeEvent employerEmployeeEvent){
+
+        contractDocumentationControlSelector.getContractSelector().getSelectionModel().clearSelection();
+        contractDocumentationControlSelector.getContractSelector().getItems().clear();
+
+        contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().clearSelection();
+        contractDocumentationControlSelector.getContractSelectedVariations().getItems().clear();
+
         ClientDTO clientDTO = employerEmployeeEvent.getSelectedClientEmployer();
         PersonDTO personDTO = employerEmployeeEvent.getNewEmployeeSelected();
         List<Integer> contractsList = new ArrayList<>();
@@ -218,11 +219,30 @@ public class ContractDocumentationControlMainController extends AnchorPane {
             contractsListWithOutDuplicates.add(Integer.parseInt(itemMap.getValue()));
         }
 
+        Collections.sort(contractsListWithOutDuplicates);
+
         ObservableList<Integer> contractsOL = FXCollections.observableArrayList(contractsListWithOutDuplicates);
         contractDocumentationControlSelector.getContractSelector().setItems(contractsOL);
         if(contractsOL.size() == 1){
             contractDocumentationControlSelector.getContractSelector().getSelectionModel().select(0);
         }
+    }
+
+    private void onContractSelectorChange(ContractSelectedEvent event){
+
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        List<ContractNewVersionDTO> contractNewVersionDTOList = contractService.findHistoryOfContractByContractNumber(event.getSelectedContractNumber());
+
+        Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+        primaryCollator.setStrength(Collator.PRIMARY);
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
+        List<ContractNewVersionDTO> sortedContractVariationList = contractNewVersionDTOList
+                .stream()
+                .sorted(Comparator.comparing(ContractNewVersionDTO::getStartDateToString, primaryCollator)).collect(Collectors.toList());
+
+        ObservableList<ContractNewVersionDTO> contractNewVersionDTOOL = FXCollections.observableArrayList(sortedContractVariationList);
+        contractDocumentationControlSelector.getContractSelectedVariations().setItems(contractNewVersionDTOOL);
     }
 
     private void onExitButton(MouseEvent event){

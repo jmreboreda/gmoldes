@@ -1,9 +1,11 @@
 package gmoldes.components.contract_documentation_control.components;
 
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract_documentation_control.events.ContractSelectedEvent;
 import gmoldes.components.contract_documentation_control.events.SelectClientEmployerEvent;
 import gmoldes.components.contract_documentation_control.events.SelectEmployerEmployeeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,11 +26,9 @@ public class ContractDocumentationControlSelector extends AnchorPane {
     private Stage stage;
 
     private EventHandler<MouseEvent> changeContractsInForceOnlyEventHandler;
-    private EventHandler<MouseEvent> contractsWithTraceabilityOnlyEventEventHandler;
-
     private EventHandler<SelectClientEmployerEvent> selectClientEmployerEventEventHandler;
     private EventHandler<SelectEmployerEmployeeEvent> selectEmployerEmployeeEventEventHandler;
-
+    private EventHandler<ContractSelectedEvent> contractSelectedEventEventHandler;
 
     @FXML
     private CheckBox contractsWithTraceabilityOnly;
@@ -40,6 +40,8 @@ public class ContractDocumentationControlSelector extends AnchorPane {
     private ChoiceBox<PersonDTO> employeeSelector;
     @FXML
     private ChoiceBox<Integer> contractSelector;
+    @FXML
+    private ChoiceBox<ContractNewVersionDTO> contractSelectedVariations;
 
     public ContractDocumentationControlSelector() {
         this.parent = ViewLoader.load(this, CONTRACT_DOCUMENTATION_CONTROL_SELECTOR_FXML);
@@ -48,14 +50,11 @@ public class ContractDocumentationControlSelector extends AnchorPane {
 
     public void initialize(){
         contractsWithTraceabilityOnly.setMouseTransparent(true);
-//        contractsWithTraceabilityOnly.setOnMouseClicked(this::onChangeContractsWithTraceabilityOnly);
         contractsInForceOnly.setOnMouseClicked(this::onChangeContractsInForceOnly);
 
         clientSelector.setOnAction(this::onClientSelectorChange);
         employeeSelector.setOnAction(this::onEmployeeSelectorChange);
-
-
-
+        contractSelector.setOnAction(this::onContractSelectorChange);
     }
 
     public CheckBox getContractsInForceOnly() {
@@ -78,9 +77,9 @@ public class ContractDocumentationControlSelector extends AnchorPane {
         return contractSelector;
     }
 
-//    private void onChangeContractsWithTraceabilityOnly(MouseEvent event){
-//        contractsWithTraceabilityOnlyEventEventHandler.handle(event);
-//    }
+    public ChoiceBox<ContractNewVersionDTO> getContractSelectedVariations() {
+        return contractSelectedVariations;
+    }
 
     private void onChangeContractsInForceOnly(MouseEvent event){
         changeContractsInForceOnlyEventHandler.handle(event);
@@ -102,8 +101,17 @@ public class ContractDocumentationControlSelector extends AnchorPane {
             return;
         }
 
-        SelectEmployerEmployeeEvent employerEmployeeEvent = new SelectEmployerEmployeeEvent(getClientSelector().getValue(), getEmployeeSelector().getValue());
-        selectEmployerEmployeeEventEventHandler.handle(employerEmployeeEvent);
+    SelectEmployerEmployeeEvent employerEmployeeEvent = new SelectEmployerEmployeeEvent(getClientSelector().getValue(), getEmployeeSelector().getValue());
+    selectEmployerEmployeeEventEventHandler.handle(employerEmployeeEvent);
+    }
+
+    private void onContractSelectorChange(ActionEvent event){
+        if(contractSelector.getSelectionModel().getSelectedItem() == null){
+
+            return;
+        }
+
+        contractSelectedEventEventHandler.handle(new ContractSelectedEvent(contractSelector.getValue()));
     }
 
     public void loadClientSelector(ObservableList<ClientDTO> clientDTOOL){
@@ -114,15 +122,15 @@ public class ContractDocumentationControlSelector extends AnchorPane {
         this.changeContractsInForceOnlyEventHandler = changeContractsInForceOnlyEvent;
     }
 
-//    public void setOnContractsWithTraceabilityOnly(EventHandler<MouseEvent> contractsWithTraceabilityOnlyEventEventHandler){
-//        this.contractsWithTraceabilityOnlyEventEventHandler = contractsWithTraceabilityOnlyEventEventHandler;
-//    }
-
     public void setOnClientSelectorChange(EventHandler<SelectClientEmployerEvent> selectClientEmployerEventEventHandler){
         this.selectClientEmployerEventEventHandler = selectClientEmployerEventEventHandler;
     }
 
     public void setOnEmployeeSelectorChange(EventHandler<SelectEmployerEmployeeEvent> selectEmployerEmployeeEventEventHandler){
         this.selectEmployerEmployeeEventEventHandler = selectEmployerEmployeeEventEventHandler;
+    }
+
+    public void setOnContractSelectorChange(EventHandler<ContractSelectedEvent> contractSelectedEventEventHandler){
+        this.contractSelectedEventEventHandler = contractSelectedEventEventHandler;
     }
 }
