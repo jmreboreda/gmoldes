@@ -87,6 +87,9 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         contractDocumentationControlSelector.getContractSelector().getSelectionModel().clearSelection();
         contractDocumentationControlSelector.getContractSelector().getItems().clear();
+
+        contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().clearSelection();
+        contractDocumentationControlSelector.getContractSelectedVariations().getItems().clear();
     }
 
     private void loadClientSelector(){
