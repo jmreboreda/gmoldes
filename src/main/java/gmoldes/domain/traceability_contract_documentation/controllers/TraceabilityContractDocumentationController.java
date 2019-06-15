@@ -14,6 +14,13 @@ public class TraceabilityContractDocumentationController {
         return traceabilityManager.updateTraceabilityRecord(traceabilityContractDocumentationDTO);
     }
 
+    public List<TraceabilityContractDocumentationDTO> findAllTraceabilityContractData(){
+
+        TraceabilityContractDocumentationManager traceabilityManger = new TraceabilityContractDocumentationManager();
+
+        return traceabilityManger.findAllTraceabilityContractData();
+    }
+
     public List<TraceabilityContractDocumentationDTO> findAllTraceabilityRecordByContractNumber(Integer contractNumber){
 
         TraceabilityContractDocumentationManager traceabilityManger = new TraceabilityContractDocumentationManager();

@@ -69,6 +69,12 @@ public class TraceabilityContractDocumentationDAO {
         return traceabilityContractDocumentationVO.getId();
     }
 
+    public List<TraceabilityContractDocumentationVO> findAllTraceabilityContractData(){
+        TypedQuery<TraceabilityContractDocumentationVO> query = session.createNamedQuery(TraceabilityContractDocumentationVO.FIND_ALL_RECORD, TraceabilityContractDocumentationVO.class);
+
+        return query.getResultList();
+    }
+
     public List<TraceabilityContractDocumentationVO> findAllTraceabilityRecordByContractNumber(Integer contractNumber){
         TypedQuery<TraceabilityContractDocumentationVO> query = session.createNamedQuery(TraceabilityContractDocumentationVO.FIND_ALL_RECORD_BY_CONTRACT_NUMBER, TraceabilityContractDocumentationVO.class);
         query.setParameter("contractNumber", contractNumber);

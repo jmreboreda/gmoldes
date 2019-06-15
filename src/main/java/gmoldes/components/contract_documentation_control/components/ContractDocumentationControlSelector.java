@@ -24,10 +24,14 @@ public class ContractDocumentationControlSelector extends AnchorPane {
     private Stage stage;
 
     private EventHandler<MouseEvent> changeContractsInForceOnlyEventHandler;
+    private EventHandler<MouseEvent> contractsWithTraceabilityOnlyEventEventHandler;
+
     private EventHandler<SelectClientEmployerEvent> selectClientEmployerEventEventHandler;
     private EventHandler<SelectEmployerEmployeeEvent> selectEmployerEmployeeEventEventHandler;
 
 
+    @FXML
+    private CheckBox contractsWithTraceabilityOnly;
     @FXML
     private CheckBox contractsInForceOnly;
     @FXML
@@ -43,7 +47,10 @@ public class ContractDocumentationControlSelector extends AnchorPane {
     }
 
     public void initialize(){
+        contractsWithTraceabilityOnly.setMouseTransparent(true);
+//        contractsWithTraceabilityOnly.setOnMouseClicked(this::onChangeContractsWithTraceabilityOnly);
         contractsInForceOnly.setOnMouseClicked(this::onChangeContractsInForceOnly);
+
         clientSelector.setOnAction(this::onClientSelectorChange);
         employeeSelector.setOnAction(this::onEmployeeSelectorChange);
 
@@ -53,6 +60,10 @@ public class ContractDocumentationControlSelector extends AnchorPane {
 
     public CheckBox getContractsInForceOnly() {
         return contractsInForceOnly;
+    }
+
+    public CheckBox getContractsWithTraceabilityOnly() {
+        return contractsWithTraceabilityOnly;
     }
 
     public ChoiceBox<ClientDTO> getClientSelector() {
@@ -66,6 +77,10 @@ public class ContractDocumentationControlSelector extends AnchorPane {
     public ChoiceBox<Integer> getContractSelector() {
         return contractSelector;
     }
+
+//    private void onChangeContractsWithTraceabilityOnly(MouseEvent event){
+//        contractsWithTraceabilityOnlyEventEventHandler.handle(event);
+//    }
 
     private void onChangeContractsInForceOnly(MouseEvent event){
         changeContractsInForceOnlyEventHandler.handle(event);
@@ -98,6 +113,10 @@ public class ContractDocumentationControlSelector extends AnchorPane {
     public void setOnChangeContractsInForceOnly(EventHandler<MouseEvent> changeContractsInForceOnlyEvent){
         this.changeContractsInForceOnlyEventHandler = changeContractsInForceOnlyEvent;
     }
+
+//    public void setOnContractsWithTraceabilityOnly(EventHandler<MouseEvent> contractsWithTraceabilityOnlyEventEventHandler){
+//        this.contractsWithTraceabilityOnlyEventEventHandler = contractsWithTraceabilityOnlyEventEventHandler;
+//    }
 
     public void setOnClientSelectorChange(EventHandler<SelectClientEmployerEvent> selectClientEmployerEventEventHandler){
         this.selectClientEmployerEventEventHandler = selectClientEmployerEventEventHandler;

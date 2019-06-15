@@ -17,7 +17,15 @@
                <children>
                   <HBox>
                      <children>
-                        <CheckBox fx:id="contractsInForceOnly" mnemonicParsing="false" selected="true" text="Solo clientes con contratos en vigor" />
+                        <CheckBox fx:id="contractsWithTraceabilityOnly" mnemonicParsing="false" selected="true" text="Solo contratos con trazabilidad">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                        <CheckBox fx:id="contractsInForceOnly" mnemonicParsing="false" selected="true" text="Solo clientes con contratos en vigor">
+                           <HBox.margin>
+                              <Insets left="150.0" />
+                           </HBox.margin></CheckBox>
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" top="5.0" />

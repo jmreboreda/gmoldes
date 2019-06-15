@@ -12,7 +12,10 @@ import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.InitialContractDTO;
+import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
+import gmoldes.domain.traceability_contract_documentation.TraceabilityService;
+import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -54,7 +57,9 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
     public void initialize(){
 
+//        contractDocumentationControlSelector.setOnContractsWithTraceabilityOnly(this::onContractsWithTraceabilityOnly);
         contractDocumentationControlSelector.setOnChangeContractsInForceOnly(this::onChangeContractsInForceOnly);
+
 
         contractDocumentationControlSelector.setOnClientSelectorChange(this::onClientSelectorChange);
         contractDocumentationControlSelector.setOnEmployeeSelectorChange(this::onEmployeeSelectorChange);
@@ -68,6 +73,17 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         contractDocumentationControlAction.setOnExitButton(this::onExitButton);
     }
 
+//    private void onContractsWithTraceabilityOnly(MouseEvent event){
+//
+//        loadClientSelector();
+//
+//        contractDocumentationControlSelector.getEmployeeSelector().getSelectionModel().clearSelection();
+//        contractDocumentationControlSelector.getEmployeeSelector().getItems().clear();
+//
+//        contractDocumentationControlSelector.getContractSelector().getSelectionModel().clearSelection();
+//        contractDocumentationControlSelector.getContractSelector().getItems().clear();
+//    }
+
     private void onChangeContractsInForceOnly(MouseEvent event){
 
         loadClientSelector();
@@ -80,19 +96,41 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     }
 
     private void loadClientSelector(){
-        List<ClientDTO> clientDTOList;
+        List<ClientDTO> clientDTOToClientSelectorList = new ArrayList<>();
+        List<ClientDTO> clientWithContractWithTraceability;
+
         ClientService clientService = ClientService.ClientServiceFactory.getInstance();
 
-        if(contractDocumentationControlSelector.getContractsInForceOnly().isSelected()) {
-            clientDTOList = clientService.findAllClientWithContractInForceAtDate(LocalDate.now());
+        // Clients with contracts with traceability
+        clientWithContractWithTraceability = retrieveClientWithContractWithTraceabilityWithOutDuplicates();
+
+        // Clients with contracts in force with traceability
+        if(contractDocumentationControlSelector.getContractsInForceOnly().isSelected()){
+            List<ClientDTO> clientDTOWithContractsInForceAtDate = clientService.findAllClientWithContractInForceAtDate(LocalDate.now());
+
+            for(ClientDTO clientWithContractTraceabilityDTO : clientWithContractWithTraceability) {
+                for (ClientDTO clientDTOWithContractInForceAtDate : clientDTOWithContractsInForceAtDate) {
+                    if(clientWithContractTraceabilityDTO.getClientId().equals(clientDTOWithContractInForceAtDate.getClientId())){
+                        clientDTOToClientSelectorList.add(clientDTOWithContractInForceAtDate);
+                    }
+                }
+            }
         }else{
-            clientDTOList = clientService.findAllActiveClientWithContractHistory();
+            // Clients with contracts (in force or not) with traceability
+            List<ClientDTO> clientDTOWithContracts = clientService.findAllActiveClientWithContractHistory();
+            for(ClientDTO clientWithContractTraceabilityDTO : clientWithContractWithTraceability) {
+                for (ClientDTO clientDTOWithContractInForceAtDate : clientDTOWithContracts) {
+                    if(clientWithContractTraceabilityDTO.getClientId().equals(clientDTOWithContractInForceAtDate.getClientId())){
+                        clientDTOToClientSelectorList.add(clientDTOWithContractInForceAtDate);
+                    }
+                }
+            }
         }
 
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
         primaryCollator.setStrength(Collator.PRIMARY);
 
-        List<ClientDTO> sortedClientDTOList = clientDTOList
+        List<ClientDTO> sortedClientDTOList = clientDTOToClientSelectorList
                 .stream()
                 .sorted(Comparator.comparing(ClientDTO::toString, primaryCollator)).collect(Collectors.toList());
 
@@ -108,25 +146,37 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         ClientDTO clientDTO = employerEvent.getSelectedClientEmployer();
 
-        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
-        List<PersonDTO> employeesOfSelectedClientDTO = contractService.findAllEmployeesByClientId(clientDTO.getClientId());
+        List<PersonDTO> employeesOfSelectedClientDTOWithContractWithTraceability = new ArrayList<>();
 
-        List<PersonDTO> employeesOfSelectedClientDTOWithOutDuplicates = new ArrayList<>();
+        TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        PersonService personService = PersonService.PersonServiceFactory.getInstance();
+
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
+        for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
+            InitialContractDTO initialContractDTO = contractService.findInitialContractByContractNumber(traceabilityContractDocumentationDTO.getContractNumber());
+            if(initialContractDTO.getContractJsonData().getClientGMId().equals(clientDTO.getClientId())){
+                PersonDTO personDTO = personService.findPersonById(initialContractDTO.getContractJsonData().getWorkerId());
+                employeesOfSelectedClientDTOWithContractWithTraceability.add(personDTO);
+            }
+        }
+
+        List<PersonDTO> employeesOfSelectedClientDTOWithContractWithTraceabilityWithOutDuplicates = new ArrayList<>();
 
         Map<Integer, PersonDTO> personDTOMap = new HashMap<>();
 
-        for (PersonDTO personDTO : employeesOfSelectedClientDTO) {
+        for (PersonDTO personDTO : employeesOfSelectedClientDTOWithContractWithTraceability) {
             personDTOMap.put(personDTO.getIdpersona(), personDTO);
         }
 
         for (Map.Entry<Integer, PersonDTO> itemMap : personDTOMap.entrySet()) {
-            employeesOfSelectedClientDTOWithOutDuplicates.add(itemMap.getValue());
+            employeesOfSelectedClientDTOWithContractWithTraceabilityWithOutDuplicates.add(itemMap.getValue());
         }
 
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
         primaryCollator.setStrength(Collator.PRIMARY);
 
-        List<PersonDTO> sortedPersonDTOList = employeesOfSelectedClientDTOWithOutDuplicates
+        List<PersonDTO> sortedPersonDTOList = employeesOfSelectedClientDTOWithContractWithTraceabilityWithOutDuplicates
                 .stream()
                 .sorted(Comparator.comparing(PersonDTO::toString, primaryCollator)).collect(Collectors.toList());
 
@@ -140,22 +190,38 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         PersonDTO personDTO = employerEmployeeEvent.getNewEmployeeSelected();
         List<Integer> contractsList = new ArrayList<>();
 
+        TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
+
         ContractService contractService = ContractService.ContractServiceFactory.getInstance();
 
-        List<InitialContractDTO> initialContractDTOList = contractService.findAllInitialContract();
-        for(InitialContractDTO initialContractDTO : initialContractDTOList){
+        for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
+            InitialContractDTO initialContractDTO = contractService.findInitialContractByContractNumber(traceabilityContractDocumentationDTO.getContractNumber());
             if(initialContractDTO.getContractJsonData().getClientGMId().equals(clientDTO.getClientId()) &&
-                    initialContractDTO.getContractJsonData().getWorkerId().equals(personDTO.getIdpersona())){
-                contractsList.add(initialContractDTO.getContractNumber());
+            initialContractDTO.getContractJsonData().getWorkerId().equals(personDTO.getIdpersona())){
+                contractsList.add(traceabilityContractDocumentationDTO.getContractNumber());
             }
         }
 
-        ObservableList<Integer> contractsOL = FXCollections.observableArrayList(contractsList);
+        List<Integer> contractsListWithOutDuplicates = new ArrayList<>();
+
+        Map<Integer, Integer> contractListMap = new HashMap<>();
+        Integer counter = 0;
+
+        for (Integer contractNumber : contractsList) {
+            contractListMap.put(counter, contractNumber);
+            counter++;
+        }
+
+        for (Map.Entry<Integer, Integer> itemMap : contractListMap.entrySet()) {
+            contractsListWithOutDuplicates.add(itemMap.getValue());
+        }
+
+        ObservableList<Integer> contractsOL = FXCollections.observableArrayList(contractsListWithOutDuplicates);
         contractDocumentationControlSelector.getContractSelector().setItems(contractsOL);
         if(contractsOL.size() == 1){
             contractDocumentationControlSelector.getContractSelector().getSelectionModel().select(0);
         }
-
     }
 
     private void onExitButton(MouseEvent event){
@@ -163,5 +229,35 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         Stage stage = (Stage) contractDocumentationControlHeader.getScene().getWindow();
         stage.close();
+    }
+
+    private List<ClientDTO> retrieveClientWithContractWithTraceabilityWithOutDuplicates(){
+        List<ClientDTO> clientWithContractWithTraceability = new ArrayList<>();
+        List<ClientDTO> clientWithContractWithTraceabilityWithOutDuplicates = new ArrayList<>();
+
+        TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
+
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+
+        for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
+            InitialContractDTO initialContractDTO = contractService.findInitialContractByContractNumber(traceabilityContractDocumentationDTO.getContractNumber());
+            ClientDTO clientDTO = clientService.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
+
+            clientWithContractWithTraceability.add(clientDTO);
+        }
+
+        Map<Integer, ClientDTO> clientDTOMap = new HashMap<>();
+
+        for (ClientDTO clientDTO : clientWithContractWithTraceability) {
+            clientDTOMap.put(clientDTO.getClientId(), clientDTO);
+        }
+
+        for (Map.Entry<Integer, ClientDTO> itemMap : clientDTOMap.entrySet()) {
+            clientWithContractWithTraceabilityWithOutDuplicates.add(itemMap.getValue());
+        }
+
+        return clientWithContractWithTraceabilityWithOutDuplicates;
     }
 }
