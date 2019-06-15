@@ -183,6 +183,9 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         ObservableList<PersonDTO> sortedPersonDTOOLL = FXCollections.observableArrayList(sortedPersonDTOList);
 
         contractDocumentationControlSelector.getEmployeeSelector().setItems(sortedPersonDTOOLL);
+        if(sortedPersonDTOOLL.size() == 1){
+            contractDocumentationControlSelector.getEmployeeSelector().getSelectionModel().select(0);
+        }
     }
 
     private void onEmployeeSelectorChange(SelectEmployerEmployeeEvent employerEmployeeEvent){
@@ -205,16 +208,14 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         List<Integer> contractsListWithOutDuplicates = new ArrayList<>();
 
-        Map<Integer, Integer> contractListMap = new HashMap<>();
-        Integer counter = 0;
+        Map<Integer, String> contractListMap = new HashMap<>();
 
         for (Integer contractNumber : contractsList) {
-            contractListMap.put(counter, contractNumber);
-            counter++;
+            contractListMap.put(contractNumber, contractNumber.toString());
         }
 
-        for (Map.Entry<Integer, Integer> itemMap : contractListMap.entrySet()) {
-            contractsListWithOutDuplicates.add(itemMap.getValue());
+        for (Map.Entry<Integer, String> itemMap : contractListMap.entrySet()) {
+            contractsListWithOutDuplicates.add(Integer.parseInt(itemMap.getValue()));
         }
 
         ObservableList<Integer> contractsOL = FXCollections.observableArrayList(contractsListWithOutDuplicates);
