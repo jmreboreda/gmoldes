@@ -243,6 +243,9 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         ObservableList<ContractNewVersionDTO> contractNewVersionDTOOL = FXCollections.observableArrayList(sortedContractVariationList);
         contractDocumentationControlSelector.getContractSelectedVariations().setItems(contractNewVersionDTOOL);
+        if(contractNewVersionDTOOL.size() == 1){
+            contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().select(0);
+        }
     }
 
     private void onExitButton(MouseEvent event){
