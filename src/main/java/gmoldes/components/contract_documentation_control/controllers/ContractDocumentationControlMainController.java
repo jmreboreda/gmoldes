@@ -242,6 +242,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     }
 
     private void onContractSelectorChange(ContractSelectedEvent event){
+        contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
 
         ContractService contractService = ContractService.ContractServiceFactory.getInstance();
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractService.findHistoryOfContractByContractNumber(event.getSelectedContractNumber());
