@@ -53,12 +53,24 @@ public class ContractDocumentationControlData extends AnchorPane {
         receptionDate.setCellFactory(param -> new ContractDocumentationControlDateCell());
         deliveryDate.setCellFactory(param -> new ContractDocumentationControlDateCell());
 
-        contractDocumentControlTable.getItems().add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", null, null));
-        contractDocumentControlTable.getItems().add(new ContractDocumentationControlDataDTO("Envío de la documentación al cliente para firma", null, null));
-        contractDocumentControlTable.getItems().add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", null, null));
-
         receptionDate.setOnEditCommit(this::verifyEditionNotEditableCell);
         deliveryDate.setOnEditCommit(this::verifyEditionNotEditableCell);
+    }
+
+    public TableView<ContractDocumentationControlDataDTO> getContractDocumentControlTable() {
+        return contractDocumentControlTable;
+    }
+
+    public TableColumn<ContractDocumentationControlDataDTO, String> getDocumentType() {
+        return documentType;
+    }
+
+    public TableColumn<ContractDocumentationControlDataDTO, LocalDate> getReceptionDate() {
+        return receptionDate;
+    }
+
+    public TableColumn<ContractDocumentationControlDataDTO, LocalDate> getDeliveryDate() {
+        return deliveryDate;
     }
 
     private void verifyEditionNotEditableCell(TableColumn.CellEditEvent event){

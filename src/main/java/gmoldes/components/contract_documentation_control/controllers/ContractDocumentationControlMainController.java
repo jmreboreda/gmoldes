@@ -1,6 +1,5 @@
 package gmoldes.components.contract_documentation_control.controllers;
 
-import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract_documentation_control.ContractDocumentationControlConstants;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlAction;
@@ -8,6 +7,7 @@ import gmoldes.components.contract_documentation_control.components.ContractDocu
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlHeader;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlSelector;
 import gmoldes.components.contract_documentation_control.events.ContractSelectedEvent;
+import gmoldes.components.contract_documentation_control.events.ContractVariationSelectedEvent;
 import gmoldes.components.contract_documentation_control.events.SelectClientEmployerEvent;
 import gmoldes.components.contract_documentation_control.events.SelectEmployerEmployeeEvent;
 import gmoldes.domain.client.ClientService;
@@ -15,6 +15,7 @@ import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
+import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
 import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.traceability_contract_documentation.TraceabilityService;
@@ -29,7 +30,6 @@ import javafx.stage.Stage;
 
 import java.text.Collator;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -67,6 +67,8 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         contractDocumentationControlSelector.setOnClientSelectorChange(this::onClientSelectorChange);
         contractDocumentationControlSelector.setOnEmployeeSelectorChange(this::onEmployeeSelectorChange);
         contractDocumentationControlSelector.setOnContractSelectorChange(this::onContractSelectorChange);
+        contractDocumentationControlSelector.setOnContractVariationSelectorChange(this::onContractVariationSelectorChange);
+
 
 
 
@@ -87,6 +89,11 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         contractDocumentationControlSelector.getContractSelector().getSelectionModel().clearSelection();
         contractDocumentationControlSelector.getContractSelector().getItems().clear();
+
+        contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().clearSelection();
+        contractDocumentationControlSelector.getContractSelectedVariations().getItems().clear();
+
+        contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
     }
 
     private void loadClientSelector(){
@@ -137,6 +144,12 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         contractDocumentationControlSelector.getContractSelector().getSelectionModel().clearSelection();
         contractDocumentationControlSelector.getContractSelector().getItems().clear();
+
+        contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().clearSelection();
+        contractDocumentationControlSelector.getContractSelectedVariations().getItems().clear();
+
+        contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
+
 
         ClientDTO clientDTO = employerEvent.getSelectedClientEmployer();
 
@@ -236,7 +249,6 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
         primaryCollator.setStrength(Collator.PRIMARY);
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         List<ContractNewVersionDTO> sortedContractVariationList = contractNewVersionDTOList
                 .stream()
                 .sorted(Comparator.comparing(ContractNewVersionDTO::getStartDateToString, primaryCollator)).collect(Collectors.toList());
@@ -245,6 +257,21 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         contractDocumentationControlSelector.getContractSelectedVariations().setItems(contractNewVersionDTOOL);
         if(contractNewVersionDTOOL.size() == 1){
             contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().select(0);
+        }
+    }
+
+    private void onContractVariationSelectorChange(ContractVariationSelectedEvent event){
+        TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
+        for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
+            if(traceabilityContractDocumentationDTO.getContractNumber().equals(event.getContractNumber()) &&
+                    traceabilityContractDocumentationDTO.getVariationType().equals(event.getVariationType()) &&
+                            traceabilityContractDocumentationDTO.getStartDate().equals(event.getStartDate())){
+                contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
+                contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
+                contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Envío de la documentación al cliente para firma", null, traceabilityContractDocumentationDTO.getDateDeliveryContractDocumentationToClient()));
+                contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate(), null));
+            }
         }
     }
 
