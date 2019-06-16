@@ -63,14 +63,10 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         contractDocumentationControlSelector.setOnChangeContractsInForceOnly(this::onChangeContractsInForceOnly);
 
-
         contractDocumentationControlSelector.setOnClientSelectorChange(this::onClientSelectorChange);
         contractDocumentationControlSelector.setOnEmployeeSelectorChange(this::onEmployeeSelectorChange);
         contractDocumentationControlSelector.setOnContractSelectorChange(this::onContractSelectorChange);
         contractDocumentationControlSelector.setOnContractVariationSelectorChange(this::onContractVariationSelectorChange);
-
-
-
 
         contractDocumentationControlSelector.getClientSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
         contractDocumentationControlSelector.getEmployeeSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);

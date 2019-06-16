@@ -17,18 +17,6 @@
     -fx-text-fill: #660000;
 }
 
-/*******************************************************
-                    Contract Schedule
-*******************************************************/
-#contract_schedule_table .column-header .label {
-                             -fx-text-fill: #191970;
-                             -fx-font-weight: normal;
-                         }
-
-#contract_schedule_table .table-column{
-    -fx-text-fill: #006400;
-}
-
 .tableDateStyle{
     -fx-alignment: CENTER;
 }
@@ -44,6 +32,30 @@
 
 #contractType .label{
           -fx-font-size: 10pt;
+}
+
+/*******************************************************
+                    Contract Schedule
+*******************************************************/
+#contract_schedule_table .column-header .label {
+                             -fx-text-fill: #191970;
+                             -fx-font-weight: normal;
+                         }
+
+#contract_schedule_table .table-column{
+    -fx-text-fill: #006400;
+}
+
+/*******************************************************
+      Contract Documentation Control Data
+*******************************************************/
+#contract_documentation_control_table .column-header .label {
+                             -fx-text-fill: #191970;
+                             -fx-font-weight: normal;
+                         }
+
+#contract_documentation_control_table .table-column{
+    -fx-text-fill: #000FFF;
 }
 
 /*

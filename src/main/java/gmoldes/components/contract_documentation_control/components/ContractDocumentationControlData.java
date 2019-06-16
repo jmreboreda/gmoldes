@@ -39,6 +39,8 @@ public class ContractDocumentationControlData extends AnchorPane {
     @FXML
     public void initialize() {
 
+        contractDocumentControlTable.setId("contract_documentation_control_table");
+
         contractDocumentControlTable.setEditable(true);
         documentType.setEditable(false);
 
@@ -83,16 +85,16 @@ public class ContractDocumentationControlData extends AnchorPane {
 
         ContractDocumentationControlDataDTO selectedItem = contractDocumentControlTable.getItems().get(editedRow);
 
-        if(editedColumn == badIDCDeliveryDate.getColumn()){
-            selectedItem.setDeliveryDate(null);
+        if(event.getTablePosition().equals(badIDCDeliveryDate)){
+            selectedItem.setDeliveryDate((LocalDate) event.getNewValue());
         }
 
-        if(editedColumn == badDocumentationReceptionDate.getColumn()){
-            selectedItem.setReceptionDate(null);
+        if(event.getTablePosition().equals(badDocumentationReceptionDate)){
+            selectedItem.setReceptionDate((LocalDate) event.getNewValue());
         }
 
-        if(editedColumn == badContractEndNoticeDeliveryDate.getColumn()){
-            selectedItem.setDeliveryDate(null);
+        if(event.getTablePosition().equals(badContractEndNoticeDeliveryDate)){
+            selectedItem.setDeliveryDate((LocalDate) event.getNewValue());
         }
 
         contractDocumentControlTable.setItems(contractDocumentControlTable.getItems());
