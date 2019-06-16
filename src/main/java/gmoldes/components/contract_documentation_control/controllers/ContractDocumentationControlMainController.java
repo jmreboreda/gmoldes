@@ -261,13 +261,14 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     }
 
     private void onContractVariationSelectorChange(ContractVariationSelectedEvent event){
+        contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
+
         TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
         List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
         for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
             if(traceabilityContractDocumentationDTO.getContractNumber().equals(event.getContractNumber()) &&
                     traceabilityContractDocumentationDTO.getVariationType().equals(event.getVariationType()) &&
                             traceabilityContractDocumentationDTO.getStartDate().equals(event.getStartDate())){
-                contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
                 contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
                 contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Envío de la documentación al cliente para firma", null, traceabilityContractDocumentationDTO.getDateDeliveryContractDocumentationToClient()));
                 contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate(), null));

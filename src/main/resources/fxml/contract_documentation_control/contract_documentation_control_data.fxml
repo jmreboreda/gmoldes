@@ -8,7 +8,7 @@
 
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TitledPane collapsible="false" layoutX="5.0" layoutY="10.0" text="Recepción y entrega de documentación" textFill="#000fff">
+      <TitledPane collapsible="false" layoutX="5.0" layoutY="10.0" text="Recepción y entrega de documentación [Registros de trazabilidad]" textFill="#000fff">
          <content>
             <TableView fx:id="contractDocumentControlTable">
               <columns>
