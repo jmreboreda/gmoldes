@@ -2,6 +2,7 @@ package gmoldes.components.contract_documentation_control.components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract_documentation_control.events.ContractSelectedEvent;
+import gmoldes.components.contract_documentation_control.events.ContractVariationSelectedEvent;
 import gmoldes.components.contract_documentation_control.events.SelectClientEmployerEvent;
 import gmoldes.components.contract_documentation_control.events.SelectEmployerEmployeeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
@@ -29,6 +30,7 @@ public class ContractDocumentationControlSelector extends AnchorPane {
     private EventHandler<SelectClientEmployerEvent> selectClientEmployerEventEventHandler;
     private EventHandler<SelectEmployerEmployeeEvent> selectEmployerEmployeeEventEventHandler;
     private EventHandler<ContractSelectedEvent> contractSelectedEventEventHandler;
+    private EventHandler<ContractVariationSelectedEvent> contractVariationSelectedEventEventHandler;
 
     @FXML
     private CheckBox contractsWithTraceabilityOnly;
@@ -55,6 +57,7 @@ public class ContractDocumentationControlSelector extends AnchorPane {
         clientSelector.setOnAction(this::onClientSelectorChange);
         employeeSelector.setOnAction(this::onEmployeeSelectorChange);
         contractSelector.setOnAction(this::onContractSelectorChange);
+        contractSelectedVariations.setOnAction(this::onContractVariationSelectorChange);
     }
 
     public CheckBox getContractsInForceOnly() {
@@ -114,6 +117,15 @@ public class ContractDocumentationControlSelector extends AnchorPane {
         contractSelectedEventEventHandler.handle(new ContractSelectedEvent(contractSelector.getValue()));
     }
 
+    private void onContractVariationSelectorChange(ActionEvent event){
+        if(contractSelectedVariations.getSelectionModel().getSelectedItem() == null){
+            return;
+        }
+
+        contractVariationSelectedEventEventHandler.handle(new ContractVariationSelectedEvent(getContractSelectedVariations().getValue().getContractNumber(),
+                getContractSelectedVariations().getValue().getVariationType(), getContractSelectedVariations().getValue().getStartDate()));
+    }
+
     public void loadClientSelector(ObservableList<ClientDTO> clientDTOOL){
         clientSelector.setItems(clientDTOOL);
     }
@@ -132,5 +144,9 @@ public class ContractDocumentationControlSelector extends AnchorPane {
 
     public void setOnContractSelectorChange(EventHandler<ContractSelectedEvent> contractSelectedEventEventHandler){
         this.contractSelectedEventEventHandler = contractSelectedEventEventHandler;
+    }
+
+    public void setOnContractVariationSelectorChange(EventHandler<ContractVariationSelectedEvent> contractVariationSelectedEventEventHandler){
+        this.contractVariationSelectedEventEventHandler = contractVariationSelectedEventEventHandler;
     }
 }
