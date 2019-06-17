@@ -17,7 +17,7 @@ public class ContractScheduleDayDTO {
     private final SimpleObjectProperty<LocalTime> pmTo;
     private final SimpleObjectProperty<Duration> totalDayHours;
 
-    public ContractScheduleDayDTO(DayOfWeek dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, Duration totalDayHours) {
+    private ContractScheduleDayDTO(DayOfWeek dayOfWeek, LocalDate date, LocalTime amFrom, LocalTime amTo, LocalTime pmFrom, LocalTime pmTo, Duration totalDayHours) {
         this.dayOfWeek = new SimpleObjectProperty<>(dayOfWeek);
         this.date = new SimpleObjectProperty<>(date);
         this.amFrom = new SimpleObjectProperty<>(amFrom);

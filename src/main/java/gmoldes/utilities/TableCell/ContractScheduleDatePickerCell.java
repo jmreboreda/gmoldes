@@ -2,7 +2,6 @@ package gmoldes.utilities.TableCell;
 
 import gmoldes.ApplicationConstants;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
-import gmoldes.utilities.Parameters;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -11,17 +10,15 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class DatePickerCell<S, T> extends TableCell<ContractScheduleDayDTO, LocalDate> {
+public class ContractScheduleDatePickerCell<S, T> extends TableCell<ContractScheduleDayDTO, LocalDate> {
 
     private DatePicker datePicker;
     private ObservableList<ContractScheduleDayDTO> date;
 
-    public DatePickerCell(ObservableList<ContractScheduleDayDTO> date) {
+    public ContractScheduleDatePickerCell(ObservableList<ContractScheduleDayDTO> date) {
 
         super();
 

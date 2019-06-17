@@ -58,6 +58,10 @@
     -fx-text-fill: #000FFF;
 }
 
+.table-cell.not-editable {
+    -fx-background-color: grey;
+
+
 /*
     -fx-base: rgb(255, 255, 204);
     -fx-background: rgb(224, 224, 224);

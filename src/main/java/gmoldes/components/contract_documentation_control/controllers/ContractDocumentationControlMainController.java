@@ -72,7 +72,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         contractDocumentationControlSelector.getEmployeeSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
         contractDocumentationControlSelector.getContractSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
 
-
+        contractDocumentationControlAction.setOnOkButton(this::onOkButton);
         contractDocumentationControlAction.setOnExitButton(this::onExitButton);
     }
 
@@ -269,8 +269,28 @@ public class ContractDocumentationControlMainController extends AnchorPane {
                 contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
                 contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Envío de la documentación al cliente para firma", null, traceabilityContractDocumentationDTO.getDateDeliveryContractDocumentationToClient()));
                 contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate(), null));
+
+//                List<ContractDocumentationControlDataDTO> itemList = new ArrayList<>();
+//
+//                itemList.add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
+//                itemList.add(new ContractDocumentationControlDataDTO("Envío de la documentación al cliente para firma", null, traceabilityContractDocumentationDTO.getDateDeliveryContractDocumentationToClient()));
+//                itemList.add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate(), null));
+//
+//                ObservableList<ContractDocumentationControlDataDTO> tableItemOL = FXCollections.observableArrayList(itemList);
+//                contractDocumentationControlData.refreshContractDocumentationControlTable(tableItemOL);
+
+
             }
         }
+    }
+
+    private void onOkButton(MouseEvent event){
+        if(!contractDocumentationControlData.noDataInNonEditableCells()){
+
+            return;
+        }
+
+        System.out.println("To update traceability table ...");
     }
 
     private void onExitButton(MouseEvent event){
