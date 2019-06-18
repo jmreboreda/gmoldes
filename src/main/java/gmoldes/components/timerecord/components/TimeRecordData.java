@@ -5,6 +5,7 @@ import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.ContractConstants;
+import gmoldes.components.timerecord.TimeRecordConstants;
 import gmoldes.components.timerecord.controllers.TimeRecordController;
 import gmoldes.components.timerecord.TimeRecord;
 import gmoldes.domain.client.controllers.ClientController;
@@ -47,8 +48,6 @@ public class TimeRecordData extends VBox {
     private static final Integer FIRST_MONTH_INDEX_IN_MONTHNAME = 0;
     private static final Integer LAST_MONTH_INDEX_IN_MONTHNAME = 11;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
-    private static final Integer ADMINISTRATOR_OR_PARTNER_CONTRACT_CODE = 101;
-    private static final String SPECIAL_REGIME_SEA = "08";
 
     private Parent parent;
     private Stage stage;
@@ -219,8 +218,8 @@ public class TimeRecordData extends VBox {
 
         List<ContractNewVersionDTO> timeRecordCandidatesWithOutExceptions = new ArrayList<>();
         for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
-            if(contractNewVersionDTO.getContractJsonData().getQuoteAccountCode() != null &&
-                    !contractNewVersionDTO.getContractJsonData().getQuoteAccountCode().substring(0, 2).contains(SPECIAL_REGIME_SEA)){
+            if(contractNewVersionDTO.getContractJsonData().getQuoteAccountCode() != null
+                   /** && !contractNewVersionDTO.getContractJsonData().getQuoteAccountCode().substring(0, 2).contains(TimeRecordConstants.SPECIAL_REGIME_SEA)**/){
                 timeRecordCandidatesWithOutExceptions.add(contractNewVersionDTO);
             }
         }
@@ -233,7 +232,7 @@ public class TimeRecordData extends VBox {
         if(!contractNewVersionDTOList.isEmpty()) {
             for (ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList) {
 //                if(contractNewVersionDTO.isPartialWorkday()) {
-                if(contractNewVersionDTO.getVariationType() != ADMINISTRATOR_OR_PARTNER_CONTRACT_CODE){
+                if(!contractNewVersionDTO.getVariationType().equals(TimeRecordConstants.ADMINISTRATOR_OR_PARTNER_CONTRACT_CODE)){
                     Integer employeeId = contractNewVersionDTO.getContractJsonData().getWorkerId();
                     PersonDTO employee = retrievePersonByPersonId(employeeId);
                     String employeeNIF = Utilities.formatAsNIF(employee.getNifcif());

@@ -5,6 +5,10 @@ public class ContractDocumentationControlConstants {
     public static final String BLUE_COLOR = "-fx-text-inner-color: #000FFF;";
     public static final String RED_COLOR = "-fx-text-inner-color: #640000;";
 
+    public static final Integer RECEPTION_FROM_MANAGER_COLUMN = 1;
+    public static final Integer DELIVERY_TO_CLIENT_COLUMN = 2;
+
+
     public static final String INCOMPLETE_DATA_ENTRY = "Entrada de datos incompleta.";
     public static final String NIE_NIF_IS_NOT_VALID = "El NIE/NIF introducido no es válido.";
     public static final String NASS_IS_NOT_VALID = "El N.A.S.S. introducido no es válido.";

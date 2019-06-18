@@ -2,6 +2,7 @@ package gmoldes.components.contract_documentation_control.components;
 
 import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract_documentation_control.ContractDocumentationControlConstants;
 import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
 import gmoldes.utilities.TableCell.ContractDocumentationControlDateCell;
 import gmoldes.utilities.TableCell.ContractDocumentationControlStringCell;
@@ -100,11 +101,11 @@ public class ContractDocumentationControlData extends AnchorPane {
 
         ContractDocumentationControlDataDTO selectedItem = contractDocumentControlTable.getItems().get(editedRow);
 
-        if(editedColumn == 1){
+        if(editedColumn == ContractDocumentationControlConstants.RECEPTION_FROM_MANAGER_COLUMN){
             selectedItem.setReceptionDate((LocalDate) cellEvent.getNewValue());
         }
 
-        if(editedColumn == 2){
+        if(editedColumn == ContractDocumentationControlConstants.DELIVERY_TO_CLIENT_COLUMN){
             selectedItem.setDeliveryDate((LocalDate) cellEvent.getNewValue());
         }
 

@@ -13,7 +13,7 @@ import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.components.person_management.controllers.PersonManagementMainController;
 import gmoldes.components.timerecord.TimeRecord;
-import gmoldes.components.timerecord.components.TimeRecordConstants;
+import gmoldes.components.timerecord.TimeRecordConstants;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
