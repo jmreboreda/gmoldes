@@ -25,7 +25,7 @@ public class ContractDocumentationControlData extends AnchorPane {
     private Parent parent;
     private Stage stage;
 
-    private Boolean cellsEdited = false;
+    public Boolean cellsEdited = false;
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
@@ -62,17 +62,8 @@ public class ContractDocumentationControlData extends AnchorPane {
         receptionDate.setCellFactory(param -> new ContractDocumentationControlDateCell());
         deliveryDate.setCellFactory(param -> new ContractDocumentationControlDateCell());
 
-        receptionDate.setOnEditCommit(this::updateTableData);
-        deliveryDate.setOnEditCommit(this::updateTableData);
-
-//        List<ContractDocumentationControlDataDTO> contractDocumentationControlDataDTOList = new ArrayList<>();
-//        for(int i = 0; i <= 2; i++){
-//            contractDocumentationControlDataDTOList.add(
-//                    new ContractDocumentationControlDataDTO(null, null, LocalDate.now()));
-//        }
-//
-//        ObservableList<ContractDocumentationControlDataDTO> data = FXCollections.observableArrayList(contractDocumentationControlDataDTOList);
-//        refreshContractDocumentationControlTable(data);
+        receptionDate.setOnEditCommit(this::updateTableDataObservableList);
+        deliveryDate.setOnEditCommit(this::updateTableDataObservableList);
     }
 
     public TableView<ContractDocumentationControlDataDTO> getContractDocumentControlTable() {
@@ -95,45 +86,59 @@ public class ContractDocumentationControlData extends AnchorPane {
         contractDocumentControlTable.setItems(tableItemOL);
     }
 
-    private void updateTableData(TableColumn.CellEditEvent cellEvent){
+    private void updateTableDataObservableList(TableColumn.CellEditEvent cellEvent) {
+        cellsEdited = false;
+
+        LocalDate initialValue = (LocalDate) cellEvent.getOldValue();
+
         int editedRow = cellEvent.getTablePosition().getRow();
         int editedColumn = cellEvent.getTablePosition().getColumn();
 
-        ContractDocumentationControlDataDTO selectedItem = contractDocumentControlTable.getItems().get(editedRow);
+        if (initialValue != null && cellEvent.getNewValue() != null &&
+                initialValue.compareTo((LocalDate) cellEvent.getNewValue()) != 0) {
 
-        if(editedColumn == ContractDocumentationControlConstants.RECEPTION_FROM_MANAGER_COLUMN){
-            selectedItem.setReceptionDate((LocalDate) cellEvent.getNewValue());
+            ContractDocumentationControlDataDTO selectedItem = contractDocumentControlTable.getItems().get(editedRow);
+
+            if (editedColumn == ContractDocumentationControlConstants.RECEPTION_FROM_MANAGER_COLUMN) {
+                if (editedRow == ContractDocumentationControlConstants.IDC_ROW || editedRow == ContractDocumentationControlConstants.CONTRACT_END_NOTICE_ROW) {
+                    selectedItem.setReceptionDate((LocalDate) cellEvent.getNewValue());
+                    cellsEdited = true;
+                }
+            } else {
+                if (editedColumn == ContractDocumentationControlConstants.DELIVERY_TO_CLIENT_COLUMN) {
+                    if (editedRow == ContractDocumentationControlConstants.DELIVERY_DOCUMENTS_ROW) {
+                        if (initialValue.compareTo((LocalDate) cellEvent.getNewValue()) != 0) {
+                            selectedItem.setDeliveryDate((LocalDate) cellEvent.getNewValue());
+                            cellsEdited = true;
+                        }
+                    }
+                }
+            }
         }
 
-        if(editedColumn == ContractDocumentationControlConstants.DELIVERY_TO_CLIENT_COLUMN){
-            selectedItem.setDeliveryDate((LocalDate) cellEvent.getNewValue());
-        }
-
-        refreshContractDocumentationControlTable(contractDocumentControlTable.getItems());
-
-        cellsEdited = true;
+        contractDocumentControlTable.refresh();
     }
 
-    public String noDataInNonEditableCells() {
-        Integer row = 0;
-
-        if(deliveryDate.getCellData(row) != null) {
-
-            return "Error en \"Informe de datos para la cotización (IDC)\". Fecha de entrega al cliente contiene datos: " + deliveryDate.getCellData(row).format(dateFormatter);
-        }
-
-        row++;
-        if(receptionDate.getCellData(row) != null) {
-
-            return "Error en \"Envío de la documentación al cliente para firma\". Fecha de recepción del gestor contiene datos: " + receptionDate.getCellData(row).format(dateFormatter);
-        }
-
-        row++;
-        if(deliveryDate.getCellData(row) != null) {
-
-            return "Error en \"Carta de preaviso de fin de contrato\". Fecha de entrega al cliente contiene datos: " + deliveryDate.getCellData(row).format(dateFormatter);
-        }
-
-        return null;
-        }
+//    public String noDataInNonEditableCells() {
+//        Integer row = 0;
+//
+//        if(deliveryDate.getCellData(row) != null) {
+//
+//            return "Error en \"Informe de datos para la cotización (IDC)\". Fecha de entrega al cliente contiene datos: " + deliveryDate.getCellData(row).format(dateFormatter);
+//        }
+//
+//        row++;
+//        if(receptionDate.getCellData(row) != null) {
+//
+//            return "Error en \"Envío de la documentación al cliente para firma\". Fecha de recepción del gestor contiene datos: " + receptionDate.getCellData(row).format(dateFormatter);
+//        }
+//
+//        row++;
+//        if(deliveryDate.getCellData(row) != null) {
+//
+//            return "Error en \"Carta de preaviso de fin de contrato\". Fecha de entrega al cliente contiene datos: " + deliveryDate.getCellData(row).format(dateFormatter);
+//        }
+//
+//        return null;
+//        }
 }

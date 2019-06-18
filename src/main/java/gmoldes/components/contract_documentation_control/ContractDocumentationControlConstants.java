@@ -8,6 +8,11 @@ public class ContractDocumentationControlConstants {
     public static final Integer RECEPTION_FROM_MANAGER_COLUMN = 1;
     public static final Integer DELIVERY_TO_CLIENT_COLUMN = 2;
 
+    public static final Integer IDC_ROW = 0;
+    public static final Integer DELIVERY_DOCUMENTS_ROW = 1;
+    public static final Integer CONTRACT_END_NOTICE_ROW = 2;
+
+
 
     public static final String INCOMPLETE_DATA_ENTRY = "Entrada de datos incompleta.";
     public static final String NIE_NIF_IS_NOT_VALID = "El NIE/NIF introducido no es válido.";

@@ -20,8 +20,6 @@ import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.traceability_contract_documentation.TraceabilityService;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
-import gmoldes.utilities.Message;
-import gmoldes.utilities.Parameters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -148,6 +146,8 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
 
+        contractDocumentationControlAction.getSaveButton().setDisable(true);
+
 
         ClientDTO clientDTO = employerEvent.getSelectedClientEmployer();
 
@@ -201,6 +201,9 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().clearSelection();
         contractDocumentationControlSelector.getContractSelectedVariations().getItems().clear();
 
+        contractDocumentationControlAction.getSaveButton().setDisable(true);
+
+
         ClientDTO clientDTO = employerEmployeeEvent.getSelectedClientEmployer();
         PersonDTO personDTO = employerEmployeeEvent.getNewEmployeeSelected();
         List<Integer> contractsList = new ArrayList<>();
@@ -242,6 +245,9 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     private void onContractSelectorChange(ContractSelectedEvent event){
         contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
 
+        contractDocumentationControlAction.getSaveButton().setDisable(true);
+
+
         ContractService contractService = ContractService.ContractServiceFactory.getInstance();
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractService.findHistoryOfContractByContractNumber(event.getSelectedContractNumber());
 
@@ -261,6 +267,9 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
     private void onContractVariationSelectorChange(ContractVariationSelectedEvent event){
         contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
+
+        contractDocumentationControlAction.getSaveButton().setDisable(true);
+
 
         TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
         List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
@@ -287,13 +296,9 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     }
 
     private void onOkButton(MouseEvent event){
-        if(contractDocumentationControlData.noDataInNonEditableCells() != null){
-            Message.errorMessage((Stage) this.contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,contractDocumentationControlData.noDataInNonEditableCells());
-
-            return;
+        if(contractDocumentationControlData.cellsEdited) {
+            contractDocumentationControlAction.getSaveButton().setDisable(false);
         }
-
-        contractDocumentationControlAction.getSaveButton().setDisable(false);
     }
 
     private void onExitButton(MouseEvent event){
