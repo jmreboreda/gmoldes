@@ -111,6 +111,7 @@ public class ContractDocumentationControlData extends AnchorPane {
 
     public String noDataInNonEditableCells() {
         Integer row = 0;
+
         if(deliveryDate.getCellData(row) != null) {
 
             return "Error en \"Informe de datos para la cotización (IDC)\". Fecha de entrega al cliente contiene datos: " + deliveryDate.getCellData(row).format(dateFormatter);
