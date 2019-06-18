@@ -113,18 +113,24 @@ public class ContractDocumentationControlData extends AnchorPane {
         Integer row = 0;
         if(deliveryDate.getCellData(row) != null) {
                 System.out.println("Error en IDCDeliveryDate, contiene: " + deliveryDate.getCellData(row));
+                deliveryDate.setStyle("-fx-text-fill: #c90c0c;");
+
                 return false;
             }
 
         row++;
         if(receptionDate.getCellData(row) != null) {
             System.out.println("Error en receptionDocumentationDate, contiene: " + receptionDate.getCellData(row));
+            receptionDate.setStyle("-fx-text-fill: #c90c0c;");
+
             return false;
         }
 
         row++;
         if(deliveryDate.getCellData(row) != null) {
             System.out.println("Error en contractEndNotice, contiene: " + deliveryDate.getCellData(row));
+            deliveryDate.setStyle("-fx-text-fill: #c90c0c;");
+
             return false;
         }
 
