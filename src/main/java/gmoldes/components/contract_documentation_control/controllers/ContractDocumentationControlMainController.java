@@ -20,6 +20,8 @@ import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.traceability_contract_documentation.TraceabilityService;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.utilities.Message;
+import gmoldes.utilities.Parameters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -285,7 +287,8 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     }
 
     private void onOkButton(MouseEvent event){
-        if(!contractDocumentationControlData.noDataInNonEditableCells()){
+        if(contractDocumentationControlData.noDataInNonEditableCells() != null){
+            Message.errorMessage((Stage) this.contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT,contractDocumentationControlData.noDataInNonEditableCells());
 
             return;
         }

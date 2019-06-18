@@ -4,6 +4,7 @@ import gmoldes.ApplicationConstants;
 import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 

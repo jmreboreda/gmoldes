@@ -109,31 +109,25 @@ public class ContractDocumentationControlData extends AnchorPane {
         refreshContractDocumentationControlTable(contractDocumentControlTable.getItems());
     }
 
-    public Boolean noDataInNonEditableCells() {
+    public String noDataInNonEditableCells() {
         Integer row = 0;
         if(deliveryDate.getCellData(row) != null) {
-                System.out.println("Error en IDCDeliveryDate, contiene: " + deliveryDate.getCellData(row));
-                deliveryDate.setStyle("-fx-text-fill: #c90c0c;");
 
-                return false;
-            }
+            return "Error en \"Informe de datos para la cotización (IDC)\". Fecha de entrega al cliente contiene datos: " + deliveryDate.getCellData(row).format(dateFormatter);
+        }
 
         row++;
         if(receptionDate.getCellData(row) != null) {
-            System.out.println("Error en receptionDocumentationDate, contiene: " + receptionDate.getCellData(row));
-            receptionDate.setStyle("-fx-text-fill: #c90c0c;");
 
-            return false;
+            return "Error en \"Envío de la documentación al cliente para firma\". Fecha de recepción del gestor contiene datos: " + receptionDate.getCellData(row).format(dateFormatter);
         }
 
         row++;
         if(deliveryDate.getCellData(row) != null) {
-            System.out.println("Error en contractEndNotice, contiene: " + deliveryDate.getCellData(row));
-            deliveryDate.setStyle("-fx-text-fill: #c90c0c;");
 
-            return false;
+            return "Error en \"Carta de preaviso de fin de contrato\". Fecha de entrega al cliente contiene datos: " + deliveryDate.getCellData(row).format(dateFormatter);
         }
 
-        return true;
+        return null;
         }
 }
