@@ -24,6 +24,8 @@ public class ContractDocumentationControlData extends AnchorPane {
     private Parent parent;
     private Stage stage;
 
+    private Boolean cellsEdited = false;
+
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
     @FXML
@@ -107,6 +109,8 @@ public class ContractDocumentationControlData extends AnchorPane {
         }
 
         refreshContractDocumentationControlTable(contractDocumentControlTable.getItems());
+
+        cellsEdited = true;
     }
 
     public String noDataInNonEditableCells() {

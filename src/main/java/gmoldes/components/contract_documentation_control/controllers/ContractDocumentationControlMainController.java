@@ -293,7 +293,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
             return;
         }
 
-        System.out.println("To update traceability table ...");
+        contractDocumentationControlAction.getSaveButton().setDisable(false);
     }
 
     private void onExitButton(MouseEvent event){
