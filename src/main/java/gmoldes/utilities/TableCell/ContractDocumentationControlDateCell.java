@@ -4,7 +4,6 @@ import gmoldes.ApplicationConstants;
 import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
@@ -74,6 +73,10 @@ public class ContractDocumentationControlDateCell extends TableCell<ContractDocu
         textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
         textField.setOnKeyPressed(t -> {
             if (t.getCode() == KeyCode.ENTER) {
+                if(textField.getText() == null){
+                    cancelEdit();
+                    return;
+                }
                 if(datePattern.matcher(textField.getText()).matches()){
                     String dateConverted = textField.getText().replace("/","-");
                     try {

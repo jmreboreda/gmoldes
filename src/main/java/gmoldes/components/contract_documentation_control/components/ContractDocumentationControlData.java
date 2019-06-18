@@ -3,10 +3,12 @@ package gmoldes.components.contract_documentation_control.components;
 import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract_documentation_control.ContractDocumentationControlConstants;
+import gmoldes.components.contract_documentation_control.events.CellTableChangedEvent;
 import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
 import gmoldes.utilities.TableCell.ContractDocumentationControlDateCell;
 import gmoldes.utilities.TableCell.ContractDocumentationControlStringCell;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
@@ -28,6 +30,8 @@ public class ContractDocumentationControlData extends AnchorPane {
     public Boolean cellsEdited = false;
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
+
+    private EventHandler<CellTableChangedEvent> cellTableChangedEventEventHandler;
 
     @FXML
     private TableView<ContractDocumentationControlDataDTO> contractDocumentControlTable;
@@ -94,8 +98,9 @@ public class ContractDocumentationControlData extends AnchorPane {
         int editedRow = cellEvent.getTablePosition().getRow();
         int editedColumn = cellEvent.getTablePosition().getColumn();
 
-        if (initialValue != null && cellEvent.getNewValue() != null &&
-                initialValue.compareTo((LocalDate) cellEvent.getNewValue()) != 0) {
+        if ((initialValue != null && cellEvent.getNewValue() != null &&
+                initialValue.compareTo((LocalDate) cellEvent.getNewValue()) != 0) ||
+                initialValue != null || cellEvent.getNewValue() != null) {
 
             ContractDocumentationControlDataDTO selectedItem = contractDocumentControlTable.getItems().get(editedRow);
 
@@ -107,16 +112,22 @@ public class ContractDocumentationControlData extends AnchorPane {
             } else {
                 if (editedColumn == ContractDocumentationControlConstants.DELIVERY_TO_CLIENT_COLUMN) {
                     if (editedRow == ContractDocumentationControlConstants.DELIVERY_DOCUMENTS_ROW) {
-                        if (initialValue.compareTo((LocalDate) cellEvent.getNewValue()) != 0) {
+//                        if (initialValue.compareTo((LocalDate) cellEvent.getNewValue()) != 0) {
                             selectedItem.setDeliveryDate((LocalDate) cellEvent.getNewValue());
                             cellsEdited = true;
-                        }
+//                        }
                     }
                 }
             }
         }
 
         contractDocumentControlTable.refresh();
+        cellTableChangedEventEventHandler.handle(new CellTableChangedEvent(cellsEdited));
+    }
+
+    public void setOnUpdateTableObservableList(EventHandler<CellTableChangedEvent> cellTableChangedEventEventHandler){
+        this.cellTableChangedEventEventHandler = cellTableChangedEventEventHandler;
+
     }
 
 //    public String noDataInNonEditableCells() {

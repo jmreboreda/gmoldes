@@ -6,10 +6,7 @@ import gmoldes.components.contract_documentation_control.components.ContractDocu
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlData;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlHeader;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlSelector;
-import gmoldes.components.contract_documentation_control.events.ContractSelectedEvent;
-import gmoldes.components.contract_documentation_control.events.ContractVariationSelectedEvent;
-import gmoldes.components.contract_documentation_control.events.SelectClientEmployerEvent;
-import gmoldes.components.contract_documentation_control.events.SelectEmployerEmployeeEvent;
+import gmoldes.components.contract_documentation_control.events.*;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
@@ -71,6 +68,8 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         contractDocumentationControlSelector.getClientSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
         contractDocumentationControlSelector.getEmployeeSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
         contractDocumentationControlSelector.getContractSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
+
+        contractDocumentationControlData.setOnUpdateTableObservableList(this::onCellTableChange);
 
         contractDocumentationControlAction.setOnOkButton(this::onOkButton);
         contractDocumentationControlAction.setOnExitButton(this::onExitButton);
@@ -292,6 +291,12 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
 
             }
+        }
+    }
+
+    private void onCellTableChange(CellTableChangedEvent event){
+        if(event.getCellsEdited()){
+            contractDocumentationControlAction.getSaveButton().setDisable(true);
         }
     }
 
