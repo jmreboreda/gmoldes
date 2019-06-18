@@ -288,8 +288,6 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 //
 //                ObservableList<ContractDocumentationControlDataDTO> tableItemOL = FXCollections.observableArrayList(itemList);
 //                contractDocumentationControlData.refreshContractDocumentationControlTable(tableItemOL);
-
-
             }
         }
     }

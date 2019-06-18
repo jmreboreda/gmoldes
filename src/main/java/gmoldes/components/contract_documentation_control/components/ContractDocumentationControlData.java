@@ -112,10 +112,8 @@ public class ContractDocumentationControlData extends AnchorPane {
             } else {
                 if (editedColumn == ContractDocumentationControlConstants.DELIVERY_TO_CLIENT_COLUMN) {
                     if (editedRow == ContractDocumentationControlConstants.DELIVERY_DOCUMENTS_ROW) {
-//                        if (initialValue.compareTo((LocalDate) cellEvent.getNewValue()) != 0) {
                             selectedItem.setDeliveryDate((LocalDate) cellEvent.getNewValue());
                             cellsEdited = true;
-//                        }
                     }
                 }
             }
