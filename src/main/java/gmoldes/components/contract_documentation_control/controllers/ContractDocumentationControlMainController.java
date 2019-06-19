@@ -329,6 +329,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         ContractNewVersionDTO contractNewVersionDTO = contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().getSelectedItem();
 
+        // Update identification contract number INEM
         String identificationContractNumberINEM = contractDocumentationControlData.getIdentificationContractNumberINEM().getText();
         contractNewVersionDTO.getContractJsonData().setIdentificationContractNumberINEM(identificationContractNumberINEM);
         if(contractNewVersionDTO.getVariationType() < 200){
@@ -353,6 +354,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
             }
         }
 
+        // Update traceability contract data
         TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
         List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
         for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
@@ -378,7 +380,6 @@ public class ContractDocumentationControlMainController extends AnchorPane {
                 }else{
                     Message.errorMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.TRACEABILITY_MODIFICATION_SAVED_NOT_OK);
                     logger.info("Problemas en la actualización de la trazabilidad.");
-
                 }
             }
         }
