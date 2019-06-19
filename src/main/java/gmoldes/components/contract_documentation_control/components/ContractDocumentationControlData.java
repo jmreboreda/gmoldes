@@ -56,7 +56,10 @@ public class ContractDocumentationControlData extends AnchorPane {
         documentType.setEditable(false);
 
         receptionDate.getStyleClass().add("tableDateStyle");
+        receptionDate.getStyleClass().add("red.table-column");
+
         deliveryDate.getStyleClass().add("tableDateStyle");
+        deliveryDate.getStyleClass().add("red.table-column");
 
         documentType.setCellValueFactory(new PropertyValueFactory<>("documentType"));
         receptionDate.setCellValueFactory(new PropertyValueFactory<>("receptionDate"));
@@ -65,6 +68,9 @@ public class ContractDocumentationControlData extends AnchorPane {
         documentType.setCellFactory(param -> new ContractDocumentationControlStringCell());
         receptionDate.setCellFactory(param -> new ContractDocumentationControlDateCell());
         deliveryDate.setCellFactory(param -> new ContractDocumentationControlDateCell());
+
+        receptionDate.setStyle(ContractDocumentationControlConstants.RED_COLOR);
+        deliveryDate.setStyle(ContractDocumentationControlConstants.RED_COLOR);
 
         receptionDate.setOnEditCommit(this::updateTableDataObservableList);
         deliveryDate.setOnEditCommit(this::updateTableDataObservableList);

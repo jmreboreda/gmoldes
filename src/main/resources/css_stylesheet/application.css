@@ -35,32 +35,44 @@
 }
 
 /*******************************************************
-                    Contract Schedule
+                    TableView: Contract Schedule
 *******************************************************/
 #contract_schedule_table .column-header .label {
                              -fx-text-fill: #191970;
                              -fx-font-weight: normal;
-                         }
+}
 
 #contract_schedule_table .table-column{
     -fx-text-fill: #006400;
 }
 
+#contract_schedule_table .tableDateStyle{
+    -fx-alignment: CENTER;
+}
+
 /*******************************************************
-      Contract Documentation Control Data
+       TableView: Contract Documentation Control Data
 *******************************************************/
 #contract_documentation_control_table .column-header .label {
                              -fx-text-fill: #191970;
                              -fx-font-weight: normal;
-                         }
+}
 
-#contract_documentation_control_table .table-column{
+#contract_documentation_control_table blue.table-column{
     -fx-text-fill: #000FFF;
 }
 
-.table-cell.not-editable {
-    -fx-background-color: grey;
+#contract_documentation_control_table red.table-column{
+    -fx-text-fill: #640000;
+}
 
+#contract_documentation_control_table .table-cell.not-editable {
+    -fx-background-color: grey;
+}
+
+#contract_documentation_control_table .tableDateStyle{
+    -fx-alignment: CENTER;
+}
 
 /*
     -fx-base: rgb(255, 255, 204);
