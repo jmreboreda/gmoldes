@@ -285,6 +285,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         String identificationContractNumberINEM = contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().getSelectedItem().getContractJsonData().getIdentificationContractNumberINEM();
         contractDocumentationControlData.getIdentificationContractNumberINEM().setText(identificationContractNumberINEM);
+        contractDocumentationControlData.previousIdentificationNumberINEMFromDatabase = identificationContractNumberINEM;
 
         TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
         List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
@@ -312,6 +313,9 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         if(event.getCellsEdited()){
             contractDocumentationControlAction.getSaveButton().setDisable(true);
             contractDocumentationControlAction.getOkButton().setDisable(false);
+        }else{
+            contractDocumentationControlAction.getSaveButton().setDisable(false);
+            contractDocumentationControlAction.getOkButton().setDisable(true);
         }
     }
 

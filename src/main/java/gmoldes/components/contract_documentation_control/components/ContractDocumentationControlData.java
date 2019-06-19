@@ -7,7 +7,10 @@ import gmoldes.components.contract_documentation_control.events.CellTableChanged
 import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
 import gmoldes.utilities.TableCell.ContractDocumentationControlDateCell;
 import gmoldes.utilities.TableCell.ContractDocumentationControlStringCell;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -29,6 +32,7 @@ public class ContractDocumentationControlData extends AnchorPane {
     private Stage stage;
 
     public Boolean cellsEdited = false;
+    public String previousIdentificationNumberINEMFromDatabase;
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
@@ -73,10 +77,24 @@ public class ContractDocumentationControlData extends AnchorPane {
         receptionDate.setStyle(ContractDocumentationControlConstants.RED_COLOR);
         deliveryDate.setStyle(ContractDocumentationControlConstants.RED_COLOR);
 
-        identificationContractNumberINEM.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.equals(oldValue)){
-                cellsEdited = true;
-                cellTableChangedEventEventHandler.handle(new CellTableChangedEvent(cellsEdited));
+//        identificationContractNumberINEM.setOnAction(this::onNumberINEMChanged);
+
+        identificationContractNumberINEM.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+
+                previousIdentificationNumberINEMFromDatabase = previousIdentificationNumberINEMFromDatabase == null ? "" : previousIdentificationNumberINEMFromDatabase;
+                newValue = newValue == null ? "" : newValue;
+
+                if(newValue.equals("") || oldValue.equals("") || newValue.equals(previousIdentificationNumberINEMFromDatabase) ||
+                newValue.equals(oldValue)){
+
+                    return;
+                }
+
+//                System.out.println("previous: " + previousIdentificationNumberINEMFromDatabase + " :: " + "new: " + newValue + " :: " + "old: " + oldValue);
+                cellTableChangedEventEventHandler.handle(new CellTableChangedEvent(true));
             }
         });
 
@@ -106,6 +124,16 @@ public class ContractDocumentationControlData extends AnchorPane {
 
     public void refreshContractDocumentationControlTable(ObservableList<ContractDocumentationControlDataDTO> tableItemOL){
         contractDocumentControlTable.setItems(tableItemOL);
+    }
+
+    private void onNumberINEMChanged(ActionEvent actionEvent){
+
+        System.out.println("previous: " + previousIdentificationNumberINEMFromDatabase + " :: " + "new: " + identificationContractNumberINEM.getText());
+
+        if(!identificationContractNumberINEM.getText().equals(previousIdentificationNumberINEMFromDatabase)){
+
+            cellTableChangedEventEventHandler.handle(new CellTableChangedEvent(true));
+        }
     }
 
     private void updateTableDataObservableList(TableColumn.CellEditEvent cellEvent) {
