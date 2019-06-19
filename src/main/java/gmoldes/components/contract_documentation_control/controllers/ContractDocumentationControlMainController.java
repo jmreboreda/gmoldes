@@ -334,6 +334,9 @@ public class ContractDocumentationControlMainController extends AnchorPane {
                 TraceabilityContractDocumentationController traceabilityContractDocumentationController = new TraceabilityContractDocumentationController();
                 if(traceabilityContractDocumentationController.updateTraceabilityRecord(traceabilityContractDocumentationDTOToUpdate) != null){
                     System.out.println("Trazabilidad actualizada.");
+                }else{
+                    System.out.println("Problemas en la actualización de la trazabilidad.");
+
                 }
 
             }
