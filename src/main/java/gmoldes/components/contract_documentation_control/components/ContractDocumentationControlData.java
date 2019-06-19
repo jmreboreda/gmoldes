@@ -55,11 +55,9 @@ public class ContractDocumentationControlData extends AnchorPane {
         contractDocumentControlTable.setEditable(true);
         documentType.setEditable(false);
 
-        receptionDate.getStyleClass().add("tableDateStyle");
-        receptionDate.getStyleClass().add("red.table-column");
-
-        deliveryDate.getStyleClass().add("tableDateStyle");
-        deliveryDate.getStyleClass().add("red.table-column");
+        documentType.getStyleClass().add("blue-tableTextStyle");
+        receptionDate.getStyleClass().add("green-tableDateStyle");
+        deliveryDate.getStyleClass().add("green-tableDateStyle");
 
         documentType.setCellValueFactory(new PropertyValueFactory<>("documentType"));
         receptionDate.setCellValueFactory(new PropertyValueFactory<>("receptionDate"));

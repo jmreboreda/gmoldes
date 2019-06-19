@@ -70,7 +70,18 @@
     -fx-background-color: grey;
 }
 
-#contract_documentation_control_table .tableDateStyle{
+#contract_documentation_control_table .blue-tableTextStyle{
+    -fx-text-fill: #000FFF;
+    -fx-alignment: LEFT;
+}
+
+#contract_documentation_control_table .green-tableDateStyle{
+    -fx-text-fill: #006400;
+    -fx-alignment: CENTER;
+}
+
+#contract_documentation_control_table .red-tableDateStyle{
+    -fx-text-fill: #640000;
     -fx-alignment: CENTER;
 }
 
