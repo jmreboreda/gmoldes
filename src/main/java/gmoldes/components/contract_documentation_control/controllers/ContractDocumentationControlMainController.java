@@ -1,6 +1,5 @@
 package gmoldes.components.contract_documentation_control.controllers;
 
-import com.sun.javafx.scene.control.TableColumnSortTypeWrapper;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract_documentation_control.ContractDocumentationControlConstants;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlAction;
@@ -19,11 +18,12 @@ import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.traceability_contract_documentation.TraceabilityService;
 import gmoldes.domain.traceability_contract_documentation.controllers.TraceabilityContractDocumentationController;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.utilities.Message;
+import gmoldes.utilities.Parameters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -271,8 +271,8 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     private void onContractVariationSelectorChange(ContractVariationSelectedEvent event){
         contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
 
+        contractDocumentationControlAction.getOkButton().setDisable(true);
         contractDocumentationControlAction.getSaveButton().setDisable(true);
-
 
         TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
         List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
@@ -299,6 +299,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     private void onCellTableChange(CellTableChangedEvent event){
         if(event.getCellsEdited()){
             contractDocumentationControlAction.getSaveButton().setDisable(true);
+            contractDocumentationControlAction.getOkButton().setDisable(false);
         }
     }
 
@@ -333,14 +334,17 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
                 TraceabilityContractDocumentationController traceabilityContractDocumentationController = new TraceabilityContractDocumentationController();
                 if(traceabilityContractDocumentationController.updateTraceabilityRecord(traceabilityContractDocumentationDTOToUpdate) != null){
-                    System.out.println("Trazabilidad actualizada.");
+                    logger.info("Trazabilidad actualizada correctamente.");
+                    Message.informationMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.TRACEABILITY_MODIFICATION_SAVED_OK);
                 }else{
-                    System.out.println("Problemas en la actualización de la trazabilidad.");
+                    Message.errorMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.TRACEABILITY_MODIFICATION_SAVED_NOT_OK);
+                    logger.info("Problemas en la actualización de la trazabilidad.");
 
                 }
-
             }
         }
+
+        contractDocumentationControlAction.getSaveButton().setDisable(true);
     }
 
     private void onExitButton(MouseEvent event){

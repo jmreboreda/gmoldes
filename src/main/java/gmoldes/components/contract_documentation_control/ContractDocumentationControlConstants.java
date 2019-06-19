@@ -14,8 +14,8 @@ public class ContractDocumentationControlConstants {
 
 
 
-    public static final String INCOMPLETE_DATA_ENTRY = "Entrada de datos incompleta.";
-    public static final String NIE_NIF_IS_NOT_VALID = "El NIE/NIF introducido no es válido.";
+    public static final String TRACEABILITY_MODIFICATION_SAVED_OK = "Las modificaciones de la trazabilidad se han guardado correctamente en la base de datos.";;
+    public static final String TRACEABILITY_MODIFICATION_SAVED_NOT_OK = "No se han podido guardar en la base de datos las modificaciones de la trazabilidad.";;
     public static final String NASS_IS_NOT_VALID = "El N.A.S.S. introducido no es válido.";
     public static final String PERSON_SAVED_OK = "Persona guardada correctamente en la base de datos.";
     public static final String PERSON_NOT_SAVED_OK = "ERROR!\n\nNo se ha podido guardar la persona en la base de datos.";

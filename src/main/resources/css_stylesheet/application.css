@@ -68,8 +68,7 @@
 
 #contract_documentation_control_table .blue-tableTextStyle{
     -fx-text-fill: #191970;
-/*    -fx-text-fill: #000FFF;*/
-    -fx-alignment: LEFT;
+    -fx-alignment: CENTER_LEFT;
 }
 
 #contract_documentation_control_table .green-tableDateStyle{
