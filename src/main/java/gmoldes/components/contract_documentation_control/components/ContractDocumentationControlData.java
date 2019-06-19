@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -33,6 +34,8 @@ public class ContractDocumentationControlData extends AnchorPane {
 
     private EventHandler<CellTableChangedEvent> cellTableChangedEventEventHandler;
 
+    @FXML
+    private TextField identificationContractNumberINEM;
     @FXML
     private TableView<ContractDocumentationControlDataDTO> contractDocumentControlTable;
     @FXML
@@ -70,12 +73,23 @@ public class ContractDocumentationControlData extends AnchorPane {
         receptionDate.setStyle(ContractDocumentationControlConstants.RED_COLOR);
         deliveryDate.setStyle(ContractDocumentationControlConstants.RED_COLOR);
 
+        identificationContractNumberINEM.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.equals(oldValue)){
+                cellsEdited = true;
+                cellTableChangedEventEventHandler.handle(new CellTableChangedEvent(cellsEdited));
+            }
+        });
+
         receptionDate.setOnEditCommit(this::updateTableDataObservableList);
         deliveryDate.setOnEditCommit(this::updateTableDataObservableList);
     }
 
     public TableView<ContractDocumentationControlDataDTO> getContractDocumentControlTable() {
         return contractDocumentControlTable;
+    }
+
+    public TextField getIdentificationContractNumberINEM() {
+        return identificationContractNumberINEM;
     }
 
     public TableColumn<ContractDocumentationControlDataDTO, String> getDocumentType() {

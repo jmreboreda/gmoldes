@@ -16,7 +16,9 @@ public class ContractDocumentationControlConstants {
 
     public static final String TRACEABILITY_MODIFICATION_SAVED_OK = "Las modificaciones de la trazabilidad se han guardado correctamente en la base de datos.";;
     public static final String TRACEABILITY_MODIFICATION_SAVED_NOT_OK = "No se han podido guardar en la base de datos las modificaciones de la trazabilidad.";;
-    public static final String NASS_IS_NOT_VALID = "El N.A.S.S. introducido no es válido.";
+    public static final String INEM_NUMBER_MODIFICATION_SAVED_OK = "El número de identificación del contrato en el Servicio de Empleo se ha registrado correctamente.";
+    public static final String INEM_NUMBER_MODIFICATION_NOT_SAVED_OK = "Problemas al guardar el número de identificación del contrato en el Servicio de Empleo.";
+
     public static final String PERSON_SAVED_OK = "Persona guardada correctamente en la base de datos.";
     public static final String PERSON_NOT_SAVED_OK = "ERROR!\n\nNo se ha podido guardar la persona en la base de datos.";
     public static final String PERSON_MODIFICATION_SAVED_OK = "Las modificaciones de la persona se han guardado correctamente en la base de datos.";
