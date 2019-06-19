@@ -66,12 +66,9 @@
     -fx-text-fill: #640000;
 }
 
-#contract_documentation_control_table .table-cell.not-editable {
-    -fx-background-color: grey;
-}
-
 #contract_documentation_control_table .blue-tableTextStyle{
-    -fx-text-fill: #000FFF;
+    -fx-text-fill: #191970;
+/*    -fx-text-fill: #000FFF;*/
     -fx-alignment: LEFT;
 }
 

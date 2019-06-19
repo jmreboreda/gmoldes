@@ -1,5 +1,6 @@
 package gmoldes.components.contract_documentation_control.controllers;
 
+import com.sun.javafx.scene.control.TableColumnSortTypeWrapper;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract_documentation_control.ContractDocumentationControlConstants;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlAction;
@@ -16,11 +17,13 @@ import gmoldes.domain.contract_documentation_control.ContractDocumentationContro
 import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.traceability_contract_documentation.TraceabilityService;
+import gmoldes.domain.traceability_contract_documentation.controllers.TraceabilityContractDocumentationController;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -72,6 +75,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         contractDocumentationControlData.setOnUpdateTableObservableList(this::onCellTableChange);
 
         contractDocumentationControlAction.setOnOkButton(this::onOkButton);
+        contractDocumentationControlAction.setOnSaveButton(this::onSaveButton);
         contractDocumentationControlAction.setOnExitButton(this::onExitButton);
     }
 
@@ -301,6 +305,38 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     private void onOkButton(MouseEvent event){
         if(contractDocumentationControlData.cellsEdited) {
             contractDocumentationControlAction.getSaveButton().setDisable(false);
+        }
+    }
+
+    private void onSaveButton(MouseEvent event){
+        ObservableList<ContractDocumentationControlDataDTO> contractDocumentationControlDataDTOOL = contractDocumentationControlData.getContractDocumentControlTable().getItems();
+
+        ContractNewVersionDTO contractNewVersionDTO = contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().getSelectedItem();
+
+        TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
+        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
+        for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
+            if(traceabilityContractDocumentationDTO.getContractNumber().equals(contractNewVersionDTO.getContractNumber()) &&
+            traceabilityContractDocumentationDTO.getVariationType().equals(contractNewVersionDTO.getVariationType()) &&
+                    traceabilityContractDocumentationDTO.getStartDate().equals(contractNewVersionDTO.getStartDate())){
+
+                TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTOToUpdate = TraceabilityContractDocumentationDTO.create()
+                        .withId(traceabilityContractDocumentationDTO.getId())
+                        .withContractNumber(traceabilityContractDocumentationDTO.getContractNumber())
+                        .withVariationType(traceabilityContractDocumentationDTO.getVariationType())
+                        .withStartDate(traceabilityContractDocumentationDTO.getStartDate())
+                        .withExpectedEndDate(traceabilityContractDocumentationDTO.getExpectedEndDate())
+                        .withIDCReceptionDate(contractDocumentationControlDataDTOOL.get(0).getReceptionDate())
+                        .withDateDeliveryContractDocumentationToClient(contractDocumentationControlDataDTOOL.get(1).getDeliveryDate())
+                        .withContractEndNoticeReceptionDate(contractDocumentationControlDataDTOOL.get(2).getReceptionDate())
+                        .build();
+
+                TraceabilityContractDocumentationController traceabilityContractDocumentationController = new TraceabilityContractDocumentationController();
+                if(traceabilityContractDocumentationController.updateTraceabilityRecord(traceabilityContractDocumentationDTOToUpdate) != null){
+                    System.out.println("Trazabilidad actualizada.");
+                }
+
+            }
         }
     }
 

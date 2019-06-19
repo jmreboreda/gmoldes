@@ -63,7 +63,7 @@ public class TraceabilityContractDocumentationDAO {
             session.getTransaction().commit();
         }
         catch (Exception e){
-            System.err.println("No se ha podido actualizar \"contractEndNoticeReceptionDate\" en la trazabilidad del contrato inicial en \"traceability_contract_documentation\": " + e.getMessage());
+            System.err.println("No se ha podido actualizar \"contractEndNoticeReceptionDate\" en la trazabilidad del contrato en \"traceability_contract_documentation\": " + e.getMessage());
         }
 
         return traceabilityContractDocumentationVO.getId();
