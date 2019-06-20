@@ -320,9 +320,9 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     }
 
     private void onOkButton(MouseEvent event){
-        if(contractDocumentationControlData.cellsEdited) {
+//        if(contractDocumentationControlData.cellsEdited) {
             contractDocumentationControlAction.getSaveButton().setDisable(false);
-        }
+//        }
     }
 
     private void onSaveButton(MouseEvent event){

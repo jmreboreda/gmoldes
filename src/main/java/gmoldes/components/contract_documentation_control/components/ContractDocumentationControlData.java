@@ -83,6 +83,7 @@ public class ContractDocumentationControlData extends AnchorPane {
 
                 previousIdentificationNumberINEMFromDatabase = previousIdentificationNumberINEMFromDatabase == null ? "" : previousIdentificationNumberINEMFromDatabase;
                 newValue = newValue == null ? "" : newValue;
+                oldValue = oldValue == null ? "" : oldValue;
 
                 if(newValue.equals("") || oldValue.equals("") || newValue.equals(previousIdentificationNumberINEMFromDatabase) ||
                 newValue.equals(oldValue)){
@@ -145,8 +146,8 @@ public class ContractDocumentationControlData extends AnchorPane {
             } else {
                 if (editedColumn == ContractDocumentationControlConstants.DELIVERY_TO_CLIENT_COLUMN) {
                     if (editedRow == ContractDocumentationControlConstants.DELIVERY_DOCUMENTS_ROW) {
-                            selectedItem.setDeliveryDate((LocalDate) cellEvent.getNewValue());
-                            cellsEdited = true;
+                        selectedItem.setDeliveryDate((LocalDate) cellEvent.getNewValue());
+                        cellsEdited = true;
                     }
                 }
             }
