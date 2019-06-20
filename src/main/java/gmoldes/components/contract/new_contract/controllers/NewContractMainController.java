@@ -513,6 +513,7 @@ public class NewContractMainController extends VBox {
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
                 .withStartDate(dateFrom)
                 .withExpectedEndDate(dateTo)
+                .withDateDeliveryContractDocumentationToClient(null)
                 .withContractEndNoticeReceptionDate(contractEndNoticeToSave)
                 .build();
 
