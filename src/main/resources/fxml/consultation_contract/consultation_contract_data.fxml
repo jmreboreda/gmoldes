@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="5.0" layoutY="10.0">
+         <children>
+            <HBox>
+               <children>
+                  <Label text="Número del contrato en el Servicio de Empleo">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="5.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="identificationContractNumberINEM" alignment="CENTER" minWidth="200.0" style="-fx-text-inner-color: #000FFF;">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" top="5.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <TitledPane collapsible="false" text="Contrato inicial y variaciones del contrato" textFill="#000fff">
+               <content>
+                  <TableView fx:id="contractDocumentControlTable">
+                    <columns>
+                        <TableColumn maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Tipo" />
+                      <TableColumn fx:id="documentType" maxWidth="-1.0" minWidth="500.0" prefWidth="-1.0" sortable="false" text="Variación" />
+                        <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" sortable="false" text="Fechas">
+                        <columns>
+                          <TableColumn fx:id="receptionDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" sortable="false" text="De inicio" />
+                          <TableColumn fx:id="deliveryDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" sortable="false" text="Fin previsto" />
+                              <TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Modificación" />
+                              <TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Finalización" />
+                        </columns>
+                        </TableColumn>
+                        <TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Jornada" />
+                    </columns>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </TableView>
+               </content>
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </VBox.margin>
+            </TitledPane>
+         </children>
+      </VBox>
+   </children>
+</fx:root>
