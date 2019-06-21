@@ -10,6 +10,7 @@ import gmoldes.components.contract_documentation_control.events.*;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
+import gmoldes.domain.contract.TypesContractVariationsService;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
@@ -306,6 +307,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         contractDocumentationControlData.previousIdentificationNumberINEMFromDatabase = identificationContractNumberINEM;
 
         TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
+        TypesContractVariationsService typesContractVariationsService = TypesContractVariationsService.TypesContractVariationServiceFactory.getInstance();
         List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
         for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
             if(traceabilityContractDocumentationDTO.getContractNumber().equals(event.getContractNumber()) &&
@@ -315,7 +317,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
                 if(traceabilityContractDocumentationDTO.getVariationType() <= ContractDocumentationControlConstants.LAST_CODE_FOR_INITIAL_CONTRACT ||
                         traceabilityContractDocumentationDTO.getVariationType().equals(ContractDocumentationControlConstants.CODE_FOR_CONTRACT_WEEKLY_WORK_HOURS_NORMAL_VARIATION) ||
                         traceabilityContractDocumentationDTO.getVariationType().equals(ContractDocumentationControlConstants.CODE_FOR_CONTRACT_WEEKLY_WORK_HOURS_LEGAL_VARIATION) ||
-                        (traceabilityContractDocumentationDTO.getVariationType() >= 900 && traceabilityContractDocumentationDTO.getVariationType() <= 950)) {
+                        (typesContractVariationsService.findTypeContractVariationByVariationId(traceabilityContractDocumentationDTO.getVariationType()).getExtinction())) {
                     contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
                 }
                 contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Envío de la documentación al cliente para firma", null, traceabilityContractDocumentationDTO.getDateDeliveryContractDocumentationToClient()));

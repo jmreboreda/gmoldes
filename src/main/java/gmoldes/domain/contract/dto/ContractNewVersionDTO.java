@@ -134,7 +134,7 @@ public class ContractNewVersionDTO {
     public String toString(){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
-        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(variationType);
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypeContractVariationByVariationId(variationType);
 
         StringBuilder string = new StringBuilder();
         string.append(typesContractVariationsDTO.getVariation_description() + " desde " + startDate.format(dateFormatter));

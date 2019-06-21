@@ -1,6 +1,5 @@
-package gmoldes.services;
+package gmoldes.domain.study;
 
-import gmoldes.domain.study.StudyController;
 import gmoldes.domain.study.dto.StudyDTO;
 
 public class StudyService {
