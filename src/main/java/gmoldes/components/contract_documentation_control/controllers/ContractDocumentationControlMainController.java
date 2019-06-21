@@ -324,14 +324,6 @@ public class ContractDocumentationControlMainController extends AnchorPane {
                         traceabilityContractDocumentationDTO.getVariationType().equals(ContractDocumentationControlConstants.CODE_FOR_CONTRACT_EXTENSION)) {
                     contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate(), null));
                 }
-//                List<ContractDocumentationControlDataDTO> itemList = new ArrayList<>();
-//
-//                itemList.add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
-//                itemList.add(new ContractDocumentationControlDataDTO("Envío de la documentación al cliente para firma", null, traceabilityContractDocumentationDTO.getDateDeliveryContractDocumentationToClient()));
-//                itemList.add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate(), null));
-//
-//                ObservableList<ContractDocumentationControlDataDTO> tableItemOL = FXCollections.observableArrayList(itemList);
-//                contractDocumentationControlData.refreshContractDocumentationControlTable(tableItemOL);
             }
         }
     }
