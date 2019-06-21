@@ -13,6 +13,8 @@ public class ContractDocumentationControlConstants {
     public static final Integer CONTRACT_END_NOTICE_ROW = 2;
     public static final Integer LAST_CODE_FOR_INITIAL_CONTRACT = 199;
     public static final Integer CODE_FOR_CONTRACT_EXTENSION = 220;
+    public static final Integer CODE_FOR_CONTRACT_WEEKLY_WORK_HOURS_NORMAL_VARIATION = 230;
+    public static final Integer CODE_FOR_CONTRACT_WEEKLY_WORK_HOURS_LEGAL_VARIATION = 231;
 
 
 
