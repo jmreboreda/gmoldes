@@ -11,6 +11,9 @@ public class ContractDocumentationControlConstants {
     public static final Integer IDC_ROW = 0;
     public static final Integer DELIVERY_DOCUMENTS_ROW = 1;
     public static final Integer CONTRACT_END_NOTICE_ROW = 2;
+    public static final Integer LAST_CODE_FOR_INITIAL_CONTRACT = 199;
+    public static final Integer CODE_FOR_CONTRACT_EXTENSION = 220;
+
 
 
 
