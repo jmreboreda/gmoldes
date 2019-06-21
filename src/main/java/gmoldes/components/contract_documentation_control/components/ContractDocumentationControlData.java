@@ -4,6 +4,7 @@ import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract_documentation_control.ContractDocumentationControlConstants;
 import gmoldes.components.contract_documentation_control.events.CellTableChangedEvent;
+import gmoldes.components.contract_documentation_control.events.ContractNumberINEMChangedEvent;
 import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
 import gmoldes.utilities.TableCell.ContractDocumentationControlDateCell;
 import gmoldes.utilities.TableCell.ContractDocumentationControlStringCell;
@@ -30,11 +31,13 @@ public class ContractDocumentationControlData extends AnchorPane {
     private Parent parent;
     private Stage stage;
 
-    public Boolean cellsEdited = false;
+    public Boolean contractNumberINEMCellEdited = false;
+    public Boolean traceabilityCellsEdited = false;
     public String previousIdentificationNumberINEMFromDatabase;
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
+    private EventHandler<ContractNumberINEMChangedEvent> contractNumberINEMChangedEventEventHandler;
     private EventHandler<CellTableChangedEvent> cellTableChangedEventEventHandler;
 
     @FXML
@@ -92,7 +95,7 @@ public class ContractDocumentationControlData extends AnchorPane {
                 }
 
 //                System.out.println("previous: " + previousIdentificationNumberINEMFromDatabase + " :: " + "new: " + newValue + " :: " + "old: " + oldValue);
-                cellTableChangedEventEventHandler.handle(new CellTableChangedEvent(true));
+                contractNumberINEMChangedEventEventHandler.handle(new ContractNumberINEMChangedEvent(true));
             }
         });
 
@@ -125,7 +128,8 @@ public class ContractDocumentationControlData extends AnchorPane {
     }
 
     private void updateTableDataObservableList(TableColumn.CellEditEvent cellEvent) {
-        cellsEdited = false;
+        traceabilityCellsEdited = false;
+        contractNumberINEMCellEdited = false;
 
         LocalDate initialValue = (LocalDate) cellEvent.getOldValue();
 
@@ -141,27 +145,30 @@ public class ContractDocumentationControlData extends AnchorPane {
             if (editedColumn == ContractDocumentationControlConstants.RECEPTION_FROM_MANAGER_COLUMN) {
                 if (editedRow == ContractDocumentationControlConstants.IDC_ROW || editedRow == ContractDocumentationControlConstants.CONTRACT_END_NOTICE_ROW) {
                     selectedItem.setReceptionDate((LocalDate) cellEvent.getNewValue());
-                    cellsEdited = true;
+                    traceabilityCellsEdited = true;
                 }
             } else {
                 if (editedColumn == ContractDocumentationControlConstants.DELIVERY_TO_CLIENT_COLUMN) {
                     if (editedRow == ContractDocumentationControlConstants.DELIVERY_DOCUMENTS_ROW) {
                         selectedItem.setDeliveryDate((LocalDate) cellEvent.getNewValue());
-                        cellsEdited = true;
+                        traceabilityCellsEdited = true;
                     }
                 }
             }
         }
 
         contractDocumentControlTable.refresh();
-        cellTableChangedEventEventHandler.handle(new CellTableChangedEvent(cellsEdited));
+        cellTableChangedEventEventHandler.handle(new CellTableChangedEvent(traceabilityCellsEdited));
     }
 
     public void setOnUpdateTableObservableList(EventHandler<CellTableChangedEvent> cellTableChangedEventEventHandler){
         this.cellTableChangedEventEventHandler = cellTableChangedEventEventHandler;
-
     }
 
+    public void setOnContractNumberINEMChanged(EventHandler<ContractNumberINEMChangedEvent> contractNumberINEMChangedEventEventHandler){
+        this.contractNumberINEMChangedEventEventHandler = contractNumberINEMChangedEventEventHandler;
+
+    }
 //    public String noDataInNonEditableCells() {
 //        Integer row = 0;
 //
