@@ -13,7 +13,7 @@ import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.study.StudyController;
 import gmoldes.domain.study.dto.StudyDTO;
-import gmoldes.services.StudyService;
+import gmoldes.domain.study.StudyService;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
 import javafx.collections.FXCollections;

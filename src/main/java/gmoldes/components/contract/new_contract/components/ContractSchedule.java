@@ -1,14 +1,15 @@
 package gmoldes.components.contract.new_contract.components;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
 import gmoldes.components.contract.ContractConstants;
+import gmoldes.components.contract.events.ChangeScheduleDurationEvent;
 import gmoldes.components.generic_components.TextInput;
 import gmoldes.domain.contract.dto.ContractScheduleDayDTO;
-import gmoldes.utilities.*;
+import gmoldes.utilities.Parameters;
 import gmoldes.utilities.TableCell.ContractScheduleDayDateCell;
 import gmoldes.utilities.TableCell.DurationCell;
 import gmoldes.utilities.TableCell.TimeCell;
+import gmoldes.utilities.Utilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;

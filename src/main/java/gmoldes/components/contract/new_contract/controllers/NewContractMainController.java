@@ -13,7 +13,7 @@ import gmoldes.components.contract.new_contract.components.*;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
 import gmoldes.components.person_management.controllers.PersonManagementMainController;
 import gmoldes.components.timerecord.TimeRecord;
-import gmoldes.components.timerecord.components.TimeRecordConstants;
+import gmoldes.components.timerecord.TimeRecordConstants;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
@@ -513,6 +513,7 @@ public class NewContractMainController extends VBox {
                 .withVariationType(ContractMainControllerConstants.ID_INITIAL_CONTRACT_TYPE_VARIATION)
                 .withStartDate(dateFrom)
                 .withExpectedEndDate(dateTo)
+                .withDateDeliveryContractDocumentationToClient(null)
                 .withContractEndNoticeReceptionDate(contractEndNoticeToSave)
                 .build();
 
@@ -584,7 +585,7 @@ public class NewContractMainController extends VBox {
                 .build();
 
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
-        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(variationTypeId);
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypeContractVariationByVariationId(variationTypeId);
 
         ContractFullDataDTO contractFullDataDTO = ContractFullDataDTO.create()
                 .withEmployer(contractParts.getSelectedEmployer())

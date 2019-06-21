@@ -30,6 +30,16 @@ public class ContractService {
 
     private static ContractController contractController = new ContractController();
 
+    public Integer updateInitialContract(ContractNewVersionDTO contractNewVersionDTO){
+
+        return contractController.updateInitialContract(contractNewVersionDTO);
+    }
+
+    public Integer updateContractVariation(ContractNewVersionDTO contractNewVersionDTO){
+
+        return contractController.updateContractVariation(contractNewVersionDTO);
+    }
+
     public List<InitialContractDTO> findAllInitialContract(){
 
         return contractController.findAllInitialContract();

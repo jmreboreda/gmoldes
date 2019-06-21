@@ -6,20 +6,21 @@ import gmoldes.components.contract_documentation_control.components.ContractDocu
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlData;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlHeader;
 import gmoldes.components.contract_documentation_control.components.ContractDocumentationControlSelector;
-import gmoldes.components.contract_documentation_control.events.ContractSelectedEvent;
-import gmoldes.components.contract_documentation_control.events.ContractVariationSelectedEvent;
-import gmoldes.components.contract_documentation_control.events.SelectClientEmployerEvent;
-import gmoldes.components.contract_documentation_control.events.SelectEmployerEmployeeEvent;
+import gmoldes.components.contract_documentation_control.events.*;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
+import gmoldes.domain.contract.TypesContractVariationsService;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
 import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.traceability_contract_documentation.TraceabilityService;
+import gmoldes.domain.traceability_contract_documentation.controllers.TraceabilityContractDocumentationController;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.utilities.Message;
+import gmoldes.utilities.Parameters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -43,6 +44,10 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     private Parent parent;
     private Stage stage;
 
+    private Boolean contractNumberINEMChanged = false;
+    private Boolean traceabilityCellsEdited = false;
+
+
     @FXML
     ContractDocumentationControlHeader contractDocumentationControlHeader;
     @FXML
@@ -63,20 +68,20 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         contractDocumentationControlSelector.setOnChangeContractsInForceOnly(this::onChangeContractsInForceOnly);
 
-
         contractDocumentationControlSelector.setOnClientSelectorChange(this::onClientSelectorChange);
         contractDocumentationControlSelector.setOnEmployeeSelectorChange(this::onEmployeeSelectorChange);
         contractDocumentationControlSelector.setOnContractSelectorChange(this::onContractSelectorChange);
         contractDocumentationControlSelector.setOnContractVariationSelectorChange(this::onContractVariationSelectorChange);
 
-
-
-
         contractDocumentationControlSelector.getClientSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
         contractDocumentationControlSelector.getEmployeeSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
         contractDocumentationControlSelector.getContractSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
 
+        contractDocumentationControlData.setOnContractNumberINEMChanged(this::onContractNumberINEMChanged);
+        contractDocumentationControlData.setOnUpdateTableObservableList(this::onCellTableOrINEMChange);
 
+        contractDocumentationControlAction.setOnOkButton(this::onOkButton);
+        contractDocumentationControlAction.setOnSaveButton(this::onSaveButton);
         contractDocumentationControlAction.setOnExitButton(this::onExitButton);
     }
 
@@ -94,6 +99,22 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         contractDocumentationControlSelector.getContractSelectedVariations().getItems().clear();
 
         contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
+    }
+
+    public Boolean getContractNumberINEMChanged() {
+        return contractNumberINEMChanged;
+    }
+
+    public void setContractNumberINEMChanged(Boolean contractNumberINEMChanged) {
+        this.contractNumberINEMChanged = contractNumberINEMChanged;
+    }
+
+    public Boolean getTraceabilityCellsEdited() {
+        return traceabilityCellsEdited;
+    }
+
+    public void setTraceabilityCellsEdited(Boolean traceabilityCellsEdited) {
+        this.traceabilityCellsEdited = traceabilityCellsEdited;
     }
 
     private void loadClientSelector(){
@@ -137,7 +158,6 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         ObservableList<ClientDTO> clientDTOOL = FXCollections.observableArrayList(sortedClientDTOList);
         contractDocumentationControlSelector.loadClientSelector(clientDTOOL);
-
     }
 
     private void onClientSelectorChange(SelectClientEmployerEvent employerEvent){
@@ -150,6 +170,9 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
         contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
 
+        contractDocumentationControlData.getIdentificationContractNumberINEM().clear();
+
+        contractDocumentationControlAction.getSaveButton().setDisable(true);
 
         ClientDTO clientDTO = employerEvent.getSelectedClientEmployer();
 
@@ -203,6 +226,10 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().clearSelection();
         contractDocumentationControlSelector.getContractSelectedVariations().getItems().clear();
 
+        contractDocumentationControlData.getIdentificationContractNumberINEM().clear();
+
+        contractDocumentationControlAction.getSaveButton().setDisable(true);
+
         ClientDTO clientDTO = employerEmployeeEvent.getSelectedClientEmployer();
         PersonDTO personDTO = employerEmployeeEvent.getNewEmployeeSelected();
         List<Integer> contractsList = new ArrayList<>();
@@ -242,6 +269,13 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     }
 
     private void onContractSelectorChange(ContractSelectedEvent event){
+        contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
+
+        contractDocumentationControlData.getIdentificationContractNumberINEM().clear();
+
+
+        contractDocumentationControlAction.getSaveButton().setDisable(true);
+
 
         ContractService contractService = ContractService.ContractServiceFactory.getInstance();
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractService.findHistoryOfContractByContractNumber(event.getSelectedContractNumber());
@@ -257,22 +291,144 @@ public class ContractDocumentationControlMainController extends AnchorPane {
         contractDocumentationControlSelector.getContractSelectedVariations().setItems(contractNewVersionDTOOL);
         if(contractNewVersionDTOOL.size() == 1){
             contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().select(0);
+            String identificationContractNumberINEM = contractDocumentationControlSelector.getContractSelectedVariations().getValue().getContractJsonData().getIdentificationContractNumberINEM();
+            contractDocumentationControlData.getIdentificationContractNumberINEM().setText(identificationContractNumberINEM);
         }
     }
 
     private void onContractVariationSelectorChange(ContractVariationSelectedEvent event){
+        contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
+
+        contractDocumentationControlAction.getOkButton().setDisable(true);
+        contractDocumentationControlAction.getSaveButton().setDisable(true);
+
+        String identificationContractNumberINEM = contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().getSelectedItem().getContractJsonData().getIdentificationContractNumberINEM();
+        contractDocumentationControlData.getIdentificationContractNumberINEM().setText(identificationContractNumberINEM);
+        contractDocumentationControlData.previousIdentificationNumberINEMFromDatabase = identificationContractNumberINEM;
+
         TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
+        TypesContractVariationsService typesContractVariationsService = TypesContractVariationsService.TypesContractVariationServiceFactory.getInstance();
         List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
         for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
             if(traceabilityContractDocumentationDTO.getContractNumber().equals(event.getContractNumber()) &&
                     traceabilityContractDocumentationDTO.getVariationType().equals(event.getVariationType()) &&
                             traceabilityContractDocumentationDTO.getStartDate().equals(event.getStartDate())){
-                contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
-                contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
+                // IDC variation data filter
+                if(typesContractVariationsService.findTypeContractVariationByVariationId(traceabilityContractDocumentationDTO.getVariationType()).getInitial() ||
+                        typesContractVariationsService.findTypeContractVariationByVariationId(traceabilityContractDocumentationDTO.getVariationType()).getWorkingDay() ||
+                        (typesContractVariationsService.findTypeContractVariationByVariationId(traceabilityContractDocumentationDTO.getVariationType()).getExtinction())) {
+                    contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
+                }
                 contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Envío de la documentación al cliente para firma", null, traceabilityContractDocumentationDTO.getDateDeliveryContractDocumentationToClient()));
-                contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate(), null));
+                // Contract end notice data filter
+                if(typesContractVariationsService.findTypeContractVariationByVariationId(traceabilityContractDocumentationDTO.getVariationType()).getInitial() ||
+                        typesContractVariationsService.findTypeContractVariationByVariationId(traceabilityContractDocumentationDTO.getVariationType()).getExtension()) {
+                    contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate(), null));
+                }
             }
         }
+    }
+
+    private void onContractNumberINEMChanged(ContractNumberINEMChangedEvent event){
+        if(event.getTextFieldContractNumberINEMChanged()){
+            contractDocumentationControlAction.getSaveButton().setDisable(true);
+            contractDocumentationControlAction.getOkButton().setDisable(false);
+            this.setContractNumberINEMChanged(true);
+        }else{
+            contractDocumentationControlAction.getSaveButton().setDisable(false);
+            contractDocumentationControlAction.getOkButton().setDisable(true);
+            this.setContractNumberINEMChanged(false);
+        }
+    }
+
+    private void onCellTableOrINEMChange(CellTableChangedEvent event){
+        if(event.getCellsEdited()){
+            contractDocumentationControlAction.getSaveButton().setDisable(true);
+            contractDocumentationControlAction.getOkButton().setDisable(false);
+            this.setTraceabilityCellsEdited(true);
+        }else{
+            contractDocumentationControlAction.getSaveButton().setDisable(false);
+            contractDocumentationControlAction.getOkButton().setDisable(true);
+            this.setTraceabilityCellsEdited(false);
+        }
+    }
+
+    private void onOkButton(MouseEvent event){
+            contractDocumentationControlAction.getSaveButton().setDisable(false);
+    }
+
+    private void onSaveButton(MouseEvent event){
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        Integer contractNumber;
+        Integer contractId;
+        ObservableList<ContractDocumentationControlDataDTO> contractDocumentationControlDataDTOOL = contractDocumentationControlData.getContractDocumentControlTable().getItems();
+
+        ContractNewVersionDTO contractNewVersionDTO = contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().getSelectedItem();
+
+        // Update identification contract number INEM
+        if(this.getContractNumberINEMChanged()) {
+            String identificationContractNumberINEM = contractDocumentationControlData.getIdentificationContractNumberINEM().getText();
+            contractNewVersionDTO.getContractJsonData().setIdentificationContractNumberINEM(identificationContractNumberINEM);
+            if (contractNewVersionDTO.getVariationType() < 200) {
+                contractNumber = contractService.updateInitialContract(contractNewVersionDTO);
+                if (contractNumber != null) {
+                    Message.informationMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.INEM_NUMBER_MODIFICATION_SAVED_OK);
+                    logger.info("El número de contrato INEM del contrato inicial se ha actualizado correctamente.");
+
+                } else {
+                    Message.errorMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.INEM_NUMBER_MODIFICATION_NOT_SAVED_OK);
+                    logger.info("Problemas al actualizar el número de contrato INEM del contrato inicial.");
+                }
+            } else {
+                contractId = contractService.updateContractVariation(contractNewVersionDTO);
+                if (contractId != null) {
+                    Message.informationMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.INEM_NUMBER_MODIFICATION_SAVED_OK);
+                    logger.info("El número de contrato INEM de la variación del contrato se ha actualizado correctamente.");
+
+                } else {
+                    Message.errorMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.INEM_NUMBER_MODIFICATION_NOT_SAVED_OK);
+                    logger.info("Problemas al actualizar el número de contrato INEM de la variación del contrato.");
+                }
+            }
+
+            setContractNumberINEMChanged(false);
+        }
+
+        // Update traceability contract data
+        if(getTraceabilityCellsEdited()) {
+            TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
+            List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
+            for (TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList) {
+                if (traceabilityContractDocumentationDTO.getContractNumber().equals(contractNewVersionDTO.getContractNumber()) &&
+                        traceabilityContractDocumentationDTO.getVariationType().equals(contractNewVersionDTO.getVariationType()) &&
+                        traceabilityContractDocumentationDTO.getStartDate().equals(contractNewVersionDTO.getStartDate())) {
+
+                    TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTOToUpdate = TraceabilityContractDocumentationDTO.create()
+                            .withId(traceabilityContractDocumentationDTO.getId())
+                            .withContractNumber(traceabilityContractDocumentationDTO.getContractNumber())
+                            .withVariationType(traceabilityContractDocumentationDTO.getVariationType())
+                            .withStartDate(traceabilityContractDocumentationDTO.getStartDate())
+                            .withExpectedEndDate(traceabilityContractDocumentationDTO.getExpectedEndDate())
+                            .withIDCReceptionDate(contractDocumentationControlDataDTOOL.get(0).getReceptionDate())
+                            .withDateDeliveryContractDocumentationToClient(contractDocumentationControlDataDTOOL.get(1).getDeliveryDate())
+                            .withContractEndNoticeReceptionDate(contractDocumentationControlDataDTOOL.get(2).getReceptionDate())
+                            .build();
+
+                    TraceabilityContractDocumentationController traceabilityContractDocumentationController = new TraceabilityContractDocumentationController();
+                    if (traceabilityContractDocumentationController.updateTraceabilityRecord(traceabilityContractDocumentationDTOToUpdate) != null) {
+                        logger.info("Trazabilidad actualizada correctamente.");
+                        Message.informationMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.TRACEABILITY_MODIFICATION_SAVED_OK);
+                    } else {
+                        Message.errorMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.TRACEABILITY_MODIFICATION_SAVED_NOT_OK);
+                        logger.info("Problemas en la actualización de la trazabilidad.");
+                    }
+                }
+            }
+
+            setTraceabilityCellsEdited(false);
+        }
+
+        contractDocumentationControlAction.getSaveButton().setDisable(true);
     }
 
     private void onExitButton(MouseEvent event){

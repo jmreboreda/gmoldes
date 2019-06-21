@@ -134,9 +134,17 @@ public class ContractNewVersionDTO {
     public String toString(){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
-        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(variationType);
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypeContractVariationByVariationId(variationType);
 
-        return typesContractVariationsDTO.getVariation_description() + " desde " + startDate.format(dateFormatter);
+        StringBuilder string = new StringBuilder();
+        string.append(typesContractVariationsDTO.getVariation_description() + " desde " + startDate.format(dateFormatter));
+        if(expectedEndDate != null){
+            string.append(" hasta " + expectedEndDate.format(dateFormatter));
+        }else{
+            string.append(" (Indefinido)");
+        }
+
+        return string.toString();
     }
 
     public Boolean isFullWorkday(){

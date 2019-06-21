@@ -5,9 +5,25 @@ public class ContractDocumentationControlConstants {
     public static final String BLUE_COLOR = "-fx-text-inner-color: #000FFF;";
     public static final String RED_COLOR = "-fx-text-inner-color: #640000;";
 
-    public static final String INCOMPLETE_DATA_ENTRY = "Entrada de datos incompleta.";
-    public static final String NIE_NIF_IS_NOT_VALID = "El NIE/NIF introducido no es válido.";
-    public static final String NASS_IS_NOT_VALID = "El N.A.S.S. introducido no es válido.";
+    public static final Integer RECEPTION_FROM_MANAGER_COLUMN = 1;
+    public static final Integer DELIVERY_TO_CLIENT_COLUMN = 2;
+
+    public static final Integer IDC_ROW = 0;
+    public static final Integer DELIVERY_DOCUMENTS_ROW = 1;
+    public static final Integer CONTRACT_END_NOTICE_ROW = 2;
+    public static final Integer LAST_CODE_FOR_INITIAL_CONTRACT = 199;
+    public static final Integer CODE_FOR_CONTRACT_EXTENSION = 220;
+    public static final Integer CODE_FOR_CONTRACT_WEEKLY_WORK_HOURS_NORMAL_VARIATION = 230;
+    public static final Integer CODE_FOR_CONTRACT_WEEKLY_WORK_HOURS_LEGAL_VARIATION = 231;
+
+
+
+
+    public static final String TRACEABILITY_MODIFICATION_SAVED_OK = "Las modificaciones de la trazabilidad se han guardado correctamente en la base de datos.";;
+    public static final String TRACEABILITY_MODIFICATION_SAVED_NOT_OK = "No se han podido guardar en la base de datos las modificaciones de la trazabilidad.";;
+    public static final String INEM_NUMBER_MODIFICATION_SAVED_OK = "El número de identificación del contrato del Servicio de Empleo se ha registrado correctamente.";
+    public static final String INEM_NUMBER_MODIFICATION_NOT_SAVED_OK = "Problemas al guardar el número de identificación del contrato del Servicio de Empleo.";
+
     public static final String PERSON_SAVED_OK = "Persona guardada correctamente en la base de datos.";
     public static final String PERSON_NOT_SAVED_OK = "ERROR!\n\nNo se ha podido guardar la persona en la base de datos.";
     public static final String PERSON_MODIFICATION_SAVED_OK = "Las modificaciones de la persona se han guardado correctamente en la base de datos.";

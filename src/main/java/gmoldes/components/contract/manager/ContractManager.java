@@ -202,7 +202,7 @@ public class ContractManager {
         for (InitialContractVO initialContractVO : initialContractVOList) {
             LocalDate notNullExpectedEndDate = initialContractVO.getExpectedEndDate() != null ? initialContractVO.getExpectedEndDate().toLocalDate() : null;
             LocalDate notNullModificationDate = initialContractVO.getModificationDate() != null ? initialContractVO.getModificationDate().toLocalDate() : null;
-            LocalDate notNullEndingDate = (initialContractVO.getEndingDate() != null) ? initialContractVO.getEndingDate().toLocalDate() : null;
+            LocalDate notNullEndingDate = initialContractVO.getEndingDate() != null ? initialContractVO.getEndingDate().toLocalDate() : null;
                 ContractNewVersionDTO contractNewVersionDTO = ContractNewVersionDTO.create()
                         .withId(initialContractVO.getId())
                         .withContractNumber(initialContractVO.getContractNumber())
