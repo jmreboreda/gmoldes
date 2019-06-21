@@ -320,7 +320,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
                     contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
                 }
                 contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Envío de la documentación al cliente para firma", null, traceabilityContractDocumentationDTO.getDateDeliveryContractDocumentationToClient()));
-                // Contract en notice data filter
+                // Contract end notice data filter
                 if(typesContractVariationsService.findTypeContractVariationByVariationId(traceabilityContractDocumentationDTO.getVariationType()).getInitial() ||
                         typesContractVariationsService.findTypeContractVariationByVariationId(traceabilityContractDocumentationDTO.getVariationType()).getExtension()) {
                     contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate(), null));
