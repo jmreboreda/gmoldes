@@ -12,7 +12,7 @@
 
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="5.0" layoutY="10.0">
+      <VBox layoutX="5.0" layoutY="10.0" prefHeight="478.0" prefWidth="1087.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox>
                <children>
@@ -30,19 +30,19 @@
             </HBox>
             <TitledPane collapsible="false" text="Contrato inicial y variaciones del contrato" textFill="#000fff">
                <content>
-                  <TableView fx:id="contractDocumentControlTable">
+                  <TableView fx:id="consultationContractDataTableDTO">
                     <columns>
-                        <TableColumn maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Tipo" />
-                      <TableColumn fx:id="documentType" maxWidth="-1.0" minWidth="500.0" prefWidth="-1.0" sortable="false" text="Variación" />
+                        <TableColumn fx:id="variationTypeCode" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Código" />
+                      <TableColumn fx:id="variationTypeDescription" maxWidth="-1.0" minWidth="500.0" prefWidth="-1.0" sortable="false" text="Descripción de la variación del contrato" />
                         <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" sortable="false" text="Fechas">
                         <columns>
-                          <TableColumn fx:id="receptionDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" sortable="false" text="De inicio" />
-                          <TableColumn fx:id="deliveryDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" sortable="false" text="Fin previsto" />
-                              <TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Modificación" />
-                              <TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Finalización" />
+                          <TableColumn fx:id="startDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" sortable="false" text="De inicio" />
+                          <TableColumn fx:id="expectedEndDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" sortable="false" text="Fin previsto" />
+                              <TableColumn fx:id="modificationDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Modificación" />
+                              <TableColumn fx:id="endingDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Finalización" />
                         </columns>
                         </TableColumn>
-                        <TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Jornada" />
+                        <TableColumn fx:id="weeklyWorkHours" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Jornada" />
                     </columns>
                      <opaqueInsets>
                         <Insets />

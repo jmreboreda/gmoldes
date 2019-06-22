@@ -86,6 +86,14 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <Button fx:id="consultationContractButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Consulta de contratos" textAlignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets left="23.5" top="10.0" />
+               </VBox.margin>
+            </Button>
             <Button fx:id="clientInvoiceCheckListButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Relación de control de recepción de facturas de clientes">
                <VBox.margin>
                   <Insets left="23.5" top="10.0" />

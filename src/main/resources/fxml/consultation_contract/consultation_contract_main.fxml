@@ -9,10 +9,10 @@
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
    <VBox>
       <children>
-           <ConsultationContractHeader fx:id="contractDocumentationControlHeader" />
-            <ConsultationContractSelector fx:id="contractDocumentationControlSelector" />
-           <ConsultationContractData fx:id="contractDocumentationControlData" />
-          <ConsultationContractAction fx:id="contractDocumentationControlAction" />
+           <ConsultationContractHeader fx:id="consultationContractHeader" />
+            <ConsultationContractSelector fx:id="consultationContractSelector" />
+           <ConsultationContractData fx:id="consultationContractData" />
+          <ConsultationContractAction fx:id="consultationContractAction" />
 
       </children>
    </VBox>

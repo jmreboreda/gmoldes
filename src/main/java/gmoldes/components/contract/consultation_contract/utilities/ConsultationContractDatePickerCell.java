@@ -1,10 +1,9 @@
-package gmoldes.utilities.TableCell;
+package gmoldes.components.contract.consultation_contract.utilities;
 
 import gmoldes.ApplicationConstants;
-import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
+import gmoldes.domain.consultation_contract.dto.ConsultationContractDataTableDTO;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.DatePicker;
@@ -13,12 +12,12 @@ import javafx.scene.control.TableCell;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class ContractDocumentationControlDatePickerCell<S, T> extends TableCell<ContractDocumentationControlDataDTO, LocalDate> {
+public class ConsultationContractDatePickerCell<S, T> extends TableCell<ConsultationContractDataTableDTO, LocalDate> {
 
     private DatePicker datePicker;
-    private ObservableList<ContractDocumentationControlDataDTO> date;
+    private ObservableList<ConsultationContractDataTableDTO> date;
 
-    public ContractDocumentationControlDatePickerCell(ObservableList<ContractDocumentationControlDataDTO> date) {
+    public ConsultationContractDatePickerCell(ObservableList<ConsultationContractDataTableDTO> date) {
 
         super();
 
@@ -89,8 +88,6 @@ public class ContractDocumentationControlDatePickerCell<S, T> extends TableCell<
         datePicker.setPromptText("jj/mm/aaaa");
         datePicker.setEditable(true);
 
-        datePicker.setOnAction(this::setDate);
-
         setAlignment(Pos.CENTER);
     }
 
@@ -105,11 +102,11 @@ public class ContractDocumentationControlDatePickerCell<S, T> extends TableCell<
         setContentDisplay(ContentDisplay.TEXT_ONLY);
     }
 
-    public ObservableList<ContractDocumentationControlDataDTO> getDatePickerData() {
+    public ObservableList<ConsultationContractDataTableDTO> getDatePickerData() {
         return date;
     }
 
-    public void setBirthdayData(ObservableList<ContractDocumentationControlDataDTO> date) {
+    public void setBirthdayData(ObservableList<ConsultationContractDataTableDTO> date) {
         this.date = date;
     }
 
@@ -119,19 +116,5 @@ public class ContractDocumentationControlDatePickerCell<S, T> extends TableCell<
 
     public void setDatePicker(DatePicker datePicker) {
         this.datePicker = datePicker;
-    }
-
-    private void setDate(Event event){
-        LocalDate date = datePicker.getValue();
-        int index = getIndex();
-
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
-        setText(dateFormatter.format(date));
-        commitEdit(date);
-
-        if (null != getDatePickerData()) {
-            getDatePickerData().get(index).setReceptionDate(date);
-            getDatePickerData().get(index).setDeliveryDate(date);
-        }
     }
 }

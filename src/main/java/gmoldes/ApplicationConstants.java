@@ -20,6 +20,8 @@ public class ApplicationConstants {
     public static final String DEFAULT_DATE_FORMAT = "dd-MM-yyyy";
     public static final String DEFAULT_TIME_FORMAT = "HH:mm";
 
+    public static final String ENGLISH_DATE_FORMAT = "yyyyMMdd";
+
     /** Various */
     public static final String PDF_EXTENSION = ".pdf";
 }

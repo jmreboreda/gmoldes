@@ -1,4 +1,4 @@
-package gmoldes.utilities.TableCell;
+package gmoldes.components.contract_documentation_control.utilities;
 
 import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
 import javafx.scene.control.ContentDisplay;

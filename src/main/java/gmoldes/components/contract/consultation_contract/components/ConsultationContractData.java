@@ -2,13 +2,11 @@ package gmoldes.components.contract.consultation_contract.components;
 
 import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract_documentation_control.ContractDocumentationControlConstants;
+import gmoldes.components.contract.consultation_contract.utilities.ConsultationContractDayDateCell;
+import gmoldes.components.contract.consultation_contract.utilities.ConsultationContractDurationCell;
+import gmoldes.components.contract.consultation_contract.utilities.ConsultationContractStringCell;
 import gmoldes.components.contract_documentation_control.events.CellTableChangedEvent;
-import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
-import gmoldes.utilities.TableCell.ContractDocumentationControlDateCell;
-import gmoldes.utilities.TableCell.ContractDocumentationControlStringCell;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import gmoldes.domain.consultation_contract.dto.ConsultationContractDataTableDTO;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -40,14 +39,21 @@ public class ConsultationContractData extends AnchorPane {
     @FXML
     private TextField identificationContractNumberINEM;
     @FXML
-    private TableView<ContractDocumentationControlDataDTO> contractDocumentControlTable;
+    private TableView<ConsultationContractDataTableDTO> consultationContractDataTableDTO;
     @FXML
-    private TableColumn<ContractDocumentationControlDataDTO, String> documentType;
+    private TableColumn<ConsultationContractDataTableDTO, Integer> variationTypeCode;
     @FXML
-    private TableColumn<ContractDocumentationControlDataDTO, LocalDate> receptionDate;
+    private TableColumn<ConsultationContractDataTableDTO, String> variationTypeDescription;
     @FXML
-    private TableColumn<ContractDocumentationControlDataDTO, LocalDate> deliveryDate;
-
+    private TableColumn<ConsultationContractDataTableDTO, LocalDate> startDate;
+    @FXML
+    private TableColumn<ConsultationContractDataTableDTO, LocalDate> expectedEndDate;
+    @FXML
+    private TableColumn<ConsultationContractDataTableDTO, LocalDate> modificationDate;
+    @FXML
+    private TableColumn<ConsultationContractDataTableDTO, LocalDate> endingDate;
+    @FXML
+    private TableColumn<ConsultationContractDataTableDTO, Duration> weeklyWorkHours;
 
     public ConsultationContractData() {
         this.parent = ViewLoader.load(this, CONSULTATION_CONTRACT_DATA_FXML);
@@ -56,132 +62,75 @@ public class ConsultationContractData extends AnchorPane {
     @FXML
     public void initialize() {
 
-        contractDocumentControlTable.setId("contract_documentation_control_table");
+        consultationContractDataTableDTO.setId("contract_documentation_control_table");
 
-        contractDocumentControlTable.setEditable(true);
-        documentType.setEditable(false);
+        variationTypeCode.getStyleClass().add("blue-tableTextStyle");
+        variationTypeDescription.getStyleClass().add("blue-tableTextStyle");
 
-        documentType.getStyleClass().add("blue-tableTextStyle");
-        receptionDate.getStyleClass().add("green-tableDateStyle");
-        deliveryDate.getStyleClass().add("green-tableDateStyle");
+        startDate.getStyleClass().add("green-tableDateStyle");
+        expectedEndDate.getStyleClass().add("green-tableDateStyle");
+        modificationDate.getStyleClass().add("green-tableDateStyle");
+        endingDate.getStyleClass().add("green-tableDateStyle");
 
-        documentType.setCellValueFactory(new PropertyValueFactory<>("documentType"));
-        receptionDate.setCellValueFactory(new PropertyValueFactory<>("receptionDate"));
-        deliveryDate.setCellValueFactory(new PropertyValueFactory<>("deliveryDate"));
 
-        documentType.setCellFactory(param -> new ContractDocumentationControlStringCell());
-        receptionDate.setCellFactory(param -> new ContractDocumentationControlDateCell());
-        deliveryDate.setCellFactory(param -> new ContractDocumentationControlDateCell());
+        variationTypeCode.setCellValueFactory(new PropertyValueFactory<>("variationTypeCode"));
+        variationTypeDescription.setCellValueFactory(new PropertyValueFactory<>("variationTypeDescription"));
+        startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        startDate.setCellValueFactory(new PropertyValueFactory<>("expectedEndDate"));
+        startDate.setCellValueFactory(new PropertyValueFactory<>("modificationDate"));
+        startDate.setCellValueFactory(new PropertyValueFactory<>("endingDate"));
+        weeklyWorkHours.setCellValueFactory((new PropertyValueFactory<>("weeklyWorkHours")));
 
-        receptionDate.setStyle(ContractDocumentationControlConstants.RED_COLOR);
-        deliveryDate.setStyle(ContractDocumentationControlConstants.RED_COLOR);
+//        variationTypeCode.setCellFactory(param -> new ConsultationContractStringCell());
+        variationTypeDescription.setCellFactory(param -> new ConsultationContractStringCell());
+        startDate.setCellFactory(param -> new ConsultationContractDayDateCell());
+        expectedEndDate.setCellFactory(param -> new ConsultationContractDayDateCell());
+        modificationDate.setCellFactory(param -> new ConsultationContractDayDateCell());
+        endingDate.setCellFactory(param -> new ConsultationContractDayDateCell());
+        weeklyWorkHours.setCellFactory(param -> new ConsultationContractDurationCell());
 
-        identificationContractNumberINEM.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable,
-                                String oldValue, String newValue) {
+//        receptionDate.setStyle(ContractDocumentationControlConstants.RED_COLOR);
+//        deliveryDate.setStyle(ContractDocumentationControlConstants.RED_COLOR);
 
-                previousIdentificationNumberINEMFromDatabase = previousIdentificationNumberINEMFromDatabase == null ? "" : previousIdentificationNumberINEMFromDatabase;
-                newValue = newValue == null ? "" : newValue;
-                oldValue = oldValue == null ? "" : oldValue;
-
-                if(newValue.equals("") || oldValue.equals("") || newValue.equals(previousIdentificationNumberINEMFromDatabase) ||
-                newValue.equals(oldValue)){
-
-                    return;
-                }
-
-//                System.out.println("previous: " + previousIdentificationNumberINEMFromDatabase + " :: " + "new: " + newValue + " :: " + "old: " + oldValue);
-                cellTableChangedEventEventHandler.handle(new CellTableChangedEvent(true));
-            }
-        });
-
-        receptionDate.setOnEditCommit(this::updateTableDataObservableList);
-        deliveryDate.setOnEditCommit(this::updateTableDataObservableList);
     }
 
-    public TableView<ContractDocumentationControlDataDTO> getContractDocumentControlTable() {
-        return contractDocumentControlTable;
+    public TableView<ConsultationContractDataTableDTO> getConsultationContractDataTableDTOTable() {
+        return consultationContractDataTableDTO;
     }
 
     public TextField getIdentificationContractNumberINEM() {
         return identificationContractNumberINEM;
     }
 
-    public TableColumn<ContractDocumentationControlDataDTO, String> getDocumentType() {
-        return documentType;
+    public TableColumn<ConsultationContractDataTableDTO, Integer> getVariationTypeCode() {
+        return variationTypeCode;
     }
 
-    public TableColumn<ContractDocumentationControlDataDTO, LocalDate> getReceptionDate() {
-        return receptionDate;
+    public TableColumn<ConsultationContractDataTableDTO, String> getVariationTypeDescription() {
+        return variationTypeDescription;
     }
 
-    public TableColumn<ContractDocumentationControlDataDTO, LocalDate> getDeliveryDate() {
-        return deliveryDate;
+    public TableColumn<ConsultationContractDataTableDTO, LocalDate> getStartDate() {
+        return startDate;
     }
 
-    public void refreshContractDocumentationControlTable(ObservableList<ContractDocumentationControlDataDTO> tableItemOL){
-        contractDocumentControlTable.setItems(tableItemOL);
+    public TableColumn<ConsultationContractDataTableDTO, LocalDate> getExpectedEndDate() {
+        return expectedEndDate;
     }
 
-    private void updateTableDataObservableList(TableColumn.CellEditEvent cellEvent) {
-        cellsEdited = false;
-
-        LocalDate initialValue = (LocalDate) cellEvent.getOldValue();
-
-        int editedRow = cellEvent.getTablePosition().getRow();
-        int editedColumn = cellEvent.getTablePosition().getColumn();
-
-        if ((initialValue != null && cellEvent.getNewValue() != null &&
-                initialValue.compareTo((LocalDate) cellEvent.getNewValue()) != 0) ||
-                initialValue != null || cellEvent.getNewValue() != null) {
-
-            ContractDocumentationControlDataDTO selectedItem = contractDocumentControlTable.getItems().get(editedRow);
-
-            if (editedColumn == ContractDocumentationControlConstants.RECEPTION_FROM_MANAGER_COLUMN) {
-                if (editedRow == ContractDocumentationControlConstants.IDC_ROW || editedRow == ContractDocumentationControlConstants.CONTRACT_END_NOTICE_ROW) {
-                    selectedItem.setReceptionDate((LocalDate) cellEvent.getNewValue());
-                    cellsEdited = true;
-                }
-            } else {
-                if (editedColumn == ContractDocumentationControlConstants.DELIVERY_TO_CLIENT_COLUMN) {
-                    if (editedRow == ContractDocumentationControlConstants.DELIVERY_DOCUMENTS_ROW) {
-                        selectedItem.setDeliveryDate((LocalDate) cellEvent.getNewValue());
-                        cellsEdited = true;
-                    }
-                }
-            }
-        }
-
-        contractDocumentControlTable.refresh();
-        cellTableChangedEventEventHandler.handle(new CellTableChangedEvent(cellsEdited));
+    public TableColumn<ConsultationContractDataTableDTO, LocalDate> getModificationDate() {
+        return modificationDate;
     }
 
-    public void setOnUpdateTableObservableList(EventHandler<CellTableChangedEvent> cellTableChangedEventEventHandler){
-        this.cellTableChangedEventEventHandler = cellTableChangedEventEventHandler;
-
+    public TableColumn<ConsultationContractDataTableDTO, LocalDate> getEndingDate() {
+        return endingDate;
     }
 
-//    public String noDataInNonEditableCells() {
-//        Integer row = 0;
-//
-//        if(deliveryDate.getCellData(row) != null) {
-//
-//            return "Error en \"Informe de datos para la cotización (IDC)\". Fecha de entrega al cliente contiene datos: " + deliveryDate.getCellData(row).format(dateFormatter);
-//        }
-//
-//        row++;
-//        if(receptionDate.getCellData(row) != null) {
-//
-//            return "Error en \"Envío de la documentación al cliente para firma\". Fecha de recepción del gestor contiene datos: " + receptionDate.getCellData(row).format(dateFormatter);
-//        }
-//
-//        row++;
-//        if(deliveryDate.getCellData(row) != null) {
-//
-//            return "Error en \"Carta de preaviso de fin de contrato\". Fecha de entrega al cliente contiene datos: " + deliveryDate.getCellData(row).format(dateFormatter);
-//        }
-//
-//        return null;
-//        }
+    public TableColumn<ConsultationContractDataTableDTO, Duration> getWeeklyWorkHours() {
+        return weeklyWorkHours;
+    }
+
+    public void refreshContractDocumentationControlTable(ObservableList<ConsultationContractDataTableDTO> tableItemOL){
+        consultationContractDataTableDTO.setItems(tableItemOL);
+    }
 }

@@ -6,8 +6,8 @@ import gmoldes.components.contract_documentation_control.ContractDocumentationCo
 import gmoldes.components.contract_documentation_control.events.CellTableChangedEvent;
 import gmoldes.components.contract_documentation_control.events.ContractNumberINEMChangedEvent;
 import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
-import gmoldes.utilities.TableCell.ContractDocumentationControlDateCell;
-import gmoldes.utilities.TableCell.ContractDocumentationControlStringCell;
+import gmoldes.components.contract_documentation_control.utilities.ContractDocumentationControlDateCell;
+import gmoldes.components.contract_documentation_control.utilities.ContractDocumentationControlStringCell;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -111,17 +111,17 @@ public class ContractDocumentationControlData extends AnchorPane {
         return identificationContractNumberINEM;
     }
 
-    public TableColumn<ContractDocumentationControlDataDTO, String> getDocumentType() {
-        return documentType;
-    }
-
-    public TableColumn<ContractDocumentationControlDataDTO, LocalDate> getReceptionDate() {
-        return receptionDate;
-    }
-
-    public TableColumn<ContractDocumentationControlDataDTO, LocalDate> getDeliveryDate() {
-        return deliveryDate;
-    }
+//    public TableColumn<ContractDocumentationControlDataDTO, String> getDocumentType() {
+//        return documentType;
+//    }
+//
+//    public TableColumn<ContractDocumentationControlDataDTO, LocalDate> getReceptionDate() {
+//        return receptionDate;
+//    }
+//
+//    public TableColumn<ContractDocumentationControlDataDTO, LocalDate> getDeliveryDate() {
+//        return deliveryDate;
+//    }
 
     public void refreshContractDocumentationControlTable(ObservableList<ContractDocumentationControlDataDTO> tableItemOL){
         contractDocumentControlTable.setItems(tableItemOL);

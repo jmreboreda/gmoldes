@@ -1,4 +1,4 @@
-package gmoldes.utilities.TableCell;
+package gmoldes.components.contract_documentation_control.utilities;
 
 import gmoldes.ApplicationConstants;
 import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;
@@ -12,11 +12,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
-public class ContractDocumentationControlDateCell extends TableCell<ContractDocumentationControlDataDTO, LocalDate> {
+public class ContractDocumentationControlDayDateCell extends TableCell<ContractDocumentationControlDataDTO, LocalDate> {
 
     private TextField textField;
 
-    public ContractDocumentationControlDateCell() {}
+    public ContractDocumentationControlDayDateCell() {}
 
     @Override
     public void startEdit() {
@@ -73,10 +73,6 @@ public class ContractDocumentationControlDateCell extends TableCell<ContractDocu
         textField.setMinWidth(this.getWidth() - this.getGraphicTextGap()*2);
         textField.setOnKeyPressed(t -> {
             if (t.getCode() == KeyCode.ENTER) {
-                if(textField.getText() == null){
-                    cancelEdit();
-                    return;
-                }
                 if(datePattern.matcher(textField.getText()).matches()){
                     String dateConverted = textField.getText().replace("/","-");
                     try {
