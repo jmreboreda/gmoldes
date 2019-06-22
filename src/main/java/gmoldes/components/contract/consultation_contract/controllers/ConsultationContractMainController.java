@@ -1,6 +1,5 @@
 package gmoldes.components.contract.consultation_contract.controllers;
 
-import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.consultation_contract.components.ConsultationContractAction;
 import gmoldes.components.contract.consultation_contract.components.ConsultationContractData;
@@ -33,7 +32,6 @@ import javafx.stage.Stage;
 
 import java.text.Collator;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -77,22 +75,7 @@ public class ConsultationContractMainController extends AnchorPane {
 //
 //        consultationContractData.setOnUpdateTableObservableList(this::onCellTableOrINEMChange);
 
-        consultationContractAction.setOnOkButton(this::onOkButton);
-        consultationContractAction.setOnSaveButton(this::onSaveButton);
         consultationContractAction.setOnExitButton(this::onExitButton);
-    }
-
-    private void onChangeContractsInForceOnly(MouseEvent event){
-
-//        loadClientSelector();
-//
-//        contractDocumentationControlSelector.getEmployeeSelector().getSelectionModel().clearSelection();
-//        contractDocumentationControlSelector.getEmployeeSelector().getItems().clear();
-//
-//        contractDocumentationControlSelector.getContractSelector().getSelectionModel().clearSelection();
-//        contractDocumentationControlSelector.getContractSelector().getItems().clear();
-//
-//        contractDocumentationControlData.getContractDocumentControlTable().getItems().clear();
     }
 
     private void loadClientSelector(){
@@ -115,17 +98,6 @@ public class ConsultationContractMainController extends AnchorPane {
                     }
                 }
             }
-//        }else{
-//            // Clients with contracts (in force or not) with traceability
-//            List<ClientDTO> clientDTOWithContracts = clientService.findAllActiveClientWithContractHistory();
-//            for(ClientDTO clientWithContractTraceabilityDTO : clientWithContractWithTraceability) {
-//                for (ClientDTO clientDTOWithContractInForceAtDate : clientDTOWithContracts) {
-//                    if(clientWithContractTraceabilityDTO.getClientId().equals(clientDTOWithContractInForceAtDate.getClientId())){
-//                        clientDTOToClientSelectorList.add(clientDTOWithContractInForceAtDate);
-//                    }
-//                }
-//            }
-//        }
 
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
         primaryCollator.setStrength(Collator.PRIMARY);
@@ -136,7 +108,6 @@ public class ConsultationContractMainController extends AnchorPane {
 
         ObservableList<ClientDTO> clientDTOOL = FXCollections.observableArrayList(sortedClientDTOList);
         consultationContractSelector.loadClientSelector(clientDTOOL);
-
     }
 
     private void onClientSelectorChange(SelectClientEmployerEvent employerEvent){
@@ -243,10 +214,6 @@ public class ConsultationContractMainController extends AnchorPane {
 
     private void onContractSelectorChange(ContractSelectedEvent event) {
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_TIME_FORMAT);
-
-
         consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
         consultationContractData.getIdentificationContractNumberINEM().clear();
 
@@ -271,16 +238,6 @@ public class ConsultationContractMainController extends AnchorPane {
                     .build();
 
             consultationContractDataTableDTOList.add(consultationContractDataTableDTO);
-
-            System.out.println(typesContractVariationsDTO.getVariation_description());
-//            consultationContractData.getConsultationContractDataTableDTOTable().getItems()
-//                    .add(new ConsultationContractDataTableDTO(typesContractVariationsDTO.getId_variation(),
-//                            typesContractVariationsDTO.getVariation_description(),
-//                            contractNewVersionDTO.getStartDate(),
-//                            contractNewVersionDTO.getExpectedEndDate(),
-//                            contractNewVersionDTO.getModificationDate(),
-//                            contractNewVersionDTO.getEndingDate(),
-//                            contractNewVersionDTO.getContractJsonData().getWeeklyWorkHours()));
         }
 
         List<ConsultationContractDataTableDTO> sortedConsultationContractDataTableDTOList = consultationContractDataTableDTOList
@@ -290,129 +247,6 @@ public class ConsultationContractMainController extends AnchorPane {
         ObservableList<ConsultationContractDataTableDTO> sortedConsultationContractDataTableDTOOL = FXCollections.observableArrayList(sortedConsultationContractDataTableDTOList);
         consultationContractData.refreshContractDocumentationControlTable(sortedConsultationContractDataTableDTOOL);
         consultationContractData.getConsultationContractDataTableDTOTable().getSelectionModel().select(0);
-    }
-
-
-//        consultationContractData.getConsultationContractDataTableDTOTable().setItems(sortedConsultationContractDataTableDTOOL);
-//        if(contractNewVersionDTOOL.size() == 1){
-//            contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().select(0);
-//            String identificationContractNumberINEM = contractDocumentationControlSelector.getContractSelectedVariations().getValue().getContractJsonData().getIdentificationContractNumberINEM();
-//            contractDocumentationControlData.getIdentificationContractNumberINEM().setText(identificationContractNumberINEM);
-//        }
-
-
-//    private void onContractVariationSelectorChange(ContractVariationSelectedEvent event){
-//        consultationContractData.getContractDocumentControlTable().getItems().clear();
-//
-//        consultationContractAction.getOkButton().setDisable(true);
-//        consultationContractAction.getSaveButton().setDisable(true);
-//
-////        String identificationContractNumberINEM = contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().getSelectedItem().getContractJsonData().getIdentificationContractNumberINEM();
-////        contractDocumentationControlData.getIdentificationContractNumberINEM().setText(identificationContractNumberINEM);
-////        contractDocumentationControlData.previousIdentificationNumberINEMFromDatabase = identificationContractNumberINEM;
-//
-//        TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
-//        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
-//        for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
-//            if(traceabilityContractDocumentationDTO.getContractNumber().equals(event.getContractNumber()) &&
-//                    traceabilityContractDocumentationDTO.getVariationType().equals(event.getVariationType()) &&
-//                            traceabilityContractDocumentationDTO.getStartDate().equals(event.getStartDate())){
-//                consultationContractData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
-//                consultationContractData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Envío de la documentación al cliente para firma", null, traceabilityContractDocumentationDTO.getDateDeliveryContractDocumentationToClient()));
-//                consultationContractData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate(), null));
-//
-////                List<ContractDocumentationControlDataDTO> itemList = new ArrayList<>();
-////
-////                itemList.add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
-////                itemList.add(new ContractDocumentationControlDataDTO("Envío de la documentación al cliente para firma", null, traceabilityContractDocumentationDTO.getDateDeliveryContractDocumentationToClient()));
-////                itemList.add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate(), null));
-////
-////                ObservableList<ContractDocumentationControlDataDTO> tableItemOL = FXCollections.observableArrayList(itemList);
-////                contractDocumentationControlData.refreshContractDocumentationControlTable(tableItemOL);
-//            }
-//        }
-//    }
-
-//    private void onCellTableOrINEMChange(CellTableChangedEvent event){
-//        if(event.getCellsEdited()){
-//            contractDocumentationControlAction.getSaveButton().setDisable(true);
-//            contractDocumentationControlAction.getOkButton().setDisable(false);
-//        }else{
-//            contractDocumentationControlAction.getSaveButton().setDisable(false);
-//            contractDocumentationControlAction.getOkButton().setDisable(true);
-//        }
-//    }
-
-    private void onOkButton(MouseEvent event){
-//        if(contractDocumentationControlData.cellsEdited) {
-            consultationContractAction.getSaveButton().setDisable(false);
-//        }
-    }
-
-    private void onSaveButton(MouseEvent event){
-//        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
-//        Integer contractNumber;
-//        Integer contractId;
-//        ObservableList<ContractDocumentationControlDataDTO> contractDocumentationControlDataDTOOL = contractDocumentationControlData.getContractDocumentControlTable().getItems();
-//
-////        ContractNewVersionDTO contractNewVersionDTO = contractDocumentationControlSelector.getContractSelectedVariations().getSelectionModel().getSelectedItem();
-//
-//        // Update identification contract number INEM
-//        String identificationContractNumberINEM = contractDocumentationControlData.getIdentificationContractNumberINEM().getText();
-//        contractNewVersionDTO.getContractJsonData().setIdentificationContractNumberINEM(identificationContractNumberINEM);
-//        if(contractNewVersionDTO.getVariationType() < 200){
-//            contractNumber = contractService.updateInitialContract(contractNewVersionDTO);
-//            if(contractNumber != null){
-//                Message.informationMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.INEM_NUMBER_MODIFICATION_SAVED_OK);
-//                logger.info("El número de contrato INEM del contrato inicial se ha actualizado correctamente.");
-//
-//            }else{
-//                Message.errorMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.INEM_NUMBER_MODIFICATION_NOT_SAVED_OK);
-//                logger.info("Problemas al actualizar el número de contrato INEM del contrato inicial.");
-//            }
-//        }else{
-//            contractId = contractService.updateContractVariation(contractNewVersionDTO);
-//            if(contractId != null){
-//                Message.informationMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.INEM_NUMBER_MODIFICATION_SAVED_OK);
-//                logger.info("El número de contrato INEM de la variación del contrato se ha actualizado correctamente.");
-//
-//            }else{
-//                Message.errorMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.INEM_NUMBER_MODIFICATION_NOT_SAVED_OK);
-//                logger.info("Problemas al actualizar el número de contrato INEM de la variación del contrato.");
-//            }
-//        }
-
-        // Update traceability contract data
-//        TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
-//        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
-//        for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
-//            if(traceabilityContractDocumentationDTO.getContractNumber().equals(contractNewVersionDTO.getContractNumber()) &&
-//            traceabilityContractDocumentationDTO.getVariationType().equals(contractNewVersionDTO.getVariationType()) &&
-//                    traceabilityContractDocumentationDTO.getStartDate().equals(contractNewVersionDTO.getStartDate())){
-//
-//                TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTOToUpdate = TraceabilityContractDocumentationDTO.create()
-//                        .withId(traceabilityContractDocumentationDTO.getId())
-//                        .withContractNumber(traceabilityContractDocumentationDTO.getContractNumber())
-//                        .withVariationType(traceabilityContractDocumentationDTO.getVariationType())
-//                        .withStartDate(traceabilityContractDocumentationDTO.getStartDate())
-//                        .withExpectedEndDate(traceabilityContractDocumentationDTO.getExpectedEndDate())
-//                        .withIDCReceptionDate(contractDocumentationControlDataDTOOL.get(0).getReceptionDate())
-//                        .withDateDeliveryContractDocumentationToClient(contractDocumentationControlDataDTOOL.get(1).getDeliveryDate())
-//                        .withContractEndNoticeReceptionDate(contractDocumentationControlDataDTOOL.get(2).getReceptionDate())
-//                        .build();
-//
-//                TraceabilityContractDocumentationController traceabilityContractDocumentationController = new TraceabilityContractDocumentationController();
-//                if(traceabilityContractDocumentationController.updateTraceabilityRecord(traceabilityContractDocumentationDTOToUpdate) != null){
-//                    logger.info("Trazabilidad actualizada correctamente.");
-//                    Message.informationMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.TRACEABILITY_MODIFICATION_SAVED_OK);
-//                }else{
-//                    Message.errorMessage((Stage) contractDocumentationControlHeader.getScene().getWindow(), Parameters.SYSTEM_INFORMATION_TEXT, ContractDocumentationControlConstants.TRACEABILITY_MODIFICATION_SAVED_NOT_OK);
-//                    logger.info("Problemas en la actualización de la trazabilidad.");
-//                }
-//            }
-//        }
-
-        consultationContractAction.getSaveButton().setDisable(true);
     }
 
     private void onExitButton(MouseEvent event){

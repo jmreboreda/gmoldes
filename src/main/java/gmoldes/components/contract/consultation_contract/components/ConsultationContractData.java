@@ -4,7 +4,6 @@ import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.consultation_contract.utilities.ConsultationContractDayDateCell;
 import gmoldes.components.contract.consultation_contract.utilities.ConsultationContractDurationCell;
-import gmoldes.components.contract.consultation_contract.utilities.ConsultationContractStringCell;
 import gmoldes.components.contract_documentation_control.events.CellTableChangedEvent;
 import gmoldes.domain.consultation_contract.dto.ConsultationContractDataTableDTO;
 import javafx.collections.ObservableList;
@@ -62,7 +61,7 @@ public class ConsultationContractData extends AnchorPane {
     @FXML
     public void initialize() {
 
-        consultationContractDataTableDTO.setId("contract_documentation_control_table");
+        consultationContractDataTableDTO.setId("consultation_contract_table");
 
         variationTypeCode.getStyleClass().add("blue-tableTextStyle");
         variationTypeDescription.getStyleClass().add("blue-tableTextStyle");
@@ -71,18 +70,20 @@ public class ConsultationContractData extends AnchorPane {
         expectedEndDate.getStyleClass().add("green-tableDateStyle");
         modificationDate.getStyleClass().add("green-tableDateStyle");
         endingDate.getStyleClass().add("green-tableDateStyle");
+        weeklyWorkHours.getStyleClass().add("green-tableDateStyle");
+
 
 
         variationTypeCode.setCellValueFactory(new PropertyValueFactory<>("variationTypeCode"));
         variationTypeDescription.setCellValueFactory(new PropertyValueFactory<>("variationTypeDescription"));
         startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        startDate.setCellValueFactory(new PropertyValueFactory<>("expectedEndDate"));
-        startDate.setCellValueFactory(new PropertyValueFactory<>("modificationDate"));
-        startDate.setCellValueFactory(new PropertyValueFactory<>("endingDate"));
+        expectedEndDate.setCellValueFactory(new PropertyValueFactory<>("expectedEndDate"));
+        modificationDate.setCellValueFactory(new PropertyValueFactory<>("modificationDate"));
+        endingDate.setCellValueFactory(new PropertyValueFactory<>("endingDate"));
         weeklyWorkHours.setCellValueFactory((new PropertyValueFactory<>("weeklyWorkHours")));
 
 //        variationTypeCode.setCellFactory(param -> new ConsultationContractStringCell());
-        variationTypeDescription.setCellFactory(param -> new ConsultationContractStringCell());
+//        variationTypeDescription.setCellFactory(param -> new ConsultationContractStringCell());
         startDate.setCellFactory(param -> new ConsultationContractDayDateCell());
         expectedEndDate.setCellFactory(param -> new ConsultationContractDayDateCell());
         modificationDate.setCellFactory(param -> new ConsultationContractDayDateCell());
