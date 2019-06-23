@@ -21,9 +21,9 @@
                         <Insets bottom="10.0" left="5.0" top="15.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="identificationContractNumberINEM" alignment="CENTER" maxWidth="175.0" minWidth="175.0" style="-fx-text-inner-color: #000FFF;">
+                  <TextField fx:id="identificationContractNumberINEM" alignment="CENTER" maxWidth="175.0" minWidth="150.0" style="-fx-text-inner-color: #000FFF;">
                      <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" top="10.0" />
+                        <Insets bottom="10.0" left="5.0" top="10.0" />
                      </HBox.margin>
                   </TextField>
                   <Label minWidth="110.0" text="Tipo de contrato">
@@ -31,9 +31,9 @@
                         <Insets left="15.0" top="15.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="contractTypeDescription" minWidth="400.0" prefHeight="26.0" prefWidth="525.0" style="-fx-text-inner-color: #000FFF;">
+                  <TextField fx:id="contractTypeDescription" minWidth="400.0" prefHeight="26.0" prefWidth="575.0" style="-fx-text-inner-color: #000FFF;">
                      <HBox.margin>
-                        <Insets left="10.0" right="5.0" top="10.0" />
+                        <Insets left="5.0" right="5.0" top="10.0" />
                      </HBox.margin>
                   </TextField>
                </children>

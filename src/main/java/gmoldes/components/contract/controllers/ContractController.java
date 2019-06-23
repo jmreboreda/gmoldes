@@ -54,6 +54,11 @@ public class ContractController {
         return contractManager.findAllContractInForceInPeriod(initialDate, finalDate);
     }
 
+    public List<InitialContractDTO> findAllInitialContractInForceAtDate(LocalDate date){
+
+        return contractManager.findAllInitialContractInForceAtDate(date);
+    }
+
     public List<ContractVariationDTO> findAllContractVariationByContractNumber(Integer contractNumber){
 
         return contractManager.findAllContractVariationByContractNumber(contractNumber);

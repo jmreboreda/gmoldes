@@ -58,7 +58,7 @@ public class ConsultationContractData extends AnchorPane {
 
         consultationContractDataTableDTO.setId("consultation_contract_table");
 
-        variationTypeCode.getStyleClass().add("blue-tableTextStyle");
+        variationTypeCode.getStyleClass().add("blue-tableNumberCenteredStyle");
         variationTypeDescription.getStyleClass().add("blue-tableTextStyle");
 
         startDate.getStyleClass().add("green-tableDateStyle");
@@ -66,8 +66,6 @@ public class ConsultationContractData extends AnchorPane {
         modificationDate.getStyleClass().add("green-tableDateStyle");
         endingDate.getStyleClass().add("green-tableDateStyle");
         weeklyWorkHours.getStyleClass().add("green-tableDateStyle");
-
-
 
         variationTypeCode.setCellValueFactory(new PropertyValueFactory<>("variationTypeCode"));
         variationTypeDescription.setCellValueFactory(new PropertyValueFactory<>("variationTypeDescription"));
@@ -95,6 +93,9 @@ public class ConsultationContractData extends AnchorPane {
             ContractDataTableSelectedRowEvent event = new ContractDataTableSelectedRowEvent(newSelection.getVariationTypeCode(), newSelection.getStartDate());
            contractDataTableSelectedRowEventEventHandler.handle(event);
         });
+
+        identificationContractNumberINEM.setMouseTransparent(true);
+        contractTypeDescription.setMouseTransparent(true);
 
     }
 
