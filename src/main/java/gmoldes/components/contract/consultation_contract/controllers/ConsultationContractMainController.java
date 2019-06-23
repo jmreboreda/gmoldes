@@ -89,6 +89,7 @@ public class ConsultationContractMainController extends AnchorPane {
         consultationContractSelector.getContractSelector().getItems().clear();
 
         consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getContractTypeDescription().clear();
 
         consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
 
