@@ -153,9 +153,14 @@ public class ConsultationContractMainController extends AnchorPane {
     }
 
     private void onActiveClientsOnly(MouseEvent event){
+        if(consultationContractSelector.getActiveClientsOnly().isSelected()){
+
+        }else{
+            consultationContractSelector.getAllContract().setSelected(true);
+            consultationContractSelector.getContractInForceOnly().setSelected(false);
+        }
 
         loadClientSelector();
-
     }
 
     private void onAllContract(MouseEvent event){
@@ -179,6 +184,13 @@ public class ConsultationContractMainController extends AnchorPane {
         consultationContractData.getIdentificationContractNumberINEM().clear();
         consultationContractData.getContractTypeDescription().clear();
 
+        if(consultationContractSelector.getActiveClientsOnly().isSelected()){
+           consultationContractSelector.getAllContract().setSelected(false);
+        }else{
+            consultationContractSelector.getActiveClientsOnly().setSelected(true);
+            consultationContractSelector.getAllContract().setSelected(false);
+        }
+
         loadClientSelector();
     }
 
@@ -190,6 +202,7 @@ public class ConsultationContractMainController extends AnchorPane {
         consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
 
         consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getContractTypeDescription().clear();
 
         consultationContractAction.getSaveButton().setDisable(true);
 
@@ -236,6 +249,11 @@ public class ConsultationContractMainController extends AnchorPane {
     }
 
     private void onEmployeeSelectorChange(SelectEmployerEmployeeEvent employerEmployeeEvent){
+
+        consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getContractTypeDescription().clear();
+
+        consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
 
         consultationContractSelector.getContractSelector().getSelectionModel().clearSelection();
         consultationContractSelector.getContractSelector().getItems().clear();
