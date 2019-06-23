@@ -203,6 +203,14 @@ public class ClientDTO {
         return getRzSocial();
     }
 
+    public Boolean isActiveClient(){
+        if(getDateTo() == null){
+            return true;
+        }
+
+        return false;
+    }
+
     public static ClientDTOOkBuilder create() {
         return new ClientDTOOkBuilder();
     }

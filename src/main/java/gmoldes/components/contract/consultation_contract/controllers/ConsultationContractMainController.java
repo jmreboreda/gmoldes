@@ -271,8 +271,6 @@ public class ConsultationContractMainController extends AnchorPane {
         consultationContractData.getIdentificationContractNumberINEM().clear();
         consultationContractData.getContractTypeDescription().clear();
 
-        consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
-
         consultationContractSelector.getContractSelector().getSelectionModel().clearSelection();
         consultationContractSelector.getContractSelector().getItems().clear();
 
@@ -285,11 +283,40 @@ public class ConsultationContractMainController extends AnchorPane {
         List<Integer> contractsList = new ArrayList<>();
 
         ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+
         List<InitialContractDTO> initialContractDTOList = contractService.findAllInitialContract();
-        for(InitialContractDTO initialContractDTO : initialContractDTOList){
-            if(initialContractDTO.getContractJsonData().getWorkerId().equals(personDTO.getIdpersona()) &&
-            initialContractDTO.getContractJsonData().getClientGMId().equals(clientDTO.getClientId())){
-                contractsList.add(initialContractDTO.getContractNumber());
+
+        if(consultationContractSelector.getActiveClientsOnly().isSelected()){
+            if(clientService.findClientById(clientDTO.getClientId()).isActiveClient()) {
+                if (consultationContractSelector.getContractInForceOnly().isSelected()) {
+                    // Active client with contract in force
+                    for (InitialContractDTO initialContractDTO : initialContractDTOList) {
+                        if (initialContractDTO.getContractJsonData().getClientGMId().equals(clientDTO.getClientId()) &&
+                                initialContractDTO.getContractJsonData().getWorkerId().equals(personDTO.getIdpersona()) &&
+                                initialContractDTO.getEndingDate() == null) {
+                            contractsList.add(initialContractDTO.getContractNumber());
+                        }
+                    }
+
+                } else if (consultationContractSelector.getAllContract().isSelected()) {
+                    // Active client all contract
+                    for (InitialContractDTO initialContractDTO : initialContractDTOList) {
+                        if (initialContractDTO.getContractJsonData().getClientGMId().equals(clientDTO.getClientId()) &&
+                                initialContractDTO.getContractJsonData().getWorkerId().equals(personDTO.getIdpersona())) {
+                            contractsList.add(initialContractDTO.getContractNumber());
+                        }
+                    }
+                }
+            }
+        } else if(!consultationContractSelector.getActiveClientsOnly().isSelected()){
+            if(consultationContractSelector.getAllContract().isSelected()){
+                for(InitialContractDTO initialContractDTO : initialContractDTOList){
+                    if(initialContractDTO.getContractJsonData().getWorkerId().equals(personDTO.getIdpersona()) &&
+                            initialContractDTO.getContractJsonData().getClientGMId().equals(clientDTO.getClientId())){
+                        contractsList.add(initialContractDTO.getContractNumber());
+                    }
+                }
             }
         }
 
