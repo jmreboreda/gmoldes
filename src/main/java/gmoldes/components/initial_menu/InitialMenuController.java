@@ -3,6 +3,7 @@ package gmoldes.components.initial_menu;
 import gmoldes.App;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.client_invoice_check_list.controllers.ClientInvoiceCheckListMainController;
+import gmoldes.components.contract.consultation_contract.controllers.ConsultationContractMainController;
 import gmoldes.components.contract.contract_variation.controllers.ContractVariationMainController;
 import gmoldes.components.contract.new_contract.controllers.NewContractMainController;
 import gmoldes.components.contract_documentation_control.controllers.ContractDocumentationControlMainController;
@@ -43,6 +44,8 @@ public class InitialMenuController extends AnchorPane {
     @FXML
     private Button timeRecordButton;
     @FXML
+    private Button consultationContractButton;
+    @FXML
     private Button contractVariationButton;
     @FXML
     private Button clientInvoiceCheckListButton;
@@ -69,6 +72,7 @@ public class InitialMenuController extends AnchorPane {
     @FXML
     public void initialize() {
         newContractButton.setOnMouseClicked(this::onNewContract);
+        consultationContractButton.setOnMouseClicked(this::onConsultationContract);
         timeRecordButton.setOnMouseClicked(this::onTimeRecord);
         contractVariationButton.setOnMouseClicked(this::onContractVariation);
         clientInvoiceCheckListButton.setOnMouseClicked(this::onClientInvoiceCheckList);
@@ -104,6 +108,19 @@ public class InitialMenuController extends AnchorPane {
         timeRecordStage.initOwner(primaryStage);
         timeRecordStage.initModality(Modality.APPLICATION_MODAL);
         timeRecordStage.show();
+    }
+
+    private void onConsultationContract(MouseEvent event){
+        ConsultationContractMainController consultationContractMainController = new ConsultationContractMainController();
+        Scene scene = new Scene(consultationContractMainController);
+        scene.getStylesheets().add(App.class.getResource("/css_stylesheet/application.css").toExternalForm());
+        Stage consultationContractStage = new Stage();
+        consultationContractStage.setResizable(false);
+        consultationContractStage.setTitle("Consulta de contratos");
+        consultationContractStage.setScene(scene);
+        consultationContractStage.initOwner(primaryStage);
+        consultationContractStage.initModality(Modality.APPLICATION_MODAL);
+        consultationContractStage.show();
     }
 
     private void onContractVariation(MouseEvent event){

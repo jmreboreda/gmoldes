@@ -2,7 +2,6 @@ package gmoldes.components.contract.consultation_contract.components;
 
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract_documentation_control.events.ContractSelectedEvent;
-import gmoldes.components.contract_documentation_control.events.ContractVariationSelectedEvent;
 import gmoldes.components.contract_documentation_control.events.SelectClientEmployerEvent;
 import gmoldes.components.contract_documentation_control.events.SelectEmployerEmployeeEvent;
 import gmoldes.domain.client.dto.ClientDTO;
@@ -29,10 +28,7 @@ public class ConsultationContractSelector extends AnchorPane {
     private EventHandler<SelectClientEmployerEvent> selectClientEmployerEventEventHandler;
     private EventHandler<SelectEmployerEmployeeEvent> selectEmployerEmployeeEventEventHandler;
     private EventHandler<ContractSelectedEvent> contractSelectedEventEventHandler;
-    private EventHandler<ContractVariationSelectedEvent> contractVariationSelectedEventEventHandler;
 
-    @FXML
-    private CheckBox contractsWithTraceabilityOnly;
     @FXML
     private CheckBox contractsInForceOnly;
     @FXML
@@ -48,7 +44,6 @@ public class ConsultationContractSelector extends AnchorPane {
     }
 
     public void initialize(){
-        contractsWithTraceabilityOnly.setMouseTransparent(true);
         contractsInForceOnly.setOnMouseClicked(this::onChangeContractsInForceOnly);
 
         clientSelector.setOnAction(this::onClientSelectorChange);
@@ -58,10 +53,6 @@ public class ConsultationContractSelector extends AnchorPane {
 
     public CheckBox getContractsInForceOnly() {
         return contractsInForceOnly;
-    }
-
-    public CheckBox getContractsWithTraceabilityOnly() {
-        return contractsWithTraceabilityOnly;
     }
 
     public ChoiceBox<ClientDTO> getClientSelector() {
@@ -127,9 +118,5 @@ public class ConsultationContractSelector extends AnchorPane {
 
     public void setOnContractSelectorChange(EventHandler<ContractSelectedEvent> contractSelectedEventEventHandler){
         this.contractSelectedEventEventHandler = contractSelectedEventEventHandler;
-    }
-
-    public void setOnContractVariationSelectorChange(EventHandler<ContractVariationSelectedEvent> contractVariationSelectedEventEventHandler){
-        this.contractVariationSelectedEventEventHandler = contractVariationSelectedEventEventHandler;
     }
 }
