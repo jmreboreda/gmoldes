@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -24,13 +26,20 @@ public class ConsultationContractSelector extends AnchorPane {
     private Parent parent;
     private Stage stage;
 
-    private EventHandler<MouseEvent> changeContractsInForceOnlyEventHandler;
+    private EventHandler<MouseEvent> onActiveClientsOnlyEventHandler;
+    private EventHandler<MouseEvent> onContractInForceOnlyEventEventHandler;
     private EventHandler<SelectClientEmployerEvent> selectClientEmployerEventEventHandler;
     private EventHandler<SelectEmployerEmployeeEvent> selectEmployerEmployeeEventEventHandler;
     private EventHandler<ContractSelectedEvent> contractSelectedEventEventHandler;
 
     @FXML
-    private CheckBox contractsInForceOnly;
+    private ToggleGroup contractActiveOrNot;
+    @FXML
+    private CheckBox activeClientsOnly;
+    @FXML
+    private RadioButton contractInForceOnly;
+    @FXML
+    private RadioButton allContract;
     @FXML
     private ChoiceBox<ClientDTO> clientSelector;
     @FXML
@@ -44,15 +53,24 @@ public class ConsultationContractSelector extends AnchorPane {
     }
 
     public void initialize(){
-        contractsInForceOnly.setOnMouseClicked(this::onChangeContractsInForceOnly);
+        activeClientsOnly.setOnMouseClicked(this::onActiveClientsOnly);
+        contractInForceOnly.setOnMouseClicked(this::onContractInForceOnly);
 
         clientSelector.setOnAction(this::onClientSelectorChange);
         employeeSelector.setOnAction(this::onEmployeeSelectorChange);
         contractSelector.setOnAction(this::onContractSelectorChange);
     }
 
-    public CheckBox getContractsInForceOnly() {
-        return contractsInForceOnly;
+    public CheckBox getActiveClientsOnly() {
+        return activeClientsOnly;
+    }
+
+    public RadioButton getContractInForceOnly() {
+        return contractInForceOnly;
+    }
+
+    public RadioButton getAllContract() {
+        return allContract;
     }
 
     public ChoiceBox<ClientDTO> getClientSelector() {
@@ -67,8 +85,12 @@ public class ConsultationContractSelector extends AnchorPane {
         return contractSelector;
     }
 
-    private void onChangeContractsInForceOnly(MouseEvent event){
-        changeContractsInForceOnlyEventHandler.handle(event);
+    private void onActiveClientsOnly(MouseEvent event){
+        onActiveClientsOnlyEventHandler.handle(event);
+    }
+
+    private void onContractInForceOnly(MouseEvent event){
+        onContractInForceOnlyEventEventHandler.handle(event);
     }
 
     private void onClientSelectorChange(ActionEvent event){
@@ -104,8 +126,12 @@ public class ConsultationContractSelector extends AnchorPane {
         clientSelector.setItems(clientDTOOL);
     }
 
-    public void setOnChangeContractsInForceOnly(EventHandler<MouseEvent> changeContractsInForceOnlyEvent){
-        this.changeContractsInForceOnlyEventHandler = changeContractsInForceOnlyEvent;
+    public void setOnActiveClientsOnly(EventHandler<MouseEvent> onActiveClientsOnlyEventHandler){
+        this.onActiveClientsOnlyEventHandler = onActiveClientsOnlyEventHandler;
+    }
+
+    public void setOnContractInForceOnly(EventHandler<MouseEvent> event){
+        this.onContractInForceOnlyEventEventHandler = event;
     }
 
     public void setOnClientSelectorChange(EventHandler<SelectClientEmployerEvent> selectClientEmployerEventEventHandler){

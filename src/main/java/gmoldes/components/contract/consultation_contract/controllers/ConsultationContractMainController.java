@@ -65,7 +65,8 @@ public class ConsultationContractMainController extends AnchorPane {
 
     public void initialize(){
 
-        consultationContractSelector.setOnChangeContractsInForceOnly(this::onChangeContractsInForceOnly);
+        consultationContractSelector.setOnActiveClientsOnly(this::onActiveClientsOnly);
+        consultationContractSelector.setOnContractInForceOnly(this::onContractInForceOnly);
 
         consultationContractSelector.setOnClientSelectorChange(this::onClientSelectorChange);
         consultationContractSelector.setOnEmployeeSelectorChange(this::onEmployeeSelectorChange);
@@ -97,13 +98,15 @@ public class ConsultationContractMainController extends AnchorPane {
 
         ClientService clientService = ClientService.ClientServiceFactory.getInstance();
 
-        if(consultationContractSelector.getContractsInForceOnly().isSelected()) {
-            List<ClientDTO> clientDTOWithContractsInForceAtDate = clientService.findAllClientWithContractInForceAtDate(LocalDate.now());
-            clientDTOToClientSelectorList.addAll(clientDTOWithContractsInForceAtDate);
+        if(consultationContractSelector.getActiveClientsOnly().isSelected()) {
+            if(consultationContractSelector.getContractInForceOnly().isSelected()){
+                List<ClientDTO> clientDTOWithContractsInForceAtDate = clientService.findAllClientWithContractInForceAtDate(LocalDate.now());
+                clientDTOToClientSelectorList.addAll(clientDTOWithContractsInForceAtDate);
+            }
+
         }else{
             List<ClientDTO> clientDTOWithContracts = clientService.findAllActiveClientWithContractHistory();
             clientDTOToClientSelectorList.addAll(clientDTOWithContracts);
-
         }
 
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
@@ -117,7 +120,19 @@ public class ConsultationContractMainController extends AnchorPane {
         consultationContractSelector.loadClientSelector(clientDTOOL);
     }
 
-    private void onChangeContractsInForceOnly(MouseEvent event){
+    private void onActiveClientsOnly(MouseEvent event){
+        loadClientSelector();
+    }
+
+    private void onContractInForceOnly(MouseEvent event){
+        consultationContractSelector.getContractSelector().getSelectionModel().clearSelection();
+        consultationContractSelector.getContractSelector().getItems().clear();
+
+        consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
+
+        consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getContractTypeDescription().clear();
+
         loadClientSelector();
     }
 
