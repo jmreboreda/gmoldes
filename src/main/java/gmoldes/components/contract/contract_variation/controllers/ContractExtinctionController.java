@@ -511,7 +511,7 @@ public class ContractExtinctionController{
 
         ContractTypeController contractTypeController = new ContractTypeController();
         Integer contractTypeId = allContractData.getContractNewVersion().getContractJsonData().getContractType();
-        ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractTypeId);
+        ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeByContractTypeCode(contractTypeId);
 
         String contractDescription = contractTypeDTO.getColloquial() + ", " + allContractData.getContractType().getContractDescription();
 

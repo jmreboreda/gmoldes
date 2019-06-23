@@ -40,9 +40,9 @@ public class ContractTypeManager {
         return contractTypeDTOList;
     }
 
-    public ContractTypeDTO findContractTypeById(Integer contractTypeId){
+    public ContractTypeDTO findContractTypeByContractTypeCode(Integer contractTypeCode){
         ContractTypeDAO contractTypeDAO = ContractTypeDAO.ContractTypeDAOFactory.getInstance();
-        ContractTypeVO contractTypeVO = contractTypeDAO.findContractTypeById(contractTypeId);
+        ContractTypeVO contractTypeVO = contractTypeDAO.findContractTypeByContractTypeCode(contractTypeCode);
 
         return ContractTypeDTO.create()
                 .withId(contractTypeVO.getId())

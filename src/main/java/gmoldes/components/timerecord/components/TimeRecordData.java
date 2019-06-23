@@ -250,7 +250,7 @@ public class TimeRecordData extends VBox {
                     String dateFrom = dateFormatter.format(contractNewVersionDTO.getStartDate());
 
                     ContractTypeController contractTypeController = new ContractTypeController();
-                    ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractNewVersionDTO.getContractJsonData().getContractType());
+                    ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeByContractTypeCode(contractNewVersionDTO.getContractJsonData().getContractType());
 
                     TimeRecordCandidateDataDTO dataCandidates = new TimeRecordCandidateDataDTO(
                             employeeName,

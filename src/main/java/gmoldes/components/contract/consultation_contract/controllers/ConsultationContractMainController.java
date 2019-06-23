@@ -14,6 +14,7 @@ import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.consultation_contract.dto.ConsultationContractDataTableDTO;
 import gmoldes.domain.contract.ContractService;
+import gmoldes.domain.contract.ContractTypeService;
 import gmoldes.domain.contract.TypesContractVariationsService;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
@@ -253,11 +254,16 @@ public class ConsultationContractMainController extends AnchorPane {
 
     private void onContractDataTableSelectedRowChange(ContractDataTableSelectedRowEvent event){
         ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        ContractTypeService contractTypeService = ContractTypeService.ContractTypeServiceFactory.getInstance();
+
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractService.findHistoryOfContractByContractNumber(consultationContractSelector.getContractSelector().getValue());
         for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
             if(contractNewVersionDTO.getVariationType().equals(event.getVariationTypeCode()) &&
                     contractNewVersionDTO.getStartDate().compareTo(event.getStartDate()) == 0){
                 consultationContractData.getIdentificationContractNumberINEM().setText(contractNewVersionDTO.getContractJsonData().getIdentificationContractNumberINEM());
+                String contractTypeText = contractTypeService.findContractTypeByContractTypeCode(contractNewVersionDTO.getContractJsonData().getContractType()).getColloquial();
+                contractTypeText = contractTypeText + " [" + contractTypeService.findContractTypeByContractTypeCode(contractNewVersionDTO.getContractJsonData().getContractType()).getContractDescription() +"]";
+                consultationContractData.getContractTypeDescription().setText(contractTypeText);
             }
         }
     }

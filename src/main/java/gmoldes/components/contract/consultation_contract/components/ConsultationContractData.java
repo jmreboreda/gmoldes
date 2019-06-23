@@ -31,6 +31,8 @@ public class ConsultationContractData extends AnchorPane {
     @FXML
     private TextField identificationContractNumberINEM;
     @FXML
+    private TextField contractTypeDescription;
+    @FXML
     private TableView<ConsultationContractDataTableDTO> consultationContractDataTableDTO;
     @FXML
     private TableColumn<ConsultationContractDataTableDTO, Integer> variationTypeCode;
@@ -102,6 +104,10 @@ public class ConsultationContractData extends AnchorPane {
 
     public TextField getIdentificationContractNumberINEM() {
         return identificationContractNumberINEM;
+    }
+
+    public TextField getContractTypeDescription() {
+        return contractTypeDescription;
     }
 
     public TableColumn<ConsultationContractDataTableDTO, Integer> getVariationTypeCode() {
