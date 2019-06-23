@@ -1,10 +1,9 @@
 package gmoldes.components.contract.consultation_contract.components;
 
-import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
+import gmoldes.components.contract.consultation_contract.events.ContractDataTableSelectedRowEvent;
 import gmoldes.components.contract.consultation_contract.utilities.ConsultationContractDayDateCell;
 import gmoldes.components.contract.consultation_contract.utilities.ConsultationContractDurationCell;
-import gmoldes.components.contract_documentation_control.events.CellTableChangedEvent;
 import gmoldes.domain.consultation_contract.dto.ConsultationContractDataTableDTO;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -19,7 +18,6 @@ import javafx.stage.Stage;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class ConsultationContractData extends AnchorPane {
 
@@ -28,12 +26,7 @@ public class ConsultationContractData extends AnchorPane {
     private Parent parent;
     private Stage stage;
 
-    public Boolean cellsEdited = false;
-    public String previousIdentificationNumberINEMFromDatabase;
-
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
-
-    private EventHandler<CellTableChangedEvent> cellTableChangedEventEventHandler;
+    private EventHandler<ContractDataTableSelectedRowEvent> contractDataTableSelectedRowEventEventHandler;
 
     @FXML
     private TextField identificationContractNumberINEM;
@@ -93,6 +86,14 @@ public class ConsultationContractData extends AnchorPane {
 //        receptionDate.setStyle(ContractDocumentationControlConstants.RED_COLOR);
 //        deliveryDate.setStyle(ContractDocumentationControlConstants.RED_COLOR);
 
+        consultationContractDataTableDTO.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if(newSelection == null){
+                return;
+            }
+            ContractDataTableSelectedRowEvent event = new ContractDataTableSelectedRowEvent(newSelection.getVariationTypeCode(), newSelection.getStartDate());
+           contractDataTableSelectedRowEventEventHandler.handle(event);
+        });
+
     }
 
     public TableView<ConsultationContractDataTableDTO> getConsultationContractDataTableDTOTable() {
@@ -133,5 +134,13 @@ public class ConsultationContractData extends AnchorPane {
 
     public void refreshContractDocumentationControlTable(ObservableList<ConsultationContractDataTableDTO> tableItemOL){
         consultationContractDataTableDTO.setItems(tableItemOL);
+    }
+
+    private void onSelectedRowChanged(){
+
+    }
+
+    public void setOnSelectedRowChange(EventHandler<ContractDataTableSelectedRowEvent> contractDataTableSelectedRowEventEventHandler){
+        this.contractDataTableSelectedRowEventEventHandler = contractDataTableSelectedRowEventEventHandler;
     }
 }

@@ -5,6 +5,7 @@ import gmoldes.components.contract.consultation_contract.components.Consultation
 import gmoldes.components.contract.consultation_contract.components.ConsultationContractData;
 import gmoldes.components.contract.consultation_contract.components.ConsultationContractHeader;
 import gmoldes.components.contract.consultation_contract.components.ConsultationContractSelector;
+import gmoldes.components.contract.consultation_contract.events.ContractDataTableSelectedRowEvent;
 import gmoldes.components.contract_documentation_control.ContractDocumentationControlConstants;
 import gmoldes.components.contract_documentation_control.events.ContractSelectedEvent;
 import gmoldes.components.contract_documentation_control.events.SelectClientEmployerEvent;
@@ -68,6 +69,8 @@ public class ConsultationContractMainController extends AnchorPane {
         consultationContractSelector.setOnClientSelectorChange(this::onClientSelectorChange);
         consultationContractSelector.setOnEmployeeSelectorChange(this::onEmployeeSelectorChange);
         consultationContractSelector.setOnContractSelectorChange(this::onContractSelectorChange);
+
+        consultationContractData.setOnSelectedRowChange(this::onContractDataTableSelectedRowChange);
 
         consultationContractSelector.getClientSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
         consultationContractSelector.getEmployeeSelector().setStyle(ContractDocumentationControlConstants.BLUE_COLOR);
@@ -246,6 +249,17 @@ public class ConsultationContractMainController extends AnchorPane {
         ObservableList<ConsultationContractDataTableDTO> sortedConsultationContractDataTableDTOOL = FXCollections.observableArrayList(sortedConsultationContractDataTableDTOList);
         consultationContractData.refreshContractDocumentationControlTable(sortedConsultationContractDataTableDTOOL);
         consultationContractData.getConsultationContractDataTableDTOTable().getSelectionModel().select(0);
+    }
+
+    private void onContractDataTableSelectedRowChange(ContractDataTableSelectedRowEvent event){
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        List<ContractNewVersionDTO> contractNewVersionDTOList = contractService.findHistoryOfContractByContractNumber(consultationContractSelector.getContractSelector().getValue());
+        for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
+            if(contractNewVersionDTO.getVariationType().equals(event.getVariationTypeCode()) &&
+                    contractNewVersionDTO.getStartDate().compareTo(event.getStartDate()) == 0){
+                consultationContractData.getIdentificationContractNumberINEM().setText(contractNewVersionDTO.getContractJsonData().getIdentificationContractNumberINEM());
+            }
+        }
     }
 
     private void onExitButton(MouseEvent event){
