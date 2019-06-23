@@ -190,7 +190,7 @@ public class NewContractDataDocumentCreator {
 
         Integer contractTypeCode = contractFullDataDTO.getContractNewVersion().getContractJsonData().getContractType();
         ContractTypeController contractTypeController = new ContractTypeController();
-        ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeById(contractTypeCode);
+        ContractTypeDTO contractTypeDTO = contractTypeController.findContractTypeByContractTypeCode(contractTypeCode);
 
         String contractTypeDescription = contractTypeDTO.getColloquial() + ", " + contractFullDataDTO.getContractType().getContractDescription();
 

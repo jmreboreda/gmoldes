@@ -41,9 +41,9 @@ public class ContractTypeDAO {
         return query.getResultList();
     }
 
-    public ContractTypeVO findContractTypeById(Integer contractTypeId){
-        TypedQuery<ContractTypeVO> query = session.createNamedQuery(ContractTypeVO.FIND_CONTRACT_TYPE_BY_ID, ContractTypeVO.class);
-        query.setParameter("contractTypeId", contractTypeId);
+    public ContractTypeVO findContractTypeByContractTypeCode(Integer contractTypeCode){
+        TypedQuery<ContractTypeVO> query = session.createNamedQuery(ContractTypeVO.FIND_CONTRACT_TYPE_BY_CONTRACT_TYPE_CODE, ContractTypeVO.class);
+        query.setParameter("contractTypeCode", contractTypeCode);
 
         return query.getSingleResult();
     }

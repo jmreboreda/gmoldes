@@ -11,15 +11,15 @@ import java.io.Serializable;
                 query = "select p from ContractTypeVO p where isMenuSelectable = true and isInitialContract = true order by contractDescription"
         ),
         @NamedQuery(
-                name = ContractTypeVO.FIND_CONTRACT_TYPE_BY_ID,
-                query = "select p from ContractTypeVO p where p.contractCode = :contractTypeId"
+                name = ContractTypeVO.FIND_CONTRACT_TYPE_BY_CONTRACT_TYPE_CODE,
+                query = "select p from ContractTypeVO p where p.contractCode = :contractTypeCode"
         )
 })
 
 public class ContractTypeVO implements Serializable{
 
     public static final String FIND_ALL_CONTRACT_TYPES_SELECTABLES = "ContractTypeVO.FIND_ALL_CONTRACT_TYPES_SELECTABLES";
-    public static final String FIND_CONTRACT_TYPE_BY_ID = "ContractTypeVO.FIND_CONTRACT_TYPE_BY_ID";
+    public static final String FIND_CONTRACT_TYPE_BY_CONTRACT_TYPE_CODE = "ContractTypeVO.FIND_CONTRACT_TYPE_BY_CONTRACT_TYPE_CODE";
 
     @Id
     @SequenceGenerator(name = "contracttype_id_seq", sequenceName = "contracttype_id_seq", allocationSize = 1)

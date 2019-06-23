@@ -14,6 +14,7 @@ import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.consultation_contract.dto.ConsultationContractDataTableDTO;
 import gmoldes.domain.contract.ContractService;
+import gmoldes.domain.contract.ContractTypeService;
 import gmoldes.domain.contract.TypesContractVariationsService;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
@@ -64,7 +65,10 @@ public class ConsultationContractMainController extends AnchorPane {
 
     public void initialize(){
 
-        consultationContractSelector.setOnChangeContractsInForceOnly(this::onChangeContractsInForceOnly);
+        consultationContractSelector.setOnActiveClientsOnly(this::onActiveClientsOnly);
+        consultationContractSelector.setOnContractInForceOnly(this::onContractInForceOnly);
+        consultationContractSelector.setOnAllContract(this::onAllContract);
+
 
         consultationContractSelector.setOnClientSelectorChange(this::onClientSelectorChange);
         consultationContractSelector.setOnEmployeeSelectorChange(this::onEmployeeSelectorChange);
@@ -88,20 +92,53 @@ public class ConsultationContractMainController extends AnchorPane {
         consultationContractSelector.getContractSelector().getItems().clear();
 
         consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getContractTypeDescription().clear();
 
         consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
 
         List<ClientDTO> clientDTOToClientSelectorList = new ArrayList<>();
+        List<ClientDTO> clientDTOWithContractList = new ArrayList<>();
 
         ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
 
-        if(consultationContractSelector.getContractsInForceOnly().isSelected()) {
-            List<ClientDTO> clientDTOWithContractsInForceAtDate = clientService.findAllClientWithContractInForceAtDate(LocalDate.now());
-            clientDTOToClientSelectorList.addAll(clientDTOWithContractsInForceAtDate);
+        // Active clients with contract
+        if(consultationContractSelector.getActiveClientsOnly().isSelected()) {
+            // Active clients with contract in force
+            if(consultationContractSelector.getContractInForceOnly().isSelected()){
+                List<ClientDTO> activeClientDTOWithContractsInForceAtDate = clientService.findAllClientWithContractInForceAtDate(LocalDate.now());
+                clientDTOToClientSelectorList.addAll(activeClientDTOWithContractsInForceAtDate);
+            }else{
+                // Active clients contract history
+                List<ClientDTO> activeClientDTOWithContracts = clientService.findAllActiveClientWithContractHistory();
+                clientDTOToClientSelectorList.addAll(activeClientDTOWithContracts);
+            }
         }else{
-            List<ClientDTO> clientDTOWithContracts = clientService.findAllActiveClientWithContractHistory();
-            clientDTOToClientSelectorList.addAll(clientDTOWithContracts);
+            //All clients with contract
+            List<InitialContractDTO> initialContractDTOList = contractService.findAllInitialContract();
+            for(InitialContractDTO initialContractDTO : initialContractDTOList){
+                clientDTOWithContractList.add(clientService.findClientById(initialContractDTO.getContractJsonData().getClientGMId()));
+            }
 
+            Map<Integer, ClientDTO> clientDTOMap = new HashMap<>();
+
+            for (ClientDTO clientDTO : clientDTOWithContractList) {
+                clientDTOMap.put(clientDTO.getClientId(), clientDTO);
+            }
+
+            List<ClientDTO> withoutDuplicatesClientDTOWithContractList = new ArrayList<>();
+            for (Map.Entry<Integer, ClientDTO> itemMap : clientDTOMap.entrySet()) {
+                withoutDuplicatesClientDTOWithContractList.add(itemMap.getValue());
+            }
+
+            Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+            primaryCollator.setStrength(Collator.PRIMARY);
+
+            List<ClientDTO>  orderedWithoutDuplicatesClientDTOWithContractList = withoutDuplicatesClientDTOWithContractList
+                    .stream()
+                    .sorted(Comparator.comparing(ClientDTO::toString, primaryCollator)).collect(Collectors.toList());
+
+            clientDTOToClientSelectorList.addAll(orderedWithoutDuplicatesClientDTOWithContractList);
         }
 
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
@@ -115,7 +152,45 @@ public class ConsultationContractMainController extends AnchorPane {
         consultationContractSelector.loadClientSelector(clientDTOOL);
     }
 
-    private void onChangeContractsInForceOnly(MouseEvent event){
+    private void onActiveClientsOnly(MouseEvent event){
+        if(consultationContractSelector.getActiveClientsOnly().isSelected()){
+
+        }else{
+            consultationContractSelector.getAllContract().setSelected(true);
+            consultationContractSelector.getContractInForceOnly().setSelected(false);
+        }
+
+        loadClientSelector();
+    }
+
+    private void onAllContract(MouseEvent event){
+        consultationContractSelector.getContractSelector().getSelectionModel().clearSelection();
+        consultationContractSelector.getContractSelector().getItems().clear();
+
+        consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
+
+        consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getContractTypeDescription().clear();
+
+        loadClientSelector();
+    }
+
+    private void onContractInForceOnly(MouseEvent event){
+        consultationContractSelector.getContractSelector().getSelectionModel().clearSelection();
+        consultationContractSelector.getContractSelector().getItems().clear();
+
+        consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
+
+        consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getContractTypeDescription().clear();
+
+        if(consultationContractSelector.getActiveClientsOnly().isSelected()){
+           consultationContractSelector.getAllContract().setSelected(false);
+        }else{
+            consultationContractSelector.getActiveClientsOnly().setSelected(true);
+            consultationContractSelector.getAllContract().setSelected(false);
+        }
+
         loadClientSelector();
     }
 
@@ -127,6 +202,7 @@ public class ConsultationContractMainController extends AnchorPane {
         consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
 
         consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getContractTypeDescription().clear();
 
         consultationContractAction.getSaveButton().setDisable(true);
 
@@ -173,6 +249,11 @@ public class ConsultationContractMainController extends AnchorPane {
     }
 
     private void onEmployeeSelectorChange(SelectEmployerEmployeeEvent employerEmployeeEvent){
+
+        consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getContractTypeDescription().clear();
+
+        consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
 
         consultationContractSelector.getContractSelector().getSelectionModel().clearSelection();
         consultationContractSelector.getContractSelector().getItems().clear();
@@ -253,11 +334,16 @@ public class ConsultationContractMainController extends AnchorPane {
 
     private void onContractDataTableSelectedRowChange(ContractDataTableSelectedRowEvent event){
         ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        ContractTypeService contractTypeService = ContractTypeService.ContractTypeServiceFactory.getInstance();
+
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractService.findHistoryOfContractByContractNumber(consultationContractSelector.getContractSelector().getValue());
         for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
             if(contractNewVersionDTO.getVariationType().equals(event.getVariationTypeCode()) &&
                     contractNewVersionDTO.getStartDate().compareTo(event.getStartDate()) == 0){
                 consultationContractData.getIdentificationContractNumberINEM().setText(contractNewVersionDTO.getContractJsonData().getIdentificationContractNumberINEM());
+                String contractTypeText = contractTypeService.findContractTypeByContractTypeCode(contractNewVersionDTO.getContractJsonData().getContractType()).getColloquial();
+                contractTypeText = contractTypeText + " [" + contractTypeService.findContractTypeByContractTypeCode(contractNewVersionDTO.getContractJsonData().getContractType()).getContractDescription() +"]";
+                consultationContractData.getContractTypeDescription().setText(contractTypeText);
             }
         }
     }

@@ -16,9 +16,9 @@ public class ContractTypeController {
         return manager.findAllSelectableContractTypes();
     }
 
-    public ContractTypeDTO findContractTypeById(Integer contractTypeId) {
+    public ContractTypeDTO findContractTypeByContractTypeCode(Integer contractTypeCode) {
         ContractTypeManager manager = new ContractTypeManager();
 
-        return manager.findContractTypeById(contractTypeId);
+        return manager.findContractTypeByContractTypeCode(contractTypeCode);
     }
 }

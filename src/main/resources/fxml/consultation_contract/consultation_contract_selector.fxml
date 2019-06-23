@@ -4,7 +4,9 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -17,10 +19,23 @@
                <children>
                   <HBox>
                      <children>
-                        <CheckBox fx:id="contractsInForceOnly" mnemonicParsing="false" selected="true" text="Solo clientes con contratos en vigor">
+                        <CheckBox fx:id="activeClientsOnly" mnemonicParsing="false" selected="true" text="Solo clientes actuales">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin></CheckBox>
+                        <RadioButton fx:id="contractInForceOnly" mnemonicParsing="false" selected="true" text="Contratos en vigor">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="contractActiveOrNot" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="allContract" mnemonicParsing="false" text="Todos los contratos" toggleGroup="$contractActiveOrNot">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </RadioButton>
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" top="5.0" />

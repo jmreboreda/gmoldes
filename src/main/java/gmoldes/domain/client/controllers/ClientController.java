@@ -1,7 +1,6 @@
 package gmoldes.domain.client.controllers;
 
 import gmoldes.domain.client.dto.ClientDTO;
-import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.domain.client.manager.ClientManager;
 
 import java.time.LocalDate;

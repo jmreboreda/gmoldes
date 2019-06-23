@@ -387,7 +387,7 @@ public class ContractManager {
 
     private ContractTypeDTO retrieveContractTypeById(Integer contractTypeId){
         ContractTypeDAO contractTypeDAO = ContractTypeDAO.ContractTypeDAOFactory.getInstance();
-        ContractTypeVO contractTypeVO = contractTypeDAO.findContractTypeById(contractTypeId);
+        ContractTypeVO contractTypeVO = contractTypeDAO.findContractTypeByContractTypeCode(contractTypeId);
 
         return MapperContractTypeVODTO.mapContractTypeVODTO(contractTypeVO);
     }
