@@ -100,6 +100,20 @@ public class ContractManager {
         return initialContractDTOList;
     }
 
+    public List<InitialContractDTO> findAllInitialContractInForceAtDate(LocalDate date){
+        List<InitialContractDTO> initialContractDTOList = new ArrayList<>();
+
+        InitialContractDAO initialContractDAO =  InitialContractDAO.InitialContractDAOFactory.getInstance();
+
+        List<InitialContractVO> initialContractVOList = initialContractDAO.findAllInitialContractInForceAtDate(date);
+        for(InitialContractVO initialContractVO : initialContractVOList){
+            InitialContractDTO initialContractDTO = MapperInitialContractVODTO.map(initialContractVO);
+            initialContractDTOList.add(initialContractDTO);
+        }
+
+        return initialContractDTOList;
+    }
+
     public List<ContractNewVersionDTO> findHistoryOfContractByContractNumber(Integer contractNumber){
 
         List<ContractNewVersionDTO> contractNewVersionDTOList = new ArrayList<>();
@@ -274,7 +288,7 @@ public class ContractManager {
         Map<Integer, LocalDate> initialContractStartDateMap = new HashMap();
 
         // Get initial contract date of all contract in force at date
-        List<InitialContractVO> initialContractInForceAtDate = initialContractDAO.findAllContractInForceAtDate(date);
+        List<InitialContractVO> initialContractInForceAtDate = initialContractDAO.findAllInitialContractInForceAtDate(date);
         for(InitialContractVO initialContractVO : initialContractInForceAtDate){
             initialContractStartDateMap.put(initialContractVO.getContractNumber(), initialContractVO.getStartDate().toLocalDate());
         }
