@@ -28,6 +28,7 @@ public class ConsultationContractSelector extends AnchorPane {
 
     private EventHandler<MouseEvent> onActiveClientsOnlyEventHandler;
     private EventHandler<MouseEvent> onContractInForceOnlyEventEventHandler;
+    private EventHandler<MouseEvent> onAllContractEventEventHandler;
     private EventHandler<SelectClientEmployerEvent> selectClientEmployerEventEventHandler;
     private EventHandler<SelectEmployerEmployeeEvent> selectEmployerEmployeeEventEventHandler;
     private EventHandler<ContractSelectedEvent> contractSelectedEventEventHandler;
@@ -55,6 +56,7 @@ public class ConsultationContractSelector extends AnchorPane {
     public void initialize(){
         activeClientsOnly.setOnMouseClicked(this::onActiveClientsOnly);
         contractInForceOnly.setOnMouseClicked(this::onContractInForceOnly);
+        allContract.setOnMouseClicked(this::onAllContract);
 
         clientSelector.setOnAction(this::onClientSelectorChange);
         employeeSelector.setOnAction(this::onEmployeeSelectorChange);
@@ -91,6 +93,10 @@ public class ConsultationContractSelector extends AnchorPane {
 
     private void onContractInForceOnly(MouseEvent event){
         onContractInForceOnlyEventEventHandler.handle(event);
+    }
+
+    private void onAllContract(MouseEvent event){
+        onAllContractEventEventHandler.handle(event);
     }
 
     private void onClientSelectorChange(ActionEvent event){
@@ -134,6 +140,9 @@ public class ConsultationContractSelector extends AnchorPane {
         this.onContractInForceOnlyEventEventHandler = event;
     }
 
+    public void setOnAllContract(EventHandler<MouseEvent> event){
+        this.onAllContractEventEventHandler = event;
+    }
     public void setOnClientSelectorChange(EventHandler<SelectClientEmployerEvent> selectClientEmployerEventEventHandler){
         this.selectClientEmployerEventEventHandler = selectClientEmployerEventEventHandler;
     }

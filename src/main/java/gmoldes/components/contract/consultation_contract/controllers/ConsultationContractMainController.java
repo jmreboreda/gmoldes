@@ -67,6 +67,8 @@ public class ConsultationContractMainController extends AnchorPane {
 
         consultationContractSelector.setOnActiveClientsOnly(this::onActiveClientsOnly);
         consultationContractSelector.setOnContractInForceOnly(this::onContractInForceOnly);
+        consultationContractSelector.setOnAllContract(this::onAllContract);
+
 
         consultationContractSelector.setOnClientSelectorChange(this::onClientSelectorChange);
         consultationContractSelector.setOnEmployeeSelectorChange(this::onEmployeeSelectorChange);
@@ -95,18 +97,48 @@ public class ConsultationContractMainController extends AnchorPane {
         consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
 
         List<ClientDTO> clientDTOToClientSelectorList = new ArrayList<>();
+        List<ClientDTO> clientDTOWithContractList = new ArrayList<>();
 
         ClientService clientService = ClientService.ClientServiceFactory.getInstance();
+        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
 
+        // Active clients with contract
         if(consultationContractSelector.getActiveClientsOnly().isSelected()) {
+            // Active clients with contract in force
             if(consultationContractSelector.getContractInForceOnly().isSelected()){
-                List<ClientDTO> clientDTOWithContractsInForceAtDate = clientService.findAllClientWithContractInForceAtDate(LocalDate.now());
-                clientDTOToClientSelectorList.addAll(clientDTOWithContractsInForceAtDate);
+                List<ClientDTO> activeClientDTOWithContractsInForceAtDate = clientService.findAllClientWithContractInForceAtDate(LocalDate.now());
+                clientDTOToClientSelectorList.addAll(activeClientDTOWithContractsInForceAtDate);
+            }else{
+                // Active clients contract history
+                List<ClientDTO> activeClientDTOWithContracts = clientService.findAllActiveClientWithContractHistory();
+                clientDTOToClientSelectorList.addAll(activeClientDTOWithContracts);
+            }
+        }else{
+            //All clients with contract
+            List<InitialContractDTO> initialContractDTOList = contractService.findAllInitialContract();
+            for(InitialContractDTO initialContractDTO : initialContractDTOList){
+                clientDTOWithContractList.add(clientService.findClientById(initialContractDTO.getContractJsonData().getClientGMId()));
             }
 
-        }else{
-            List<ClientDTO> clientDTOWithContracts = clientService.findAllActiveClientWithContractHistory();
-            clientDTOToClientSelectorList.addAll(clientDTOWithContracts);
+            Map<Integer, ClientDTO> clientDTOMap = new HashMap<>();
+
+            for (ClientDTO clientDTO : clientDTOWithContractList) {
+                clientDTOMap.put(clientDTO.getClientId(), clientDTO);
+            }
+
+            List<ClientDTO> withoutDuplicatesClientDTOWithContractList = new ArrayList<>();
+            for (Map.Entry<Integer, ClientDTO> itemMap : clientDTOMap.entrySet()) {
+                withoutDuplicatesClientDTOWithContractList.add(itemMap.getValue());
+            }
+
+            Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
+            primaryCollator.setStrength(Collator.PRIMARY);
+
+            List<ClientDTO>  orderedWithoutDuplicatesClientDTOWithContractList = withoutDuplicatesClientDTOWithContractList
+                    .stream()
+                    .sorted(Comparator.comparing(ClientDTO::toString, primaryCollator)).collect(Collectors.toList());
+
+            clientDTOToClientSelectorList.addAll(orderedWithoutDuplicatesClientDTOWithContractList);
         }
 
         Collator primaryCollator = Collator.getInstance(new Locale("es","ES"));
@@ -121,6 +153,20 @@ public class ConsultationContractMainController extends AnchorPane {
     }
 
     private void onActiveClientsOnly(MouseEvent event){
+
+        loadClientSelector();
+
+    }
+
+    private void onAllContract(MouseEvent event){
+        consultationContractSelector.getContractSelector().getSelectionModel().clearSelection();
+        consultationContractSelector.getContractSelector().getItems().clear();
+
+        consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
+
+        consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getContractTypeDescription().clear();
+
         loadClientSelector();
     }
 
