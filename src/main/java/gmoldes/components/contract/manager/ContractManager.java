@@ -1,8 +1,8 @@
 package gmoldes.components.contract.manager;
 
 
-import gmoldes.components.contract.contract_variation.persistence.dao.ContractVariationDAO;
-import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
+import gmoldes.components.contract_variation.persistence.dao.ContractVariationDAO;
+import gmoldes.components.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.domain.contract_type.dto.ContractTypeDTO;

@@ -35,7 +35,7 @@
         <mapping class="gmoldes.domain.person.persistence.vo.PersonVO"/>
         <mapping class ="gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO"/>
         <mapping class ="gmoldes.domain.contract.persistence.vo.ContractVO"/>
-        <mapping class="gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO"/>
+        <mapping class="gmoldes.components.contract_variation.persistence.vo.ContractVariationVO"/>
         <mapping class="gmoldes.domain.traceability_contract_documentation.persistence.vo.TraceabilityContractDocumentationVO"/>
         <mapping class="gmoldes.domain.types_contract_variations.persistence.vo.TypesContractVariationsVO"/>
         <mapping class="gmoldes.domain.contract_type.persistence.vo.ContractTypeVO"/>
