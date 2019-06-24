@@ -1,12 +1,9 @@
 package gmoldes.domain.contract.mapper;
 
-import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
+import gmoldes.components.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.domain.contract.dto.ContractVariationDTO;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 public class MapperContractVariationVODTO {
 

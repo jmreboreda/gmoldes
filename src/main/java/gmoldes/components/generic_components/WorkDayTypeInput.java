@@ -41,7 +41,7 @@ public class WorkDayTypeInput extends HBox {
     }
 
     @FXML
-    private void initialize(){
+    public void initialize(){
 
         this.radioButtonFullWorkDay.setMaxWidth(180);
         this.radioButtonFullWorkDay.setMinHeight(25);

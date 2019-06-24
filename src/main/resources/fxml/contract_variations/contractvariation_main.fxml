@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import gmoldes.components.contract.contract_variation.components.ContractVariationActionComponents?>
-<?import gmoldes.components.contract.contract_variation.components.ContractVariationContractData?>
-<?import gmoldes.components.contract.contract_variation.components.ContractVariationContractVariations?>
-<?import gmoldes.components.contract.contract_variation.components.ContractVariationHeader?>
-<?import gmoldes.components.contract.contract_variation.components.ContractVariationParts?>
-<?import gmoldes.components.contract.contract_variation.components.ContractVariationTypes?>
+<?import gmoldes.components.contract_variation.components.ContractVariationActionComponents?>
+<?import gmoldes.components.contract_variation.components.ContractVariationContractData?>
+<?import gmoldes.components.contract_variation.components.ContractVariationContractVariations?>
+<?import gmoldes.components.contract_variation.components.ContractVariationHeader?>
+<?import gmoldes.components.contract_variation.components.ContractVariationParts?>
+<?import gmoldes.components.contract_variation.components.ContractVariationTypes?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>

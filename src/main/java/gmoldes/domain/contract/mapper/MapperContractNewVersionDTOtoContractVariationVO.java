@@ -1,6 +1,6 @@
 package gmoldes.domain.contract.mapper;
 
-import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
+import gmoldes.components.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 
 import java.sql.Date;

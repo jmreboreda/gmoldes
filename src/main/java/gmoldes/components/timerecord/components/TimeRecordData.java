@@ -11,7 +11,7 @@ import gmoldes.components.timerecord.TimeRecord;
 import gmoldes.domain.client.controllers.ClientController;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.ContractTypeDTO;
+import gmoldes.domain.contract_type.dto.ContractTypeDTO;
 import gmoldes.domain.person.controllers.PersonController;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.timerecord.dto.TimeRecordCandidateDataDTO;

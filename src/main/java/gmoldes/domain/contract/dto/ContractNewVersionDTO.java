@@ -5,6 +5,7 @@ import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -134,7 +135,7 @@ public class ContractNewVersionDTO {
     public String toString(){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
-        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypeContractVariationByVariationId(variationType);
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(variationType);
 
         StringBuilder string = new StringBuilder();
         string.append(typesContractVariationsDTO.getVariation_description() + " desde " + startDate.format(dateFormatter));

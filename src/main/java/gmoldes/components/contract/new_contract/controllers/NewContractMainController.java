@@ -19,6 +19,7 @@ import gmoldes.domain.client.dto.ClientCCCDTO;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client.persistence.vo.ClientCCCVO;
 import gmoldes.domain.contract.dto.*;
+import gmoldes.domain.contract_type.dto.ContractTypeDTO;
 import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
@@ -29,6 +30,7 @@ import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.domain.traceability_contract_documentation.manager.TraceabilityContractDocumentationManager;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
@@ -585,7 +587,7 @@ public class NewContractMainController extends VBox {
                 .build();
 
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
-        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypeContractVariationByVariationId(variationTypeId);
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(variationTypeId);
 
         ContractFullDataDTO contractFullDataDTO = ContractFullDataDTO.create()
                 .withEmployer(contractParts.getSelectedEmployer())

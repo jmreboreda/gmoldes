@@ -7,9 +7,8 @@ import gmoldes.components.contract.events.ChangeContractDataHoursWorkWeekEvent;
 import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.events.ChangeContractTypeEvent;
 import gmoldes.components.generic_components.*;
-import gmoldes.domain.contract.dto.ContractTypeDTO;
+import gmoldes.domain.contract_type.dto.ContractTypeDTO;
 import gmoldes.domain.contract.dto.ProvisionalContractDataDTO;
-import gmoldes.utilities.Parameters;
 import gmoldes.utilities.Utilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -64,7 +63,7 @@ public class ContractData extends AnchorPane {
     }
 
     @FXML
-    private void initialize(){
+    public void initialize(){
         logger.info("Initializing contract data fxml ...");
 
         contractType.setOnAction(this::onChangeContractType);

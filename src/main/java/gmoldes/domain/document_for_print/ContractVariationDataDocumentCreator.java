@@ -3,9 +3,9 @@ package gmoldes.domain.document_for_print;
 import com.lowagie.text.DocumentException;
 import gmoldes.ApplicationConstants;
 import gmoldes.components.contract.ContractConstants;
-import gmoldes.components.contract.contract_variation.controllers.ContractVariationMainController;
-import gmoldes.components.contract.contract_variation.forms.ContractVariationDataSubfolder;
-import gmoldes.components.contract.contract_variation.services.ContractVariationDataSubfolderPDFCreator;
+import gmoldes.components.contract_variation.controllers.ContractVariationMainController;
+import gmoldes.components.contract_variation.forms.ContractVariationDataSubfolder;
+import gmoldes.components.contract_variation.services.ContractVariationDataSubfolderPDFCreator;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
@@ -13,7 +13,7 @@ import gmoldes.components.contract.new_contract.services.ContractDataToContractA
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.study.StudyManager;
@@ -178,7 +178,7 @@ public class ContractVariationDataDocumentCreator {
                 .build();
 
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
-        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypeContractVariationByVariationId(variationTypeId);
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(variationTypeId);
 
         ClientDTO employer = this.contractVariationMainController.getContractVariationParts().getClientSelector().getValue();
         PersonDTO employee = this.contractVariationMainController.getContractVariationParts().getContractSelector().getValue().getEmployee();

@@ -1,7 +1,7 @@
 package gmoldes.domain.check;
 
 import gmoldes.ApplicationConstants;
-import gmoldes.components.contract.contract_variation.controllers.ContractVariationController;
+import gmoldes.components.contract_variation.controllers.ContractVariationController;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.check.dto.IDCControlDTO;
 import gmoldes.domain.client.ClientService;
