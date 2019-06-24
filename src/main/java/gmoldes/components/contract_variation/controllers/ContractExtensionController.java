@@ -26,6 +26,7 @@ import gmoldes.domain.study.StudyManager;
 import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.domain.traceability_contract_documentation.manager.TraceabilityContractDocumentationManager;
+import gmoldes.domain.types_contract_variations.TypesContractVariationsService;
 import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
@@ -431,10 +432,8 @@ public class ContractExtensionController{
     }
 
     private String retrievePublicNotes(){
-
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-
-        TypesContractVariationsDTO typesContractVariationsDTO = applicationMainController.findTypeContractVariationById(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION);
+        TypesContractVariationsService typesContractVariationsService = TypesContractVariationsService.TypesContractVariationServiceFactory.getInstance();
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsService.findTypeContractVariationById(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION);
         String contractVariationType = typesContractVariationsDTO.getVariation_description();
 
         StringBuilder sb = new StringBuilder();

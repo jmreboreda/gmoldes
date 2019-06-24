@@ -28,7 +28,6 @@ public class TypesContractVariationsService {
     private ApplicationMainManager applicationMainManager = new ApplicationMainManager();
 
     public List<TypesContractVariationsDTO> findAllTypesContractVariations(){
-//        TypesContractVariationsManager manager= new TypesContractVariationsManager();
 
         return typesContractVariationsController.findAllTypesContractVariations();
     }
