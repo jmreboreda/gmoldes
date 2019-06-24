@@ -1,20 +1,22 @@
 package gmoldes.components.contract_variation.controllers;
 
 import gmoldes.ApplicationConstants;
-import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.ContractConstants;
-import gmoldes.components.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract_variation.events.ContractVariationPersistenceEvent;
-import gmoldes.components.contract_variation.events.MessageContractVariationEvent;
-import gmoldes.components.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
+import gmoldes.components.contract_variation.events.CompatibleVariationEvent;
+import gmoldes.components.contract_variation.events.ContractVariationPersistenceEvent;
+import gmoldes.components.contract_variation.events.MessageContractVariationEvent;
+import gmoldes.components.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
-import gmoldes.domain.contract.dto.*;
+import gmoldes.domain.contract.dto.ContractFullDataDTO;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.contract.dto.ContractVariationDTO;
+import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.contract.mapper.MapperJsonScheduleToWorkDaySchedule;
 import gmoldes.domain.contract_type.dto.ContractTypeDTO;
 import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
@@ -183,8 +185,6 @@ public class ContractExtensionController{
     }
 
     public CompatibleVariationEvent checkExistenceIncompatibleVariationsForContractExtension() {
-
-        ApplicationMainController applicationMainController = new ApplicationMainController();
 
         Integer contractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
         LocalDate contractExtensionDateFrom = contractVariationMainController.getContractVariationContractVariations().getContractVariationContractExtension().getDateFrom().getValue();
@@ -434,7 +434,7 @@ public class ContractExtensionController{
 
     private String retrievePublicNotes(){
         TypesContractVariationsService typesContractVariationsService = TypesContractVariationsService.TypesContractVariationServiceFactory.getInstance();
-        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsService.findTypeContractVariationById(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION);
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsService.findTypesContractVariationsById(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION);
         String contractVariationType = typesContractVariationsDTO.getVariation_description();
 
         StringBuilder sb = new StringBuilder();

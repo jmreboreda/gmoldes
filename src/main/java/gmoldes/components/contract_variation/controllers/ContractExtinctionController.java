@@ -1,16 +1,15 @@
 package gmoldes.components.contract_variation.controllers;
 
 import gmoldes.ApplicationConstants;
-import gmoldes.ApplicationMainController;
-import gmoldes.components.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract_variation.events.MessageContractVariationEvent;
-import gmoldes.components.contract_variation.events.ContractVariationPersistenceEvent;
-import gmoldes.components.contract_variation.forms.ContractVariationDataSubfolder;
+import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
-import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
+import gmoldes.components.contract_variation.events.CompatibleVariationEvent;
+import gmoldes.components.contract_variation.events.ContractVariationPersistenceEvent;
+import gmoldes.components.contract_variation.events.MessageContractVariationEvent;
+import gmoldes.components.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.*;
@@ -18,11 +17,12 @@ import gmoldes.domain.contract_type.dto.ContractTypeDTO;
 import gmoldes.domain.document_for_print.ContractVariationDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.study.StudyManager;
+import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.traceability_contract_documentation.controllers.TraceabilityContractDocumentationController;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.domain.traceability_contract_documentation.manager.TraceabilityContractDocumentationManager;
+import gmoldes.domain.types_contract_variations.TypesContractVariationsService;
 import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
@@ -188,8 +188,6 @@ public class ContractExtinctionController{
 
     public CompatibleVariationEvent checkExistenceIncompatibleVariationsForContractExtinction() {
 
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-
         Integer selectedContractNumber = contractVariationMainController.getContractVariationParts().getContractSelector().getSelectionModel().getSelectedItem().getContractNewVersion().getContractNumber();
 
         // 1. Expiration date requested for the contract is higher than the expected termination date
@@ -208,8 +206,9 @@ public class ContractExtinctionController{
 
         // 2. The extinction of the contract already exists and is not by prior subrogation of the contract
         ContractService contractService = ContractService.ContractServiceFactory.getInstance();
+        TypesContractVariationsService typesContractVariationsService = TypesContractVariationsService.TypesContractVariationServiceFactory.getInstance();
         List<ContractVariationDTO> contractVariationDTOList = contractService.findAllContractVariationByContractNumber(selectedContractNumber);
-        List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
+        List<TypesContractVariationsDTO> typesContractVariationsDTOList = typesContractVariationsService.findAllTypesContractVariations();
         for (ContractVariationDTO contractVariationDTO : contractVariationDTOList) {
             for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
                 if (typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
@@ -368,8 +367,6 @@ public class ContractExtinctionController{
     }
 
     private Integer updateLastVariationOfContractToBeExtinguished(ContractNewVersionDTO contractNewVersionExtinctedDTO){
-
-        ApplicationMainController applicationMainController = new ApplicationMainController();
 
         Integer contractNumber = contractNewVersionExtinctedDTO.getContractNumber();
         ContractService contractService = ContractService.ContractServiceFactory.getInstance();

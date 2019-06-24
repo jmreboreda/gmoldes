@@ -190,7 +190,7 @@ public class ContractVariationContractData extends TitledPane {
 
         // Last variation for the contract
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
-        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypeContractVariationByVariationId(contractNewVersionDTOList.get(index).getVariationType());
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(contractNewVersionDTOList.get(index).getVariationType());
         this.getLastVariationDescription().setText(typesContractVariationsDTO.getVariation_description());
         this.getLastVariationDate().setText(maximumDate.format(formatter));
         if(maximumDate.compareTo(LocalDate.now()) > 0){

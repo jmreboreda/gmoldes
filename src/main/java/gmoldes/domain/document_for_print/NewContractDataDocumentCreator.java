@@ -274,7 +274,7 @@ public class NewContractDataDocumentCreator {
                 .build();
 
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
-        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypeContractVariationByVariationId(variationTypeId);
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(variationTypeId);
 
         ContractFullDataDTO contractFullDataDTO = ContractFullDataDTO.create()
                 .withEmployer(this.newContractMainController.getContractParts().getSelectedEmployer())

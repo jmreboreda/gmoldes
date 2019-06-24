@@ -1,6 +1,5 @@
 package gmoldes.domain.types_contract_variations;
 
-import gmoldes.ApplicationMainManager;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 
@@ -25,20 +24,13 @@ public class TypesContractVariationsService {
 
     private TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
 
-    private ApplicationMainManager applicationMainManager = new ApplicationMainManager();
-
     public List<TypesContractVariationsDTO> findAllTypesContractVariations(){
 
         return typesContractVariationsController.findAllTypesContractVariations();
     }
 
-    public TypesContractVariationsDTO findTypeContractVariationById(Integer typeContractVariationId){
+    public TypesContractVariationsDTO findTypesContractVariationsById(Integer variationId){
 
-        return applicationMainManager.retrieveTypesContractVariations(typeContractVariationId);
-    }
-
-    public TypesContractVariationsDTO findTypeContractVariationByVariationId(Integer variationId){
-
-        return typesContractVariationsController.findTypeContractVariationByVariationId(variationId);
+        return typesContractVariationsController.findTypesContractVariationsById(variationId);
     }
 }

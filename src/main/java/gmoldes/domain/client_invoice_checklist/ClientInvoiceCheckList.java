@@ -1,6 +1,5 @@
 package gmoldes.domain.client_invoice_checklist;
 
-import gmoldes.ApplicationMainController;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.client_invoice_checklist.dto.ClientInvoiceCheckListDTO;
@@ -97,7 +96,6 @@ public class ClientInvoiceCheckList {
     public List<ClientInvoiceCheckListDTO> findAllClientGMWithInvoicesToClaimInPeriod(Month month, Integer year){
 
         List<ClientInvoiceCheckListDTO> clientInvoiceCheckListDTOList = new ArrayList<>();
-        ApplicationMainController applicationMainController = new ApplicationMainController();
 
         Integer yearReceived = year;
         Integer monthReceived = month.getValue();

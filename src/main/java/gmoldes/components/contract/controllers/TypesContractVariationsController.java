@@ -18,7 +18,7 @@ public class TypesContractVariationsController {
         return typesContractVariationsManager.findVariationDescriptionById(variationId);
     }
 
-    public TypesContractVariationsDTO findTypeContractVariationByVariationId(Integer typesContractVariationsId){
+    public TypesContractVariationsDTO findTypesContractVariationsById(Integer typesContractVariationsId){
 
         return typesContractVariationsManager.findTypesContractVariationsById(typesContractVariationsId);
     }

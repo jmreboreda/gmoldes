@@ -1,25 +1,24 @@
 package gmoldes.components.contract_variation.controllers;
 
 import gmoldes.ApplicationConstants;
-import gmoldes.ApplicationMainController;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract.ContractConstants;
-import gmoldes.components.contract_variation.ContractVariationConstants;
-import gmoldes.components.contract_variation.components.*;
-import gmoldes.components.contract_variation.events.*;
-import gmoldes.components.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.controllers.ContractMainControllerConstants;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
+import gmoldes.components.contract_variation.ContractVariationConstants;
+import gmoldes.components.contract_variation.components.*;
+import gmoldes.components.contract_variation.events.*;
+import gmoldes.components.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
-import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;
 import gmoldes.domain.document_for_print.ContractExtinctionDataDocumentCreator;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;
 import gmoldes.utilities.Parameters;
@@ -64,7 +63,6 @@ public class ContractVariationMainController extends VBox {
 
     private Parent parent;
 
-    private ApplicationMainController applicationMainController = new ApplicationMainController();
     private ContractExtinctionController contractExtinctionController = new ContractExtinctionController(this);
     private ContractExtensionController contractExtensionController = new ContractExtensionController(this);
     private WeeklyWorkScheduleVariationController weeklyWorkScheduleVariationController = new WeeklyWorkScheduleVariationController(this);

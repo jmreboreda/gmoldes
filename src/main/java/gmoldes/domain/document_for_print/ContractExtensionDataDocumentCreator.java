@@ -148,7 +148,7 @@ public class ContractExtensionDataDocumentCreator {
                 .build();
 
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
-        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypeContractVariationByVariationId(ContractParameters.CONTRACT_EXTENSION_ID);
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(ContractParameters.CONTRACT_EXTENSION_ID);
 
         ClientDTO employer = this.contractVariationMainController.getContractVariationParts().getClientSelector().getValue();
         PersonDTO employee = this.contractVariationMainController.getContractVariationParts().getContractSelector().getValue().getEmployee();

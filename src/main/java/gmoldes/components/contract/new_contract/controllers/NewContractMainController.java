@@ -587,7 +587,7 @@ public class NewContractMainController extends VBox {
                 .build();
 
         TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
-        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypeContractVariationByVariationId(variationTypeId);
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsController.findTypesContractVariationsById(variationTypeId);
 
         ContractFullDataDTO contractFullDataDTO = ContractFullDataDTO.create()
                 .withEmployer(contractParts.getSelectedEmployer())

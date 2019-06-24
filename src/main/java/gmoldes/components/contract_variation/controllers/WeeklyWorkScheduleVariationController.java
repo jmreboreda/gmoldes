@@ -421,7 +421,7 @@ public class WeeklyWorkScheduleVariationController {
 
     private String retrievePublicNotes(){
         TypesContractVariationsService typesContractVariationsService = TypesContractVariationsService.TypesContractVariationServiceFactory.getInstance();
-        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsService.findTypeContractVariationById(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION);
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsService.findTypesContractVariationsById(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION);
         String contractVariationType = typesContractVariationsDTO.getVariation_description();
 
         StringBuilder sb = new StringBuilder();

@@ -355,7 +355,7 @@ public class ConsultationContractMainController extends AnchorPane {
         List<ConsultationContractDataTableDTO> consultationContractDataTableDTOList = new ArrayList<>();
         TypesContractVariationsService typesContractVariationsService = TypesContractVariationsService.TypesContractVariationServiceFactory.getInstance();
         for (ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList) {
-            TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsService.findTypeContractVariationByVariationId(contractNewVersionDTO.getVariationType());
+            TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsService.findTypesContractVariationsById(contractNewVersionDTO.getVariationType());
             ConsultationContractDataTableDTO consultationContractDataTableDTO = ConsultationContractDataTableDTO.create()
                     .withVariationTypeCode(typesContractVariationsDTO.getId_variation())
                     .withVariationTypeDescription(typesContractVariationsDTO.getVariation_description())
