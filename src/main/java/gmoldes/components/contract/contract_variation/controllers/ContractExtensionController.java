@@ -16,6 +16,7 @@ import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.*;
 import gmoldes.domain.contract.mapper.MapperJsonScheduleToWorkDaySchedule;
+import gmoldes.domain.contract_type.dto.ContractTypeDTO;
 import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.document_for_print.ContractExtensionDataDocumentCreator;

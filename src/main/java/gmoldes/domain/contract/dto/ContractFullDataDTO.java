@@ -1,6 +1,7 @@
 package gmoldes.domain.contract.dto;
 
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.contract_type.dto.ContractTypeDTO;
 import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 

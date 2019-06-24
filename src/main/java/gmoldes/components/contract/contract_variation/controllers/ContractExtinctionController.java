@@ -14,6 +14,7 @@ import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAge
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.*;
+import gmoldes.domain.contract_type.dto.ContractTypeDTO;
 import gmoldes.domain.document_for_print.ContractVariationDataDocumentCreator;
 import gmoldes.domain.email.EmailDataCreationDTO;
 import gmoldes.domain.person.dto.PersonDTO;

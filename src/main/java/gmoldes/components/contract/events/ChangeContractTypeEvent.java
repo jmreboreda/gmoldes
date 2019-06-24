@@ -1,10 +1,8 @@
 package gmoldes.components.contract.events;
 
-import gmoldes.domain.contract.dto.ContractTypeDTO;
+import gmoldes.domain.contract_type.dto.ContractTypeDTO;
 import javafx.event.Event;
 import javafx.event.EventType;
-
-import java.time.Duration;
 
 public class ChangeContractTypeEvent extends Event {
 

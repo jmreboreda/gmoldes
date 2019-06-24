@@ -1,7 +1,7 @@
 package gmoldes.domain.contract_type;
 
 import gmoldes.components.contract.controllers.ContractTypeController;
-import gmoldes.domain.contract.dto.ContractTypeDTO;
+import gmoldes.domain.contract_type.dto.ContractTypeDTO;
 
 import java.util.List;
 

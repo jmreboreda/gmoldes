@@ -1,4 +1,4 @@
-package gmoldes.domain.contract.dto;
+package gmoldes.domain.contract_type.dto;
 
 public class ContractTypeDTO {
 

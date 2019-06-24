@@ -3,7 +3,7 @@ package gmoldes;
 import gmoldes.domain.types_contract_variations.persistence.dao.TypesContractVariationsDAO;
 import gmoldes.domain.types_contract_variations.persistence.vo.TypesContractVariationsVO;
 import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
-import gmoldes.domain.contract.mapper.MapperTypesContractVariationsVODTO;
+import gmoldes.domain.types_contract_variations.mapper.MapperTypesContractVariationsVODTO;
 
 public class ApplicationMainManager {
 

@@ -1,4 +1,4 @@
-package gmoldes.domain.contract.mapper;
+package gmoldes.domain.types_contract_variations.mapper;
 
 import gmoldes.domain.types_contract_variations.persistence.vo.TypesContractVariationsVO;
 import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;

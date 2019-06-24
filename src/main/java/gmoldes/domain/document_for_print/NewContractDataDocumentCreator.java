@@ -15,7 +15,7 @@ import gmoldes.components.contract.new_contract.services.NewContractDataSubfolde
 import gmoldes.components.contract.new_contract.services.NewContractRecordHistorySubfolderPDFCreator;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.ContractTypeDTO;
+import gmoldes.domain.contract_type.dto.ContractTypeDTO;
 import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.study.StudyManager;

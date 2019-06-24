@@ -5,8 +5,10 @@ import gmoldes.components.contract.contract_variation.persistence.dao.ContractVa
 import gmoldes.components.contract.contract_variation.persistence.vo.ContractVariationVO;
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
-import gmoldes.components.contract.new_contract.mapper.MapperContractTypeVODTO;
+import gmoldes.domain.contract_type.dto.ContractTypeDTO;
+import gmoldes.domain.contract_type.mapper.MapperContractTypeVODTO;
 import gmoldes.domain.contract_type.persistence.dao.ContractTypeDAO;
+import gmoldes.domain.types_contract_variations.mapper.MapperTypesContractVariationsVODTO;
 import gmoldes.domain.types_contract_variations.persistence.dao.TypesContractVariationsDAO;
 import gmoldes.domain.contract_type.persistence.vo.ContractTypeVO;
 import gmoldes.domain.types_contract_variations.persistence.vo.TypesContractVariationsVO;
