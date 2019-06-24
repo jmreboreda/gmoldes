@@ -1,8 +1,6 @@
 package gmoldes.components.generic_components;
 
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.events.ChangeTextInputEvent;
-import gmoldes.utilities.Utilities;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,9 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 public class TextInput extends HBox {
@@ -35,7 +30,7 @@ public class TextInput extends HBox {
     }
 
     @FXML
-    private void initialize(){
+    public void initialize(){
 
         this.textLabel.setPrefWidth(28);
         this.textField.setMaxWidth(50);

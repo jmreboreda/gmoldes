@@ -63,7 +63,7 @@ public class ContractData extends AnchorPane {
     }
 
     @FXML
-    private void initialize(){
+    public void initialize(){
         logger.info("Initializing contract data fxml ...");
 
         contractType.setOnAction(this::onChangeContractType);
