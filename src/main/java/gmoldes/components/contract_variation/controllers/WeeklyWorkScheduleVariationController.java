@@ -1,20 +1,22 @@
 package gmoldes.components.contract_variation.controllers;
 
 import gmoldes.ApplicationConstants;
-import gmoldes.ApplicationMainController;
 import gmoldes.components.contract.ContractConstants;
-import gmoldes.components.contract_variation.events.CompatibleVariationEvent;
-import gmoldes.components.contract_variation.events.ContractVariationPersistenceEvent;
-import gmoldes.components.contract_variation.events.MessageContractVariationEvent;
-import gmoldes.components.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.components.contract.new_contract.components.ContractParameters;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
 import gmoldes.components.contract.new_contract.forms.ContractDataToContractsAgent;
+import gmoldes.components.contract_variation.events.CompatibleVariationEvent;
+import gmoldes.components.contract_variation.events.ContractVariationPersistenceEvent;
+import gmoldes.components.contract_variation.events.MessageContractVariationEvent;
+import gmoldes.components.contract_variation.forms.ContractVariationDataSubfolder;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
-import gmoldes.domain.contract.dto.*;
+import gmoldes.domain.contract.dto.ContractFullDataDTO;
+import gmoldes.domain.contract.dto.ContractNewVersionDTO;
+import gmoldes.domain.contract.dto.ContractVariationDTO;
+import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.contract.mapper.MapperJsonScheduleToWorkDaySchedule;
 import gmoldes.domain.contract_type.dto.ContractTypeDTO;
 import gmoldes.domain.contractjsondata.ContractDayScheduleJsonData;
@@ -27,6 +29,7 @@ import gmoldes.domain.study.StudyManager;
 import gmoldes.domain.study.dto.StudyDTO;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.domain.traceability_contract_documentation.manager.TraceabilityContractDocumentationManager;
+import gmoldes.domain.types_contract_variations.TypesContractVariationsService;
 import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
@@ -417,10 +420,8 @@ public class WeeklyWorkScheduleVariationController {
     }
 
     private String retrievePublicNotes(){
-
-        ApplicationMainController applicationMainController = new ApplicationMainController();
-
-        TypesContractVariationsDTO typesContractVariationsDTO = applicationMainController.findTypeContractVariationById(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION);
+        TypesContractVariationsService typesContractVariationsService = TypesContractVariationsService.TypesContractVariationServiceFactory.getInstance();
+        TypesContractVariationsDTO typesContractVariationsDTO = typesContractVariationsService.findTypeContractVariationById(VARIATION_TYPE_ID_FOR_CONTRACT_EXTENSION);
         String contractVariationType = typesContractVariationsDTO.getVariation_description();
 
         StringBuilder sb = new StringBuilder();

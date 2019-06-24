@@ -261,8 +261,9 @@ public class ContractExtensionController{
         }
 
         // 4. An extension of the contract incompatible with the requested one is already registered
+        TypesContractVariationsService typesContractVariationsService = TypesContractVariationsService.TypesContractVariationServiceFactory.getInstance();
         List<ContractVariationDTO> contractVariationDTOList_2 =  contractService.findAllContractVariationByContractNumber(contractNumber);
-        List<TypesContractVariationsDTO> typesContractVariationsDTOList = applicationMainController.findAllTypesContractVariations();
+        List<TypesContractVariationsDTO> typesContractVariationsDTOList = typesContractVariationsService.findAllTypesContractVariations();
         for(ContractVariationDTO contractVariationDTO : contractVariationDTOList_2) {
             for (TypesContractVariationsDTO typesContractVariationsDTO : typesContractVariationsDTOList) {
                 if (typesContractVariationsDTO.getId_variation().equals(contractVariationDTO.getVariationType()) &&
