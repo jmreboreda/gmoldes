@@ -14,15 +14,13 @@ import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.consultation_contract.dto.ConsultationContractDataTableDTO;
 import gmoldes.domain.contract.ContractService;
-import gmoldes.domain.contract_type.ContractTypeService;
-import gmoldes.domain.types_contract_variations.TypesContractVariationsService;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
-import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
+import gmoldes.domain.contract_type.ContractTypeService;
 import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
-import gmoldes.domain.traceability_contract_documentation.TraceabilityService;
-import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
+import gmoldes.domain.types_contract_variations.TypesContractVariationsService;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import gmoldes.utilities.Utilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -210,7 +208,6 @@ public class ConsultationContractMainController extends AnchorPane {
 
         ClientDTO clientDTO = employerEvent.getSelectedClientEmployer();
 
-        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
         ContractService contractService = ContractService.ContractServiceFactory.getInstance();
         PersonService personService = PersonService.PersonServiceFactory.getInstance();
 
@@ -400,35 +397,5 @@ public class ConsultationContractMainController extends AnchorPane {
 
         Stage stage = (Stage) consultationContractHeader.getScene().getWindow();
         stage.close();
-    }
-
-    private List<ClientDTO> retrieveClientWithContractWithTraceabilityWithOutDuplicates(){
-        List<ClientDTO> clientWithContractWithTraceability = new ArrayList<>();
-        List<ClientDTO> clientWithContractWithTraceabilityWithOutDuplicates = new ArrayList<>();
-
-        TraceabilityService traceabilityService = TraceabilityService.TraceabilityServiceFactory.getInstance();
-        List<TraceabilityContractDocumentationDTO> traceabilityContractDocumentationDTOList = traceabilityService.findAllTraceabilityContractData();
-
-        ContractService contractService = ContractService.ContractServiceFactory.getInstance();
-        ClientService clientService = ClientService.ClientServiceFactory.getInstance();
-
-        for(TraceabilityContractDocumentationDTO traceabilityContractDocumentationDTO : traceabilityContractDocumentationDTOList){
-            InitialContractDTO initialContractDTO = contractService.findInitialContractByContractNumber(traceabilityContractDocumentationDTO.getContractNumber());
-            ClientDTO clientDTO = clientService.findClientById(initialContractDTO.getContractJsonData().getClientGMId());
-
-            clientWithContractWithTraceability.add(clientDTO);
-        }
-
-        Map<Integer, ClientDTO> clientDTOMap = new HashMap<>();
-
-        for (ClientDTO clientDTO : clientWithContractWithTraceability) {
-            clientDTOMap.put(clientDTO.getClientId(), clientDTO);
-        }
-
-        for (Map.Entry<Integer, ClientDTO> itemMap : clientDTOMap.entrySet()) {
-            clientWithContractWithTraceabilityWithOutDuplicates.add(itemMap.getValue());
-        }
-
-        return clientWithContractWithTraceabilityWithOutDuplicates;
     }
 }
