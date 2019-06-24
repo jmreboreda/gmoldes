@@ -1,7 +1,7 @@
 package gmoldes.domain.contract.mapper;
 
-import gmoldes.components.contract.new_contract.persistence.vo.TypesContractVariationsVO;
-import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.domain.types_contract_variations.persistence.vo.TypesContractVariationsVO;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 
 public class MapperTypesContractVariationsVODTO {
 

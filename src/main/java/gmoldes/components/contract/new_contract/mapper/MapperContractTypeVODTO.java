@@ -1,6 +1,6 @@
 package gmoldes.components.contract.new_contract.mapper;
 
-import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO;
+import gmoldes.domain.contract_type.persistence.vo.ContractTypeVO;
 import gmoldes.domain.contract.dto.ContractTypeDTO;
 
 public class MapperContractTypeVODTO {

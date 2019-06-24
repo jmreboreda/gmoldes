@@ -3,8 +3,10 @@ package gmoldes.domain.contract;
 import gmoldes.ApplicationConstants;
 import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.new_contract.components.WorkDaySchedule;
+import gmoldes.domain.contract_type.ContractType;
 import gmoldes.domain.employee.Employee;
 import gmoldes.domain.employer.Employer;
+import gmoldes.domain.types_contract_variations.TypesContractVariations;
 import gmoldes.utilities.Utilities;
 
 import java.time.DayOfWeek;

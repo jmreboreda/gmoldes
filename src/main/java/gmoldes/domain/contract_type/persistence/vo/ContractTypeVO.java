@@ -1,4 +1,4 @@
-package gmoldes.components.contract.new_contract.persistence.vo;
+package gmoldes.domain.contract_type.persistence.vo;
 
 import javax.persistence.*;
 import java.io.Serializable;

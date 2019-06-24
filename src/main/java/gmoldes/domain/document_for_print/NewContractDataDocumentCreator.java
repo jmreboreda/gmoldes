@@ -16,7 +16,7 @@ import gmoldes.components.contract.new_contract.services.NewContractRecordHistor
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.ContractTypeDTO;
-import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.study.StudyManager;
 import gmoldes.domain.study.dto.StudyDTO;

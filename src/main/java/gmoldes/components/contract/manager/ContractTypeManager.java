@@ -1,7 +1,7 @@
 package gmoldes.components.contract.manager;
 
-import gmoldes.components.contract.new_contract.persistence.dao.ContractTypeDAO;
-import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO;
+import gmoldes.domain.contract_type.persistence.dao.ContractTypeDAO;
+import gmoldes.domain.contract_type.persistence.vo.ContractTypeVO;
 import gmoldes.domain.contract.dto.ContractTypeDTO;
 
 import java.util.ArrayList;

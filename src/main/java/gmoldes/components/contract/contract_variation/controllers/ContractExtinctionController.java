@@ -22,6 +22,7 @@ import gmoldes.domain.study.StudyManager;
 import gmoldes.domain.traceability_contract_documentation.controllers.TraceabilityContractDocumentationController;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.domain.traceability_contract_documentation.manager.TraceabilityContractDocumentationManager;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.Printer;
 import gmoldes.services.email.EmailConstants;

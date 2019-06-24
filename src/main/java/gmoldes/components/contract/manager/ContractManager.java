@@ -6,10 +6,10 @@ import gmoldes.components.contract.contract_variation.persistence.vo.ContractVar
 import gmoldes.components.contract.initial_contract.persistence.dao.InitialContractDAO;
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.new_contract.mapper.MapperContractTypeVODTO;
-import gmoldes.components.contract.new_contract.persistence.dao.ContractTypeDAO;
-import gmoldes.components.contract.new_contract.persistence.dao.TypesContractVariationsDAO;
-import gmoldes.components.contract.new_contract.persistence.vo.ContractTypeVO;
-import gmoldes.components.contract.new_contract.persistence.vo.TypesContractVariationsVO;
+import gmoldes.domain.contract_type.persistence.dao.ContractTypeDAO;
+import gmoldes.domain.types_contract_variations.persistence.dao.TypesContractVariationsDAO;
+import gmoldes.domain.contract_type.persistence.vo.ContractTypeVO;
+import gmoldes.domain.types_contract_variations.persistence.vo.TypesContractVariationsVO;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.dto.*;
@@ -25,6 +25,7 @@ import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.person.mapper.MapperPersonVODTO;
 import gmoldes.domain.person.persistence.dao.PersonDAO;
 import gmoldes.domain.person.persistence.vo.PersonVO;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 
 import java.time.LocalDate;
 import java.util.*;

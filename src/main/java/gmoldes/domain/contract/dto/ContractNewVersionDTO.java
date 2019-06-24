@@ -5,6 +5,7 @@ import gmoldes.components.contract.ContractConstants;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.contractjsondata.ContractJsonData;
 import gmoldes.domain.contractjsondata.ContractScheduleJsonData;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

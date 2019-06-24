@@ -10,7 +10,7 @@ import gmoldes.components.contract_documentation_control.events.*;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
-import gmoldes.domain.contract.TypesContractVariationsService;
+import gmoldes.domain.types_contract_variations.TypesContractVariationsService;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.contract.dto.InitialContractDTO;
 import gmoldes.domain.contract_documentation_control.ContractDocumentationControlDataDTO;

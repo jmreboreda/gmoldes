@@ -1,4 +1,4 @@
-package gmoldes.domain.contract;
+package gmoldes.domain.contract_type;
 
 import gmoldes.components.contract.controllers.ContractTypeController;
 import gmoldes.domain.contract.dto.ContractTypeDTO;

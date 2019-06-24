@@ -29,6 +29,7 @@ import gmoldes.domain.person.dto.PersonDTO;
 import gmoldes.domain.timerecord.service.TimeRecordPDFCreator;
 import gmoldes.domain.traceability_contract_documentation.dto.TraceabilityContractDocumentationDTO;
 import gmoldes.domain.traceability_contract_documentation.manager.TraceabilityContractDocumentationManager;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import gmoldes.services.AgentNotificator;
 import gmoldes.services.email.EmailConstants;
 import gmoldes.utilities.Message;

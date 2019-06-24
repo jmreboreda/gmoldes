@@ -7,7 +7,7 @@ import gmoldes.components.contract.controllers.TypesContractVariationsController
 import gmoldes.domain.contract.ContractService;
 import gmoldes.domain.contract.dto.ContractFullDataDTO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
-import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;

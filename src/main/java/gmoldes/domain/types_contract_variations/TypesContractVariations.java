@@ -1,9 +1,9 @@
-package gmoldes.domain.contract.dto;
+package gmoldes.domain.types_contract_variations;
 
 import java.io.Serializable;
 
 
-public class TypesContractVariationsDTO implements Serializable {
+public class TypesContractVariations implements Serializable {
 
     private Integer id;
     private Integer id_variation;
@@ -17,17 +17,17 @@ public class TypesContractVariationsDTO implements Serializable {
     private Boolean reincorporation;
     private Boolean workingDay;
 
-    public TypesContractVariationsDTO(Integer id,
-                                      Integer id_variation,
-                                      String variation_description,
-                                      Boolean extinction,
-                                      Boolean conversion,
-                                      Boolean special,
-                                      Boolean extension,
-                                      Boolean category,
-                                      Boolean initial,
-                                      Boolean reincorporation,
-                                      Boolean workingDay) {
+    public TypesContractVariations(Integer id,
+                                   Integer id_variation,
+                                   String variation_description,
+                                   Boolean extinction,
+                                   Boolean conversion,
+                                   Boolean special,
+                                   Boolean extension,
+                                   Boolean category,
+                                   Boolean initial,
+                                   Boolean reincorporation,
+                                   Boolean workingDay) {
         this.id = id;
         this.id_variation = id_variation;
         this.variation_description = variation_description;
@@ -41,7 +41,7 @@ public class TypesContractVariationsDTO implements Serializable {
         this.workingDay = workingDay;
     }
 
-    public TypesContractVariationsDTO() {
+    public TypesContractVariations() {
     }
 
     public Integer getId() {
@@ -136,11 +136,11 @@ public class TypesContractVariationsDTO implements Serializable {
         return getVariation_description();
     }
 
-    public static TypesContractVariationsDTOBuilder create() {
-        return new TypesContractVariationsDTOBuilder();
+    public static TypesContractVariationsBuilder create() {
+        return new TypesContractVariationsBuilder();
     }
 
-    public static class TypesContractVariationsDTOBuilder {
+    public static class TypesContractVariationsBuilder {
 
         private Integer id;
         private Integer id_variation;
@@ -154,65 +154,65 @@ public class TypesContractVariationsDTO implements Serializable {
         private Boolean reincorporation;
         private Boolean workingDay;
 
-        public TypesContractVariationsDTOBuilder withId(Integer id) {
+        public TypesContractVariationsBuilder withId(Integer id) {
             this.id = id;
             return this;
         }
 
-        public TypesContractVariationsDTOBuilder withId_Variation(Integer id_variation) {
+        public TypesContractVariationsBuilder withId_Variation(Integer id_variation) {
             this.id_variation = id_variation;
             return this;
         }
 
-        public TypesContractVariationsDTOBuilder withVariationDescription(String variation_description) {
+        public TypesContractVariationsBuilder withVariationDescription(String variation_description) {
             this.variation_description = variation_description;
             return this;
         }
 
-        public TypesContractVariationsDTOBuilder withExtinction(Boolean extinction) {
+        public TypesContractVariationsBuilder withExtinction(Boolean extinction) {
             this.extinction = extinction;
             return this;
         }
 
-        public TypesContractVariationsDTOBuilder withSpecial(Boolean special) {
+        public TypesContractVariationsBuilder withSpecial(Boolean special) {
             this.special = special;
             return this;
         }
 
-        public TypesContractVariationsDTOBuilder withConversion(Boolean conversion) {
+        public TypesContractVariationsBuilder withConversion(Boolean conversion) {
             this.conversion = conversion;
             return this;
         }
 
-        public TypesContractVariationsDTOBuilder withExtension(Boolean extension) {
+        public TypesContractVariationsBuilder withExtension(Boolean extension) {
             this.extension = extension;
             return this;
         }
 
-        public TypesContractVariationsDTOBuilder withCategory(Boolean category) {
+        public TypesContractVariationsBuilder withCategory(Boolean category) {
             this.category = category;
             return this;
         }
 
-        public TypesContractVariationsDTOBuilder withInitial(Boolean initial) {
+        public TypesContractVariationsBuilder withInitial(Boolean initial) {
             this.initial = initial;
             return this;
         }
 
-        public TypesContractVariationsDTOBuilder withReincorporation(Boolean reincorporation) {
+        public TypesContractVariationsBuilder withReincorporation(Boolean reincorporation) {
             this.reincorporation = reincorporation;
             return this;
         }
 
-        public TypesContractVariationsDTOBuilder withWorkingDay(Boolean workingDay) {
+        public TypesContractVariationsBuilder withWorkingDay(Boolean workingDay) {
             this.workingDay = workingDay;
             return this;
         }
 
 
 
-        public TypesContractVariationsDTO build() {
-            return new TypesContractVariationsDTO(this.id, this.id_variation, this.variation_description, this.extinction, this.conversion, this.special, this.extension,
+        public TypesContractVariations build() {
+            return new TypesContractVariations(this.id, this.id_variation, this.variation_description, this.extinction, this.conversion, this.special, this.extension,
                     this.category, this.initial, this.reincorporation, this.workingDay);
         }
     }

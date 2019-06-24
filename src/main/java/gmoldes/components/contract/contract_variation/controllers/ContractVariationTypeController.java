@@ -1,7 +1,7 @@
 package gmoldes.components.contract.contract_variation.controllers;
 
 import gmoldes.components.contract.manager.TypesContractVariationsManager;
-import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 
 import java.util.List;
 

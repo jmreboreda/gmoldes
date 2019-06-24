@@ -1,4 +1,4 @@
-package gmoldes.domain.contract;
+package gmoldes.domain.contract_type;
 
 public class ContractType {
 

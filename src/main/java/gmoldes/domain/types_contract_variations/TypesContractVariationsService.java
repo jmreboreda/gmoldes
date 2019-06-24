@@ -1,7 +1,7 @@
-package gmoldes.domain.contract;
+package gmoldes.domain.types_contract_variations;
 
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
-import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 
 public class TypesContractVariationsService {
 

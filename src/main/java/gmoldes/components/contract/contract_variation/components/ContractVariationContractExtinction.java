@@ -2,12 +2,7 @@ package gmoldes.components.contract.contract_variation.components;
 
 import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
-import gmoldes.components.contract.controllers.TypesContractVariationsController;
-import gmoldes.domain.contract.dto.TypesContractVariationsDTO;
-import gmoldes.utilities.Parameters;
-import gmoldes.utilities.Utilities;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -16,8 +11,6 @@ import javafx.scene.layout.VBox;
 import javafx.util.converter.LocalDateStringConverter;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ContractVariationContractExtinction extends VBox {
 
