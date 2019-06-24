@@ -26,28 +26,28 @@
                         <Insets bottom="10.0" left="5.0" top="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Label minWidth="110.0" text="Tipo de contrato">
+                  <Label text="Categoria laboral">
                      <HBox.margin>
-                        <Insets left="15.0" top="15.0" />
+                        <Insets bottom="15.0" left="15.0" top="15.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="contractTypeDescription" minWidth="400.0" prefHeight="26.0" prefWidth="575.0" style="-fx-text-inner-color: #000FFF;">
+                  <TextField fx:id="laborCategory" minWidth="425.0" prefHeight="26.0" style="-fx-text-inner-color: #000FFF;">
                      <HBox.margin>
-                        <Insets left="5.0" right="5.0" top="10.0" />
+                        <Insets bottom="10.0" left="10.0" top="10.0" />
                      </HBox.margin>
                   </TextField>
                </children>
             </HBox>
             <HBox>
                <children>
-                  <Label text="Categoria laboral">
+                  <Label minWidth="110.0" text="Tipo de contrato">
                      <HBox.margin>
-                        <Insets bottom="15.0" left="5.0" top="4.0" />
+                        <Insets bottom="10.0" left="5.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="laborCategory" minWidth="350.0" prefHeight="26.0" style="-fx-text-inner-color: #000FFF;">
+                  <TextField fx:id="contractTypeDescription" minWidth="925.0" prefHeight="26.0" style="-fx-text-inner-color: #000FFF;">
                      <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" top="2.0" />
+                        <Insets bottom="10.0" left="5.0" right="5.0" />
                      </HBox.margin>
                   </TextField>
                </children>
