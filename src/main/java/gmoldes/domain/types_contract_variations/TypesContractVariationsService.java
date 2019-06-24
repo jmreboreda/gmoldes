@@ -1,7 +1,10 @@
 package gmoldes.domain.types_contract_variations;
 
+import gmoldes.ApplicationMainManager;
 import gmoldes.components.contract.controllers.TypesContractVariationsController;
 import gmoldes.domain.types_contract_variations.dto.TypesContractVariationsDTO;
+
+import java.util.List;
 
 public class TypesContractVariationsService {
 
@@ -10,18 +13,32 @@ public class TypesContractVariationsService {
 
     public static class TypesContractVariationServiceFactory {
 
-        private static TypesContractVariationsService studyService;
+        private static TypesContractVariationsService typesContractVariationsService;
 
         public static TypesContractVariationsService getInstance() {
-            if(studyService == null) {
-                studyService = new TypesContractVariationsService();
+            if(typesContractVariationsService == null) {
+                typesContractVariationsService = new TypesContractVariationsService();
             }
-            return studyService;
+            return typesContractVariationsService;
         }
     }
 
+    private TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
+
+    private ApplicationMainManager applicationMainManager = new ApplicationMainManager();
+
+    public List<TypesContractVariationsDTO> findAllTypesContractVariations(){
+//        TypesContractVariationsManager manager= new TypesContractVariationsManager();
+
+        return typesContractVariationsController.findAllTypesContractVariations();
+    }
+
+    public TypesContractVariationsDTO findTypeContractVariationById(Integer typeContractVariationId){
+
+        return applicationMainManager.retrieveTypesContractVariations(typeContractVariationId);
+    }
+
     public TypesContractVariationsDTO findTypeContractVariationByVariationId(Integer variationId){
-        TypesContractVariationsController typesContractVariationsController = new TypesContractVariationsController();
 
         return typesContractVariationsController.findTypeContractVariationByVariationId(variationId);
     }
