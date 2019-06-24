@@ -387,6 +387,7 @@ public class ConsultationContractMainController extends AnchorPane {
             if(contractNewVersionDTO.getVariationType().equals(event.getVariationTypeCode()) &&
                     contractNewVersionDTO.getStartDate().compareTo(event.getStartDate()) == 0){
                 consultationContractData.getIdentificationContractNumberINEM().setText(contractNewVersionDTO.getContractJsonData().getIdentificationContractNumberINEM());
+                consultationContractData.getLaborCategory().setText(contractNewVersionDTO.getContractJsonData().getLaborCategory());
                 String contractTypeText = contractTypeService.findContractTypeByContractTypeCode(contractNewVersionDTO.getContractJsonData().getContractType()).getColloquial();
                 contractTypeText = contractTypeText + " [" + contractTypeService.findContractTypeByContractTypeCode(contractNewVersionDTO.getContractJsonData().getContractType()).getContractDescription() +"]";
                 consultationContractData.getContractTypeDescription().setText(contractTypeText);

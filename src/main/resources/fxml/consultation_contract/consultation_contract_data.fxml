@@ -12,13 +12,13 @@
 
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="5.0" layoutY="10.0" prefHeight="478.0" prefWidth="1087.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="5.0" layoutY="10.0" prefHeight="478.0" prefWidth="1097.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox>
                <children>
                   <Label minWidth="300.0" text="Número del contrato en el Servicio de Empleo">
                      <HBox.margin>
-                        <Insets bottom="10.0" left="5.0" top="15.0" />
+                        <Insets bottom="5.0" left="5.0" top="15.0" />
                      </HBox.margin>
                   </Label>
                   <TextField fx:id="identificationContractNumberINEM" alignment="CENTER" maxWidth="175.0" minWidth="150.0" style="-fx-text-inner-color: #000FFF;">
@@ -34,6 +34,20 @@
                   <TextField fx:id="contractTypeDescription" minWidth="400.0" prefHeight="26.0" prefWidth="575.0" style="-fx-text-inner-color: #000FFF;">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" top="10.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Categoria laboral">
+                     <HBox.margin>
+                        <Insets bottom="15.0" left="5.0" top="4.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="laborCategory" minWidth="350.0" prefHeight="26.0" style="-fx-text-inner-color: #000FFF;">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" top="2.0" />
                      </HBox.margin>
                   </TextField>
                </children>

@@ -39,6 +39,8 @@ public class ConsultationContractData extends AnchorPane {
     @FXML
     private TableColumn<ConsultationContractDataTableDTO, String> variationTypeDescription;
     @FXML
+    private TextField laborCategory;
+    @FXML
     private TableColumn<ConsultationContractDataTableDTO, LocalDate> startDate;
     @FXML
     private TableColumn<ConsultationContractDataTableDTO, LocalDate> expectedEndDate;
@@ -109,6 +111,10 @@ public class ConsultationContractData extends AnchorPane {
 
     public TextField getContractTypeDescription() {
         return contractTypeDescription;
+    }
+
+    public TextField getLaborCategory() {
+        return laborCategory;
     }
 
     public TableColumn<ConsultationContractDataTableDTO, Integer> getVariationTypeCode() {
