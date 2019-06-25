@@ -42,7 +42,7 @@ import java.sql.Date;
         ),
         @NamedQuery(
                 name = InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE,
-                query = "select p from InitialContractVO p order by p.contractNumber, p.startDate"
+                query = "select p from InitialContractVO p order by p.contractNumber, p.startDate, variationType"
         ),
         @NamedQuery(
                 name = InitialContractVO.FIND_INITIAL_CONTRACT_BY_CONTRACT_NUMBER,

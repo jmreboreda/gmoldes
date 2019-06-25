@@ -97,6 +97,7 @@ public class ConsultationContractData extends AnchorPane {
         });
 
         identificationContractNumberINEM.setMouseTransparent(true);
+        laborCategory.setMouseTransparent(true);
         contractTypeDescription.setMouseTransparent(true);
 
     }
