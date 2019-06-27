@@ -12,16 +12,18 @@ public class PayrollCheckListDTO {
     private Month month;
     private Integer year;
     private String withVariationsInMonth;
+    private String date;
     private Clipboard clipboard;
 
     public PayrollCheckListDTO() {
 
     }
 
-    public PayrollCheckListDTO(String employerFullName, String workerFullName, String withVariationsInMonth) {
+    public PayrollCheckListDTO(String employerFullName, String workerFullName, String withVariationsInMonth, String date) {
         this.employerFullName = employerFullName;
         this.workerFullName = workerFullName;
         this.withVariationsInMonth = withVariationsInMonth;
+        this.date = date;
     }
 
     public String getEmployerFullName() {
@@ -64,6 +66,14 @@ public class PayrollCheckListDTO {
         this.withVariationsInMonth = withVariationsInMonth;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public Clipboard getClipboard() {
         return clipboard;
     }
@@ -71,6 +81,7 @@ public class PayrollCheckListDTO {
     public void setClipboard(Clipboard clipboard) {
         this.clipboard = clipboard;
     }
+
     public String toString(){
 
         return getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) ;

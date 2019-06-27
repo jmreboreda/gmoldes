@@ -6,9 +6,10 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
-public class PayrollCheckListAction extends HBox {
+public class PayrollCheckListAction extends AnchorPane {
 
     private static final String PAYROLL_CHECKLIST_ACTION_FXML = "/fxml/payroll_check_list/payrollchecklist_action_components.fxml";
 

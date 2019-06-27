@@ -39,6 +39,8 @@ public class PayrollCheckListData extends VBox {
     @FXML
     private TableColumn<PayrollCheckListDTO, String> columnChanges;
     @FXML
+    private TableColumn<PayrollCheckListDTO, String> columnVariationDate;
+    @FXML
     private TableView<PayrollCheckListDTO> payrollTable;
 
     public PayrollCheckListData() {
@@ -52,8 +54,10 @@ public class PayrollCheckListData extends VBox {
         columnEmployer.setCellValueFactory(new PropertyValueFactory<>("employerFullName"));
         columnWorker.setCellValueFactory(new PropertyValueFactory<>("workerFullName"));
         columnChanges.setCellValueFactory(new PropertyValueFactory<>("withVariationsInMonth"));
+        columnVariationDate.setCellValueFactory(new PropertyValueFactory<>("date"));
 
         columnChanges.setStyle( "-fx-alignment: CENTER CENTER;");
+        columnVariationDate.setStyle("-fx-alignment: CENTER CENTER;");
 
         this.month.setOnAction(this::onMonthChanged);
         this.year.setOnAction(this::onYearChanged);
