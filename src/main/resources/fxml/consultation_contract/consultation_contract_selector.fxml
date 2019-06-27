@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TitledPane?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TitledPane collapsible="false" layoutX="5.0" prefHeight="126.0" prefWidth="1160.0" text="Datos del contrato" textFill="#000fff" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
          <content>
@@ -21,19 +22,24 @@
                      <children>
                         <CheckBox fx:id="activeClientsOnly" mnemonicParsing="false" selected="true" text="Solo clientes actuales">
                            <HBox.margin>
-                              <Insets />
+                              <Insets top="4.0" />
                            </HBox.margin></CheckBox>
-                        <RadioButton fx:id="contractInForceOnly" mnemonicParsing="false" selected="true" text="Contratos en vigor">
+                        <RadioButton fx:id="contractInForceOnly" mnemonicParsing="false" selected="true" text="Contratos en vigor al">
                            <HBox.margin>
-                              <Insets left="15.0" />
+                              <Insets left="15.0" top="4.0" />
                            </HBox.margin>
                            <toggleGroup>
                               <ToggleGroup fx:id="contractActiveOrNot" />
                            </toggleGroup>
                         </RadioButton>
+                        <DatePicker fx:id="inForceDate" maxWidth="125.0" style="-fx-text-inner-color: #000FFF;">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </DatePicker>
                         <RadioButton fx:id="allContract" mnemonicParsing="false" text="Todos los contratos" toggleGroup="$contractActiveOrNot">
                            <HBox.margin>
-                              <Insets left="15.0" />
+                              <Insets left="15.0" top="4.0" />
                            </HBox.margin>
                         </RadioButton>
                      </children>

@@ -104,7 +104,8 @@ public class ConsultationContractMainController extends AnchorPane {
         if(consultationContractSelector.getActiveClientsOnly().isSelected()) {
             // Active clients with contract in force
             if(consultationContractSelector.getContractInForceOnly().isSelected()){
-                List<ClientDTO> activeClientDTOWithContractsInForceAtDate = clientService.findAllClientWithContractInForceAtDate(LocalDate.now());
+                LocalDate inForceDate = consultationContractSelector.getInForceDate().getValue();
+                List<ClientDTO> activeClientDTOWithContractsInForceAtDate = clientService.findAllClientWithContractInForceAtDate(inForceDate);
                 clientDTOToClientSelectorList.addAll(activeClientDTOWithContractsInForceAtDate);
             }else{
                 // Active clients contract history
@@ -152,10 +153,12 @@ public class ConsultationContractMainController extends AnchorPane {
 
     private void onActiveClientsOnly(MouseEvent event){
         if(consultationContractSelector.getActiveClientsOnly().isSelected()){
+            consultationContractSelector.getInForceDate().setDisable(false);
 
         }else{
             consultationContractSelector.getAllContract().setSelected(true);
             consultationContractSelector.getContractInForceOnly().setSelected(false);
+            consultationContractSelector.getInForceDate().setDisable(true);
         }
 
         loadClientSelector();
@@ -171,9 +174,11 @@ public class ConsultationContractMainController extends AnchorPane {
         consultationContractData.getContractTypeDescription().clear();
 
         if(consultationContractSelector.getActiveClientsOnly().isSelected()){
+            consultationContractSelector.getInForceDate().setDisable(false);
            consultationContractSelector.getAllContract().setSelected(false);
         }else{
             consultationContractSelector.getActiveClientsOnly().setSelected(true);
+            consultationContractSelector.getInForceDate().setDisable(false);
             consultationContractSelector.getAllContract().setSelected(false);
         }
 
@@ -181,6 +186,9 @@ public class ConsultationContractMainController extends AnchorPane {
     }
 
     private void onAllContract(MouseEvent event){
+
+        consultationContractSelector.getInForceDate().setDisable(true);
+
         consultationContractSelector.getContractSelector().getSelectionModel().clearSelection();
         consultationContractSelector.getContractSelector().getItems().clear();
 
@@ -213,7 +221,7 @@ public class ConsultationContractMainController extends AnchorPane {
 
         if(consultationContractSelector.getActiveClientsOnly().isSelected()){
             if(consultationContractSelector.getContractInForceOnly().isSelected()){
-                List<InitialContractDTO> initialContractInForceDTOList = contractService.findAllInitialContractInForceAtDate(LocalDate.now());
+                List<InitialContractDTO> initialContractInForceDTOList = contractService.findAllInitialContractInForceAtDate(consultationContractSelector.getInForceDate().getValue());
                 for(InitialContractDTO initialContractDTO : initialContractInForceDTOList) {
                     if (initialContractDTO.getContractJsonData().getClientGMId().equals(clientDTO.getClientId())) {
                         employeesOfSelectedClientDTOWithContract.add(personService.findPersonById(initialContractDTO.getContractJsonData().getWorkerId()));

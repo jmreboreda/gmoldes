@@ -1,5 +1,6 @@
 package gmoldes.components.consultation_contract.components;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.components.ViewLoader;
 import gmoldes.components.contract_documentation_control.events.ContractSelectedEvent;
 import gmoldes.components.contract_documentation_control.events.SelectClientEmployerEvent;
@@ -11,13 +12,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalDateStringConverter;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ConsultationContractSelector extends AnchorPane {
 
@@ -25,6 +27,8 @@ public class ConsultationContractSelector extends AnchorPane {
 
     private Parent parent;
     private Stage stage;
+
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
     private EventHandler<MouseEvent> onActiveClientsOnlyEventHandler;
     private EventHandler<MouseEvent> onContractInForceOnlyEventEventHandler;
@@ -39,6 +43,8 @@ public class ConsultationContractSelector extends AnchorPane {
     private CheckBox activeClientsOnly;
     @FXML
     private RadioButton contractInForceOnly;
+    @FXML
+    private DatePicker inForceDate;
     @FXML
     private RadioButton allContract;
     @FXML
@@ -56,11 +62,16 @@ public class ConsultationContractSelector extends AnchorPane {
     public void initialize(){
         activeClientsOnly.setOnMouseClicked(this::onActiveClientsOnly);
         contractInForceOnly.setOnMouseClicked(this::onContractInForceOnly);
+        inForceDate.setOnAction(this::onInForceDate);
         allContract.setOnMouseClicked(this::onAllContract);
 
         clientSelector.setOnAction(this::onClientSelectorChange);
         employeeSelector.setOnAction(this::onEmployeeSelectorChange);
         contractSelector.setOnAction(this::onContractSelectorChange);
+
+        inForceDate.setConverter(new LocalDateStringConverter(dateFormatter, null));
+        inForceDate.setValue(LocalDate.now());
+
     }
 
     public CheckBox getActiveClientsOnly() {
@@ -69,6 +80,10 @@ public class ConsultationContractSelector extends AnchorPane {
 
     public RadioButton getContractInForceOnly() {
         return contractInForceOnly;
+    }
+
+    public DatePicker getInForceDate() {
+        return inForceDate;
     }
 
     public RadioButton getAllContract() {
@@ -117,6 +132,10 @@ public class ConsultationContractSelector extends AnchorPane {
 
     SelectEmployerEmployeeEvent employerEmployeeEvent = new SelectEmployerEmployeeEvent(getClientSelector().getValue(), getEmployeeSelector().getValue());
     selectEmployerEmployeeEventEventHandler.handle(employerEmployeeEvent);
+    }
+
+    private void onInForceDate(ActionEvent event){
+
     }
 
     private void onContractSelectorChange(ActionEvent event){
