@@ -62,7 +62,7 @@ public class ConsultationContractSelector extends AnchorPane {
     public void initialize(){
         activeClientsOnly.setOnMouseClicked(this::onActiveClientsOnly);
         contractInForceOnly.setOnMouseClicked(this::onContractInForceOnly);
-        inForceDate.setOnAction(this::onInForceDate);
+        inForceDate.setOnMouseClicked(this::onInForceDate);
         allContract.setOnMouseClicked(this::onAllContract);
 
         clientSelector.setOnAction(this::onClientSelectorChange);
@@ -134,8 +134,8 @@ public class ConsultationContractSelector extends AnchorPane {
     selectEmployerEmployeeEventEventHandler.handle(employerEmployeeEvent);
     }
 
-    private void onInForceDate(ActionEvent event){
-
+    private void onInForceDate(MouseEvent event){
+        onContractInForceOnly(event);
     }
 
     private void onContractSelectorChange(ActionEvent event){

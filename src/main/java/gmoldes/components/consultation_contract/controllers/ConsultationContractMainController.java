@@ -91,6 +91,7 @@ public class ConsultationContractMainController extends AnchorPane {
 
         consultationContractData.getIdentificationContractNumberINEM().clear();
         consultationContractData.getContractTypeDescription().clear();
+        consultationContractData.getLaborCategory().clear();
 
         consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
 
@@ -172,6 +173,7 @@ public class ConsultationContractMainController extends AnchorPane {
 
         consultationContractData.getIdentificationContractNumberINEM().clear();
         consultationContractData.getContractTypeDescription().clear();
+        consultationContractData.getLaborCategory().clear();
 
         if(consultationContractSelector.getActiveClientsOnly().isSelected()){
             consultationContractSelector.getInForceDate().setDisable(false);
@@ -196,6 +198,7 @@ public class ConsultationContractMainController extends AnchorPane {
 
         consultationContractData.getIdentificationContractNumberINEM().clear();
         consultationContractData.getContractTypeDescription().clear();
+        consultationContractData.getLaborCategory().clear();
 
         loadClientSelector();
     }
