@@ -160,6 +160,7 @@ public class ConsultationContractMainController extends AnchorPane {
             consultationContractSelector.getAllContract().setSelected(true);
             consultationContractSelector.getContractInForceOnly().setSelected(false);
             consultationContractSelector.getInForceDate().setDisable(true);
+            consultationContractSelector.getInForceDate().setDisable(true);
         }
 
         loadClientSelector();

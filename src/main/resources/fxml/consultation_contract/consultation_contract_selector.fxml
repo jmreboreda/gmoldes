@@ -37,7 +37,7 @@
                               <Insets left="10.0" />
                            </HBox.margin>
                         </DatePicker>
-                        <RadioButton fx:id="allContract" mnemonicParsing="false" text="Todos los contratos" toggleGroup="$contractActiveOrNot">
+                        <RadioButton fx:id="allContract" mnemonicParsing="false" text="Todos los contratos (extinguidos, en vigor y futuros)" toggleGroup="$contractActiveOrNot">
                            <HBox.margin>
                               <Insets left="15.0" top="4.0" />
                            </HBox.margin>

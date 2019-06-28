@@ -72,6 +72,8 @@ public class ConsultationContractSelector extends AnchorPane {
         inForceDate.setConverter(new LocalDateStringConverter(dateFormatter, null));
         inForceDate.setValue(LocalDate.now());
 
+        allContract.setTooltip(new Tooltip("Contratos vencidos, en vigor y futuros"));
+
     }
 
     public CheckBox getActiveClientsOnly() {
