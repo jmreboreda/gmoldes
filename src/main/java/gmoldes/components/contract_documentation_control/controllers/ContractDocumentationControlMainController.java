@@ -363,7 +363,17 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     }
 
     private void onOkButton(MouseEvent event){
+
+        for(int i = 0; i < contractDocumentationControlData.getContractDocumentControlTable().getItems().size(); i++){
+            if(contractDocumentationControlData.getContractDocumentControlTable().getItems().get(i).getDocumentType() == null){
+                contractDocumentationControlData.getContractDocumentControlTable().getItems().get(i).setReceptionDate(null);
+                contractDocumentationControlData.getContractDocumentControlTable().getItems().get(i).setDeliveryDate(null);
+                contractDocumentationControlData.getContractDocumentControlTable().refresh();
+            }
+
             contractDocumentationControlAction.getSaveButton().setDisable(false);
+        }
+
     }
 
     private void onSaveButton(MouseEvent event){
