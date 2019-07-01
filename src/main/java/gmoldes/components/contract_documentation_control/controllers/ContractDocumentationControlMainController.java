@@ -313,17 +313,26 @@ public class ContractDocumentationControlMainController extends AnchorPane {
             if(traceabilityContractDocumentationDTO.getContractNumber().equals(event.getContractNumber()) &&
                     traceabilityContractDocumentationDTO.getVariationType().equals(event.getVariationType()) &&
                             traceabilityContractDocumentationDTO.getStartDate().equals(event.getStartDate())){
+
                 // IDC variation data filter
                 if(typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getInitial() ||
                         typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getWorkingDay() ||
                         (typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getExtinction())) {
                     contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
                 }
+                else{
+                    contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO(null,null, null));
+                }
+
+                // Delivery documentation without filter
                 contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Envío de la documentación al cliente para firma", null, traceabilityContractDocumentationDTO.getDateDeliveryContractDocumentationToClient()));
+
                 // Contract end notice data filter
                 if(typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getInitial() ||
                         typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getExtension()) {
                     contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Carta de preaviso de fin de contrato", traceabilityContractDocumentationDTO.getContractEndNoticeReceptionDate(), null));
+                }else{
+                    contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO(null,null, null));
                 }
             }
         }
@@ -354,7 +363,17 @@ public class ContractDocumentationControlMainController extends AnchorPane {
     }
 
     private void onOkButton(MouseEvent event){
+
+        for(int i = 0; i < contractDocumentationControlData.getContractDocumentControlTable().getItems().size(); i++){
+            if(contractDocumentationControlData.getContractDocumentControlTable().getItems().get(i).getDocumentType() == null){
+                contractDocumentationControlData.getContractDocumentControlTable().getItems().get(i).setReceptionDate(null);
+                contractDocumentationControlData.getContractDocumentControlTable().getItems().get(i).setDeliveryDate(null);
+                contractDocumentationControlData.getContractDocumentControlTable().refresh();
+            }
+
             contractDocumentationControlAction.getSaveButton().setDisable(false);
+        }
+
     }
 
     private void onSaveButton(MouseEvent event){

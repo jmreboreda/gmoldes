@@ -1,5 +1,6 @@
 package gmoldes.domain.payroll_checklist;
 
+import gmoldes.ApplicationConstants;
 import gmoldes.domain.client.ClientService;
 import gmoldes.domain.client.dto.ClientDTO;
 import gmoldes.domain.contract.ContractService;
@@ -7,13 +8,16 @@ import gmoldes.domain.contract.dto.ContractNewVersionDTO;
 import gmoldes.domain.payroll_checklist.dto.PayrollCheckListDTO;
 import gmoldes.domain.person.PersonService;
 import gmoldes.domain.person.dto.PersonDTO;
+import gmoldes.domain.types_contract_variations.TypesContractVariationsService;
+import javafx.scene.input.KeyCode;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.text.Collator;
+import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,6 +29,7 @@ public class PayrollCheckList {
     private String employerFullName;
     private String  workerFullName;
     private String withVariationsInMonth;
+    private String date;
     private Month month;
     private Integer year;
     private Clipboard clipboard;
@@ -74,6 +79,14 @@ public class PayrollCheckList {
         this.withVariationsInMonth = withVariationsInMonth;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @Override
     public String toString(){
 
@@ -85,7 +98,10 @@ public class PayrollCheckList {
         String clipboardData = "";
 
         for(PayrollCheckListDTO payrollCheckListDTO : payrollCheckListDTOList){
-            clipboardData = clipboardData + payrollCheckListDTO.getEmployerFullName() + ";" + payrollCheckListDTO.getWorkerFullName() + ";" + payrollCheckListDTO.getWithVariationsInMonth() + "\n";
+            clipboardData = clipboardData + payrollCheckListDTO.getEmployerFullName() + ";" +
+                    payrollCheckListDTO.getWorkerFullName() + ";" +
+                    payrollCheckListDTO.getWithVariationsInMonth() + ";" +
+                    payrollCheckListDTO.getDate() + "\n";
         }
 
         StringSelection ss = new StringSelection(clipboardData);
@@ -93,25 +109,37 @@ public class PayrollCheckList {
     }
 
     public List<PayrollCheckListDTO> retrieveAllContractInForceInPeriod(Month month, Integer year){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(ApplicationConstants.DEFAULT_DATE_FORMAT);
 
         List<PayrollCheckListDTO> payrollCheckListDTOList = new ArrayList<>();
         List<ContractNewVersionDTO> contractNewVersionDTOList = findAllContractInForceInPeriod(month, year);
         for(ContractNewVersionDTO contractNewVersionDTO : contractNewVersionDTOList){
             ClientService clientService = ClientService.ClientServiceFactory.getInstance();
-            ClientDTO employer = clientService.findClientById(contractNewVersionDTO.getContractJsonData().getClientGMId());
-            String employerName = employer.toString();
+            TypesContractVariationsService typesContractVariationsService = TypesContractVariationsService.TypesContractVariationServiceFactory.getInstance();
+            ClientDTO employerDTO = clientService.findClientById(contractNewVersionDTO.getContractJsonData().getClientGMId());
+            String employerName = employerDTO.toString();
             PersonService personService = PersonService.PersonServiceFactory.getInstance();
-            PersonDTO worker = personService.findPersonById(contractNewVersionDTO.getContractJsonData().getWorkerId());
-            String workerName = worker.toString();
+            PersonDTO workerDTO = personService.findPersonById(contractNewVersionDTO.getContractJsonData().getWorkerId());
+            String workerName = workerDTO.toString();
+            String date = "";
 
             String variation = "";
-            if(contractNewVersionDTO.getModificationDate() != null &&
-                    contractNewVersionDTO.getModificationDate().getMonth().getValue() == month.getValue() &&
-                    contractNewVersionDTO.getModificationDate().getYear() == year){
-                    variation = "**";
+            if(contractNewVersionDTO.getStartDate().getMonth().getValue() == month.getValue() &&
+                    contractNewVersionDTO.getStartDate().getYear() == year){
+
+                variation = typesContractVariationsService.findTypesContractVariationsById(contractNewVersionDTO.getVariationType())
+                        .getVariation_description().length() >= 21 ?
+                        typesContractVariationsService.findTypesContractVariationsById(contractNewVersionDTO
+                                .getVariationType())
+                                .getVariation_description().substring(0, 21) :
+                        typesContractVariationsService.findTypesContractVariationsById(contractNewVersionDTO
+                                .getVariationType())
+                                .getVariation_description();
+
+                date = contractNewVersionDTO.getStartDate() != null ? contractNewVersionDTO.getStartDate().format(dateFormatter) : " ";
             }
 
-            PayrollCheckListDTO payrollCheckListDTO = new PayrollCheckListDTO(employerName, workerName, variation);
+            PayrollCheckListDTO payrollCheckListDTO = new PayrollCheckListDTO(employerName, workerName, variation, date);
             payrollCheckListDTOList.add(payrollCheckListDTO);
         }
 

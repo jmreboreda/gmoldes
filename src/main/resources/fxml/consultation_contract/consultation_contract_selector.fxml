@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TitledPane?>
@@ -21,19 +22,24 @@
                      <children>
                         <CheckBox fx:id="activeClientsOnly" mnemonicParsing="false" selected="true" text="Solo clientes actuales">
                            <HBox.margin>
-                              <Insets />
+                              <Insets top="4.0" />
                            </HBox.margin></CheckBox>
-                        <RadioButton fx:id="contractInForceOnly" mnemonicParsing="false" selected="true" text="Contratos en vigor">
+                        <RadioButton fx:id="contractInForceOnly" mnemonicParsing="false" selected="true" text="Contratos en vigor al">
                            <HBox.margin>
-                              <Insets left="15.0" />
+                              <Insets left="15.0" top="4.0" />
                            </HBox.margin>
                            <toggleGroup>
                               <ToggleGroup fx:id="contractActiveOrNot" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="allContract" mnemonicParsing="false" text="Todos los contratos" toggleGroup="$contractActiveOrNot">
+                        <DatePicker fx:id="inForceDate" maxWidth="125.0" style="-fx-text-inner-color: #000FFF;">
                            <HBox.margin>
-                              <Insets left="15.0" />
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </DatePicker>
+                        <RadioButton fx:id="allContract" mnemonicParsing="false" text="Todos los contratos (extinguidos, en vigor y futuros)" toggleGroup="$contractActiveOrNot">
+                           <HBox.margin>
+                              <Insets left="15.0" top="4.0" />
                            </HBox.margin>
                         </RadioButton>
                      </children>
@@ -45,31 +51,31 @@
                      <children>
                         <Label text="Cliente">
                            <HBox.margin>
-                              <Insets bottom="20.0" left="5.0" right="5.0" top="10.0" />
+                              <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                            </HBox.margin>
                         </Label>
                         <ChoiceBox fx:id="clientSelector" minWidth="400.0" prefWidth="150.0">
                            <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" top="5.0" />
+                              <Insets bottom="10.0" left="5.0" top="5.0" />
                            </HBox.margin>
                         </ChoiceBox>
                         <Label text="Empleado">
                            <HBox.margin>
-                              <Insets bottom="20.0" left="15.0" right="10.0" top="10.0" />
+                              <Insets bottom="10.0" left="15.0" right="10.0" top="10.0" />
                            </HBox.margin>
                         </Label>
                         <ChoiceBox fx:id="employeeSelector" minWidth="400.0" prefWidth="150.0">
                            <HBox.margin>
-                              <Insets bottom="20.0" top="5.0" />
+                              <Insets bottom="10.0" top="5.0" />
                            </HBox.margin></ChoiceBox>
                         <Label text="Contrato">
                            <HBox.margin>
-                              <Insets bottom="20.0" left="15.0" right="10.0" top="10.0" />
+                              <Insets bottom="10.0" left="15.0" right="10.0" top="10.0" />
                            </HBox.margin>
                         </Label>
                         <ChoiceBox fx:id="contractSelector" prefWidth="100.0">
                            <HBox.margin>
-                              <Insets bottom="20.0" top="5.0" />
+                              <Insets bottom="10.0" top="5.0" />
                            </HBox.margin></ChoiceBox>
                      </children>
                   </HBox>

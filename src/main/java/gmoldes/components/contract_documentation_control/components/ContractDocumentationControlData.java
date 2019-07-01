@@ -94,7 +94,6 @@ public class ContractDocumentationControlData extends AnchorPane {
                     return;
                 }
 
-//                System.out.println("previous: " + previousIdentificationNumberINEMFromDatabase + " :: " + "new: " + newValue + " :: " + "old: " + oldValue);
                 contractNumberINEMChangedEventEventHandler.handle(new ContractNumberINEMChangedEvent(true));
             }
         });

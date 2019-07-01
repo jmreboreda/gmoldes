@@ -42,7 +42,8 @@
         <columns>
           <TableColumn fx:id="columnEmployer" maxWidth="-1.0" minWidth="345.0" prefWidth="345.0" resizable="false" text="Cliente GM - Empleador" />
           <TableColumn fx:id="columnWorker" maxWidth="-1.0" minWidth="345.0" prefWidth="345.0" resizable="false" text="Empleado" />
-            <TableColumn fx:id="columnChanges" minWidth="100.0" prefWidth="100.0" text="Cambios" />
+            <TableColumn fx:id="columnChanges" minWidth="200.0" prefWidth="200.0" text="Cambios" />
+            <TableColumn fx:id="columnVariationDate" minWidth="100.0" prefWidth="100.0" text="Fecha" />
         </columns>
          <VBox.margin>
             <Insets left="10.0" right="10.0" top="10.0" />

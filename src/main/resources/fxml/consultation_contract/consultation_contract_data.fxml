@@ -21,7 +21,7 @@
                         <Insets bottom="5.0" left="5.0" top="15.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="identificationContractNumberINEM" alignment="CENTER" maxWidth="175.0" minWidth="150.0" style="-fx-text-inner-color: #000FFF;">
+                  <TextField fx:id="identificationContractNumberINEM" alignment="CENTER" maxWidth="160.0" minWidth="160.0" style="-fx-text-inner-color: #000FFF;">
                      <HBox.margin>
                         <Insets bottom="10.0" left="5.0" top="10.0" />
                      </HBox.margin>
