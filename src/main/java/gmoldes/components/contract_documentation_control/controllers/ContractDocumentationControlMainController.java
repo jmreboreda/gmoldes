@@ -317,6 +317,8 @@ public class ContractDocumentationControlMainController extends AnchorPane {
                 // IDC variation data filter
                 if(typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getInitial() ||
                         typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getWorkingDay() ||
+                        typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getConversion() ||
+                        typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getCategory() ||
                         (typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getExtinction())) {
                     contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
                 }
