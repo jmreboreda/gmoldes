@@ -13,6 +13,10 @@ import java.util.Set;
 
 @NamedQueries(value = {
         @NamedQuery(
+                name = ClientVO.FIND_ALL_ACTIVE_CLIENT,
+                query = "select p from ClientVO as p where p.dateTo is null and withoutActivity is null"
+        ),
+        @NamedQuery(
                 name = ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN,
                 query = "select p from ClientVO as p where (lower(p.rzSocial) like lower(:lettersOfName)" +
                         " or lower(p.surNames) like lower(:lettersOfName)" +
@@ -40,6 +44,7 @@ import java.util.Set;
 
 public class ClientVO implements Serializable {
 
+    public static final String FIND_ALL_ACTIVE_CLIENT = "ClientVO.FIND_ALL_ACTIVE_CLIENT";
     public static final String FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN = "ClientVO.FIND_ALL_ACTIVE_CLIENTS_BY_NAME_PATTERN";
     public static final String FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER = "ClientVO.FIND_ALL_ACTIVE_CLIENTS_IN_ALPHABETICAL_ORDER";
     public static final String FIND_CLIENT_BY_SAME_NAME = "ClientVO.FIND_CLIENT_BY_SAME_NAME";

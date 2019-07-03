@@ -7,6 +7,7 @@ import gmoldes.components.contract.initial_contract.persistence.dao.InitialContr
 import gmoldes.components.contract.initial_contract.persistence.vo.InitialContractVO;
 import gmoldes.components.contract.manager.ContractManager;
 import gmoldes.domain.client.dto.ClientDTO;
+import gmoldes.domain.client.mapper.MapperClientVODTO;
 import gmoldes.domain.client.persistence.dao.ClientDAO;
 import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.domain.contract.dto.ContractNewVersionDTO;
@@ -23,6 +24,18 @@ public class ClientManager {
     private ContractDAO contractDAO;
 
     public ClientManager() {
+    }
+
+    public List<ClientDTO> findAllActiveClient(){
+        List<ClientDTO> clientDTOList = new ArrayList<>();
+
+        clientDAO = ClientDAO.ClientDAOFactory.getInstance();
+        List<ClientVO> activeClientVO = clientDAO.findAllActiveClient();
+        for(ClientVO clientVO: activeClientVO){
+            clientDTOList.add(MapperClientVODTO.map(clientVO));
+        }
+
+        return clientDTOList;
     }
 
     public List<ClientDTO> findAllActiveClientByNamePatternInAlphabeticalOrder(String namePattern) {
