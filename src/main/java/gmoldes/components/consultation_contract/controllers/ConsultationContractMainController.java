@@ -303,8 +303,7 @@ public class ConsultationContractMainController extends AnchorPane {
                     for (InitialContractDTO initialContractDTO : initialContractDTOList) {
                         if (initialContractDTO.getContractJsonData().getClientGMId().equals(clientDTO.getClientId()) &&
                                 initialContractDTO.getContractJsonData().getWorkerId().equals(personDTO.getIdpersona()) &&
-                                (initialContractDTO.getEndingDate() == null ||
-                                initialContractDTO.getExpectedEndDate().compareTo(consultationContractSelector.getInForceDate().getValue()) <= 0)) {
+                                initialContractDTO.getEndingDate() == null) {
                             contractsList.add(initialContractDTO.getContractNumber());
                         }
                     }
