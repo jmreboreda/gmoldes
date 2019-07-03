@@ -10,6 +10,11 @@ public class ClientController {
 
     ClientManager clientManager = new ClientManager();
 
+    public List<ClientDTO> findAllActiveClient(){
+
+        return clientManager.findAllActiveClient();
+    }
+
     public List<ClientDTO> findAllActiveClientByNamePatternInAlphabeticalOrder(String pattern){
 
         return clientManager.findAllActiveClientByNamePatternInAlphabeticalOrder(pattern);

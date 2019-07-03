@@ -5,9 +5,8 @@ import gmoldes.domain.client.persistence.vo.ClientVO;
 import gmoldes.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
 import javax.persistence.TypedQuery;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 public class ClientDAO {
@@ -54,6 +53,12 @@ public class ClientDAO {
         query.setParameter("clientId", clientId);
 
         return query.getSingleResult();
+    }
+
+    public List<ClientVO> findAllActiveClient(){
+        TypedQuery<ClientVO> query = session.createNamedQuery(ClientVO.FIND_ALL_ACTIVE_CLIENT, ClientVO.class);
+
+        return query.getResultList();
     }
 
     public List<ClientVO> findAllActiveClientsInAlphabeticalOrder(){

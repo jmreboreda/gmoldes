@@ -93,7 +93,7 @@ public class InitialContractDAO {
     }
 
     public List<InitialContractVO> findAllInitialContractSorted(){
-        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACTNUMBER_AND_STARTDATE, InitialContractVO.class);
+        TypedQuery<InitialContractVO> query = session.createNamedQuery(InitialContractVO.FIND_ALL_CONTRACTS_ORDERED_BY_CONTRACT_NUMBER_AND_START_DATE, InitialContractVO.class);
 
         return query.getResultList();
     }

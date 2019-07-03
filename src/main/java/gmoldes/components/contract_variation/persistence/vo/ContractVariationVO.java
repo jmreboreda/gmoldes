@@ -43,11 +43,16 @@ import java.sql.Date;
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATION_BY_ID,
                 query = "select p from ContractVariationVO p where p.variationType = :code order by p.modificationDate, p.endingDate"
         ),
+//        @NamedQuery(
+//                name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE_OLD,
+//                query = "select p from ContractVariationVO p where p.startDate <= :date and (p.endingDate is null or p.endingDate >= :date)" +
+//                        " and (p.modificationDate is null or p.modificationDate >= :date) and (p.expectedEndDate is null or p.expectedEndDate >= :date) order by p.modificationDate," +
+//                        " p.endingDate"
+//        ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_IN_FORCE_AT_DATE,
                 query = "select p from ContractVariationVO p where p.startDate <= :date and (p.endingDate is null or p.endingDate >= :date)" +
-                        " and (p.modificationDate is null or p.modificationDate >= :date) and (p.expectedEndDate is null or p.expectedEndDate >= :date) order by p.modificationDate," +
-                        " p.endingDate"
+                        " and (p.expectedEndDate is null or p.expectedEndDate >= :date)"
         ),
         @NamedQuery(
                 name = ContractVariationVO.FIND_ALL_CONTRACT_VARIATIONS_ORDERED_BY_CONTRACT_NUMBER_AND_START_DATE,
