@@ -11,6 +11,7 @@ public class MapperTypesContractVariationsVODTO {
                .withId(typesContractVariationsVO.getId())
                .withId_Variation(typesContractVariationsVO.getId_variation())
                .withVariationDescription(typesContractVariationsVO.getVariation_description())
+               .withIdcRequired(typesContractVariationsVO.getIdcRequired())
                .build();
     }
 }

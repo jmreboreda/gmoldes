@@ -315,11 +315,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
                             traceabilityContractDocumentationDTO.getStartDate().equals(event.getStartDate())){
 
                 // IDC variation data filter
-                if(typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getInitial() ||
-                        typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getWorkingDay() ||
-                        typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getConversion() ||
-                        typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getCategory() ||
-                        (typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getExtinction())) {
+                if(typesContractVariationsService.findTypesContractVariationsById(traceabilityContractDocumentationDTO.getVariationType()).getIdcRequired()) {
                     contractDocumentationControlData.getContractDocumentControlTable().getItems().add(new ContractDocumentationControlDataDTO("Informe de datos para la cotización (IDC)", traceabilityContractDocumentationDTO.getIDCReceptionDate(), null));
                 }
                 else{
@@ -454,6 +450,7 @@ public class ContractDocumentationControlMainController extends AnchorPane {
 
     private void onExitButton(MouseEvent event){
         logger.info("Contract documentation control: exiting program.");
+
 
         Stage stage = (Stage) contractDocumentationControlHeader.getScene().getWindow();
         stage.close();

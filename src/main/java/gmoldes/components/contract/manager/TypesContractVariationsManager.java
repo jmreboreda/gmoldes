@@ -64,6 +64,7 @@ public class TypesContractVariationsManager {
                 .withInitial(typesContractVariationsVO.getInitial())
                 .withReincorporation(typesContractVariationsVO.getReincorporation())
                 .withWorkingDay(typesContractVariationsVO.getWorkingDay())
+                .withIdcRequired(typesContractVariationsVO.getIdcRequired())
                 .build();
     }
 }

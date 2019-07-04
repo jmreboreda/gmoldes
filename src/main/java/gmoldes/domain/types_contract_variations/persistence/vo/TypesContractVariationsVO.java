@@ -37,6 +37,7 @@ public class TypesContractVariationsVO implements Serializable {
     private Boolean initial;
     private Boolean reincorporation;
     private Boolean workingDay;
+    private Boolean idcRequired;
 
     public TypesContractVariationsVO() {
     }
@@ -127,5 +128,13 @@ public class TypesContractVariationsVO implements Serializable {
 
     public void setWorkingDay(Boolean workingDay) {
         this.workingDay = workingDay;
+    }
+
+    public Boolean getIdcRequired() {
+        return idcRequired;
+    }
+
+    public void setIdcRequired(Boolean idcRequired) {
+        this.idcRequired = idcRequired;
     }
 }
