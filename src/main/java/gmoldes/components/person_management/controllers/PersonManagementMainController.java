@@ -43,12 +43,16 @@ public class PersonManagementMainController extends VBox {
 
 
     @FXML
+    private
     PersonManagementHeader personManagementHeader;
     @FXML
+    private
     PersonManagementSelector personManagementSelector;
     @FXML
+    private
     PersonManagementData personManagementData;
     @FXML
+    private
     PersonManagementAction personManagementAction;
 
     @FXML

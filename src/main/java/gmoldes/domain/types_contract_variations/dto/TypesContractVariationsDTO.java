@@ -16,6 +16,7 @@ public class TypesContractVariationsDTO implements Serializable {
     private Boolean initial;
     private Boolean reincorporation;
     private Boolean workingDay;
+    private Boolean idcRequired;
 
     public TypesContractVariationsDTO(Integer id,
                                       Integer id_variation,
@@ -27,7 +28,8 @@ public class TypesContractVariationsDTO implements Serializable {
                                       Boolean category,
                                       Boolean initial,
                                       Boolean reincorporation,
-                                      Boolean workingDay) {
+                                      Boolean workingDay,
+                                      Boolean idcRequired) {
         this.id = id;
         this.id_variation = id_variation;
         this.variation_description = variation_description;
@@ -39,6 +41,7 @@ public class TypesContractVariationsDTO implements Serializable {
         this.initial = initial;
         this.reincorporation = reincorporation;
         this.workingDay = workingDay;
+        this.idcRequired = idcRequired;
     }
 
     public TypesContractVariationsDTO() {
@@ -132,6 +135,14 @@ public class TypesContractVariationsDTO implements Serializable {
         this.workingDay = workingDay;
     }
 
+    public Boolean getIdcRequired() {
+        return idcRequired;
+    }
+
+    public void setIdcRequired(Boolean idcRequired) {
+        this.idcRequired = idcRequired;
+    }
+
     public String toString(){
         return getVariation_description();
     }
@@ -153,6 +164,7 @@ public class TypesContractVariationsDTO implements Serializable {
         private Boolean initial;
         private Boolean reincorporation;
         private Boolean workingDay;
+        private Boolean idcRequired;
 
         public TypesContractVariationsDTOBuilder withId(Integer id) {
             this.id = id;
@@ -209,11 +221,16 @@ public class TypesContractVariationsDTO implements Serializable {
             return this;
         }
 
+        public TypesContractVariationsDTOBuilder withIdcRequired(Boolean idcRequired) {
+            this.idcRequired = idcRequired;
+            return this;
+        }
+
 
 
         public TypesContractVariationsDTO build() {
             return new TypesContractVariationsDTO(this.id, this.id_variation, this.variation_description, this.extinction, this.conversion, this.special, this.extension,
-                    this.category, this.initial, this.reincorporation, this.workingDay);
+                    this.category, this.initial, this.reincorporation, this.workingDay, this.idcRequired);
         }
     }
 
