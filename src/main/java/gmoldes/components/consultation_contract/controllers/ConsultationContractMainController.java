@@ -212,6 +212,7 @@ public class ConsultationContractMainController extends AnchorPane {
         consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
 
         consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getLaborCategory().clear();
         consultationContractData.getContractTypeDescription().clear();
 
         consultationContractAction.getSaveButton().setDisable(true);
@@ -278,6 +279,7 @@ public class ConsultationContractMainController extends AnchorPane {
     private void onEmployeeSelectorChange(SelectEmployerEmployeeEvent employerEmployeeEvent){
 
         consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getLaborCategory().clear();
         consultationContractData.getContractTypeDescription().clear();
 
         consultationContractSelector.getContractSelector().getSelectionModel().clearSelection();
@@ -354,6 +356,7 @@ public class ConsultationContractMainController extends AnchorPane {
 
         consultationContractData.getConsultationContractDataTableDTOTable().getItems().clear();
         consultationContractData.getIdentificationContractNumberINEM().clear();
+        consultationContractData.getLaborCategory().clear();
 
         ContractService contractService = ContractService.ContractServiceFactory.getInstance();
         List<ContractNewVersionDTO> contractNewVersionDTOList = contractService.findHistoryOfContractByContractNumber(event.getSelectedContractNumber());
