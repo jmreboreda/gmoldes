@@ -313,6 +313,7 @@ public class NewContractMainController extends VBox {
                 Integer contractNumber = persistContract();
                 persistTraceabilityControlData(initialContractNumber);
 
+                contractActionComponents.enableOkButton(false);
                 contractActionComponents.enableSendMailButton(true);
                 contractActionComponents.enablePDFButton(true);
                 contractActionComponents.enableExitButton(true);                }
